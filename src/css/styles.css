@@ -2182,7 +2182,7 @@ hr {
 }
 
 .footer--dark {
-    --ifm-footer-background-color: #303846;
+    --ifm-footer-background-color: black;
     --ifm-footer-color: var(--ifm-footer-link-color);
     --ifm-footer-link-color: var(--ifm-color-secondary);
     --ifm-footer-title-color: var(--ifm-color-white);
@@ -2257,7 +2257,7 @@ hr {
   }
 
 .hero--dark {
-    --ifm-hero-background-color: #303846;
+    --ifm-hero-background-color: black;
     --ifm-hero-text-color: var(--ifm-color-white);
   }
 
