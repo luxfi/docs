@@ -17,7 +17,7 @@ Subnet elástica (o sin permisos).
 
 - [Lux-CLI instalado](/tooling/cli-guides/install-cli.md)
 - Has desplegado una Subnet con permisos en [local](/build/subnet/deploy/local-subnet.md), en
-  [Fuji](/build/subnet/deploy/fuji-testnet-subnet.md) o en [Mainnet](/build/subnet/deploy/mainnet-subnet.md)
+  [Testnet](/build/subnet/deploy/testnet-subnet.md) o en [Mainnet](/build/subnet/deploy/mainnet-subnet.md)
 
 ## Empezando
 
@@ -29,7 +29,7 @@ Para transformar tu Subnet con permisos en una Subnet Elástica (NOTA: esta acci
 `lux subnet elastic <subnetName>`
 
 y selecciona la red en la que quieres transformar la Subnet. Alternativamente, puedes omitir esta
-solicitud proporcionando la bandera `--local`, `--fuji` o `--mainnet`.
+solicitud proporcionando la bandera `--local`, `--testnet` o `--mainnet`.
 
 Proporciona el nombre y el símbolo del token nativo de la Subnet sin permisos. También puedes omitir
 esta solicitud proporcionando las banderas `--tokenName` y `--tokenSymbol`.
@@ -41,19 +41,19 @@ la configuración predeterminada de la Subnet Elástica.
 
 El comando puede tardar unos minutos en ejecutarse.
 
-### Transformación de la Subnet Elástica en Fuji y Mainnet
+### Transformación de la Subnet Elástica en Testnet y Mainnet
 
 La transformación de la Subnet Elástica en una red pública requiere que la clave privada esté cargada en la herramienta, o un
 dispositivo ledger conectado.
 
-Tanto el uso de claves almacenadas como el uso de ledger están habilitados en Fuji (más información sobre la creación de claves
-[aquí](/build/subnet/deploy/fuji-testnet-subnet.md#private-key))
+Tanto el uso de claves almacenadas como el uso de ledger están habilitados en Testnet (más información sobre la creación de claves
+[aquí](/build/subnet/deploy/testnet-subnet.md#private-key))
 mientras que sólo el uso de ledger está habilitado en Mainnet (más información sobre la configuración de tu ledger
 [aquí](/build/subnet/deploy/mainnet-subnet.md#setting-up-your-ledger)).
 
 Para transformar una Subnet con permisos en una Subnet Elástica en redes públicas, los usuarios deben
-proporcionar las claves que controlan la Subnet definida durante el proceso de despliegue de la Subnet (más información sobre las claves en Fuji se puede encontrar
-[aquí](/build/subnet/deploy/fuji-testnet-subnet.md#deploy-the-subnet),
+proporcionar las claves que controlan la Subnet definida durante el proceso de despliegue de la Subnet (más información sobre las claves en Testnet se puede encontrar
+[aquí](/build/subnet/deploy/testnet-subnet.md#deploy-the-subnet),
 mientras que más información sobre la firma de ledger en Mainnet se puede encontrar
 [aquí](/build/subnet/deploy/mainnet-subnet.md#deploy-the-subnet)).
 

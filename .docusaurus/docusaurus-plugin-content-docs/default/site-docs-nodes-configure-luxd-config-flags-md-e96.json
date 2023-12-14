@@ -1,0 +1,38 @@
+{
+  "id": "nodes/configure/luxd-config-flags",
+  "title": "LuxGo Configs and Flags",
+  "description": "This documents list all available configuration and flags for LuxGo.",
+  "source": "@site/docs/nodes/configure/luxd-config-flags.md",
+  "sourceDirName": "nodes/configure",
+  "slug": "/nodes/configure/luxd-config-flags",
+  "permalink": "/nodes/configure/luxd-config-flags",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/configure/luxd-config-flags.md",
+  "tags": [
+    {
+      "label": "Nodes",
+      "permalink": "/tags/nodes"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 0,
+  "frontMatter": {
+    "tags": [
+      "Nodes"
+    ],
+    "description": "This documents list all available configuration and flags for LuxGo.",
+    "sidebar_label": "LuxGo Configs + Flags",
+    "pagination_label": "LuxGo Configs and Flags",
+    "sidebar_position": 0
+  },
+  "sidebar": "nodes",
+  "previous": {
+    "title": "Common Errors While Building a Node",
+    "permalink": "/nodes/run/FAQ"
+  },
+  "next": {
+    "title": "Chain Configs",
+    "permalink": "/nodes/configure/chain-config-flags"
+  }
+}

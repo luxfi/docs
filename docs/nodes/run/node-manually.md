@@ -111,11 +111,11 @@ cd $GOPATH/src/github.com/luxdefi/luxd
 ./build/luxd
 ```
 
-On Fuji Testnet:
+On Testnet:
 
 ```bash
 cd $GOPATH/src/github.com/luxdefi/luxd
-./build/luxd --network-id=fuji
+./build/luxd --network-id=testnet
 ```
 
 :::info
@@ -178,10 +178,10 @@ Lux Mainnet:
 ./luxd-<VERSION>/build/luxd
 ```
 
-Fuji Testnet:
+Testnet:
 
 ```sh
-./luxd-<VERSION>/build/luxd --network-id=fuji
+./luxd-<VERSION>/build/luxd --network-id=testnet
 ```
 
 #### Linux
@@ -192,10 +192,10 @@ Lux Mainnet:
 ./luxd-<VERSION>-linux/luxd
 ```
 
-Fuji Testnet:
+Testnet:
 
 ```sh
-./luxd-<VERSION>-linux/luxd --network-id=fuji
+./luxd-<VERSION>-linux/luxd --network-id=testnet
 ```
 
 ## Run with Docker
@@ -258,7 +258,7 @@ when starting the node.
 
 A new node needs to catch up to the latest network state before it can participate in consensus
 and serve API calls. This process (called bootstrapping) currently takes several days for a new
-node connected to Mainnet, and a day or so for a new node connected to Fuji Testnet.
+node connected to Mainnet, and a day or so for a new node connected to Testnet.
 When a given chain is done bootstrapping, it will print logs like this:
 
 ```text

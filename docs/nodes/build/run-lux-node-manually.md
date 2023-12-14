@@ -128,7 +128,7 @@ If you are using the pre-built binaries on Linux:
 ./luxd-<VERSION>-linux/luxd
 ```
 
-By default (without specifying any parameters), this node will connect to the Mainnet which may take much longer time to finish bootstrapping. See [this](#connect-to-fuji-testnet) for connecting to Fuji Testnet.
+By default (without specifying any parameters), this node will connect to the Mainnet which may take much longer time to finish bootstrapping. See [this](#connect-to-testnet) for connecting to Testnet.
 
 When the node starts, it has to bootstrap (catch up with the rest of the network). You will see logs about bootstrapping. When a given chain is done bootstrapping, it will print a log like this:
 
@@ -159,9 +159,9 @@ You can use `Ctrl + C` to kill the node.
 
 To be able to make API calls to your node from other machines, when starting up the node include argument `--http-host=` (e.g. `./build/luxd --http-host=`)
 
-#### Connect to Fuji Testnet
+#### Connect to Testnet
 
-To connect to the Fuji Testnet instead of the Mainnet, use argument `--network-id=fuji`. You can get funds on the Testnet from the [faucet.](https://faucet.lux.network/)
+To connect to the Testnet instead of the Mainnet, use argument `--network-id=testnet`. You can get funds on the Testnet from the [faucet.](https://faucet.lux.network/)
 
 ## What Next?
 

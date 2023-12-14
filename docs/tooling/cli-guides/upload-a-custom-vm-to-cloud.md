@@ -11,7 +11,7 @@ sidebar_position: 7
 This page demonstrates how to deploy a custom VM into cloud-based validators using Lux-CLI.
 
 :::info
-Currently, only Fuji network and Devnets are supported.
+Currently, only Testnet network and Devnets are supported.
 :::
 
 :::warning
@@ -26,7 +26,7 @@ Before we begin, you will need to have:
 
 - Created a Cloud Server node as described [here](/tooling/cli-guides/create-a-validator-aws.md)
 - Created a Custom VM, as described [here](/build/vm/intro.md).
-- Set up a key to be able to pay for the Fuji Fees, as described [here](/build/subnet/deploy/fuji-testnet-subnet.md).
+- Set up a key to be able to pay for the Testnet Fees, as described [here](/build/subnet/deploy/testnet-subnet.md).
 
 Currently, we only support AWS cloud services, but we plan to add support for more cloud
 services in the near future.
@@ -135,21 +135,21 @@ Cloning into ...
 Successfully created subnet configuration
 ```
 
-## Deploy Subnet on Fuji
+## Deploy Subnet on Testnet
 
-To deploy the Subnet and blockchain on Fuji, run:
+To deploy the Subnet and blockchain on Testnet, run:
 
 ```shell
 lux subnet deploy <subnetName>
 ```
 
-Choose Fuji:
+Choose Testnet:
 
 ```text
 Use the arrow keys to navigate: ↓ ↑ → ←
 ? Choose a network to deploy on:
     Local Network
-  ▸ Fuji
+  ▸ Testnet
     Mainnet
 ```
 
@@ -184,8 +184,8 @@ The successfully creation of our Subnet and blockchain is
 confirmed by the following output:
 
 ```text
-Your Subnet's control keys: [P-fuji1dlwux652lkflgz79g3nsphjzvl6t35xhmunfk1]
-Your subnet auth keys for chain creation: [P-fuji1dlwux652lkflgz79g3nsphjzvl6t35xhmunfk1]
+Your Subnet's control keys: [P-testnet1dlwux652lkflgz79g3nsphjzvl6t35xhmunfk1]
+Your subnet auth keys for chain creation: [P-testnet1dlwux652lkflgz79g3nsphjzvl6t35xhmunfk1]
 Subnet has been created with ID: RU72cWmBmcXber6ZBPT7R5scFFuVSoFRudcS3vayf3L535ZE3
 Now creating blockchain...
 +--------------------+----------------------------------------------------+

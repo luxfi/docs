@@ -1,6 +1,6 @@
 ---
 tags: [Build, Subnets]
-description: The WAGMI ("We're All Going to Make It") Subnet is a high throughput testbed for EVM (Ethereum Virtual Machine) optimizations. It is parameterized to run at a factor more capacity than Fuji/Mainnet C-Chain and will is used to experiment with release candidates before included in an official Coreth release.
+description: The WAGMI ("We're All Going to Make It") Subnet is a high throughput testbed for EVM (Ethereum Virtual Machine) optimizations. It is parameterized to run at a factor more capacity than Testnet/Mainnet C-Chain and will is used to experiment with release candidates before included in an official Coreth release.
 sidebar_label: "Case Study: WAGMI Subnet"
 pagination_label: "WAGMI Subnet"
 sidebar_position: 1
@@ -10,7 +10,7 @@ sidebar_position: 1
 
 The WAGMI ("We're All Going to Make It") Subnet is a high throughput testbed for EVM (Ethereum
 Virtual Machine) optimizations. It is parameterized to run at a factor more capacity than
-Fuji/Mainnet C-Chain and will is used to experiment with release candidates before included
+Testnet/Mainnet C-Chain and will is used to experiment with release candidates before included
 in an official Coreth release.
 
 ## Overview

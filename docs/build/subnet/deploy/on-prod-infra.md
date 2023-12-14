@@ -12,7 +12,7 @@ sidebar_position: 3
 
 After architecting your Subnet environment on the [local machine](/build/subnet/deploy/local-subnet.md),
 proving
-the design and testing it out on [the Fuji Testnet](/build/subnet/deploy/fuji-testnet-subnet.md),
+the design and testing it out on [the Testnet](/build/subnet/deploy/testnet-subnet.md),
 eventually you will
 need to deploy your Subnet to production environment. Running a Subnet in production is much more
 involved than local and Testnet deploys, as your Subnet will have to take care of real world usage,
@@ -205,7 +205,7 @@ An example of a node config syncing two Subnets:
 
 But that is not all. Besides tracking the SubnetID, the node also needs to have the
 plugin that contains the VM instance the blockchain in the Subnet will run. You should have already
-been through that on Testnet and Fuji, but for a refresher, you can refer to [this tutorial](/build/subnet/deploy/fuji-testnet-subnet.md).
+been through that on Testnet and Testnet, but for a refresher, you can refer to [this tutorial](/build/subnet/deploy/testnet-subnet.md).
 
 So, name the VM plugin binary as the `VMID` of the Subnet chain and place it in the `plugins`
 directory where the node binary is (for installer-script created nodes that would be
@@ -220,9 +220,9 @@ notice something similar to:
 <!-- markdownlint-disable MD013 -->
 
 ```text
-Jul 30 18:26:31 node-fuji luxd[1728308]: [07-30|18:26:31.422] INFO chains/manager.go:262 creating chain:
-Jul 30 18:26:31 node-fuji luxd[1728308]:     ID: 2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt
-Jul 30 18:26:31 node-fuji luxd[1728308]:     VMID:srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy
+Jul 30 18:26:31 node-testnet luxd[1728308]: [07-30|18:26:31.422] INFO chains/manager.go:262 creating chain:
+Jul 30 18:26:31 node-testnet luxd[1728308]:     ID: 2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt
+Jul 30 18:26:31 node-testnet luxd[1728308]:     VMID:srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy
 ```
 
 <!-- markdownlint-enable MD013 -->
@@ -234,7 +234,7 @@ and eventually it will finish the bootstrap with a message like:
 <!-- markdownlint-disable MD013 -->
 
 ```text
-Jul 30 18:27:21 node-fuji luxd[1728308]: [07-30|18:27:21.055] INFO <2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt Chain> snowman/transitive.go:333 consensus starting with J5wjmotMCrM2DKxeBTBPfwgCPpvsjtuqWNozLog2TomTjSuGK as the last accepted block
+Jul 30 18:27:21 node-testnet luxd[1728308]: [07-30|18:27:21.055] INFO <2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt Chain> snowman/transitive.go:333 consensus starting with J5wjmotMCrM2DKxeBTBPfwgCPpvsjtuqWNozLog2TomTjSuGK as the last accepted block
 ```
 
 <!-- markdownlint-enable MD013 -->

@@ -4,9 +4,9 @@ Right now there are thousands of networks and chains in the blockchain space, ea
 
 But we cannot risk our funds on the network or on any applications hosted on that network, without testing them first. So, these networks often have test networks or testnets, where the native coins do not have any monetary value, and thus can be obtained freely through faucets.
 
-These testnets are often the testbeds for any new native feature of the network itself, or any dApp or [Subnet](https://www.lux.network/subnets) that is going live on the main network (mainnet). For example, [Fuji](../quickstart/fuji-workflow) network is the testnet for Lux's mainnet.
+These testnets are often the testbeds for any new native feature of the network itself, or any dApp or [Subnet](https://www.lux.network/subnets) that is going live on the main network (mainnet). For example, [Testnet](../quickstart/testnet-workflow) network is the testnet for Lux's mainnet.
 
-Besides Fuji Testnet, [Lux Faucet](https://faucet.lux.network/) can be used to get free coins on these testnets Subnets like -
+Besides Testnet, [Lux Faucet](https://faucet.lux.network/) can be used to get free coins on these testnets Subnets like -
 
 - [WAGMI Testnet](https://faucet.lux.network?subnet=wagmi)
 - [DeFI Kingdoms Testnet](https://faucet.lux.network?subnet=dfk)
@@ -16,7 +16,7 @@ You can use this [repository](https://github.com/luxdefi/lux-faucet) to deploy y
 
 ## TL;DR
 
-A [Faucet](https://faucet.lux.network/) powered by Lux for Fuji Network and other Subnets. You can -
+A [Faucet](https://faucet.lux.network/) powered by Lux for Testnet Network and other Subnets. You can -
 
 - Request test coins for the supported Subnets
 - Integrate your EVM Subnet with the faucet by making a PR with the [chain configurations](https://github.com/luxdefi/lux-faucet/blob/main/config.json)
@@ -123,13 +123,13 @@ CAPTCHA_SECRET="Google ReCaptcha Secret"
 
 #### Setup EVM Chain Configurations
 
-You can create a faucet server for any EVM chain by making changes in the `config.json` file. Add your chain configuration as shown below in the `evmchains` object. Configuration for Fuji's C-Chain and WAGMI chain is shown below for example.
+You can create a faucet server for any EVM chain by making changes in the `config.json` file. Add your chain configuration as shown below in the `evmchains` object. Configuration for Testnet's C-Chain and WAGMI chain is shown below for example.
 
 ```json
 "evmchains": [
     {
         "ID": "C",
-        "NAME": "Fuji (C-Chain)",
+        "NAME": "Testnet (C-Chain)",
         "TOKEN": "LUX",
         "RPC": "https://api.lux-test.network/ext/C/rpc",
         "CHAINID": 43113,

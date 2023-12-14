@@ -1,6 +1,6 @@
 ---
 tags: [Construir, Dapps]
-description: Esta guía muestra cómo implementar e interactuar con contratos inteligentes utilizando Foundry en una Red Lux local y la C-Chain Fuji.
+description: Esta guía muestra cómo implementar e interactuar con contratos inteligentes utilizando Foundry en una Red Lux local y la C-Chain Testnet.
 sidebar_label: Foundry
 pagination_label: Usando Foundry con la Lux C-Chain
 sidebar_position: 2
@@ -10,7 +10,7 @@ sidebar_position: 2
 
 ## Introducción
 
-Esta guía muestra cómo implementar e interactuar con contratos inteligentes utilizando Foundry en una Red Lux local y la C-Chain Fuji.
+Esta guía muestra cómo implementar e interactuar con contratos inteligentes utilizando Foundry en una Red Lux local y la C-Chain Testnet.
 
 [Foundry toolchain](https://github.com/foundry-rs/foundry) es una herramienta de desarrollo de contratos inteligentes escrita en Rust. Gestiona tus dependencias, compila tu proyecto, ejecuta pruebas, implementa y te permite interactuar con la cadena desde la línea de comandos.
 
@@ -30,12 +30,12 @@ Esta guía muestra cómo implementar e interactuar con contratos inteligentes ut
 
 [LuxGo](https://github.com/luxdefi/luxd) es una implementación de nodo Lux escrita en Go.
 
-[Lux Network Runner](/tooling/network-runner.md) es una herramienta para implementar rápidamente redes de prueba locales. Juntos, pueden implementar redes de prueba locales y ejecutar pruebas en ellas.
+[Lux Network Runner](/tooling/netrunner.md) es una herramienta para implementar rápidamente redes de prueba locales. Juntos, pueden implementar redes de prueba locales y ejecutar pruebas en ellas.
 
 Inicia una red Lux local de cinco nodos:
 
 ```zsh
-cd /ruta/a/network-runner
+cd /ruta/a/netrunner
 # inicia una red de cinco nodos de staking
 ./go run examples/local/fivenodenetwork/main.go
 ```
@@ -145,7 +145,7 @@ export RPC_URL=<TU-PUNTO-FINAL-RPC>
 export PRIVATE_KEY=<TU-CLAVE-PRIVADA>
 ```
 
-Dado que estamos implementando en la testnet Fuji, nuestra exportación de `RPC_URL` debería ser:
+Dado que estamos implementando en la testnet Testnet, nuestra exportación de `RPC_URL` debería ser:
 
 ```zsh
 export RPC_URL=https://api.lux-test.network/ext/bc/C/rpc
@@ -180,7 +180,7 @@ Después de una verificación exitosa, después de tu implementación verás el 
 ```zsh
 Iniciando verificación de contrato...
 Esperando a que etherscan detecte la implementación del contrato...
-Comenzando a verificar el contrato `0x8e982a4ef70430f8317b5652bd5c28f147fbf912` implementado en fuji
+Comenzando a verificar el contrato `0x8e982a4ef70430f8317b5652bd5c28f147fbf912` implementado en testnet
 
 Enviando verificación para [contracts/NFT.sol:NFT] "0x8e982a4Ef70430f8317B5652Bd5C28F147FBf912".
 
@@ -218,7 +218,7 @@ Después de una verificación exitosa, verás el estado de verificación del con
 ```zsh
 Iniciando verificación de contrato...
 Esperando a que etherscan detecte la implementación del contrato...
-Comenzando a verificar el contrato `0x8e982a4ef70430f8317b5652bd5c28f147fbf912` implementado en fuji
+Comenzando a verificar el contrato `0x8e982a4ef70430f8317b5652bd5c28f147fbf912` implementado en testnet
 
 Enviando verificación para [contracts/NFT.sol:NFT] "0x8e982a4Ef70430f8317B5652Bd5C28F147FBf912".
 
@@ -281,7 +281,7 @@ La dirección que proporcionaste anteriormente debería aparecer como propietari
 
 ## Flujo de trabajo en Mainnet
 
-El flujo de trabajo en Fuji se puede adaptar a Mainnet con las siguientes modificaciones en las variables de entorno:
+El flujo de trabajo en Testnet se puede adaptar a Mainnet con las siguientes modificaciones en las variables de entorno:
 
 ```zsh
 export RPC_URL=https://api.lux.network/ext/bc/C/rpc
@@ -290,9 +290,9 @@ export PRIVATE_KEY=<TU-CLAVE-PRIVADA>
 
 ## Flujo de trabajo local
 
-El flujo de trabajo en Fuji se puede adaptar a una red local siguiendo estos pasos:
+El flujo de trabajo en Testnet se puede adaptar a una red local siguiendo estos pasos:
 
-En una nueva terminal, navega al directorio de [Lux Network Runner](/tooling/network-runner.md).
+En una nueva terminal, navega al directorio de [Lux Network Runner](/tooling/netrunner.md).
 
 ```zsh
 cd /ruta/a/Lux-Network-Runner

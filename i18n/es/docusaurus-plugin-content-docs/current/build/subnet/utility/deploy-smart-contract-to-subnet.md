@@ -12,14 +12,14 @@ sidebar_position: 0
 
 Este tutorial asume que:
 
-- Se ha creado una Subnet y blockchain EVM (/build/subnet/deploy/fuji-testnet-subnet.md)
+- Se ha creado una Subnet y blockchain EVM (/build/subnet/deploy/testnet-subnet.md)
 - Tu Nodo está validando actualmente tu Subnet objetivo
 - Tu billetera tiene un saldo del Token Nativo de la Subnet (Especificado bajo _alloc_ en tu
   [Archivo Génesis](/build/subnet/upgrade/customize-a-subnet.md#genesis)).
 
 ## Paso 1: Configurar Core
 
-### **Configuraciones de la Subnet EVM:** [(Tutorial de Core EVM)](/build/subnet/deploy/fuji-testnet-subnet.md#connect-with-core)
+### **Configuraciones de la Subnet EVM:** [(Tutorial de Core EVM)](/build/subnet/deploy/testnet-subnet.md#connect-with-core)
 
 - **`Nombre de Red`**: Subnet-EVM Personalizada
 - **`Nueva URL RPC`**: [http://DirecciónIPNodo:9650/ext/bc/IDBlockchain/rpc] (Nota: el número de puerto debe

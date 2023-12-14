@@ -325,7 +325,7 @@ This will add the Subnets dashboard. It allows you to monitor operational data
 for any Subnet that is synced on the node. There is a Subnet switcher that
 allows you to switch between different Subnets. As there are many Subnets and
 not every node will have all of them, by default, it comes populated only with
-Spaces and WAGMI Subnets that exist on Fuji testnet:
+Spaces and WAGMI Subnets that exist on Testnet testnet:
 
 ![Subnets switcher](/img/monitoring-03-subnets.png)
 
@@ -346,7 +346,7 @@ Subnet name:<BlockchainID>
 and the separator between entries is a comma. Entries for Spaces and WAGMI look like:
 
 ```text
-Spaces (Fuji) : 2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt, WAGMI (Fuji) : 2AM3vsuLoJdGBGqX2ibE8RGEq4Lg7g4bot6BT1Z7B9dH5corUD
+Spaces (Testnet) : 2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt, WAGMI (Testnet) : 2AM3vsuLoJdGBGqX2ibE8RGEq4Lg7g4bot6BT1Z7B9dH5corUD
 ```
 
 After editing the values, press `Update` and then click `Save dashboard` button

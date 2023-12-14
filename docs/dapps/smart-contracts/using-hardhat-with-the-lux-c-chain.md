@@ -22,7 +22,7 @@ npm install -g yarn
 
 ### LuxGo and Lux Network Runner
 
-[LuxGo](https://github.com/luxdefi/luxd) is an Lux node implementation written in Go. [Lux Network Runner](../../subnets/network-runner.md) is a tool to quickly deploy local test networks. Together, you can deploy local test networks and run tests on them.
+[LuxGo](https://github.com/luxdefi/luxd) is an Lux node implementation written in Go. [Lux Network Runner](../../subnets/netrunner.md) is a tool to quickly deploy local test networks. Together, you can deploy local test networks and run tests on them.
 
 ### Solidity and Lux
 
@@ -134,7 +134,7 @@ Start Lux Network Runner and run a script to start a new local network.
 
 ```text
 $ cd /path/to/Lux-Network-Runner
-$ lux-network-runner server \
+$ lux-netrunner server \
 --log-level debug \
 --port=":8080" \
 --grpc-gateway-port=":8081"
@@ -149,7 +149,7 @@ $ LUXGO_EXEC_PATH="luxd"
 ```
 
 ```bash
-$ lux-network-runner control start \
+$ lux-netrunner control start \
 --log-level debug \
 --endpoint="0.0.0.0:8080" \
 --number-of-nodes=5 \
@@ -226,8 +226,8 @@ npx hardhat balances --network local
 Note: If you see `Error HH108: Cannot connect to the network local. Please make sure your node is running, and check your internet connection and networks config`, ensure that you are using a valid Node Port. See which ports the Nodes are using by running the command:
 
 ```text
-$ cd /path/to/lux-network-runner
-$ lux-network-runner control uris \
+$ cd /path/to/lux-netrunner
+$ lux-netrunner control uris \
 --log-level debug \
 --endpoint="0.0.0.0:8080"
 ```
@@ -264,7 +264,7 @@ Edit the deployment script in `scripts/deploy.ts`
 "deploy": "npx hardhat run scripts/deploy.ts",
 ```
 
-You can choose which environment that you want to deploy to by passing in the `--network` flag with `local` (e.g. a local network created with Lux Network Runner), `fuji`, or `mainnet` for each respective environment. If you don't pass in `--network` then it will default to the hardhat network. For example, if you want to deploy to mainnet:
+You can choose which environment that you want to deploy to by passing in the `--network` flag with `local` (e.g. a local network created with Lux Network Runner), `testnet`, or `mainnet` for each respective environment. If you don't pass in `--network` then it will default to the hardhat network. For example, if you want to deploy to mainnet:
 
 ```text
 yarn deploy --network mainnet
@@ -375,7 +375,7 @@ undefined
 }
 ```
 
-Note: Since this is a local network, we did not need to wait until transaction is accepted. However for other networks like `fuji` or `mainnet` you need to wait until transaction is accepted with: `await result.wait()`.
+Note: Since this is a local network, we did not need to wait until transaction is accepted. However for other networks like `testnet` or `mainnet` you need to wait until transaction is accepted with: `await result.wait()`.
 
 Now we can ensure that tokens are transferred:
 

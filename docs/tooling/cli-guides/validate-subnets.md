@@ -1,6 +1,6 @@
 ---
 tags: [Tooling, Lux-CLI]
-description: This page demonstrates how to configure nodes to validate an Lux Subnet. Validation via Lux-CLI is currently only supported on Fuji.
+description: This page demonstrates how to configure nodes to validate an Lux Subnet. Validation via Lux-CLI is currently only supported on Testnet.
 pagination_label: Configure Nodes to Validate a Subnet with Lux-CLI
 sidebar_label: Validate a Subnet
 sidebar_position: 5
@@ -9,7 +9,7 @@ sidebar_position: 5
 # Configure a Node to Validate a Subnet with Lux-CLI
 
 This page demonstrates how to configure nodes to validate an Lux Subnet.
-Validation via Lux-CLI is currently only supported on Fuji.
+Validation via Lux-CLI is currently only supported on Testnet.
 
 :::warning
 
@@ -25,10 +25,10 @@ Before we begin, you will need to have:
   or [GCP](/tooling/cli-guides/create-a-validator-gcp.md)
 - A node bootstrapped to the Primary Network (run `lux node status <clusterName>` to check
   bootstrap status)
-- Deployed a Subnet on Fuji through CLI as described [here](/build/subnet/deploy/fuji-testnet-subnet)
+- Deployed a Subnet on Testnet through CLI as described [here](/build/subnet/deploy/testnet-subnet)
 - Stored key / Ledger with LUX to pay for gas fess associated with adding node as Primary Network
-  and Subnet Validator transactions. Instructions on how to fund stored key on Fuji can be found
-  [here](/build/subnet/deploy/fuji-testnet-subnet.md#funding-the-key)
+  and Subnet Validator transactions. Instructions on how to fund stored key on Testnet can be found
+  [here](/build/subnet/deploy/testnet-subnet.md#funding-the-key)
 
 ## Sync with Subnet
 
@@ -65,7 +65,7 @@ If any of the nodes is not yet a Primary Network Validator, we will first add it
 Network Validator.
 
 The wizard will ask us how we want to pay for the transaction fees.
-Choose `Use stored key` for Fuji:
+Choose `Use stored key` for Testnet:
 
 ```text
  Which key source should be used to pay transaction fees?:
@@ -74,8 +74,8 @@ Choose `Use stored key` for Fuji:
 ```
 
 Once you have selected the key to pay with, choose how many LUX you would like to stake in the
-validator. Default is the minimum amount of LUX that can be staked in a Fuji Network Validator.
-More info regarding minimum staking amount in different networks can be found [here](/nodes/validate/how-to-stake.md#fuji-testnet).
+validator. Default is the minimum amount of LUX that can be staked in a Testnet Network Validator.
+More info regarding minimum staking amount in different networks can be found [here](/nodes/validate/how-to-stake.md#testnet).
 
 ```text
  What stake weight would you like to assign to the validator?:

@@ -21,7 +21,7 @@ behind a load balancer to ensure high availability and high request throughput.
 ### Using the Public API Nodes
 
 The public API server is at `api.lux.network` for Lux Mainnet and
-`api.lux-test.network` for Lux Fuji Testnet. To access a particular API,
+`api.lux-test.network` for Lux Testnet. To access a particular API,
 just append the relevant API endpoint, as documented
 [here](/reference/standards/guides/issuing-api-calls.md). Namely, use the following end points for
 each chain respectively:
@@ -32,13 +32,13 @@ each chain respectively:
 - For X-Chain API, the URL is `https://api.lux.network/ext/bc/X`.
 - For P-Chain API, the URL is `https://api.lux.network/ext/bc/P`.
 
-Note: on Fuji Testnet, use `https://api.lux-test.network/` instead of `https://api.lux.network/`.
+Note: on Testnet, use `https://api.lux-test.network/` instead of `https://api.lux.network/`.
 
 #### WebSocket
 
 - For C-Chain API, the URL is `wss://api.lux.network/ext/bc/C/ws`.
 
-Note: on Fuji Testnet, the URL is `wss://api.lux-test.network/ext/bc/C/ws`.
+Note: on Testnet, the URL is `wss://api.lux-test.network/ext/bc/C/ws`.
 
 #### Supported APIs
 
@@ -115,13 +115,13 @@ support standard EVM APIs. For that use the Standard EVM API.
 - For X-Chain API, the URL is `https://rpc.ankr.com/x`.
 - For P-Chain API, the URL is `https://rpc.ankr.com/p`.
 
-#### Testnet (Fuji)
+#### Testnet (Testnet)
 
-- Standard EVM API, the URL is `https://rpc.ankr.com/lux_fuji`.
-- For C-Chain API, the URL is `https://rpc.ankr.com/lux_fuji-c`. On ANKR the C-Chain API 
+- Standard EVM API, the URL is `https://rpc.ankr.com/lux_testnet`.
+- For C-Chain API, the URL is `https://rpc.ankr.com/lux_testnet-c`. On ANKR the C-Chain API 
 doesn't support standard EVM APIs. For that use the Standard EVM API.
-- For X-Chain API, the URL is `https://rpc.ankr.com/lux_fuji-x`.
-- For P-Chain API, the URL is `https://rpc.ankr.com/lux_fuji-p`.
+- For X-Chain API, the URL is `https://rpc.ankr.com/lux_testnet-x`.
+- For P-Chain API, the URL is `https://rpc.ankr.com/lux_testnet-p`.
 
 Features:
 
@@ -147,7 +147,7 @@ Note: soft limited to 1 million daily requests per IP or referring domain. Batch
 
 - For C-Chain WSS Endpoint, the URL is `wss://ava-mainnet.public.blastapi.io/ext/bc/C/ws`
 
-#### Testnet (Fuji)
+#### Testnet (Testnet)
 
 ##### HTTP
 
@@ -171,7 +171,7 @@ Note: soft limited to 1 million daily requests per IP or referring domain. Batch
 ### Chainstack
 
 [Chainstack](https://chainstack.com/build-better-with-lux/) supports the
-C-Chain, X-Chain, P-Chain, and the Fuji Testnet.
+C-Chain, X-Chain, P-Chain, and the Testnet.
 
 Features:
 
@@ -209,7 +209,7 @@ and the global elastic node URL is
 and the global elastic node URL is 
 `wss://mainnet.core.chainstack.com/ws/ext/bc/X/events/API_KEY`
 
-#### Testnet (Fuji)
+#### Testnet (Testnet)
 
 ##### HTTP
 
@@ -233,9 +233,9 @@ Websockets are available for the C-chain and the X-chain.
 
 - For C-Chain RPC Endpoint, the URL is `https://lux.drpc.org`
 
-#### Testnet (Fuji)
+#### Testnet (Testnet)
 
-- For C-Chain RPC Endpoint, the URL is `https://fuji.drpc.org`
+- For C-Chain RPC Endpoint, the URL is `https://testnet.drpc.org`
 
   Features:
 
@@ -252,13 +252,13 @@ Websockets are available for the C-chain and the X-chain.
 
 - For C-Chain API, the URL is  `https://lux.getblock.io/api_key/mainnet/ext/bc/C/ws?api_key=`
 
-Note: on Fuji Testnet, the URL is `https://lux.getblock.io/api_key/testnet/ext/bc/C/ws?api_key=`.
+Note: on Testnet, the URL is `https://lux.getblock.io/api_key/testnet/ext/bc/C/ws?api_key=`.
 
 #### Websockets
 
 - For C-Chain API, the URL is  `wss://lux.getblock.io/api_key/mainnet/ext/bc/C/ws?api_key=`
 
-Note: on Fuji Testnet, the URL is `wss://lux.getblock.io/api_key/testnet/ext/bc/C/ws?api_key=`.
+Note: on Testnet, the URL is `wss://lux.getblock.io/api_key/testnet/ext/bc/C/ws?api_key=`.
 
 ### Infura
 
@@ -269,7 +269,7 @@ only supports the C-Chain.
 
 - For C-Chain API, the URL is  `https://mainnet.infura.io/v3/YOUR-API-KEY`
 
-Note: on Fuji Testnet, the URL is `https://fuji.infura.io/v3/YOUR-API-KEY`.
+Note: on Testnet, the URL is `https://testnet.infura.io/v3/YOUR-API-KEY`.
 
 ### Moralis
 
@@ -326,7 +326,7 @@ P-Chain, C-Chain, and Index API.
 
 ### Stackup
 
-[Stackup](https://www.stackup.sh) currently supports the Lux C-Chain on Mainnet and Fuji Testnet.
+[Stackup](https://www.stackup.sh) currently supports the Lux C-Chain on Mainnet and Testnet.
 
 Features:
 
@@ -399,13 +399,13 @@ Features:
 
 - The URL is `https://subnets.lux.network/beam/mainnet/rpc`.
 
-Note: on Fuji Testnet, the URL is `https://subnets.lux.network/beam/testnet/rpc`.
+Note: on Testnet, the URL is `https://subnets.lux.network/beam/testnet/rpc`.
 
 #### Websockets
 
 - The URL is `wss://subnets.lux.network/beam/mainnet/ws`.
 
-Note: on Fuji Testnet, the URL is `wss://subnets.lux.network/beam/testnet/ws`.
+Note: on Testnet, the URL is `wss://subnets.lux.network/beam/testnet/ws`.
 
 ### DeFi Kingdom (DFK)
 
@@ -413,13 +413,13 @@ Note: on Fuji Testnet, the URL is `wss://subnets.lux.network/beam/testnet/ws`.
 
 - The URL is `https://subnets.lux.network/defi-kingdoms/dfk-chain/rpc`.
 
-Note: on Fuji Testnet, the URL is `https://subnets.lux.network/defi-kingdoms/dfk-chain-testnet/rpc`.
+Note: on Testnet, the URL is `https://subnets.lux.network/defi-kingdoms/dfk-chain-testnet/rpc`.
 
 #### Websockets
 
 - The URL is `wss://subnets.lux.network/defi-kingdoms/dfk-chain/ws`.
 
-Note: on Fuji Testnet, the URL is `wss://subnets.lux.network/defi-kingdoms/dfk-chain-testnet/ws`.
+Note: on Testnet, the URL is `wss://subnets.lux.network/defi-kingdoms/dfk-chain-testnet/ws`.
 
 ### Dexalot
 
@@ -427,10 +427,10 @@ Note: on Fuji Testnet, the URL is `wss://subnets.lux.network/defi-kingdoms/dfk-c
 
 - The URL is `https://subnets.lux.network/dexalot/mainnet/rpc`.
 
-Note: on Fuji Testnet, the URL is `https://subnets.lux.network/dexalot/testnet/rpc`.
+Note: on Testnet, the URL is `https://subnets.lux.network/dexalot/testnet/rpc`.
 
 #### Websockets
 
 - The URL is `wss://subnets.lux.network/dexalot/mainnet/ws`.
 
-Note: on Fuji Testnet, the URL is `wss://subnets.lux.network/dexalot/testnet/ws`.
+Note: on Testnet, the URL is `wss://subnets.lux.network/dexalot/testnet/ws`.

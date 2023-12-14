@@ -130,7 +130,7 @@ First step is to specify the network. `Mainnet` in this case:
 Use the arrow keys to navigate: ↓ ↑ → ←
 ? Network to use:
   ▸ Mainnet
-    Fuji
+    Testnet
     Local Network
 ```
 
@@ -207,7 +207,7 @@ Specify the `Mainnet` network:
 Use the arrow keys to navigate: ↓ ↑ → ←
 ? Network to use:
   ▸ Mainnet
-    Fuji
+    Testnet
     Local Network
 ```
 

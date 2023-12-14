@@ -1,0 +1,38 @@
+{
+  "id": "nodes/run/third-party/microsoft-azure-node",
+  "title": "Run an Lux Node with Microsoft Azure",
+  "description": "Running a validator and staking with Lux using Microsoft Azure infrastructure provides extremely competitive rewards. Find out more info here.",
+  "source": "@site/docs/nodes/run/third-party/microsoft-azure-node.md",
+  "sourceDirName": "nodes/run/third-party",
+  "slug": "/nodes/run/third-party/microsoft-azure-node",
+  "permalink": "/nodes/run/third-party/microsoft-azure-node",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/run/third-party/microsoft-azure-node.md",
+  "tags": [
+    {
+      "label": "Nodes",
+      "permalink": "/tags/nodes"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "tags": [
+      "Nodes"
+    ],
+    "description": "Running a validator and staking with Lux using Microsoft Azure infrastructure provides extremely competitive rewards. Find out more info here.",
+    "sidebar_label": "Microsoft Azure",
+    "pagination_label": "Run an Lux Node with Microsoft Azure",
+    "sidebar_position": 2
+  },
+  "sidebar": "nodes",
+  "previous": {
+    "title": "Run an Lux Node with Amazon Web Services with one click",
+    "permalink": "/nodes/run/third-party/aws-marketplace-one-click"
+  },
+  "next": {
+    "title": "Run an Lux Node with Google Cloud Platform",
+    "permalink": "/nodes/run/third-party/google-cloud-node"
+  }
+}

@@ -9,7 +9,7 @@ sidebar_position: 4
 # Deploy a Subnet with Multisig Authorization
 
 Subnet creators can control critical Subnet operations with a N of M multisig. This multisig must be
-setup at deployment time and can't be edited afterward. Multisigs can are available on both the Fuji
+setup at deployment time and can't be edited afterward. Multisigs can are available on both the Testnet
 Testnet and Mainnet.
 
 To setup your multisig, you need to know the P-Chain address of each key holder and what you
@@ -25,10 +25,10 @@ for setting up your multisig.
 ## Prerequisites
 
 - [`Lux-CLI`](https://github.com/luxdefi/cli) installed
-- Familiarity with process of [Deploying a Subnet on Testnet](/build/subnet/deploy/fuji-testnet-subnet.md)
+- Familiarity with process of [Deploying a Subnet on Testnet](/build/subnet/deploy/testnet-subnet.md)
  and [Deploying a Permissioned Subnet on Mainnet](/build/subnet/deploy/mainnet-subnet.md)
 - Multiple Ledger devices [configured for Lux](/build/subnet/deploy/mainnet-subnet.md#setting-up-your-ledger)
-- A Subnet configuration ready to deploy to either Fuji Testnet or Mainnet
+- A Subnet configuration ready to deploy to either Testnet or Mainnet
 
 ## Getting Started
 
@@ -43,13 +43,13 @@ Start the Subnet deployment with
 lux subnet deploy testsubnet
 ```
 
-First step is to specify `Fuji` or `Mainnet` as the network:
+First step is to specify `Testnet` or `Mainnet` as the network:
 
 ```text
 Use the arrow keys to navigate: ↓ ↑ → ←
 ? Choose a network to deploy on:
     Local Network
-    Fuji
+    Testnet
   ▸ Mainnet
 ```
 
@@ -261,7 +261,7 @@ remaining keys and the `partiallySigned.txt` file.
 ### Issue the Command to Sign the Chain Creation TX
 
 Lux-CLI can detect the deployment network automatically. For `Mainnet` TXs, it uses your
-Ledger automatically. For `Fuji Testnet`, the CLI prompts the user to choose the signing mechanism.
+Ledger automatically. For `Testnet`, the CLI prompts the user to choose the signing mechanism.
 
 You can start the signing process with the `transaction sign` command:
 
@@ -343,12 +343,12 @@ lux subnet addValidator testsubnet
 
 ### Select Network
 
-First specify the network. Select either `Fuji` or `Mainnet`
+First specify the network. Select either `Testnet` or `Mainnet`
 
 ```text
 Use the arrow keys to navigate: ↓ ↑ → ←
 ? Choose a network to add validator to.:
-  ▸ Fuji
+  ▸ Testnet
     Mainnet
 ```
 
@@ -452,7 +452,7 @@ remaining keys and the `partialAddValidatorTx.txt` file.
 ### Issue the Command to Sign the Add Validator TX
 
 Lux-CLI can detect the deployment network automatically. For `Mainnet` TXs, it uses your Ledger
-automatically. For `Fuji Testnet`, the CLI prompts the user to choose the signing mechanism.
+automatically. For `Testnet`, the CLI prompts the user to choose the signing mechanism.
 
 ```bash
 lux transaction sign testsubnet --input-tx-filepath partialAddValidatorTx.txt

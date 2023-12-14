@@ -11,7 +11,7 @@ sidebar_postion: 0
 This tutorial will start you with a basic [ERC-721
 (NFT)](https://eips.ethereum.org/EIPS/eip-721) smart contract on the Lux
 Network, regardless of your previous development experience. We'll deploy our
-NFT on the Lux Fuji Testnet and view it on the Snowtrace Testnet Explorer.
+NFT on the Lux Testnet and view it on the Snowtrace Testnet Explorer.
 Note that these aren't transferable to the Mainnet. However, once you feel
 comfortable launching your project, you can do so on Lux Mainnet and list
 it on an NFT marketplace.
@@ -20,7 +20,7 @@ The following tools will be used during this tutorial:
 
 - [Pinata](https://www.pinata.cloud/): To store your NFT images and metadata.
 - [OpenZeppelin’s Wizard](https://wizard.openzeppelin.com/): to create the ERC-721 smart contract.
-- [Remix IDE](https://remix-project.org/): To edit the code and deploy it to Fuji.
+- [Remix IDE](https://remix-project.org/): To edit the code and deploy it to Testnet.
 - [Lux Testnet Faucet](https://faucet.lux.network/): To fund the deployment.
 - [Core browser
   Extension](https://chrome.google.com/webstore/detail/core-crypto-wallet-nft-ex/agoakfejjabomempkjlepdflaleeobhb):
@@ -61,13 +61,13 @@ To do that, go to **Settings** and click on **Advanced**.
 ![Settings image 1](/img/c-chain-ERC20/settings1.png)
 
 Here, turn on the **Testnet Mode** feature. This will automatically make Core switch to
-Fuji Testnet.
+Testnet.
 
 ![Settings image 2](/img/c-chain-ERC20/settings2.png)
 
 :::info
 
-If you are using other wallets, like Core or MetaMask, you can add the Fuji
+If you are using other wallets, like Core or MetaMask, you can add the Testnet
 Testnet using the following specs:
 
 - **Network Name**: Lux C-Chain
@@ -80,9 +80,9 @@ Testnet using the following specs:
 
 ### Getting Testnet Funds
 
-Because we're deploying on the Fuji Network, you'll need to get LUX on the Fuji
+Because we're deploying on the Testnet Network, you'll need to get LUX on the Testnet
 network. If you visit the [Lux Faucet](https://faucet.lux.network/), you
-can request up to 2 Fuji LUX per day. Please enter the C Chain address of the
+can request up to 2 Testnet LUX per day. Please enter the C Chain address of the
 account linked to your Core wallet in the previous step.
 
 ![Lux Faucet](intro-to-erc721s/1-faucet.png)

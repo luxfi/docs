@@ -1,4 +1,4 @@
-network="fuji"
+network="testnet"
 region="us-east1"
 zone="us-east1-b"
 project="my-lux-project"

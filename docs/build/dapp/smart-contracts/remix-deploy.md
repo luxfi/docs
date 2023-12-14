@@ -28,7 +28,7 @@ to create a new wallet.
 
 If you want to use the **Lux C-Chain**, it can be selected from the networks list.
 
-To switch to the **Fuji test network**, go to Settings, select Advanced, and then turn Testnet Mode on.
+To switch to the **Testnet test network**, go to Settings, select Advanced, and then turn Testnet Mode on.
 
 <div style={{textAlign: 'center'}}>
 
@@ -36,7 +36,7 @@ To switch to the **Fuji test network**, go to Settings, select Advanced, and the
 
 </div>
 
-**Local Testnet (Lux Network Runner) Settings:** [(Lux Network Runner Tutorial)](/tooling/network-runner.md)
+**Local Testnet (Lux Network Runner) Settings:** [(Lux Network Runner Tutorial)](/tooling/netrunner.md)
 
 - **Network Name**: Lux Local C-Chain
 - **New RPC URL**:

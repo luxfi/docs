@@ -1,0 +1,38 @@
+{
+  "id": "reference/standards/guides/banff-changes",
+  "title": "Banff Changes",
+  "description": "This document specifies the changes in Lux Banff, which was released in LuxGo v1.10.0.",
+  "source": "@site/docs/reference/standards/guides/banff-changes.md",
+  "sourceDirName": "reference/standards/guides",
+  "slug": "/reference/standards/guides/banff-changes",
+  "permalink": "/reference/standards/guides/banff-changes",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/reference/standards/guides/banff-changes.md",
+  "tags": [
+    {
+      "label": "Standards",
+      "permalink": "/tags/standards"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "tags": [
+      "Standards"
+    ],
+    "description": "This document specifies the changes in Lux Banff, which was released in LuxGo v1.10.0.",
+    "sidebar_label": "Banff Changes",
+    "pagination_label": "Banff Changes",
+    "sidebar_position": 3
+  },
+  "sidebar": "reference",
+  "previous": {
+    "title": "X-Chain Migration Guide - Lux Cortina",
+    "permalink": "/reference/standards/guides/x-chain-migration"
+  },
+  "next": {
+    "title": "Flow of a Single Blockchain",
+    "permalink": "/reference/standards/guides/blockchain-flow"
+  }
+}

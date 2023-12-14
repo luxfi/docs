@@ -16,7 +16,7 @@ Para eliminar una configuración de Subnet creada, ejecuta
 
 ## Eliminando una Subnet Desplegada
 
-No puedes eliminar Subnets desplegadas en Mainnet o en la Testnet Fuji.
+No puedes eliminar Subnets desplegadas en Mainnet o en la Testnet.
 
 Sin embargo, puedes eliminar Subnets desplegadas en una red local limpiando el estado de la red con
 

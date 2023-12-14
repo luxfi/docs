@@ -1,6 +1,6 @@
 ---
 tags: [Construir, Subnets]
-description: La Subnet WAGMI ("Todos vamos a lograrlo") es un banco de pruebas de alto rendimiento para optimizaciones de la Máquina Virtual Ethereum (EVM). Está parametrizada para funcionar con una capacidad mayor que la C-Chain Fuji/Mainnet y se utiliza para experimentar con candidatos a versiones antes de incluirlos en una versión oficial de Coreth.
+description: La Subnet WAGMI ("Todos vamos a lograrlo") es un banco de pruebas de alto rendimiento para optimizaciones de la Máquina Virtual Ethereum (EVM). Está parametrizada para funcionar con una capacidad mayor que la C-Chain Testnet/Mainnet y se utiliza para experimentar con candidatos a versiones antes de incluirlos en una versión oficial de Coreth.
 sidebar_label: "Estudio de caso: Subnet WAGMI"
 pagination_label: "Subnet WAGMI"
 sidebar_position: 1
@@ -8,7 +8,7 @@ sidebar_position: 1
 
 # Subnet WAGMI
 
-La Subnet WAGMI ("Todos vamos a lograrlo") es un banco de pruebas de alto rendimiento para optimizaciones de la Máquina Virtual Ethereum (EVM). Está parametrizada para funcionar con una capacidad mayor que la C-Chain Fuji/Mainnet y se utiliza para experimentar con candidatos a versiones antes de incluirlos en una versión oficial de Coreth.
+La Subnet WAGMI ("Todos vamos a lograrlo") es un banco de pruebas de alto rendimiento para optimizaciones de la Máquina Virtual Ethereum (EVM). Está parametrizada para funcionar con una capacidad mayor que la C-Chain Testnet/Mainnet y se utiliza para experimentar con candidatos a versiones antes de incluirlos en una versión oficial de Coreth.
 
 ## Resumen
 

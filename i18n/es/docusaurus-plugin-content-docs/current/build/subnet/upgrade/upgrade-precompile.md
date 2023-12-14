@@ -283,12 +283,12 @@ Uso:
 Banderas:
       --luxd-chain-config-dir string   directorio del archivo de configuración de la cadena de luxd (por defecto "/home/fabio/.luxd/chains")
       --config                                crear configuración de actualización para despliegues futuros de la subnet (igual que generar)
-      --fuji fuji                             aplicar actualización a un despliegue fuji existente (alias de `testnet`)
+      --testnet testnet                             aplicar actualización a un despliegue testnet existente (alias de `testnet`)
   -h, --help                                  ayuda para aplicar
       --local local                           aplicar actualización a un despliegue local existente
       --mainnet mainnet                       aplicar actualización a un despliegue mainnet existente
       --print                                 si es verdadero, imprime la configuración manual sin solicitarla (solo para redes públicas)
-      --testnet testnet                       aplicar actualización a un despliegue testnet existente (alias de `fuji`)
+      --testnet testnet                       aplicar actualización a un despliegue testnet existente (alias de `testnet`)
 
 Banderas globales:
       --log-level string   nivel de registro para la aplicación (por defecto "ERROR")
@@ -335,13 +335,13 @@ Instaló los bytes de actualización _tal como están_ como los configuraste o p
 Debes verificar por ti mismo que las actualizaciones se hayan instalado correctamente,
 por ejemplo, emitiendo algunas transacciones - ¡ten en cuenta la marca de tiempo!.
 
-## Aplicar la Actualización a un Nodo Público (Fuji o Mainnet)
+## Aplicar la Actualización a un Nodo Público (Testnet o Mainnet)
 
 Para que este escenario funcione, también debes haber desplegado la Subnet
-en la red pública (Fuji o Mainnet) con esta herramienta.
+en la red pública (Testnet o Mainnet) con esta herramienta.
 De lo contrario, la herramienta no conocerá los detalles de la Subnet y no podrá guiarte.
 
-Suponiendo que la Subnet ya ha sido desplegada en Fuji, al ejecutar el comando `apply`,
+Suponiendo que la Subnet ya ha sido desplegada en Testnet, al ejecutar el comando `apply`,
 la herramienta detecta el despliegue:
 
 ```shell
@@ -349,14 +349,14 @@ lux subnet upgrade apply testSubnet
 Usa las teclas de flecha para navegar: ↓ ↑ → ←
 ? ¿Qué despliegue quieres actualizar:
     Despliegue local existente
-  ▸ Fuji
+  ▸ Testnet
 ```
 
-Si no, no encontrarías la entrada `Fuji` aquí.
+Si no, no encontrarías la entrada `Testnet` aquí.
 
 :::important
 
-Este escenario asume que estás ejecutando el validador `fuji` en la misma máquina
+Este escenario asume que estás ejecutando el validador `testnet` en la misma máquina
 que está ejecutando Lux-CLI.
 
 :::
@@ -379,20 +379,20 @@ Si todo es correcto, el archivo se instala:
 
 ```shell
 lux subnet upgrade apply testSubnet
-✔ Fuji
+✔ Testnet
 El directorio de configuración de cadenas que luxd utiliza está configurado en /home/fabio/.luxd/chains
 Intentando instalar los archivos de actualización en la ruta proporcionada /home/fabio/.luxd/chains
 Archivo de actualización instalado correctamente
 ```
 
-Sin embargo, si el nodo _no_ se está ejecutando en la misma máquina donde estás ejecutando Lux-CLI, no tiene sentido ejecutar este comando para un nodo Fuji.
+Sin embargo, si el nodo _no_ se está ejecutando en la misma máquina donde estás ejecutando Lux-CLI, no tiene sentido ejecutar este comando para un nodo Testnet.
 En este caso, es posible que prefieras exportar el archivo e instalarlo en la ubicación correcta.
 
 Para ver las instrucciones sobre cómo hacer esto, agrega la bandera `--print`:
 
 ```shell
 lux subnet upgrade apply testSubnet --print
-✔ Fuji
+✔ Testnet
 Para instalar el archivo de actualización en tu validador:
 
 1. Identifica dónde tiene configurado el directorio de configuración de cadenas el validador.

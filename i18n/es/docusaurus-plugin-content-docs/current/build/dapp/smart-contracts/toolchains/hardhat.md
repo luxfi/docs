@@ -29,7 +29,7 @@ npm install -g yarn
 ### LuxGo y Lux Network Runner
 
 [LuxGo](https://github.com/luxdefi/luxd) es una implementación de nodo Lux
-escrita en Go. [Lux Network Runner](/tooling/network-runner.md) es una herramienta para desplegar rápidamente redes de prueba locales.
+escrita en Go. [Lux Network Runner](/tooling/netrunner.md) es una herramienta para desplegar rápidamente redes de prueba locales.
 Juntos, puedes desplegar redes de prueba locales y ejecutar pruebas en ellas.
 
 ### Solidity y Lux
@@ -77,15 +77,15 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { BigNumber } from "ethers";
 import "@nomiclabs/hardhat-waffle";
 
-// Al usar la red hardhat, puedes elegir bifurcar Fuji o Lux Mainnet
+// Al usar la red hardhat, puedes elegir bifurcar Testnet o Lux Mainnet
 // Esto te permitirá depurar contratos usando la red hardhat mientras mantienes el estado de la red actual
 // Para habilitar la bifurcación, activa uno de estos booleanos y luego ejecuta tus tareas/scripts usando ``--network hardhat``
 // Para más información, consulta la guía de hardhat
 // https://hardhat.org/hardhat-network/
 // https://hardhat.org/guides/mainnet-forking.html
-const FORK_FUJI = false;
+const FORK_TESTNET = false;
 const FORK_MAINNET = false;
-const forkingData = FORK_FUJI
+const forkingData = FORK_TESTNET
   ? {
       url: "https://api.lux-test.network/ext/bc/C/rpc",
     }
@@ -138,7 +138,7 @@ export default {
         "0x750839e9dbbd2a0910efe40f50b2f3b2f2f59f5580bb4b83bd8c1201cf9a010a",
       ],
     },
-    fuji: {
+    testnet: {
       url: "https://api.lux-test.network/ext/bc/C/rpc",
       gasPrice: 225000000000,
       chainId: 43113,
@@ -257,7 +257,7 @@ task("check-erc20-balance", "Imprime el saldo ERC20 de tu cuenta").setAction(
 
 Esto devolverá el resultado en wei. Si quieres saber la cantidad exacta de tokens con su nombre de token, entonces necesitas dividirlo por su decimal. `erc20.abi.json` se puede encontrar [aquí](./erc20.abi.json).
 
-El ejemplo utiliza la [API pública de la C-Chain](/reference/luxd/c-chain/api#endpoints) para el proveedor. Para una red Lux local, usa `http://127.0.0.1:9650/ext/bc/C/rpc` y para la Testnet Fuji, usa `https://api.lux-test.network/ext/bc/C/rpc`.
+El ejemplo utiliza la [API pública de la C-Chain](/reference/luxd/c-chain/api#endpoints) para el proveedor. Para una red Lux local, usa `http://127.0.0.1:9650/ext/bc/C/rpc` y para la Testnet, usa `https://api.lux-test.network/ext/bc/C/rpc`.
 
 ## Ayuda de Hardhat
 
@@ -278,7 +278,7 @@ git checkout master
 
 (Ten en cuenta que también puedes [descargar binarios precompilados de LuxGo](https://github.com/luxdefi/luxd/releases) en lugar de construir desde el código fuente).
 
-Confirma que tienes Lux Network Runner instalado siguiendo los pasos enumerados [aquí](/tooling/network-runner.md).
+Confirma que tienes Lux Network Runner instalado siguiendo los pasos enumerados [aquí](/tooling/netrunner.md).
 
 Inicia Lux Network Runner y ejecuta un script para iniciar una nueva red local.
 
@@ -286,7 +286,7 @@ Inicia Lux Network Runner y ejecuta un script para iniciar una nueva red local.
 
 ```text
 $ cd /ruta/a/Lux-Network-Runner
-$ network-runner server \
+$ netrunner server \
 --log-level debug \
 --port=":8080" \
 --grpc-gateway-port=":8081"
@@ -301,7 +301,7 @@ $ LUXD_EXEC_PATH="luxd"
 ```
 
 ```bash
-$ network-runner control start \
+$ netrunner control start \
 --log-level debug \
 --endpoint="0.0.0.0:8080" \
 --number-of-nodes=5 \
@@ -430,7 +430,7 @@ undefined
 }
 ```
 
-Nota: Como esta es una red local, no necesitamos esperar hasta que la transacción sea aceptada. Sin embargo, para otras redes como `fuji` o `mainnet`, debes esperar hasta que la transacción sea aceptada con: `await result.wait()`.
+Nota: Como esta es una red local, no necesitamos esperar hasta que la transacción sea aceptada. Sin embargo, para otras redes como `testnet` o `mainnet`, debes esperar hasta que la transacción sea aceptada con: `await result.wait()`.
 
 Ahora podemos asegurarnos de que los tokens se hayan transferido:
 

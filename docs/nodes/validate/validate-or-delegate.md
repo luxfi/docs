@@ -14,7 +14,7 @@ Validation in the context of staking refers to the act of running a node on the
 blockchain network to validate transactions and secure the network.
 
 - **Stake Requirement:** To become a validator on the Lux network,
-one must stake a minimum amount of 2,000 LUX tokens on the Mainnet (1 LUX on the Fuji Testnet).
+one must stake a minimum amount of 2,000 LUX tokens on the Mainnet (1 LUX on the Testnet).
 - **Process:** Validators participate in achieving consensus by repeatedly sampling other validators.
 The probability of being sampled is proportional to the validator's stake, meaning the more tokens a
 validator stakes, the more influential they are in the consensus process.
@@ -28,7 +28,7 @@ Delegation allows token holders who do not wish to run their own validator node 
 in staking by "delegating" their tokens to an existing validator node.
 
 - **Stake Requirement:** To delegate on the Lux network, a minimum of 25 LUX tokens is
-required on the Mainnet (1 LUX on the Fuji Testnet).
+required on the Mainnet (1 LUX on the Testnet).
 - **Process:** Delegators choose a specific validator node to delegate their tokens to, trusting 
 that the validator will behave correctly and help secure the network on their behalf.
 - **Rewards:** Delegators are also eligible to receive rewards for their stake. The validator they 

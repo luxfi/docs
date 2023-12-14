@@ -6,7 +6,7 @@ description: ERC-20 tokens are the most fundamental and essential concept in Eth
 
 [ERC-20 tokens](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/) are the most fundamental and essential concept in Ethereum. As the Lux community and the ecosystem are growing, new use cases and projects that are running on Ethereum or different chains would be implemented to Lux.
 
-Therefore, we will be creating our own mintable ERC-20 token and will mint it to any address we want. The token will be generated on Lux C-Chain and will be accessible on that chain. We are using Fuji Testnet in this tutorial.
+Therefore, we will be creating our own mintable ERC-20 token and will mint it to any address we want. The token will be generated on Lux C-Chain and will be accessible on that chain. We are using Testnet in this tutorial.
 
 The article focuses on deploying a smart contract written with Solidity to Lux. This is the feature that Lux provides us - to be able to deploy any smart contract to the chain and no requirement for a new language specific contract concept to interact. Let’s look at how to create an ERC-20 contract and deploy it to lux C-Chain.
 
@@ -32,7 +32,7 @@ After setting up all the parameters correctly, we should see this page. For now,
 
 ## Fund Your C-Chain Address
 
-For funding on the Fuji Testnet, you can use the Test Network Faucet. Navigate to [https://faucet.lux.network/](https://faucet.lux.network/) and paste your C-Chain address.
+For funding on the Testnet, you can use the Test Network Faucet. Navigate to [https://faucet.lux.network/](https://faucet.lux.network/) and paste your C-Chain address.
 
 ## Create Mintable Token
 

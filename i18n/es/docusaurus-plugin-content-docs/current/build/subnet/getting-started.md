@@ -53,11 +53,11 @@ La primera etapa del desarrollo de la Subnet implica probar tu Subnet en tu máq
 
 El desarrollo es extremadamente rápido y las actualizaciones tardan segundos o minutos en aplicarse. En esta fase, debes restringir el acceso de la dapp a partes de confianza. Debido a que estás interactuando con una copia local de la red Lux, no puedes acceder al estado de producción u otras Subnets de producción.
 
-### Despliega tu Subnet en Fuji
+### Despliega tu Subnet en Testnet
 
-La segunda etapa del desarrollo de la Subnet implica desplegar tu Subnet y tu dapp en la Testnet Fuji. Esta fase prueba tu capacidad para ejecutar nodos validadores, coordinar a todas las partes involucradas en la Subnet y monitorear la salud de la red. También puedes practicar el uso de Ledgers para gestionar transacciones de la Subnet.
+La segunda etapa del desarrollo de la Subnet implica desplegar tu Subnet y tu dapp en la Testnet. Esta fase prueba tu capacidad para ejecutar nodos validadores, coordinar a todas las partes involucradas en la Subnet y monitorear la salud de la red. También puedes practicar el uso de Ledgers para gestionar transacciones de la Subnet.
 
-La Subnet es públicamente visible y es posible que quieras permitir que usuarios externos prueben tu dapp. El desarrollo en Fuji es significativamente más lento que con el desarrollo local. Las actualizaciones ahora pueden tardar horas o días en aplicarse. Es importante hacer tantas pruebas locales como sea posible antes de pasar a Fuji.
+La Subnet es públicamente visible y es posible que quieras permitir que usuarios externos prueben tu dapp. El desarrollo en Testnet es significativamente más lento que con el desarrollo local. Las actualizaciones ahora pueden tardar horas o días en aplicarse. Es importante hacer tantas pruebas locales como sea posible antes de pasar a Testnet.
 
 ### Despliega tu Subnet en Mainnet
 

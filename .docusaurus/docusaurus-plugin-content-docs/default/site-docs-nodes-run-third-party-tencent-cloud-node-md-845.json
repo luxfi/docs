@@ -1,0 +1,38 @@
+{
+  "id": "nodes/run/third-party/tencent-cloud-node",
+  "title": "Run an Lux Node with Tencent Cloud",
+  "description": "Detailed instructions for running an Lux node with Tencent Cloud",
+  "source": "@site/docs/nodes/run/third-party/tencent-cloud-node.md",
+  "sourceDirName": "nodes/run/third-party",
+  "slug": "/nodes/run/third-party/tencent-cloud-node",
+  "permalink": "/nodes/run/third-party/tencent-cloud-node",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/run/third-party/tencent-cloud-node.md",
+  "tags": [
+    {
+      "label": "Nodes",
+      "permalink": "/tags/nodes"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "tags": [
+      "Nodes"
+    ],
+    "description": "Detailed instructions for running an Lux node with Tencent Cloud",
+    "sidebar_label": "Tencent Cloud",
+    "pagination_label": "Run an Lux Node with Tencent Cloud",
+    "sidebar_position": 5
+  },
+  "sidebar": "nodes",
+  "previous": {
+    "title": "Run an Lux Node with Alibaba Cloud",
+    "permalink": "/nodes/run/third-party/alibaba-cloud-node"
+  },
+  "next": {
+    "title": "Common Errors While Building a Node",
+    "permalink": "/nodes/run/FAQ"
+  }
+}

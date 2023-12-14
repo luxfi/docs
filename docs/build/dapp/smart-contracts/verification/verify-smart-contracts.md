@@ -10,7 +10,7 @@ sidebar_position: 0
 
 The C-Chain Explorer supports verifying smart contracts, allowing users to review it.
 
-The Mainnet C-Chain Explorer is [here](https://snowtrace.io/) and the Fuji Testnet Explorer is [here.](https://testnet.snowtrace.io/)
+The Mainnet C-Chain Explorer is [here](https://snowtrace.io/) and the Testnet Explorer is [here.](https://testnet.snowtrace.io/)
 
 If you have issues, contact us on [Discord](https://chat.lux.network).
 

@@ -86,17 +86,17 @@ Development is extremely quick and updates take seconds to minutes to apply. In 
 you should restrict dapp access to trusted parties. Because you're interacting with a local copy of
 the Lux network, you can't access production state or other production Subnets.
 
-### Deploy Your Subnet to Fuji
+### Deploy Your Subnet to Testnet
 
-The second stage of Subnet development involves deploying your Subnet and your dapp to the Fuji
+The second stage of Subnet development involves deploying your Subnet and your dapp to the Testnet
 Testnet. This phase tests your ability to run validator nodes, coordinate all parties involved in
 the Subnet, and monitor network health. You can also practice using Ledgers to manage Subnet
 transactions.
 
 The Subnet is publicly visible and you may want to allow external users to test your
-dapp. Development on Fuji is significantly slower than with local development. Updates may now take
+dapp. Development on Testnet is significantly slower than with local development. Updates may now take
 hours to days to apply. It's important to do as much local testing as possible before moving to
-Fuji.
+Testnet.
 
 ### Deploy Your Subnet to Mainnet
 

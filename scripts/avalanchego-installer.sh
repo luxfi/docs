@@ -42,8 +42,8 @@ create_config_file () {
   if [ "$indexOpt" = "true" ]; then
     echo "  \"index-enabled\": true,">>node.json
   fi
-  if [ "$fujiOpt" = "true" ]; then
-    echo "  \"network-id\": \"fuji\",">>node.json
+  if [ "$testnetOpt" = "true" ]; then
+    echo "  \"network-id\": \"testnet\",">>node.json
   fi
   if [ "$dbdirOpt" != "no" ]; then
     echo "  \"db-dir\": \"$dbdirOpt\",">>node.json
@@ -161,7 +161,7 @@ usage () {
   echo "   --state-sync on|off      If provided explicitly turns C-Chain state sync on or off"
   echo "   --index                  If provided, will enable indexer and Index API, defaults to disabled"
   echo "   --db-dir <path>          Full path to the database directory, defaults to $HOME/.luxd/db"
-  echo "   --fuji                   Connect to Fuji testnet, defaults to mainnet if omitted"
+  echo "   --testnet                   Connect to Testnet testnet, defaults to mainnet if omitted"
   echo "   --admin                  Enable Admin API, defaults to disabled if omitted"
   echo ""
   echo "Run without any options, script will install or upgrade LuxGo to latest available version. Node config"
@@ -184,7 +184,7 @@ usage_error () { echo >&2 "$(basename $0):  $1"; exit 2; }
 assert_argument () { test "$1" != "$EOL" || usage_error "$2 requires an argument"; }
 
 #initialise options
-fujiOpt="no"
+testnetOpt="no"
 adminOpt="no"
 rpcOpt="ask"
 indexOpt="no"
@@ -225,7 +225,7 @@ if [ "$#" != 0 ]; then
       --state-sync) assert_argument "$1" "$opt"; stateOpt="$1"; shift;;
       --index) indexOpt='true';;
       --db-dir) assert_argument "$1" "$opt"; dbdirOpt="$1"; shift;;
-      --fuji) fujiOpt='true';;
+      --testnet) testnetOpt='true';;
       --admin) adminOpt='true';;
 
       -|''|[!-]*) set -- "$@" "$opt";;                                          # positional argument, rotate to the end
@@ -431,8 +431,8 @@ if [ "$adminOpt" = "true" ]; then
   echo "Admin API on the node is enabled."
   echo ""
 fi
-if [ "$fujiOpt" = "true" ]; then
-  echo "Node is connected to the Fuji test network."
+if [ "$testnetOpt" = "true" ]; then
+  echo "Node is connected to the Testnet test network."
   echo ""
 fi
 if [ "$dbdirOpt" != "no" ]; then

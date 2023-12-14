@@ -1,7 +1,7 @@
 # 03/02/2023
 
 /subnets/subnet-cli https://github.com/luxdefi/subnet-cli
-/subnets/create-a-fuji-subnet-subnet-cli /subnets/create-a-fuji-subnet
+/subnets/create-a-testnet-subnet-subnet-cli /subnets/create-a-testnet-subnet
 
 # 02/23/2023
 
@@ -47,7 +47,7 @@
 
 # 07/17/2022
 
-/quickstart/network-runner /subnets/network-runner 301
+/quickstart/netrunner /subnets/netrunner 301
 /quickstart/exchanges/integrate-exchange-with-lux /quickstart/integrate-exchange-with-lux 301
 
 # 06/01/2022
@@ -61,20 +61,20 @@
 
 # 5/30/2022
 
-/subnets/create-custom-blockchain/ /subnets/create-a-fuji-subnet 301
-/subnets/create-custom-blockchain /subnets/create-a-fuji-subnet 301
+/subnets/create-custom-blockchain/ /subnets/create-a-testnet-subnet 301
+/subnets/create-custom-blockchain /subnets/create-a-testnet-subnet 301
 
 # 05/24/2022
 
-/quickstart/summit-fuji-quickstart/ / 301
-/quickstart/summit-fuji-quickstart / 301
+/quickstart/summit-testnet-quickstart/ / 301
+/quickstart/summit-testnet-quickstart / 301
 
 # 05/23/2022
 
-/subnets/fuji-deployment/ /subnets/create-a-fuji-subnet 301
-/subnets/fuji-deployment /subnets/create-a-fuji-subnet 301
-/subnets/create-evm-blockchain/ /subnets/create-a-fuji-subnet 301
-/subnets/create-evm-blockchain /subnets/create-a-fuji-subnet 301
+/subnets/testnet-deployment/ /subnets/create-a-testnet-subnet 301
+/subnets/testnet-deployment /subnets/create-a-testnet-subnet 301
+/subnets/create-evm-blockchain/ /subnets/create-a-testnet-subnet 301
+/subnets/create-evm-blockchain /subnets/create-a-testnet-subnet 301
 
 # 05/18/2022
 
@@ -83,8 +83,8 @@
 
 # 05/17/2022
 
-/quickstart/references/avash/ /subnets/network-runner 301
-/quickstart/references/avash /subnets/network-runner 301
+/quickstart/references/avash/ /subnets/netrunner 301
+/quickstart/references/avash /subnets/netrunner 301
 /dapps/smart-digital-assets/creating-a-nft-part-1/ / 301
 /dapps/smart-digital-assets/creating-a-nft-part-1 / 301
 
@@ -162,8 +162,8 @@
 /build/references/network-protocol /quickstart/references/network-protocol 301
 /build/tools/abigen/ /quickstart/references/abigen 301
 /build/tools/abigen /quickstart/references/abigen 301
-/build/tools/avash/ /subnets/network-runner 301
-/build/tools/avash /subnets/network-runner 301
+/build/tools/avash/ /subnets/netrunner 301
+/build/tools/avash /subnets/netrunner 301
 /build/references/cryptographic-primitives/ /quickstart/references/cryptographic-primitives 301
 /build/references/cryptographic-primitives /quickstart/references/cryptographic-primitives 301
 /build/references/serialization-primitives/ /quickstart/references/serialization-primitives 301
@@ -195,8 +195,8 @@
 /build/tutorials/platform/subnets/create-evm-blockchain /subnets/create-evm-blockchain 301
 /build/tutorials/platform/subnets/create-a-virtual-machine-vm/ /subnets/create-a-virtual-machine-vm 301
 /build/tutorials/platform/subnets/create-a-virtual-machine-vm /subnets/create-a-virtual-machine-vm 301
-/build/tutorials/platform/subnets/create-custom-blockchain/ /subnets/create-a-fuji-subnet 301
-/build/tutorials/platform/subnets/create-custom-blockchain /subnets/create-a-fuji-subnet 301
+/build/tutorials/platform/subnets/create-custom-blockchain/ /subnets/create-a-testnet-subnet 301
+/build/tutorials/platform/subnets/create-custom-blockchain /subnets/create-a-testnet-subnet 301
 /build/tutorials/platform/subnets/spaces/ /subnets/spaces 301
 /build/tutorials/platform/subnets/spaces /subnets/spaces 301
 /build/tutorials/platform/subnets/wagmi/ /subnets/wagmi 301
@@ -296,8 +296,8 @@
 
 /build/tutorials/platform/ /quickstart/ 301
 /build/tutorials/platform /quickstart/ 301
-/build/tutorials/platform/fuji-workflow/ /quickstart/fuji-workflow 301
-/build/tutorials/platform/fuji-workflow /quickstart/fuji-workflow 301
+/build/tutorials/platform/testnet-workflow/ /quickstart/testnet-workflow 301
+/build/tutorials/platform/testnet-workflow /quickstart/testnet-workflow 301
 /build/tutorials/platform/fund-a-local-test-network/ /quickstart/fund-a-local-test-network 301
 /build/tutorials/platform/fund-a-local-test-network /quickstart/fund-a-local-test-network 301
 /build/tutorials/platform/integrate-exchange-with-lux/ /quickstart/exchanges/integrate-exchange-with-lux 301
@@ -314,8 +314,8 @@
 /build/tutorials/platform/sending-transactions-with-dynamic-fees-using-javascript /quickstart/sending-transactions-with-dynamic-fees-using-javascript 301
 /learn/platform-overview/transaction-fees/ /quickstart/transaction-fees 301
 /learn/platform-overview/transaction-fees /quickstart/transaction-fees 301
-/build/tools/network-runner/ /subnets/network-runner 301
-/build/tools/network-runner /subnets/network-runner 301
+/build/tools/netrunner/ /subnets/netrunner 301
+/build/tools/netrunner /subnets/netrunner 301
 
 # dapps
 
@@ -411,7 +411,7 @@
 /build /build/subnet 301
 /subnets/subnet-development-lifecycle /build/subnet/getting-started 301
 /subnets/build-first-subnet /build/subnet/hello-subnet 301
-/subnets/create-a-fuji-subnet /build/subnet/deploy/fuji-testnet-subnet 301
+/subnets/create-a-testnet-subnet /build/subnet/deploy/testnet-subnet 301
 /subnets/create-a-mainnet-subnet /build/subnet/deploy/mainnet-subnet 301
 /subnets/create-a-local-subnet /build/subnet/deploy/local-subnet 301
 /subnets/when-to-use-subnet-vs-c-chain /build/subnet/c-chain-vs-subnet 301
@@ -439,7 +439,7 @@
 #  07/21/2023 - Docs Revamp - Build/Dapps Tab
 /specs/abigen /build/dapp/smart-contracts/abigen 301
 /dapps/launch-your-ethereum-dapp /build/dapp/launch-dapp 301
-/quickstart/fuji-workflow /build/dapp/fuji-workflow 301
+/quickstart/testnet-workflow /build/dapp/testnet-workflow 301
 /dapps/developer-toolchains/using-foundry-with-c-chain /build/dapp/smart-contracts/toolchains/foundry 301
 /dapps/developer-toolchains/using-hardhat-with-c-chain /build/dapp/smart-contracts/toolchains/hardhat 301
 /dapps/developer-toolchains/using-truffle-with-c-chain /build/dapp/smart-contracts/toolchains/truffle 301
@@ -472,7 +472,7 @@
 
 # Docs Revamp - Tooling Tab
 /quickstart/tools-list docs/tooling 301
-/subnets/network-runner /tooling/network-runner 301
+/subnets/netrunner /tooling/netrunner 301
 /subnets/reference-cli-commands /tooling/cli 301
 /apis/glacier /tooling/glacier 301
 /apis/metrics /tooling/metrics 301

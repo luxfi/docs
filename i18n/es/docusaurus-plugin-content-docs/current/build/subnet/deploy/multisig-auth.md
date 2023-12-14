@@ -8,7 +8,7 @@ sidebar_position: 4
 
 # Implementar una Subnet con autorización multisig
 
-Los creadores de Subnets pueden controlar operaciones críticas de la Subnet con una multisig de N de M. Esta multisig debe configurarse en el momento de la implementación y no se puede editar posteriormente. Las multisigs están disponibles tanto en la Testnet Fuji como en la Mainnet.
+Los creadores de Subnets pueden controlar operaciones críticas de la Subnet con una multisig de N de M. Esta multisig debe configurarse en el momento de la implementación y no se puede editar posteriormente. Las multisigs están disponibles tanto en la Testnet como en la Mainnet.
 
 Para configurar tu multisig, necesitas conocer la dirección de la cadena P de cada titular de clave y cuál es tu umbral de firma.
 
@@ -21,10 +21,10 @@ Lux-CLI requiere Ledgers para implementaciones en Mainnet. Esta guía asume el u
 ## Requisitos previos
 
 - [`Lux-CLI`](https://github.com/luxdefi/cli) instalado
-- Familiaridad con el proceso de [Implementar una Subnet en Testnet](/build/subnet/deploy/fuji-testnet-subnet.md)
+- Familiaridad con el proceso de [Implementar una Subnet en Testnet](/build/subnet/deploy/testnet-subnet.md)
   y [Implementar una Subnet con permisos en Mainnet](/build/subnet/deploy/mainnet-subnet.md)
 - Múltiples dispositivos Ledger [configurados para Lux](/build/subnet/deploy/mainnet-subnet.md#setting-up-your-ledger)
-- Una configuración de Subnet lista para implementar en la Testnet Fuji o en la Mainnet
+- Una configuración de Subnet lista para implementar en la Testnet o en la Mainnet
 
 ## Empezando
 
@@ -38,13 +38,13 @@ Inicia la implementación de la Subnet con
 lux subnet deploy testsubnet
 ```
 
-El primer paso es especificar `Fuji` o `Mainnet` como la red:
+El primer paso es especificar `Testnet` o `Mainnet` como la red:
 
 ```text
 Usa las teclas de flecha para navegar: ↓ ↑ → ←
 ? Elige una red en la que implementar:
     Red Local
-    Fuji
+    Testnet
   ▸ Mainnet
 ```
 
@@ -252,7 +252,7 @@ archivo `partiallySigned.txt`.
 ### Emitir el comando para firmar la TX de creación de cadena
 
 Lux-CLI puede detectar automáticamente la red de despliegue. Para TXs de `Mainnet`, utiliza tu
-Ledger automáticamente. Para `Fuji Testnet`, la CLI solicita al usuario que elija el mecanismo de firma.
+Ledger automáticamente. Para `Testnet`, la CLI solicita al usuario que elija el mecanismo de firma.
 
 Puedes iniciar el proceso de firma con el comando `transaction sign`:
 
@@ -334,12 +334,12 @@ lux subnet addValidator testsubnet
 
 ### Seleccionar Red
 
-Primero especifica la red. Selecciona ya sea `Fuji` o `Mainnet`
+Primero especifica la red. Selecciona ya sea `Testnet` o `Mainnet`
 
 ```text
 Usa las teclas de flecha para navegar: ↓ ↑ → ←
 ? Elige una red para agregar el validador a.:
-  ▸ Fuji
+  ▸ Testnet
     Mainnet
 ```
 
@@ -440,7 +440,7 @@ El resto de esta sección asume que estás trabajando en una máquina con acceso
 
 ### Emitir el comando para firmar la TX de agregar validador
 
-Lux-CLI puede detectar automáticamente la red de implementación. Para TX de `Mainnet`, utiliza tu Ledger automáticamente. Para `Fuji Testnet`, la CLI solicita al usuario que elija el mecanismo de firma.
+Lux-CLI puede detectar automáticamente la red de implementación. Para TX de `Mainnet`, utiliza tu Ledger automáticamente. Para `Testnet`, la CLI solicita al usuario que elija el mecanismo de firma.
 
 ```bash
 lux transaction sign testsubnet --input-tx-filepath partialAddValidatorTx.txt

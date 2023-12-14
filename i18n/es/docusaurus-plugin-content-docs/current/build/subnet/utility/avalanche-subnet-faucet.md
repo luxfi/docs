@@ -12,9 +12,9 @@ Hay miles de redes y cadenas en el espacio de la blockchain, cada una con sus pr
 
 Pero no podemos arriesgar nuestros fondos en la red o en cualquier aplicación alojada en esa red, sin probarlos primero. Por lo tanto, estas redes a menudo tienen redes de prueba o testnets, donde las monedas nativas no tienen ningún valor monetario y, por lo tanto, se pueden obtener libremente a través de faucets.
 
-Estas testnets suelen ser los bancos de pruebas para cualquier nueva característica nativa de la propia red, o cualquier dapp o [Subnet](learn/lux/subnets-overview.md) que va a vivir en la red principal (Mainnet). Por ejemplo, la red [Fuji](learn/lux/fuji.md) es la Testnet para la Mainnet de Lux.
+Estas testnets suelen ser los bancos de pruebas para cualquier nueva característica nativa de la propia red, o cualquier dapp o [Subnet](learn/lux/subnets-overview.md) que va a vivir en la red principal (Mainnet). Por ejemplo, la red [Testnet](learn/lux/testnet.md) es la Testnet para la Mainnet de Lux.
 
-Además de la Testnet Fuji, el
+Además de la Testnet, el
 [Faucet Lux](https://core.app/tools/testnet-faucet/?subnet=c&token=c)
 se puede utilizar para obtener tokens de prueba gratuitos en Subnets de testnet como:
 
@@ -28,7 +28,7 @@ Este faucet viene con muchas características como soporte para múltiples caden
 
 ## Resumen
 
-Un [Faucet](https://faucet.lux.network/) alimentado por Lux para la Red Fuji y otras Subnets.
+Un [Faucet](https://faucet.lux.network/) alimentado por Lux para la Red Testnet y otras Subnets.
 Puedes -
 
 - Solicitar monedas de prueba para las Subnets soportadas
@@ -148,13 +148,13 @@ CAPTCHA_SECRET="Secreto de reCAPTCHA de Google"
 
 #### Configurar Configuraciones de Cadena EVM
 
-Puedes crear un servidor de llaves para cualquier cadena EVM haciendo cambios en el archivo `config.json`. Agrega tu configuración de cadena como se muestra a continuación en el objeto `evmchains`. A continuación se muestra un ejemplo de configuración para la cadena C de Fuji y la cadena WAGMI.
+Puedes crear un servidor de llaves para cualquier cadena EVM haciendo cambios en el archivo `config.json`. Agrega tu configuración de cadena como se muestra a continuación en el objeto `evmchains`. A continuación se muestra un ejemplo de configuración para la cadena C de Testnet y la cadena WAGMI.
 
 ```json
 "evmchains": [
     {
         "ID": "C",
-        "NAME": "Fuji (C-Chain)",
+        "NAME": "Testnet (C-Chain)",
         "TOKEN": "LUX",
         "RPC": "https://api.lux-test.network/ext/C/rpc",
         "CHAINID": 43113,

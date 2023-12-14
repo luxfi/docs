@@ -1,0 +1,177 @@
+{
+  "label": "Nodes",
+  "permalink": "/tags/nodes",
+  "allTagsPath": "/tags",
+  "count": 28,
+  "items": [
+    {
+      "id": "nodes/README",
+      "title": "🔗 Nodes Quick Links",
+      "description": "This section provides documents on how to build and maintain an LuxGo node, and then validate the Lux network using an LuxGo node.",
+      "permalink": "/nodes/"
+    },
+    {
+      "id": "nodes/validate/add-a-validator",
+      "title": "Add a Node to the Validator Set",
+      "description": "This section provides documents on how to build and maintain an LuxGo node, and then validate the Lux network using an LuxGo node.",
+      "permalink": "/nodes/validate/add-a-validator"
+    },
+    {
+      "id": "nodes/configure/chain-config-flags",
+      "title": "Chain Configs",
+      "description": "Reference for all available chain config options and flags.",
+      "permalink": "/nodes/configure/chain-config-flags"
+    },
+    {
+      "id": "nodes/run/FAQ",
+      "title": "Common Errors While Building a Node",
+      "description": "If you experience any issues building your node, here are some common errors and possible solutions.",
+      "permalink": "/nodes/run/FAQ"
+    },
+    {
+      "id": "nodes/validate/how-to-stake",
+      "title": "How to Stake on Lux",
+      "description": "This section provides documents on how to stake LUX on the Lux Network.",
+      "permalink": "/nodes/validate/how-to-stake"
+    },
+    {
+      "id": "nodes/run/with-installer/installing-luxd",
+      "title": "Installing LuxGo Using the Script",
+      "description": "In this tutorial, you'll learn how to download and install LuxGo using the installation script.",
+      "permalink": "/nodes/run/with-installer/installing-luxd"
+    },
+    {
+      "id": "nodes/run/third-party/aws-marketplace-one-click",
+      "title": "Launch an Lux Validator on AWS with One Click",
+      "description": "This tutorial will guide you through spinning up an Lux node via the one-click validator node through the AWS Marketplace. This includes subscribing to the software, launching it on EC2, connecting to the node over ssh, calling curl commands, adding the node as a validator on the Testnet network using the Lux Web wallet, and confirming the node is a pending validator.",
+      "permalink": "/nodes/run/third-party/aws-marketplace-one-click"
+    },
+    {
+      "id": "nodes/configure/luxd-config-flags",
+      "title": "LuxGo Configs and Flags",
+      "description": "This documents list all available configuration and flags for LuxGo.",
+      "permalink": "/nodes/configure/luxd-config-flags"
+    },
+    {
+      "id": "nodes/run/with-installer/managing-luxd",
+      "title": "Managing LuxGo",
+      "description": "In this tutorial, you'll learn how to manage your LuxGo node.",
+      "permalink": "/nodes/run/with-installer/managing-luxd"
+    },
+    {
+      "id": "nodes/maintain/setting-up-node-monitoring",
+      "title": "Monitor an Lux Node",
+      "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of LuxGo.",
+      "permalink": "/nodes/maintain/setting-up-node-monitoring"
+    },
+    {
+      "id": "nodes/maintain/node-backup-and-restore",
+      "title": "Node Backup and Restore",
+      "description": "Should your machine ever have a failure due to either hardware or software issues, it's best to be prepared for such a situation by making a backup.",
+      "permalink": "/nodes/maintain/node-backup-and-restore"
+    },
+    {
+      "id": "nodes/maintain/node-bootstrap",
+      "title": "Node Bootstrap",
+      "description": "Node Bootstrap is the process where a node *securely* downloads linear chain blocks to recreate the latest state of the chain locally. Bootstrapping a node is a multi-step process which requires downloading the chains required by the Primary Network (that is, the C-Chain, P-Chain, and X-Chain), as well as the chains required by any additional Subnets that the node explicitly tracks.",
+      "permalink": "/nodes/maintain/node-bootstrap"
+    },
+    {
+      "id": "nodes/run/with-installer/advance-config-maintenance",
+      "title": "Node Configuration and Maintenance",
+      "description": "In this tutorial, you'll learn about advanced Lux node configuration options and maintenance tasks.",
+      "permalink": "/nodes/run/with-installer/advance-config-maintenance"
+    },
+    {
+      "id": "nodes/run/subnet-node",
+      "title": "Run a Subnet Node",
+      "description": "Detailed instructions for running an Lux node that tracks a Subnet.",
+      "permalink": "/nodes/run/subnet-node"
+    },
+    {
+      "id": "nodes/maintain/background-service-config",
+      "title": "Run an Lux Node as a Background Service",
+      "description": "This page demonstrates how to set up a `luxd.service` file to enable a manually deployed validator node to run in the background of a server instead of in the terminal directly.",
+      "permalink": "/nodes/maintain/background-service-config"
+    },
+    {
+      "id": "nodes/run/node-manually",
+      "title": "Run an Lux Node Manually",
+      "description": "The quickest way to learn about Lux is to run a node and interact with the network. This tutorial demonstrates how to install and run an Lux node, and connect to the Lux Network by compiling a node from source and running it manually.",
+      "permalink": "/nodes/run/node-manually"
+    },
+    {
+      "id": "nodes/run/with-installer/preparing-your-environment",
+      "title": "Run an Lux Node Using the Install Script",
+      "description": "In this tutorial, you'll learn how to prepare your environment for LuxGo installation and configure your network settings.",
+      "permalink": "/nodes/run/with-installer/preparing-your-environment"
+    },
+    {
+      "id": "nodes/run/third-party/alibaba-cloud-node",
+      "title": "Run an Lux Node with Alibaba Cloud",
+      "description": "Detailed instructions for running an Lux node with Alibaba Cloud",
+      "permalink": "/nodes/run/third-party/alibaba-cloud-node"
+    },
+    {
+      "id": "nodes/run/third-party/aws-node",
+      "title": "Run an Lux Node with Amazon Web Services (AWS)",
+      "description": "This tutorial will guide you through setting up an Lux node on Amazon Web Services (AWS). Cloud services like AWS are a good way to ensure that your node is highly secure, available, and accessible.",
+      "permalink": "/nodes/run/third-party/aws-node"
+    },
+    {
+      "id": "nodes/run/third-party/google-cloud-node",
+      "title": "Run an Lux Node with Google Cloud Platform",
+      "description": "Launch an Lux Node on Google Cloud Platform.",
+      "permalink": "/nodes/run/third-party/google-cloud-node"
+    },
+    {
+      "id": "nodes/run/third-party/latitude-node",
+      "title": "Run an Lux Node with Latitude.sh",
+      "description": "Detailed instructions for running an Lux node with Latitude.sh",
+      "permalink": "/nodes/run/third-party/latitude-node"
+    },
+    {
+      "id": "nodes/run/third-party/microsoft-azure-node",
+      "title": "Run an Lux Node with Microsoft Azure",
+      "description": "Running a validator and staking with Lux using Microsoft Azure infrastructure provides extremely competitive rewards. Find out more info here.",
+      "permalink": "/nodes/run/third-party/microsoft-azure-node"
+    },
+    {
+      "id": "nodes/run/third-party/tencent-cloud-node",
+      "title": "Run an Lux Node with Tencent Cloud",
+      "description": "Detailed instructions for running an Lux node with Tencent Cloud",
+      "permalink": "/nodes/run/third-party/tencent-cloud-node"
+    },
+    {
+      "id": "nodes/maintain/run-offline-pruning",
+      "title": "Run C-Chain Offline Pruning",
+      "description": "In this doc, learn how to run offline pruning on your node to reduce its disk usage.",
+      "permalink": "/nodes/maintain/run-offline-pruning"
+    },
+    {
+      "id": "nodes/configure/subnet-configs",
+      "title": "Subnet Configs",
+      "description": "Reference for all available Subnet config options and flags.",
+      "permalink": "/nodes/configure/subnet-configs"
+    },
+    {
+      "id": "nodes/system-requirements",
+      "title": "System Requirements for Running an Lux Node",
+      "description": "Lux is an incredibly lightweight protocol, so nodes can run on commodity hardware. Note that as network usage increases, hardware requirements may change.",
+      "permalink": "/nodes/system-requirements"
+    },
+    {
+      "id": "nodes/validate/validate-or-delegate",
+      "title": "The Differences Between Validation and Delegation on Lux",
+      "description": "This section details the difference between staking and delegating on Lux.",
+      "permalink": "/nodes/validate/validate-or-delegate"
+    },
+    {
+      "id": "nodes/validate/what-is-staking",
+      "title": "What Is Staking?",
+      "description": "Staking is an essential part of proof-of-stake (PoS) consensus mechanisms used by many blockchain networks, including Lux.",
+      "permalink": "/nodes/validate/what-is-staking"
+    }
+  ],
+  "unlisted": false
+}

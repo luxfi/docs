@@ -230,7 +230,7 @@ con [Remix](https://remix.ethereum.org/), [Hardhat](https://hardhat.org/) o
 Subnet agregando precompilaciones o ajustando el airdrop.
 
 Una vez que hayas desarrollado una Subnet estable que te guste, consulta
-[Crear una Subnet EVM en la Testnet Fuji](/build/subnet/deploy/fuji-testnet-subnet.md) para llevar tu
+[Crear una Subnet EVM en la Testnet](/build/subnet/deploy/testnet-subnet.md) para llevar tu
 Subnet un paso más cerca de la producción.
 
 ¡Buena Subnetting!

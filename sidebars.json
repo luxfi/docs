@@ -10,7 +10,7 @@
       "type": "category",
       "label": "Networks",
       "collapsed": false,
-      "items": ["learn/lux/mainnet", "learn/lux/fuji"]
+      "items": ["learn/lux/mainnet", "learn/lux/testnet"]
     },
     "learn/lux/consensus",
     "learn/lux/lux",
@@ -37,7 +37,7 @@
   "nodes": [
     {
       "type": "html",
-      "value": "<span class='menu__item'><b><medium> 🔺 Nodes </medium></b></span>"
+      "value": "<span class='menu__item'><b><medium> ▼ Nodes </medium></b></span>"
     },
     "nodes/README",
     "nodes/system-requirements",
@@ -112,23 +112,10 @@
     }
   ],
 
-  "community": [
-    {
-      "type": "category",
-      "label": "Tutorials Contest",
-      "collapsed": true,
-      "items": [
-        "deprecated/tutorials-contest/README",
-        "deprecated/tutorials-contest/2022",
-        "deprecated/tutorials-contest/2021"
-      ]
-    }
-  ],
-
   "build-dapp": [
     {
       "type": "html",
-      "value": "<span class='menu__item'><b><medium> 🔺 Decentralized Apps </medium></b></span>"
+      "value": "<span class='menu__item'><b><medium> ▼ Decentralized Apps </medium></b></span>"
     },
     "build/dapp/README",
     "build/dapp/c-chain-evm",
@@ -142,7 +129,7 @@
       "type": "html",
       "value": "<span class='menu__item'><b><medium> Development Networks </medium></b></span>"
     },
-    "tooling/network-runner",
+    "tooling/netrunner",
     {
       "type": "html",
       "value": "<hr/>"
@@ -208,14 +195,14 @@
       "type": "html",
       "value": "<span class='menu__item'><b><medium> End-to-End Walkthroughs </medium></b></span>"
     },
-    "build/dapp/fuji-workflow",
+    "build/dapp/testnet-workflow",
     "build/dapp/launch-dapp"
   ],
 
   "build-subnet": [
     {
       "type": "html",
-      "value": "<span class='menu__item'><b><medium> 🔺 Lux Subnets </medium></b></span>"
+      "value": "<span class='menu__item'><b><medium> ▼ Lux Subnets </medium></b></span>"
     },
     "build/subnet/README",
     "build/subnet/getting-started",
@@ -313,7 +300,7 @@
   "build-vm": [
     {
       "type": "html",
-      "value": "<span class='menu__item'><b><medium> 🔺 Virtual Machines </medium></b></span>"
+      "value": "<span class='menu__item'><b><medium> ▼ Virtual Machines </medium></b></span>"
     },
     "build/vm/README",
     "build/vm/intro",
@@ -408,7 +395,7 @@
       "value": "<hr/>"
     },
     "tooling/luxd-installer",
-    "tooling/network-runner",
+    "tooling/netrunner",
     "tooling/plugin-manager",
     "tooling/ops",
     {

@@ -289,12 +289,12 @@ Usage:
 Flags:
       --luxd-chain-config-dir string   luxd's chain config file directory (default "/home/fabio/.luxd/chains")
       --config                                create upgrade config for future subnet deployments (same as generate)
-      --fuji fuji                             apply upgrade existing fuji deployment (alias for `testnet`)
+      --testnet testnet                             apply upgrade existing testnet deployment (alias for `testnet`)
   -h, --help                                  help for apply
       --local local                           apply upgrade existing local deployment
       --mainnet mainnet                       apply upgrade existing mainnet deployment
       --print                                 if true, print the manual config without prompting (for public networks only)
-      --testnet testnet                       apply upgrade existing testnet deployment (alias for `fuji`)
+      --testnet testnet                       apply upgrade existing testnet deployment (alias for `testnet`)
 
 Global Flags:
       --log-level string   log level for the application (default "ERROR")
@@ -342,13 +342,13 @@ It installed the upgrade bytes _as-is_ as you configured respectively provided t
 You should verify yourself that the upgrades were actually installed correctly,
 for example issuing some transactions - mind the timestamp!.
 
-## Apply the Upgrade to a Public Node (Fuji or Mainnet)
+## Apply the Upgrade to a Public Node (Testnet or Mainnet)
 
 For this scenario to work, you should also have deployed the Subnet
-to the public network (Fuji or Mainnet) with this tool.
+to the public network (Testnet or Mainnet) with this tool.
 Otherwise, the tool won't know the details of the Subnet, and won't be able to guide you.
 
-Assuming the Subnet has been already deployed to Fuji, when running the `apply` command,
+Assuming the Subnet has been already deployed to Testnet, when running the `apply` command,
 the tool notices the deployment:
 
 ```shell
@@ -356,14 +356,14 @@ lux subnet upgrade apply testSubnet
 Use the arrow keys to navigate: ↓ ↑ → ←
 ? What deployment would you like to upgrade:
     Existing local deployment
-  ▸ Fuji
+  ▸ Testnet
 ```
 
-If not, you would not find the `Fuji` entry here.
+If not, you would not find the `Testnet` entry here.
 
 :::important
 
-This scenario assumes that you are running the `fuji` validator on the same machine
+This scenario assumes that you are running the `testnet` validator on the same machine
 which is running Lux-CLI.
 
 :::
@@ -387,21 +387,21 @@ If all is correct, the file gets installed:
 
 ```shell
 lux subnet upgrade apply testSubnet
-✔ Fuji
+✔ Testnet
 The chain config dir luxd uses is set at /home/fabio/.luxd/chains
 Trying to install the upgrade files at the provided /home/fabio/.luxd/chains path
 Successfully installed upgrade file
 ```
 
 If however the node is _not_ running on this same machine where you are executing Lux-CLI,
-there is no point in running this command for a Fuji node.
+there is no point in running this command for a Testnet node.
 In this case, you might rather export the file and install it at the right location.
 
 To see the instructions about how to go about this, add the `--print` flag:
 
 ```shell
 lux subnet upgrade apply testSubnet --print
-✔ Fuji
+✔ Testnet
 To install the upgrade file on your validator:
 
 1. Identify where your validator has the luxd chain config dir configured.

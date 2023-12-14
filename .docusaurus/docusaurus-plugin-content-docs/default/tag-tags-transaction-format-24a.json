@@ -1,0 +1,27 @@
+{
+  "label": "Transaction Format",
+  "permalink": "/tags/transaction-format",
+  "allTagsPath": "/tags",
+  "count": 3,
+  "items": [
+    {
+      "id": "reference/luxd/c-chain/txn-format",
+      "title": "C-Chain Transaction Format",
+      "description": "This page is an overview of the Coreth atomic transaction format associated with LuxGo C-Chain API.",
+      "permalink": "/reference/luxd/c-chain/txn-format"
+    },
+    {
+      "id": "reference/luxd/p-chain/txn-format",
+      "title": "P-Chain Transaction Format",
+      "description": "This page is an overview of the transaction format associated with LuxGo P-Chain API.",
+      "permalink": "/reference/luxd/p-chain/txn-format"
+    },
+    {
+      "id": "reference/luxd/x-chain/txn-format",
+      "title": "X-Chain Transaction Format",
+      "description": "This page is an overview of the AVM transaction format associated with LuxGo X-Chain API.",
+      "permalink": "/reference/luxd/x-chain/txn-format"
+    }
+  ],
+  "unlisted": false
+}

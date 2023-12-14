@@ -18,8 +18,8 @@ You must take the full responsibility to ensure your bridge's security.
 ## Introduction
 
 In this tutorial, we will be building a bridge between **[WAGMI](/build/subnet/info/wagmi.md)** and
-**[Fuji](/learn/lux/fuji.md)**. This bridge will help us to transfer native **WGM** coin
-wrapped into **wWGM** back and forth from the WAGMI chain to the Fuji chain. Using this guide, you
+**[Testnet](/learn/lux/testnet.md)**. This bridge will help us to transfer native **WGM** coin
+wrapped into **wWGM** back and forth from the WAGMI chain to the Testnet chain. Using this guide, you
 can deploy a bridge between any EVM-based chains for any ERC20 tokens.
 
 The wrapped version of a native coin is its pegged ERC20 representation. Wrapping it with the ERC20
@@ -32,7 +32,7 @@ We will be using **ChainSafe**'s bridge repository, to easily set up a robust an
 
 ## Workflow of the Bridge
 
-WAGMI and Fuji chains are not interconnected by default, however, we could make them communicate.
+WAGMI and Testnet chains are not interconnected by default, however, we could make them communicate.
 Relayers watch for events (by polling blocks) on one chain and perform necessary action using those
 events on the other chain. This way we can also perform bridging of tokens from one chain to the
 other chain through the use of smart contracts.
@@ -61,10 +61,10 @@ chain.
 These are the requirement to follow this tutorial -
 
 - Set up [WAGMI](/build/subnet/info/wagmi.md#adding-wagmi-to-core) and
-[Fuji](/build/dapp/fuji-workflow.md#set-up-fuji-network-on-core-optional) on Core
+[Testnet](/build/dapp/testnet-workflow.md#set-up-testnet-network-on-core-optional) on Core
 - Import `wWGM` token (asset) on the WAGMI network (Core). Here is the address - `0x3Ee7094DADda15810F191DD6AcF7E4FFa37571e4`
 - `WGM` coins on the WAGMI chain. Drip `1 WGM` from the [WAGMI Faucet](https://faucet.trywagmi.xyz/).
-- `LUX` coins on the Fuji chain. Drip `10 LUX` from the [Fuji Faucet](https://faucet.lux.network/)
+- `LUX` coins on the Testnet chain. Drip `10 LUX` from the [Testnet Faucet](https://faucet.lux.network/)
 - Wrapped `WGM` tokens on the WAGMI chain. Send a few `WGM` coins to the `wWGM` token address (see
 second point), to receive the same amount of `wWGM`. Always keep some `WGM` coins, to cover transaction
 fees.
@@ -106,8 +106,8 @@ DST_GATEWAY=https://api.lux-test.network/ext/bc/C/rpc
 
 SRC_ADDR="<Your address on WAGMI>"
 SRC_PK="<your private key on WAGMI>"
-DST_ADDR="<Your address on Fuji>"
-DST_PK="<your private key on Fuji>"
+DST_ADDR="<Your address on Testnet>"
+DST_PK="<your private key on Testnet>"
 
 SRC_TOKEN="0x3Ee7094DADda15810F191DD6AcF7E4FFa37571e4"
 RESOURCE_ID="0x00"
@@ -116,7 +116,7 @@ RESOURCE_ID="0x00"
 - `SRC_ADDR` and `DST_ADDR` are the addresses that will deploy bridge contracts and will act as a relayer.
 - `SRC_TOKEN` is the token that we want to bridge. Here is the address of the wrapped ERC20 version
 of the WGM coin aka wWGM.
-- `RESOURCE_ID` could be anything. It identifies our bridged ERC20 tokens on both sides (WAGMI and Fuji).
+- `RESOURCE_ID` could be anything. It identifies our bridged ERC20 tokens on both sides (WAGMI and Testnet).
 
 Every time we make changes to these config variables, we have to update our bash environment. Run
 the following command according to the relative location of the file. These variables are temporary
@@ -139,7 +139,7 @@ We need to set up our source chain as follows -
 
 The command-line tool `cb-sol-cli` will help us to deploy the contracts. Run the following command
 in the terminal session where the config vars are loaded. It will add `SRC_ADDR` as the default
-relayer for relaying events from the WAGMI chain (source) to the Fuji chain (destination).
+relayer for relaying events from the WAGMI chain (source) to the Testnet chain (destination).
 
 **One of the most important parameter to take care of while deploying bridge contract is the `expiry`**
 **value. It is the number of blocks after which a proposal is considered cancelled. By default it is**
@@ -196,8 +196,8 @@ We need to set up our destination chain as follows -
 
 ### Deploy Destination Contracts
 
-Run the following command to deploy Bridge, ERC20 Handler, and `wWGM` token contracts on the Fuji
-chain. Again it will set `DST_ADDR` as the default relayer for relaying events from Fuji chain
+Run the following command to deploy Bridge, ERC20 Handler, and `wWGM` token contracts on the Testnet
+chain. Again it will set `DST_ADDR` as the default relayer for relaying events from Testnet chain
 (destination) to WAGMI chain (source). For this example, both `SRC_ADDR` and `DST_ADDR` represent
 the same thing.
 
@@ -324,7 +324,7 @@ echo "{
       }
     },
     {
-      \"name\": \"Fuji\",
+      \"name\": \"Testnet\",
       \"type\": \"ethereum\",
       \"id\": \"1\",
       \"endpoint\": \"$DST_GATEWAY\",

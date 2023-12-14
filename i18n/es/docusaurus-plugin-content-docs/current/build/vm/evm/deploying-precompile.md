@@ -14,8 +14,8 @@ import TabItem from '@theme/TabItem';
 ¡Lo logramos! Todo funciona en nuestras pruebas de Ginkgo, y ahora queremos poner en marcha una red local
 con la precompilación de Hello World activada.
 
-Inicia el servidor en una terminal en una nueva pestaña usando network-runner. Por favor, revisa
-[este enlace](/tooling/network-runner.md) para obtener más información sobre Lux
+Inicia el servidor en una terminal en una nueva pestaña usando netrunner. Por favor, revisa
+[este enlace](/tooling/netrunner.md) para obtener más información sobre Lux
 Network Runner, cómo descargarlo y cómo usarlo. El servidor estará en modo "escucha",
 esperando llamadas de API.
 
@@ -46,7 +46,7 @@ cd $GOPATH/src/github.com/luxdefi/precompile-evm
 Luego ejecuta ANR:
 
 ```bash
-network-runner server \
+netrunner server \
 --log-level debug \
 --port=":8080" \
 --grpc-gateway-port=":8081"
@@ -66,10 +66,10 @@ export LUXD_PLUGIN_PATH="${GOPATH}/src/github.com/luxdefi/luxd/build/plugins"
 ```
 
 El siguiente comando "emitirá solicitudes" al servidor que acabamos de poner en marcha. Podemos usar
-network-runner para poner en marcha algunos nodos que ejecutan la última versión de Subnet-EVM:
+netrunner para poner en marcha algunos nodos que ejecutan la última versión de Subnet-EVM:
 
 ```bash
-  network-runner control start \
+  netrunner control start \
   --log-level debug \
   --endpoint="0.0.0.0:8080" \
   --number-of-nodes=5 \

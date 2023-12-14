@@ -173,7 +173,7 @@ Next, select `Local Network`.
 Use the arrow keys to navigate: ↓ ↑ → ←
 ? Choose a network to deploy on:
   ▸ Local Network
-    Fuji
+    Testnet
     Mainnet
 ```
 

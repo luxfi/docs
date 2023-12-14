@@ -14,7 +14,7 @@ La validación en el contexto del staking se refiere al acto de ejecutar un nodo
 para validar transacciones y asegurar la red.
 
 - **Requisito de Stake:** Para convertirse en un validador en la red Lux, se debe hacer stake
-  de una cantidad mínima de 2,000 tokens LUX en la Mainnet (1 LUX en la Fuji Testnet).
+  de una cantidad mínima de 2,000 tokens LUX en la Mainnet (1 LUX en la Testnet).
 - **Proceso:** Los validadores participan en lograr consenso muestreando repetidamente a otros
   validadores. La probabilidad de ser muestreado es proporcional al stake del validador, lo que significa
   que cuantos más tokens haga stake un validador, más influyente es en el proceso de consenso.
@@ -28,7 +28,7 @@ La delegación permite a los titulares de tokens que no desean ejecutar su propi
 participar aún en el staking al "delegar" sus tokens a un nodo validador existente.
 
 - **Requisito de Stake:** Para delegar en la red Lux, se requiere un mínimo de 25 tokens LUX
-  en la Mainnet (1 LUX en la Fuji Testnet).
+  en la Mainnet (1 LUX en la Testnet).
 - **Proceso:** Los delegadores eligen un nodo validador específico para delegar sus tokens,
   confiando en que el validador se comportará correctamente y ayudará a asegurar la red en su nombre.
 - **Recompensas:** Los delegadores también son elegibles para recibir recompensas por su stake.

@@ -1,0 +1,47 @@
+{
+  "id": "reference/luxd/c-chain/api",
+  "title": "Contract Chain API",
+  "description": "This page is an overview of the C-Chain API associated with LuxGo.",
+  "source": "@site/docs/reference/luxd/c-chain/api.md",
+  "sourceDirName": "reference/luxd/c-chain",
+  "slug": "/reference/luxd/c-chain/api",
+  "permalink": "/reference/luxd/c-chain/api",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/reference/luxd/c-chain/api.md",
+  "tags": [
+    {
+      "label": "C-Chain",
+      "permalink": "/tags/c-chain"
+    },
+    {
+      "label": "Contract Chain",
+      "permalink": "/tags/contract-chain"
+    },
+    {
+      "label": "LuxGo APIs",
+      "permalink": "/tags/lux-go-ap-is"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "api",
+    "tags": [
+      "C-Chain",
+      "Contract Chain",
+      "LuxGo APIs"
+    ],
+    "description": "This page is an overview of the C-Chain API associated with LuxGo.",
+    "sidebar_label": "API",
+    "pagination_label": "C-Chain API"
+  },
+  "sidebar": "reference",
+  "previous": {
+    "title": "P-Chain Transaction Format",
+    "permalink": "/reference/luxd/p-chain/txn-format"
+  },
+  "next": {
+    "title": "C-Chain Transaction Format",
+    "permalink": "/reference/luxd/c-chain/txn-format"
+  }
+}

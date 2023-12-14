@@ -1,5 +1,5 @@
 ---
-title: 🔺 Subnets de Lux
+title: ▼ Subnets de Lux
 tags: [Construir, Subnets]
 description: Subnets
 sidebar_label: 🔗 Enlaces rápidos
@@ -19,7 +19,7 @@ Las Subnets de Lux son un subconjunto de validadores de la red primaria de Lux q
 | Desplegar una Subnet                                                                  |     |
 | :------------------------------------------------------------------------------------ | --- |
 | [**En una red local**](/build/subnet/deploy/local-subnet.md)                          |
-| [**En la testnet Fuji**](/build/subnet/deploy/fuji-testnet-subnet.md)                 |
+| [**En la testnet Testnet**](/build/subnet/deploy/testnet-subnet.md)                 |
 | [**En la mainnet de Lux**](/build/subnet/deploy/mainnet-subnet.md)              |
 | [**En infraestructura de producción**](/build/subnet/deploy/on-prod-infra.md)         |
 | [**Con autorización de firma múltiple**](/build/subnet/deploy/multisig-auth.md)       |

@@ -21,7 +21,7 @@ options and their usage:
   has no historical data
 - `db-dir` - use to provide the full path to the location where the database
   will be stored
-- `fuji` - node will connect to Fuji testnet instead of the Mainnet
+- `testnet` - node will connect to Testnet testnet instead of the Mainnet
 - `index` - [Index API](/reference/luxd/index-api.md) will be
   enabled
 - `ip` - use `dynamic`, `static` arguments, of enter a desired IP directly to be
@@ -54,10 +54,10 @@ For example:
 
 ### Usage Examples
 
-- To run a Fuji node with indexing enabled and autodetected static IP:
+- To run a Testnet node with indexing enabled and autodetected static IP:
 
   ```bash
-  ./luxd-installer.sh --fuji --ip static --index
+  ./luxd-installer.sh --testnet --ip static --index
   ```
 
 - To run an archival Mainnet node with dynamic IP and database located at `/home/node/db`:

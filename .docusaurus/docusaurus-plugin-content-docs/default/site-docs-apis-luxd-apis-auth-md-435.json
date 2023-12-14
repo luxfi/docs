@@ -1,0 +1,18 @@
+{
+  "id": "apis/luxd/apis/auth",
+  "title": "Auth API",
+  "description": "When you run a node, you can require that API calls have an authorization token attached. This API manages the creation and revocation of authorization tokens.",
+  "source": "@site/docs/apis/luxd/apis/auth.md",
+  "sourceDirName": "apis/luxd/apis",
+  "slug": "/apis/luxd/apis/auth",
+  "permalink": "/apis/luxd/apis/auth",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/apis/luxd/apis/auth.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 8,
+  "frontMatter": {
+    "sidebar_position": 8
+  }
+}

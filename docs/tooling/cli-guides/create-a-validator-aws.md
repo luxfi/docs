@@ -12,7 +12,7 @@ This page demonstrates how to deploy Lux validators on AWS using just one Lux-CL
 command.
 
 :::info
-Currently, only Fuji network and Devnets are supported.
+Currently, only Testnet network and Devnets are supported.
 :::
 
 :::warning

@@ -1,5 +1,5 @@
 ---
-title: 🔺 Máquinas Virtuales
+title: ▼ Máquinas Virtuales
 tags: [Construir, Máquinas Virtuales]
 description: Máquinas Virtuales
 sidebar_label: 🔗 Enlaces Rápidos

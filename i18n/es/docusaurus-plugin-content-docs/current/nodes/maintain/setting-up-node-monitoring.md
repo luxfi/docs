@@ -306,7 +306,7 @@ Esto agregará el panel de control de Subnets. Te permite monitorear datos opera
 para cualquier Subnet que esté sincronizada en el nodo. Hay un interruptor de Subnet que
 te permite cambiar entre diferentes Subnets. Como hay muchas Subnets y
 no todos los nodos tendrán todas ellas, por defecto, viene poblado solo con
-las Subnets de Spaces y WAGMI que existen en la testnet Fuji:
+las Subnets de Spaces y WAGMI que existen en la testnet Testnet:
 
 ![Interruptor de Subnets](/img/monitoring-03-subnets.png)
 
@@ -323,7 +323,7 @@ Nombre de la Subnet:<BlockchainID>
 y el separador entre las entradas es una coma. Las entradas para Spaces y WAGMI se ven así:
 
 ```text
-Spaces (Fuji) : 2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt, WAGMI (Fuji) : 2AM3vsuLoJdGBGqX2ibE8RGEq4Lg7g4bot6BT1Z7B9dH5corUD
+Spaces (Testnet) : 2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt, WAGMI (Testnet) : 2AM3vsuLoJdGBGqX2ibE8RGEq4Lg7g4bot6BT1Z7B9dH5corUD
 ```
 
 Después de editar los valores, presiona "Actualizar" y luego haz clic en el botón "Guardar panel de control" y confirma. Presiona la flecha hacia atrás en la esquina superior izquierda para volver al panel de control. Ahora deberías poder seleccionar los nuevos valores del menú desplegable y se mostrarán los datos de la Subnet seleccionada en los paneles.

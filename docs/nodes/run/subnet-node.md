@@ -120,7 +120,7 @@ VMID, Subnet ID, ChainID, and all other parameters can be found in the "Chain In
 section of the Subnet Explorer.
 
 - [Lux Mainnet](https://subnets.lux.network/c-chain)
-- [Fuji Testnet](https://subnets-test.lux.network/wagmi)
+- [Testnet](https://subnets-test.lux.network/wagmi)
 
 </p>
 </details>
@@ -145,11 +145,11 @@ included in the configuration file.
 
 ```bash
 cd $GOPATH/src/github.com/luxdefi/luxd
-./build/luxd --config-file ~/.luxd/config.json --network-id=fuji
+./build/luxd --config-file ~/.luxd/config.json --network-id=testnet
 ```
 
-Note: The above command includes the `--network-id=fuji` command because the WAGMI Subnet is deployed
-on Fuji Testnet.
+Note: The above command includes the `--network-id=testnet` command because the WAGMI Subnet is deployed
+on Testnet.
 
 <details>
 
@@ -162,7 +162,7 @@ flag.
 For example:
 
 ```bash
-./build/luxd --track-subnets 28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY --network-id=fuji
+./build/luxd --track-subnets 28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY --network-id=testnet
 ```
 
 </p>

@@ -21,9 +21,9 @@ una implementación en producción.
 
 :::
 
-Después de gestionar con éxito una implementación de Subred en la `Fuji Testnet`, estás listo para
+Después de gestionar con éxito una implementación de Subred en la `Testnet`, estás listo para
 implementar tu Subred en Mainnet. Si no lo has hecho, primero
-[implementa una Subred en Testnet](/build/subnet/deploy/fuji-testnet-subnet.md).
+[implementa una Subred en Testnet](/build/subnet/deploy/testnet-subnet.md).
 
 Este tutorial muestra cómo hacer lo siguiente en `Mainnet`.
 
@@ -45,7 +45,7 @@ tu propia ejecución de este tutorial.
 - [Lux-CLI está instalado](/tooling/cli-guides/install-cli.md) en la caja de cada nodo validador
 - Un dispositivo [Ledger](https://www.ledger.com/)
 - Has [creado una configuración de Subred](/build/subnet/hello-subnet.md#create-your-subnet-configuration)
-  y probado completamente una implementación de Subred en [Fuji Testnet](/build/subnet/deploy/fuji-testnet-subnet.md)
+  y probado completamente una implementación de Subred en [Testnet](/build/subnet/deploy/testnet-subnet.md)
 
 :::warning
 
@@ -124,7 +124,7 @@ validadores cuesta 0.001 LUX cada uno. Para más detalles, consulta [Tarifas](/r
 
 Puedes usar el comando `key list` para obtener cualquier dirección de Ledger en la secuencia de derivación al
 cambiar el parámetro de índice de `0` al deseado, o a una lista de ellos (por ejemplo: `2`, o
-`0,4,7`). Además, puedes solicitar direcciones en `Fuji` con el parámetro `--fuji`, y redes locales
+`0,4,7`). Además, puedes solicitar direcciones en `Testnet` con el parámetro `--testnet`, y redes locales
 con el parámetro `--local`.
 
 :::
@@ -155,7 +155,7 @@ Esto va a iniciar una nueva serie de comandos en el prompt.
 Use las teclas de flecha para navegar: ↓ ↑ → ←
 ? Elije una red para implementar en:
     Red Local
-    Fuji
+    Testnet
   ▸ Mainnet
 ```
 
@@ -286,7 +286,7 @@ Cuando ejecutas el comando `join`, primero se te solicita la selección de la re
 ```text
 Usa las teclas de flecha para navegar: ↓ ↑ → ←
 ? Elige una red en la que validar (este comando solo admite redes públicas):
-    Fuji
+    Testnet
   ▸ Mainnet
 ```
 
@@ -406,7 +406,7 @@ Primero elija `Mainnet` como la red a la que agregar el validador de la Subnet.
 ```text
 Use las teclas de flecha para navegar: ↓ ↑ → ←
 ? Elija una red a la que agregar el validador.:
-    Fuji
+    Testnet
   ▸ Mainnet
 ```
 

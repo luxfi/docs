@@ -115,7 +115,7 @@ Depending on the `networkID` which is passed in when instantiating `Lux` the enc
 - 2 - X-`cascade`19rknw8l0grnfunjrzwxlxync6zrlu33ypmtvnh
 - 3 - X-`denali`19rknw8l0grnfunjrzwxlxync6zrlu33yhc357h
 - 4 - X-`everest`19rknw8l0grnfunjrzwxlxync6zrlu33yn44wty
-- 5 - X-`fuji`19rknw8l0grnfunjrzwxlxync6zrlu33yxqzg0h
+- 5 - X-`testnet`19rknw8l0grnfunjrzwxlxync6zrlu33yxqzg0h
 - 1337 - X-`custom`19rknw8l0grnfunjrzwxlxync6zrlu33yeg5dya
 - 12345 - X-`local`19rknw8l0grnfunjrzwxlxync6zrlu33ynpm3qq
 
@@ -128,7 +128,7 @@ export const NetworkIDToHRP = {
   2: "cascade",
   3: "denali",
   4: "everest",
-  5: "fuji",
+  5: "testnet",
   1337: "custom",
   12345: "local",
 }
@@ -146,12 +146,12 @@ const lux = new Lux(undefined, undefined, undefined, networkID)
 ```
 
 ```ts
-// fuji
+// testnet
 const networkID = 5
 const lux = new Lux(undefined, undefined, undefined, networkID)
 
-// [ 'X-fuji1j2j0vzttatv73gr7j4tnd7rp4el3ngcy7kt70x' ]
-// [ 'X-fuji19rknw8l0grnfunjrzwxlxync6zrlu33yxqzg0h' ]
+// [ 'X-testnet1j2j0vzttatv73gr7j4tnd7rp4el3ngcy7kt70x' ]
+// [ 'X-testnet19rknw8l0grnfunjrzwxlxync6zrlu33yxqzg0h' ]
 ```
 
 ```ts

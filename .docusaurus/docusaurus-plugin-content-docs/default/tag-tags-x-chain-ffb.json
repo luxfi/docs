@@ -1,0 +1,27 @@
+{
+  "label": "X-Chain",
+  "permalink": "/tags/x-chain",
+  "allTagsPath": "/tags",
+  "count": 3,
+  "items": [
+    {
+      "id": "learn/lux/platform",
+      "title": "The Primary Network",
+      "description": "Lux features 3 built-in blockchains which includes Exchange Chain (X-Chain), Platform Chain (P-Chain), and Contract Chain (C-Chain). More info here.",
+      "permalink": "/learn/lux/platform"
+    },
+    {
+      "id": "reference/luxd/x-chain/api",
+      "title": "X-Chain API",
+      "description": "This page is an overview of the Exchange Chain (X-Chain) API associated with LuxGo.",
+      "permalink": "/reference/luxd/x-chain/api"
+    },
+    {
+      "id": "reference/luxd/x-chain/txn-format",
+      "title": "X-Chain Transaction Format",
+      "description": "This page is an overview of the AVM transaction format associated with LuxGo X-Chain API.",
+      "permalink": "/reference/luxd/x-chain/txn-format"
+    }
+  ],
+  "unlisted": false
+}

@@ -115,7 +115,7 @@ Add a validator to the Primary Network. You must stake LUX to do this. If the no
 
 The validator charges a fee to delegators; the former receives a percentage of the delegator’s validation reward (if any.) The minimum delegation fee is 2%. A transaction that adds a validator has no fee.
 
-The validation period must be between 2 weeks and 1 year for the Mainnet, and 24 hours and 1 year for Fuji Testnet.
+The validation period must be between 2 weeks and 1 year for the Mainnet, and 24 hours and 1 year for Testnet.
 
 There is a maximum total weight imposed on validators. This means that no validator will ever have more LUX staked and delegated to it than this value. This value will initially be set to `min(5 * amount staked, 3M LUX)`. The total value on a validator is 3 million LUX.
 
@@ -1650,7 +1650,7 @@ curl -X POST --data '{
             "assetID": "U8iRqJoiJm8xZHAacmvYyZVwqQx6uDNtQeP3CQ6fcgQk3JqnK",
             "fxID": "spdxUxVJQbX85MGxMHbKw1sHxMnSqJ3QBzDyDYEP3h6TLuxqQ",
             "output": {
-              "addresses": ["P-fuji1yhem6kev6gkfsyse3m5z09e6qsuxujz0arpw8v"],
+              "addresses": ["P-testnet1yhem6kev6gkfsyse3m5z09e6qsuxujz0arpw8v"],
               "amount": 1997000000,
               "locktime": 0,
               "threshold": 1

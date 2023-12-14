@@ -9,7 +9,7 @@ pagination_label: Dapps Quick Links
 
 | Smart Contract Development       |   |
 | :------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [**💰 Get Test Funds**](/build/dapp/smart-contracts/get-funds-faucet.md)      | How to get a "drip" of test LUX from the Fuji testnet faucet |
+| [**💰 Get Test Funds**](/build/dapp/smart-contracts/get-funds-faucet.md)      | How to get a "drip" of test LUX from the Testnet testnet faucet |
 | [**Deploy with Remix IDE**](/build/dapp/smart-contracts/remix-deploy.md)   | Learn how to deploy and test a smart contract on Lux using Remix and Core |
 | [**Create an ERC-20 Token**](/build/dapp/smart-contracts/erc-20.md)      |  Create a mintable ERC-20 token |
 | [**Deploy an NFT Collection**](/build/dapp/smart-contracts/nfts/deploy-collection.md)      |  Walkthrough deploying a basic ERC-721 (NFT) smart contract on the Lux Network |
@@ -25,5 +25,5 @@ pagination_label: Dapps Quick Links
 
 | End-to-End Walkthroughs     |   |
 | :------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [**Fuji Workflow**](/build/dapp/fuji-workflow.md) | Walkthrough of necessary development activities for a bare-bones decentralized application |
+| [**Testnet Workflow**](/build/dapp/testnet-workflow.md) | Walkthrough of necessary development activities for a bare-bones decentralized application |
 | [**Launch an Ethereum Dapp**](/build/dapp/launch-dapp.md) | Launch any new or existing Solidity dapp on Lux C-Chain the same as Ethereum, while benefiting from the security, speed, and interoperability of the Lux Network|

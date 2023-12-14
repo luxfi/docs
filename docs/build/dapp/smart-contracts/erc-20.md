@@ -15,7 +15,7 @@ running on Ethereum or different chains would be implemented to Lux.
 
 Therefore, we will be creating our own mintable ERC-20 token and will mint it to
 any address we want. The token will be generated on Lux C-Chain and will
-be accessible on that chain. We are using Fuji Testnet in this tutorial.
+be accessible on that chain. We are using Testnet in this tutorial.
 
 The article focuses on deploying a smart contract written with Solidity to
 Lux. This is the feature that Lux provides us - to be able to deploy
@@ -31,13 +31,13 @@ and click on **Advanced**.
 ![Settings image 1](/img/c-chain-ERC20/settings1.png)
 
 Here, turn on the **Testnet Mode** feature. This will automatically make Core switch to
-Fuji Testnet. 
+Testnet. 
 
 ![Settings image 2](/img/c-chain-ERC20/settings2.png)
 
 :::info
 
-If you are using other wallets, like MetaMask, you can add the Fuji Testnet using the following specs:
+If you are using other wallets, like MetaMask, you can add the Testnet using the following specs:
 
 - **Network Name**: Lux C-Chain
 - **New RPC URL**: [https://api.lux-test.network/ext/bc/C/rpc](https://api.lux-test.network/ext/bc/C/rpc)
@@ -51,7 +51,7 @@ The setup is done. For now, we have 0 LUX.
 
 ## Fund Your C-Chain Address
 
-For funding on the Fuji Testnet, you can use the Test Network Faucet. Navigate
+For funding on the Testnet, you can use the Test Network Faucet. Navigate
 to [https://faucet.lux.network/](https://faucet.lux.network/) and paste your
 C-Chain address.
 

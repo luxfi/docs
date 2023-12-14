@@ -109,7 +109,7 @@ esta solución alternativa te ayuda a evitar compilaciones rotas a corto plazo.
 
 :::caution
 Debes actualizar a la última versión de LuxGo cuando implementes públicamente en
-Fuji Testnet o Lux Mainnet.
+Testnet o Lux Mainnet.
 :::
 
 ### Más información

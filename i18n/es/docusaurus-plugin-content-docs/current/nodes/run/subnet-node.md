@@ -122,7 +122,7 @@ El VMID, ID de Subnet, ChainID y todos los demás parámetros se pueden encontra
 del Subnet Explorer.
 
 - [Mainnet Lux](https://subnets.lux.network/c-chain)
-- [Testnet Fuji](https://subnets-test.lux.network/wagmi)
+- [Testnet](https://subnets-test.lux.network/wagmi)
 
 </p>
 </details>
@@ -147,11 +147,11 @@ incluidas en el archivo de configuración.
 
 ```bash
 cd $GOPATH/src/github.com/luxdefi/luxd
-./build/luxd --config-file ~/.luxd/config.json --network-id=fuji
+./build/luxd --config-file ~/.luxd/config.json --network-id=testnet
 ```
 
-Nota: El comando anterior incluye el comando `--network-id=fuji` porque la Subnet WAGMI está desplegada
-en la Testnet Fuji.
+Nota: El comando anterior incluye el comando `--network-id=testnet` porque la Subnet WAGMI está desplegada
+en la Testnet.
 
 <details>
 
@@ -163,7 +163,7 @@ Si prefiere rastrear Subnets usando una bandera de línea de comandos, en su lug
 Por ejemplo:
 
 ```bash
-./build/luxd --track-subnets 28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY --network-id=fuji
+./build/luxd --track-subnets 28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY --network-id=testnet
 ```
 
 </p>

@@ -1,6 +1,6 @@
 ---
 tags: [Nodes]
-description: This tutorial will guide you through spinning up an Lux node via the one-click validator node through the AWS Marketplace. This includes subscribing to the software, launching it on EC2, connecting to the node over ssh, calling curl commands, adding the node as a validator on the Fuji network using the Lux Web wallet, and confirming the node is a pending validator.
+description: This tutorial will guide you through spinning up an Lux node via the one-click validator node through the AWS Marketplace. This includes subscribing to the software, launching it on EC2, connecting to the node over ssh, calling curl commands, adding the node as a validator on the Testnet network using the Lux Web wallet, and confirming the node is a pending validator.
 sidebar_label: AWS Marketplace
 pagination_label: Run an Lux Node with Amazon Web Services with one click
 sidebar_position: 1
@@ -26,7 +26,7 @@ With the intention of enabling developers and entrepreneurs to on-ramp into the
 Lux ecosystem with as little friction as possible, Lux Partners recently
 launched an offering to deploy an Lux Validator node via the AWS
 Marketplace. This tutorial will show the main steps required to get this node
-running and validating on the Lux Fuji testnet.
+running and validating on the Lux Testnet testnet.
 
 ## Product Overview
 
@@ -113,14 +113,14 @@ ssh username@ip.address.of.ec2.instance
 
 ## Node Configuration
 
-### Switch to Fuji Testnet
+### Switch to Testnet
 
 By default the Lux Node available through the AWS Marketplace syncs the
 Mainnet. If this is what you are looking for, you can skip this step.
 
-For this tutorial you want to sync and validate the Fuji Testnet. Now
+For this tutorial you want to sync and validate the Testnet. Now
 that you're `ssh`ed into the EC2 instance you can make the required changes to
-sync Fuji instead of Mainnet.
+sync Testnet instead of Mainnet.
 
 First, confirm that the node is syncing the Mainnet by running the `info.getNetworkID` command.
 
@@ -151,7 +151,7 @@ The returned `networkID` will be 1 which is the network ID for Mainnet.
 ```
 
 Now you want to edit `/etc/luxd/conf.json` and change the `"network-id"`
-property from `"mainnet"` to `"fuji"`. To see the contents of
+property from `"mainnet"` to `"testnet"`. To see the contents of
 `/etc/luxd/conf.json` you can `cat` the file.
 
 ```zsh
@@ -168,7 +168,7 @@ cat /etc/luxd/conf.json
 ```
 
 Edit that `/etc/luxd/conf.json` with your favorite text editor and change the value of the
-`"network-id"` property from `"mainnet"` to `"fuji"`. Once that's complete,
+`"network-id"` property from `"mainnet"` to `"testnet"`. Once that's complete,
 save the file and restart the Lux node via `sudo systemctl restart luxd`.
 You can then call the `info.getNetworkID` endpoint to confirm the
 change was successful.
@@ -187,7 +187,7 @@ curl -X POST --data '{
 
 #### `info.getNetworkID` Response
 
-The returned `networkID` will be 5 which is the network ID for Fuji.
+The returned `networkID` will be 5 which is the network ID for Testnet.
 
 ```zsh
 {
@@ -272,9 +272,9 @@ the `nodeID` is `NodeID-Q8Gfaaio9FAqCmZVEXDq9bFvNPvDi7rt5`
 }
 ```
 
-## Add Node as Validator on Fuji via Core web
+## Add Node as Validator on Testnet via Core web
 
-For adding the new node as a Validator on the Fuji testnet's Primary Network you can
+For adding the new node as a Validator on the Testnet testnet's Primary Network you can
 use the [Core web](https://core.app/) 
 [connected](https://support.lux.network/en/articles/6639869-core-web-how-do-i-connect-to-core-web) to
 [Core extension](https://join.core.app/extension).
@@ -294,7 +294,7 @@ NFTs, Lux Bridge, Subnets, L2s, and more, directly to users.
 ### Switching to Testnet Mode
 
 By default, Core web and Core extension are connected to Mainnet. 
-For the sake of this demo, you want to connect to the Fuji Testnet.
+For the sake of this demo, you want to connect to the Testnet.
 
 #### On Core Extension
 
@@ -391,7 +391,7 @@ and the total time which has elapsed from the entire Validation period.
 <img src="/img/one-click-validator-node/explorer-transaction-details.png"/>
 
 
-## Confirm That the Node is a Pending Validator on Fuji
+## Confirm That the Node is a Pending Validator on Testnet
 
 As a last step you can call the `platform.getPendingvalidators` endpoint to
 confirm that the Lux node which was recently spun up on AWS is no in the
@@ -479,7 +479,7 @@ NodeIDs.
 }
 ```
 
-After 5 minutes the node will officially start validating the Lux Fuji
+After 5 minutes the node will officially start validating the Lux Testnet
 testnet and you will no longer see it in the response body for the
 `platform.getPendingValidators` endpoint. Now you will access it via the
 `platform.getCurrentValidators` endpoint.
@@ -517,21 +517,21 @@ curl --location --request POST 'https://api.lux-test.network/ext/bc/P' \
           "locktime": "0",
           "threshold": "1",
           "addresses": [
-            "P-fuji1tgj2c3k56enytw5d78rt0tsq3lzg8wnftffwk7"
+            "P-testnet1tgj2c3k56enytw5d78rt0tsq3lzg8wnftffwk7"
           ]
         },
         "validationRewardOwner": {
           "locktime": "0",
           "threshold": "1",
           "addresses": [
-            "P-fuji1tgj2c3k56enytw5d78rt0tsq3lzg8wnftffwk7"
+            "P-testnet1tgj2c3k56enytw5d78rt0tsq3lzg8wnftffwk7"
           ]
         },
         "delegationRewardOwner": {
           "locktime": "0",
           "threshold": "1",
           "addresses": [
-            "P-fuji1tgj2c3k56enytw5d78rt0tsq3lzg8wnftffwk7"
+            "P-testnet1tgj2c3k56enytw5d78rt0tsq3lzg8wnftffwk7"
           ]
         },
         "potentialReward": "5400963",

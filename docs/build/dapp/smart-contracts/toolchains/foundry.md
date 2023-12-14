@@ -1,6 +1,6 @@
 ---
 tags: [Build, Dapps]
-description: This guide shows how to deploy and interact with smart contracts using foundry on a local Lux Network and the Fuji C-Chain.
+description: This guide shows how to deploy and interact with smart contracts using foundry on a local Lux Network and the Testnet C-Chain.
 sidebar_label: Foundry
 pagination_label: Using Foundry with the Lux C-Chain
 sidebar_position: 2
@@ -11,7 +11,7 @@ sidebar_position: 2
 ## Introduction
 
 This guide shows how to deploy and interact with smart contracts using foundry
-on a local Lux Network and the Fuji C-Chain.
+on a local Lux Network and the Testnet C-Chain.
 
 [Foundry toolchain](https://github.com/foundry-rs/foundry) is a smart contract
 development toolchain written in Rust. It manages your dependencies, compiles
@@ -40,14 +40,14 @@ command-line.
 [LuxGo](https://github.com/luxdefi/luxd) is an Lux node
 implementation written in Go.
 
-[Lux Network Runner](/tooling/network-runner.md) is a tool to quickly
+[Lux Network Runner](/tooling/netrunner.md) is a tool to quickly
 deploy local test networks. Together, you can deploy local test networks and run
 tests on them.
 
 Start a local five node Lux network:
 
 ```zsh
-cd /path/to/network-runner
+cd /path/to/netrunner
 # start a five node staking network
 ./go run examples/local/fivenodenetwork/main.go
 ```
@@ -184,7 +184,7 @@ export RPC_URL=<YOUR-RPC-ENDPOINT>
 export PRIVATE_KEY=<YOUR-PRIVATE-KEY>
 ```
 
-Since we are deploying to Fuji testnet, our `RPC_URL` export should be:
+Since we are deploying to Testnet testnet, our `RPC_URL` export should be:
 
 ```zsh
 export RPC_URL=https://api.lux-test.network/ext/bc/C/rpc
@@ -228,7 +228,7 @@ Upon successful verification, after your deployment you will see the contract ve
 ```zsh
 Starting contract verification...
 Waiting for etherscan to detect contract deployment...
-Start verifying contract `0x8e982a4ef70430f8317b5652bd5c28f147fbf912` deployed on fuji
+Start verifying contract `0x8e982a4ef70430f8317b5652bd5c28f147fbf912` deployed on testnet
 
 Submitting verification for [contracts/NFT.sol:NFT] "0x8e982a4Ef70430f8317B5652Bd5C28F147FBf912".
 
@@ -269,7 +269,7 @@ Upon successful verification, you will see the contract verification status as `
 ```zsh
 Starting contract verification...
 Waiting for etherscan to detect contract deployment...
-Start verifying contract `0x8e982a4ef70430f8317b5652bd5c28f147fbf912` deployed on fuji
+Start verifying contract `0x8e982a4ef70430f8317b5652bd5c28f147fbf912` deployed on testnet
 
 Submitting verification for [contracts/NFT.sol:NFT] "0x8e982a4Ef70430f8317B5652Bd5C28F147FBf912".
 
@@ -341,7 +341,7 @@ The address you provided above should be returned as the owner.
 
 ## Mainnet Workflow
 
-The Fuji workflow above can be adapted to Mainnet with the following
+The Testnet workflow above can be adapted to Mainnet with the following
 modifications to the environment variables:
 
 ```zsh
@@ -351,9 +351,9 @@ export PRIVATE_KEY=<YOUR-PRIVATE-KEY>
 
 ## Local Workflow
 
-The Fuji workflow above can be adapted to a Local Network by doing following:
+The Testnet workflow above can be adapted to a Local Network by doing following:
 
-In a new terminal navigate to your [Lux Network Runner](/tooling/network-runner.md) directory.
+In a new terminal navigate to your [Lux Network Runner](/tooling/netrunner.md) directory.
 
 ```zsh
 cd /path/to/Lux-Network-Runner

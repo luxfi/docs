@@ -62,9 +62,9 @@ require("dotenv").config();
 const privateKey = process.env.PRIVATEKEY;
 ```
 
-## Setting up HTTP Provider Connected with Fuji Network
+## Setting up HTTP Provider Connected with Testnet Network
 
-Using the HTTP provider, we will connect to one of the nodes on the Fuji
+Using the HTTP provider, we will connect to one of the nodes on the Testnet
 network. Using this provider we will send the signed transaction to the network.
 You can also connect to Mainnet using the URL -
 `https://api.lux.network/ext/bc/C/rpc`

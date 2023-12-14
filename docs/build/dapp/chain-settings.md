@@ -15,9 +15,9 @@ pagination_label: Lux C-Chain Settings
 - **Symbol**: `LUX`
 - **Explorer**: [https://snowtrace.io/](https://snowtrace.io/)
 
-## **Fuji Testnet Settings**
+## **Testnet Settings**
 
-- **Network Name**: Lux Fuji C-Chain
+- **Network Name**: Lux Testnet C-Chain
 - **New RPC URL**: [https://api.lux-test.network/ext/bc/C/rpc](https://api.lux-test.network/ext/bc/C/rpc)
 - **ChainID**: `43113`
 - **Symbol**: `LUX`

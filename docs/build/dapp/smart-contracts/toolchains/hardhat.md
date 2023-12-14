@@ -32,7 +32,7 @@ npm install -g yarn
 
 [LuxGo](https://github.com/luxdefi/luxd) is an Lux node
 implementation written in Go.
-[Lux Network Runner](/tooling/network-runner.md) is a tool to quickly deploy local test
+[Lux Network Runner](/tooling/netrunner.md) is a tool to quickly deploy local test
 networks. Together, you can deploy local test networks and run tests on them.
 
 ### Solidity and Lux
@@ -81,15 +81,15 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { BigNumber } from "ethers";
 import "@nomiclabs/hardhat-waffle";
 
-// When using the hardhat network, you may choose to fork Fuji or Lux Mainnet
+// When using the hardhat network, you may choose to fork Testnet or Lux Mainnet
 // This will allow you to debug contracts using the hardhat network while keeping the current network state
 // To enable forking, turn one of these booleans on, and then run your tasks/scripts using ``--network hardhat``
 // For more information go to the hardhat guide
 // https://hardhat.org/hardhat-network/
 // https://hardhat.org/guides/mainnet-forking.html
-const FORK_FUJI = false;
+const FORK_TESTNET = false;
 const FORK_MAINNET = false;
-const forkingData = FORK_FUJI
+const forkingData = FORK_TESTNET
   ? {
       url: "https://api.lux-test.network/ext/bc/C/rpc",
     }
@@ -142,7 +142,7 @@ export default {
         "0x750839e9dbbd2a0910efe40f50b2f3b2f2f59f5580bb4b83bd8c1201cf9a010a",
       ],
     },
-    fuji: {
+    testnet: {
       url: "https://api.lux-test.network/ext/bc/C/rpc",
       gasPrice: 225000000000,
       chainId: 43113,
@@ -273,7 +273,7 @@ token with its token name then you need to divide it with its decimal.
 
 The example uses the [C-Chain Public
 API](/reference/luxd/c-chain/api#endpoints) for the provider. For a local
-Lux network use `http://127.0.0.1:9650/ext/bc/C/rpc` and for Fuji Testnet
+Lux network use `http://127.0.0.1:9650/ext/bc/C/rpc` and for Testnet
 use `https://api.lux-test.network/ext/bc/C/rpc`.
 
 ## Hardhat Help
@@ -298,7 +298,7 @@ binaries](https://github.com/luxdefi/luxd/releases) rather than building
 from source.)
 
 Confirm you have Lux Network Runner installed by following the steps
-listed [here](/tooling/network-runner.md)
+listed [here](/tooling/netrunner.md)
 
 Start Lux Network Runner and run a script to start a new local network.
 
@@ -306,7 +306,7 @@ Start Lux Network Runner and run a script to start a new local network.
 
 ```text
 $ cd /path/to/Lux-Network-Runner
-$ network-runner server \
+$ netrunner server \
 --log-level debug \
 --port=":8080" \
 --grpc-gateway-port=":8081"
@@ -321,7 +321,7 @@ $ LUXD_EXEC_PATH="luxd"
 ```
 
 ```bash
-$ network-runner control start \
+$ netrunner control start \
 --log-level debug \
 --endpoint="0.0.0.0:8080" \
 --number-of-nodes=5 \
@@ -407,8 +407,8 @@ config`, ensure that you are using a valid Node Port. See which ports the Nodes
 are using by running the command:
 
 ```text
-$ cd /path/to/network-runner
-$ network-runner control uris \
+$ cd /path/to/netrunner
+$ netrunner control uris \
 --log-level debug \
 --endpoint="0.0.0.0:8080"
 ```
@@ -451,7 +451,7 @@ Edit the deployment script in `scripts/deploy.ts`
 
 You can choose which environment that you want to deploy to by passing in the
 `--network` flag with `local` (for example a local network created with Lux
-Network Runner), `fuji`, or `mainnet` for each respective environment. If you
+Network Runner), `testnet`, or `mainnet` for each respective environment. If you
 don't pass in `--network` then it will default to the hardhat network. For
 example, if you want to deploy to Mainnet:
 
@@ -576,7 +576,7 @@ undefined
 ```
 
 Note: Since this is a local network, we did not need to wait until transaction
-is accepted. However for other networks like `fuji` or `mainnet` you need to
+is accepted. However for other networks like `testnet` or `mainnet` you need to
 wait until transaction is accepted with: `await result.wait()`.
 
 Now we can ensure that tokens are transferred:

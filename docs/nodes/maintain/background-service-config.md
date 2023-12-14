@@ -19,7 +19,7 @@ a server instead of in the terminal directly.
 
 ## Steps
 
-### Fuji Testnet Config
+### Testnet Config
 
 Run this command in your terminal to create the `luxd.service` file
 
@@ -54,7 +54,7 @@ StartLimitInterval=120s
 StartLimitBurst=5
 WorkingDirectory=/Your/Path/To/luxd
 ExecStart=/Your/Path/To/luxd/./luxd \  
-   --network-id=fuji \
+   --network-id=testnet \
    --api-metrics-enabled=true 
 
 [Install]
@@ -136,7 +136,7 @@ socopower@node-01:~$ sudo systemctl status luxd
      Memory: 8.7G
         CPU: 5h 50min 31.165s
      CGroup: /system.slice/luxd.service
-             └─2226 /usr/local/bin/luxd/./luxd --network-id=fuji
+             └─2226 /usr/local/bin/luxd/./luxd --network-id=testnet
 
 Aug 30 03:02:50 node-01 luxd[2226]: INFO [08-30|03:02:50.685] >
 Aug 30 03:02:51 node-01 luxd[2226]: INFO [08-30|03:02:51.185] >

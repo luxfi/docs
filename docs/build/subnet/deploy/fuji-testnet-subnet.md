@@ -1,23 +1,23 @@
 ---
 tags: [Build, Subnets]
-description: This tutorial demonstrates how to deploy a permissioned Subnet on Fuji Testnet.
-sidebar_label: On Fuji Testnet
-pagination_label: Deploy a Permissioned Subnet on Fuji Testnet
+description: This tutorial demonstrates how to deploy a permissioned Subnet on Testnet.
+sidebar_label: On Testnet
+pagination_label: Deploy a Permissioned Subnet on Testnet
 sidebar_position: 1
 ---
 
-# Deploy a Permissioned Subnet on Fuji Testnet
+# Deploy a Permissioned Subnet on Testnet
 
 :::note
 
-This document describes how to use the new Lux-CLI to deploy a Subnet on `Fuji`.
+This document describes how to use the new Lux-CLI to deploy a Subnet on `Testnet`.
 
 :::
 
 After trying out a Subnet on a local box by following [this tutorial](/build/subnet/deploy/local-subnet.md),
-next step is to try it out on `Fuji` Testnet.
+next step is to try it out on `Testnet` Testnet.
 
-In this article, it's shown how to do the following on `Fuji` Testnet.
+In this article, it's shown how to do the following on `Testnet` Testnet.
 
 - Create a Subnet.
 - Deploy a virtual machine based on Subnet-EVM.
@@ -29,7 +29,7 @@ run-through of this tutorial.
 
 ## Prerequisites
 
-- 1+ nodes running and fully bootstrapped on `Fuji` Testnet. Check out the section
+- 1+ nodes running and fully bootstrapped on `Testnet` Testnet. Check out the section
   [Nodes](/nodes/README.md) on how to run a node and become a validator.
 - [`Lux-CLI`](https://github.com/luxdefi/cli) installed
 
@@ -46,19 +46,19 @@ Chains. Subnet-EVM is a simplified version of [Lux C-Chain](https://github.com/l
 This chain implements the Ethereum Virtual Machine and supports Solidity smart contracts as well as
 most other Ethereum client features.
 
-## Fuji Testnet
+## Testnet
 
 For this tutorial, it's recommended that you follow
-[Run an Lux Node Manually](/nodes/run/node-manually.md#connect-to-fuji-testnet)
-and this step below particularly to start your node on `Fuji`:
+[Run an Lux Node Manually](/nodes/run/node-manually.md#connect-to-testnet)
+and this step below particularly to start your node on `Testnet`:
 
-_To connect to the Fuji Testnet instead of the main net, use argument `--network-id=Fuji`_
+_To connect to the Testnet instead of the main net, use argument `--network-id=Testnet`_
 
 Also it's worth pointing out that
-[it only needs 1 LUX to become a validator on the Fuji Testnet](/nodes/validate/what-is-staking.md#fuji-testnet)
+[it only needs 1 LUX to become a validator on the Testnet](/nodes/validate/what-is-staking.md#testnet)
 and you can get the test token from the [faucet](https://faucet.lux.network/).
 
-To get the NodeID of this `Fuji` node, call the following curl command to [info.getNodeID](/reference/luxd/info-api.md#infogetnodeid):
+To get the NodeID of this `Testnet` node, call the following curl command to [info.getNodeID](/reference/luxd/info-api.md#infogetnodeid):
 
 ```text
 curl -X POST --data '{
@@ -85,7 +85,7 @@ The user is going to need this ID in the later section when calling [addValidato
 
 :::info
 
-With more data on `Fuji`, it may take a while to bootstrap `Fuji` Testnet from scratch.
+With more data on `Testnet`, it may take a while to bootstrap `Testnet` Testnet from scratch.
 You can use [State-Sync](/nodes/configure/chain-config-flags.md#state-sync-enabled-boolean)
 to shorten the time for bootstrapping.
 
@@ -101,7 +101,7 @@ All commands which issue a transaction require either a private key loaded into 
 a connected ledger device.
 
 This tutorial focuses on stored key usage and leave ledger operation details for the `Mainnet`
-deploy one, as `Mainnet` operations requires ledger usage, while for `Fuji` it's optional.
+deploy one, as `Mainnet` operations requires ledger usage, while for `Testnet` it's optional.
 
 `Lux-CLI` supports the following key operations:
 
@@ -112,7 +112,7 @@ deploy one, as `Mainnet` operations requires ledger usage, while for `Fuji` it's
 
 :::warning
 
-You should only use the private key created for this tutorial for testing operations on `Fuji` or
+You should only use the private key created for this tutorial for testing operations on `Testnet` or
 other testnets. Don't use this key on `Mainnet`. CLI is going to store the key on your file
 system. Whoever gets access to that key is going to have access to all funds secured by that
 private key. To deploy to `Mainnet`, follow [this tutorial](/build/subnet/deploy/mainnet-subnet.md).
@@ -141,7 +141,7 @@ Key created
 +           +-------------------------------+-------------------------------------------------+---------------+
 |           | P-Chain (Bech32 format)       | P-custom1a3azftqvygc4tlqsdvd82wks2u7nx85rg7v8ta | Local Network |
 +           +                               +-------------------------------------------------+---------------+
-|           |                               | P-fuji1a3azftqvygc4tlqsdvd82wks2u7nx85rhk6zqh   | Fuji          |
+|           |                               | P-testnet1a3azftqvygc4tlqsdvd82wks2u7nx85rhk6zqh   | Testnet          |
 +-----------+-------------------------------+-------------------------------------------------+---------------+
 ```
 
@@ -149,8 +149,8 @@ Key created
 
 You may use the C-Chain address (`0x86BB07a534ADF43786ECA5Dd34A97e3F96927e4F`) to
 fund your key from the [faucet](https://faucet.lux.network/). The command also prints P-Chain
-addresses for both the default local network and `Fuji`. The latter
-(`P-fuji1a3azftqvygc4tlqsdvd82wks2u7nx85rhk6zqh`) is the one needed for this tutorial.
+addresses for both the default local network and `Testnet`. The latter
+(`P-testnet1a3azftqvygc4tlqsdvd82wks2u7nx85rhk6zqh`) is the one needed for this tutorial.
 
 The `delete` command of course deletes a private key:
 
@@ -193,13 +193,13 @@ lux key list
 +           +-------------------------------+-------------------------------------------------+---------------+
 |           | P-Chain (Bech32 format)       | P-custom1n5n4h99j3nx8hdrv50v8ll7aldm383nap6rh42 | Local Network |
 +           +                               +-------------------------------------------------+---------------+
-|           |                               | P-fuji1n5n4h99j3nx8hdrv50v8ll7aldm383na7j4j7q   | Fuji          |
+|           |                               | P-testnet1n5n4h99j3nx8hdrv50v8ll7aldm383na7j4j7q   | Testnet          |
 +-----------+-------------------------------+-------------------------------------------------+---------------+
 | mytestkey | C-Chain (Ethereum hex format) | 0x86BB07a534ADF43786ECA5Dd34A97e3F96927e4F      | All           |
 +           +-------------------------------+-------------------------------------------------+---------------+
 |           | P-Chain (Bech32 format)       | P-custom1a3azftqvygc4tlqsdvd82wks2u7nx85rg7v8ta | Local Network |
 +           +                               +-------------------------------------------------+---------------+
-|           |                               | P-fuji1a3azftqvygc4tlqsdvd82wks2u7nx85rhk6zqh   | Fuji          |
+|           |                               | P-testnet1a3azftqvygc4tlqsdvd82wks2u7nx85rhk6zqh   | Testnet          |
 +-----------+-------------------------------+-------------------------------------------------+---------------+
 ```
 
@@ -209,7 +209,7 @@ lux key list
 
 :::danger
 
-Do these steps only to follow this tutorial for `Fuji` addresses. To access the wallet for `Mainnet`,
+Do these steps only to follow this tutorial for `Testnet` addresses. To access the wallet for `Mainnet`,
 the use of a ledger device is strongly recommended.
 
 :::
@@ -226,16 +226,16 @@ the use of a ledger device is strongly recommended.
    by clicking Stake, then Cross-Chain Transfer (find more details on
    [this tutorial](https://support.lux.network/en/articles/8133713-core-web-how-do-i-make-cross-chain-transfers-in-core-stake)).
 
-After following these 3 steps, your test key should now have a balance on the P-Chain on `Fuji` Testnet.
+After following these 3 steps, your test key should now have a balance on the P-Chain on `Testnet` Testnet.
 
 ## Create an EVM Subnet
 
-Creating a Subnet with `Lux-CLI` for `Fuji` works the same way as with a
+Creating a Subnet with `Lux-CLI` for `Testnet` works the same way as with a
 [local network](/build/subnet/deploy/local-subnet.md#create-a-custom-subnet-configuration). In fact,
 the `create` commands only creates a specification of your Subnet on the local file system.
 Afterwards the
 Subnet needs to be _deployed_. This allows to reuse configs, by creating the config with the
-`create` command, then first deploying to a local network and successively to `Fuji` - and
+`create` command, then first deploying to a local network and successively to `Testnet` - and
 eventually to `Mainnet`.
 
 To create an EVM Subnet, run the `subnet create` command with a name of your choice:
@@ -348,9 +348,9 @@ lux subnet describe testsubnet
 +----------------------------+----------------------------------------------------+
 | VM ID                      | tGBrM2SXkAdNsqzb3SaFZZWMNdzjjFEUKteheTa4dhUwnfQyu  |
 +----------------------------+----------------------------------------------------+
-| Fuji SubnetID              | XTK7AM2Pw5A4cCtQ3rTugqbeLCU9mVixML3YwwLYUJ4WXN2Kt  |
+| Testnet SubnetID              | XTK7AM2Pw5A4cCtQ3rTugqbeLCU9mVixML3YwwLYUJ4WXN2Kt  |
 +----------------------------+----------------------------------------------------+
-| Fuji BlockchainID          | 5ce2WhnyeMELzg9UtfpCDGNwRa2AzMzRhBWfTqmFuiXPWE4TR  |
+| Testnet BlockchainID          | 5ce2WhnyeMELzg9UtfpCDGNwRa2AzMzRhBWfTqmFuiXPWE4TR  |
 +----------------------------+----------------------------------------------------+
 | Local Network SubnetID     | 2CZP2ndbQnZxTzGuZjPrJAm5b4s2K2Bcjh8NqWoymi8NZMLYQk |
 +----------------------------+----------------------------------------------------+
@@ -430,7 +430,7 @@ List deployed information:
 lux subnet list --deployed
 go run main.go subnet list --deployed
 +-------------+-------------+---------------------------------------------------+---------------+-----------------------------------------------------------------+---------+
-|   SUBNET    |    CHAIN    |                       VM ID                       | LOCAL NETWORK |                          FUJI (TESTNET)                         | MAINNET |
+|   SUBNET    |    CHAIN    |                       VM ID                       | LOCAL NETWORK |                          TESTNET (TESTNET)                         | MAINNET |
 +-------------+-------------+---------------------------------------------------+---------------+-----------------------------------------------------------------+---------+
 | testsubnet  | testsubnet  | tGBrM2SXkAdNsqzb3SaFZZWMNdzjjFEUKteheTa4dhUwnfQyu | Yes           | SubnetID: XTK7AM2Pw5A4cCtQ3rTugqbeLCU9mVixML3YwwLYUJ4WXN2Kt     | No      |
 +             +             +                                                   +               +-----------------------------------------------------------------+---------+
@@ -453,22 +453,22 @@ This is going to start a new prompt series.
 Use the arrow keys to navigate: ↓ ↑ → ←
 ? Choose a network to deploy on:
   ▸ Local Network
-    Fuji
+    Testnet
     Mainnet
 ```
 
-This tutorial is about deploying to `Fuji`, so navigate with the arrow keys to `Fuji` and hit enter.
+This tutorial is about deploying to `Testnet`, so navigate with the arrow keys to `Testnet` and hit enter.
 The user is then asked to provide which private key to use for the deployment. The deployment basically
 consists in running a
 [createSubnet transaction](/reference/luxd/p-chain/api.md#platformcreatesubnet). Therefore the
 key needs to have funds.
 
-Also, this tutorial assumes that a node is up running, fully bootstrapped on `Fuji`, and runs
+Also, this tutorial assumes that a node is up running, fully bootstrapped on `Testnet`, and runs
 from the **same** box.
 
 ```bash
-✔ Fuji
-Deploying [testsubnet] to Fuji
+✔ Testnet
+Deploying [testsubnet] to Testnet
 Use the arrow keys to navigate: ↓ ↑ → ←
 ? Which private key should be used to issue the transaction?:
     test
@@ -478,7 +478,7 @@ Use the arrow keys to navigate: ↓ ↑ → ←
 Subnets are currently permissioned only. Therefore, the process now requires the user to provide
 _which keys can control the Subnet_. CLI prompts the user to provide one or more **P-Chain addresses**.
 Only the keys corresponding to these addresses are going to be able to add or remove validators.
-Make sure to provide **Fuji P-Chain** addresses -`P-Fuji....`-.
+Make sure to provide **Testnet P-Chain** addresses -`P-Testnet....`-.
 
 ```bash
 Configure which addresses may add new validators to the subnet.
@@ -497,7 +497,7 @@ intentionally invalid. The address has a checksum and the tool is going to make 
 
 ```bash
 ✔ Add control key
-Enter P-Chain address (Ex: `P-...`): P-fuji1vaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasz
+Enter P-Chain address (Ex: `P-...`): P-testnet1vaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasz
 Use the arrow keys to navigate: ↓ ↑ → ←
 ? Set control keys:
     Add control key
@@ -544,7 +544,7 @@ Endpoint for blockchain "2XDnKyAEr1RhhWpTpMXqrjeejN23vETmDykVzkb4PrU1fQjewh" wit
 
 <!-- markdownlint-enable MD013 -->
 
-Well done. You have just created your own Subnet with your own Subnet-EVM running on `Fuji`.
+Well done. You have just created your own Subnet with your own Subnet-EVM running on `Testnet`.
 
 To get your new Subnet information, visit the
 [Lux Subnet Explorer](https://subnets-test.lux.network/). The
@@ -581,7 +581,7 @@ When you call the `join` command, you are first prompted with the network select
 ```bash
 Use the arrow keys to navigate: ↓ ↑ → ←
 ? Choose a network to validate on (this command only supports public networks):
-  ▸ Fuji
+  ▸ Testnet
     Mainnet
 ```
 
@@ -666,7 +666,7 @@ line or systemd script), add the following flag to your node's startup command:
 comma-separating it).
 
 For example:
-./build/luxd --network-id=Fuji --track-subnets=2b175hLJhGdj3CzgXENso9CmwMgejaCQXhMFzBsm8hXbH2MF7H
+./build/luxd --network-id=Testnet --track-subnets=2b175hLJhGdj3CzgXENso9CmwMgejaCQXhMFzBsm8hXbH2MF7H
 
 If you start the node via a JSON config file, add this to your config file:
 track-subnets: 2b175hLJhGdj3CzgXENso9CmwMgejaCQXhMFzBsm8hXbH2MF7H
@@ -707,12 +707,12 @@ Use the arrow keys to navigate: ↓ ↑ → ←
   ▸ mytestkey
 ```
 
-Choose `Fuji`:
+Choose `Testnet`:
 
 ```bash
 Use the arrow keys to navigate: ↓ ↑ → ←
-? Choose a network to deploy on. This command only supports Fuji currently.:
-  ▸ Fuji
+? Choose a network to deploy on. This command only supports Testnet currently.:
+  ▸ Testnet
     Mainnet
 ```
 
@@ -785,7 +785,7 @@ Confirm if correct. At this point the prompt series is complete and CLI attempts
 
 ```bash
 NodeID: NodeID-BFa1padLXBj7VHa2JYvYGzcTBPQGjPhUy
-Network: Fuji
+Network: Testnet
 Start time: 2022-07-28 12:26:55
 End time: 2023-02-13 12:26:55
 Weight: 30
@@ -798,7 +798,7 @@ This might take a couple of seconds, and if successful, it's going to print:
 Transaction successful, transaction ID :EhZh8PvQyqA9xggxn6EsdemXMnWKyy839NzEJ5DHExTBiXbjV
 ```
 
-This means the node is now a validator on the given Subnet on `Fuji`!
+This means the node is now a validator on the given Subnet on `Testnet`!
 
 ## Subnet Export
 

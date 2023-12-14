@@ -15,4 +15,4 @@ activities.
 | Links      |   |
 | :------------------------------------------------- |
 | [**Lux Mainnet**](https://subnets.lux.network/) 🌐     |
-| [**Fuji Testnet**](https://subnets-test.lux.network/) 🧪  | 
+| [**Testnet**](https://subnets-test.lux.network/) 🧪  | 

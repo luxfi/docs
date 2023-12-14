@@ -81,7 +81,7 @@ Aquí, elige 'Validate' en el menú.
 Completa los parámetros de participación. Se explican con más detalle en [este documento](/nodes/validate/how-to-stake.md). Cuando hayas
 completado todos los parámetros de participación y los hayas revisado, haz clic en `Submit Validation`. Asegúrate de que el período de participación sea al menos
 2 semanas, la tasa de tarifa de delegación sea al menos 2% y estés participando con
-al menos 2,000 LUX en Mainnet (1 LUX en Fuji Testnet). Una guía completa sobre esto se puede encontrar
+al menos 2,000 LUX en Mainnet (1 LUX en Testnet). Una guía completa sobre esto se puede encontrar
 [aquí](https://support.lux.network/en/articles/8117267-core-web-how-do-i-validate-in-core-stake).
 
 <iframe src="https://www.youtube.com/embed/1M0LZbuHO5Q?modestbranding=1&rel=0&iv_load_policy=3&color=white" width="800" height="500" title="Cómo validar en Core Web" frameborder="0" allowfullscreen></iframe>
@@ -135,9 +135,9 @@ yarn add @luxdefi/luxjs
 Para este tutorial, usaremos [`ts-node`](https://www.npmjs.com/package/ts-node)
 para ejecutar los scripts de ejemplo directamente desde un directorio LuxJS.
 
-### Flujo de trabajo de Fuji
+### Flujo de trabajo de Testnet
 
-En esta sección, usaremos Fuji Testnet para mostrar cómo agregar un nodo al conjunto de validadores.
+En esta sección, usaremos Testnet para mostrar cómo agregar un nodo al conjunto de validadores.
 
 Abre tu directorio LuxJS y selecciona la carpeta
 [**`examples/platformvm`**](https://github.com/luxdefi/luxjs/tree/master/examples/platformvm)
@@ -166,7 +166,7 @@ const privKey: string = "<TU-CLAVE-PRIVADA-AQUÍ>";
 #### Configuración de red
 
 La siguiente configuración funciona cuando se usa un nodo local iniciado con
-[`--network-id=fuji`](/nodes/configure/luxd-config-flags.md#network-id):
+[`--network-id=testnet`](/nodes/configure/luxd-config-flags.md#network-id):
 
 ```js
 const ip: string = "localhost";
@@ -175,7 +175,7 @@ const protocol: string = "http";
 const networkID: number = 5;
 ```
 
-Sin embargo, para conectarse directamente al servidor de la API de la [Lux Fuji Testnet](/tooling/rpc-providers.md), se necesitan los siguientes cambios:
+Sin embargo, para conectarse directamente al servidor de la API de la [Lux Testnet](/tooling/rpc-providers.md), se necesitan los siguientes cambios:
 
 ```js
 const ip: string = "api.lux-test.network";
@@ -186,9 +186,9 @@ const networkID: number = 5;
 
 Dependiendo del networkID pasado al instanciar un objeto `Lux` en el código, las direcciones codificadas utilizadas tendrán una Parte Legible por Humanos (HRP) distintiva por red.
 
-_Ejemplo de dirección: 5 - X-`fuji`19rknw8l0grnfunjrzwxlxync6zrlu33yxqzg0h_
+_Ejemplo de dirección: 5 - X-`testnet`19rknw8l0grnfunjrzwxlxync6zrlu33yxqzg0h_
 
-Para la Fuji Testnet, 5 es el valor correcto a usar.
+Para la Testnet, 5 es el valor correcto a usar.
 
 Para obtener más información sobre las direcciones codificadas, haz clic [aquí](/tooling/luxjs-guides/manage-x-chain-keys.md#encode-bech32-addresses).
 
@@ -257,7 +257,7 @@ No se necesita ningún cambio en las direcciones para la acción predeterminada.
 
 #### Ejecutar el Código
 
-Ahora que hemos realizado todos los cambios necesarios en el script de ejemplo, es hora de agregar un validador a la Red Fuji.
+Ahora que hemos realizado todos los cambios necesarios en el script de ejemplo, es hora de agregar un validador a la Red Testnet.
 
 Ejecuta el comando:
 
@@ -307,7 +307,7 @@ Esto devuelve:
 
 El estado debería ser `Committed`, lo que significa que la transacción fue exitosa.
 
-Podemos ver si el nodo está ahora en el conjunto de validadores pendientes para la red Fuji utilizando el ejemplo: [`getPendingValidators.ts`](https://github.com/luxdefi/luxjs/blob/master/examples/platformvm/getPendingValidators.ts). Simplemente cambia la [configuración de red](#configuración-de-red) para cumplir con los requisitos de Fuji y luego ejecuta el script:
+Podemos ver si el nodo está ahora en el conjunto de validadores pendientes para la red Testnet utilizando el ejemplo: [`getPendingValidators.ts`](https://github.com/luxdefi/luxjs/blob/master/examples/platformvm/getPendingValidators.ts). Simplemente cambia la [configuración de red](#configuración-de-red) para cumplir con los requisitos de Testnet y luego ejecuta el script:
 
 ```sh
 ts-node examples/platformvm/getPendingValidators.ts
@@ -352,7 +352,7 @@ let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`;
 pKeychain.importKey(privKey);
 ```
 
-y reemplaza `privKey` con las claves privadas que controlas. Para generar un nuevo par de claves, podemos usar el script de ejemplo [`createKeypair.ts`](https://github.com/luxdefi/luxjs/blob/master/examples/platformvm/createKeypair.ts) junto con la [Configuración de la Red Fuji](#configuración-de-red).
+y reemplaza `privKey` con las claves privadas que controlas. Para generar un nuevo par de claves, podemos usar el script de ejemplo [`createKeypair.ts`](https://github.com/luxdefi/luxjs/blob/master/examples/platformvm/createKeypair.ts) junto con la [Configuración de la Red Testnet](#configuración-de-red).
 
 ```ts
 let privKey: string =
@@ -371,10 +371,10 @@ const pAddressStrings: string[] = pchain.keyChain().getAddressStrings();
 Este ejemplo crearía una cadena de claves con 4 direcciones:
 
 ```ts
-  "P-fuji1jx644d9y00y5q4hz8cq4wr75a2erne2y4e32xc", // pAddressStrings[0]
-  "P-fuji1wchdgdp94j8tszlpsp56qvgkvdn20svpmnm8qk", // pAddressStrings[1]
-  "P-fuji1f36kkpy6yzd7ayrywxvvprns7qlrcu3hwqdya8", // pAddressStrings[2]
-  "P-fuji1qw7yt3fp43kuwsufff4vhezs2yl00slr09vmh5", // pAddressStrings[3]
+  "P-testnet1jx644d9y00y5q4hz8cq4wr75a2erne2y4e32xc", // pAddressStrings[0]
+  "P-testnet1wchdgdp94j8tszlpsp56qvgkvdn20svpmnm8qk", // pAddressStrings[1]
+  "P-testnet1f36kkpy6yzd7ayrywxvvprns7qlrcu3hwqdya8", // pAddressStrings[2]
+  "P-testnet1qw7yt3fp43kuwsufff4vhezs2yl00slr09vmh5", // pAddressStrings[3]
 ```
 
 Ahora podemos pasar cada dirección según su posición en el arreglo `pAddressStrings`:
@@ -400,7 +400,7 @@ const unsignedTx: UnsignedTx = await pchain.buildAddValidatorTx(
 
 ### Flujo de trabajo en Mainnet
 
-El flujo de trabajo en Fuji anterior se puede adaptar a Mainnet con las siguientes modificaciones:
+El flujo de trabajo en Testnet anterior se puede adaptar a Mainnet con las siguientes modificaciones:
 
 - La clave privada correcta.
 - La configuración de red debe ser para un nodo de Mainnet, ya sea [un nodo local en Mainnet](/nodes/configure/luxd-config-flags.md#network-id) o [un servidor de API de Lux Mainnet](/tooling/rpc-providers.md#using-the-public-api-nodes) donde se debe usar `api.lux.network` para la `ip`.

@@ -19,9 +19,9 @@ do not have any monetary value, and thus can be obtained freely through faucets.
 
 These testnets are often the testbeds for any new native feature of the network itself, or any dapp
 or [Subnet](learn/lux/subnets-overview.md) that is going live on the main network (Mainnet). For
-example, [Fuji](learn/lux/fuji.md) network is the Testnet for Lux's Mainnet.
+example, [Testnet](learn/lux/testnet.md) network is the Testnet for Lux's Mainnet.
 
-Besides Fuji Testnet, the
+Besides Testnet, the
 [Lux Faucet](https://core.app/tools/testnet-faucet/?subnet=c&token=c)
 can be used to get free test tokens on testnet Subnets like:
 
@@ -37,7 +37,7 @@ CAPTCHA verification, and concurrent transaction handling.
 
 ## Summary
 
-A [Faucet](https://faucet.lux.network/) powered by Lux for Fuji Network and other Subnets.
+A [Faucet](https://faucet.lux.network/) powered by Lux for Testnet Network and other Subnets.
 You can -
 
 - Request test coins for the supported Subnets
@@ -180,14 +180,14 @@ CAPTCHA_SECRET="Google reCAPTCHA Secret"
 #### Setup EVM Chain Configurations
 
 You can create a faucet server for any EVM chain by making changes in the `config.json` file. Add
-your chain configuration as shown below in the `evmchains` object. Configuration for Fuji's C-Chain
+your chain configuration as shown below in the `evmchains` object. Configuration for Testnet's C-Chain
 and WAGMI chain is shown below for example.
 
 ```json
 "evmchains": [
     {
         "ID": "C",
-        "NAME": "Fuji (C-Chain)",
+        "NAME": "Testnet (C-Chain)",
         "TOKEN": "LUX",
         "RPC": "https://api.lux-test.network/ext/C/rpc",
         "CHAINID": 43113,

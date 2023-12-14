@@ -15,9 +15,9 @@ pagination_label: Configuración de la Cadena C-Chain de Lux
 - **Símbolo**: `LUX`
 - **Explorador**: [https://snowtrace.io/](https://snowtrace.io/)
 
-## **Configuración de la Testnet Fuji de Lux**
+## **Configuración de la Testnet de Lux**
 
-- **Nombre de la Red**: Lux Fuji C-Chain
+- **Nombre de la Red**: Lux Testnet C-Chain
 - **Nueva URL RPC**: [https://api.lux-test.network/ext/bc/C/rpc](https://api.lux-test.network/ext/bc/C/rpc)
 - **ChainID**: `43113`
 - **Símbolo**: `LUX`

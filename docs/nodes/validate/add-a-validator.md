@@ -82,7 +82,7 @@ Here, choose 'Validate' from the menu.
 Fill out the staking parameters. They are explained in more detail in [this doc](/nodes/validate/how-to-stake.md). When you’ve 
 filled in all the staking parameters and double-checked them, click `Submit Validation`. Make sure the staking period is at
 least 2 weeks, the delegation fee rate is at least 2%, and you’re staking at
-least 2,000 LUX on Mainnet (1 LUX on Fuji Testnet). A full guide about this can be found 
+least 2,000 LUX on Mainnet (1 LUX on Testnet). A full guide about this can be found 
 [here](https://support.lux.network/en/articles/8117267-core-web-how-do-i-validate-in-core-stake).
 
 <iframe src="https://www.youtube.com/embed/1M0LZbuHO5Q?modestbranding=1&rel=0&iv_load_policy=3&color=white" width="800" height="500" title="How to Validate in Core Web" frameborder="0" allowfullscreen></iframe>
@@ -136,9 +136,9 @@ yarn add @luxdefi/luxjs
 For this tutorial we will use [`ts-node`](https://www.npmjs.com/package/ts-node)
 to run the example scripts directly from an LuxJS directory.
 
-### Fuji Workflow
+### Testnet Workflow
 
-In this section, we will use Fuji Testnet to show how to add a node to the validator set.
+In this section, we will use Testnet to show how to add a node to the validator set.
 
 Open your LuxJS directory and select the
 [**`examples/platformvm`**](https://github.com/luxdefi/luxjs/tree/master/examples/platformvm)
@@ -167,7 +167,7 @@ const privKey: string = "<YOUR-PRIVATE-KEY-HERE>";
 #### Network Setting
 
 The following settings work when using a local node started with
-[`--network-id=fuji`](/nodes/configure/luxd-config-flags.md#network-id):
+[`--network-id=testnet`](/nodes/configure/luxd-config-flags.md#network-id):
 
 ```js
 const ip: string = "localhost";
@@ -176,7 +176,7 @@ const protocol: string = "http";
 const networkID: number = 5;
 ```
 
-However, to connect directly to the [Lux Fuji Testnet API server](/tooling/rpc-providers.md), the following changes are
+However, to connect directly to the [Lux Testnet API server](/tooling/rpc-providers.md), the following changes are
 needed:
 
 ```js
@@ -190,9 +190,9 @@ Depending on the networkID passed in when instantiating an `Lux` object in
 the code, the encoded addresses used will have a distinctive Human Readable
 Part(HRP) per network.
 
-_Example Address: 5 - X-`fuji`19rknw8l0grnfunjrzwxlxync6zrlu33yxqzg0h_
+_Example Address: 5 - X-`testnet`19rknw8l0grnfunjrzwxlxync6zrlu33yxqzg0h_
 
-For Fuji Testnet, 5 is the correct value to use.
+For Testnet, 5 is the correct value to use.
 
 To learn more about encoded addresses, click [here](/tooling/luxjs-guides/manage-x-chain-keys.md#encode-bech32-addresses).
 
@@ -284,7 +284,7 @@ please refer to [this section](#customizing-addresses).
 #### Execute the Code
 
 Now that we have made all of the necessary changes to the example script, it's
-time to add a validator to the Fuji Network.
+time to add a validator to the Testnet Network.
 
 Run the command:
 
@@ -336,10 +336,10 @@ This returns:
 
 The status should be `Committed`, meaning the transaction was successful.
 
-We can see if the node is now in the pending validator set for the Fuji network
+We can see if the node is now in the pending validator set for the Testnet network
 by using the
 example:[`getPendingValidators.ts`](https://github.com/luxdefi/luxjs/blob/master/examples/platformvm/getPendingValidators.ts).
-Just change the [network settings](#network-setting) to meet Fuji requirements
+Just change the [network settings](#network-setting) to meet Testnet requirements
 and then run the script:
 
 ```sh
@@ -399,7 +399,7 @@ pKeychain.importKey(privKey);
 and replace `privKey` with private keys that you control. To generate a new
 keypair, we can use the
 [`createKeypair.ts`](https://github.com/luxdefi/luxjs/blob/master/examples/platformvm/createKeypair.ts)
-example script along with [Fuji Network Settings](#network-setting).
+example script along with [Testnet Network Settings](#network-setting).
 
 ```ts
 let privKey: string =
@@ -418,10 +418,10 @@ const pAddressStrings: string[] = pchain.keyChain().getAddressStrings();
 This example would create a keychain with 4 addresses:
 
 ```ts
-  "P-fuji1jx644d9y00y5q4hz8cq4wr75a2erne2y4e32xc", // pAddressStrings[0]
-  "P-fuji1wchdgdp94j8tszlpsp56qvgkvdn20svpmnm8qk", // pAddressStrings[1]
-  "P-fuji1f36kkpy6yzd7ayrywxvvprns7qlrcu3hwqdya8", // pAddressStrings[2]
-  "P-fuji1qw7yt3fp43kuwsufff4vhezs2yl00slr09vmh5", // pAddressStrings[3]
+  "P-testnet1jx644d9y00y5q4hz8cq4wr75a2erne2y4e32xc", // pAddressStrings[0]
+  "P-testnet1wchdgdp94j8tszlpsp56qvgkvdn20svpmnm8qk", // pAddressStrings[1]
+  "P-testnet1f36kkpy6yzd7ayrywxvvprns7qlrcu3hwqdya8", // pAddressStrings[2]
+  "P-testnet1qw7yt3fp43kuwsufff4vhezs2yl00slr09vmh5", // pAddressStrings[3]
 ```
 
 Now we can pass in each address according to its slot in the `pAddressStrings` array:
@@ -447,7 +447,7 @@ const unsignedTx: UnsignedTx = await pchain.buildAddValidatorTx(
 
 ### Mainnet Workflow
 
-The Fuji workflow above can be adapted to Mainnet with the following modifications:
+The Testnet workflow above can be adapted to Mainnet with the following modifications:
 
 - The correct private key.
 - Network setting should be to a Mainnet node, either

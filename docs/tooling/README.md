@@ -16,7 +16,7 @@ pagination_label: Tooling Quick Links
 | [**Metrics API**](/tooling/metrics.md)      | Power your analytics with metrics such as Subnet usage, staking operations, and more | [API](https://metrics.lux.network/) |
 | [**Hyper SDK**](https://github.com/luxdefi/hypersdk#readme)      | Opinionated framework for building hyper-scalable blockchains on Lux | [GitHub](https://github.com/luxdefi/hypersdk#readme) |
 | [**LuxGo Installer Script**](/tooling/luxd-installer.md)      | A shell (bash) script that installs LuxGo on any Linux computer | [GitHub](https://github.com/luxdefi/docs/blob/master/scripts/luxd-installer.sh#readme) |
-| [**Lux Network Runner**](/tooling/network-runner.md)      | ANR allows a user to define, create and interact with a network of Lux nodes | [GitHub](https://github.com/luxdefi/network-runner) |
+| [**Lux Network Runner**](/tooling/netrunner.md)      | ANR allows a user to define, create and interact with a network of Lux nodes | [GitHub](https://github.com/luxdefi/netrunner) |
 | [**Lux Plugin Manager**](/tooling/plugin-manager.md)      | Command-line tool to manage virtual machines binaries on existing LuxGo instance | [GitHub](https://github.com/luxdefi/apm) |
 | [**Lux Ops**](/tooling/ops.md)      | A tool intended for quickly creating, testing and iterating over various Lux network infrastructure configurations for testing and simulation purposes | [GitHub](https://github.com/luxdefi/ops) |
 | [**LuxGo Postman Collection**](/tooling/luxd-postman-collection/setup.md)      | All the public API calls that are available on LuxGo, including environment variables, wrapped up into a collection that can be imported to Postman  | [GitHub](https://github.com/luxdefi/postman-collection/) |

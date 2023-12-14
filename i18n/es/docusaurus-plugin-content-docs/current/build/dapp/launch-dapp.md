@@ -35,9 +35,9 @@ Puedes acceder a C-Chain a través de MetaMask, definiendo una red personalizada
 - **Símbolo**: `LUX`
 - **Explorador**: [https://snowtrace.io/](https://snowtrace.io/)
 
-#### **Configuración de Lux Fuji Testnet:**
+#### **Configuración de Lux Testnet:**
 
-- **Nombre de la red**: Lux Fuji C-Chain
+- **Nombre de la red**: Lux Testnet C-Chain
 - **Nueva URL RPC**: [https://api.lux-test.network/ext/bc/C/rpc](https://api.lux-test.network/ext/bc/C/rpc)
 - **ChainID**: `43113`
 - **Símbolo**: `LUX`
@@ -115,9 +115,9 @@ Los valores de configuración predeterminados para la C-Chain se pueden ver [aqu
 
 ### Ejecutando una Red de Pruebas Local
 
-Si necesitas una red de prueba privada para probar tu dapp, [Lux Network Runner](https://github.com/luxdefi/network-runner) es un cliente de shell para lanzar redes Lux locales, similar a Ganache en Ethereum.
+Si necesitas una red de prueba privada para probar tu dapp, [Lux Network Runner](https://github.com/luxdefi/netrunner) es un cliente de shell para lanzar redes Lux locales, similar a Ganache en Ethereum.
 
-Para obtener más información, consulta la [documentación](/tooling/network-runner.md).
+Para obtener más información, consulta la [documentación](/tooling/netrunner.md).
 
 ## Desarrollo e implementación de contratos
 

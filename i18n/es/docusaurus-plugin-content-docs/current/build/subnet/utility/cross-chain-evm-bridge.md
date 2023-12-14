@@ -18,8 +18,8 @@ Debes asumir la responsabilidad total de garantizar la seguridad de tu puente.
 ## Introducción
 
 En este tutorial, estaremos construyendo un puente entre **[WAGMI](/build/subnet/info/wagmi.md)** y
-**[Fuji](/learn/lux/fuji.md)**. Este puente nos ayudará a transferir la moneda nativa **WGM**
-envuelta en **wWGM** de ida y vuelta desde la cadena WAGMI a la cadena Fuji. Usando esta guía, tú
+**[Testnet](/learn/lux/testnet.md)**. Este puente nos ayudará a transferir la moneda nativa **WGM**
+envuelta en **wWGM** de ida y vuelta desde la cadena WAGMI a la cadena Testnet. Usando esta guía, tú
 puedes implementar un puente entre cualquier cadena basada en EVM para cualquier token ERC20.
 
 La versión envuelta de una moneda nativa es su representación ERC20 anclada. Envolverla con el estándar ERC20
@@ -32,7 +32,7 @@ Estaremos utilizando el repositorio del puente de **ChainSafe**, para configurar
 
 ## Flujo de trabajo del puente
 
-Las cadenas WAGMI y Fuji no están interconectadas por defecto, sin embargo, podríamos hacer que se comuniquen.
+Las cadenas WAGMI y Testnet no están interconectadas por defecto, sin embargo, podríamos hacer que se comuniquen.
 Los relayers observan eventos (mediante la consulta de bloques) en una cadena y realizan la acción necesaria utilizando esos
 eventos en la otra cadena. De esta manera, también podemos realizar el puente de tokens de una cadena a la
 otra cadena a través del uso de contratos inteligentes.
@@ -60,10 +60,10 @@ Y acuñimos el token correspondiente (que desplegaremos y, por lo tanto, control
 Estos son los requisitos para seguir este tutorial -
 
 - Configurar [WAGMI](/build/subnet/info/wagmi.md#adding-wagmi-to-core) y
-  [Fuji](/build/dapp/fuji-workflow.md#set-up-fuji-network-on-core-optional) en Core
+  [Testnet](/build/dapp/testnet-workflow.md#set-up-testnet-network-on-core-optional) en Core
 - Importar el token `wWGM` (activo) en la red WAGMI (Core). Aquí está la dirección - `0x3Ee7094DADda15810F191DD6AcF7E4FFa37571e4`
 - Monedas `WGM` en la cadena WAGMI. Gotea `1 WGM` desde el [WAGMI Faucet](https://faucet.trywagmi.xyz/).
-- Monedas `LUX` en la cadena Fuji. Gotea `10 LUX` desde el [Fuji Faucet](https://faucet.lux.network/)
+- Monedas `LUX` en la cadena Testnet. Gotea `10 LUX` desde el [Testnet Faucet](https://faucet.lux.network/)
 - Tokens `WGM` envueltos en la cadena WAGMI. Envía algunas monedas `WGM` a la dirección del token `wWGM` (ver
   segundo punto), para recibir la misma cantidad de `wWGM`. Siempre mantén algunas monedas `WGM`, para cubrir las tarifas de transacción.
 
@@ -104,8 +104,8 @@ DST_GATEWAY=https://api.lux-test.network/ext/bc/C/rpc
 
 SRC_ADDR="<Tu dirección en WAGMI>"
 SRC_PK="<tu clave privada en WAGMI>"
-DST_ADDR="<Tu dirección en Fuji>"
-DST_PK="<tu clave privada en Fuji>"
+DST_ADDR="<Tu dirección en Testnet>"
+DST_PK="<tu clave privada en Testnet>"
 
 SRC_TOKEN="0x3Ee7094DADda15810F191DD6AcF7E4FFa37571e4"
 RESOURCE_ID="0x00"
@@ -114,7 +114,7 @@ RESOURCE_ID="0x00"
 - `SRC_ADDR` y `DST_ADDR` son las direcciones que desplegarán los contratos de puente y actuarán como relayers.
 - `SRC_TOKEN` es el token que queremos puentear. Aquí está la dirección de la versión envuelta ERC20
   de la moneda WGM aka wWGM.
-- `RESOURCE_ID` podría ser cualquier cosa. Identifica nuestros tokens ERC20 puenteados en ambos lados (WAGMI y Fuji).
+- `RESOURCE_ID` podría ser cualquier cosa. Identifica nuestros tokens ERC20 puenteados en ambos lados (WAGMI y Testnet).
 
 Cada vez que hagamos cambios en estas variables de configuración, tenemos que actualizar nuestro entorno bash. Ejecuta
 el siguiente comando de acuerdo a la ubicación relativa del archivo. Estas variables son temporales
@@ -137,7 +137,7 @@ Necesitamos configurar nuestra cadena fuente de la siguiente manera -
 
 La herramienta de línea de comandos `cb-sol-cli` nos ayudará a desplegar los contratos. Ejecuta el siguiente comando
 en la sesión de terminal donde se cargan las variables de configuración. Agregará `SRC_ADDR` como el relayer predeterminado
-para relayer eventos desde la cadena WAGMI (fuente) a la cadena Fuji (destino).
+para relayer eventos desde la cadena WAGMI (fuente) a la cadena Testnet (destino).
 
 **Uno de los parámetros más importantes a tener en cuenta al desplegar el contrato de puente es el valor de `expiry`**
 **Es el número de bloques después del cual una propuesta se considera cancelada. Por defecto es**
@@ -196,7 +196,7 @@ echo "{
       }
     },
     {
-      \"name\": \"Fuji\",
+      \"name\": \"Testnet\",
       \"type\": \"ethereum\",
       \"id\": \"1\",
       \"endpoint\": \"$DST_GATEWAY\",

@@ -1,0 +1,35 @@
+{
+  "id": "tooling/plugin-manager",
+  "title": "Lux Plugin Manager",
+  "description": "Lux Plugin Manager is a command-line tool to manage virtual machines binaries on existing LuxGo instances. It enables to add/remove nodes to Subnets, upgrade the VM plugin binaries as new versions get released to the plugin repository.",
+  "source": "@site/docs/tooling/plugin-manager.md",
+  "sourceDirName": "tooling",
+  "slug": "/tooling/plugin-manager",
+  "permalink": "/tooling/plugin-manager",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/plugin-manager.md",
+  "tags": [
+    {
+      "label": "Tooling",
+      "permalink": "/tags/tooling"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "Tooling"
+    ],
+    "description": "Lux Plugin Manager is a command-line tool to manage virtual machines binaries on existing LuxGo instances. It enables to add/remove nodes to Subnets, upgrade the VM plugin binaries as new versions get released to the plugin repository.",
+    "pagination_label": "Lux Plugin Manager"
+  },
+  "sidebar": "tooling",
+  "previous": {
+    "title": "Lux Network Runner",
+    "permalink": "/tooling/netrunner"
+  },
+  "next": {
+    "title": "Lux Ops",
+    "permalink": "/tooling/ops"
+  }
+}

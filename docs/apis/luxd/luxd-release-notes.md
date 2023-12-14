@@ -542,7 +542,7 @@ This version is backwards compatible to [v1.7.0](https://github.com/luxdefi/luxd
 - Added `--stake-supply-cap` which defaults to `720,000,000,000,000,000` nLUX.
 - Renamed `--bootstrap-multiput-max-containers-sent` to `--bootstrap-ancestors-max-containers-sent`.
 - Renamed `--bootstrap-multiput-max-containers-received` to `--bootstrap-ancestors-max-containers-received`.
-- Enforced that `--staking-enabled=false` can not be specified on public networks (`Fuji` and `Mainnet`).
+- Enforced that `--staking-enabled=false` can not be specified on public networks (`Testnet` and `Mainnet`).
 
 **Metrics**
 
@@ -667,15 +667,15 @@ The changes in the upgrade go into effect at 1 PM EST, December 2nd 2021 on Main
 
 - Removed `--snow-epoch-first-transition` and `snow-epoch-duration` as command line arguments.
 
-## PRE_RELEASE v1.7.0-fuji ([View on GitHub](https://github.com/luxdefi/luxd/releases/tag/v1.7.0-fuji))
+## PRE_RELEASE v1.7.0-testnet ([View on GitHub](https://github.com/luxdefi/luxd/releases/tag/v1.7.0-testnet))
 
 **Please note that this release is unable to run mainnet - and will display "mainnet is not supported" if attempted to run with a mainnet configuration.**
 
 This upgrade adds support for issuing multiple atomic transactions into a single block and directly transferring assets between the P-chain and the C-chain.
 
-The changes in the upgrade go into effect at 10 AM EST, November 24th 2021 on the Fuji testnet. After Fuji is updated and verified, a mainnet compatible release will be published.
+The changes in the upgrade go into effect at 10 AM EST, November 24th 2021 on the Testnet testnet. After Testnet is updated and verified, a mainnet compatible release will be published.
 
-**All Fuji nodes should upgrade before 10 AM EST, November 24th 2021.**
+**All Testnet nodes should upgrade before 10 AM EST, November 24th 2021.**
 
 **Networking**
 
@@ -913,8 +913,8 @@ Fix race condition during timeout manager startup.
 
 **Upgrades**
 
-- Introduced [Snowman++](https://github.com/luxdefi/luxd/blob/v1.6.0-fuji/vms/proposervm/README.md) on the P-chain and C-chain.
-- Introduced [mempool gossiping to the P-chain](https://github.com/luxdefi/luxd/blob/v1.6.0-fuji/vms/platformvm/README.md) and C-chain using the VM&lt;-&gt;VM communication layer.
+- Introduced [Snowman++](https://github.com/luxdefi/luxd/blob/v1.6.0-testnet/vms/proposervm/README.md) on the P-chain and C-chain.
+- Introduced [mempool gossiping to the P-chain](https://github.com/luxdefi/luxd/blob/v1.6.0-testnet/vms/platformvm/README.md) and C-chain using the VM&lt;-&gt;VM communication layer.
 - Added a block based fee to C-chain blocks.
 - Set the minimum gas price to 25 nLUX and the maximum gas price to 1000 nLUX in the C-chain dynamic fee mechanism.
 - Rate limit incoming connections
@@ -929,20 +929,20 @@ Fix race condition during timeout manager startup.
 - Added flag `inbound-connection-throttling-max-conns-per-sec`.(See [config documentation.](../../nodes/maintain/luxd-config-flags.md))
 - Deprecated flag `inbound-connection-throttling-max-recent`. This flag is now ignored.
 
-## PRE_RELEASE v1.6.0-fuji ([View on GitHub](https://github.com/luxdefi/luxd/releases/tag/v1.6.0-fuji))
+## PRE_RELEASE v1.6.0-testnet ([View on GitHub](https://github.com/luxdefi/luxd/releases/tag/v1.6.0-testnet))
 
 **Please note that this release is unable to run mainnet - and will display "mainnet is not supported" if attempted to run with a mainnet configuration.**
 
 This upgrade adds a contention limiter to the C-chain and P-chain, introduces a block based fee on the C-chain, and tunes some dynamic fee parameters on the C-chain.
 
-The changes in the upgrade go into effect at 5 PM EDT, September 16th 2021 on the Fuji testnet. After Fuji is updated and verified, a Mainnet compatible release will be published.
+The changes in the upgrade go into effect at 5 PM EDT, September 16th 2021 on the Testnet testnet. After Testnet is updated and verified, a Mainnet compatible release will be published.
 
-**All Fuji nodes should upgrade before 5 PM EDT, September 16th 2021.**
+**All Testnet nodes should upgrade before 5 PM EDT, September 16th 2021.**
 
 **Upgrades**
 
-- Introduced [Snowman++](https://github.com/luxdefi/luxd/blob/v1.6.0-fuji/vms/proposervm/README.md) on the P-chain and C-chain.
-- Introduced [mempool gossiping to the P-chain](https://github.com/luxdefi/luxd/blob/v1.6.0-fuji/vms/platformvm/README.md) and C-chain using the VM&lt;-&gt;VM communication layer.
+- Introduced [Snowman++](https://github.com/luxdefi/luxd/blob/v1.6.0-testnet/vms/proposervm/README.md) on the P-chain and C-chain.
+- Introduced [mempool gossiping to the P-chain](https://github.com/luxdefi/luxd/blob/v1.6.0-testnet/vms/platformvm/README.md) and C-chain using the VM&lt;-&gt;VM communication layer.
 - Added a block based fee to C-chain blocks.
 - Set the minimum gas price to 25 nLUX and the maximum gas price to 1000 nLUX in the C-chain dynamic fee mechanism.
 - Added metrics for the number of blocks built and the number of failed build block attempts.
@@ -1080,7 +1080,7 @@ More info can be found [here](https://medium.com/luxlux/apricot-phase-three-c-ch
   - Added `indexTransactions`
   - Added `indexAllowIncomplete`
 
-## PRE_RELEASE v1.5.0-fuji ([View on GitHub](https://github.com/luxdefi/luxd/releases/tag/v1.5.0-fuji))
+## PRE_RELEASE v1.5.0-testnet ([View on GitHub](https://github.com/luxdefi/luxd/releases/tag/v1.5.0-testnet))
 
 **Please note that this release is unable to run mainnet - and will display "this node version doesn't support mainnet" if attempted to run with a mainnet configuration. If you run a mainnet node, no action is required until the official release is published next week.**
 
@@ -1088,7 +1088,7 @@ More info can be found [here](https://medium.com/luxlux/apricot-phase-three-c-ch
 
 This upgrade adds dynamic fees to the C-chain, along with various other improvements.
 
-The changes in the upgrade go into effect at 3 PM EDT, August 16th 2021 on the Fuji testnet. After Fuji is updated and verified, a mainnet compatible release will be published.
+The changes in the upgrade go into effect at 3 PM EDT, August 16th 2021 on the Testnet testnet. After Testnet is updated and verified, a mainnet compatible release will be published.
 
 **Network Upgrades**
 
@@ -1195,9 +1195,9 @@ Nodes now compress some P2P messages. If a peer is version &gt;= v1.4.11, Put, P
 - Replaced `1024` with `units.KiB`, etc.
 - Improved partition tolerance by processing chits in order of the creation of the corresponding queries.
 
-**Fuji IPs**
+**Testnet IPs**
 
-Updated the bootstrap IPs for the Fuji Testnet.
+Updated the bootstrap IPs for the Testnet.
 
 ## v1.4.10 ([View on GitHub](https://github.com/luxdefi/luxd/releases/tag/v1.4.10))
 
@@ -1450,7 +1450,7 @@ The patch includes bug fixes, updated uptime monitoring, and performance improve
 **Apricot Phase 2 - Patch 2**
 
 :::caution
-This update is backwards compatible with v1.4.0 and v1.4.1. The changes in the upgrade go into effect at 10 AM EDT, May 5th 2021 on the Fuji testnet and 7 AM EDT, May 10th 2021 on mainnet.
+This update is backwards compatible with v1.4.0 and v1.4.1. The changes in the upgrade go into effect at 10 AM EDT, May 5th 2021 on the Testnet testnet and 7 AM EDT, May 10th 2021 on mainnet.
 :::
 
 The patch further reduces the size of gossiped peerlist messages and introduces several new flags:
@@ -1482,7 +1482,7 @@ The patch reduces the size of gossiped peerlist messages and introduces a new fl
 :::caution
 This upgrade applies the Ethereum Berlin upgrade to the C-chain, adds a new AVM endpoint, and includes various stability improvements. We urge everyone in the community to update as soon as possible in order to ensure that their nodes remain healthy.
 
-The changes in the upgrade go into effect at 10 AM EDT, May 5th 2021 on the Fuji testnet and 7 AM EDT, May 10th 2021 on mainnet.
+The changes in the upgrade go into effect at 10 AM EDT, May 5th 2021 on the Testnet testnet and 7 AM EDT, May 10th 2021 on mainnet.
 :::
 
 **The primary components to this upgrade include:**
@@ -1568,7 +1568,7 @@ Please note that this change is not backwards compatible with previous releases.
 This upgrade reduces C-chain gas fees, removes C-chain gas refunds, and includes various security improvements. We urge everyone in the community to update as soon as possible in order to ensure that their nodes remain healthy.
 :::
 
-The changes in the upgrade go into effect at 10 AM EST, March 25th 2021 on the Fuji testnet and 10 AM EST, March 31st 2021 on mainnet.
+The changes in the upgrade go into effect at 10 AM EST, March 25th 2021 on the Testnet testnet and 10 AM EST, March 31st 2021 on mainnet.
 
 **The primary components to this upgrade include:**
 

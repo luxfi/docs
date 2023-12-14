@@ -97,15 +97,15 @@ import "hardhat-gas-reporter";
 import "@nomiclabs/hardhat-etherscan";
 import { MNEMONIC, APIKEY } from "./.env.json";
 
-// Al usar la red hardhat, puedes elegir bifurcar Fuji o Lux Mainnet
+// Al usar la red hardhat, puedes elegir bifurcar Testnet o Lux Mainnet
 // Esto te permitirá depurar contratos usando la red hardhat mientras mantienes el estado de la red actual
 // Para habilitar la bifurcación, activa uno de estos booleanos y luego ejecuta tus tareas/scripts usando ``--network hardhat``
 // Para obtener más información, consulta la guía de hardhat
 // https://hardhat.org/hardhat-network/
 // https://hardhat.org/guides/mainnet-forking.html
-const FORK_FUJI = false;
+const FORK_TESTNET = false;
 const FORK_MAINNET = false;
-const forkingData = FORK_FUJI
+const forkingData = FORK_TESTNET
   ? {
       url: "https://api.lux-test.network/ext/bc/C/rpc",
     }
@@ -164,7 +164,7 @@ export default {
       //   url: 'https://api.lux.network/ext/bc/C/rpc',
       // },
     },
-    fuji: {
+    testnet: {
       url: "https://api.lux-test.network/ext/bc/C/rpc",
       gasPrice: 225000000000,
       chainId: 43113,
@@ -193,7 +193,7 @@ npx hardhat verify <dirección-del-contrato> <argumentos> --network <red>
 Ejemplo:
 
 ```zsh
-npx hardhat verify 0x3972c87769886C4f1Ff3a8b52bc57738E82192D5 MockNFT Mock ipfs://QmQ2RFEmZaMds8bRjZCTJxo4DusvcBdLTS6XuDbhp5BZjY 100 --network fuji
+npx hardhat verify 0x3972c87769886C4f1Ff3a8b52bc57738E82192D5 MockNFT Mock ipfs://QmQ2RFEmZaMds8bRjZCTJxo4DusvcBdLTS6XuDbhp5BZjY 100 --network testnet
 ```
 
 <br></br>
@@ -240,7 +240,7 @@ npx hardhat run scripts/<nombre_del_script.ts> --network <red>
 Ejemplo:
 
 ```zsh
-npx hardhat run scripts/5-verifyNFT.ts --network fuji
+npx hardhat run scripts/5-verifyNFT.ts --network testnet
 ```
 
 <br></br>

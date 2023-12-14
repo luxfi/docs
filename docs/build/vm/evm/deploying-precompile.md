@@ -14,8 +14,8 @@ import TabItem from '@theme/TabItem';
 We made it! Everything works in our Ginkgo tests, and now we want to spin up a local network
 with the Hello World precompile activated.
 
-Start the server in a terminal in a new tab using network-runner. Please check out
-[this link](/tooling/network-runner.md) for more information on Lux
+Start the server in a terminal in a new tab using netrunner. Please check out
+[this link](/tooling/netrunner.md) for more information on Lux
 Network Runner, how to download it, and how to use it. The server will be in "listening" mode
 waiting for API calls.
 
@@ -46,7 +46,7 @@ cd $GOPATH/src/github.com/luxdefi/precompile-evm
 Then run ANR:
 
 ```bash
-network-runner server \
+netrunner server \
 --log-level debug \
 --port=":8080" \
 --grpc-gateway-port=":8081"
@@ -66,10 +66,10 @@ export LUXD_PLUGIN_PATH="${GOPATH}/src/github.com/luxdefi/luxd/build/plugins"
 ```
 
 The following command will "issue requests" to the server we just spun up. We can use
-network-runner to spin up some nodes that run the latest version of Subnet-EVM:
+netrunner to spin up some nodes that run the latest version of Subnet-EVM:
 
 ```bash
-  network-runner control start \
+  netrunner control start \
   --log-level debug \
   --endpoint="0.0.0.0:8080" \
   --number-of-nodes=5 \

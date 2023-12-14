@@ -1,5 +1,5 @@
 ---
-title: 🔺 Lux Subnets
+title: ▼ Lux Subnets
 tags: [Build, Subnets]
 description: Subnets
 sidebar_label: 🔗 Quick Links
@@ -22,7 +22,7 @@ for a broad overview.
 | Deploy a Subnet                                                                |     |
 | :----------------------------------------------------------------------------- | --- |
 | [**On a Local Network**](/build/subnet/deploy/local-subnet.md)                 |
-| [**On Fuji Testnet**](/build/subnet/deploy/fuji-testnet-subnet.md)             |
+| [**On Testnet**](/build/subnet/deploy/testnet-subnet.md)             |
 | [**On Lux Mainnet**](/build/subnet/deploy/mainnet-subnet.md)             |
 | [**On Production Infrastructure**](/build/subnet/deploy/on-prod-infra.md)      |
 | [**With Multisignature Authorization**](/build/subnet/deploy/multisig-auth.md) |

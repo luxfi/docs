@@ -49,9 +49,9 @@ Lux is as follows.
 - **Symbol**: `LUX`
 - **Explorer**: [https://snowtrace.io/](https://snowtrace.io/)
 
-#### **Fuji Testnet Settings:**
+#### **Testnet Settings:**
 
-- **Network Name**: Lux Fuji C-Chain
+- **Network Name**: Lux Testnet C-Chain
 - **New RPC URL**: [https://api.lux-test.network/ext/bc/C/rpc](https://api.lux-test.network/ext/bc/C/rpc)
 - **ChainID**: `43113`
 - **Symbol**: `LUX`
@@ -174,10 +174,10 @@ Default config values for the C-Chain can be seen [here](/nodes/configure/chain-
 ### Running a Local Test Network
 
 If you need a private test network to test your dapp, [Lux Network
-Runner](https://github.com/luxdefi/network-runner) is a shell client
+Runner](https://github.com/luxdefi/netrunner) is a shell client
 for launching local Lux networks, similar to Ganache on Ethereum.
 
-For more information, see [documentation](/tooling/network-runner.md).
+For more information, see [documentation](/tooling/netrunner.md).
 
 ## Developing and Deploying Contracts
 

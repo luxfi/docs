@@ -20,7 +20,7 @@ y su uso:
   utiliza la reproducción regular de transacciones para el arranque; state-sync es mucho más rápido, pero
   no tiene datos históricos
 - `db-dir` - se utiliza para proporcionar la ruta completa a la ubicación donde se almacenará la base de datos
-- `fuji` - el nodo se conectará a la red de prueba Fuji en lugar de la Mainnet
+- `testnet` - el nodo se conectará a la red de prueba Testnet en lugar de la Mainnet
 - `index` - se habilitará la [API de Índice](/reference/luxd/index-api.md)
 - `ip` - utiliza los argumentos `dynamic`, `static`, o ingresa una IP deseada directamente para ser
   utilizada como la IP pública que el nodo anunciará a la red
@@ -52,10 +52,10 @@ Por ejemplo:
 
 ### Ejemplos de Uso
 
-- Para ejecutar un nodo Fuji con indexación habilitada y IP estática autodetectada:
+- Para ejecutar un nodo Testnet con indexación habilitada y IP estática autodetectada:
 
   ```bash
-  ./luxd-installer.sh --fuji --ip static --index
+  ./luxd-installer.sh --testnet --ip static --index
   ```
 
 - Para ejecutar un nodo Mainnet de archivo con IP dinámica y base de datos ubicada en `/home/node/db`:

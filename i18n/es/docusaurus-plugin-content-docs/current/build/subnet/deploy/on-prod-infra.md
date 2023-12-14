@@ -11,7 +11,7 @@ sidebar_position: 3
 ## Introducción
 
 Después de arquitectar tu entorno de Subnet en la [máquina local](/build/subnet/deploy/local-subnet.md),
-demostrando el diseño y probándolo en [la Testnet Fuji](/build/subnet/deploy/fuji-testnet-subnet.md),
+demostrando el diseño y probándolo en [la Testnet](/build/subnet/deploy/testnet-subnet.md),
 eventualmente necesitarás implementar tu Subnet en un entorno de producción. Ejecutar una Subnet en producción es mucho más
 complicado que las implementaciones locales y en Testnet, ya que tu Subnet tendrá que cuidar el uso del mundo real,
 manteniendo el tiempo de actividad, las actualizaciones y todo eso en un entorno potencialmente adversarial. El propósito
@@ -169,7 +169,7 @@ Un ejemplo de una configuración de nodo que sincroniza dos Subnets:
 }
 ```
 
-Pero eso no es todo. Además de rastrear el ID de la Subnet, el nodo también necesita tener el plugin que contiene la instancia de la VM en la que se ejecutará la cadena de bloques en la Subnet. Es probable que ya hayas pasado por eso en Testnet y Fuji, pero como recordatorio, puedes consultar [este tutorial](/build/subnet/deploy/fuji-testnet-subnet.md).
+Pero eso no es todo. Además de rastrear el ID de la Subnet, el nodo también necesita tener el plugin que contiene la instancia de la VM en la que se ejecutará la cadena de bloques en la Subnet. Es probable que ya hayas pasado por eso en Testnet y Testnet, pero como recordatorio, puedes consultar [este tutorial](/build/subnet/deploy/testnet-subnet.md).
 
 Entonces, nombra al binario del plugin de la VM como el `VMID` de la cadena de la Subnet y colócalo en el directorio `plugins` donde se encuentra el binario del nodo (para nodos creados con el script de instalación, eso sería `~/node/plugins/`).
 
@@ -180,9 +180,9 @@ Después de haber rastreado la Subnet y colocado el binario de la VM en el direc
 <!-- markdownlint-disable MD013 -->
 
 ```text
-Jul 30 18:26:31 node-fuji luxd[1728308]: [07-30|18:26:31.422] INFO chains/manager.go:262 creating chain:
-Jul 30 18:26:31 node-fuji luxd[1728308]:     ID: 2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt
-Jul 30 18:26:31 node-fuji luxd[1728308]:     VMID:srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy
+Jul 30 18:26:31 node-testnet luxd[1728308]: [07-30|18:26:31.422] INFO chains/manager.go:262 creating chain:
+Jul 30 18:26:31 node-testnet luxd[1728308]:     ID: 2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt
+Jul 30 18:26:31 node-testnet luxd[1728308]:     VMID:srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy
 ```
 
 <!-- markdownlint-enable MD013 -->
@@ -192,7 +192,7 @@ Eso significa que el nodo ha detectado la Subnet y está intentando inicializarl
 <!-- markdownlint-disable MD013 -->
 
 ```text
-Jul 30 18:27:21 node-fuji luxd[1728308]: [07-30|18:27:21.055] INFO <2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt Chain> snowman/transitive.go:333 consensus starting with J5wjmotMCrM2DKxeBTBPfwgCPpvsjtuqWNozLog2TomTjSuGK as the last accepted block
+Jul 30 18:27:21 node-testnet luxd[1728308]: [07-30|18:27:21.055] INFO <2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt Chain> snowman/transitive.go:333 consensus starting with J5wjmotMCrM2DKxeBTBPfwgCPpvsjtuqWNozLog2TomTjSuGK as the last accepted block
 ```
 
 <!-- markdownlint-enable MD013 -->

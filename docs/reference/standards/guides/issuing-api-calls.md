@@ -125,7 +125,7 @@ running on a local node would be:
 http://127.0.0.1/ext/bc/q2aTwKuyzgs8pynF7UXBZCU7DejbZbZ6EUyHr3JQzYgwNPUPi/rpc
 ```
 
-Or for the WAGMI Subnet on the Fuji testnet:
+Or for the WAGMI Subnet on the Testnet testnet:
 
 ```sh
 http://127.0.0.1/ext/bc/2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt/rpc

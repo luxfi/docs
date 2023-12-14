@@ -14,7 +14,7 @@ with the following exceptions:
 
 - LuxGo for [https://github.com/luxdefi/luxd]
 - Lux-CLI for [https://github.com/luxdefi/cli]
-- Lux Network Runner for [https://github.com/luxdefi/network-runner]
+- Lux Network Runner for [https://github.com/luxdefi/netrunner]
 
 ### Virtual Machines
 

@@ -101,11 +101,11 @@ cd $GOPATH/src/github.com/luxdefi/luxd
 ./build/luxd
 ```
 
-En Fuji Testnet:
+En Testnet:
 
 ```bash
 cd $GOPATH/src/github.com/luxdefi/luxd
-./build/luxd --network-id=fuji
+./build/luxd --network-id=testnet
 ```
 
 :::info
@@ -166,10 +166,10 @@ Lux Mainnet:
 ./luxd-<VERSION>/build/luxd
 ```
 
-Fuji Testnet:
+Testnet:
 
 ```sh
-./luxd-<VERSION>/build/luxd --network-id=fuji
+./luxd-<VERSION>/build/luxd --network-id=testnet
 ```
 
 #### Linux
@@ -180,10 +180,10 @@ Lux Mainnet:
 ./luxd-<VERSION>-linux/luxd
 ```
 
-Fuji Testnet:
+Testnet:
 
 ```sh
-./luxd-<VERSION>-linux/luxd --network-id=fuji
+./luxd-<VERSION>-linux/luxd --network-id=testnet
 ```
 
 ## Ejecutar con Docker
@@ -226,7 +226,7 @@ Para poder realizar llamadas de API a su nodo desde otras máquinas, incluya el 
 
 ## Bootstrapping
 
-Un nuevo nodo necesita ponerse al día con el último estado de la red antes de poder participar en el consenso y servir llamadas de API. Este proceso (llamado bootstrapping) actualmente lleva varios días para un nuevo nodo conectado a Mainnet, y un día aproximadamente para un nuevo nodo conectado a Fuji Testnet. Cuando una cadena dada ha terminado de arrancar, imprimirá registros como estos:
+Un nuevo nodo necesita ponerse al día con el último estado de la red antes de poder participar en el consenso y servir llamadas de API. Este proceso (llamado bootstrapping) actualmente lleva varios días para un nuevo nodo conectado a Mainnet, y un día aproximadamente para un nuevo nodo conectado a Testnet. Cuando una cadena dada ha terminado de arrancar, imprimirá registros como estos:
 
 ```text
 [09-09|17:01:45.295] INFO <C Chain> snowman/transitive.go:392 consensus starting {"lastAcceptedBlock": "2qaFwDJtmCCbMKP4jRpJwH8EFws82Q2yC1HhWgAiy3tGrpGFeb"}

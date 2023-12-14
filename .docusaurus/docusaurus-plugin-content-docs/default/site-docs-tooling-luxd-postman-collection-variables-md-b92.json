@@ -1,0 +1,42 @@
+{
+  "id": "tooling/luxd-postman-collection/variables",
+  "title": "Variables",
+  "description": "The LuxGo Postman collection includes all the public API calls that are available on LuxGo instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
+  "source": "@site/docs/tooling/luxd-postman-collection/variables.md",
+  "sourceDirName": "tooling/luxd-postman-collection",
+  "slug": "/tooling/luxd-postman-collection/variables",
+  "permalink": "/tooling/luxd-postman-collection/variables",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/luxd-postman-collection/variables.md",
+  "tags": [
+    {
+      "label": "Tooling",
+      "permalink": "/tags/tooling"
+    },
+    {
+      "label": "LuxGo APIs",
+      "permalink": "/tags/lux-go-ap-is"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "tags": [
+      "Tooling",
+      "LuxGo APIs"
+    ],
+    "description": "The LuxGo Postman collection includes all the public API calls that are available on LuxGo instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
+    "pagination_label": "LuxGo Install Script",
+    "sidebar_position": 3
+  },
+  "sidebar": "tooling",
+  "previous": {
+    "title": "LuxGo Install Script",
+    "permalink": "/tooling/luxd-postman-collection/making-api-calls"
+  },
+  "next": {
+    "title": "LuxGo Install Script",
+    "permalink": "/tooling/luxd-postman-collection/data-visualization"
+  }
+}

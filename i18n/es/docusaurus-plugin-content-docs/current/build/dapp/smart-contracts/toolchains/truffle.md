@@ -29,7 +29,7 @@ para obtener fondos en tu dirección de C-Chain.
 ## Dependencias
 
 - [Lux Network
-  Runner](https://github.com/luxdefi/network-runner) es una herramienta para
+  Runner](https://github.com/luxdefi/netrunner) es una herramienta para
   ejecutar una red Lux local. Es similar a
   [Ganache](https://www.trufflesuite.com/ganache) de Truffle.
 - [NodeJS](https://nodejs.org/en) v8.9.4 o posterior.
@@ -37,11 +37,11 @@ para obtener fondos en tu dirección de C-Chain.
 
 ## Iniciar una Red Lux Local
 
-[Lux Network Runner](https://github.com/luxdefi/network-runner)
+[Lux Network Runner](https://github.com/luxdefi/netrunner)
 te permite iniciar despliegues de redes de prueba privadas. Inicia una red Lux local de cinco nodos:
 
 ```text
-cd /ruta/a/network-runner
+cd /ruta/a/netrunner
 # iniciar una red de cinco nodos de staking
 ./go run examples/local/fivenodenetwork/main.go
 ```

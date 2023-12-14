@@ -110,7 +110,7 @@ El primer paso es especificar la red. `Mainnet` en este caso:
 Use las teclas de flecha para navegar: ↓ ↑ → ←
 ? ¿Qué red usar?:
   ▸ Mainnet
-    Fuji
+    Testnet
     Red local
 ```
 
@@ -186,7 +186,7 @@ Especifique la red `Mainnet`:
 Use las teclas de flecha para navegar: ↓ ↑ → ←
 ? ¿Qué red usar?:
   ▸ Mainnet
-    Fuji
+    Testnet
     Red local
 ```
 

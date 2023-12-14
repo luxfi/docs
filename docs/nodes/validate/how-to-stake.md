@@ -60,9 +60,9 @@ nodes, validators with small stake, or validators that have not been online for
 the full duration of your validation period can provide an inaccurate view of
 your node's true uptime.
 
-### Fuji Testnet
+### Testnet
 
-On Fuji Testnet, all staking parameters are the same as those on Mainnet except the following ones:
+On Testnet, all staking parameters are the same as those on Mainnet except the following ones:
 
 - The minimum amount that a validator must stake is 1 LUX
 - The minimum amount that a delegator must delegate is 1 LUX

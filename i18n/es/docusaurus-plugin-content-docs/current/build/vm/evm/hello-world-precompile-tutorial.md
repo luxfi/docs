@@ -241,7 +241,7 @@ Download the following prerequisites into your `$GOPATH`:
 
 - Git Clone the repository (Subnet-EVM or Precompile-EVM)
 - Git Clone [LuxGo](https://github.com/luxdefi/luxd) repository
-- Install [Lux Network Runner](/tooling/network-runner.md)
+- Install [Lux Network Runner](/tooling/netrunner.md)
 - Install [solc](https://github.com/ethereum/solc-js#usage-on-the-command-line)
 - Install [Node.js and NPM](https://nodejs.org/en/download)
   For easy copy paste, use the below commands:
@@ -281,7 +281,7 @@ Then run the following commands:
 
 ```shell
 git clone git@github.com:luxdefi/luxd.git
-curl -sSfL https://raw.githubusercontent.com/luxdefi/network-runner/main/scripts/install.sh | sh -s
+curl -sSfL https://raw.githubusercontent.com/luxdefi/netrunner/main/scripts/install.sh | sh -s
 npm install -g solc
 ```
 
@@ -1925,8 +1925,8 @@ to double-check your work as well.
 We made it! Everything works in our Ginkgo tests, and now we want to spin up a local network
 with the Hello World precompile activated.
 
-Start the server in a terminal in a new tab using network-runner. Please check out
-[this link](/tooling/network-runner.md) for more information on Lux
+Start the server in a terminal in a new tab using netrunner. Please check out
+[this link](/tooling/netrunner.md) for more information on Lux
 Network Runner, how to download it, and how to use it. The server will be in "listening" mode
 waiting for API calls.
 
@@ -1957,7 +1957,7 @@ cd $GOPATH/src/github.com/luxdefi/precompile-evm
 Then run ANR:
 
 ```bash
-network-runner server \
+netrunner server \
 --log-level debug \
 --port=":8080" \
 --grpc-gateway-port=":8081"
@@ -1977,10 +1977,10 @@ export LUXD_PLUGIN_PATH="${GOPATH}/src/github.com/luxdefi/luxd/build/plugins"
 ```
 
 The following command will "issue requests" to the server we just spun up. We can use
-network-runner to spin up some nodes that run the latest version of Subnet-EVM:
+netrunner to spin up some nodes that run the latest version of Subnet-EVM:
 
 ```bash
-  network-runner control start \
+  netrunner control start \
   --log-level debug \
   --endpoint="0.0.0.0:8080" \
   --number-of-nodes=5 \

@@ -1,0 +1,15 @@
+{
+  "id": "dapps/smart-contracts/using-truffle-with-the-lux-c-chain",
+  "title": "Using Truffle with the Lux C-Chain",
+  "description": "Introduction",
+  "source": "@site/docs/dapps/smart-contracts/using-truffle-with-the-lux-c-chain.md",
+  "sourceDirName": "dapps/smart-contracts",
+  "slug": "/dapps/smart-contracts/using-truffle-with-the-lux-c-chain",
+  "permalink": "/dapps/smart-contracts/using-truffle-with-the-lux-c-chain",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/dapps/smart-contracts/using-truffle-with-the-lux-c-chain.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {}
+}

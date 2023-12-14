@@ -26,15 +26,15 @@ Log in to MetaMask -&gt; Click the Network drop-down -&gt; Select Custom RPC
 - **Symbol**: `LUX`
 - **Explorer**: [https://snowtrace.io/](https://snowtrace.io/)
 
-#### **FUJI Testnet Settings:**
+#### **TESTNET Testnet Settings:**
 
-- **Network Name**: Lux FUJI C-Chain
+- **Network Name**: Lux TESTNET C-Chain
 - **New RPC URL**: [https://api.lux-test.network/ext/bc/C/rpc](https://api.lux-test.network/ext/bc/C/rpc)
 - **ChainID**: `43113`
 - **Symbol**: `LUX`
 - **Explorer**: [https://testnet.snowtrace.io/](https://testnet.snowtrace.io/)
 
-#### **Local Testnet (Lux Network Runner) Settings:** [(Lux Network Runner Tutorial)](../../subnets/network-runner.md)
+#### **Local Testnet (Lux Network Runner) Settings:** [(Lux Network Runner Tutorial)](../../subnets/netrunner.md)
 
 - **Network Name**: Lux Local C-Chain
 - **New RPC URL**: [http://127.0.0.1:34890/ext/bc/C/rpc](http://127.0.0.1:34890/ext/bc/C/rpc) (Note: the port number should match your local setting which can be different from 34890.)

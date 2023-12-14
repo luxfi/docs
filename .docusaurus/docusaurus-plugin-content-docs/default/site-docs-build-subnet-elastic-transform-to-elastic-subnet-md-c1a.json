@@ -1,0 +1,43 @@
+{
+  "id": "build/subnet/elastic/transform-to-elastic-subnet",
+  "title": "How to Transform a Permissioned Subnet into an Elastic Subnet",
+  "description": "This how-to guide focuses on taking an already created permissioned Subnet and transforming it to an elastic (or permissionless) Subnet.",
+  "source": "@site/docs/build/subnet/elastic/transform-to-elastic-subnet.md",
+  "sourceDirName": "build/subnet/elastic",
+  "slug": "/build/subnet/elastic/transform-to-elastic-subnet",
+  "permalink": "/build/subnet/elastic/transform-to-elastic-subnet",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/build/subnet/elastic/transform-to-elastic-subnet.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Subnets",
+      "permalink": "/tags/subnets"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 0,
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Subnets"
+    ],
+    "description": "This how-to guide focuses on taking an already created permissioned Subnet and transforming it to an elastic (or permissionless) Subnet.",
+    "sidebar_label": "Make Subnet Permissionless",
+    "pagination_label": "Transform a Permissioned Subnet into an Elastic Subnet",
+    "sidebar_position": 0
+  },
+  "sidebar": "build-subnet",
+  "previous": {
+    "title": "Deploy a Subnet with Multisig Authorization",
+    "permalink": "/build/subnet/deploy/custom-vm-subnet"
+  },
+  "next": {
+    "title": "Elastic Subnets Parameters",
+    "permalink": "/build/subnet/elastic/elastic-parameters"
+  }
+}

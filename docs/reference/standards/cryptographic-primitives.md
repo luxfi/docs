@@ -83,7 +83,7 @@ exists on, followed by a dash. For example, X-Chain addresses are prefixed with
 `X-`.
 
 The following regular expression matches addresses on the X-Chain, P-Chain and
-C-Chain for Mainnet, Fuji and localhost. Note that all valid Lux addresses
+C-Chain for Mainnet, Testnet and localhost. Note that all valid Lux addresses
 will match this regular expression, but some strings that are not valid
 Lux addresses may match this regular expression.
 

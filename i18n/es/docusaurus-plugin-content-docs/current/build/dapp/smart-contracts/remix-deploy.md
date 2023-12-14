@@ -28,7 +28,7 @@ para crear una nueva billetera.
 
 Si quieres usar la **C-Chain de Lux**, puedes seleccionarla de la lista de redes.
 
-Para cambiar a la **red de prueba Fuji**, ve a Configuración, selecciona Avanzado y luego activa el Modo de Red de Prueba.
+Para cambiar a la **red de prueba Testnet**, ve a Configuración, selecciona Avanzado y luego activa el Modo de Red de Prueba.
 
 <div style={{textAlign: 'center'}}>
 
@@ -36,7 +36,7 @@ Para cambiar a la **red de prueba Fuji**, ve a Configuración, selecciona Avanza
 
 </div>
 
-Configuración de la **Red de Prueba Local (Lux Network Runner)**: [(Tutorial del Lux Network Runner)](/tooling/network-runner.md)
+Configuración de la **Red de Prueba Local (Lux Network Runner)**: [(Tutorial del Lux Network Runner)](/tooling/netrunner.md)
 
 - **Nombre de la Red**: Lux Local C-Chain
 - **Nueva URL RPC**:

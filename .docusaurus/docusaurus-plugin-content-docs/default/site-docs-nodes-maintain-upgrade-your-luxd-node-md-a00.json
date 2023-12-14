@@ -1,0 +1,27 @@
+{
+  "id": "nodes/maintain/upgrade-your-luxd-node",
+  "title": "Upgrade Your Luxd Node",
+  "description": "Backup Your Node",
+  "source": "@site/docs/nodes/maintain/upgrade-your-luxd-node.md",
+  "sourceDirName": "nodes/maintain",
+  "slug": "/nodes/maintain/upgrade-your-luxd-node",
+  "permalink": "/nodes/maintain/upgrade-your-luxd-node",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/maintain/upgrade-your-luxd-node.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "nodes",
+  "previous": {
+    "title": "Monitor an Lux Node",
+    "permalink": "/nodes/maintain/setting-up-node-monitoring"
+  },
+  "next": {
+    "title": "Reduce a Node's Disk Space: Run C-Chain Offline Pruning",
+    "permalink": "/nodes/maintain/run-offline-pruning"
+  }
+}

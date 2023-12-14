@@ -49,7 +49,7 @@ Make a new directory `multisig` for keeping all the project codes and move there
 npm install --save lux dotenv
 ```
 
-Now create a configuration file named `config.js` for storing all the pieces of information regarding the network and chain we are connecting to. Since we are making transactions on the Fuji network, its network ID is 5. You can change the configuration according to the network you are using.
+Now create a configuration file named `config.js` for storing all the pieces of information regarding the network and chain we are connecting to. Since we are making transactions on the Testnet network, its network ID is 5. You can change the configuration according to the network you are using.
 
 ```javascript
 require("dotenv").config()
@@ -773,7 +773,7 @@ Now call the `sendBaseTx()` function by adding this line
 sendBaseTx()
 ```
 
-Run this file using `node examples/sendBaseTx.js`, see the txID in the output, and look for it in the Fuji explorer.
+Run this file using `node examples/sendBaseTx.js`, see the txID in the output, and look for it in the Testnet explorer.
 
 ![](/img/multisig-utxos-3.jpeg)
 
@@ -873,7 +873,7 @@ Call the function by adding the below function call.
 exportXP()
 ```
 
-Run this file using `node examples/exportXP.js`, see the txID in the output, and look for it in the [Fuji explorer](https://explorer-xp.lux-test.network/blockchain/2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm).
+Run this file using `node examples/exportXP.js`, see the txID in the output, and look for it in the [Testnet explorer](https://explorer-xp.lux-test.network/blockchain/2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm).
 
 ![](/img/multisig-utxos-4.jpeg)
 
@@ -1143,6 +1143,6 @@ Call the function by adding the below function call.
 addDelegator()
 ```
 
-Run this file using `node examples/addDelegatorTx.js`, see the txID in the output, and look for it in the Fuji explorer.
+Run this file using `node examples/addDelegatorTx.js`, see the txID in the output, and look for it in the Testnet explorer.
 
 ![](/img/multisig-utxos-7.jpeg)

@@ -9,7 +9,7 @@ pagination_label: Crear un Token ERC-20 usando Solidity
 
 [Los tokens ERC-20](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/) son el concepto más fundamental y esencial en Ethereum. A medida que la comunidad Lux y el ecosistema están creciendo, nuevos casos de uso y proyectos que se ejecutan en Ethereum u otras cadenas se implementarán en Lux.
 
-Por lo tanto, estaremos creando nuestro propio token ERC-20 mintable y lo mintiremos a cualquier dirección que queramos. El token se generará en la cadena C de Lux y será accesible en esa cadena. Estamos utilizando la red de pruebas Fuji en este tutorial.
+Por lo tanto, estaremos creando nuestro propio token ERC-20 mintable y lo mintiremos a cualquier dirección que queramos. El token se generará en la cadena C de Lux y será accesible en esa cadena. Estamos utilizando la red de pruebas Testnet en este tutorial.
 
 El artículo se centra en desplegar un contrato inteligente escrito con Solidity en Lux. Esta es la característica que Lux nos proporciona, poder desplegar cualquier contrato inteligente en la cadena y sin necesidad de un nuevo concepto de contrato específico de lenguaje para interactuar. Veamos cómo crear un contrato ERC-20 y desplegarlo en la cadena C de Lux.
 
@@ -19,13 +19,13 @@ Lo primero que debemos hacer es habilitar el modo de red de pruebas en Core. Par
 
 ![Imagen de configuración 1](/img/c-chain-ERC20/settings1.png)
 
-Aquí, activa la función de **Modo de Red de Pruebas**. Esto hará que Core cambie automáticamente a la red de pruebas Fuji.
+Aquí, activa la función de **Modo de Red de Pruebas**. Esto hará que Core cambie automáticamente a la red de pruebas Testnet.
 
 ![Imagen de configuración 2](/img/c-chain-ERC20/settings2.png)
 
 :::info
 
-Si estás usando otras billeteras, como MetaMask, puedes agregar la red de pruebas Fuji utilizando las siguientes especificaciones:
+Si estás usando otras billeteras, como MetaMask, puedes agregar la red de pruebas Testnet utilizando las siguientes especificaciones:
 
 - **Nombre de la Red**: Lux C-Chain
 - **Nueva URL RPC**: [https://api.lux-test.network/ext/bc/C/rpc](https://api.lux-test.network/ext/bc/C/rpc)
@@ -39,7 +39,7 @@ La configuración está hecha. Por ahora, tenemos 0 LUX.
 
 ## Financia tu dirección en la C-Chain
 
-Para financiar en la red de pruebas Fuji, puedes usar el Faucet de la Red de Pruebas. Navega a [https://faucet.lux.network/](https://faucet.lux.network/) y pega tu dirección de la C-Chain.
+Para financiar en la red de pruebas Testnet, puedes usar el Faucet de la Red de Pruebas. Navega a [https://faucet.lux.network/](https://faucet.lux.network/) y pega tu dirección de la C-Chain.
 
 ## Crea un Token Mintable
 

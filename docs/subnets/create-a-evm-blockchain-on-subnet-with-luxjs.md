@@ -64,15 +64,15 @@ You can directly build the `subnet-evm` binary inside the plugins folder as well
 
 ## Setting up Local Lux Network
 
-For the development purpose, we can use [**Lux Network Runner (ANR)**](../subnets/network-runner.md). It helps us in simulating the actual network. For this tutorial, we will be installing ANR binary and will interact with the network through RPCs.
+For the development purpose, we can use [**Lux Network Runner (ANR)**](../subnets/netrunner.md). It helps us in simulating the actual network. For this tutorial, we will be installing ANR binary and will interact with the network through RPCs.
 
 ### Clone Lux Network Runner
 
 Now move to `subnet-evm-demo`, and clone the repository.
 
 ```bash
-git clone https://github.com/luxdefi/lux-network-runner
-cd lux-network-runner
+git clone https://github.com/luxdefi/lux-netrunner
+cd lux-netrunner
 ```
 
 ### Install ANR binary
@@ -80,7 +80,7 @@ cd lux-network-runner
 The following command will install the ANR binary inside `$GOPATH/bin`. Please make sure that you have the `$GOPATH/bin` path set in the `$PATH` environment variable, otherwise, you will not be able to run the binary unless you specify its location in each command.
 
 ```bash
-go install -v ./cmd/lux-network-runner
+go install -v ./cmd/lux-netrunner
 ```
 
 ### Start RPC Server
@@ -88,7 +88,7 @@ go install -v ./cmd/lux-network-runner
 Run the following command to start the RPC server. This will help us in deploying our local cluster of validating nodes. Keep this tab open and run the subsequent commands in the new terminal (or tab).
 
 ```bash
-lux-network-runner server \
+lux-netrunner server \
 --port=":8080" \
 --grpc-gateway-port=":8081"
 ```
@@ -98,7 +98,7 @@ lux-network-runner server \
 Run the following command to start a network cluster of 5 validating nodes, all running the LuxGo's binary and have the plugins of the `subnet-evm` VM. Put the `luxd` binary location as per your requirement.
 
 ```bash
-lux-network-runner control start \
+lux-netrunner control start \
 --endpoint="0.0.0.0:8080" \
 --luxd-path ${HOME}/subnet-evm-demo/luxd/build/luxd
 ```
@@ -116,7 +116,7 @@ node5: node ID "NodeID-P7oB2McjBGgW2NXXWVYjV8JEDFoW9xDE5", URI "http://localhost
 You can view the `URIs` of the nodes using the following command.
 
 ```bash
-lux-network-runner control uris \
+lux-netrunner control uris \
 --endpoint="0.0.0.0:8080"
 ```
 
@@ -140,7 +140,7 @@ $HOME
 |_subnet-evm-demo
     |_luxd
     |_subnet-evm
-    |_lux-network-runner
+    |_lux-netrunner
     |_subnet-evm-js
 ```
 
@@ -174,7 +174,7 @@ module.exports = {
 }
 ```
 
-We have `networkID: 1337` for the local network. Mainnet has `43114`, and Fuji has `43113`. Put the port here, that you have copied earlier from the ANR's output. Rest all should remain the same. Here we are also accessing `PRIVATEKEY` from the `.env` file. So make sure to include your funded private key in the `.env` file which was provided by ANR.
+We have `networkID: 1337` for the local network. Mainnet has `43114`, and Testnet has `43113`. Put the port here, that you have copied earlier from the ANR's output. Rest all should remain the same. Here we are also accessing `PRIVATEKEY` from the `.env` file. So make sure to include your funded private key in the `.env` file which was provided by ANR.
 
 ```env
 PRIVATEKEY="PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN"
@@ -404,7 +404,7 @@ We will keep the start time 5 minutes later than the current time. This `$(date 
 Subnet owners can add any node to their Subnet. That doesn't mean the nodes start validating their Subnet without any consent. If a node wants to validate the newly added Subnet, then it must restart its `luxd` binary with the new Subnet being whitelisted.
 
 ```bash
-lux-network-runner control restart-node \
+lux-netrunner control restart-node \
 --request-timeout=3m \
 --endpoint="0.0.0.0:8080" \
 --node-name node1 \
@@ -517,4 +517,4 @@ Creating a new chain will take few seconds. You can also view the logs on the Lu
 
 ## Interacting with the New Blockchain with MetaMask
 
-We have created the new Subnet, deployed a new blockchain using the `subnet-evm`, and finally added a validator to this Subnet, for validating different chains. Now it's time to interact with the new chain. You can follow this [part](../subnets/create-a-fuji-subnet.md#interact-with-the-new-blockchain) in our docs, to learn, how you can set up your MetaMask to interact with this chain. You can send tokens, create smart contracts, and do everything that you can do on C-Chain.
+We have created the new Subnet, deployed a new blockchain using the `subnet-evm`, and finally added a validator to this Subnet, for validating different chains. Now it's time to interact with the new chain. You can follow this [part](../subnets/create-a-testnet-subnet.md#interact-with-the-new-blockchain) in our docs, to learn, how you can set up your MetaMask to interact with this chain. You can send tokens, create smart contracts, and do everything that you can do on C-Chain.

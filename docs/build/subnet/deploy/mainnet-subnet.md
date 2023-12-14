@@ -21,9 +21,9 @@ shouldn't be used for a production deployment.
 
 :::
 
-After managing a successful Subnet deployment on the `Fuji Testnet`, you're ready to deploy your
+After managing a successful Subnet deployment on the `Testnet`, you're ready to deploy your
 Subnet on Mainnet. If you haven't done so, first
-[Deploy a Subnet on Testnet](/build/subnet/deploy/fuji-testnet-subnet.md).
+[Deploy a Subnet on Testnet](/build/subnet/deploy/testnet-subnet.md).
 
 This tutorial shows how to do the following on `Mainnet`.
 
@@ -46,7 +46,7 @@ your own run-through of this tutorial.
   box
 - A [Ledger](https://www.ledger.com/) device
 - You've [created a Subnet configuration](/build/subnet/hello-subnet.md#create-your-subnet-configuration)
-  and fully tested a [Fuji Testnet Subnet deployment](/build/subnet/deploy/fuji-testnet-subnet.md)
+  and fully tested a [Testnet Subnet deployment](/build/subnet/deploy/testnet-subnet.md)
 
 :::warning
 
@@ -125,7 +125,7 @@ validators costs 0.001 LUX each. For more details, see [Fees](/reference/standar
 
 You can use the `key list` command to get any Ledger address in the derivation sequence by
 changing the index parameter from `0` to the one desired, or to a list of them (for example: `2`, or
-`0,4,7`). Also, you can ask for addresses on `Fuji` with the `--fuji` parameter, and local networks
+`0,4,7`). Also, you can ask for addresses on `Testnet` with the `--testnet` parameter, and local networks
 with the `--local` parameter.
 
 :::
@@ -156,7 +156,7 @@ This is going to start a new prompt series.
 Use the arrow keys to navigate: ↓ ↑ → ←
 ? Choose a network to deploy on:
     Local Network
-    Fuji
+    Testnet
   ▸ Mainnet
 ```
 
@@ -289,7 +289,7 @@ When you `join` command, you are first prompted with the network selection. Choo
 ```text
 Use the arrow keys to navigate: ↓ ↑ → ←
 ? Choose a network to validate on (this command only supports public networks):
-    Fuji
+    Testnet
   ▸ Mainnet
 ```
 
@@ -424,7 +424,7 @@ First choose `Mainnet` as the network to add the Subnet validator to.
 ```text
 Use the arrow keys to navigate: ↓ ↑ → ←
 ? Choose a network to add validator to.:
-    Fuji
+    Testnet
   ▸ Mainnet
 ```
 

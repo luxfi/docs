@@ -1,6 +1,6 @@
 ---
 tags: [Nodos]
-description: Este tutorial te guiará a través de la puesta en marcha de un nodo Lux a través del nodo validador de un solo clic a través del AWS Marketplace. Esto incluye suscribirse al software, lanzarlo en EC2, conectarse al nodo a través de ssh, llamar a comandos curl, agregar el nodo como un validador en la red Fuji usando la billetera web Lux y confirmar que el nodo es un validador pendiente.
+description: Este tutorial te guiará a través de la puesta en marcha de un nodo Lux a través del nodo validador de un solo clic a través del AWS Marketplace. Esto incluye suscribirse al software, lanzarlo en EC2, conectarse al nodo a través de ssh, llamar a comandos curl, agregar el nodo como un validador en la red Testnet usando la billetera web Lux y confirmar que el nodo es un validador pendiente.
 sidebar_label: AWS Marketplace
 pagination_label: Ejecutar un nodo Lux con Amazon Web Services con un solo clic
 sidebar_position: 1
@@ -22,7 +22,7 @@ sidebar_position: 1
         allowfullscreen>
 </iframe>
 
-Con la intención de permitir que los desarrolladores y emprendedores ingresen al ecosistema Lux con la menor fricción posible, Lux Partners lanzó recientemente una oferta para implementar un nodo validador Lux a través del AWS Marketplace. Este tutorial mostrará los principales pasos requeridos para poner en funcionamiento este nodo y validar en la testnet Lux Fuji.
+Con la intención de permitir que los desarrolladores y emprendedores ingresen al ecosistema Lux con la menor fricción posible, Lux Partners lanzó recientemente una oferta para implementar un nodo validador Lux a través del AWS Marketplace. Este tutorial mostrará los principales pasos requeridos para poner en funcionamiento este nodo y validar en la testnet Lux Testnet.
 
 ## Descripción del producto
 
@@ -78,11 +78,11 @@ ssh nombredeusuario@dirección.ip.de.la.instancia.ec2
 
 ## Configuración del nodo
 
-### Cambiar a la Testnet Fuji
+### Cambiar a la Testnet
 
 De forma predeterminada, el nodo Lux disponible a través del AWS Marketplace sincroniza la Mainnet. Si esto es lo que estás buscando, puedes saltarte este paso.
 
-Para este tutorial, quieres sincronizar y validar la Testnet Fuji. Ahora que estás `ssh` en la instancia EC2, puedes hacer los cambios necesarios para sincronizar Fuji en lugar de Mainnet.
+Para este tutorial, quieres sincronizar y validar la Testnet. Ahora que estás `ssh` en la instancia EC2, puedes hacer los cambios necesarios para sincronizar Testnet en lugar de Mainnet.
 
 Primero, confirma que el nodo está sincronizando la Mainnet ejecutando el comando `info.getNetworkID`.
 
@@ -112,7 +112,7 @@ El `networkID` devuelto será 1, que es el ID de red de Mainnet.
 }
 ```
 
-Ahora quieres editar `/etc/luxd/conf.json` y cambiar la propiedad `"network-id"` de `"mainnet"` a `"fuji"`. Para ver el contenido de `/etc/luxd/conf.json`, puedes usar el comando `cat` en el archivo.
+Ahora quieres editar `/etc/luxd/conf.json` y cambiar la propiedad `"network-id"` de `"mainnet"` a `"testnet"`. Para ver el contenido de `/etc/luxd/conf.json`, puedes usar el comando `cat` en el archivo.
 
 ```zsh
 cat /etc/luxd/conf.json
@@ -127,7 +127,7 @@ cat /etc/luxd/conf.json
 }
 ```
 
-Edita ese `/etc/luxd/conf.json` con tu editor de texto favorito y cambia el valor de la propiedad `"network-id"` de `"mainnet"` a `"fuji"`. Una vez que eso esté completo, guarda el archivo y reinicia el nodo Lux a través de `sudo systemctl restart luxd`. Luego puedes llamar al endpoint `info.getNetworkID` para confirmar que el cambio fue exitoso.
+Edita ese `/etc/luxd/conf.json` con tu editor de texto favorito y cambia el valor de la propiedad `"network-id"` de `"mainnet"` a `"testnet"`. Una vez que eso esté completo, guarda el archivo y reinicia el nodo Lux a través de `sudo systemctl restart luxd`. Luego puedes llamar al endpoint `info.getNetworkID` para confirmar que el cambio fue exitoso.
 
 #### Solicitud `info.getNetworkID`
 
@@ -143,7 +143,7 @@ curl -X POST --data '{
 
 #### Respuesta de `info.getNetworkID`
 
-El `networkID` devuelto será 5, que es el ID de red para Fuji.
+El `networkID` devuelto será 5, que es el ID de red para Testnet.
 
 ```zsh
 {
@@ -227,9 +227,9 @@ el `nodeID` es `NodeID-Q8Gfaaio9FAqCmZVEXDq9bFvNPvDi7rt5`
 }
 ```
 
-## Agregar el nodo como validador en Fuji a través de el Web Wallet
+## Agregar el nodo como validador en Testnet a través de el Web Wallet
 
-Para agregar el nuevo nodo como un validador en la red de pruebas Fuji, puedes
+Para agregar el nuevo nodo como un validador en la red de pruebas Testnet, puedes
 usar la [Lux Web Wallet](https://wallet.lux.network).
 
 ![Lux Web Wallet](/img/one-click-validator-node/web-wallet.png)
@@ -250,28 +250,28 @@ la pantalla. Por defecto, la Lux Web Wallet se conecta a Mainnet.
 <img src="/img/one-click-validator-node/network-mainnet.png" alt="Red -
 Mainnet" width="60%" />
 
-Para este demo, quieres conectar la billetera a la red de pruebas Fuji. En la parte superior derecha de la billetera, haz clic en "Mainnet" y desde el menú de navegación selecciona Fuji.
+Para este demo, quieres conectar la billetera a la red de pruebas Testnet. En la parte superior derecha de la billetera, haz clic en "Mainnet" y desde el menú de navegación selecciona Testnet.
 
-#### Seleccionando Fuji
+#### Seleccionando Testnet
 
-<img src="/img/one-click-validator-node/network-selecting-fuji.png" alt="Red - Seleccionando Fuji" 
+<img src="/img/one-click-validator-node/network-selecting-testnet.png" alt="Red - Seleccionando Testnet" 
 width="60%" />
 
-La billetera mostrará "Conectando..." mientras cambia de Mainnet a Fuji.
+La billetera mostrará "Conectando..." mientras cambia de Mainnet a Testnet.
 
-#### Conectado a Fuji
+#### Conectado a Testnet
 
-Una vez que la billetera se haya conectado a Fuji, aparecerá una ventana emergente que dice "Conectado a Fuji".
+Una vez que la billetera se haya conectado a Testnet, aparecerá una ventana emergente que dice "Conectado a Testnet".
 
-<img src="/img/one-click-validator-node/connected-to-fuji.png" alt="Conectado a Fuji" 
+<img src="/img/one-click-validator-node/connected-to-testnet.png" alt="Conectado a Testnet" 
 width="80%" />
 
-#### Conectado a Fuji
+#### Conectado a Testnet
 
-<img src="/img/one-click-validator-node/network-fuji.png" alt="Red - Fuji"
+<img src="/img/one-click-validator-node/network-testnet.png" alt="Red - Testnet"
 width="60%" />
 
-Puedes seguir los mismos pasos para volver a conectar la billetera a Mainnet desde Fuji y para agregar redes personalizadas.
+Puedes seguir los mismos pasos para volver a conectar la billetera a Mainnet desde Testnet y para agregar redes personalizadas.
 
 ### La pestaña "Earn"
 
@@ -308,7 +308,7 @@ ha transcurrido desde todo el período de validación.
 
 ![Transacción de validador](/img/one-click-validator-node/validation-tx.png)
 
-## Confirma que el Nodo es un Validador Pendiente en Fuji
+## Confirma que el Nodo es un Validador Pendiente en Testnet
 
 Como último paso, puedes llamar al endpoint `platform.getPendingValidators` para confirmar que el nodo Lux que fue creado recientemente en AWS está en la cola de validadores pendientes, donde permanecerá durante 5 minutos.
 
@@ -392,7 +392,7 @@ Esto filtrará la respuesta por el arreglo `nodeIDs`, lo que te ahorrará tiempo
 }
 ```
 
-Después de 5 minutos, el nodo comenzará oficialmente a validar la red de pruebas Lux Fuji y ya no lo verás en el cuerpo de respuesta del endpoint `platform.getPendingValidators`. Ahora podrás acceder a él a través del endpoint `platform.getCurrentValidators`.
+Después de 5 minutos, el nodo comenzará oficialmente a validar la red de pruebas Lux Testnet y ya no lo verás en el cuerpo de respuesta del endpoint `platform.getPendingValidators`. Ahora podrás acceder a él a través del endpoint `platform.getCurrentValidators`.
 
 ### Solicitud de `platform.getCurrentValidators`
 
@@ -427,21 +427,21 @@ curl --location --request POST 'https://api.lux-test.network/ext/bc/P' \
           "locktime": "0",
           "threshold": "1",
           "addresses": [
-            "P-fuji1tgj2c3k56enytw5d78rt0tsq3lzg8wnftffwk7"
+            "P-testnet1tgj2c3k56enytw5d78rt0tsq3lzg8wnftffwk7"
           ]
         },
         "validationRewardOwner": {
           "locktime": "0",
           "threshold": "1",
           "addresses": [
-            "P-fuji1tgj2c3k56enytw5d78rt0tsq3lzg8wnftffwk7"
+            "P-testnet1tgj2c3k56enytw5d78rt0tsq3lzg8wnftffwk7"
           ]
         },
         "delegationRewardOwner": {
           "locktime": "0",
           "threshold": "1",
           "addresses": [
-            "P-fuji1tgj2c3k56enytw5d78rt0tsq3lzg8wnftffwk7"
+            "P-testnet1tgj2c3k56enytw5d78rt0tsq3lzg8wnftffwk7"
           ]
         },
         "potentialReward": "5400963",

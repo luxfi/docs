@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This article shows how to deploy and interact with smart contracts using foundry on the [Fuji C-Chain](../../quickstart/fuji-workflow.md).
+This article shows how to deploy and interact with smart contracts using foundry on the [Testnet C-Chain](../../quickstart/testnet-workflow.md).
 
 [Foundry toolchain](https://github.com/foundry-rs/foundry) is a smart contract development toolchain written in Rust.
 
@@ -12,7 +12,7 @@ Foundry manages your dependencies, compiles your project, runs tests, deploys, a
 
 - You have [installed Foundry](https://github.com/foundry-rs/foundry#installation). This installation includes the `forge` and `cast` binaries used in this walk-through.
 - You are familiar with [Lux Smart Contract Quickstart](https://github.com/luxdefi/lux-smart-contract-quickstart).
-- If you plan on running locally, ensure that you have installed and are familiar with [Lux Network Runner](../../subnets/network-runner).
+- If you plan on running locally, ensure that you have installed and are familiar with [Lux Network Runner](../../subnets/netrunner).
 
 ## Getting Started
 
@@ -84,7 +84,7 @@ export RPC_URL=<YOUR-RPC-ENDPOINT>
 export PRIVATE_KEY=<YOUR-PRIVATE-KEY>
 ```
 
-Since we are deploying to Fuji testnet, our `RPC_URL` export should be:
+Since we are deploying to Testnet testnet, our `RPC_URL` export should be:
 
 ```zsh
 export RPC_URL=https://api.lux-test.network/ext/bc/C/rpc
@@ -154,7 +154,7 @@ The address you provided above should be returned as the owner.
 
 ## Mainnet Workflow
 
-The Fuji workflow above can be adapted to Mainnet with the following modifications to the environment variables:
+The Testnet workflow above can be adapted to Mainnet with the following modifications to the environment variables:
 
 ```zsh
 export RPC_URL=https://api.lux.network/ext/bc/C/rpc
@@ -163,9 +163,9 @@ export PRIVATE_KEY=<YOUR-PRIVATE-KEY>
 
 ## Local Workflow
 
-The Fuji workflow above can be adapted to a Local Network by doing following:
+The Testnet workflow above can be adapted to a Local Network by doing following:
 
-In a new terminal navigate to your [Lux Network Runner](../../subnets/network-runner.md) directory.
+In a new terminal navigate to your [Lux Network Runner](../../subnets/netrunner.md) directory.
 
 ```zsh
 cd /path/to/Lux-Network-Runner

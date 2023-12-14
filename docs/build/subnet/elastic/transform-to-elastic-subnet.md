@@ -17,7 +17,7 @@ elastic (or permissionless) Subnet.
 
 - [Lux-CLI installed](/tooling/cli-guides/install-cli.md)
 - You have deployed a permissioned Subnet on [local](/build/subnet/deploy/local-subnet.md), on 
-[Fuji](/build/subnet/deploy/fuji-testnet-subnet.md) or on [Mainnet](/build/subnet/deploy/mainnet-subnet.md)
+[Testnet](/build/subnet/deploy/testnet-subnet.md) or on [Mainnet](/build/subnet/deploy/mainnet-subnet.md)
 
 ## Getting Started
 
@@ -29,7 +29,7 @@ To transform your permissioned Subnet into an Elastic Subnet (NOTE: this action 
 `lux subnet elastic <subnetName>`
 
 and select the network that you want to transform the Subnet on. Alternatively, you can bypass this 
-prompt by providing the `--local`, `--fuji`, or `--mainnet` flag. 
+prompt by providing the `--local`, `--testnet`, or `--mainnet` flag. 
 
 Provide the name and the symbol for the permissionless Subnet's native token. You can also bypass 
 this prompt by providing the `--tokenName` and `--tokenSymbol` flags.
@@ -41,20 +41,20 @@ the default Elastic Subnet config.
 
 The command may take a couple minutes to run.
 
-### Elastic Subnet Transformation on Fuji and Mainnet
+### Elastic Subnet Transformation on Testnet and Mainnet
 
 Elastic Subnet transformation on public network requires private key loaded into the tool, or a 
 connected ledger device.
 
-Both stored key usage and ledger usage are enabled on Fuji (see more on creating keys 
-[here](/build/subnet/deploy/fuji-testnet-subnet.md#private-key)) 
+Both stored key usage and ledger usage are enabled on Testnet (see more on creating keys 
+[here](/build/subnet/deploy/testnet-subnet.md#private-key)) 
 while only ledger usage is enabled on Mainnet (see more on setting up your ledger 
 [here](/build/subnet/deploy/mainnet-subnet.md#setting-up-your-ledger)).
 
 To transform a permissioned Subnet into Elastic Subnet on public networks, users are required to 
 provide the keys that control the Subnet defined during the Subnet deployment process (more info on 
-keys in Fuji can be found 
-[here](/build/subnet/deploy/fuji-testnet-subnet.md#deploy-the-subnet),
+keys in Testnet can be found 
+[here](/build/subnet/deploy/testnet-subnet.md#deploy-the-subnet),
 while more info on ledger signing in Mainnet can be found 
 [here](/build/subnet/deploy/mainnet-subnet.md#deploy-the-subnet)). 
 

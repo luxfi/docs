@@ -11,7 +11,7 @@ sidebar_postion: 0
 Este tutorial te guiará en el despliegue de un contrato inteligente [ERC-721
 (NFT)](https://eips.ethereum.org/EIPS/eip-721) básico en la Red Lux,
 independientemente de tu experiencia previa en desarrollo. Desplegaremos nuestro
-NFT en la Testnet Fuji de Lux y lo veremos en el Explorador Snowtrace de la Testnet.
+NFT en la Testnet de Lux y lo veremos en el Explorador Snowtrace de la Testnet.
 Ten en cuenta que estos no son transferibles a la Mainnet. Sin embargo, una vez que te sientas
 cómodo lanzando tu proyecto, puedes hacerlo en la Mainnet de Lux y listar
 en un mercado de NFT.
@@ -20,7 +20,7 @@ Se utilizarán las siguientes herramientas durante este tutorial:
 
 - [Pinata](https://www.pinata.cloud/): Para almacenar tus imágenes y metadatos de NFT.
 - [Wizard de OpenZeppelin](https://wizard.openzeppelin.com/): para crear el contrato inteligente ERC-721.
-- [Remix IDE](https://remix-project.org/): Para editar el código y desplegarlo en Fuji.
+- [Remix IDE](https://remix-project.org/): Para editar el código y desplegarlo en Testnet.
 - [Lux Testnet Faucet](https://faucet.lux.network/): Para financiar el despliegue.
 - [Extensión de navegador Core](https://chrome.google.com/webstore/detail/core-crypto-wallet-nft-ex/agoakfejjabomempkjlepdflaleeobhb):
   Para procesar transacciones relacionadas con el financiamiento y despliegue del contrato inteligente.
@@ -58,14 +58,14 @@ Para hacer eso, ve a **Configuración** y haz clic en **Avanzado**.
 ![Imagen de Configuración 1](/img/c-chain-ERC20/settings1.png)
 
 Aquí, activa la función de **Modo Testnet**. Esto hará que Core cambie automáticamente a
-Fuji Testnet.
+Testnet.
 
 ![Imagen de Configuración 2](/img/c-chain-ERC20/settings2.png)
 
 :::info
 
 Si estás usando otras billeteras, como Core o MetaMask, puedes agregar la
-Testnet Fuji usando las siguientes especificaciones:
+Testnet usando las siguientes especificaciones:
 
 - **Nombre de Red**: Lux C-Chain
 - **Nueva URL RPC**: [https://api.lux-test.network/ext/bc/C/rpc](https://api.lux-test.network/ext/bc/C/rpc)
@@ -77,8 +77,8 @@ Testnet Fuji usando las siguientes especificaciones:
 
 ### Obteniendo Fondos de Testnet
 
-Como estamos desplegando en la Red Fuji, necesitarás obtener LUX en la red Fuji.
-Si visitas el [Lux Faucet](https://faucet.lux.network/), puedes solicitar hasta 2 LUX Fuji al día.
+Como estamos desplegando en la Red Testnet, necesitarás obtener LUX en la red Testnet.
+Si visitas el [Lux Faucet](https://faucet.lux.network/), puedes solicitar hasta 2 LUX Testnet al día.
 Por favor, ingresa la dirección de la C Chain de la cuenta vinculada a tu billetera Core en el paso anterior.
 
 ![Lux Faucet](intro-to-erc721s/1-faucet.png)

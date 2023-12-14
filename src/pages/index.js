@@ -43,7 +43,7 @@ function Home() {
               <Card
                 to="intro"
                 header={{
-                  label: translate({ message: "🔺 Learn about Lux" }),
+                  label: translate({ message: "▼ Learn about Lux" }),
                 }}
                 body={{
                   label: translate({
@@ -129,7 +129,7 @@ function Home() {
               <Card
                 to="https://academy.lux.network/course/fundamentals?utm_source=dev-docs&utm_medium=website&utm_content=learn-lux"
                 header={{
-                  label: translate({ message: "🔺 Lux Fundamentals" }),
+                  label: translate({ message: "▼ Lux Fundamentals" }),
                 }}
                 body={{
                   label: translate({

@@ -1,0 +1,15 @@
+{
+  "label": "Indexers",
+  "permalink": "/tags/indexers",
+  "allTagsPath": "/tags",
+  "count": 1,
+  "items": [
+    {
+      "id": "tooling/indexers",
+      "title": "🗄️ Indexers",
+      "description": "tools or services that facilitate efficient and quick access to data stored on Lux network.",
+      "permalink": "/tooling/indexers"
+    }
+  ],
+  "unlisted": false
+}

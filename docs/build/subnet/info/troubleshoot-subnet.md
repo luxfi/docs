@@ -109,7 +109,7 @@ this workaround helps you avoid broken builds in the short term.
 
 :::caution
 You must upgrade to the latest LuxGo version when deploying publicly to 
-Fuji Testnet or Lux Mainnet.
+Testnet or Lux Mainnet.
 :::
 
 ### More Information

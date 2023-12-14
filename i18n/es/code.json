@@ -413,8 +413,8 @@
     "message": "Comienza tu viaje de desarrollo de Subnets creando una Subnet en menos de cinco minutos",
     "description": "Translation for the first card description"
   },
-  "🔺 Learn about Lux": {
-    "message": "🔺 Aprende sobre Lux",
+  "▼ Learn about Lux": {
+    "message": "▼ Aprende sobre Lux",
     "description": "Translation for the second card label"
   },
   "Discover how Subnets and Lux Consensus are revolutionizing Web3": {
@@ -457,8 +457,8 @@
     "message": "Aprende con Lux Academy",
     "description": "Translation for the section title"
   },
-  "🔺 Lux Fundamentals": {
-    "message": "🔺 Fundamentos de Lux",
+  "▼ Lux Fundamentals": {
+    "message": "▼ Fundamentos de Lux",
     "description": "Translation for the first card label in the 'Learn with Lux Academy' section"
   },
   "Beginner-friendly course to get a high level overview of Lux Consensus, Subnets, and VM": {

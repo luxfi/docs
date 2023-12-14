@@ -34,9 +34,9 @@ Un validador recibirá una recompensa de staking si está en línea y responde d
 Puedes llamar al método de API `info.uptime` en tu nodo para aprender su tiempo de actividad ponderado y qué porcentaje de la red piensa actualmente que tu nodo tiene un tiempo de actividad suficientemente alto para recibir una recompensa de stake. Ver [aquí](/reference/luxd/info-api.md#infouptime). Puedes obtener otra opinión sobre el tiempo de actividad de tu nodo desde el
 [tablero de salud del validador](https://stats.lux.network/dashboard/validator-health-check/) de Lux. Si tu tiempo de actividad reportado no está cerca del 100%, puede haber algo mal con la configuración de tu nodo, lo que puede poner en peligro tu recompensa de stake. Si este es el caso, por favor ve [aquí](#por-qué-es-bajo-mi-tiempo-de-actividad) o contáctanos en [Discord](https://chat.lux.network) para que podamos ayudarte a encontrar el problema. Ten en cuenta que solo verificar el tiempo de actividad de tu validador según lo medido por nodos que no están haciendo staking, validadores con una pequeño stake o validadores que no han estado en línea durante toda la duración de tu período de validación puede proporcionar una vista inexacta del verdadero tiempo de actividad de tu nodo.
 
-### Fuji Testnet
+### Testnet
 
-En Fuji Testnet, todos los parámetros de staking son iguales que en Mainnet, excepto los siguientes:
+En Testnet, todos los parámetros de staking son iguales que en Mainnet, excepto los siguientes:
 
 - La cantidad mínima que un validador debe poner en stake es de 1 LUX
 - La cantidad mínima que un delegador debe delegar es de 1 LUX

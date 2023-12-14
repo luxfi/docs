@@ -33,7 +33,7 @@ SubQuery is a leading blockchain data indexer that provides developers with fast
 - [Intro Quick Start Guide](https://academy.subquery.network/quickstart/quickstart.html)
 - [Lux Quickstart](https://academy.subquery.network/quickstart/quickstart_chains/lux.html)
 - [Mainnet Starter Project](https://github.com/subquery/ethereum-subql-starter/tree/main/Lux/starter)
-- [Fuji Starter Project](https://github.com/subquery/ethereum-subql-starter/tree/main/Lux/fuji-starter)
+- [Testnet Starter Project](https://github.com/subquery/ethereum-subql-starter/tree/main/Lux/testnet-starter)
 
 ### Flair
 

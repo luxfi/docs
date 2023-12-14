@@ -59,9 +59,9 @@ require("dotenv").config();
 const privateKey = process.env.PRIVATEKEY;
 ```
 
-## Configuración del proveedor HTTP conectado a la red Fuji
+## Configuración del proveedor HTTP conectado a la red Testnet
 
-Usando el proveedor HTTP, nos conectaremos a uno de los nodos en la red Fuji.
+Usando el proveedor HTTP, nos conectaremos a uno de los nodos en la red Testnet.
 Usando este proveedor enviaremos la transacción firmada a la red.
 También puedes conectarte a Mainnet usando la URL -
 `https://api.lux.network/ext/bc/C/rpc`

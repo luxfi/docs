@@ -10,7 +10,7 @@ sidebar_position: 0
 
 El explorador de la cadena C soporta la verificación de contratos inteligentes, permitiendo a los usuarios revisarlos.
 
-El explorador de la cadena C en Mainnet está [aquí](https://snowtrace.io/) y el explorador de la Testnet Fuji está [aquí.](https://testnet.snowtrace.io/)
+El explorador de la cadena C en Mainnet está [aquí](https://snowtrace.io/) y el explorador de la Testnet está [aquí.](https://testnet.snowtrace.io/)
 
 Si tienes problemas, contáctanos en [Discord](https://chat.lux.network).
 

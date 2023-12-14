@@ -8,7 +8,7 @@ There is a public API server that allows developers to access the Lux network wi
 
 ## Using the Public API nodes
 
-The public API server is at `api.lux.network` for Lux Mainnet and `api.lux-test.network` for Lux Fuji Testnet. To access a particular API, just append the relevant API endpoint, as documented [here](./apis/issuing-api-calls.md). Namely, use the following end points for each chain respectively:
+The public API server is at `api.lux.network` for Lux Mainnet and `api.lux-test.network` for Lux Testnet. To access a particular API, just append the relevant API endpoint, as documented [here](./apis/issuing-api-calls.md). Namely, use the following end points for each chain respectively:
 
 ### HTTP
 
@@ -16,13 +16,13 @@ The public API server is at `api.lux.network` for Lux Mainnet and `api.lux-test.
 - For X-Chain API, the URL is `https://api.lux.network/ext/bc/X`.
 - For P-Chain API, the URL is `https://api.lux.network/ext/bc/P`.
 
-Note: on Fuji Testnet, use `https://api.lux-test.network/` instead of `https://api.lux.network/`.
+Note: on Testnet, use `https://api.lux-test.network/` instead of `https://api.lux.network/`.
 
 ### WebSocket
 
 - For C-Chain API, the URL is `wss://api.lux.network/ext/bc/C/ws`.
 
-Note: on Fuji Testnet, the URL is `wss://api.lux-test.network/ext/bc/C/ws`.
+Note: on Testnet, the URL is `wss://api.lux-test.network/ext/bc/C/ws`.
 
 ## Supported APIs
 

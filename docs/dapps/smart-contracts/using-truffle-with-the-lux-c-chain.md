@@ -10,16 +10,16 @@ You've completed [Run an Lux Node](../../nodes/build/run-lux-node-manually.md) a
 
 ## Dependencies
 
-- [Lux Network Runner](https://github.com/luxdefi/lux-network-runner) is a tool for running a local Lux network. It's similar to Truffle's [Ganache](https://www.trufflesuite.com/ganache).
+- [Lux Network Runner](https://github.com/luxdefi/lux-netrunner) is a tool for running a local Lux network. It's similar to Truffle's [Ganache](https://www.trufflesuite.com/ganache).
 - [NodeJS](https://nodejs.org/en) v8.9.4 or later.
 - Truffle, which you can install with `npm install -g truffle`
 
 ## Start up a Local Lux Network
 
-[Lux Network Runner](https://github.com/luxdefi/lux-network-runner) allows you to spin up private test network deployments. Start a local five node Lux network:
+[Lux Network Runner](https://github.com/luxdefi/lux-netrunner) allows you to spin up private test network deployments. Start a local five node Lux network:
 
 ```text
-cd /path/to/lux-network-runner
+cd /path/to/lux-netrunner
 # start a five node staking network
 ./go run examples/local/fivenodenetwork/main.go
 ```

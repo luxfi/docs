@@ -30,7 +30,7 @@ Para ver información detallada sobre tus Subnets desplegadas, agrega la bandera
 ```text
 > lux subnet list --deployed
 +-------------+-------------+---------------------------------------------------+---------------+-----------------------------------------------------------------+---------+
-|   SUBNET    |    CHAIN    |                       VM ID                       | LOCAL NETWORK |                          FUJI (TESTNET)                         | MAINNET |
+|   SUBNET    |    CHAIN    |                       VM ID                       | LOCAL NETWORK |                          TESTNET (TESTNET)                         | MAINNET |
 +-------------+-------------+---------------------------------------------------+---------------+-----------------------------------------------------------------+---------+
 | test        | test        | tGBrM2SXkAdNsqzb3SaFZZWMNdzjjFEUKteheTa4dhUwnfQyu | Sí            | SubnetID: XTK7AM2Pw5A4cCtQ3rTugqbeLCU9mVixML3YwwLYUJ4WXN2Kt     | No      |
 +             +             +                                                   +               +-----------------------------------------------------------------+---------+
@@ -66,9 +66,9 @@ Ejemplo:
 +----------------------------+----------------------------------------------------+
 | ID de la VM                | tGBrM2SXkAdNsqzb3SaFZZWMNdzjjFEUKteheTa4dhUwnfQyu  |
 +----------------------------+----------------------------------------------------+
-| SubnetID Fuji              | XTK7AM2Pw5A4cCtQ3rTugqbeLCU9mVixML3YwwLYUJ4WXN2Kt  |
+| SubnetID Testnet              | XTK7AM2Pw5A4cCtQ3rTugqbeLCU9mVixML3YwwLYUJ4WXN2Kt  |
 +----------------------------+----------------------------------------------------+
-| BlockchainID Fuji          | 5ce2WhnyeMELzg9UtfpCDGNwRa2AzMzRhBWfTqmFuiXPWE4TR  |
+| BlockchainID Testnet          | 5ce2WhnyeMELzg9UtfpCDGNwRa2AzMzRhBWfTqmFuiXPWE4TR  |
 +----------------------------+----------------------------------------------------+
 | SubnetID Red Local         | 2CZP2ndbQnZxTzGuZjPrJAm5b4s2K2Bcjh8NqWoymi8NZMLYQk |
 +----------------------------+----------------------------------------------------+

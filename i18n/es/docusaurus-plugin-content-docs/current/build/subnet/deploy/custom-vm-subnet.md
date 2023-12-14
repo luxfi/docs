@@ -173,7 +173,7 @@ A continuación, selecciona `Red Local`.
 Usa las teclas de flecha para navegar: ↓ ↑ → ←
 ? Elige una red para desplegar en:
   ▸ Red Local
-    Fuji
+    Testnet
     Mainnet
 ```
 

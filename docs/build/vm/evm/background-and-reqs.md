@@ -89,7 +89,7 @@ Download the following prerequisites into your `$GOPATH`:
 
 - Git Clone the repository (Subnet-EVM or Precompile-EVM)
 - Git Clone [LuxGo](https://github.com/luxdefi/luxd) repository
-- Install [Lux Network Runner](/tooling/network-runner.md)
+- Install [Lux Network Runner](/tooling/netrunner.md)
 - Install [solc](https://github.com/ethereum/solc-js#usage-on-the-command-line)
 - Install [Node.js and NPM](https://nodejs.org/en/download)
   For easy copy paste, use the below commands:
@@ -129,7 +129,7 @@ Then run the following commands:
 
 ```shell
 git clone git@github.com:luxdefi/luxd.git
-curl -sSfL https://raw.githubusercontent.com/luxdefi/network-runner/main/scripts/install.sh | sh -s
+curl -sSfL https://raw.githubusercontent.com/luxdefi/netrunner/main/scripts/install.sh | sh -s
 npm install -g solc
 ```
 

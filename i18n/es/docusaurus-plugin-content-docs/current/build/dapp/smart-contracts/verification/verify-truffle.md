@@ -108,7 +108,7 @@ module.exports = {
     snowtrace: snowtraceApiKey,
   },
   networks: {
-    fuji: {
+    testnet: {
       provider: () =>
         new HDWalletProvider(
           mnemonic,
@@ -141,7 +141,7 @@ Una vez que se complete esta operación, tu carpeta `./build/contracts` debería
 Ejecuta el siguiente comando:
 
 ```zsh
-npx truffle migrate --network fuji
+npx truffle migrate --network testnet
 ```
 
 Deberías ver la actividad de la TX en tu terminal
@@ -155,9 +155,9 @@ Deberías ver la actividad de la TX en tu terminal
 
 Truffle verify permite a los usuarios verificar contratos desde la CLI
 
-### Fuji Testnet
+### Testnet
 
-Echa un vistazo al explorador de Fuji Testnet [aquí](https://testnet.snowtrace.io/)
+Echa un vistazo al explorador de Testnet [aquí](https://testnet.snowtrace.io/)
 y lee más sobre truffle verify
 [aquí](https://github.com/rkalis/truffle-plugin-verify)
 
@@ -166,7 +166,7 @@ Si tienes problemas, contáctanos en [Discord](https://chat.lux.network)
 1. Ejecuta el siguiente comando:
 
    ```zsh
-   npx truffle run verify ConvertLib MetaCoin --network fuji
+   npx truffle run verify ConvertLib MetaCoin --network testnet
    ```
 
 2. Espera el mensaje de verificación desde la CLI
@@ -210,4 +210,4 @@ truffle migrate --network mainnet
 truffle verify CovertLib MetaCoin --network mainnet
 ```
 
-Gracias por leer 🔺
+Gracias por leer ▼

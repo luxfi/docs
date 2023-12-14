@@ -16,4 +16,4 @@ Subnets y blockchains.
 | Enlaces                                                      |     |
 | :----------------------------------------------------------- | --- |
 | [**Mainnet de Lux**](https://subnets.lux.network/) 🌐 |
-| [**Testnet Fuji**](https://subnets-test.lux.network/) 🧪    |
+| [**Testnet**](https://subnets-test.lux.network/) 🧪    |
