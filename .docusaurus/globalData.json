@@ -328,6 +328,10 @@
               "path": "/deprecated/tutorials-contest/2021"
             },
             {
+              "id": "deprecated/tutorials-contest/2021/DAO/README",
+              "path": "/deprecated/tutorials-contest/2021/DAO/"
+            },
+            {
               "id": "deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js",
               "path": "/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js"
             },
@@ -360,20 +364,20 @@
               "path": "/deprecated/tutorials-contest/2021/drizzle-auction-manager/"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/ActiveElections.js",
-              "path": "/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/ActiveElections.js"
+              "id": "deprecated/tutorials-contest/2021/evoting-dapp/frontend/ActiveElections.js",
+              "path": "/deprecated/tutorials-contest/2021/evoting-dapp/frontend/ActiveElections.js"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/CreateElection.js",
-              "path": "/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/CreateElection.js"
+              "id": "deprecated/tutorials-contest/2021/evoting-dapp/frontend/CreateElection.js",
+              "path": "/deprecated/tutorials-contest/2021/evoting-dapp/frontend/CreateElection.js"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/VoteModal.js",
-              "path": "/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/VoteModal.js"
+              "id": "deprecated/tutorials-contest/2021/evoting-dapp/frontend/VoteModal.js",
+              "path": "/deprecated/tutorials-contest/2021/evoting-dapp/frontend/VoteModal.js"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/evoting-lux-dapp/README",
-              "path": "/deprecated/tutorials-contest/2021/evoting-lux-dapp/"
+              "id": "deprecated/tutorials-contest/2021/evoting-dapp/README",
+              "path": "/deprecated/tutorials-contest/2021/evoting-dapp/"
             },
             {
               "id": "deprecated/tutorials-contest/2021/hardhat-fork/README",
@@ -386,10 +390,6 @@
             {
               "id": "deprecated/tutorials-contest/2021/lux-chat-dapp/README",
               "path": "/deprecated/tutorials-contest/2021/lux-chat-dapp/"
-            },
-            {
-              "id": "deprecated/tutorials-contest/2021/lux-DAO/README",
-              "path": "/deprecated/tutorials-contest/2021/lux-DAO/"
             },
             {
               "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html",
@@ -424,16 +424,16 @@
               "path": "/deprecated/tutorials-contest/2021/pangolin-token-subgraph/"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup/README",
-              "path": "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup/"
+              "id": "deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/ansible-chainlink-lux-setup/README",
+              "path": "/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/ansible-chainlink-lux-setup/"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/chainlink-external-adaptor/README",
-              "path": "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/chainlink-external-adaptor/"
+              "id": "deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/chainlink-external-adaptor/README",
+              "path": "/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/chainlink-external-adaptor/"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/README",
-              "path": "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/"
+              "id": "deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/README",
+              "path": "/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/"
             },
             {
               "id": "deprecated/tutorials-contest/2021/red-dev-sig-verify-tutorial/README",
@@ -452,20 +452,20 @@
               "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/nativeMinterAddress.js"
             },
             {
-              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol",
-              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol"
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol"
             },
             {
               "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol",
               "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol"
             },
             {
-              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol",
-              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol"
-            },
-            {
               "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol",
               "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol"
             },
             {
               "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBalance.js",
@@ -532,8 +532,8 @@
               "path": "/deprecated/tutorials-contest/2022/lux-subnet-customization/"
             },
             {
-              "id": "deprecated/tutorials-contest/2022/lux-theGraph-index/README",
-              "path": "/deprecated/tutorials-contest/2022/lux-theGraph-index/"
+              "id": "deprecated/tutorials-contest/2022/theGraph-index/README",
+              "path": "/deprecated/tutorials-contest/2022/theGraph-index/"
             },
             {
               "id": "deprecated/tutorials-contest/README",

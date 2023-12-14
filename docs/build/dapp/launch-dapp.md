@@ -33,7 +33,7 @@ bridges, and NFTs in one seamless, high-performance browser experience. Putting
 in another way, Core is more than a wallet. It is a curated web3 operating
 system combining Wallet, Explorer, Bridge, Subnets, dApps, and more.
 
-In your application's web interface, follow [this to add Lux programmatically](/build/dapp/advanced/add-programmatically.md#core).
+In your application's web interface, follow [this to add Lux programmatically](/build/dapp/advanced/add-lux-programmatically.md#core).
 
 ### Through MetaMask
 
@@ -58,7 +58,7 @@ Lux is as follows.
 - **Explorer**: [https://testnet.snowtrace.io/](https://testnet.snowtrace.io/)
 
 In your application's web interface, you can
-[add Lux programmatically](/build/dapp/advanced/add-programmatically.md#metamask)
+[add Lux programmatically](/build/dapp/advanced/add-lux-programmatically.md#metamask)
 so your users don't have to enter the network data manually.
 
 ### Using the Public API Nodes or RPC Endpoints

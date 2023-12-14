@@ -21,7 +21,7 @@ Hay varias formas de trabajar con la C-Chain.
 
 Impulsado por Lux, [Core](https://medium.com/luxdefi/luxdefi-releases-core-an-all-in-one-web3-operating-system-for-a844eb822887) es un sistema operativo todo en uno que reúne aplicaciones Lux, Subnets, puentes y NFT en una experiencia de navegador sin problemas y de alto rendimiento. En otras palabras, Core es más que una billetera. Es un sistema operativo web3 curado que combina Wallet, Explorer, Bridge, Subnets, dApps y más.
 
-En la interfaz web de tu aplicación, sigue [esto para agregar Lux programáticamente](/build/dapp/advanced/add-programmatically.md#core).
+En la interfaz web de tu aplicación, sigue [esto para agregar Lux programáticamente](/build/dapp/advanced/add-lux-programmatically.md#core).
 
 ### A través de MetaMask
 
@@ -43,7 +43,7 @@ Puedes acceder a C-Chain a través de MetaMask, definiendo una red personalizada
 - **Símbolo**: `LUX`
 - **Explorador**: [https://testnet.snowtrace.io/](https://testnet.snowtrace.io/)
 
-En la interfaz web de tu aplicación, puedes [agregar Lux programáticamente](/build/dapp/advanced/add-programmatically.md#metamask) para que tus usuarios no tengan que ingresar los datos de la red manualmente.
+En la interfaz web de tu aplicación, puedes [agregar Lux programáticamente](/build/dapp/advanced/add-lux-programmatically.md#metamask) para que tus usuarios no tengan que ingresar los datos de la red manualmente.
 
 ### Usando los Nodos de API Pública o Puntos de Extremo RPC
 

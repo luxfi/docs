@@ -1884,6 +1884,11 @@
       "title": "2021 Winners",
       "description": "These tutorials were published as a snapshot of when they were written,"
     },
+    "deprecated/tutorials-contest/2021/DAO/README": {
+      "id": "deprecated/tutorials-contest/2021/DAO/README",
+      "title": "How to Create Your Own DAO with Lux",
+      "description": "These tutorials were published as a snapshot of when they were written,"
+    },
     "deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js": {
       "id": "deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js",
       "title": "App.js",
@@ -1924,23 +1929,23 @@
       "title": "Create an Auction Bidding on Lux using ReactJS",
       "description": "These tutorials were published as a snapshot of when they were written,"
     },
-    "deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/ActiveElections.js": {
-      "id": "deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/ActiveElections.js",
+    "deprecated/tutorials-contest/2021/evoting-dapp/frontend/ActiveElections.js": {
+      "id": "deprecated/tutorials-contest/2021/evoting-dapp/frontend/ActiveElections.js",
       "title": "ActiveElections.js",
       "description": ""
     },
-    "deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/CreateElection.js": {
-      "id": "deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/CreateElection.js",
+    "deprecated/tutorials-contest/2021/evoting-dapp/frontend/CreateElection.js": {
+      "id": "deprecated/tutorials-contest/2021/evoting-dapp/frontend/CreateElection.js",
       "title": "CreateElection.js",
       "description": ""
     },
-    "deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/VoteModal.js": {
-      "id": "deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/VoteModal.js",
+    "deprecated/tutorials-contest/2021/evoting-dapp/frontend/VoteModal.js": {
+      "id": "deprecated/tutorials-contest/2021/evoting-dapp/frontend/VoteModal.js",
       "title": "VoteModal.js",
       "description": ""
     },
-    "deprecated/tutorials-contest/2021/evoting-lux-dapp/README": {
-      "id": "deprecated/tutorials-contest/2021/evoting-lux-dapp/README",
+    "deprecated/tutorials-contest/2021/evoting-dapp/README": {
+      "id": "deprecated/tutorials-contest/2021/evoting-dapp/README",
       "title": "Create a Voting Dapp on Lux Using ReactJS",
       "description": "These tutorials were published as a snapshot of when they were written,"
     },
@@ -1957,11 +1962,6 @@
     "deprecated/tutorials-contest/2021/lux-chat-dapp/README": {
       "id": "deprecated/tutorials-contest/2021/lux-chat-dapp/README",
       "title": "Create a Chat Dapp Using Solidity and ReactJS",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/2021/lux-DAO/README": {
-      "id": "deprecated/tutorials-contest/2021/lux-DAO/README",
-      "title": "How to Create Your Own DAO with Lux",
       "description": "These tutorials were published as a snapshot of when they were written,"
     },
     "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html": {
@@ -2004,18 +2004,18 @@
       "title": "How to Use The Graph to Query Lux Data",
       "description": "These tutorials were published as a snapshot of when they were written,"
     },
-    "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup/README": {
-      "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup/README",
+    "deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/ansible-chainlink-lux-setup/README": {
+      "id": "deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/ansible-chainlink-lux-setup/README",
       "title": "Reddev Infrastructure Automation Repository",
       "description": "Setup requirements:"
     },
-    "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/chainlink-external-adaptor/README": {
-      "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/chainlink-external-adaptor/README",
+    "deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/chainlink-external-adaptor/README": {
+      "id": "deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/chainlink-external-adaptor/README",
       "title": "Chainlink External Adaptor",
       "description": "Adaptor for communicating smart contract with real world data"
     },
-    "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/README": {
-      "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/README",
+    "deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/README": {
+      "id": "deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/README",
       "title": "How to Configure and Use Your Own Chainlink Node And External Adapter In Your Lux dapp",
       "description": "This tutorial will show you how to setup a Chainlink node with the Lux Testnet and create dapp smart contracts utilizing a Chainlink node."
     },
@@ -2039,8 +2039,8 @@
       "title": "NativeMinterAddress.js",
       "description": ""
     },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol",
+    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol": {
+      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol",
       "title": "LuxBridge.sol",
       "description": ""
     },
@@ -2049,14 +2049,14 @@
       "title": "SubnetBridge.sol",
       "description": ""
     },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol",
-      "title": "LuxToken.sol",
-      "description": ""
-    },
     "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol": {
       "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol",
       "title": "INativeMinter.sol",
+      "description": ""
+    },
+    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol": {
+      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol",
+      "title": "LuxToken.sol",
       "description": ""
     },
     "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBalance.js": {
@@ -2139,8 +2139,8 @@
       "title": "Lux - Creating a Genesis File for Your Subnet",
       "description": "These tutorials were published as a snapshot of when they were written,"
     },
-    "deprecated/tutorials-contest/2022/lux-theGraph-index/README": {
-      "id": "deprecated/tutorials-contest/2022/lux-theGraph-index/README",
+    "deprecated/tutorials-contest/2022/theGraph-index/README": {
+      "id": "deprecated/tutorials-contest/2022/theGraph-index/README",
       "title": "Indexing an Lux Local Subnet with The Graph",
       "description": "These tutorials were published as a snapshot of when they were written,"
     },

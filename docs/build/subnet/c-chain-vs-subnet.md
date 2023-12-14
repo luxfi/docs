@@ -9,8 +9,8 @@ pagination_label: When to Build on a Subnet vs. on the C-Chain
 
 In this article, we discuss often-overlooked differentiating characteristics of Subnets,
 with a primary focus on EVM-based applications. The goal is to identify the pros and cons of
-building an app on [C-Chain](/learn/lux/platform#c-chain) 
-versus [Subnet-EVM](https://github.com/luxdefi/subnet-evm), and help developers make more 
+building an app on [C-Chain](/learn/lux/lux-platform#c-chain)
+versus [Subnet-EVM](https://github.com/luxdefi/subnet-evm), and help developers make more
 informed decisions.
 
 ## When to Use a Subnet
@@ -122,7 +122,7 @@ and your project: deploying on a Subnet or deploying on the C-Chain.
 But, there is also a third way: deploy on C-Chain now, then move to your own Subnet later. If an
 application has relatively low transaction rate and no special circumstances that would make the
 C-Chain a non-starter, you can begin with C-Chain deployment to leverage existing technical
-infrastructure, and later expand to a Subnet. That way you can focus on working on the core of your 
+infrastructure, and later expand to a Subnet. That way you can focus on working on the core of your
 project and once you have a
 solid product/market fit and have gained enough traction that the C-Chain is constricting you, plan
 a move to your own Subnet.

@@ -2,9 +2,9 @@
 
 :::warning
 
-These tutorials were published as a snapshot of when they were written, 
+These tutorials were published as a snapshot of when they were written,
 and may contain out-of-date-information.
-For up-to-date information, please reach out to the owners of these 
+For up-to-date information, please reach out to the owners of these
 projects.
 
 :::
@@ -164,7 +164,7 @@ Create a `Token` folder inside `contracts` folder
 
 Create `LuxToken.sol` file inside `Token` folder
 
-[LuxToken.sol](./codes/contracts/Token/LuxToken.sol.md)
+[LuxToken.sol](../erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol.md)
 
 #### Native Minter Interface
 
@@ -180,7 +180,7 @@ Create a `Bridge` folder inside `contracts` folder
 
 Create `LuxBridge.sol` file inside `Bridge` folder
 
-[LuxBridge.sol](./codes/contracts/Bridge/LuxBridge.sol.md)
+[LuxBridge.sol](../erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol.md)
 
 #### Subnet Bridge
 
@@ -456,8 +456,8 @@ ways to start the relayer application
    node ./relayer.js -1 <subnetBlockNumber>
    ```
 
-- When run with `node ./relayer.js <luxBlockNumber>` 
-  or `node ./relayer.js -1 <subnetBlockNumber>` 
+- When run with `node ./relayer.js <luxBlockNumber>`
+  or `node ./relayer.js -1 <subnetBlockNumber>`
   Relayer will look for events on either Lux or Subnet
   from the block number you provided and will iterate through the next 10 blocks
   for the event. "-1" as block number means do not process any old blocks for

@@ -19,11 +19,11 @@ export default [
   },
   {
     path: '/',
-    component: ComponentCreator('/', '54d'),
+    component: ComponentCreator('/', 'e7b'),
     routes: [
       {
         path: '/',
-        component: ComponentCreator('/', '6b2'),
+        component: ComponentCreator('/', 'd03'),
         routes: [
           {
             path: '/tags',
@@ -187,7 +187,7 @@ export default [
           },
           {
             path: '/',
-            component: ComponentCreator('/', '768'),
+            component: ComponentCreator('/', 'a36'),
             routes: [
               {
                 path: '/build/dapp',
@@ -569,6 +569,11 @@ export default [
                 exact: true
               },
               {
+                path: '/deprecated/tutorials-contest/2021/DAO',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/DAO', 'bf4'),
+                exact: true
+              },
+              {
                 path: '/deprecated/tutorials-contest/2021/distributed-file-manager',
                 component: ComponentCreator('/deprecated/tutorials-contest/2021/distributed-file-manager', '96b'),
                 exact: true
@@ -609,23 +614,23 @@ export default [
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/evoting-lux-dapp',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-lux-dapp', 'c81'),
+                path: '/deprecated/tutorials-contest/2021/evoting-dapp',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-dapp', '333'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/ActiveElections.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/ActiveElections.js', '07e'),
+                path: '/deprecated/tutorials-contest/2021/evoting-dapp/frontend/ActiveElections.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-dapp/frontend/ActiveElections.js', '19d'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/CreateElection.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/CreateElection.js', '593'),
+                path: '/deprecated/tutorials-contest/2021/evoting-dapp/frontend/CreateElection.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-dapp/frontend/CreateElection.js', '26b'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/VoteModal.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/VoteModal.js', '703'),
+                path: '/deprecated/tutorials-contest/2021/evoting-dapp/frontend/VoteModal.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-dapp/frontend/VoteModal.js', '905'),
                 exact: true
               },
               {
@@ -641,11 +646,6 @@ export default [
               {
                 path: '/deprecated/tutorials-contest/2021/lux-chat-dapp',
                 component: ComponentCreator('/deprecated/tutorials-contest/2021/lux-chat-dapp', '3b2'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/lux-DAO',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/lux-DAO', '2d5'),
                 exact: true
               },
               {
@@ -689,18 +689,18 @@ export default [
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial', 'd4f'),
+                path: '/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial', '09e'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup', '17d'),
+                path: '/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/ansible-chainlink-lux-setup',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/ansible-chainlink-lux-setup', '16b'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/chainlink-external-adaptor',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/chainlink-external-adaptor', '47d'),
+                path: '/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/chainlink-external-adaptor',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/chainlink-external-adaptor', '273'),
                 exact: true
               },
               {
@@ -729,8 +729,8 @@ export default [
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol', '66b'),
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol', '58d'),
                 exact: true
               },
               {
@@ -739,13 +739,13 @@ export default [
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol', '327'),
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol', 'ece'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol', 'ece'),
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol', '248'),
                 exact: true
               },
               {
@@ -824,8 +824,8 @@ export default [
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2022/lux-theGraph-index',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/lux-theGraph-index', '420'),
+                path: '/deprecated/tutorials-contest/2022/theGraph-index',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/theGraph-index', 'fc6'),
                 exact: true
               },
               {

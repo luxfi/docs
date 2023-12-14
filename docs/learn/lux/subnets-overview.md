@@ -13,11 +13,11 @@ validators working together to achieve consensus on the state of one or more
 blockchains. Each blockchain is validated by exactly one Subnet, while a Subnet
 can validate many blockchains.
 
-Lux's [Primary Network](platform.md) is a special Subnet running three blockchains:
+Lux's [Primary Network](lux-platform.md) is a special Subnet running three blockchains:
 
-- The Platform Chain [(P-Chain)](/learn/lux/platform#p-chain)
-- The Contract Chain [(C-Chain)](/learn/lux/platform#c-chain)
-- The Exchange Chain [(X-Chain)](/learn/lux/platform#x-chain)
+- The Platform Chain [(P-Chain)](/learn/lux/lux-platform#p-chain)
+- The Contract Chain [(C-Chain)](/learn/lux/lux-platform#c-chain)
+- The Exchange Chain [(X-Chain)](/learn/lux/lux-platform#x-chain)
 
 ![image](/img/subnet-validators.png)
 
