@@ -2,7 +2,7 @@
   "label": "Build",
   "permalink": "/tags/build",
   "allTagsPath": "/tags",
-  "count": 65,
+  "count": 62,
   "items": [
     {
       "id": "build/dapp/README",
@@ -21,12 +21,6 @@
       "title": "🔺 Virtual Machines",
       "description": "Virtual Machines",
       "permalink": "/build/vm/"
-    },
-    {
-      "id": "build/dapp/advanced/add-avalanche-programmatically",
-      "title": "Add Lux Network Programmatically",
-      "description": "This document shows how to integrate Lux Network with your Dapp, either by Core or MetaMask.",
-      "permalink": "/build/dapp/advanced/add-avalanche-programmatically"
     },
     {
       "id": "build/dapp/advanced/add-lux-programmatically",
@@ -99,12 +93,6 @@
       "title": "Deploy a Permissioned Subnet on Mainnet",
       "description": "This tutorial demonstrates how to deploy a permissioned Subnet on Lux Mainnet.",
       "permalink": "/build/subnet/deploy/mainnet-subnet"
-    },
-    {
-      "id": "build/subnet/deploy/fuji-testnet-subnet",
-      "title": "Deploy a Permissioned Subnet on Testnet",
-      "description": "This tutorial demonstrates how to deploy a permissioned Subnet on Testnet.",
-      "permalink": "/build/subnet/deploy/fuji-testnet-subnet"
     },
     {
       "id": "build/subnet/deploy/testnet-subnet",
@@ -315,12 +303,6 @@
       "title": "Stateful Precompile Generation Tutorial",
       "description": "Getting started with building stateful precompiles for Subnet-EVM and Precompile-EVM",
       "permalink": "/build/vm/evm/intro"
-    },
-    {
-      "id": "build/dapp/fuji-workflow",
-      "title": "Testnet Workflow",
-      "description": "An end-to-end walkthrough of necessary development activities for a bare-bones decentralized application.",
-      "permalink": "/build/dapp/fuji-workflow"
     },
     {
       "id": "build/dapp/testnet-workflow",

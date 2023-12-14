@@ -19,11 +19,11 @@ export default [
   },
   {
     path: '/',
-    component: ComponentCreator('/', 'fc6'),
+    component: ComponentCreator('/', '54d'),
     routes: [
       {
         path: '/',
-        component: ComponentCreator('/', 'dbd'),
+        component: ComponentCreator('/', '6b2'),
         routes: [
           {
             path: '/tags',
@@ -187,17 +187,11 @@ export default [
           },
           {
             path: '/',
-            component: ComponentCreator('/', '5ee'),
+            component: ComponentCreator('/', '768'),
             routes: [
               {
                 path: '/build/dapp',
                 component: ComponentCreator('/build/dapp', '335'),
-                exact: true,
-                sidebar: "build-dapp"
-              },
-              {
-                path: '/build/dapp/advanced/add-avalanche-programmatically',
-                component: ComponentCreator('/build/dapp/advanced/add-avalanche-programmatically', '4c9'),
                 exact: true,
                 sidebar: "build-dapp"
               },
@@ -242,11 +236,6 @@ export default [
                 component: ComponentCreator('/build/dapp/explorers', '44b'),
                 exact: true,
                 sidebar: "build-dapp"
-              },
-              {
-                path: '/build/dapp/fuji-workflow',
-                component: ComponentCreator('/build/dapp/fuji-workflow', 'cec'),
-                exact: true
               },
               {
                 path: '/build/dapp/launch-dapp',
@@ -341,12 +330,6 @@ export default [
               {
                 path: '/build/subnet/deploy/custom-vm-subnet',
                 component: ComponentCreator('/build/subnet/deploy/custom-vm-subnet', '615'),
-                exact: true,
-                sidebar: "build-subnet"
-              },
-              {
-                path: '/build/subnet/deploy/fuji-testnet-subnet',
-                component: ComponentCreator('/build/subnet/deploy/fuji-testnet-subnet', '3f0'),
                 exact: true,
                 sidebar: "build-subnet"
               },
@@ -1095,16 +1078,6 @@ export default [
                 component: ComponentCreator('/nodes/validate/what-is-staking', 'da4'),
                 exact: true,
                 sidebar: "nodes"
-              },
-              {
-                path: '/quickstart/integrate-exchange-with-lux',
-                component: ComponentCreator('/quickstart/integrate-exchange-with-lux', 'ba7'),
-                exact: true
-              },
-              {
-                path: '/quickstart/multisig-utxos-with-luxjs',
-                component: ComponentCreator('/quickstart/multisig-utxos-with-luxjs', 'eeb'),
-                exact: true
               },
               {
                 path: '/reference',

@@ -223,7 +223,7 @@ the 1st address to the 2nd address.
 ```typescript
 // import ethers.js
 import { ethers } from "ethers";
-// network: using the Testnet testnet
+// network: using the Testnet
 const network = "https://api.lux-test.network/ext/bc/C/rpc";
 // provider: establish and RPC connection to the network
 const provider = new ethers.providers.JsonRpcProvider(network);

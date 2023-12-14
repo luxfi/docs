@@ -559,13 +559,6 @@
       {
         "type": "link",
         "label": "Add Network Programmatically",
-        "href": "/build/dapp/advanced/add-avalanche-programmatically",
-        "docId": "build/dapp/advanced/add-avalanche-programmatically",
-        "unlisted": false
-      },
-      {
-        "type": "link",
-        "label": "Add Network Programmatically",
         "href": "/build/dapp/advanced/add-lux-programmatically",
         "docId": "build/dapp/advanced/add-lux-programmatically",
         "unlisted": false
@@ -646,13 +639,6 @@
         "label": "On a Local Network",
         "href": "/build/subnet/deploy/local-subnet",
         "docId": "build/subnet/deploy/local-subnet",
-        "unlisted": false
-      },
-      {
-        "type": "link",
-        "label": "On Testnet",
-        "href": "/build/subnet/deploy/fuji-testnet-subnet",
-        "docId": "build/subnet/deploy/fuji-testnet-subnet",
         "unlisted": false
       },
       {
@@ -1524,12 +1510,6 @@
     ]
   },
   "docs": {
-    "build/dapp/advanced/add-avalanche-programmatically": {
-      "id": "build/dapp/advanced/add-avalanche-programmatically",
-      "title": "Add Lux Network Programmatically",
-      "description": "This document shows how to integrate Lux Network with your Dapp, either by Core or MetaMask.",
-      "sidebar": "build-dapp"
-    },
     "build/dapp/advanced/add-lux-programmatically": {
       "id": "build/dapp/advanced/add-lux-programmatically",
       "title": "Add Lux Network Programmatically",
@@ -1571,11 +1551,6 @@
       "title": "Lux Block Explorer",
       "description": "These Lux Block Explorers allow you to query historical Mainnet, testnet, and Subnet block data.",
       "sidebar": "build-dapp"
-    },
-    "build/dapp/fuji-workflow": {
-      "id": "build/dapp/fuji-workflow",
-      "title": "Testnet Workflow",
-      "description": "An end-to-end walkthrough of necessary development activities for a bare-bones decentralized application."
     },
     "build/dapp/launch-dapp": {
       "id": "build/dapp/launch-dapp",
@@ -1671,12 +1646,6 @@
       "id": "build/subnet/deploy/custom-vm-subnet",
       "title": "Create a Subnet with a Custom Virtual Machine",
       "description": "This tutorial demonstrates the process of creating a Subnet with a custom virtual machine and deploying it locally.",
-      "sidebar": "build-subnet"
-    },
-    "build/subnet/deploy/fuji-testnet-subnet": {
-      "id": "build/subnet/deploy/fuji-testnet-subnet",
-      "title": "Deploy a Permissioned Subnet on Testnet",
-      "description": "This tutorial demonstrates how to deploy a permissioned Subnet on Testnet.",
       "sidebar": "build-subnet"
     },
     "build/subnet/deploy/local-subnet": {
@@ -2430,16 +2399,6 @@
       "title": "What Is Staking?",
       "description": "Staking is an essential part of proof-of-stake (PoS) consensus mechanisms used by many blockchain networks, including Lux.",
       "sidebar": "nodes"
-    },
-    "quickstart/integrate-exchange-with-lux": {
-      "id": "quickstart/integrate-exchange-with-lux",
-      "title": "C-Chain Exchange Integration",
-      "description": "Overview"
-    },
-    "quickstart/multisig-utxos-with-luxjs": {
-      "id": "quickstart/multisig-utxos-with-luxjs",
-      "title": "Multi Signature UTXOs with LuxJS",
-      "description": "Introduction"
     },
     "reference/luxd/admin-api": {
       "id": "reference/luxd/admin-api",

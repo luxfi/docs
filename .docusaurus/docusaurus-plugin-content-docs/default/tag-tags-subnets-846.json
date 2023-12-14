@@ -2,7 +2,7 @@
   "label": "Subnets",
   "permalink": "/tags/subnets",
   "allTagsPath": "/tags",
-  "count": 28,
+  "count": 27,
   "items": [
     {
       "id": "build/subnet/README",
@@ -39,12 +39,6 @@
       "title": "Deploy a Permissioned Subnet on Mainnet",
       "description": "This tutorial demonstrates how to deploy a permissioned Subnet on Lux Mainnet.",
       "permalink": "/build/subnet/deploy/mainnet-subnet"
-    },
-    {
-      "id": "build/subnet/deploy/fuji-testnet-subnet",
-      "title": "Deploy a Permissioned Subnet on Testnet",
-      "description": "This tutorial demonstrates how to deploy a permissioned Subnet on Testnet.",
-      "permalink": "/build/subnet/deploy/fuji-testnet-subnet"
     },
     {
       "id": "build/subnet/deploy/testnet-subnet",

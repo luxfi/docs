@@ -2,14 +2,8 @@
   "label": "Dapps",
   "permalink": "/tags/dapps",
   "allTagsPath": "/tags",
-  "count": 25,
+  "count": 23,
   "items": [
-    {
-      "id": "build/dapp/advanced/add-avalanche-programmatically",
-      "title": "Add Lux Network Programmatically",
-      "description": "This document shows how to integrate Lux Network with your Dapp, either by Core or MetaMask.",
-      "permalink": "/build/dapp/advanced/add-avalanche-programmatically"
-    },
     {
       "id": "build/dapp/advanced/add-lux-programmatically",
       "title": "Add Lux Network Programmatically",
@@ -105,12 +99,6 @@
       "title": "Sending Transactions with Dynamic Fees using JavaScript",
       "description": "This tutorial will help users to send transactions with dynamic fee settings to adjust their priority fee and max fee cap during high network activity using javascript.",
       "permalink": "/build/dapp/advanced/sending-transactions-with-dynamic-fees-using-javascript"
-    },
-    {
-      "id": "build/dapp/fuji-workflow",
-      "title": "Testnet Workflow",
-      "description": "An end-to-end walkthrough of necessary development activities for a bare-bones decentralized application.",
-      "permalink": "/build/dapp/fuji-workflow"
     },
     {
       "id": "build/dapp/testnet-workflow",

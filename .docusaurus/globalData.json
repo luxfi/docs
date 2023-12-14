@@ -17,11 +17,6 @@
           "mainDocId": "learn/lux/intro",
           "docs": [
             {
-              "id": "build/dapp/advanced/add-avalanche-programmatically",
-              "path": "/build/dapp/advanced/add-avalanche-programmatically",
-              "sidebar": "build-dapp"
-            },
-            {
               "id": "build/dapp/advanced/add-lux-programmatically",
               "path": "/build/dapp/advanced/add-lux-programmatically",
               "sidebar": "build-dapp"
@@ -55,10 +50,6 @@
               "id": "build/dapp/explorers",
               "path": "/build/dapp/explorers",
               "sidebar": "build-dapp"
-            },
-            {
-              "id": "build/dapp/fuji-workflow",
-              "path": "/build/dapp/fuji-workflow"
             },
             {
               "id": "build/dapp/launch-dapp",
@@ -138,11 +129,6 @@
             {
               "id": "build/subnet/deploy/custom-vm-subnet",
               "path": "/build/subnet/deploy/custom-vm-subnet",
-              "sidebar": "build-subnet"
-            },
-            {
-              "id": "build/subnet/deploy/fuji-testnet-subnet",
-              "path": "/build/subnet/deploy/fuji-testnet-subnet",
               "sidebar": "build-subnet"
             },
             {
@@ -761,14 +747,6 @@
               "id": "nodes/validate/what-is-staking",
               "path": "/nodes/validate/what-is-staking",
               "sidebar": "nodes"
-            },
-            {
-              "id": "quickstart/integrate-exchange-with-lux",
-              "path": "/quickstart/integrate-exchange-with-lux"
-            },
-            {
-              "id": "quickstart/multisig-utxos-with-luxjs",
-              "path": "/quickstart/multisig-utxos-with-luxjs"
             },
             {
               "id": "reference/luxd/admin-api",
