@@ -636,7 +636,8 @@ Maximum amount of time an item should be processing and still be healthy. Report
 
 #### `snow-mixed-query-num-push-vdr` (uint):
 
-If this node is a validator, when a container is inserted into consensus, send a Push Query to this many validators and a Pull Query to the others. Must be <= k. Defaults to `10`.
+If this node is a validator, when a container is inserted into consensus, send a
+Push Query to this many validators and a Pull Query to the others. Must be `<= k`. Defaults to `10`.
 
 #### `snow-mixed-query-num-push-non-vdr` (uint):
 

@@ -137,10 +137,10 @@
       "permalink": "/build/subnet/upgrade/considerations-subnet-upgrade"
     },
     {
-      "id": "learn/lux/mainnet",
+      "id": "learn/avalanche/mainnet",
       "title": "Lux Mainnet",
       "description": "Lux Mainnet is the final and production-ready version of the blockchain where users can interact with the network and transact with real world assets.",
-      "permalink": "/learn/lux/mainnet"
+      "permalink": "/learn/avalanche/mainnet"
     },
     {
       "id": "learn/lux/mainnet",

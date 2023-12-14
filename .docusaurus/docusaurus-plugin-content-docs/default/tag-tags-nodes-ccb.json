@@ -35,10 +35,10 @@
       "permalink": "/nodes/validate/how-to-stake"
     },
     {
-      "id": "nodes/run/with-installer/installing-luxd",
+      "id": "nodes/run/with-installer/installing-avalanchego",
       "title": "Installing Luxd Using the Script",
       "description": "In this tutorial, you'll learn how to download and install Luxd using the installation script.",
-      "permalink": "/nodes/run/with-installer/installing-luxd"
+      "permalink": "/nodes/run/with-installer/installing-avalanchego"
     },
     {
       "id": "nodes/run/with-installer/installing-luxd",
@@ -53,10 +53,16 @@
       "permalink": "/nodes/run/third-party/aws-marketplace-one-click"
     },
     {
-      "id": "nodes/maintain/lux-notify",
+      "id": "nodes/maintain/avalanche-notify",
       "title": "Lux Notify",
       "description": "Lux Notify is an active monitoring system that checks a validator's responsiveness each minute. To receive email alerts if a validator becomes unresponsive or out-of-date, sign up with the Lux Notify tool.",
-      "permalink": "/nodes/maintain/lux-notify"
+      "permalink": "/nodes/maintain/avalanche-notify"
+    },
+    {
+      "id": "nodes/configure/avalanchego-config-flags",
+      "title": "Luxd Configs and Flags",
+      "description": "This documents list all available configuration and flags for Luxd.",
+      "permalink": "/nodes/configure/avalanchego-config-flags"
     },
     {
       "id": "nodes/configure/luxd-config-flags",
@@ -65,16 +71,10 @@
       "permalink": "/nodes/configure/luxd-config-flags"
     },
     {
-      "id": "nodes/configure/luxd-config-flags",
-      "title": "Luxd Configs and Flags",
-      "description": "This documents list all available configuration and flags for Luxd.",
-      "permalink": "/nodes/configure/luxd-config-flags"
-    },
-    {
-      "id": "nodes/run/with-installer/managing-luxd",
+      "id": "nodes/run/with-installer/managing-avalanchego",
       "title": "Managing Luxd",
       "description": "In this tutorial, you'll learn how to manage your Luxd node.",
-      "permalink": "/nodes/run/with-installer/managing-luxd"
+      "permalink": "/nodes/run/with-installer/managing-avalanchego"
     },
     {
       "id": "nodes/run/with-installer/managing-luxd",
@@ -185,10 +185,10 @@
       "permalink": "/nodes/validate/validate-or-delegate"
     },
     {
-      "id": "nodes/maintain/upgrade-your-luxd-node",
+      "id": "nodes/maintain/upgrade-your-avalanchego-node",
       "title": "Upgrade Your Luxd Node",
       "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.",
-      "permalink": "/nodes/maintain/upgrade-your-luxd-node"
+      "permalink": "/nodes/maintain/upgrade-your-avalanchego-node"
     },
     {
       "id": "nodes/validate/what-is-staking",

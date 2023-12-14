@@ -1,14 +1,14 @@
 {
-  "id": "nodes/run/with-installer/managing-luxd",
+  "id": "nodes/run/with-installer/managing-avalanchego",
   "title": "Managing Luxd",
   "description": "In this tutorial, you'll learn how to manage your Luxd node.",
-  "source": "@site/docs/nodes/run/with-installer/managing-luxd.md",
+  "source": "@site/docs/nodes/run/with-installer/managing-avalanchego.md",
   "sourceDirName": "nodes/run/with-installer",
-  "slug": "/nodes/run/with-installer/managing-luxd",
-  "permalink": "/nodes/run/with-installer/managing-luxd",
+  "slug": "/nodes/run/with-installer/managing-avalanchego",
+  "permalink": "/nodes/run/with-installer/managing-avalanchego",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/run/with-installer/managing-luxd.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/run/with-installer/managing-avalanchego.md",
   "tags": [
     {
       "label": "Nodes",
@@ -27,11 +27,11 @@
   },
   "sidebar": "nodes",
   "previous": {
-    "title": "Managing Luxd",
-    "permalink": "/nodes/run/with-installer/managing-avalanchego"
+    "title": "Installing Luxd",
+    "permalink": "/nodes/run/with-installer/installing-luxd"
   },
   "next": {
-    "title": "Node Config and Maintenance",
-    "permalink": "/nodes/run/with-installer/advance-config-maintenance"
+    "title": "Managing Luxd",
+    "permalink": "/nodes/run/with-installer/managing-luxd"
   }
 }

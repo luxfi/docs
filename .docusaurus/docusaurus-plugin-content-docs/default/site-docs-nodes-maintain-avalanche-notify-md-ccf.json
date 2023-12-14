@@ -1,0 +1,38 @@
+{
+  "id": "nodes/maintain/avalanche-notify",
+  "title": "Lux Notify",
+  "description": "Lux Notify is an active monitoring system that checks a validator's responsiveness each minute. To receive email alerts if a validator becomes unresponsive or out-of-date, sign up with the Lux Notify tool.",
+  "source": "@site/docs/nodes/maintain/avalanche-notify.md",
+  "sourceDirName": "nodes/maintain",
+  "slug": "/nodes/maintain/avalanche-notify",
+  "permalink": "/nodes/maintain/avalanche-notify",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/maintain/avalanche-notify.md",
+  "tags": [
+    {
+      "label": "Nodes",
+      "permalink": "/tags/nodes"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "tags": [
+      "Nodes"
+    ],
+    "description": "Lux Notify is an active monitoring system that checks a validator's responsiveness each minute. To receive email alerts if a validator becomes unresponsive or out-of-date, sign up with the Lux Notify tool.",
+    "sidebar_label": "Enroll in Lux Notify",
+    "pagination_label": "Enroll in Lux Notify",
+    "sidebar_position": 5
+  },
+  "sidebar": "nodes",
+  "previous": {
+    "title": "Reduce a Node's Disk Space: Run C-Chain Offline Pruning",
+    "permalink": "/nodes/maintain/run-offline-pruning"
+  },
+  "next": {
+    "title": "Luxd Config and Flags",
+    "permalink": "/nodes/maintain/luxd-config-flags"
+  }
+}
