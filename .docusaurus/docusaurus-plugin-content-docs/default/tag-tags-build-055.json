@@ -23,10 +23,10 @@
       "permalink": "/build/vm/"
     },
     {
-      "id": "build/dapp/advanced/add-avalanche-programmatically",
+      "id": "build/dapp/advanced/add-lux-programmatically",
       "title": "Add Lux Network Programmatically",
       "description": "This document shows how to integrate Lux Network with your Dapp, either by Core or MetaMask.",
-      "permalink": "/build/dapp/advanced/add-avalanche-programmatically"
+      "permalink": "/build/dapp/advanced/add-lux-programmatically"
     },
     {
       "id": "build/dapp/advanced/add-lux-programmatically",
@@ -101,10 +101,10 @@
       "permalink": "/build/subnet/deploy/mainnet-subnet"
     },
     {
-      "id": "build/subnet/deploy/testnet-testnet-subnet",
+      "id": "build/subnet/deploy/fuji-testnet-subnet",
       "title": "Deploy a Permissioned Subnet on Testnet",
       "description": "This tutorial demonstrates how to deploy a permissioned Subnet on Testnet.",
-      "permalink": "/build/subnet/deploy/testnet-testnet-subnet"
+      "permalink": "/build/subnet/deploy/fuji-testnet-subnet"
     },
     {
       "id": "build/subnet/deploy/testnet-subnet",
@@ -161,10 +161,10 @@
       "permalink": "/build/subnet/elastic/elastic-parameters"
     },
     {
-      "id": "build/subnet/utility/avalanche-subnet-faucet",
+      "id": "build/subnet/utility/lux-subnet-faucet",
       "title": "Enable Testnet Capabilities on a Subnet with Lux Subnet Faucet",
       "description": "Deploy a custom testnet faucet for your Subnet with features like multiple chain support, custom rate-limiting, CAPTCHA verification, and concurrent transaction handling.",
-      "permalink": "/build/subnet/utility/avalanche-subnet-faucet"
+      "permalink": "/build/subnet/utility/lux-subnet-faucet"
     },
     {
       "id": "build/vm/evm/executing-tests",
@@ -299,10 +299,10 @@
       "permalink": "/tooling/netrunner"
     },
     {
-      "id": "tooling/netrunner",
+      "id": "tooling/network-runner",
       "title": "Lux Netrunner",
       "description": "The Lux Netrunner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
-      "permalink": "/tooling/netrunner"
+      "permalink": "/tooling/network-runner"
     },
     {
       "id": "build/dapp/smart-contracts/nfts/preparing-nft-files",
@@ -323,10 +323,10 @@
       "permalink": "/build/vm/evm/intro"
     },
     {
-      "id": "build/dapp/testnet-workflow",
+      "id": "build/dapp/fuji-workflow",
       "title": "Testnet Workflow",
       "description": "An end-to-end walkthrough of necessary development activities for a bare-bones decentralized application.",
-      "permalink": "/build/dapp/testnet-workflow"
+      "permalink": "/build/dapp/fuji-workflow"
     },
     {
       "id": "build/dapp/testnet-workflow",
@@ -367,13 +367,13 @@
     {
       "id": "build/dapp/smart-contracts/verification/verify-hardhat",
       "title": "Verifying Smart Contracts Using Hardhat and Snowtrace",
-      "description": "This tutorial walks through verifying a smart contract on a block explorer using Hardhat after deploying it to Avalance C-Chain.",
+      "description": "This tutorial walks through verifying a smart contract on a block explorer using Hardhat after deploying it to Lux C-Chain.",
       "permalink": "/build/dapp/smart-contracts/verification/verify-hardhat"
     },
     {
       "id": "deprecated/verify-truffle",
       "title": "Verifying Smart Contracts with Truffle Verify",
-      "description": "This tutorial walks through verifying a smart contract on a block explorer using Truffle after deploying it to Avalance C-Chain.",
+      "description": "This tutorial walks through verifying a smart contract on a block explorer using Truffle after deploying it to Lux C-Chain.",
       "permalink": "/deprecated/verify-truffle"
     },
     {

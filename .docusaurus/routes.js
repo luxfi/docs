@@ -201,8 +201,8 @@ export default [
                 sidebar: "build-dapp"
               },
               {
-                path: '/build/dapp/advanced/add-avalanche-programmatically',
-                component: ComponentCreator('/build/dapp/advanced/add-avalanche-programmatically', '4c9'),
+                path: '/build/dapp/advanced/add-lux-programmatically',
+                component: ComponentCreator('/build/dapp/advanced/add-lux-programmatically', '4c9'),
                 exact: true,
                 sidebar: "build-dapp"
               },
@@ -249,8 +249,8 @@ export default [
                 sidebar: "build-dapp"
               },
               {
-                path: '/build/dapp/testnet-workflow',
-                component: ComponentCreator('/build/dapp/testnet-workflow', 'cec'),
+                path: '/build/dapp/fuji-workflow',
+                component: ComponentCreator('/build/dapp/fuji-workflow', 'cec'),
                 exact: true
               },
               {
@@ -350,8 +350,8 @@ export default [
                 sidebar: "build-subnet"
               },
               {
-                path: '/build/subnet/deploy/testnet-testnet-subnet',
-                component: ComponentCreator('/build/subnet/deploy/testnet-testnet-subnet', '3f0'),
+                path: '/build/subnet/deploy/fuji-testnet-subnet',
+                component: ComponentCreator('/build/subnet/deploy/fuji-testnet-subnet', '3f0'),
                 exact: true,
                 sidebar: "build-subnet"
               },
@@ -470,8 +470,8 @@ export default [
                 sidebar: "build-subnet"
               },
               {
-                path: '/build/subnet/utility/avalanche-subnet-faucet',
-                component: ComponentCreator('/build/subnet/utility/avalanche-subnet-faucet', 'd04'),
+                path: '/build/subnet/utility/lux-subnet-faucet',
+                component: ComponentCreator('/build/subnet/utility/lux-subnet-faucet', 'd04'),
                 exact: true,
                 sidebar: "build-subnet"
               },
@@ -591,13 +591,13 @@ export default [
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/avalanche-DAO',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/avalanche-DAO', 'beb'),
+                path: '/deprecated/tutorials-contest/2021/lux-DAO',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/lux-DAO', 'beb'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/avax-chat-dapp',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/avax-chat-dapp', 'a9f'),
+                path: '/deprecated/tutorials-contest/2021/lux-chat-dapp',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/lux-chat-dapp', 'a9f'),
                 exact: true
               },
               {
@@ -641,23 +641,23 @@ export default [
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/evoting-avalanche-dapp',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-avalanche-dapp', '1df'),
+                path: '/deprecated/tutorials-contest/2021/evoting-lux-dapp',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-lux-dapp', '1df'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/ActiveElections.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/ActiveElections.js', 'd81'),
+                path: '/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/ActiveElections.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/ActiveElections.js', 'd81'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/CreateElection.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/CreateElection.js', '489'),
+                path: '/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/CreateElection.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/CreateElection.js', '489'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/VoteModal.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/VoteModal.js', 'b96'),
+                path: '/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/VoteModal.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/VoteModal.js', 'b96'),
                 exact: true
               },
               {
@@ -671,38 +671,38 @@ export default [
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche', '3d2'),
+                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux', '3d2'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend', '27e'),
+                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend', '27e'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/public/index-html',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/public/index-html', 'e51'),
+                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html', 'e51'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/App.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/App.js', '3d8'),
+                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/App.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/App.js', '3d8'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/index.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/index.js', '91c'),
+                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/index.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/index.js', '91c'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js', 'af2'),
+                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js', 'af2'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/setupTests.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/setupTests.js', '1dc'),
+                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/setupTests.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/setupTests.js', '1dc'),
                 exact: true
               },
               {
@@ -711,18 +711,18 @@ export default [
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial', '31f'),
+                path: '/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial', '31f'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial/ansible-chainlink-avalanche-setup',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial/ansible-chainlink-avalanche-setup', '2e4'),
+                path: '/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup', '2e4'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial/chainlink-external-adaptor',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial/chainlink-external-adaptor', 'd13'),
+                path: '/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/chainlink-external-adaptor',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/chainlink-external-adaptor', 'd13'),
                 exact: true
               },
               {
@@ -736,13 +736,13 @@ export default [
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2022/avalanche-theGraph-index',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/avalanche-theGraph-index', '588'),
+                path: '/deprecated/tutorials-contest/2022/lux-theGraph-index',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/lux-theGraph-index', '588'),
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2022/avax-subnet-customization',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/avax-subnet-customization', '4b8'),
+                path: '/deprecated/tutorials-contest/2022/lux-subnet-customization',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/lux-subnet-customization', '4b8'),
                 exact: true
               },
               {
@@ -761,8 +761,8 @@ export default [
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol', '66b'),
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol', '66b'),
                 exact: true
               },
               {
@@ -771,8 +771,8 @@ export default [
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol', '327'),
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol', '327'),
                 exact: true
               },
               {
@@ -873,43 +873,43 @@ export default [
                 sidebar: "learn"
               },
               {
-                path: '/learn/avalanche/avalanche-consensus',
-                component: ComponentCreator('/learn/avalanche/avalanche-consensus', '3f8'),
+                path: '/learn/lux/lux-consensus',
+                component: ComponentCreator('/learn/lux/lux-consensus', '3f8'),
                 exact: true
               },
               {
-                path: '/learn/avalanche/avalanche-platform',
-                component: ComponentCreator('/learn/avalanche/avalanche-platform', 'b13'),
+                path: '/learn/lux/lux-platform',
+                component: ComponentCreator('/learn/lux/lux-platform', 'b13'),
                 exact: true
               },
               {
-                path: '/learn/avalanche/avax',
-                component: ComponentCreator('/learn/avalanche/avax', '144'),
+                path: '/learn/lux/lux',
+                component: ComponentCreator('/learn/lux/lux', '144'),
                 exact: true
               },
               {
-                path: '/learn/avalanche/awm',
-                component: ComponentCreator('/learn/avalanche/awm', 'f18'),
+                path: '/learn/lux/awm',
+                component: ComponentCreator('/learn/lux/awm', 'f18'),
                 exact: true
               },
               {
-                path: '/learn/avalanche/testnet',
-                component: ComponentCreator('/learn/avalanche/testnet', '11e'),
+                path: '/learn/lux/fuji',
+                component: ComponentCreator('/learn/lux/fuji', '11e'),
                 exact: true
               },
               {
-                path: '/learn/avalanche/mainnet',
-                component: ComponentCreator('/learn/avalanche/mainnet', 'ebd'),
+                path: '/learn/lux/mainnet',
+                component: ComponentCreator('/learn/lux/mainnet', 'ebd'),
                 exact: true
               },
               {
-                path: '/learn/avalanche/subnets-overview',
-                component: ComponentCreator('/learn/avalanche/subnets-overview', '876'),
+                path: '/learn/lux/subnets-overview',
+                component: ComponentCreator('/learn/lux/subnets-overview', '876'),
                 exact: true
               },
               {
-                path: '/learn/avalanche/virtual-machines',
-                component: ComponentCreator('/learn/avalanche/virtual-machines', '3d1'),
+                path: '/learn/lux/virtual-machines',
+                component: ComponentCreator('/learn/lux/virtual-machines', '3d1'),
                 exact: true
               },
               {
@@ -987,8 +987,8 @@ export default [
                 exact: true
               },
               {
-                path: '/nodes/configure/avalanchego-config-flags',
-                component: ComponentCreator('/nodes/configure/avalanchego-config-flags', 'cf0'),
+                path: '/nodes/configure/luxd-config-flags',
+                component: ComponentCreator('/nodes/configure/luxd-config-flags', 'cf0'),
                 exact: true,
                 sidebar: "nodes"
               },
@@ -1011,8 +1011,8 @@ export default [
                 sidebar: "nodes"
               },
               {
-                path: '/nodes/maintain/avalanche-notify',
-                component: ComponentCreator('/nodes/maintain/avalanche-notify', '5d5'),
+                path: '/nodes/maintain/lux-notify',
+                component: ComponentCreator('/nodes/maintain/lux-notify', '5d5'),
                 exact: true,
                 sidebar: "nodes"
               },
@@ -1059,8 +1059,8 @@ export default [
                 sidebar: "nodes"
               },
               {
-                path: '/nodes/maintain/upgrade-your-avalanchego-node',
-                component: ComponentCreator('/nodes/maintain/upgrade-your-avalanchego-node', '566'),
+                path: '/nodes/maintain/upgrade-your-luxd-node',
+                component: ComponentCreator('/nodes/maintain/upgrade-your-luxd-node', '566'),
                 exact: true,
                 sidebar: "nodes"
               },
@@ -1137,8 +1137,8 @@ export default [
                 sidebar: "nodes"
               },
               {
-                path: '/nodes/run/with-installer/installing-avalanchego',
-                component: ComponentCreator('/nodes/run/with-installer/installing-avalanchego', '85c'),
+                path: '/nodes/run/with-installer/installing-luxd',
+                component: ComponentCreator('/nodes/run/with-installer/installing-luxd', '85c'),
                 exact: true,
                 sidebar: "nodes"
               },
@@ -1149,8 +1149,8 @@ export default [
                 sidebar: "nodes"
               },
               {
-                path: '/nodes/run/with-installer/managing-avalanchego',
-                component: ComponentCreator('/nodes/run/with-installer/managing-avalanchego', '0cc'),
+                path: '/nodes/run/with-installer/managing-luxd',
+                component: ComponentCreator('/nodes/run/with-installer/managing-luxd', '0cc'),
                 exact: true,
                 sidebar: "nodes"
               },
@@ -1297,8 +1297,8 @@ export default [
                 sidebar: "reference"
               },
               {
-                path: '/reference/standards/avalanche-network-protocol',
-                component: ComponentCreator('/reference/standards/avalanche-network-protocol', '7d6'),
+                path: '/reference/standards/lux-network-protocol',
+                component: ComponentCreator('/reference/standards/lux-network-protocol', '7d6'),
                 exact: true
               },
               {
@@ -1362,88 +1362,88 @@ export default [
                 sidebar: "tooling"
               },
               {
-                path: '/tooling/avalanche-cli',
-                component: ComponentCreator('/tooling/avalanche-cli', '281'),
+                path: '/tooling/cli',
+                component: ComponentCreator('/tooling/cli', '281'),
                 exact: true
               },
               {
-                path: '/tooling/avalanche-ops',
-                component: ComponentCreator('/tooling/avalanche-ops', 'd59'),
+                path: '/tooling/lux-ops',
+                component: ComponentCreator('/tooling/lux-ops', 'd59'),
                 exact: true
               },
               {
-                path: '/tooling/avalanche-plugin-manager',
-                component: ComponentCreator('/tooling/avalanche-plugin-manager', '6a3'),
+                path: '/tooling/lux-plugin-manager',
+                component: ComponentCreator('/tooling/lux-plugin-manager', '6a3'),
                 exact: true
               },
               {
-                path: '/tooling/avalanchego-installer',
-                component: ComponentCreator('/tooling/avalanchego-installer', '479'),
+                path: '/tooling/luxd-installer',
+                component: ComponentCreator('/tooling/luxd-installer', '479'),
                 exact: true
               },
               {
-                path: '/tooling/avalanchego-postman-collection/data-visualization',
-                component: ComponentCreator('/tooling/avalanchego-postman-collection/data-visualization', '632'),
+                path: '/tooling/luxd-postman-collection/data-visualization',
+                component: ComponentCreator('/tooling/luxd-postman-collection/data-visualization', '632'),
                 exact: true
               },
               {
-                path: '/tooling/avalanchego-postman-collection/making-api-calls',
-                component: ComponentCreator('/tooling/avalanchego-postman-collection/making-api-calls', 'b03'),
+                path: '/tooling/luxd-postman-collection/making-api-calls',
+                component: ComponentCreator('/tooling/luxd-postman-collection/making-api-calls', 'b03'),
                 exact: true
               },
               {
-                path: '/tooling/avalanchego-postman-collection/setup',
-                component: ComponentCreator('/tooling/avalanchego-postman-collection/setup', 'f44'),
+                path: '/tooling/luxd-postman-collection/setup',
+                component: ComponentCreator('/tooling/luxd-postman-collection/setup', 'f44'),
                 exact: true
               },
               {
-                path: '/tooling/avalanchego-postman-collection/variables',
-                component: ComponentCreator('/tooling/avalanchego-postman-collection/variables', 'f20'),
+                path: '/tooling/luxd-postman-collection/variables',
+                component: ComponentCreator('/tooling/luxd-postman-collection/variables', 'f20'),
                 exact: true
               },
               {
-                path: '/tooling/avalanchejs-api',
-                component: ComponentCreator('/tooling/avalanchejs-api', 'e58'),
+                path: '/tooling/luxjs-api',
+                component: ComponentCreator('/tooling/luxjs-api', 'e58'),
                 exact: true
               },
               {
-                path: '/tooling/avalanchejs-guides/create-an-asset-on-the-x-chain',
-                component: ComponentCreator('/tooling/avalanchejs-guides/create-an-asset-on-the-x-chain', 'cf1'),
+                path: '/tooling/luxjs-guides/create-an-asset-on-the-x-chain',
+                component: ComponentCreator('/tooling/luxjs-guides/create-an-asset-on-the-x-chain', 'cf1'),
                 exact: true
               },
               {
-                path: '/tooling/avalanchejs-guides/cross-chain-transfers',
-                component: ComponentCreator('/tooling/avalanchejs-guides/cross-chain-transfers', '4bf'),
+                path: '/tooling/luxjs-guides/cross-chain-transfers',
+                component: ComponentCreator('/tooling/luxjs-guides/cross-chain-transfers', '4bf'),
                 exact: true
               },
               {
-                path: '/tooling/avalanchejs-guides/generate-a-txid-using-avalanchejs',
-                component: ComponentCreator('/tooling/avalanchejs-guides/generate-a-txid-using-avalanchejs', '626'),
+                path: '/tooling/luxjs-guides/generate-a-txid-using-luxjs',
+                component: ComponentCreator('/tooling/luxjs-guides/generate-a-txid-using-luxjs', '626'),
                 exact: true
               },
               {
-                path: '/tooling/avalanchejs-guides/generate-key-pair',
-                component: ComponentCreator('/tooling/avalanchejs-guides/generate-key-pair', 'e78'),
+                path: '/tooling/luxjs-guides/generate-key-pair',
+                component: ComponentCreator('/tooling/luxjs-guides/generate-key-pair', 'e78'),
                 exact: true
               },
               {
-                path: '/tooling/avalanchejs-guides/manage-x-chain-keys',
-                component: ComponentCreator('/tooling/avalanchejs-guides/manage-x-chain-keys', '51f'),
+                path: '/tooling/luxjs-guides/manage-x-chain-keys',
+                component: ComponentCreator('/tooling/luxjs-guides/manage-x-chain-keys', '51f'),
                 exact: true
               },
               {
-                path: '/tooling/avalanchejs-guides/multisig-utxos-with-avalanchejs',
-                component: ComponentCreator('/tooling/avalanchejs-guides/multisig-utxos-with-avalanchejs', '0f3'),
+                path: '/tooling/luxjs-guides/multisig-utxos-with-luxjs',
+                component: ComponentCreator('/tooling/luxjs-guides/multisig-utxos-with-luxjs', '0f3'),
                 exact: true
               },
               {
-                path: '/tooling/avalanchejs-guides/send-an-asset-on-the-x-chain',
-                component: ComponentCreator('/tooling/avalanchejs-guides/send-an-asset-on-the-x-chain', '074'),
+                path: '/tooling/luxjs-guides/send-an-asset-on-the-x-chain',
+                component: ComponentCreator('/tooling/luxjs-guides/send-an-asset-on-the-x-chain', '074'),
                 exact: true
               },
               {
-                path: '/tooling/avalanchejs-overview',
-                component: ComponentCreator('/tooling/avalanchejs-overview', '1fc'),
+                path: '/tooling/luxjs-overview',
+                component: ComponentCreator('/tooling/luxjs-overview', '1fc'),
                 exact: true
               },
               {
@@ -1471,8 +1471,8 @@ export default [
                 sidebar: "tooling"
               },
               {
-                path: '/tooling/cli-guides/install-avalanche-cli',
-                component: ComponentCreator('/tooling/cli-guides/install-avalanche-cli', 'e0d'),
+                path: '/tooling/cli-guides/install-cli',
+                component: ComponentCreator('/tooling/cli-guides/install-cli', 'e0d'),
                 exact: true,
                 sidebar: "tooling"
               },
@@ -1633,8 +1633,8 @@ export default [
                 sidebar: "tooling"
               },
               {
-                path: '/tooling/netrunner',
-                component: ComponentCreator('/tooling/netrunner', 'b67'),
+                path: '/tooling/network-runner',
+                component: ComponentCreator('/tooling/network-runner', 'b67'),
                 exact: true
               },
               {

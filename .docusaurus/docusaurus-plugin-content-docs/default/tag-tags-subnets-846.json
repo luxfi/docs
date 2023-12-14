@@ -41,10 +41,10 @@
       "permalink": "/build/subnet/deploy/mainnet-subnet"
     },
     {
-      "id": "build/subnet/deploy/testnet-testnet-subnet",
+      "id": "build/subnet/deploy/fuji-testnet-subnet",
       "title": "Deploy a Permissioned Subnet on Testnet",
       "description": "This tutorial demonstrates how to deploy a permissioned Subnet on Testnet.",
-      "permalink": "/build/subnet/deploy/testnet-testnet-subnet"
+      "permalink": "/build/subnet/deploy/fuji-testnet-subnet"
     },
     {
       "id": "build/subnet/deploy/testnet-subnet",
@@ -77,10 +77,10 @@
       "permalink": "/build/subnet/elastic/elastic-parameters"
     },
     {
-      "id": "build/subnet/utility/avalanche-subnet-faucet",
+      "id": "build/subnet/utility/lux-subnet-faucet",
       "title": "Enable Testnet Capabilities on a Subnet with Lux Subnet Faucet",
       "description": "Deploy a custom testnet faucet for your Subnet with features like multiple chain support, custom rate-limiting, CAPTCHA verification, and concurrent transaction handling.",
-      "permalink": "/build/subnet/utility/avalanche-subnet-faucet"
+      "permalink": "/build/subnet/utility/lux-subnet-faucet"
     },
     {
       "id": "build/subnet/maintain/delete-subnet",
@@ -137,10 +137,10 @@
       "permalink": "/build/subnet/upgrade/considerations-subnet-upgrade"
     },
     {
-      "id": "learn/avalanche/mainnet",
+      "id": "learn/lux/mainnet",
       "title": "Lux Mainnet",
       "description": "Lux Mainnet is the final and production-ready version of the blockchain where users can interact with the network and transact with real world assets.",
-      "permalink": "/learn/avalanche/mainnet"
+      "permalink": "/learn/lux/mainnet"
     },
     {
       "id": "learn/lux/mainnet",

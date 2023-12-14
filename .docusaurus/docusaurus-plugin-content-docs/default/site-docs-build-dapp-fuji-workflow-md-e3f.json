@@ -1,0 +1,32 @@
+{
+  "id": "build/dapp/fuji-workflow",
+  "title": "Testnet Workflow",
+  "description": "An end-to-end walkthrough of necessary development activities for a bare-bones decentralized application.",
+  "source": "@site/docs/build/dapp/fuji-workflow.md",
+  "sourceDirName": "build/dapp",
+  "slug": "/build/dapp/fuji-workflow",
+  "permalink": "/build/dapp/fuji-workflow",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/build/dapp/fuji-workflow.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Dapps",
+      "permalink": "/tags/dapps"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Dapps"
+    ],
+    "description": "An end-to-end walkthrough of necessary development activities for a bare-bones decentralized application.",
+    "sidebar_label": "Testnet Workflow",
+    "pagination_label": "Testnet Workflow"
+  }
+}

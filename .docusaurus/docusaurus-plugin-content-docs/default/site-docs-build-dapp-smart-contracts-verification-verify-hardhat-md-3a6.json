@@ -1,7 +1,7 @@
 {
   "id": "build/dapp/smart-contracts/verification/verify-hardhat",
   "title": "Verifying Smart Contracts Using Hardhat and Snowtrace",
-  "description": "This tutorial walks through verifying a smart contract on a block explorer using Hardhat after deploying it to Avalance C-Chain.",
+  "description": "This tutorial walks through verifying a smart contract on a block explorer using Hardhat after deploying it to Lux C-Chain.",
   "source": "@site/docs/build/dapp/smart-contracts/verification/verify-hardhat.md",
   "sourceDirName": "build/dapp/smart-contracts/verification",
   "slug": "/build/dapp/smart-contracts/verification/verify-hardhat",
@@ -25,7 +25,7 @@
       "Build",
       "Dapps"
     ],
-    "description": "This tutorial walks through verifying a smart contract on a block explorer using Hardhat after deploying it to Avalance C-Chain.",
+    "description": "This tutorial walks through verifying a smart contract on a block explorer using Hardhat after deploying it to Lux C-Chain.",
     "sidebar_label": "Using Hardhat",
     "pagination_label": "Verifying Smart Contracts Using Hardhat and Snowtrace"
   },

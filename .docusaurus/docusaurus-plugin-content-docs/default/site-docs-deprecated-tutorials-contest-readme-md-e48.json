@@ -1,0 +1,15 @@
+{
+  "id": "deprecated/tutorials-contest/README",
+  "title": "Contest Overview",
+  "description": "These tutorials were published as a snapshot of when they were written,",
+  "source": "@site/docs/deprecated/tutorials-contest/README.md",
+  "sourceDirName": "deprecated/tutorials-contest",
+  "slug": "/deprecated/tutorials-contest/",
+  "permalink": "/deprecated/tutorials-contest/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/deprecated/tutorials-contest/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {}
+}

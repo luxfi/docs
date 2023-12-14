@@ -17,10 +17,10 @@
       "permalink": "/reference/luxd/p-chain/api"
     },
     {
-      "id": "learn/avalanche/avalanche-platform",
+      "id": "learn/lux/lux-platform",
       "title": "The Primary Network",
       "description": "Lux features 3 built-in blockchains which includes Exchange Chain (X-Chain), Platform Chain (P-Chain), and Contract Chain (C-Chain). More info here.",
-      "permalink": "/learn/avalanche/avalanche-platform"
+      "permalink": "/learn/lux/lux-platform"
     },
     {
       "id": "learn/lux/platform",

@@ -17,8 +17,8 @@
           "mainDocId": "learn/lux/intro",
           "docs": [
             {
-              "id": "build/dapp/advanced/add-avalanche-programmatically",
-              "path": "/build/dapp/advanced/add-avalanche-programmatically",
+              "id": "build/dapp/advanced/add-lux-programmatically",
+              "path": "/build/dapp/advanced/add-lux-programmatically",
               "sidebar": "build-dapp"
             },
             {
@@ -57,8 +57,8 @@
               "sidebar": "build-dapp"
             },
             {
-              "id": "build/dapp/testnet-workflow",
-              "path": "/build/dapp/testnet-workflow"
+              "id": "build/dapp/fuji-workflow",
+              "path": "/build/dapp/fuji-workflow"
             },
             {
               "id": "build/dapp/launch-dapp",
@@ -141,8 +141,8 @@
               "sidebar": "build-subnet"
             },
             {
-              "id": "build/subnet/deploy/testnet-testnet-subnet",
-              "path": "/build/subnet/deploy/testnet-testnet-subnet",
+              "id": "build/subnet/deploy/fuji-testnet-subnet",
+              "path": "/build/subnet/deploy/fuji-testnet-subnet",
               "sidebar": "build-subnet"
             },
             {
@@ -246,8 +246,8 @@
               "sidebar": "build-subnet"
             },
             {
-              "id": "build/subnet/utility/avalanche-subnet-faucet",
-              "path": "/build/subnet/utility/avalanche-subnet-faucet",
+              "id": "build/subnet/utility/lux-subnet-faucet",
+              "path": "/build/subnet/utility/lux-subnet-faucet",
               "sidebar": "build-subnet"
             },
             {
@@ -342,12 +342,12 @@
               "path": "/deprecated/tutorials-contest/2021"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/avalanche-DAO/README",
-              "path": "/deprecated/tutorials-contest/2021/avalanche-DAO/"
+              "id": "deprecated/tutorials-contest/2021/lux-DAO/README",
+              "path": "/deprecated/tutorials-contest/2021/lux-DAO/"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/avax-chat-dapp/README",
-              "path": "/deprecated/tutorials-contest/2021/avax-chat-dapp/"
+              "id": "deprecated/tutorials-contest/2021/lux-chat-dapp/README",
+              "path": "/deprecated/tutorials-contest/2021/lux-chat-dapp/"
             },
             {
               "id": "deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js",
@@ -382,20 +382,20 @@
               "path": "/deprecated/tutorials-contest/2021/drizzle-auction-manager/"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/ActiveElections.js",
-              "path": "/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/ActiveElections.js"
+              "id": "deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/ActiveElections.js",
+              "path": "/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/ActiveElections.js"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/CreateElection.js",
-              "path": "/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/CreateElection.js"
+              "id": "deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/CreateElection.js",
+              "path": "/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/CreateElection.js"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/VoteModal.js",
-              "path": "/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/VoteModal.js"
+              "id": "deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/VoteModal.js",
+              "path": "/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/VoteModal.js"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/evoting-avalanche-dapp/README",
-              "path": "/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/"
+              "id": "deprecated/tutorials-contest/2021/evoting-lux-dapp/README",
+              "path": "/deprecated/tutorials-contest/2021/evoting-lux-dapp/"
             },
             {
               "id": "deprecated/tutorials-contest/2021/hardhat-fork/README",
@@ -406,48 +406,48 @@
               "path": "/deprecated/tutorials-contest/2021/how-to-mint-erc721-using-openzeppelin/tutorial"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/public/index-html",
-              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/public/index-html"
+              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html",
+              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/README",
-              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/"
+              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/README",
+              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/App.js",
-              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/App.js"
+              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/App.js",
+              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/App.js"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/index.js",
-              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/index.js"
+              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/index.js",
+              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/index.js"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js",
-              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js"
+              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js",
+              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/setupTests.js",
-              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/setupTests.js"
+              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/setupTests.js",
+              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/setupTests.js"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/README",
-              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/"
+              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/README",
+              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/"
             },
             {
               "id": "deprecated/tutorials-contest/2021/pangolin-token-subgraph/README",
               "path": "/deprecated/tutorials-contest/2021/pangolin-token-subgraph/"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial/ansible-chainlink-avalanche-setup/README",
-              "path": "/deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial/ansible-chainlink-avalanche-setup/"
+              "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup/README",
+              "path": "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup/"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial/chainlink-external-adaptor/README",
-              "path": "/deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial/chainlink-external-adaptor/"
+              "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/chainlink-external-adaptor/README",
+              "path": "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/chainlink-external-adaptor/"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial/README",
-              "path": "/deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial/"
+              "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/README",
+              "path": "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/"
             },
             {
               "id": "deprecated/tutorials-contest/2021/red-dev-sig-verify-tutorial/README",
@@ -458,12 +458,12 @@
               "path": "/deprecated/tutorials-contest/2022"
             },
             {
-              "id": "deprecated/tutorials-contest/2022/avalanche-theGraph-index/README",
-              "path": "/deprecated/tutorials-contest/2022/avalanche-theGraph-index/"
+              "id": "deprecated/tutorials-contest/2022/lux-theGraph-index/README",
+              "path": "/deprecated/tutorials-contest/2022/lux-theGraph-index/"
             },
             {
-              "id": "deprecated/tutorials-contest/2022/avax-subnet-customization/README",
-              "path": "/deprecated/tutorials-contest/2022/avax-subnet-customization/"
+              "id": "deprecated/tutorials-contest/2022/lux-subnet-customization/README",
+              "path": "/deprecated/tutorials-contest/2022/lux-subnet-customization/"
             },
             {
               "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/chains.js",
@@ -474,16 +474,16 @@
               "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/nativeMinterAddress.js"
             },
             {
-              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol",
-              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol"
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol"
             },
             {
               "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol",
               "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol"
             },
             {
-              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol",
-              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol"
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol"
             },
             {
               "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol",
@@ -563,40 +563,40 @@
               "sidebar": "learn"
             },
             {
-              "id": "learn/avalanche/avalanche-consensus",
-              "path": "/learn/avalanche/avalanche-consensus"
+              "id": "learn/lux/lux-consensus",
+              "path": "/learn/lux/lux-consensus"
             },
             {
-              "id": "learn/avalanche/avalanche-platform",
-              "path": "/learn/avalanche/avalanche-platform"
+              "id": "learn/lux/lux-platform",
+              "path": "/learn/lux/lux-platform"
             },
             {
-              "id": "learn/avalanche/avax",
-              "path": "/learn/avalanche/avax"
+              "id": "learn/lux/lux",
+              "path": "/learn/lux/lux"
             },
             {
-              "id": "learn/avalanche/awm",
-              "path": "/learn/avalanche/awm"
+              "id": "learn/lux/awm",
+              "path": "/learn/lux/awm"
             },
             {
-              "id": "learn/avalanche/testnet",
-              "path": "/learn/avalanche/testnet"
+              "id": "learn/lux/fuji",
+              "path": "/learn/lux/fuji"
             },
             {
-              "id": "learn/avalanche/intro",
+              "id": "learn/lux/intro",
               "path": "/intro"
             },
             {
-              "id": "learn/avalanche/mainnet",
-              "path": "/learn/avalanche/mainnet"
+              "id": "learn/lux/mainnet",
+              "path": "/learn/lux/mainnet"
             },
             {
-              "id": "learn/avalanche/subnets-overview",
-              "path": "/learn/avalanche/subnets-overview"
+              "id": "learn/lux/subnets-overview",
+              "path": "/learn/lux/subnets-overview"
             },
             {
-              "id": "learn/avalanche/virtual-machines",
-              "path": "/learn/avalanche/virtual-machines"
+              "id": "learn/lux/virtual-machines",
+              "path": "/learn/lux/virtual-machines"
             },
             {
               "id": "learn/lux/awm",
@@ -660,8 +660,8 @@
               "path": "/nodes/build/setting-up-an-lux-node-with-amazon-web-services-aws"
             },
             {
-              "id": "nodes/configure/avalanchego-config-flags",
-              "path": "/nodes/configure/avalanchego-config-flags",
+              "id": "nodes/configure/luxd-config-flags",
+              "path": "/nodes/configure/luxd-config-flags",
               "sidebar": "nodes"
             },
             {
@@ -680,8 +680,8 @@
               "sidebar": "nodes"
             },
             {
-              "id": "nodes/maintain/avalanche-notify",
-              "path": "/nodes/maintain/avalanche-notify",
+              "id": "nodes/maintain/lux-notify",
+              "path": "/nodes/maintain/lux-notify",
               "sidebar": "nodes"
             },
             {
@@ -720,8 +720,8 @@
               "sidebar": "nodes"
             },
             {
-              "id": "nodes/maintain/upgrade-your-avalanchego-node",
-              "path": "/nodes/maintain/upgrade-your-avalanchego-node",
+              "id": "nodes/maintain/upgrade-your-luxd-node",
+              "path": "/nodes/maintain/upgrade-your-luxd-node",
               "sidebar": "nodes"
             },
             {
@@ -790,8 +790,8 @@
               "sidebar": "nodes"
             },
             {
-              "id": "nodes/run/with-installer/installing-avalanchego",
-              "path": "/nodes/run/with-installer/installing-avalanchego",
+              "id": "nodes/run/with-installer/installing-luxd",
+              "path": "/nodes/run/with-installer/installing-luxd",
               "sidebar": "nodes"
             },
             {
@@ -800,8 +800,8 @@
               "sidebar": "nodes"
             },
             {
-              "id": "nodes/run/with-installer/managing-avalanchego",
-              "path": "/nodes/run/with-installer/managing-avalanchego",
+              "id": "nodes/run/with-installer/managing-luxd",
+              "path": "/nodes/run/with-installer/managing-luxd",
               "sidebar": "nodes"
             },
             {
@@ -923,8 +923,8 @@
               "sidebar": "reference"
             },
             {
-              "id": "reference/standards/avalanche-network-protocol",
-              "path": "/reference/standards/avalanche-network-protocol"
+              "id": "reference/standards/lux-network-protocol",
+              "path": "/reference/standards/lux-network-protocol"
             },
             {
               "id": "reference/standards/cryptographic-primitives",
@@ -972,72 +972,72 @@
               "sidebar": "reference"
             },
             {
-              "id": "tooling/avalanche-cli",
-              "path": "/tooling/avalanche-cli"
+              "id": "tooling/cli",
+              "path": "/tooling/cli"
             },
             {
-              "id": "tooling/avalanche-ops",
-              "path": "/tooling/avalanche-ops"
+              "id": "tooling/lux-ops",
+              "path": "/tooling/lux-ops"
             },
             {
-              "id": "tooling/avalanche-plugin-manager",
-              "path": "/tooling/avalanche-plugin-manager"
+              "id": "tooling/lux-plugin-manager",
+              "path": "/tooling/lux-plugin-manager"
             },
             {
-              "id": "tooling/avalanchego-installer",
-              "path": "/tooling/avalanchego-installer"
+              "id": "tooling/luxd-installer",
+              "path": "/tooling/luxd-installer"
             },
             {
-              "id": "tooling/avalanchego-postman-collection/data-visualization",
-              "path": "/tooling/avalanchego-postman-collection/data-visualization"
+              "id": "tooling/luxd-postman-collection/data-visualization",
+              "path": "/tooling/luxd-postman-collection/data-visualization"
             },
             {
-              "id": "tooling/avalanchego-postman-collection/making-api-calls",
-              "path": "/tooling/avalanchego-postman-collection/making-api-calls"
+              "id": "tooling/luxd-postman-collection/making-api-calls",
+              "path": "/tooling/luxd-postman-collection/making-api-calls"
             },
             {
-              "id": "tooling/avalanchego-postman-collection/setup",
-              "path": "/tooling/avalanchego-postman-collection/setup"
+              "id": "tooling/luxd-postman-collection/setup",
+              "path": "/tooling/luxd-postman-collection/setup"
             },
             {
-              "id": "tooling/avalanchego-postman-collection/variables",
-              "path": "/tooling/avalanchego-postman-collection/variables"
+              "id": "tooling/luxd-postman-collection/variables",
+              "path": "/tooling/luxd-postman-collection/variables"
             },
             {
-              "id": "tooling/avalanchejs-api",
-              "path": "/tooling/avalanchejs-api"
+              "id": "tooling/luxjs-api",
+              "path": "/tooling/luxjs-api"
             },
             {
-              "id": "tooling/avalanchejs-guides/create-an-asset-on-the-x-chain",
-              "path": "/tooling/avalanchejs-guides/create-an-asset-on-the-x-chain"
+              "id": "tooling/luxjs-guides/create-an-asset-on-the-x-chain",
+              "path": "/tooling/luxjs-guides/create-an-asset-on-the-x-chain"
             },
             {
-              "id": "tooling/avalanchejs-guides/cross-chain-transfers",
-              "path": "/tooling/avalanchejs-guides/cross-chain-transfers"
+              "id": "tooling/luxjs-guides/cross-chain-transfers",
+              "path": "/tooling/luxjs-guides/cross-chain-transfers"
             },
             {
-              "id": "tooling/avalanchejs-guides/generate-a-txid-using-avalanchejs",
-              "path": "/tooling/avalanchejs-guides/generate-a-txid-using-avalanchejs"
+              "id": "tooling/luxjs-guides/generate-a-txid-using-luxjs",
+              "path": "/tooling/luxjs-guides/generate-a-txid-using-luxjs"
             },
             {
-              "id": "tooling/avalanchejs-guides/generate-key-pair",
-              "path": "/tooling/avalanchejs-guides/generate-key-pair"
+              "id": "tooling/luxjs-guides/generate-key-pair",
+              "path": "/tooling/luxjs-guides/generate-key-pair"
             },
             {
-              "id": "tooling/avalanchejs-guides/manage-x-chain-keys",
-              "path": "/tooling/avalanchejs-guides/manage-x-chain-keys"
+              "id": "tooling/luxjs-guides/manage-x-chain-keys",
+              "path": "/tooling/luxjs-guides/manage-x-chain-keys"
             },
             {
-              "id": "tooling/avalanchejs-guides/multisig-utxos-with-avalanchejs",
-              "path": "/tooling/avalanchejs-guides/multisig-utxos-with-avalanchejs"
+              "id": "tooling/luxjs-guides/multisig-utxos-with-luxjs",
+              "path": "/tooling/luxjs-guides/multisig-utxos-with-luxjs"
             },
             {
-              "id": "tooling/avalanchejs-guides/send-an-asset-on-the-x-chain",
-              "path": "/tooling/avalanchejs-guides/send-an-asset-on-the-x-chain"
+              "id": "tooling/luxjs-guides/send-an-asset-on-the-x-chain",
+              "path": "/tooling/luxjs-guides/send-an-asset-on-the-x-chain"
             },
             {
-              "id": "tooling/avalanchejs-overview",
-              "path": "/tooling/avalanchejs-overview"
+              "id": "tooling/luxjs-overview",
+              "path": "/tooling/luxjs-overview"
             },
             {
               "id": "tooling/cli",
@@ -1060,8 +1060,8 @@
               "sidebar": "tooling"
             },
             {
-              "id": "tooling/cli-guides/install-avalanche-cli",
-              "path": "/tooling/cli-guides/install-avalanche-cli",
+              "id": "tooling/cli-guides/install-cli",
+              "path": "/tooling/cli-guides/install-cli",
               "sidebar": "tooling"
             },
             {
@@ -1195,8 +1195,8 @@
               "sidebar": "tooling"
             },
             {
-              "id": "tooling/netrunner",
-              "path": "/tooling/netrunner"
+              "id": "tooling/network-runner",
+              "path": "/tooling/network-runner"
             },
             {
               "id": "tooling/ops",

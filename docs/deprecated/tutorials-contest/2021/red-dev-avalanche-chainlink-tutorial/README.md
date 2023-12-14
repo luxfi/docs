@@ -141,7 +141,7 @@ You can find more about SSH and how to use it
 Build the image into docker:
 
 ```bash
-cd avalancghego
+cd luxd
 ./scripts/build_image.sh
 ```
 

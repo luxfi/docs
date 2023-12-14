@@ -11,10 +11,10 @@
       "permalink": "/reference/subnet-evm/api"
     },
     {
-      "id": "learn/avalanche/virtual-machines",
+      "id": "learn/lux/virtual-machines",
       "title": "Virtual Machines",
       "description": "Virtual Machine is a virtual environment inside blockchain networks that executes smart contracts and transactions according to predetermined rules and protocols.",
-      "permalink": "/learn/avalanche/virtual-machines"
+      "permalink": "/learn/lux/virtual-machines"
     },
     {
       "id": "learn/lux/virtual-machines",

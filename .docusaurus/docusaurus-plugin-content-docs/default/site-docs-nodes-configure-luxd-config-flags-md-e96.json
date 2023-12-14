@@ -29,7 +29,7 @@
   "sidebar": "nodes",
   "previous": {
     "title": "Luxd Configs and Flags",
-    "permalink": "/nodes/configure/avalanchego-config-flags"
+    "permalink": "/nodes/configure/luxd-config-flags"
   },
   "next": {
     "title": "Chain Configs",
