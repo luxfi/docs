@@ -15,7 +15,7 @@
       },
       {
         "type": "link",
-        "label": "🔺 What is Lux?",
+        "label": "▼ What is Lux?",
         "href": "/intro",
         "docId": "learn/lux/intro",
         "unlisted": false
@@ -1740,7 +1740,7 @@
     },
     "build/subnet/README": {
       "id": "build/subnet/README",
-      "title": "🔺 Lux Subnets",
+      "title": "▼ Lux Subnets",
       "description": "Subnets",
       "sidebar": "build-subnet"
     },
@@ -1860,7 +1860,7 @@
     },
     "build/vm/README": {
       "id": "build/vm/README",
-      "title": "🔺 Virtual Machines",
+      "title": "▼ Virtual Machines",
       "description": "Virtual Machines",
       "sidebar": "build-vm"
     },

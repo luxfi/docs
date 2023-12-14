@@ -3,7 +3,7 @@ slug: /intro
 tags: [Lux]
 description: Lux is an open-source platform for building dApps in an interoperable, decentralized, and highly scalable ecosystem.
 keywords: [docs, lux, scalability, build on lux, dApps]
-sidebar_label: 🔺 What is Lux?
+sidebar_label: ▼ What is Lux?
 ---
 
 # What Is Lux?

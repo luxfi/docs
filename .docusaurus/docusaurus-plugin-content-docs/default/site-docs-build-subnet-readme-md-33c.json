@@ -1,6 +1,6 @@
 {
   "id": "build/subnet/README",
-  "title": "🔺 Lux Subnets",
+  "title": "▼ Lux Subnets",
   "description": "Subnets",
   "source": "@site/docs/build/subnet/README.md",
   "sourceDirName": "build/subnet",
@@ -21,7 +21,7 @@
   ],
   "version": "current",
   "frontMatter": {
-    "title": "🔺 Lux Subnets",
+    "title": "▼ Lux Subnets",
     "tags": [
       "Build",
       "Subnets"

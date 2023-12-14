@@ -214,4 +214,4 @@ truffle migrate --network mainnet
 truffle verify CovertLib MetaCoin --network mainnet
 ```
 
-Thanks for reading 🔺
+Thanks for reading ▼

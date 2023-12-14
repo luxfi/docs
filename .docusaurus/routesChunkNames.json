@@ -1,1035 +1,1078 @@
 {
-  "/markdown-page-7fc": {
-    "__comp": "1f391b9e",
+  "/__docusaurus/debug-5c1": {
+    "__comp": "__comp---theme-debug-config-23-a-2ff",
     "__context": {
-      "plugin": "ebf56fd0"
+      "plugin": "plugin---docusaurus-debug-9-fd-5c0"
+    }
+  },
+  "/__docusaurus/debug/config-213": {
+    "__comp": "__comp---theme-debug-config-23-a-2ff",
+    "__context": {
+      "plugin": "plugin---docusaurus-debug-9-fd-5c0"
+    }
+  },
+  "/__docusaurus/debug/content-375": {
+    "__comp": "__comp---theme-debug-contentba-8-ce7",
+    "__context": {
+      "plugin": "plugin---docusaurus-debug-9-fd-5c0"
     },
-    "content": "393be207"
+    "allContent": "allContent---docusaurus-debug-content-246-9aa"
+  },
+  "/__docusaurus/debug/globalData-8f5": {
+    "__comp": "__comp---theme-debug-global-dataede-0fa",
+    "__context": {
+      "plugin": "plugin---docusaurus-debug-9-fd-5c0"
+    }
+  },
+  "/__docusaurus/debug/metadata-f45": {
+    "__comp": "__comp---theme-debug-site-metadata-68-e-3d4",
+    "__context": {
+      "plugin": "plugin---docusaurus-debug-9-fd-5c0"
+    }
+  },
+  "/__docusaurus/debug/registry-829": {
+    "__comp": "__comp---theme-debug-registry-679-501",
+    "__context": {
+      "plugin": "plugin---docusaurus-debug-9-fd-5c0"
+    }
+  },
+  "/__docusaurus/debug/routes-eaa": {
+    "__comp": "__comp---theme-debug-routes-946-699",
+    "__context": {
+      "plugin": "plugin---docusaurus-debug-9-fd-5c0"
+    }
+  },
+  "/markdown-page-7fc": {
+    "__comp": "__comp---theme-mdx-page-1-f-3-b90",
+    "__context": {
+      "plugin": "plugin---markdown-pageebf-c6c"
+    },
+    "content": "content---markdown-page-393-028"
   },
   "/search-e1f": {
-    "__comp": "1a4e3797",
+    "__comp": "__comp---theme-search-page-1-a-4-d6f",
     "__context": {
-      "plugin": "68b8be43"
+      "plugin": "plugin---search-68-b-3ae"
     }
   },
   "/-c20": {
-    "__comp": "c4f5d8e4",
+    "__comp": "__comp---site-src-pages-index-jsc-4-f-f99",
     "__context": {
-      "plugin": "ebf56fd0"
+      "plugin": "plugin---markdown-pageebf-c6c"
     },
-    "config": "5e9f5e1a"
+    "config": "config---5-e-9-4f3"
   },
   "/-e7b": {
-    "__comp": "5e95c892",
+    "__comp": "__comp---theme-docs-root-5-e-9-0b6",
     "__context": {
-      "plugin": "059fabf7"
+      "plugin": "plugin---059-803"
     }
   },
   "/-d03": {
-    "__comp": "a7bd4aaa",
-    "version": "935f2afb"
+    "__comp": "__comp---theme-doc-version-roota-7-b-5de",
+    "version": "version---935-fcf"
   },
   "/tags-d7a": {
-    "__comp": "3720c009",
-    "tags": "55960ee5"
+    "__comp": "__comp---theme-doc-tags-list-page-372-89e",
+    "tags": "tags---tags-559-690"
   },
   "/tags/build-98c": {
-    "__comp": "df203c0f",
-    "tag": "11f9f2ab"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-build-11-f-9e8"
   },
   "/tags/c-chain-c8b": {
-    "__comp": "df203c0f",
-    "tag": "9377037b"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-c-chain-937-5a4"
   },
   "/tags/contract-chain-45c": {
-    "__comp": "df203c0f",
-    "tag": "c204e4f8"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-contract-chainc-20-259"
   },
   "/tags/cross-subnet-communication-74e": {
-    "__comp": "df203c0f",
-    "tag": "accf746f"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-cross-subnet-communicationacc-3b9"
   },
   "/tags/dapps-a69": {
-    "__comp": "df203c0f",
-    "tag": "93ec6c93"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-dapps-93-e-118"
   },
   "/tags/decentralized-applications-c36": {
-    "__comp": "df203c0f",
-    "tag": "9dbce453"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-decentralized-applications-9-db-74c"
   },
   "/tags/glacier-api-770": {
-    "__comp": "df203c0f",
-    "tag": "91838601"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-glacier-api-918-242"
   },
   "/tags/indexers-490": {
-    "__comp": "df203c0f",
-    "tag": "fe746bd1"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-indexersfe-7-302"
   },
   "/tags/lux-4fb": {
-    "__comp": "df203c0f",
-    "tag": "be7f3dfb"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-luxbe-7-25c"
   },
   "/tags/lux-cli-38d": {
-    "__comp": "df203c0f",
-    "tag": "f6942482"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-lux-clif-69-a85"
   },
   "/tags/lux-consensus-8cc": {
-    "__comp": "df203c0f",
-    "tag": "58fb25d9"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-lux-consensus-58-f-b6c"
   },
   "/tags/lux-js-e72": {
-    "__comp": "df203c0f",
-    "tag": "9e9c62ce"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-lux-js-9-e-9-9f3"
   },
   "/tags/lux-protocol-f22": {
-    "__comp": "df203c0f",
-    "tag": "215fad81"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-lux-protocol-215-a8e"
   },
   "/tags/lux-warp-messaging-df4": {
-    "__comp": "df203c0f",
-    "tag": "ca51fc89"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-lux-warp-messagingca-5-855"
   },
   "/tags/luxd-7b7": {
-    "__comp": "df203c0f",
-    "tag": "644c9130"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-luxd-644-e3e"
   },
   "/tags/luxd-ap-is-3b7": {
-    "__comp": "df203c0f",
-    "tag": "0c65ef50"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-luxd-ap-is-0-c-6-5ec"
   },
   "/tags/metrics-api-608": {
-    "__comp": "df203c0f",
-    "tag": "13919c7d"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-metrics-api-139-dba"
   },
   "/tags/nodes-bb4": {
-    "__comp": "df203c0f",
-    "tag": "436cf8ef"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-nodes-436-acf"
   },
   "/tags/p-chain-642": {
-    "__comp": "df203c0f",
-    "tag": "07a9983e"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-p-chain-07-a-36c"
   },
   "/tags/platform-chain-2c1": {
-    "__comp": "df203c0f",
-    "tag": "8952ad17"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-platform-chain-895-19f"
   },
   "/tags/primary-network-2f9": {
-    "__comp": "df203c0f",
-    "tag": "4ab60127"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-primary-network-4-ab-08e"
   },
   "/tags/rpc-providers-17a": {
-    "__comp": "df203c0f",
-    "tag": "092a6522"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-rpc-providers-092-f78"
   },
   "/tags/standards-982": {
-    "__comp": "df203c0f",
-    "tag": "27bf1fe3"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-standards-27-b-70b"
   },
   "/tags/subnet-c48": {
-    "__comp": "df203c0f",
-    "tag": "b1da05ba"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-subnetb-1-d-479"
   },
   "/tags/subnet-evm-247": {
-    "__comp": "df203c0f",
-    "tag": "164d97b0"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-subnet-evm-164-a5a"
   },
   "/tags/subnets-fe5": {
-    "__comp": "df203c0f",
-    "tag": "bfadd050"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-subnetsbfa-82a"
   },
   "/tags/testnet-cf0": {
-    "__comp": "df203c0f",
-    "tag": "de3d36ac"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-testnetde-3-29f"
   },
   "/tags/tooling-b8d": {
-    "__comp": "df203c0f",
-    "tag": "3fa6c59c"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-tooling-3-fa-fe1"
   },
   "/tags/transaction-format-0a9": {
-    "__comp": "df203c0f",
-    "tag": "8815427c"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-transaction-format-881-78d"
   },
   "/tags/virtual-machines-bd4": {
-    "__comp": "df203c0f",
-    "tag": "0e0f1127"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-virtual-machines-0-e-0-a5b"
   },
   "/tags/x-chain-728": {
-    "__comp": "df203c0f",
-    "tag": "f5249aae"
+    "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
+    "tag": "tag---tags-x-chainf-52-d2f"
   },
   "/-a36": {
-    "__comp": "a94703ab"
+    "__comp": "__comp---theme-doc-roota-94-67a"
   },
   "/build/dapp-335": {
-    "__comp": "17896441",
-    "content": "fa959038"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dappfa-9-275"
   },
   "/build/dapp/advanced/add-lux-programmatically-ada": {
-    "__comp": "17896441",
-    "content": "1472cf4b"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-advanced-add-lux-programmatically-147-220"
   },
   "/build/dapp/advanced/adjusting-gas-price-during-high-network-activity-f51": {
-    "__comp": "17896441",
-    "content": "8101caf0"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-advanced-adjusting-gas-price-during-high-network-activity-810-83f"
   },
   "/build/dapp/advanced/integrate-exchange-31d": {
-    "__comp": "17896441",
-    "content": "447ad692"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-advanced-integrate-exchange-447-c80"
   },
   "/build/dapp/advanced/sending-transactions-with-dynamic-fees-using-javascript-19f": {
-    "__comp": "17896441",
-    "content": "2ad96283"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-advanced-sending-transactions-with-dynamic-fees-using-javascript-2-ad-a05"
   },
   "/build/dapp/c-chain-evm-3ac": {
-    "__comp": "17896441",
-    "content": "58637f60"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-c-chain-evm-586-391"
   },
   "/build/dapp/chain-settings-6eb": {
-    "__comp": "17896441",
-    "content": "82e990f0"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-chain-settings-82-e-d40"
   },
   "/build/dapp/explorers-44b": {
-    "__comp": "17896441",
-    "content": "a7ad87e9"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-explorersa-7-a-068"
   },
   "/build/dapp/launch-dapp-bca": {
-    "__comp": "17896441",
-    "content": "b56c2c5e"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-launch-dappb-56-439"
   },
   "/build/dapp/smart-contracts/abigen-978": {
-    "__comp": "17896441",
-    "content": "60aa070c"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-smart-contracts-abigen-60-a-977"
   },
   "/build/dapp/smart-contracts/erc-20-59b": {
-    "__comp": "17896441",
-    "content": "a5b38fcd"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-smart-contracts-erc-20-a-5-b-547"
   },
   "/build/dapp/smart-contracts/get-funds-faucet-e4d": {
-    "__comp": "17896441",
-    "content": "e6e52007"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-smart-contracts-get-funds-faucete-6-e-985"
   },
   "/build/dapp/smart-contracts/nfts/deploy-collection-ccd": {
-    "__comp": "17896441",
-    "content": "9302dd1f"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-smart-contracts-nfts-deploy-collection-930-a77"
   },
   "/build/dapp/smart-contracts/nfts/preparing-nft-files-819": {
-    "__comp": "17896441",
-    "content": "959f03a8"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-smart-contracts-nfts-preparing-nft-files-959-c2f"
   },
   "/build/dapp/smart-contracts/remix-deploy-b88": {
-    "__comp": "17896441",
-    "content": "4dcb2e40"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-smart-contracts-remix-deploy-4-dc-a49"
   },
   "/build/dapp/smart-contracts/toolchains/foundry-b32": {
-    "__comp": "17896441",
-    "content": "ce4a4968"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-smart-contracts-toolchains-foundryce-4-91f"
   },
   "/build/dapp/smart-contracts/toolchains/hardhat-822": {
-    "__comp": "17896441",
-    "content": "c1b99ab1"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-smart-contracts-toolchains-hardhatc-1-b-0a5"
   },
   "/build/dapp/smart-contracts/toolchains/thirdweb-260": {
-    "__comp": "17896441",
-    "content": "5126bd88"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-smart-contracts-toolchains-thirdweb-512-028"
   },
   "/build/dapp/smart-contracts/verification/verify-hardhat-103": {
-    "__comp": "17896441",
-    "content": "3a6f3fe7"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-smart-contracts-verification-verify-hardhat-3-a-6-e2c"
   },
   "/build/dapp/smart-contracts/verification/verify-smart-contracts-680": {
-    "__comp": "17896441",
-    "content": "3bc9bad7"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-smart-contracts-verification-verify-smart-contracts-3-bc-7b6"
   },
   "/build/dapp/testnet-workflow-80b": {
-    "__comp": "17896441",
-    "content": "442b7637"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-dapp-testnet-workflow-442-7d4"
   },
   "/build/subnet-e1e": {
-    "__comp": "17896441",
-    "content": "33c8b0a9"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-33-c-cce"
   },
   "/build/subnet/c-chain-vs-subnet-f21": {
-    "__comp": "17896441",
-    "content": "929ea9ac"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-c-chain-vs-subnet-929-38f"
   },
   "/build/subnet/deploy/custom-vm-subnet-615": {
-    "__comp": "17896441",
-    "content": "f3f42adb"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-deploy-custom-vm-subnetf-3-f-896"
   },
   "/build/subnet/deploy/local-subnet-b61": {
-    "__comp": "17896441",
-    "content": "a25a4579"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-deploy-local-subneta-25-2ae"
   },
   "/build/subnet/deploy/mainnet-subnet-03f": {
-    "__comp": "17896441",
-    "content": "dfd3f726"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-deploy-mainnet-subnetdfd-704"
   },
   "/build/subnet/deploy/multisig-auth-7d0": {
-    "__comp": "17896441",
-    "content": "52673120"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-deploy-multisig-auth-526-339"
   },
   "/build/subnet/deploy/on-prod-infra-bf8": {
-    "__comp": "17896441",
-    "content": "3c54f941"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-deploy-on-prod-infra-3-c-5-be7"
   },
   "/build/subnet/deploy/testnet-subnet-e5a": {
-    "__comp": "17896441",
-    "content": "a2332d11"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-deploy-testnet-subneta-23-cde"
   },
   "/build/subnet/elastic/elastic-parameters-806": {
-    "__comp": "17896441",
-    "content": "3a2914b5"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-elastic-elastic-parameters-3-a-2-0d7"
   },
   "/build/subnet/elastic/transform-to-elastic-subnet-b78": {
-    "__comp": "17896441",
-    "content": "c1acef19"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-elastic-transform-to-elastic-subnetc-1-a-6dd"
   },
   "/build/subnet/getting-started-cb5": {
-    "__comp": "17896441",
-    "content": "6ca28a01"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-getting-started-6-ca-cb3"
   },
   "/build/subnet/hello-subnet-b6a": {
-    "__comp": "17896441",
-    "content": "ab6b96ea"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-hello-subnetab-6-1cd"
   },
   "/build/subnet/info/troubleshoot-subnet-0f5": {
-    "__comp": "17896441",
-    "content": "33921dae"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-info-troubleshoot-subnet-339-02c"
   },
   "/build/subnet/info/wagmi-cc8": {
-    "__comp": "17896441",
-    "content": "27de5587"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-info-wagmi-27-d-524"
   },
   "/build/subnet/maintain/delete-subnet-e0f": {
-    "__comp": "17896441",
-    "content": "7270e581"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-maintain-delete-subnet-727-295"
   },
   "/build/subnet/maintain/how-to-transfer-funds-222": {
-    "__comp": "17896441",
-    "content": "640e2353"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-maintain-how-to-transfer-funds-640-665"
   },
   "/build/subnet/maintain/pause-resume-subnet-87d": {
-    "__comp": "17896441",
-    "content": "f4397d71"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-maintain-pause-resume-subnetf-43-af8"
   },
   "/build/subnet/maintain/view-subnets-205": {
-    "__comp": "17896441",
-    "content": "49181a45"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-maintain-view-subnets-491-8ef"
   },
   "/build/subnet/upgrade/considerations-subnet-upgrade-283": {
-    "__comp": "17896441",
-    "content": "2b2475c3"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-upgrade-considerations-subnet-upgrade-2-b-2-6e4"
   },
   "/build/subnet/upgrade/customize-a-subnet-d5c": {
-    "__comp": "17896441",
-    "content": "9beb7e70"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-upgrade-customize-a-subnet-9-be-bea"
   },
   "/build/subnet/upgrade/upgrade-precompile-b05": {
-    "__comp": "17896441",
-    "content": "763b98e8"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-upgrade-upgrade-precompile-763-89f"
   },
   "/build/subnet/upgrade/upgrade-subnet-vm-14b": {
-    "__comp": "17896441",
-    "content": "3c286722"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-upgrade-upgrade-subnet-vm-3-c-2-93a"
   },
   "/build/subnet/utility/cross-chain-evm-bridge-692": {
-    "__comp": "17896441",
-    "content": "06b6ef99"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-utility-cross-chain-evm-bridge-06-b-5f0"
   },
   "/build/subnet/utility/deploy-smart-contract-to-subnet-1d5": {
-    "__comp": "17896441",
-    "content": "d12935d0"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-utility-deploy-smart-contract-to-subnetd-12-59a"
   },
   "/build/subnet/utility/subnet-faucet-9ee": {
-    "__comp": "17896441",
-    "content": "3e4f29dd"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-subnet-utility-subnet-faucet-3-e-4-b3a"
   },
   "/build/vm-709": {
-    "__comp": "17896441",
-    "content": "e546942e"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-vme-54-c58"
   },
   "/build/vm/create/any-lang-vm-6a9": {
-    "__comp": "17896441",
-    "content": "4b7b76ea"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-vm-create-any-lang-vm-4-b-7-610"
   },
   "/build/vm/create/golang-vm-complex-948": {
-    "__comp": "17896441",
-    "content": "e3644d99"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-vm-create-golang-vm-complexe-36-469"
   },
   "/build/vm/create/golang-vm-simple-7e2": {
-    "__comp": "17896441",
-    "content": "aad548ba"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-vm-create-golang-vm-simpleaad-4ea"
   },
   "/build/vm/create/rust-vm-ddd": {
-    "__comp": "17896441",
-    "content": "e916f989"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-vm-create-rust-vme-91-49b"
   },
   "/build/vm/evm/background-and-reqs-fbb": {
-    "__comp": "17896441",
-    "content": "64f369bc"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-vm-evm-background-and-reqs-64-f-178"
   },
   "/build/vm/evm/defining-precompile-8a0": {
-    "__comp": "17896441",
-    "content": "fb28fd3d"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-vm-evm-defining-precompilefb-2-5fc"
   },
   "/build/vm/evm/defining-tests-bb5": {
-    "__comp": "17896441",
-    "content": "3af611ce"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-vm-evm-defining-tests-3-af-e20"
   },
   "/build/vm/evm/deploying-precompile-8d1": {
-    "__comp": "17896441",
-    "content": "134be8be"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-vm-evm-deploying-precompile-134-b4d"
   },
   "/build/vm/evm/executing-tests-9e0": {
-    "__comp": "17896441",
-    "content": "0c382d7b"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-vm-evm-executing-tests-0-c-3-fb3"
   },
   "/build/vm/evm/generate-precompile-d63": {
-    "__comp": "17896441",
-    "content": "704d2bcc"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-vm-evm-generate-precompile-704-1a6"
   },
   "/build/vm/evm/intro-e81": {
-    "__comp": "17896441",
-    "content": "3b59d881"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-vm-evm-intro-3-b-5-d5e"
   },
   "/build/vm/intro-520": {
-    "__comp": "17896441",
-    "content": "dd6bb706"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---build-vm-introdd-6-34d"
   },
   "/deprecated/deploy-a-gnosis-safe-on-your-evm-6d1": {
-    "__comp": "17896441",
-    "content": "159176cf"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-deploy-a-gnosis-safe-on-your-evm-159-7e4"
   },
   "/deprecated/dfk-subnet-node-137": {
-    "__comp": "17896441",
-    "content": "c1fd324e"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-dfk-subnet-nodec-1-f-278"
   },
   "/deprecated/truffle-21a": {
-    "__comp": "17896441",
-    "content": "6f10a64f"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-truffle-6-f-1-d5d"
   },
   "/deprecated/tutorials-contest-828": {
-    "__comp": "17896441",
-    "content": "e48e6003"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-conteste-48-db8"
   },
   "/deprecated/tutorials-contest/2021-831": {
-    "__comp": "17896441",
-    "content": "df50f526"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-df-5-935"
   },
   "/deprecated/tutorials-contest/2021/DAO-bf4": {
-    "__comp": "17896441",
-    "content": "0a551742"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-dao-0-a-5-c8d"
   },
   "/deprecated/tutorials-contest/2021/distributed-file-manager-96b": {
-    "__comp": "17896441",
-    "content": "7c03bc8d"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-distributed-file-manager-7-c-0-1dd"
   },
   "/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js-ca9": {
-    "__comp": "17896441",
-    "content": "560e82c1"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-distributed-file-manager-frontend-app-js-560-803"
   },
   "/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSUploader.js-9d7": {
-    "__comp": "17896441",
-    "content": "c5414cd2"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-distributed-file-manager-frontend-ipfs-uploader-jsc-54-6de"
   },
   "/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSViewer.js-532": {
-    "__comp": "17896441",
-    "content": "fb1872b3"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-distributed-file-manager-frontend-ipfs-viewer-jsfb-1-ffb"
   },
   "/deprecated/tutorials-contest/2021/drizzle-auction-manager-c7e": {
-    "__comp": "17896441",
-    "content": "d675a267"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-drizzle-auction-managerd-67-599"
   },
   "/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/Auction.js-fbd": {
-    "__comp": "17896441",
-    "content": "204287cf"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-drizzle-auction-manager-frontend-auction-js-204-fd1"
   },
   "/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/AuctionList.js-886": {
-    "__comp": "17896441",
-    "content": "6d3fe493"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-drizzle-auction-manager-frontend-auction-list-js-6-d-3-df2"
   },
   "/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/CreateAuction.js-b5c": {
-    "__comp": "17896441",
-    "content": "f88b702c"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-drizzle-auction-manager-frontend-create-auction-jsf-88-64e"
   },
   "/deprecated/tutorials-contest/2021/evoting-dapp-333": {
-    "__comp": "17896441",
-    "content": "83318fdf"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-evoting-dapp-833-682"
   },
   "/deprecated/tutorials-contest/2021/evoting-dapp/frontend/ActiveElections.js-19d": {
-    "__comp": "17896441",
-    "content": "16e06771"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-evoting-dapp-frontend-active-elections-js-16-e-f0a"
   },
   "/deprecated/tutorials-contest/2021/evoting-dapp/frontend/CreateElection.js-26b": {
-    "__comp": "17896441",
-    "content": "b04c6f94"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-evoting-dapp-frontend-create-election-jsb-04-1d9"
   },
   "/deprecated/tutorials-contest/2021/evoting-dapp/frontend/VoteModal.js-905": {
-    "__comp": "17896441",
-    "content": "f4479ef1"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-evoting-dapp-frontend-vote-modal-jsf-44-4a9"
   },
   "/deprecated/tutorials-contest/2021/hardhat-fork-c3c": {
-    "__comp": "17896441",
-    "content": "2a379531"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-hardhat-fork-2-a-3-e6a"
   },
   "/deprecated/tutorials-contest/2021/how-to-mint-erc721-using-openzeppelin/tutorial-2e5": {
-    "__comp": "17896441",
-    "content": "031e2e02"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-how-to-mint-erc-721-using-openzeppelin-tutorial-031-bb4"
   },
   "/deprecated/tutorials-contest/2021/lux-chat-dapp-3b2": {
-    "__comp": "17896441",
-    "content": "3e62336d"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-lux-chat-dapp-3-e-6-89c"
   },
   "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux-bf2": {
-    "__comp": "17896441",
-    "content": "5be5dade"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-nft-marketplace-on-lux-5-be-68a"
   },
   "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend-490": {
-    "__comp": "17896441",
-    "content": "74a7032f"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-nft-marketplace-on-lux-nft-marketplace-d-app-frontend-74-a-bc4"
   },
   "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html-d5c": {
-    "__comp": "17896441",
-    "content": "a64d055c"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-nft-marketplace-on-lux-nft-marketplace-d-app-frontend-public-index-htmla-64-8f0"
   },
   "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/App.js-6ab": {
-    "__comp": "17896441",
-    "content": "8f2909b5"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-nft-marketplace-on-lux-nft-marketplace-d-app-frontend-src-app-js-8-f-2-66e"
   },
   "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/index.js-7f5": {
-    "__comp": "17896441",
-    "content": "f069a303"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-nft-marketplace-on-lux-nft-marketplace-d-app-frontend-src-index-jsf-06-475"
   },
   "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js-fc2": {
-    "__comp": "17896441",
-    "content": "0cba92a3"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-nft-marketplace-on-lux-nft-marketplace-d-app-frontend-src-report-web-vitals-js-0-cb-30e"
   },
   "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/setupTests.js-285": {
-    "__comp": "17896441",
-    "content": "f65f58e5"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-nft-marketplace-on-lux-nft-marketplace-d-app-frontend-src-setup-tests-jsf-65-e1d"
   },
   "/deprecated/tutorials-contest/2021/pangolin-token-subgraph-091": {
-    "__comp": "17896441",
-    "content": "6e07e3fc"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-pangolin-token-subgraph-6-e-0-e4e"
   },
   "/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial-09e": {
-    "__comp": "17896441",
-    "content": "a1bc9d3a"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-red-dev-chainlink-tutoriala-1-b-f61"
   },
   "/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/ansible-chainlink-lux-setup-16b": {
-    "__comp": "17896441",
-    "content": "8c5c4e78"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-red-dev-chainlink-tutorial-ansible-chainlink-lux-setup-8-c-5-35e"
   },
   "/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/chainlink-external-adaptor-273": {
-    "__comp": "17896441",
-    "content": "becd6ff4"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-red-dev-chainlink-tutorial-chainlink-external-adaptorbec-5b3"
   },
   "/deprecated/tutorials-contest/2021/red-dev-sig-verify-tutorial-9d3": {
-    "__comp": "17896441",
-    "content": "f86a6424"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2021-red-dev-sig-verify-tutorialf-86-9e7"
   },
   "/deprecated/tutorials-contest/2022-cc3": {
-    "__comp": "17896441",
-    "content": "b993aca4"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-b-99-dd1"
   },
   "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token-681": {
-    "__comp": "17896441",
-    "content": "9c7f80f3"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-erc-20-as-subnet-gas-token-9-c-7-474"
   },
   "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/chains.js-6e0": {
-    "__comp": "17896441",
-    "content": "d5df6fb5"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-erc-20-as-subnet-gas-token-codes-constants-chains-jsd-5-d-ce5"
   },
   "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/nativeMinterAddress.js-6ac": {
-    "__comp": "17896441",
-    "content": "06ffb84a"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-erc-20-as-subnet-gas-token-codes-constants-native-minter-address-js-06-f-5a5"
   },
   "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol-58d": {
-    "__comp": "17896441",
-    "content": "69c31c0d"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-erc-20-as-subnet-gas-token-codes-contracts-bridge-lux-bridge-sol-69-c-1d1"
   },
   "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol-981": {
-    "__comp": "17896441",
-    "content": "b8a3e4df"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-erc-20-as-subnet-gas-token-codes-contracts-bridge-subnet-bridge-solb-8-a-289"
   },
   "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol-ece": {
-    "__comp": "17896441",
-    "content": "0d596c36"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-erc-20-as-subnet-gas-token-codes-contracts-token-i-native-minter-sol-0-d-5-e03"
   },
   "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol-248": {
-    "__comp": "17896441",
-    "content": "d24e40be"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-erc-20-as-subnet-gas-token-codes-contracts-token-lux-token-sold-24-7e1"
   },
   "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBalance.js-469": {
-    "__comp": "17896441",
-    "content": "24cc31c0"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-erc-20-as-subnet-gas-token-codes-hardhat-config-after-balance-js-24-c-9a4"
   },
   "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBurnOrLock.js-326": {
-    "__comp": "17896441",
-    "content": "b130e201"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-erc-20-as-subnet-gas-token-codes-hardhat-config-after-burn-or-lock-jsb-13-0a1"
   },
   "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterDeploy.js-61a": {
-    "__comp": "17896441",
-    "content": "954d3aeb"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-erc-20-as-subnet-gas-token-codes-hardhat-config-after-deploy-js-954-938"
   },
   "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/relayer.js-cdf": {
-    "__comp": "17896441",
-    "content": "dd1e8c99"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-erc-20-as-subnet-gas-token-codes-relayer-jsdd-1-12f"
   },
   "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/balance.js-961": {
-    "__comp": "17896441",
-    "content": "b11725b0"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-erc-20-as-subnet-gas-token-codes-scripts-balance-jsb-11-d40"
   },
   "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/burnOrLock.js-36b": {
-    "__comp": "17896441",
-    "content": "de6d98db"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-erc-20-as-subnet-gas-token-codes-scripts-burn-or-lock-jsde-6-12c"
   },
   "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/deploy.js-4fb": {
-    "__comp": "17896441",
-    "content": "7d8c2e33"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-erc-20-as-subnet-gas-token-codes-scripts-deploy-js-7-d-8-635"
   },
   "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initContracts.js-ab1": {
-    "__comp": "17896441",
-    "content": "9155e35e"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-erc-20-as-subnet-gas-token-codes-utils-init-contracts-js-915-b93"
   },
   "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initProviders.js-b07": {
-    "__comp": "17896441",
-    "content": "90a32d0a"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-erc-20-as-subnet-gas-token-codes-utils-init-providers-js-90-a-9e2"
   },
   "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initSigners.js-125": {
-    "__comp": "17896441",
-    "content": "10809184"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-erc-20-as-subnet-gas-token-codes-utils-init-signers-js-108-ada"
   },
   "/deprecated/tutorials-contest/2022/local-subnet-development-90d": {
-    "__comp": "17896441",
-    "content": "ad5891fc"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-local-subnet-developmentad-5-69f"
   },
   "/deprecated/tutorials-contest/2022/local-subnet-development/hardhat.config.ts-612": {
-    "__comp": "17896441",
-    "content": "fb847014"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-local-subnet-development-hardhat-config-tsfb-8-c69"
   },
   "/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/AllowList-111": {
-    "__comp": "17896441",
-    "content": "b98c7182"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-local-subnet-development-precompiles-allow-listb-98-983"
   },
   "/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/NativeMinter-ba6": {
-    "__comp": "17896441",
-    "content": "a17a0f86"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-local-subnet-development-precompiles-native-mintera-17-60e"
   },
   "/deprecated/tutorials-contest/2022/lux-subnet-customization-aef": {
-    "__comp": "17896441",
-    "content": "9a8a1361"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-lux-subnet-customization-9-a-8-344"
   },
   "/deprecated/tutorials-contest/2022/theGraph-index-fc6": {
-    "__comp": "17896441",
-    "content": "d61fa960"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-tutorials-contest-2022-the-graph-indexd-61-3f1"
   },
   "/deprecated/verify-truffle-523": {
-    "__comp": "17896441",
-    "content": "a017eab4"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---deprecated-verify-trufflea-01-4c5"
   },
   "/disclaimer-76c": {
-    "__comp": "17896441",
-    "content": "fe0242b1"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---disclaimerfe-0-291"
   },
   "/intro-2fc": {
-    "__comp": "17896441",
-    "content": "5ccc9166"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---intro-5-cc-169"
   },
   "/learn/lux/awm-c5c": {
-    "__comp": "17896441",
-    "content": "14290e8e"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---learn-lux-awm-142-c2a"
   },
   "/learn/lux/lux-consensus-2b2": {
-    "__comp": "17896441",
-    "content": "26db4a40"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---learn-lux-lux-consensus-26-d-c40"
   },
   "/learn/lux/lux-platform-b07": {
-    "__comp": "17896441",
-    "content": "7979724c"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---learn-lux-lux-platform-797-5b6"
   },
   "/learn/lux/mainnet-2e7": {
-    "__comp": "17896441",
-    "content": "468e8a76"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---learn-lux-mainnet-468-888"
   },
   "/learn/lux/subnets-overview-3cc": {
-    "__comp": "17896441",
-    "content": "a694d4bd"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---learn-lux-subnets-overviewa-69-bb4"
   },
   "/learn/lux/testnet-9a0": {
-    "__comp": "17896441",
-    "content": "c26235a1"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---learn-lux-testnetc-26-d12"
   },
   "/learn/lux/virtual-machines-4e3": {
-    "__comp": "17896441",
-    "content": "d49b2f63"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---learn-lux-virtual-machinesd-49-043"
   },
   "/nodes-ee9": {
-    "__comp": "17896441",
-    "content": "12fd64a5"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-12-f-a85"
   },
   "/nodes/configure/avalanchego-config-flags-cf0": {
-    "__comp": "17896441",
-    "content": "64217976"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-configure-avalanchego-config-flags-642-63a"
   },
   "/nodes/configure/chain-config-flags-cd7": {
-    "__comp": "17896441",
-    "content": "773f2174"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-configure-chain-config-flags-773-aa0"
   },
   "/nodes/configure/luxd-config-flags-3d3": {
-    "__comp": "17896441",
-    "content": "e965f86f"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-configure-luxd-config-flagse-96-e22"
   },
   "/nodes/configure/subnet-configs-fac": {
-    "__comp": "17896441",
-    "content": "c04397f4"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-configure-subnet-configsc-04-fde"
   },
   "/nodes/maintain/background-service-config-4ad": {
-    "__comp": "17896441",
-    "content": "c5898dc1"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-maintain-background-service-configc-58-bc1"
   },
   "/nodes/maintain/node-backup-and-restore-a02": {
-    "__comp": "17896441",
-    "content": "2355499e"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-maintain-node-backup-and-restore-235-c3b"
   },
   "/nodes/maintain/node-bootstrap-ac6": {
-    "__comp": "17896441",
-    "content": "1ccd99e2"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-maintain-node-bootstrap-1-cc-d15"
   },
   "/nodes/maintain/notify-dc4": {
-    "__comp": "17896441",
-    "content": "889a5e00"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-maintain-notify-889-936"
   },
   "/nodes/maintain/run-offline-pruning-d47": {
-    "__comp": "17896441",
-    "content": "9bd2e3a7"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-maintain-run-offline-pruning-9-bd-e6d"
   },
   "/nodes/maintain/setting-up-node-monitoring-c9e": {
-    "__comp": "17896441",
-    "content": "a01ad309"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-maintain-setting-up-node-monitoringa-01-7ab"
   },
   "/nodes/maintain/upgrade-your-luxd-node-48d": {
-    "__comp": "17896441",
-    "content": "a004cb73"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-maintain-upgrade-your-luxd-nodea-00-2f6"
   },
   "/nodes/run/FAQ-803": {
-    "__comp": "17896441",
-    "content": "47e20c19"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-run-faq-47-e-f2b"
   },
   "/nodes/run/node-manually-f85": {
-    "__comp": "17896441",
-    "content": "8db0cbe5"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-run-node-manually-8-db-01b"
   },
   "/nodes/run/subnet-node-04f": {
-    "__comp": "17896441",
-    "content": "0518c20f"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-run-subnet-node-051-656"
   },
   "/nodes/run/third-party/alibaba-cloud-node-905": {
-    "__comp": "17896441",
-    "content": "a94dd064"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-run-third-party-alibaba-cloud-nodea-94-90d"
   },
   "/nodes/run/third-party/aws-marketplace-one-click-4a3": {
-    "__comp": "17896441",
-    "content": "0ab8f4b2"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-run-third-party-aws-marketplace-one-click-0-ab-f76"
   },
   "/nodes/run/third-party/aws-node-872": {
-    "__comp": "17896441",
-    "content": "bce9270c"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-run-third-party-aws-nodebce-aa9"
   },
   "/nodes/run/third-party/google-cloud-node-72e": {
-    "__comp": "17896441",
-    "content": "324628ce"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-run-third-party-google-cloud-node-324-dea"
   },
   "/nodes/run/third-party/microsoft-azure-node-49f": {
-    "__comp": "17896441",
-    "content": "244a6424"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-run-third-party-microsoft-azure-node-244-8a9"
   },
   "/nodes/run/third-party/tencent-cloud-node-be1": {
-    "__comp": "17896441",
-    "content": "8456b428"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-run-third-party-tencent-cloud-node-845-f61"
   },
   "/nodes/run/with-installer/advance-config-maintenance-e6b": {
-    "__comp": "17896441",
-    "content": "aca3d6c2"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-run-with-installer-advance-config-maintenanceaca-0f9"
   },
   "/nodes/run/with-installer/installing-avalanchego-85c": {
-    "__comp": "17896441",
-    "content": "69f92ee2"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-run-with-installer-installing-avalanchego-69-f-5bd"
   },
   "/nodes/run/with-installer/installing-luxd-184": {
-    "__comp": "17896441",
-    "content": "677a56c3"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-run-with-installer-installing-luxd-677-ed8"
   },
   "/nodes/run/with-installer/managing-avalanchego-0cc": {
-    "__comp": "17896441",
-    "content": "e5a5a0e2"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-run-with-installer-managing-avalanchegoe-5-a-fbe"
   },
   "/nodes/run/with-installer/managing-luxd-f06": {
-    "__comp": "17896441",
-    "content": "45164bdf"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-run-with-installer-managing-luxd-451-334"
   },
   "/nodes/run/with-installer/preparing-your-environment-cd6": {
-    "__comp": "17896441",
-    "content": "e96b54ec"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-run-with-installer-preparing-your-environmente-96-30f"
   },
   "/nodes/system-requirements-ff2": {
-    "__comp": "17896441",
-    "content": "7eda6e6e"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-system-requirements-7-ed-cb3"
   },
   "/nodes/validate/add-a-validator-eb3": {
-    "__comp": "17896441",
-    "content": "4d4b8dab"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-validate-add-a-validator-4-d-4-a6c"
   },
   "/nodes/validate/how-to-stake-e1a": {
-    "__comp": "17896441",
-    "content": "facbf4aa"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-validate-how-to-stakefac-3a3"
   },
   "/nodes/validate/validate-or-delegate-9d1": {
-    "__comp": "17896441",
-    "content": "6e15182e"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-validate-validate-or-delegate-6-e-1-6ca"
   },
   "/nodes/validate/what-is-staking-da4": {
-    "__comp": "17896441",
-    "content": "120df418"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---nodes-validate-what-is-staking-120-c9f"
   },
   "/reference-362": {
-    "__comp": "17896441",
-    "content": "9bd2e2d8"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-9-bd-6a5"
   },
   "/reference/luxd/admin-api-461": {
-    "__comp": "17896441",
-    "content": "850d1002"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-luxd-admin-api-850-c82"
   },
   "/reference/luxd/auth-api-dad": {
-    "__comp": "17896441",
-    "content": "9c025416"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-luxd-auth-api-9-c-0-576"
   },
   "/reference/luxd/c-chain/api-b17": {
-    "__comp": "17896441",
-    "content": "fcc68c0c"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-luxd-c-chain-apifcc-7c7"
   },
   "/reference/luxd/c-chain/txn-format-275": {
-    "__comp": "17896441",
-    "content": "5e11e9be"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-luxd-c-chain-txn-format-5-e-1-866"
   },
   "/reference/luxd/health-api-82b": {
-    "__comp": "17896441",
-    "content": "63a1a3b1"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-luxd-health-api-63-a-6f3"
   },
   "/reference/luxd/index-api-2b8": {
-    "__comp": "17896441",
-    "content": "8e4bdecb"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-luxd-index-api-8-e-4-f86"
   },
   "/reference/luxd/info-api-751": {
-    "__comp": "17896441",
-    "content": "6eda6dff"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-luxd-info-api-6-ed-170"
   },
   "/reference/luxd/ipc-api-313": {
-    "__comp": "17896441",
-    "content": "57d55250"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-luxd-ipc-api-57-d-d0a"
   },
   "/reference/luxd/keystore-api-9d9": {
-    "__comp": "17896441",
-    "content": "79d71acd"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-luxd-keystore-api-79-d-9aa"
   },
   "/reference/luxd/metrics-api-ae2": {
-    "__comp": "17896441",
-    "content": "2e6c595b"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-luxd-metrics-api-2-e-6-206"
   },
   "/reference/luxd/p-chain/api-14e": {
-    "__comp": "17896441",
-    "content": "03038387"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-luxd-p-chain-api-030-008"
   },
   "/reference/luxd/p-chain/txn-format-c6a": {
-    "__comp": "17896441",
-    "content": "16595478"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-luxd-p-chain-txn-format-165-d3b"
   },
   "/reference/luxd/x-chain/api-e88": {
-    "__comp": "17896441",
-    "content": "c4532d2e"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-luxd-x-chain-apic-45-1ec"
   },
   "/reference/luxd/x-chain/txn-format-1ad": {
-    "__comp": "17896441",
-    "content": "30e67e48"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-luxd-x-chain-txn-format-30-e-e11"
   },
   "/reference/standards/avalanche-network-protocol-7d6": {
-    "__comp": "17896441",
-    "content": "7e506ae0"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-standards-avalanche-network-protocol-7-e-5-074"
   },
   "/reference/standards/cryptographic-primitives-cd3": {
-    "__comp": "17896441",
-    "content": "4e2aa73e"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-standards-cryptographic-primitives-4-e-2-9a9"
   },
   "/reference/standards/guides/banff-changes-548": {
-    "__comp": "17896441",
-    "content": "ad26a45c"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-standards-guides-banff-changesad-2-9ef"
   },
   "/reference/standards/guides/blockchain-flow-b7a": {
-    "__comp": "17896441",
-    "content": "1e5be5c1"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-standards-guides-blockchain-flow-1-e-5-74a"
   },
   "/reference/standards/guides/issuing-api-calls-4ae": {
-    "__comp": "17896441",
-    "content": "7d084902"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-standards-guides-issuing-api-calls-7-d-0-fb8"
   },
   "/reference/standards/guides/txn-fees-d20": {
-    "__comp": "17896441",
-    "content": "957805d0"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-standards-guides-txn-fees-957-b3e"
   },
   "/reference/standards/guides/x-chain-migration-b3a": {
-    "__comp": "17896441",
-    "content": "a4a20f9b"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-standards-guides-x-chain-migrationa-4-a-2cc"
   },
   "/reference/standards/network-protocol-150": {
-    "__comp": "17896441",
-    "content": "8b6718e4"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-standards-network-protocol-8-b-6-e91"
   },
   "/reference/standards/serialization-primitives-8b0": {
-    "__comp": "17896441",
-    "content": "5f9f901f"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-standards-serialization-primitives-5-f-9-129"
   },
   "/reference/subnet-evm/api-25e": {
-    "__comp": "17896441",
-    "content": "9f3e435b"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---reference-subnet-evm-api-9-f-3-cc8"
   },
   "/tooling-3a1": {
-    "__comp": "17896441",
-    "content": "583667c9"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-583-614"
   },
   "/tooling/cli-410": {
-    "__comp": "17896441",
-    "content": "da3371cb"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-clida-3-b34"
   },
   "/tooling/cli-guides/create-a-validator-aws-6e2": {
-    "__comp": "17896441",
-    "content": "8c382c59"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-cli-guides-create-a-validator-aws-8-c-3-3ac"
   },
   "/tooling/cli-guides/create-a-validator-gcp-2dc": {
-    "__comp": "17896441",
-    "content": "3a84e902"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-cli-guides-create-a-validator-gcp-3-a-8-55c"
   },
   "/tooling/cli-guides/import-subnet-987": {
-    "__comp": "17896441",
-    "content": "ea10ddd0"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-cli-guides-import-subnetea-1-a92"
   },
   "/tooling/cli-guides/install-cli-3b9": {
-    "__comp": "17896441",
-    "content": "fbd3fcb4"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-cli-guides-install-clifbd-1f3"
   },
   "/tooling/cli-guides/node-ssh-183": {
-    "__comp": "17896441",
-    "content": "7bfca8cd"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-cli-guides-node-ssh-7-bf-fb4"
   },
   "/tooling/cli-guides/run-with-docker-8d7": {
-    "__comp": "17896441",
-    "content": "19f66e01"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-cli-guides-run-with-docker-19-f-be8"
   },
   "/tooling/cli-guides/setup-a-devnet-b48": {
-    "__comp": "17896441",
-    "content": "6f3a7f15"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-cli-guides-setup-a-devnet-6-f-3-d4c"
   },
   "/tooling/cli-guides/stop-node-764": {
-    "__comp": "17896441",
-    "content": "9c53cd4a"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-cli-guides-stop-node-9-c-5-14c"
   },
   "/tooling/cli-guides/upload-a-custom-vm-to-cloud-153": {
-    "__comp": "17896441",
-    "content": "dea9bcac"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-cli-guides-upload-a-custom-vm-to-clouddea-0bb"
   },
   "/tooling/cli-guides/validate-primary-network-7a3": {
-    "__comp": "17896441",
-    "content": "0622a062"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-cli-guides-validate-primary-network-062-4d9"
   },
   "/tooling/cli-guides/validate-subnets-85d": {
-    "__comp": "17896441",
-    "content": "431560c2"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-cli-guides-validate-subnets-431-bac"
   },
   "/tooling/glacier-438": {
-    "__comp": "17896441",
-    "content": "f2fef12b"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-glacierf-2-f-465"
   },
   "/tooling/indexers-a93": {
-    "__comp": "17896441",
-    "content": "b112293b"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-indexersb-11-a8b"
   },
   "/tooling/lux-plugin-manager-22e": {
-    "__comp": "17896441",
-    "content": "699b6c19"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-lux-plugin-manager-699-b82"
   },
   "/tooling/luxd-installer-476": {
-    "__comp": "17896441",
-    "content": "ed1006ed"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-luxd-installered-1-6c6"
   },
   "/tooling/luxd-postman-collection/data-visualization-313": {
-    "__comp": "17896441",
-    "content": "004a3c32"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-luxd-postman-collection-data-visualization-004-3bc"
   },
   "/tooling/luxd-postman-collection/making-api-calls-fe4": {
-    "__comp": "17896441",
-    "content": "912fd55f"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-luxd-postman-collection-making-api-calls-912-86c"
   },
   "/tooling/luxd-postman-collection/setup-b4f": {
-    "__comp": "17896441",
-    "content": "78f1b29e"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-luxd-postman-collection-setup-78-f-95b"
   },
   "/tooling/luxd-postman-collection/variables-4d3": {
-    "__comp": "17896441",
-    "content": "b92df8e1"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-luxd-postman-collection-variablesb-92-a6a"
   },
   "/tooling/luxjs-api-99d": {
-    "__comp": "17896441",
-    "content": "6db31480"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-luxjs-api-6-db-666"
   },
   "/tooling/luxjs-guides/create-an-asset-on-the-x-chain-95a": {
-    "__comp": "17896441",
-    "content": "be6d9aef"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-luxjs-guides-create-an-asset-on-the-x-chainbe-6-e92"
   },
   "/tooling/luxjs-guides/cross-chain-transfers-5ec": {
-    "__comp": "17896441",
-    "content": "b3335266"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-luxjs-guides-cross-chain-transfersb-33-173"
   },
   "/tooling/luxjs-guides/generate-a-txid-using-luxjs-d35": {
-    "__comp": "17896441",
-    "content": "e91e772f"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-luxjs-guides-generate-a-txid-using-luxjse-91-652"
   },
   "/tooling/luxjs-guides/generate-key-pair-161": {
-    "__comp": "17896441",
-    "content": "f8120faa"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-luxjs-guides-generate-key-pairf-81-7df"
   },
   "/tooling/luxjs-guides/manage-x-chain-keys-c8e": {
-    "__comp": "17896441",
-    "content": "46b73634"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-luxjs-guides-manage-x-chain-keys-46-b-8ed"
   },
   "/tooling/luxjs-guides/multisig-utxos-with-luxjs-026": {
-    "__comp": "17896441",
-    "content": "3ec5a78d"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-luxjs-guides-multisig-utxos-with-luxjs-3-ec-8d7"
   },
   "/tooling/luxjs-guides/send-an-asset-on-the-x-chain-38e": {
-    "__comp": "17896441",
-    "content": "2e3cb13f"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-luxjs-guides-send-an-asset-on-the-x-chain-2-e-3-a78"
   },
   "/tooling/luxjs-overview-c52": {
-    "__comp": "17896441",
-    "content": "51281920"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-luxjs-overview-512-958"
   },
   "/tooling/metrics-494": {
-    "__comp": "17896441",
-    "content": "49a6bff9"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-metrics-49-a-5a7"
   },
   "/tooling/netrunner-daa": {
-    "__comp": "17896441",
-    "content": "29266d55"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-netrunner-292-f50"
   },
   "/tooling/ops-c27": {
-    "__comp": "17896441",
-    "content": "37d0a0bf"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-ops-37-d-267"
   },
   "/tooling/plugin-manager-479": {
-    "__comp": "17896441",
-    "content": "d1c09ad9"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-plugin-managerd-1-c-81a"
   },
   "/tooling/rpc-providers-237": {
-    "__comp": "17896441",
-    "content": "98e84e46"
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---tooling-rpc-providers-98-e-543"
   }
 }

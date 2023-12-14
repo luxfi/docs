@@ -5,22 +5,22 @@
   "count": 62,
   "items": [
     {
-      "id": "build/dapp/README",
-      "title": "🔗 Dapps Quick Links",
-      "description": "Dapps",
-      "permalink": "/build/dapp/"
-    },
-    {
       "id": "build/subnet/README",
-      "title": "🔺 Lux Subnets",
+      "title": "▼ Lux Subnets",
       "description": "Subnets",
       "permalink": "/build/subnet/"
     },
     {
       "id": "build/vm/README",
-      "title": "🔺 Virtual Machines",
+      "title": "▼ Virtual Machines",
       "description": "Virtual Machines",
       "permalink": "/build/vm/"
+    },
+    {
+      "id": "build/dapp/README",
+      "title": "🔗 Dapps Quick Links",
+      "description": "Dapps",
+      "permalink": "/build/dapp/"
     },
     {
       "id": "build/dapp/advanced/add-lux-programmatically",
