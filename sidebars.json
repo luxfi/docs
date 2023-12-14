@@ -400,7 +400,7 @@
     "tooling/ops",
     {
       "type": "category",
-      "label": "LuxGo Postman Collection",
+      "label": "Luxd Postman Collection",
       "collapsed": true,
       "items": [
         {
@@ -421,7 +421,7 @@
     },
     {
       "type": "html",
-      "value": "<span class='menu__item'><b><medium> LuxGo </medium></b></span>"
+      "value": "<span class='menu__item'><b><medium> Luxd </medium></b></span>"
     },
     {
       "type": "category",

@@ -1,6 +1,6 @@
 ---
-tags: [LuxGo APIs]
-description: This page is an overview of the IPC API associated with LuxGo.
+tags: [Luxd APIs]
+description: This page is an overview of the IPC API associated with Luxd.
 sidebar_label: IPC API
 pagination_label: IPC API
 ---

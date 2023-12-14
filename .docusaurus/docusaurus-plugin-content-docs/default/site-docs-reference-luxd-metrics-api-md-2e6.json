@@ -1,7 +1,7 @@
 {
   "id": "reference/luxd/metrics-api",
   "title": "Metrics API",
-  "description": "This page is an overview of the Metrics API associated with LuxGo.",
+  "description": "This page is an overview of the Metrics API associated with Luxd.",
   "source": "@site/docs/reference/luxd/metrics-api.md",
   "sourceDirName": "reference/luxd",
   "slug": "/reference/luxd/metrics-api",
@@ -11,16 +11,16 @@
   "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/reference/luxd/metrics-api.md",
   "tags": [
     {
-      "label": "LuxGo APIs",
+      "label": "Luxd APIs",
       "permalink": "/tags/lux-go-ap-is"
     }
   ],
   "version": "current",
   "frontMatter": {
     "tags": [
-      "LuxGo APIs"
+      "Luxd APIs"
     ],
-    "description": "This page is an overview of the Metrics API associated with LuxGo.",
+    "description": "This page is an overview of the Metrics API associated with Luxd.",
     "sidebar_label": "Metrics API",
     "pagination_label": "Metrics API"
   },

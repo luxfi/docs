@@ -188,7 +188,7 @@ Selecciona la instancia que acabas de crear. Esto asociará la nueva IP Elástic
 
 ![Asigna la IP Elástica a tu instancia de EC2.](https://miro.medium.com/max/834/1*NW-S4LzL3EC1q2_4AkIPUg.png)
 
-## Configurar LuxGo
+## Configurar Luxd
 
 Vuelve al panel de control de EC2 y selecciona `Instancias en ejecución`.
 
@@ -244,7 +244,7 @@ ssh ubuntu@PUBLICIP
 
 Estás conectado nuevamente a la instancia de EC2. Ahora necesitaremos configurar nuestro nodo Lux. Para hacer esto, sigue el tutorial [Configurar un Nodo Lux con el Instalador](/nodes/run/with-installer/installing-luxd.md) que automatiza el proceso de instalación. Necesitarás la `PUBLICIP` que configuramos antes.
 
-Tu nodo LuxGo debería estar funcionando ahora y en proceso de arranque, lo cual puede llevar algunas horas. Para verificar si ha terminado, puedes hacer una llamada de API usando `curl`. Si estás haciendo la solicitud desde la instancia de EC2, la solicitud es:
+Tu nodo Luxd debería estar funcionando ahora y en proceso de arranque, lo cual puede llevar algunas horas. Para verificar si ha terminado, puedes hacer una llamada de API usando `curl`. Si estás haciendo la solicitud desde la instancia de EC2, la solicitud es:
 
 ```text
 curl -X POST --data '{
@@ -269,7 +269,7 @@ Una vez que el nodo haya terminado de arrancar, la respuesta será:
 }
 ```
 
-Puedes continuar, incluso si LuxGo no ha terminado de arrancar.
+Puedes continuar, incluso si Luxd no ha terminado de arrancar.
 
 Para hacer que tu nodo sea un validador, necesitarás su ID de nodo. Para obtenerlo, ejecuta:
 
@@ -290,7 +290,7 @@ La respuesta contiene el ID de nodo.
 En el ejemplo anterior, el ID del nodo es `NodeID-DznHmm3o7RkmpLkWMn9NqafH66mqunXbM`.
 Copia tu ID de nodo para más adelante. Tu ID de nodo no es un secreto, así que puedes simplemente pegarlo en un editor de texto.
 
-LuxGo tiene otras APIs, como la [API de Salud](/reference/luxd/health-api.md), que se pueden usar para interactuar con el nodo. Algunas APIs están deshabilitadas de forma predeterminada. Para habilitar estas APIs, modifica la sección ExecStart de `/etc/systemd/system/luxd.service` (creado durante el proceso de instalación) para incluir banderas que habiliten estos puntos finales. No habilites manualmente ninguna API a menos que tengas una razón para hacerlo.
+Luxd tiene otras APIs, como la [API de Salud](/reference/luxd/health-api.md), que se pueden usar para interactuar con el nodo. Algunas APIs están deshabilitadas de forma predeterminada. Para habilitar estas APIs, modifica la sección ExecStart de `/etc/systemd/system/luxd.service` (creado durante el proceso de instalación) para incluir banderas que habiliten estos puntos finales. No habilites manualmente ninguna API a menos que tengas una razón para hacerlo.
 
 ![Algunas APIs están deshabilitadas de forma predeterminada.](https://miro.medium.com/max/881/1*Vm-Uh2yV0pDCVn8zqFw64A.png)
 
@@ -314,13 +314,13 @@ Ahora tu clave de staking y certificado están en el directorio `~/aws_lux_backu
 
 ### Actualizando tu Nodo
 
-LuxGo es un proyecto en curso y hay actualizaciones regulares de versión. La mayoría de las actualizaciones son recomendadas pero no requeridas. Se dará aviso previo para las actualizaciones que no sean compatibles con versiones anteriores. Para actualizar tu nodo a la última versión, SSH en tu instancia de AWS como antes y ejecuta el script de instalación nuevamente.
+Luxd es un proyecto en curso y hay actualizaciones regulares de versión. La mayoría de las actualizaciones son recomendadas pero no requeridas. Se dará aviso previo para las actualizaciones que no sean compatibles con versiones anteriores. Para actualizar tu nodo a la última versión, SSH en tu instancia de AWS como antes y ejecuta el script de instalación nuevamente.
 
 ```text
 ./luxd-installer.sh
 ```
 
-Tu máquina ahora está ejecutando la versión más nueva de LuxGo. Para ver el estado del servicio LuxGo, ejecuta `sudo systemctl status luxd.`
+Tu máquina ahora está ejecutando la versión más nueva de Luxd. Para ver el estado del servicio Luxd, ejecuta `sudo systemctl status luxd.`
 
 ## Aumentar el Tamaño del Volumen
 
@@ -331,4 +331,4 @@ Si necesitas aumentar el tamaño del volumen, sigue estas instrucciones de AWS:
 
 ## Conclusión
 
-¡Eso es todo! Ahora tienes un nodo LuxGo ejecutándose en una instancia AWS EC2. Recomendamos configurar [monitoreo de nodo](/nodes/maintain/setting-up-node-monitoring.md) para tu nodo LuxGo. También recomendamos configurar alertas de facturación de AWS para que no te lleves sorpresas cuando llegue la factura. Si tienes comentarios sobre este tutorial, o cualquier otra cosa, envíanos un mensaje en [Discord](https://chat.lux.network).
+¡Eso es todo! Ahora tienes un nodo Luxd ejecutándose en una instancia AWS EC2. Recomendamos configurar [monitoreo de nodo](/nodes/maintain/setting-up-node-monitoring.md) para tu nodo Luxd. También recomendamos configurar alertas de facturación de AWS para que no te lleves sorpresas cuando llegue la factura. Si tienes comentarios sobre este tutorial, o cualquier otra cosa, envíanos un mensaje en [Discord](https://chat.lux.network).

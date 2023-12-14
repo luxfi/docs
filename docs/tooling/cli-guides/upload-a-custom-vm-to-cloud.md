@@ -212,11 +212,11 @@ files for a blockchain:
 - Blockchain Config
 - Subnet Config
 - Network Upgrades
-- LuxGo Config
+- Luxd Config
 
 The following example uses all of them, but the user can decide to provide a subset of those.
 
-### LuxGo Flags
+### Luxd Flags
 
 Save the following content (as defined [here](https://github.com/luxdefi/hypersdk/blob/main/examples/tokenvm/tests/e2e/e2e_test.go))
 into a file with path `<avagoFlagsPath>` (for example `~/tokenvm_avago.json`):
@@ -260,7 +260,7 @@ Use the arrow keys to navigate: ↓ ↑ → ←
     per-node-chain.json
 ```
 
-Provide the path to the LuxGo config file:
+Provide the path to the Luxd config file:
 
 ```text
 ✗ Enter the path to your configuration file: <avagoFlagsPath>

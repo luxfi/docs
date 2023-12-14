@@ -55,8 +55,8 @@ All messaging functions in `OutboundMsgBuilder` can be categorized as follows:
   - VMs communicate application-specific messages to other nodes through app
     messages. A common example is mempool gossiping.
 
-Currently, LuxGo implements its own message serialization to communicate.
-In the future, LuxGo will use protocol buffers to communicate.
+Currently, Luxd implements its own message serialization to communicate.
+In the future, Luxd will use protocol buffers to communicate.
 
 ### Network
 

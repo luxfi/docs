@@ -1,7 +1,7 @@
 {
   "id": "reference/luxd/x-chain/api",
   "title": "X-Chain API",
-  "description": "This page is an overview of the Exchange Chain (X-Chain) API associated with LuxGo.",
+  "description": "This page is an overview of the Exchange Chain (X-Chain) API associated with Luxd.",
   "source": "@site/docs/reference/luxd/x-chain/api.md",
   "sourceDirName": "reference/luxd/x-chain",
   "slug": "/reference/luxd/x-chain/api",
@@ -15,7 +15,7 @@
       "permalink": "/tags/x-chain"
     },
     {
-      "label": "LuxGo APIs",
+      "label": "Luxd APIs",
       "permalink": "/tags/lux-go-ap-is"
     }
   ],
@@ -23,9 +23,9 @@
   "frontMatter": {
     "tags": [
       "X-Chain",
-      "LuxGo APIs"
+      "Luxd APIs"
     ],
-    "description": "This page is an overview of the Exchange Chain (X-Chain) API associated with LuxGo.",
+    "description": "This page is an overview of the Exchange Chain (X-Chain) API associated with Luxd.",
     "sidebar_label": "API",
     "pagination_label": "X-Chain API"
   },

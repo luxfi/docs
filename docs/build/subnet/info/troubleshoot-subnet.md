@@ -27,7 +27,7 @@ Starting network...
 ```
 
 Lux-CLI only supports running one local Lux network at a time. If other instances of
-LuxGo are running concurrently, your Lux-CLI network fails to start.
+Luxd are running concurrently, your Lux-CLI network fails to start.
 
 To test for this error, start by shutting down any Lux nodes started by Lux-CLI.
 
@@ -35,7 +35,7 @@ To test for this error, start by shutting down any Lux nodes started by Lux-CLI.
 lux network clean --hard
 ```
 
-Next, look for any lingering LuxGo processes with:
+Next, look for any lingering Luxd processes with:
 
 ```shell
 ps aux | grep luxd
@@ -46,7 +46,7 @@ If any processes are running, you need to stop them before you can launch your V
 :::warning
 
 If you're running a validator node on the same box you're using Lux-CLI, **don't** end any
-of these lingering LuxGo processes. This may shut down your validator and could affect
+of these lingering Luxd processes. This may shut down your validator and could affect
 your validation uptime.
 
 :::
@@ -72,43 +72,43 @@ Blockchain has been deployed. Wait until network acknowledges...
 This error has many possible causes, but a common cause is usually due to **an RPC
 protocol version mismatch.**
 
-LuxGo communicates with custom VMs over RPC using [gRPC](https://grpc.io/). gRPC defines a
-protocol specification shared by both LuxGo and the VM. **Both components must be running
+Luxd communicates with custom VMs over RPC using [gRPC](https://grpc.io/). gRPC defines a
+protocol specification shared by both Luxd and the VM. **Both components must be running
 the same RPC version for VM deployment to work.**
 
-Your custom VM's RPC version is set by the version of LuxGo that you import. By default,
-Lux-CLI creates local Avalalanche networks that run the latest LuxGo release.
+Your custom VM's RPC version is set by the version of Luxd that you import. By default,
+Lux-CLI creates local Avalalanche networks that run the latest Luxd release.
 
 ### Example
 
-_Here's an example with real numbers from the LuxGo compatibility page_:
+_Here's an example with real numbers from the Luxd compatibility page_:
 
-- If the latest LuxGo release is version v1.10.11, then Lux-CLI deploys a network with
+- If the latest Luxd release is version v1.10.11, then Lux-CLI deploys a network with
 RPC version 28.
 - For your deploy to be successful, your VM must also have RPC version 28. Because only
-LuxGo versions v1.10.9, v1.10.10 and v1.10.11 supports RPC version 28, 
+Luxd versions v1.10.9, v1.10.10 and v1.10.11 supports RPC version 28, 
 your VM **must** import one of those versions.
 
 ### Solution
 
-Error: `RPCChainVM protocol version mismatch between LuxGo and Virtual Machine plugin`
+Error: `RPCChainVM protocol version mismatch between Luxd and Virtual Machine plugin`
 
 This error occurs when the RPCChainVM protocol version used by VMs like Subnet-EVM
-are incompatible with the protocol version of LuxGo.
+are incompatible with the protocol version of Luxd.
 
 If your VM has an RPC version mismatch, you have two options: 
 
-1. Update the version of LuxGo you use in your VM. This is the correct long-term approach.
-2. Use Lux-CLI to deploy an older version of LuxGo by using the
+1. Update the version of Luxd you use in your VM. This is the correct long-term approach.
+2. Use Lux-CLI to deploy an older version of Luxd by using the
 `--luxd-version` flag. Both the [`subnet deploy`](/tooling/cli.md#subnet-deploy)
 and [`network start`](/tooling/cli.md#network-start) commands support
-setting the LuxGo version explicitly.
+setting the Luxd version explicitly.
 
-Although it's very important to keep your version of LuxGo up-to-date,
+Although it's very important to keep your version of Luxd up-to-date,
 this workaround helps you avoid broken builds in the short term. 
 
 :::caution
-You must upgrade to the latest LuxGo version when deploying publicly to 
+You must upgrade to the latest Luxd version when deploying publicly to 
 Testnet or Lux Mainnet.
 :::
 
@@ -116,9 +116,9 @@ Testnet or Lux Mainnet.
 
 Similar version matching is required in different tools on the ecosystem. Here is a compatibility 
 table showing which RPCChainVM Version implements the more recent releases of 
-LuxGo, Subnet-EVM, Precompile-EVM and HyperSDK.
+Luxd, Subnet-EVM, Precompile-EVM and HyperSDK.
 
-| RPCChainVM | LuxGo             | Subnet-EVM            | Precompile-EVM        | HyperSDK |
+| RPCChainVM | Luxd             | Subnet-EVM            | Precompile-EVM        | HyperSDK |
 | :--------: | :-------:               | :-------:             | :-------:             | :-------: |
 | 26         | v1.10.1-v1.10.4         | v0.5.1-v0.5.2         | v0.1.0-v0.1.1         | v0.0.6-v0.0.9 |
 | 27         | v1.10.5-v1.10.8         | v0.5.3                | v0.1.2                | v0.0.10-v0.0.12 |
@@ -128,7 +128,7 @@ LuxGo, Subnet-EVM, Precompile-EVM and HyperSDK.
 
 You can view the full RPC compatibility broken down by release version for each tool here: 
 
-[LuxGo](https://github.com/luxdefi/luxd/blob/master/version/compatibility.json).
+[Luxd](https://github.com/luxdefi/luxd/blob/master/version/compatibility.json).
 
 [Subnet-EVM](https://github.com/luxdefi/subnet-evm/blob/master/compatibility.json).
 
@@ -136,7 +136,7 @@ You can view the full RPC compatibility broken down by release version for each 
 
 
 :::note
-Updates to LuxGo's RPC version are **not** tied to its semantic version scheme. Minor LuxGo
+Updates to Luxd's RPC version are **not** tied to its semantic version scheme. Minor Luxd
 version bumps may include a breaking RPC version bump.
 :::
 

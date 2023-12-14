@@ -10,7 +10,7 @@ Additionally, Lux Partners maintains an implementation of the [Rosetta API](http
 
 ### Running an Lux node
 
-If you want to build your node form source or include it in a docker image, reference the [LuxGo GitHub repository](https://github.com/luxdefi/luxd). To quickly get up and running, you can use the [node installation script](../nodes/build/set-up-node-with-installer.md) that automates installing and updating luxd node as a systemd service on Linux, using prebuilt binaries.
+If you want to build your node form source or include it in a docker image, reference the [Luxd GitHub repository](https://github.com/luxdefi/luxd). To quickly get up and running, you can use the [node installation script](../nodes/build/set-up-node-with-installer.md) that automates installing and updating luxd node as a systemd service on Linux, using prebuilt binaries.
 
 ### Configuring an Lux node
 
@@ -20,11 +20,11 @@ You can supply configuration options on the command line, or use a config file, 
 
 Individual chains, including the C-Chain, have their own configuration options which are separate from the node-level options. These can also be specified in a config file. For more details, see [here](../nodes/maintain/chain-config-flags.md#c-chain-configs).
 
-The C-Chain config file should be at `$HOME/.luxd/configs/chains/C/config.json`. You can also tell LuxGo to look somewhere else for the C-Chain config file with option `--chain-config-dir`. An example C-Chain config file:
+The C-Chain config file should be at `$HOME/.luxd/configs/chains/C/config.json`. You can also tell Luxd to look somewhere else for the C-Chain config file with option `--chain-config-dir`. An example C-Chain config file:
 
 :::caution
 
-If you need Ethereum [Archive Node](https://ethereum.org/en/developers/docs/nodes-and-clients/#archive-node) functionality, you need to disable C-Chain pruning, which has been enabled by default since LuxGo v1.4.10. To disable pruning, include `"pruning-enabled": false` in the C-Chain config file as shown below.
+If you need Ethereum [Archive Node](https://ethereum.org/en/developers/docs/nodes-and-clients/#archive-node) functionality, you need to disable C-Chain pruning, which has been enabled by default since Luxd v1.4.10. To disable pruning, include `"pruning-enabled": false` in the C-Chain config file as shown below.
 
 :::
 

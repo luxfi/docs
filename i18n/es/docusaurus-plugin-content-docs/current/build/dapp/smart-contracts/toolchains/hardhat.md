@@ -26,9 +26,9 @@ A continuación, instala [yarn](https://yarnpkg.com):
 npm install -g yarn
 ```
 
-### LuxGo y Lux Network Runner
+### Luxd y Lux Network Runner
 
-[LuxGo](https://github.com/luxdefi/luxd) es una implementación de nodo Lux
+[Luxd](https://github.com/luxdefi/luxd) es una implementación de nodo Lux
 escrita en Go. [Lux Network Runner](/tooling/netrunner.md) es una herramienta para desplegar rápidamente redes de prueba locales.
 Juntos, puedes desplegar redes de prueba locales y ejecutar pruebas en ellas.
 
@@ -267,7 +267,7 @@ Ejecuta `yarn hardhat` para listar la versión de Hardhat, las instrucciones de 
 
 ### Ejecutar Lux Network Runner
 
-Primero, confirma que tienes la última versión de LuxGo construida.
+Primero, confirma que tienes la última versión de Luxd construida.
 
 ```text
 cd /ruta/a/luxd
@@ -276,7 +276,7 @@ git checkout master
 ./scripts/build.sh
 ```
 
-(Ten en cuenta que también puedes [descargar binarios precompilados de LuxGo](https://github.com/luxdefi/luxd/releases) en lugar de construir desde el código fuente).
+(Ten en cuenta que también puedes [descargar binarios precompilados de Luxd](https://github.com/luxdefi/luxd/releases) en lugar de construir desde el código fuente).
 
 Confirma que tienes Lux Network Runner instalado siguiendo los pasos enumerados [aquí](/tooling/netrunner.md).
 
@@ -295,7 +295,7 @@ $ netrunner server \
 ### Iniciar una nueva red Lux con cinco nodos
 
 ```bash
-# reemplaza execPath con la ruta a LuxGo en tu máquina
+# reemplaza execPath con la ruta a Luxd en tu máquina
 # por ejemplo, ${HOME}/go/src/github.com/luxdefi/luxd/build/luxd
 $ LUXD_EXEC_PATH="luxd"
 ```

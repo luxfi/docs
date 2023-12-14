@@ -24,7 +24,7 @@ Los nodos que eligen usar un HDD pueden tener latencias de lectura/escritura pob
 
 ## Redes
 
-Para funcionar correctamente, LuxGo necesita aceptar conexiones desde Internet en el puerto de red `9651`. Antes de continuar con la instalación, debes determinar el entorno de red en el que se ejecutará tu nodo.
+Para funcionar correctamente, Luxd necesita aceptar conexiones desde Internet en el puerto de red `9651`. Antes de continuar con la instalación, debes determinar el entorno de red en el que se ejecutará tu nodo.
 
 ### Ejecución en un proveedor de nube
 

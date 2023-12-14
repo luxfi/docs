@@ -10,7 +10,7 @@ sidebar_position: 0
 
 In the course of Subnet operation, you will inevitably need to upgrade or change some part of the
 software stack that is running your Subnet. If nothing else, you will have to upgrade the
-LuxGo node client. Same goes for the VM plugin binary that is used to run the blockchain on
+Luxd node client. Same goes for the VM plugin binary that is used to run the blockchain on
 your Subnet, which is most likely the [Subnet-EVM](https://github.com/luxdefi/subnet-evm), the
 Subnet implementation of the Ethereum virtual machine.
 
@@ -70,7 +70,7 @@ appropriate value.
 
 ## Upgrading Subnet Validator Nodes
 
-LuxGo, the node client that is running the Lux validators is under constant and rapid
+Luxd, the node client that is running the Lux validators is under constant and rapid
 development. New versions come out often (roughly every two weeks), bringing added capabilities,
 performance improvements or security fixes. Updates are usually optional, but from time to time
 (much less frequently than regular updates) there will be an update that includes a mandatory
@@ -79,9 +79,9 @@ does not perform the update before the activation timestamp will immediately sto
 upgrade activates.
 
 That's why having a node upgrade strategy is absolutely vital, and you should always update to the
-latest LuxGo client immediately when it is made available.
+latest Luxd client immediately when it is made available.
 
-For a general guide on upgrading LuxGo check out [this tutorial](/nodes/maintain/upgrade-your-luxd-node.md). When upgrading Subnet nodes and
+For a general guide on upgrading Luxd check out [this tutorial](/nodes/maintain/upgrade-your-luxd-node.md). When upgrading Subnet nodes and
 keeping in mind the previous section, make sure to stagger node upgrades and start a new upgrade
 only once the previous node has successfully upgraded. Use the [Health API](/reference/luxd/health-api.md#healthhealth) to check that `healthy` value in the response
 is `true` on the upgraded node, and on other Subnet validators check that
@@ -94,7 +94,7 @@ Continue the upgrade cycle until all the Subnet nodes are upgraded.
 
 ## Upgrading Subnet VM Plugin Binaries
 
-Besides the LuxGo client itself, new versions get released for the VM binaries that run the
+Besides the Luxd client itself, new versions get released for the VM binaries that run the
 blockchains on the Subnet. On most Subnets, that is the
 [Subnet-EVM](https://github.com/luxdefi/subnet-evm), so this tutorial will go through the steps for
 updating the `subnet-evm` binary. The update process will be similar for updating any VM plugin
@@ -125,7 +125,7 @@ tar xvf subnet-evm_0.2.9_linux_amd64.tar.gz
 This will unpack and place the contents of the archive in the current directory, file `subnet-evm`
 is the plugin binary. You need to stop the node now (if the node is running as a service, use `sudo
 systemctl stop luxd` command). You need to place that file into the plugins directory where
-the LuxGo binary is located. If the node is installed using the install script, the path will
+the Luxd binary is located. If the node is installed using the install script, the path will
 be `~/node/plugins` Instead of the `subnet-evm` filename, VM binary needs to be named as
 the VM ID of the chain on the Subnet. For example, for the [WAGMI
 Subnet](https://subnets-test.lux.network/wagmi) that VM ID is
@@ -171,10 +171,10 @@ upgraded the VM!
 Refer to the previous section on how to make sure node is healthy and connected before moving on to
 upgrading the next Subnet validator.
 
-If you don't get the expected result, you can stop the `LuxGo`, examine and follow closely
+If you don't get the expected result, you can stop the `Luxd`, examine and follow closely
 step-by-step of the above. You are free to remove files under `~/node/plugins`, however,
 you should keep in mind that removing files is to remove an existing VM binary. You must put the
-correct VM plugin in place before you restart LuxGo.
+correct VM plugin in place before you restart Luxd.
 
 ## Network Upgrades
 

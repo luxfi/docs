@@ -22,13 +22,13 @@ To get the process started, at the minimum, you will to implement the following 
 - [`vm.Runtime`](https://buf.build/luxdefi/lux/docs/main:vm.runtime) (Client)
 - [`vm.VM`](https://buf.build/luxdefi/lux/docs/main:vm) (Server)
 
-To build a blockchain taking advantage of LuxGo's consensus to build blocks, you will need
+To build a blockchain taking advantage of Luxd's consensus to build blocks, you will need
 to implement :
 
 - [AppSender](https://buf.build/luxdefi/lux/docs/main:appsender) (Client)
 - [Messenger](https://buf.build/luxdefi/lux/docs/main:messenger) (Client)
 
-To have a json-RPC endpoint, `/ext/bc/subnetId/rpc` exposed by LuxGo, you will need 
+To have a json-RPC endpoint, `/ext/bc/subnetId/rpc` exposed by Luxd, you will need 
 to implement : 
 
 - [`Http`](https://buf.build/luxdefi/lux/docs/main:http) (Server)
@@ -39,14 +39,14 @@ as stated in the [Lux module](https://buf.build/luxdefi/lux)'s page.
 
 :::note
 There are _server_ and _client_ interfaces to implement.
-LuxGo calls the _server_ interfaces exposed by your VM and your VM calls 
-the _client_ interfaces exposed by LuxGo.
+Luxd calls the _server_ interfaces exposed by your VM and your VM calls 
+the _client_ interfaces exposed by Luxd.
 :::
 
 ## Starting Process 
 
-Your VM is started by LuxGo launching your binary. Your binary is started as a sub-process
-of LuxGo. While launching your binary, LuxGo passes an environment variable
+Your VM is started by Luxd launching your binary. Your binary is started as a sub-process
+of Luxd. While launching your binary, Luxd passes an environment variable
 `LUX_VM_RUNTIME_ENGINE_ADDR` containing an url. We must use this url to initialize a
 `vm.Runtime` client. 
 
@@ -55,7 +55,7 @@ Your VM, after having started a grpc server implementing the VM interface must c
 with the following parameters.
 
 - `protocolVersion` : It must match the `supported plugin version` of the 
-[LuxGo release](https://github.com/luxdefi/LuxGo/releases) you are using. 
+[Luxd release](https://github.com/luxdefi/Luxd/releases) you are using. 
 It is always part of the release notes.
 
 - `addr` : It is your grpc server's address. It must be in the following format
@@ -68,7 +68,7 @@ You will need to implement these methods in your server.
 
 ### Pre-Initialization Sequence
 
-_LuxGo starts/stops your process multiple times before launching the real initialization_ 
+_Luxd starts/stops your process multiple times before launching the real initialization_ 
 
 - [VM.Version](https://buf.build/luxdefi/lux/docs/main:vm#vm.VM.Version) 
   - Return : your VM's version.
@@ -96,7 +96,7 @@ _LuxGo starts/stops your process multiple times before launching the real initia
 [VerifyHeightIndexResponse](https://buf.build/luxdefi/lux/docs/main:vm#vm.VerifyHeightIndexResponse)
   with the code `ERROR_UNSPECIFIED` to indicate that no error has occurred.
 - [VM.CreateHandlers](https://buf.build/luxdefi/lux/docs/main:vm#vm.VM.CreateHandlers)
-  - To serve json-RPC endpoint, `/ext/bc/subnetId/rpc` exposed by LuxGo 
+  - To serve json-RPC endpoint, `/ext/bc/subnetId/rpc` exposed by Luxd 
   - See [json-RPC](#json-rpc) for more detail
   - Create a [`Http`](https://buf.build/luxdefi/lux/docs/main:http) server and get its url.
   - Return : a `CreateHandlersResponse` containing a single item with the server's url. (or an empty
@@ -140,7 +140,7 @@ _LuxGo starts/stops your process multiple times before launching the real initia
 (for every other node validating this Subnet in the network)
   - Param : a 
 [ConnectedRequest](https://buf.build/luxdefi/lux/docs/main:vm#vm.ConnectedRequest) 
-  with the NodeID and the version of LuxGo.
+  with the NodeID and the version of Luxd.
   - Return : Empty
 - [VM.Health](https://buf.build/luxdefi/lux/docs/main:vm#vm.VM.Health) 
   - Param : Empty
@@ -174,7 +174,7 @@ _on nodeX_
   `SendAppGossip` to propagate the transaction.
 
 
-LuxGo then propagates this to the other nodes.
+Luxd then propagates this to the other nodes.
 
 _on nodeY and nodeZ_
 
@@ -195,7 +195,7 @@ _on nodeY_
 
 - _client_ 
 [`Messenger.Notify`](https://buf.build/luxdefi/lux/docs/main:messenger#messenger.Messenger.Notify)
-  - You must issue a notify request to LuxGo by calling the method with the 
+  - You must issue a notify request to Luxd by calling the method with the 
   `MESSAGE_BUILD_BLOCK` value.
 
 _on nodeY_
@@ -241,7 +241,7 @@ _on all nodes_
 #### Managing Conflicts
 
 Conflicts happen when two or more nodes propose the next block at the same time.
-LuxGo takes care of this and decides which block should be considered
+Luxd takes care of this and decides which block should be considered
 final, and which blocks should be rejected using Snowman consensus.
 On the VM side, all there is to do is implement the `VM.BlockAccept` and
 `VM.BlockReject` methods.
@@ -250,7 +250,7 @@ _nodeX proposes block `0x123...`, nodeY proposes block `0x321...` and nodeZ
 proposes block `0x456`_
 
 There are three conflicting blocks (different hashes), and if we look at our VM's
-log files, we can see that LuxGo uses Snowman to decide which block must
+log files, we can see that Luxd uses Snowman to decide which block must
 be accepted. 
 
 ```log
@@ -265,7 +265,7 @@ be accepted.
 ...
 ```
 
-Supposing that LuxGo accepts block `0x123...`. The following RPC methods
+Supposing that Luxd accepts block `0x123...`. The following RPC methods
 are called on all nodes :
 
 - [VM.BlockAccept](https://buf.build/luxdefi/lux/docs/main:vm#vm.VM.BlockAccept)
@@ -299,7 +299,7 @@ To enable your json-RPC endpoint, you must implement the HandleSimple method of 
   [HandleSimpleHTTPResponse](https://buf.build/luxdefi/lux/docs/main:http#http.HandleSimpleHTTPResponse)
   response that will be sent back to the original sender.
 
-This server is registered with LuxGo during the 
+This server is registered with Luxd during the 
 [initialization process](#initialization-sequence) when the `VM.CreateHandlers` method is called.
 You must simply respond with the server's url in the `CreateHandlersResponse`
 result.

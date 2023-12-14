@@ -97,7 +97,7 @@ Give authorization to access AWS resources on behalf of the user:
 
 Now, the nodes will be created. 
 
-After that, you will be asked which LuxGo version you want to install in the nodes. Select
+After that, you will be asked which Luxd version you want to install in the nodes. Select
 the one associated to `<subnetName>`.
 
 ```text
@@ -111,7 +111,7 @@ New EC2 instance(s) successfully created in AWS!
 
 ...
 
-LuxGo and Lux-CLI installed and node(s) are bootstrapping!
+Luxd and Lux-CLI installed and node(s) are bootstrapping!
 ```
 
 You can check the Devnet setup with the `node status` command:
@@ -376,7 +376,7 @@ Following the Custom VM tutorial, create the needed input files, and set their p
 - `<genesisPath>` [Genesis File](/tooling/cli-guides/upload-a-custom-vm-to-cloud#genesis-file)
 - `<chainConfigPath>` [Blockchain Config](/tooling/cli-guides/upload-a-custom-vm-to-cloud#blockchain-config)
 - `<subnetConfigPath>` [Subnet Config](/tooling/cli-guides/upload-a-custom-vm-to-cloud#subnet-config)
-- `<avagoConfigPath>` [LuxGo Config](/tooling/cli-guides/upload-a-custom-vm-to-cloud#luxd-flags)
+- `<avagoConfigPath>` [Luxd Config](/tooling/cli-guides/upload-a-custom-vm-to-cloud#luxd-flags)
 
 #### Execute Wiz
 

@@ -405,7 +405,7 @@ which automates the installation process. You will need the "IPv4 Public IP"
 copied from the Azure Portal we set up earlier.
 
 Once the installation is complete, our node should now be bootstrapping! We can
-run the following command to take a peek at the latest status of the LuxGo
+run the following command to take a peek at the latest status of the Luxd
 node:
 
 ```text

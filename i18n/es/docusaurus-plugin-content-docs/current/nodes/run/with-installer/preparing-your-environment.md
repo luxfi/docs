@@ -1,13 +1,13 @@
 ---
 tags: [Nodos]
-description: En este tutorial, aprenderás cómo preparar tu entorno para la instalación de LuxGo y configurar tus ajustes de red.
+description: En este tutorial, aprenderás cómo preparar tu entorno para la instalación de Luxd y configurar tus ajustes de red.
 sidebar_label: Preparando tu Entorno
 sidebar_position: 0
 ---
 
 # Ejecutar un Nodo Lux Usando el Script de Instalación
 
-Tenemos un script de shell (bash) que instala LuxGo en tu computadora. Este
+Tenemos un script de shell (bash) que instala Luxd en tu computadora. Este
 script configura un nodo completo y en funcionamiento en cuestión de minutos con una entrada de usuario mínima
 requerida. El script también se puede utilizar para instalaciones desatendidas y automatizadas.
 
@@ -39,7 +39,7 @@ máquinas más potentes que las enumeradas, y también usarán más ancho de ban
 
 Este script de instalación asume:
 
-- LuxGo no está en funcionamiento y no está instalado como un servicio
+- Luxd no está en funcionamiento y no está instalado como un servicio
 - El usuario que ejecuta el script tiene privilegios de superusuario (puede ejecutar `sudo`)
 
 ## Consideraciones del Entorno
@@ -80,14 +80,14 @@ caso, `2630`. Detén el nodo ejecutando `kill -2 2630`.
 
 ### Archivos de Trabajo del Nodo
 
-Si anteriormente ejecutaste un nodo LuxGo en esta computadora, tendrás archivos de nodo locales
+Si anteriormente ejecutaste un nodo Luxd en esta computadora, tendrás archivos de nodo locales
 almacenados en el directorio `$HOME/.luxd`. Esos archivos no se verán afectados y el nodo configurado por el script continuará su operación con la misma identidad y estado que tenía antes. Dicho esto, para la seguridad de tu nodo, haz una copia de seguridad de los archivos `staker.crt` y `staker.key`, que se encuentran en
 `$HOME/.luxd/staking`, y guárdalos en un lugar seguro. Puedes usar esos
 archivos para recrear tu nodo en una computadora diferente si alguna vez es necesario. Consulta este [tutorial](/nodes/maintain/node-backup-and-restore.md) para obtener el procedimiento de copia de seguridad y restauración.
 
 ## Consideraciones de Red
 
-Para funcionar correctamente, LuxGo necesita aceptar conexiones desde Internet
+Para funcionar correctamente, Luxd necesita aceptar conexiones desde Internet
 en el puerto de red `9651`. Antes de continuar con la instalación, necesitas
 determinar el entorno de red en el que se ejecutará tu nodo.
 

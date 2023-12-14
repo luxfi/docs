@@ -902,7 +902,7 @@ func (f *Factory) New(*snow.Context) (interface{}, error) { return &VM{}, nil }
 
 A VM may have a static API, which allows clients to call methods that do not query or update the
 state of a particular blockchain, but rather apply to the VM as a whole. This is analogous to static
-methods in computer programming. LuxGo uses [Gorilla’s RPC
+methods in computer programming. Luxd uses [Gorilla’s RPC
 library](https://www.gorillatoolkit.org/pkg/rpc) to implement HTTP APIs.
 
 `StaticService` implements the static API for our VM.
@@ -1185,7 +1185,7 @@ func (s *Service) ProposeBlock(_ *http.Request, args *ProposeBlockArgs, reply *P
 ### Plugin
 
 In order to make this VM compatible with `go-plugin`, we need to define a `main` package and method,
-which serves our VM over gRPC so that LuxGo can call its methods.
+which serves our VM over gRPC so that Luxd can call its methods.
 
 `main.go`'s contents are:
 
@@ -1204,7 +1204,7 @@ func main() {
 }
 ```
 
-Now LuxGo's `rpcchainvm` can connect to this plugin and calls its methods.
+Now Luxd's `rpcchainvm` can connect to this plugin and calls its methods.
 
 ### Executable Binary
 
@@ -1235,7 +1235,7 @@ JSON file at `~/.luxd/configs/vms/aliases.json` with:
 
 :::warning
 The name of the VM binary is also its static ID and should not be changed manually.
-Changing the name of the VM binary will result in LuxGo failing to start the VM.
+Changing the name of the VM binary will result in Luxd failing to start the VM.
 To reference a VM by another name, define a VM alias as described below.
 :::
 
@@ -1250,7 +1250,7 @@ To reference a VM by another name, define a VM alias as described below.
 
 ### Installing a VM
 
-LuxGo searches for and registers plugins under the `plugins` [directory](/nodes/configure/luxd-config-flags.md#--plugin-dir-string).
+Luxd searches for and registers plugins under the `plugins` [directory](/nodes/configure/luxd-config-flags.md#--plugin-dir-string).
 
 To install the virtual machine onto your node, you need to move the built virtual machine binary
 under this directory. Virtual machine executable names must be either a full virtual machine ID
@@ -1305,7 +1305,7 @@ Now, this VM's static API can be accessed at endpoints `/ext/vm/timestampvm` and
 [here](/nodes/configure/luxd-config-flags.md#vm-configs).
 
 In this tutorial, we used the VM's ID as the executable name to simplify the process. However,
-LuxGo would also accept `timestampvm` or `timestamp` since those are registered aliases in
+Luxd would also accept `timestampvm` or `timestamp` since those are registered aliases in
 previous step.
 
 ## Wrapping Up

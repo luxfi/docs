@@ -26,9 +26,9 @@ Esta guía muestra cómo implementar e interactuar con contratos inteligentes ut
 - Has [instalado Foundry](https://github.com/foundry-rs/foundry#installation) y ejecutado `foundryup`. Esta instalación incluye los binarios `forge` y `cast` utilizados en este recorrido.
 - [NodeJS](https://nodejs.org/en) versión `16.x`
 
-### LuxGo y Lux Network Runner
+### Luxd y Lux Network Runner
 
-[LuxGo](https://github.com/luxdefi/luxd) es una implementación de nodo Lux escrita en Go.
+[Luxd](https://github.com/luxdefi/luxd) es una implementación de nodo Lux escrita en Go.
 
 [Lux Network Runner](/tooling/netrunner.md) es una herramienta para implementar rápidamente redes de prueba locales. Juntos, pueden implementar redes de prueba locales y ejecutar pruebas en ellas.
 

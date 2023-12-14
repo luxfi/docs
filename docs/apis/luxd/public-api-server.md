@@ -4,7 +4,7 @@ description: There is a public API server that allows developers to access the L
 
 # Public API Server
 
-There is a public API server that allows developers to access the Lux network without having to run a node themselves. The public API server is actually several [LuxGo](https://github.com/luxdefi/luxd) nodes behind a load balancer to ensure high availability and high request throughput.
+There is a public API server that allows developers to access the Lux network without having to run a node themselves. The public API server is actually several [Luxd](https://github.com/luxdefi/luxd) nodes behind a load balancer to ensure high availability and high request throughput.
 
 ## Using the Public API nodes
 

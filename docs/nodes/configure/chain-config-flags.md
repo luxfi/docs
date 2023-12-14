@@ -9,11 +9,11 @@ sidebar_position: 1
 # Chain Configs
 
 Some chains allow the node operator to provide a custom configuration.
-LuxGo can read chain configurations from files and pass them to the
+Luxd can read chain configurations from files and pass them to the
 corresponding chains on initialization.
 
-LuxGo looks for these files in the directory specified by
-`--chain-config-dir` LuxGo flag, as documented
+Luxd looks for these files in the directory specified by
+`--chain-config-dir` Luxd flag, as documented
 [here](/nodes/configure/luxd-config-flags.md#--chain-config-dir-string). If omitted, value
 defaults to `$HOME/.luxd/configs/chains`. This directory can have
 sub-directories whose names are chain IDs or chain aliases. Each sub-directory
@@ -39,9 +39,9 @@ The filename extension that these files should have, and the contents of these
 files, is VM-dependent. For example, some chains may expect `config.txt` while
 others expect `config.json`. If multiple files are provided with the same name
 but different extensions (for example `config.json` and `config.txt`) in the same
-sub-directory, LuxGo will exit with an error.
+sub-directory, Luxd will exit with an error.
 
-For a given chain, LuxGo will follow the sequence below to look for its
+For a given chain, Luxd will follow the sequence below to look for its
 config file, where all folder and file names are case sensitive:
 
 - First it looks for a config sub-directory whose name is the chain ID - If it
@@ -50,7 +50,7 @@ config file, where all folder and file names are case sensitive:
   name is another alias for the chain
 
 Alternatively, for some setups it might be more convenient to provide config
-entirely via the command line. For that, you can use LuxGo
+entirely via the command line. For that, you can use Luxd
 `--chain-config-content` flag, as documented
 [here](/nodes/configure/luxd-config-flags.md#--chain-config-content-string).
 
@@ -266,7 +266,7 @@ Adds the following RPC calls to the `net_*` namespace. Defaults to `true`.
 Note: Coreth is a virtual machine and does not have direct access to the
 networking layer, so `net_listening` always returns true and `net_peerCount`
 always returns 0. For accurate metrics on the network layer, users should use
-the LuxGo APIs.
+the Luxd APIs.
 
 #### `debug-tracer`
 

@@ -160,7 +160,7 @@ Estos valores, que son constantes, son bastante pequeños en la Red Lux. El tama
 
 Snowball es muy escalable a medida que aumenta el número de nodos en la red, _n_. Independientemente del número de participantes en la red, la cantidad de mensajes de consenso enviados sigue siendo la misma porque en una consulta dada, un nodo solo consulta a `20` nodos, incluso si hay miles de nodos en la red.
 
-Todo lo discutido hasta este punto es cómo se describe Lux en el [libro blanco de Lux](https://assets-global.website-files.com/5d80307810123f5ffbb34d6e/6009805681b416f34dcae012_Lux%20Consensus%20Whitepaper.pdf). La implementación del protocolo de consenso Lux por parte de Lux Partners (específicamente en LuxGo) tiene algunas optimizaciones para latencia y rendimiento.
+Todo lo discutido hasta este punto es cómo se describe Lux en el [libro blanco de Lux](https://assets-global.website-files.com/5d80307810123f5ffbb34d6e/6009805681b416f34dcae012_Lux%20Consensus%20Whitepaper.pdf). La implementación del protocolo de consenso Lux por parte de Lux Partners (específicamente en Luxd) tiene algunas optimizaciones para latencia y rendimiento.
 
 ### Bloques
 
@@ -200,7 +200,7 @@ El voto transitivo, donde un voto por un bloque es un voto por todos sus ancestr
 
 ### Cabos Suelto
 
-Las transacciones son creadas por usuarios que llaman a una API en un nodo completo de LuxGo o las crean utilizando una biblioteca como LuxJS.
+Las transacciones son creadas por usuarios que llaman a una API en un nodo completo de Luxd o las crean utilizando una biblioteca como LuxJS.
 
 ### Otras Observaciones
 

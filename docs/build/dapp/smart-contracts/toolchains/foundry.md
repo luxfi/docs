@@ -35,9 +35,9 @@ command-line.
   walk-through.
 - [NodeJS](https://nodejs.org/en) version `16.x`
 
-### LuxGo and Lux Network Runner
+### Luxd and Lux Network Runner
 
-[LuxGo](https://github.com/luxdefi/luxd) is an Lux node
+[Luxd](https://github.com/luxdefi/luxd) is an Lux node
 implementation written in Go.
 
 [Lux Network Runner](/tooling/netrunner.md) is a tool to quickly

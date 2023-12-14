@@ -1,7 +1,7 @@
 {
   "id": "apis/luxd/README",
-  "title": "LuxGo Overview",
-  "description": "APIs: Learn about all APIs provided by LuxGo server software.",
+  "title": "Luxd Overview",
+  "description": "APIs: Learn about all APIs provided by Luxd server software.",
   "source": "@site/docs/apis/luxd/README.md",
   "sourceDirName": "apis/luxd",
   "slug": "/apis/luxd/",

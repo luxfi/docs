@@ -1,6 +1,6 @@
 ---
 tags: [Nodes]
-description: This tutorial demonstrates how to set up infrastructure to monitor an instance of LuxGo.
+description: This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.
 sidebar_label: Monitoring
 pagination_label: Monitor an Lux Node
 sidebar_position: 2
@@ -11,17 +11,17 @@ sidebar_position: 2
 ## Introduction
 
 This tutorial demonstrates how to set up infrastructure to monitor an instance of
-[LuxGo](https://github.com/luxdefi/luxd). We will use:
+[Luxd](https://github.com/luxdefi/luxd). We will use:
 
 - [Prometheus](https://prometheus.io/) to gather and store data
 - [`node_exporter`](https://github.com/prometheus/node_exporter) to get information about the machine,
-- LuxGo’s [Metrics API](/reference/luxd/metrics-api.md) to get information about the node
+- Luxd’s [Metrics API](/reference/luxd/metrics-api.md) to get information about the node
 - [Grafana](https://grafana.com/) to visualize data on a dashboard.
 - A set of pre-made [Lux dashboards](https://github.com/luxdefi/monitoring/tree/main/grafana/dashboards)
 
 Prerequisites:
 
-- A running LuxGo node
+- A running Luxd node
 - Shell access to the machine running the node
 - Administrator privileges on the machine
 
@@ -75,10 +75,10 @@ Options:
 --1      Step 1: Installs Prometheus
 --2      Step 2: Installs Grafana
 --3      Step 3: Installs node_exporter
---4      Step 4: Installs LuxGo Grafana dashboards
+--4      Step 4: Installs Luxd Grafana dashboards
 --5      Step 5: (Optional) Installs additional dashboards
 
-Run without any options, script will download and install latest version of LuxGo dashboards.
+Run without any options, script will download and install latest version of Luxd dashboards.
 ```
 
 Let's get to it.
@@ -94,7 +94,7 @@ Run the script to execute the first step:
 It should produce output something like this:
 
 ```text
-LuxGo monitoring installer
+Luxd monitoring installer
 --------------------------------
 STEP 1: Installing Prometheus
 
@@ -160,7 +160,7 @@ Run the script to execute the second step:
 It should produce output something like this:
 
 ```text
-LuxGo monitoring installer
+Luxd monitoring installer
 --------------------------------
 STEP 2: Installing Grafana
 
@@ -198,7 +198,7 @@ Prometheus and Grafana are now installed, we're ready for the next step.
 
 ## Step 3: Set up `node_exporter` <a id="exporter"></a>
 
-In addition to metrics from LuxGo, let’s set up monitoring of the machine
+In addition to metrics from Luxd, let’s set up monitoring of the machine
 itself, so we can check CPU, memory, network and disk usage and be aware of any
 anomalies. For that, we will use `node_exporter`, a Prometheus plugin.
 
@@ -211,7 +211,7 @@ Run the script to execute the third step:
 The output should look something like this:
 
 ```bash
-LuxGo monitoring installer
+Luxd monitoring installer
 --------------------------------
 STEP 3: Installing node_exporter
 
@@ -235,14 +235,14 @@ together now. To check, in your browser visit Prometheus web interface on
 `http://your-node-host-ip:9090/targets`. You should see three targets enabled:
 
 - Prometheus
-- LuxGo
+- Luxd
 - `luxd-machine`
 
 Make sure that all of them have `State` as `UP`.
 
 :::info
 
-If you run your LuxGo node with TLS enabled on your API port, you will
+If you run your Luxd node with TLS enabled on your API port, you will
 need to manually edit the `/etc/prometheus/prometheus.yml` file and change the
 `luxd` job to look like this:
 
@@ -276,7 +276,7 @@ Run the script to install the dashboards:
 It will produce output something like this:
 
 ```text
-LuxGo monitoring installer
+Luxd monitoring installer
 --------------------------------
 
 Downloading...

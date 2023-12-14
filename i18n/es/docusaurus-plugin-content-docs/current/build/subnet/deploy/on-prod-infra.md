@@ -27,18 +27,18 @@ intuición para el tipo de preguntas que necesitarás considerar.
 
 Los nodos Lux son elementos esenciales para ejecutar tu Subnet en producción. Como mínimo, tu
 Subnet necesitará nodos validadores, potencialmente también nodos que actúen como servidores RPC, indexadores o
-exploradores. Ejecutar un nodo es básicamente ejecutar una instancia de [LuxGo](/nodes/README.md) en un
+exploradores. Ejecutar un nodo es básicamente ejecutar una instancia de [Luxd](/nodes/README.md) en un
 servidor.
 
 ### Sistema Operativo del Servidor
 
-Aunque LuxGo puede ejecutarse en una computadora macOS o Windows, recomendamos encarecidamente ejecutar nodos
+Aunque Luxd puede ejecutarse en una computadora macOS o Windows, recomendamos encarecidamente ejecutar nodos
 en computadoras que ejecuten Linux, ya que están diseñadas específicamente para cargas de servidor y todas las herramientas y
 utilidades necesarias para administrar un servidor son nativas de Linux.
 
 ### Especificación de Hardware
 
-Para ejecutar LuxGo como un validador en la Red Primaria, la configuración recomendada es la siguiente:
+Para ejecutar Luxd como un validador en la Red Primaria, la configuración recomendada es la siguiente:
 
 - CPU: Equivalente a 8 vCPU de AWS
 - RAM: 16 GiB
@@ -69,7 +69,7 @@ conectado a la red físicamente (no a través de Wi-Fi), y que el enrutador sea 
 manejar un par de miles de conexiones TCP persistentes y que el ancho de banda de la red pueda
 acomodar al menos 5 Mbps de tráfico de red constante de subida y bajada.
 
-Al instalar el nodo LuxGo en las máquinas, a menos que tengas un personal de DevOps dedicado que
+Al instalar el nodo Luxd en las máquinas, a menos que tengas un personal de DevOps dedicado que
 se encargará de la configuración y la configuración del nodo, recomendamos usar el [script de instalación](/nodes/run/with-installer/installing-luxd.md)
 para configurar los nodos. Abstraerá la mayor parte del
 proceso de configuración para ti, configurará el nodo como un servicio del sistema y permitirá actualizaciones fáciles del nodo.
@@ -110,7 +110,7 @@ capaz de manejar rutinariamente al menos un nodo fuera de línea sin que el rend
 
 ### Inicio de Nodos
 
-Una vez que configures el servidor e instales LuxGo en ellos, los nodos necesitarán iniciar (sincronizarse con
+Una vez que configures el servidor e instales Luxd en ellos, los nodos necesitarán iniciar (sincronizarse con
 la red). Este es un proceso largo, ya que los nodos necesitan ponerse al día y reproducir toda la actividad de la red
 desde el génesis hasta el momento presente. La sincronización completa en un nodo puede llevar más de una
 semana, pero hay formas de acortar ese proceso, dependiendo de tus circunstancias.

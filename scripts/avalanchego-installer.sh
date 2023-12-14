@@ -15,7 +15,7 @@ fi
 create_service_file () {
   rm -f luxd.service
   echo "[Unit]">>luxd.service
-  echo "Description=LuxGo systemd service">>luxd.service
+  echo "Description=Luxd systemd service">>luxd.service
   echo "StartLimitIntervalSec=0">>luxd.service
   echo "[Service]">>luxd.service
   echo "Type=simple">>luxd.service
@@ -152,7 +152,7 @@ usage () {
   echo "   --help            Shows this message"
   echo "   --list            Lists 10 newest versions available to install"
   echo "   --reinstall       Run the installer from scratch, overwriting the old service file and node configuration"
-  echo "   --remove          Remove the system service and LuxGo binaries and exit"
+  echo "   --remove          Remove the system service and Luxd binaries and exit"
   echo ""
   echo "   --version <tag>          Installs <tag> version, default is the latest"
   echo "   --ip dynamic|static|<IP> Uses dynamic, static (autodetect) or provided public IP, will ask if not provided"
@@ -164,7 +164,7 @@ usage () {
   echo "   --testnet                   Connect to Testnet testnet, defaults to mainnet if omitted"
   echo "   --admin                  Enable Admin API, defaults to disabled if omitted"
   echo ""
-  echo "Run without any options, script will install or upgrade LuxGo to latest available version. Node config"
+  echo "Run without any options, script will install or upgrade Luxd to latest available version. Node config"
   echo "options for version, ip and others will be ignored when upgrading the node, run with --reinstall to change config."
   echo "Reinstall will not modify the database or NodeID definition, it will overwrite node and chain configs."
   exit 0
@@ -193,7 +193,7 @@ dbdirOpt="no"
 ipOpt="ask"
 stateOpt="?"
 
-echo "LuxGo installer"
+echo "Luxd installer"
 echo "---------------------"
 
 # process command line arguments
@@ -215,7 +215,7 @@ if [ "$#" != 0 ]; then
         echo "Remove node binaries..."
         rm -rf $HOME/node
         echo "Done."
-        echo "LuxGo removed. Working directory ($HOME/.luxd/) has been preserved."
+        echo "Luxd removed. Working directory ($HOME/.luxd/) has been preserved."
         exit 0
         ;;
       --help) usage ;;
@@ -266,12 +266,12 @@ else
   exit
 fi
 if test -f "/etc/systemd/system/luxd.service"; then
-  foundLuxGo=true
-  echo "Found LuxGo systemd service already installed, switching to upgrade mode."
+  foundLuxd=true
+  echo "Found Luxd systemd service already installed, switching to upgrade mode."
   echo "Stopping service..."
   sudo systemctl stop luxd
 else
-  foundLuxGo=false
+  foundLuxd=false
 fi
 # download and copy node files
 mkdir -p /tmp/luxd-install               #make a directory to work in
@@ -288,8 +288,8 @@ fi
 if [[ `wget -S --spider $fileName  2>&1 | grep 'HTTP/1.1 200 OK'` ]]; then
   echo "Node version found."
 else
-  echo "Unable to find LuxGo version $version. Exiting."
-  if [ "$foundLuxGo" = "true" ]; then
+  echo "Unable to find Luxd version $version. Exiting."
+  if [ "$foundLuxd" = "true" ]; then
     echo "Restarting service..."
     sudo systemctl start luxd
   fi
@@ -310,7 +310,7 @@ if [ "$osType" = "RHEL" ]; then
   sudo semanage fcontext -a -t bin_t "$HOME/node/luxd" || sudo semanage fcontext -m -t bin_t "$HOME/node/luxd"
   sudo restorecon -Fv "$HOME/node/luxd"
 fi
-if [ "$foundLuxGo" = "true" ]; then
+if [ "$foundLuxd" = "true" ]; then
   echo "Node upgraded, starting service..."
   sudo systemctl start luxd
   echo "New node version:"

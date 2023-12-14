@@ -1,12 +1,12 @@
 ---
 tags: [Tooling]
-description: Lux Plugin Manager is a command-line tool to manage virtual machines binaries on existing LuxGo instances. It enables to add/remove nodes to Subnets, upgrade the VM plugin binaries as new versions get released to the plugin repository.
+description: Lux Plugin Manager is a command-line tool to manage virtual machines binaries on existing Luxd instances. It enables to add/remove nodes to Subnets, upgrade the VM plugin binaries as new versions get released to the plugin repository.
 pagination_label: Lux Plugin Manager
 ---
 # Lux Plugin Manager
 
 Lux Plugin Manager (**APM**) is a command-line tool to manage virtual
-machines binaries on existing LuxGo instances. It enables to add/remove
+machines binaries on existing Luxd instances. It enables to add/remove
 nodes to Subnets, upgrade the VM plugin binaries as new versions get released to
 the plugin repository.
 

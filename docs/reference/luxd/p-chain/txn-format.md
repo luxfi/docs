@@ -1,6 +1,6 @@
 ---
 tags: [P-Chain, Platform Chain, Transaction Format]
-description: This page is an overview of the transaction format associated with LuxGo P-Chain API.
+description: This page is an overview of the transaction format associated with Luxd P-Chain API.
 sidebar_label: Transaction Format
 pagination_label: P-Chain Transaction Format
 ---

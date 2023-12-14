@@ -31,7 +31,7 @@ Lux is an incredibly lightweight protocol, so nodes can run on commodity hardwar
 
 ### Networking
 
-To run successfully, LuxGo needs to accept connections from the Internet on the network port `9651`. Before you proceed with the installation, you need to determine the networking environment your node will run in.
+To run successfully, Luxd needs to accept connections from the Internet on the network port `9651`. Before you proceed with the installation, you need to determine the networking environment your node will run in.
 
 #### Running on a Cloud Provider
 
@@ -49,9 +49,9 @@ Please note that a fully connected Lux node maintains and communicates over a co
 
 ## Run an Lux Node
 
-Let’s install LuxGo, the GoLang implementation of an Lux node, and connect to the Lux primary network.
+Let’s install Luxd, the GoLang implementation of an Lux node, and connect to the Lux primary network.
 
-### Download LuxGo
+### Download Luxd
 
 The node is a binary program. You can either download the source code and then build the binary program, or you can download the pre-built binary. You don’t need to do both.
 
@@ -65,7 +65,7 @@ First install Go 1.17.9 or later. Follow the instructions [here](https://golang.
 
 Set `$GOPATH` environment variable properly for Go to look for Go Workspaces. Please read [this](https://go.dev/doc/gopath_code) for details. You can verify by running `echo $GOPATH`.
 
-Download the LuxGo repository into your `$GOPATH`:
+Download the Luxd repository into your `$GOPATH`:
 
 ```sh
 cd $GOPATH
@@ -77,7 +77,7 @@ cd luxd
 
 Note: This checkouts to the master branch. For the latest stable version, checkout the latest tag.
 
-Build LuxGo:
+Build Luxd:
 
 ```sh
 ./scripts/build.sh
@@ -85,7 +85,7 @@ Build LuxGo:
 
 The binary, named `luxd`, is in `luxd/build`. If you've followed the instructions so far, this will be within your `$GOPATH` at: `$GOPATH/src/github.com/luxdefi/luxd/build`.
 
-To begin running LuxGo, run the following (hit Ctrl+C to stop your node):
+To begin running Luxd, run the following (hit Ctrl+C to stop your node):
 
 ```sh
 ./build/luxd

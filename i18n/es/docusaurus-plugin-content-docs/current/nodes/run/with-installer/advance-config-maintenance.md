@@ -102,7 +102,7 @@ configurar la C-Chain, como se describe en detalle
 
 ## Usando una Versión Anterior
 
-El script de instalación también se puede utilizar para instalar una versión de LuxGo que no sea la última versión.
+El script de instalación también se puede utilizar para instalar una versión de Luxd que no sea la última versión.
 
 Para ver una lista de versiones disponibles para la instalación, ejecuta:
 
@@ -113,7 +113,7 @@ Para ver una lista de versiones disponibles para la instalación, ejecuta:
 Imprimirá una lista, algo como esto:
 
 ```text
-Instalador de LuxGo
+Instalador de Luxd
 ---------------------
 Versiones disponibles:
 v1.3.2
@@ -137,7 +137,7 @@ etiqueta de la versión. Por ejemplo:
 
 :::warning
 
-Ten en cuenta que no todas las versiones de LuxGo son compatibles. Generalmente deberías ejecutar
+Ten en cuenta que no todas las versiones de Luxd son compatibles. Generalmente deberías ejecutar
 la última versión. Ejecutar una versión que no sea la última puede hacer que tu nodo
 no funcione correctamente y, para los validadores, no recibir una recompensa de staking.
 
@@ -190,7 +190,7 @@ rm -rf ~/.luxd/
 
 ## ¿Qué Sigue?
 
-¡Eso es todo, estás ejecutando un nodo LuxGo! ¡Felicitaciones! Háznoslo saber en nuestro [Twitter](https://twitter.com/luxdefi),
+¡Eso es todo, estás ejecutando un nodo Luxd! ¡Felicitaciones! Háznoslo saber en nuestro [Twitter](https://twitter.com/luxdefi),
 [Telegram](https://t.me/luxdefi) o [Reddit](https://t.me/luxdefi)!
 
 Si estás en una red residencial (IP dinámica), no olvides configurar el reenvío de puertos. Si estás en un proveedor de servicios en la nube, estás listo para continuar.

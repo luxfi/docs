@@ -45,7 +45,7 @@ Cluster "<clusterName>" (Devnet)
   [i-0759b102acfd5b585] ssh -o IdentitiesOnly=yes -o StrictHostKeyChecking=no ubuntu@107.21.158.224 -i /home/fm/.ssh/fm-us-east-1-cli-us-east-1-kp.pem 
 ```
 
-## Get the LuxGo PID for All Nodes in `<clusterName>`
+## Get the Luxd PID for All Nodes in `<clusterName>`
 
 ```shell
 lux node ssh <clusterName> pgrep luxd
@@ -65,7 +65,7 @@ lux node ssh <clusterName> pgrep luxd
 14555
 ```
 
-## Get the LuxGo Configuration for All Nodes in `<clusterName>`
+## Get the Luxd Configuration for All Nodes in `<clusterName>`
 
 ```shell
 lux node ssh <clusterName> cat /home/ubuntu/.luxd/configs/node.json

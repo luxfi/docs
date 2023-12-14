@@ -1,13 +1,13 @@
 ---
 tags: [Nodes]
-description: In this tutorial, you'll learn how to prepare your environment for LuxGo installation and configure your network settings.
+description: In this tutorial, you'll learn how to prepare your environment for Luxd installation and configure your network settings.
 sidebar_label: Preparing Your Environment
 sidebar_position: 0
 ---
 
 # Run an Lux Node Using the Install Script
 
-We have a shell (bash) script that installs LuxGo on your computer. This
+We have a shell (bash) script that installs Luxd on your computer. This
 script sets up full, running node in a matter of minutes with minimal user input
 required. Script can also be used for unattended, automated installs.
 
@@ -39,7 +39,7 @@ more powerful machines than listed, and will use more bandwidth as well.
 
 This install script assumes:
 
-- LuxGo is not running and not already installed as a service
+- Luxd is not running and not already installed as a service
 - User running the script has superuser privileges (can run `sudo`)
 
 ## Environment Considerations
@@ -80,7 +80,7 @@ case, `2630`. Stop the node by running `kill -2 2630`.
 
 ### Node Working Files
 
-If you previously ran an LuxGo node on this computer, you will have local
+If you previously ran an Luxd node on this computer, you will have local
 node files stored in `$HOME/.luxd` directory. Those files will not be
 disturbed, and node set up by the script will continue operation with the same
 identity and state it had before. That being said, for your node's security,
@@ -92,7 +92,7 @@ restore procedure.
 
 ## Networking Considerations
 
-To run successfully, LuxGo needs to accept connections from the Internet
+To run successfully, Luxd needs to accept connections from the Internet
 on the network port `9651`. Before you proceed with the installation, you need
 to determine the networking environment your node will run in.
 

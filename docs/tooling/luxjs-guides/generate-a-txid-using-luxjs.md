@@ -13,7 +13,7 @@ A transaction id, or TxID, is a string of numbers and letters which identifies a
 specific transaction on the blockchain. TXIDs are one of the most core
 components that developers interact with when working on a blockchain system.
 They're deterministic and can be generated using
-[LuxGo](/reference) or
+[Luxd](/reference) or
 [LuxJS](/tooling/luxjs-overview.md).
 
 On the Lux network a TxID is a CB58 encoded string which is created by
@@ -67,7 +67,7 @@ The `generatedTxID` will be a CB58 encoded string similar to `eLXEKFFMgGmK7ZLokC
 
 ## Confirm TxID Is Correct
 
-To confirm that the `generatedTxID` is correct issue the `BaseTx` to LuxGo
+To confirm that the `generatedTxID` is correct issue the `BaseTx` to Luxd
 and compare the TxID which is returned with the recently created TxID.
 
 ```ts

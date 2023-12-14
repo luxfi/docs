@@ -1,12 +1,12 @@
 ---
 tags: [Nodos]
-description: Este tutorial demuestra cómo configurar la infraestructura para monitorear una instancia de LuxGo.
+description: Este tutorial demuestra cómo configurar la infraestructura para monitorear una instancia de Luxd.
 sidebar_label: Actualización
-pagination_label: Actualiza tu nodo LuxGo
+pagination_label: Actualiza tu nodo Luxd
 sidebar_position: 3
 ---
 
-# Actualiza tu nodo LuxGo
+# Actualiza tu nodo Luxd
 
 ## Haz una copia de seguridad de tu nodo
 
@@ -30,14 +30,14 @@ Si instalaste tu nodo usando el [script de instalación](/nodes/run/with-install
 ./luxd-installer.sh
 ```
 
-Detectará que ya tienes LuxGo instalado:
+Detectará que ya tienes Luxd instalado:
 
 ```text
-Instalador LuxGo
+Instalador Luxd
 ---------------------
 Preparando el entorno...
 Se encontró una arquitectura Intel/AMD de 64 bits...
-Se encontró el servicio systemd LuxGo ya instalado, cambiando a modo de actualización.
+Se encontró el servicio systemd Luxd ya instalado, cambiando a modo de actualización.
 Deteniendo el servicio...
 ```
 
@@ -166,7 +166,7 @@ Puedes encontrar más información sobre SSH y cómo usarlo
 [aquí](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/about-ssh).
 :::
 
-Luego muévete al directorio de LuxGo:
+Luego muévete al directorio de Luxd:
 
 ```zsh
 cd luxd

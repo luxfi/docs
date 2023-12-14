@@ -63,7 +63,7 @@ way to access and move LUX.
 
 LuxJS allows you to create and sign transactions locally which is why it
 is the recommended way to transfer LUX between chains. We are moving away from
-using LuxGo's keystore because it requires you to keep your keys on a full
+using Luxd's keystore because it requires you to keep your keys on a full
 node which makes them a target for malicious hackers.
 
 ### Example Code

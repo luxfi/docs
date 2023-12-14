@@ -1,12 +1,12 @@
 ---
 tags: [Nodes]
-description: This documents list all available configuration and flags for LuxGo.
-sidebar_label: LuxGo Configs + Flags
-pagination_label: LuxGo Configs and Flags
+description: This documents list all available configuration and flags for Luxd.
+sidebar_label: Luxd Configs + Flags
+pagination_label: Luxd Configs and Flags
 sidebar_position: 0
 ---
 
-# LuxGo Configs and Flags
+# Luxd Configs and Flags
 
 <!-- markdownlint-disable MD001 -->
 
@@ -38,7 +38,7 @@ Example JSON config file:
 :::tip
 [Install Script](/nodes/run/with-installer/installing-luxd.md) creates the
 node config file at `~/.luxd/configs/node.json`. No default file is
-created if [LuxGo is built from source](/nodes/run/node-manually.md), you
+created if [Luxd is built from source](/nodes/run/node-manually.md), you
 would need to create it manually if needed.
 :::
 
@@ -187,7 +187,7 @@ Partial sync enables non-validators to optionally sync only the P-chain on the p
 
 Some blockchains allow the node operator to provide custom configurations for
 individual blockchains. These custom configurations are broken down into two
-categories: network upgrades and optional chain configurations. LuxGo
+categories: network upgrades and optional chain configurations. Luxd
 reads in these configurations from the chain configuration directory and passes
 them into the VM on initialization.
 
@@ -196,8 +196,8 @@ them into the VM on initialization.
 Specifies the directory that contains chain configs, as described
 [here](chain-config-flags.md). Defaults to `$HOME/.luxd/configs/chains`.
 If this flag is not provided and the default directory does not exist,
-LuxGo will not exit since custom configs are optional. However, if the
-flag is set, the specified folder must exist, or LuxGo will exit with an
+Luxd will not exit since custom configs are optional. However, if the
+flag is set, the specified folder must exist, or Luxd will exit with an
 error. This flag is ignored if `--chain-config-content` is specified.
 
 :::note
@@ -611,7 +611,7 @@ The identity of the network the node should connect to. Can be one of:
 
 ## OpenTelemetry
 
-LuxGo supports collecting and exporting [OpenTelemetry](https://opentelemetry.io/) traces.
+Luxd supports collecting and exporting [OpenTelemetry](https://opentelemetry.io/) traces.
 This might be useful for debugging, performance analysis, or monitoring.
 
 #### `--tracing-enabled` (boolean)
@@ -726,7 +726,7 @@ Defaults to empty (will only validate the Primary Network).
 
 It is possible to provide parameters for Subnets. Parameters here apply to all
 chains in the specified Subnets. Parameters must be specified with a
-`{subnetID}.json` config file under `--subnet-config-dir`. LuxGo loads
+`{subnetID}.json` config file under `--subnet-config-dir`. Luxd loads
 configs for Subnets specified in
 `--track-subnets` parameter.
 
@@ -737,7 +737,7 @@ separate [Subnet Configs](./subnet-configs) document.
 
 Specifies the directory that contains Subnet configs, as described above.
 Defaults to `$HOME/.luxd/configs/subnets`. If the flag is set explicitly,
-the specified folder must exist, or LuxGo will exit with an error. This
+the specified folder must exist, or Luxd will exit with an error. This
 flag is ignored if `--subnet-config-content` is specified.
 
 Example: Let's say we have a Subnet with ID
@@ -1173,7 +1173,7 @@ Timeout while dialing a peer. Defaults to `30s`.
 
 These flags govern rate-limiting of inbound and outbound messages. For more
 information on rate-limiting and the flags below, see package `throttling` in
-LuxGo.
+Luxd.
 
 #### CPU Based
 

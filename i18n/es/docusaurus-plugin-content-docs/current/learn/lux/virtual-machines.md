@@ -35,7 +35,7 @@ Todos los validadores de Lux como miembros de la Red Primaria de Lux deben ejecu
 - VM de Plataforma: Define la Cadena de Plataforma (P-Chain); soporta operaciones sobre staking y Subnets.
 - VM de Lux: Define la Cadena de Intercambio (X-Chain); soporta operaciones sobre Tokens Nativos de Lux.
 
-Las tres se pueden ejecutar fácilmente en cualquier computadora con [LuxGo](/nodes).
+Las tres se pueden ejecutar fácilmente en cualquier computadora con [Luxd](/nodes).
 
 Los validadores pueden instalar VMs adicionales en su nodo para validar Subnets adicionales en el ecosistema Lux. A cambio, los validadores reciben recompensas de staking en forma de un token de recompensa determinado por las Subnets.
 

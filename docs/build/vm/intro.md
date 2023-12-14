@@ -45,7 +45,7 @@ state of the blockchain. Here's a quick example of how VMs interact with consens
 6. Depending upon the consensus results, the engine will either accept or reject the block
    - What happens when a block is accepted or rejected is specific to the implementation of the VM
 
-LuxGo provides the consensus engine for every blockchain on the Lux Network. The consensus
+Luxd provides the consensus engine for every blockchain on the Lux Network. The consensus
 engine relies on the VM interface to handle building, parsing, and storing blocks as well as verifying
 and executing on behalf of the consensus engine.
 
@@ -55,24 +55,24 @@ layer managed by Lux which deals with how nodes agree on whether or not to accep
 
 ## Installing a VM
 
-VMs are supplied as binaries to a node running `LuxGo`. These binaries must be named the VM's
+VMs are supplied as binaries to a node running `Luxd`. These binaries must be named the VM's
 assigned **VMID**. A VMID is a 32-byte hash encoded in CB58 that is generated when you build your VM.
 
-In order to install a VM, its binary must be installed in the `LuxGo` plugin path. See
+In order to install a VM, its binary must be installed in the `Luxd` plugin path. See
 [here](/nodes/configure/luxd-config-flags.md#--plugin-dir-string) for more details.
 Multiple VMs can be installed in this location.
 
-Each VM runs as a separate process from LuxGo and communicates with `LuxGo` using gRPC
+Each VM runs as a separate process from Luxd and communicates with `Luxd` using gRPC
 calls. This functionality is enabled by **RPCChainVM**, a special VM which wraps around other VM
-implementations and bridges the VM and LuxGo, establishing a standardized communication 
+implementations and bridges the VM and Luxd, establishing a standardized communication 
 protocol between them.
 
 :::info
 
-During VM creation, handshake messages are exchanged via **RPCChainVM** between LuxGo and the 
+During VM creation, handshake messages are exchanged via **RPCChainVM** between Luxd and the 
 VM installation. Ensure matching **RPCChainVM** protocol versions to avoid 
 errors, by updating your VM or using a 
-[different version of LuxGo](https://github.com/luxdefi/LuxGo/releases).
+[different version of Luxd](https://github.com/luxdefi/Luxd/releases).
 
 Note that some VMs may not support the latest protocol version.
 
@@ -98,7 +98,7 @@ on an object, whereas VM handlers can be thought of as static methods on a class
 ### Instantiate a VM
 
 The `vm.Factory` interface is implemented to create new VM instances from which a blockchain can be
-initialized. The factory's `New` method shown below provides `LuxGo` with an instance of the
+initialized. The factory's `New` method shown below provides `Luxd` with an instance of the
 VM. It's defined in the
 [`factory.go`](https://github.com/luxdefi/timestampvm/blob/main/timestampvm/factory.go) file
 of the `timestampvm` repository.
@@ -110,7 +110,7 @@ func (f *Factory) New(*snow.Context) (interface{}, error) { return &vm.VM{}, nil
 
 ### Initializing a VM to Create a Blockchain
 
-Before a VM can run, LuxGo will initialize it by invoking its `Initialize` method. Here, the
+Before a VM can run, Luxd will initialize it by invoking its `Initialize` method. Here, the
 VM will bootstrap itself and sets up anything it requires before it starts running.
 
 This might involve setting up its database, mempool, genesis state, or anything else the VM requires

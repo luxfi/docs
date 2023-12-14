@@ -138,7 +138,7 @@ lux subnet removeValidator [subnetName] [flags]
 
 ### Subnet Configure
 
-LuxGo nodes support several different configuration files. Subnets have their own
+Luxd nodes support several different configuration files. Subnets have their own
 Subnet config which applies to all chains/VMs in the Subnet. Each chain within the Subnet
 can have its own chain config. This command allows you to set both config files.
 
@@ -950,7 +950,7 @@ You can check the Subnet bootstrap status by calling lux `node status <clusterNa
 :::
 
 The `node update` command suite provides a collection of commands for nodes to update
-their LuxGo version or VM version/config.
+their Luxd version or VM version/config.
 You can check the status after update by calling `lux node status`
 
 ### Node Update Subnet

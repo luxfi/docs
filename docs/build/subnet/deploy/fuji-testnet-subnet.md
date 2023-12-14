@@ -601,7 +601,7 @@ could just copy the file later. In any case, the tool is going to either try to 
 specified by the given path, or create a new file. Again, set write permissions.
 
 Next, provide the plugin directory. The beginning of this tutorial contains VMs description
-[Virtual Machine](#virtual-machine). Each VM runs its own plugin, therefore LuxGo needs to
+[Virtual Machine](#virtual-machine). Each VM runs its own plugin, therefore Luxd needs to
 be able to access the correspondent plugin binary. As this is the `join` command, which doesn't
 know yet about the plugin, there is a need to provide the directory where the plugin resides. Make
 sure to provide the location for your case:

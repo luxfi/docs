@@ -1,11 +1,11 @@
 ---
 tags: [Nodos]
-description: En este tutorial, aprenderás cómo descargar e instalar LuxGo utilizando el script de instalación.
-sidebar_label: Instalando LuxGo
+description: En este tutorial, aprenderás cómo descargar e instalar Luxd utilizando el script de instalación.
+sidebar_label: Instalando Luxd
 sidebar_position: 1
 ---
 
-# Instalando LuxGo Usando el Script
+# Instalando Luxd Usando el Script
 
 ## Ejecutando el Script
 
@@ -28,7 +28,7 @@ chmod 755 luxd-installer.sh;\
 </summary>
 
 ```text
-Instalador de LuxGo
+Instalador de Luxd
 ---------------------
 Preparando el entorno...
 Se encontró la arquitectura arm64...
@@ -135,7 +135,7 @@ El script ha terminado y deberías ver el indicador del sistema nuevamente.
 
 ## Post Instalación
 
-LuxGo debería estar ejecutándose en segundo plano como un servicio. Puedes verificar que esté en ejecución con:
+Luxd debería estar ejecutándose en segundo plano como un servicio. Puedes verificar que esté en ejecución con:
 
 ```bash
 sudo systemctl status luxd
@@ -150,7 +150,7 @@ A continuación, se muestra un ejemplo de cómo deberían verse los últimos reg
 </summary>
 
 ```text
-● luxd.service - LuxGo systemd service
+● luxd.service - Luxd systemd service
 Loaded: loaded (/etc/systemd/system/luxd.service; enabled; vendor preset: enabled)
 Active: active (running) since Tue 2021-01-05 10:38:21 UTC; 51s ago
 Main PID: 2142 (luxd)

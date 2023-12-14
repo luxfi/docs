@@ -1,19 +1,19 @@
 ---
 tags: [Nodes]
-description: This section provides documents on how to build and maintain an LuxGo node, and then validate the Lux network using an LuxGo node.
+description: This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.
 sidebar_label: 🔗 Quick Links
 pagination_label: 🔗 Nodes Quick Links
 ---
 
 # 🔗 Nodes Quick Links
 
-This section provides documents on how to build and maintain an LuxGo
-node, and then validate the Lux network using an LuxGo node.
+This section provides documents on how to build and maintain an Luxd
+node, and then validate the Lux network using an Luxd node.
 
 |   Run a Node   |                                             |
 | :------------------------------------------------------- | :------------------------------------------ |
 | [**Manually**](/nodes/run/node-manually.md)      | Compile an Lux node from source and run it manually |
-| [**Using the Install Script**](/nodes/run/with-installer/installing-luxd.md)     | How to install and run LuxGo with the installer script    |
+| [**Using the Install Script**](/nodes/run/with-installer/installing-luxd.md)     | How to install and run Luxd with the installer script    |
 | [**Run a Subnet Node**](/nodes/run/subnet-node.md) | How to run a Subnet node              |
 | [**Common Errors**](nodes/run/FAQ.md)     | Learn about common errors when building your node       |
 |   **Using a Third-Party Cloud Service**   |                                             |
@@ -28,7 +28,7 @@ node, and then validate the Lux network using an LuxGo node.
 
 |    Configure                                                                         |                                                             |
 | :------------------------------------------------------------------------------- | :---------------------------------------------------------- |
-| [**LuxGo Configs and Flags**](/nodes/configure/luxd-config-flags.md) | This documents list all available configuration and flags for LuxGo    |
+| [**Luxd Configs and Flags**](/nodes/configure/luxd-config-flags.md) | This documents list all available configuration and flags for Luxd    |
 | [**Chain Configs and Flags**](/nodes/configure/chain-config-flags.md)             | Reference for all available chain config options and flags    |
 | [**Subnet Configs**](/nodes/configure/subnet-configs.md)             | Reference for all available Subnet config options and flags   |
 
@@ -44,7 +44,7 @@ node, and then validate the Lux network using an LuxGo node.
 | :------------------------------------------------------------------------------- | :---------------------------------------------------------- |
 | [**Node Bootstrapping: What to Expect**](/nodes/maintain/node-bootstrap.md)     | Understand how a node bootstraps                                     |
 | [**Node Backup and Restore**](/nodes/maintain/node-backup-and-restore.md)             | Back up important files to be able to restore your node     |
-| [**Monitor an Lux Node**](/nodes/maintain/setting-up-node-monitoring.md)        | Set up infrastructure to monitor an instance of LuxGo |
-| [**Upgrade Your LuxGo Node**](/nodes/maintain/upgrade-your-luxd-node.md) | How to upgrade your Lux node                                 |
-| [**Reduce Disk Usage by running C-Chain Offline Pruning**](/nodes/maintain/run-offline-pruning.md)          | How to reduce the disk space used by LuxGo                                     |
+| [**Monitor an Lux Node**](/nodes/maintain/setting-up-node-monitoring.md)        | Set up infrastructure to monitor an instance of Luxd |
+| [**Upgrade Your Luxd Node**](/nodes/maintain/upgrade-your-luxd-node.md) | How to upgrade your Lux node                                 |
+| [**Reduce Disk Usage by running C-Chain Offline Pruning**](/nodes/maintain/run-offline-pruning.md)          | How to reduce the disk space used by Luxd                                     |
 | [**Enroll A Node in Lux Notify**](/nodes/maintain/notify.md)       | To receive email alerts if a validator becomes unresponsive or out-of-date, sign up with the Lux Notify tool                       |

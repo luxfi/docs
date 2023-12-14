@@ -20,6 +20,6 @@ contratos inteligentes de Solidity de Ethereum, pero con una capacidad de transa
 mucho mayor y finalidad instantánea que el [consenso revolucionario de Lux](learn/lux/consensus.md) permite.
 
 Coreth se carga como un complemento en
-[LuxGo](https://github.com/luxdefi/luxd), la aplicación de nodo cliente
+[Luxd](https://github.com/luxdefi/luxd), la aplicación de nodo cliente
 utilizada para ejecutar la red Lux. Cualquier Dapp desplegada en Lux C-Chain se ejecutará
 igual que en Ethereum, solo que más rápido y más barato.

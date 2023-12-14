@@ -1,7 +1,7 @@
 {
   "id": "reference/luxd/p-chain/api",
   "title": "Platform Chain API",
-  "description": "This page is an overview of the P-Chain API associated with LuxGo.",
+  "description": "This page is an overview of the P-Chain API associated with Luxd.",
   "source": "@site/docs/reference/luxd/p-chain/api.md",
   "sourceDirName": "reference/luxd/p-chain",
   "slug": "/reference/luxd/p-chain/api",
@@ -19,7 +19,7 @@
       "permalink": "/tags/platform-chain"
     },
     {
-      "label": "LuxGo APIs",
+      "label": "Luxd APIs",
       "permalink": "/tags/lux-go-ap-is"
     }
   ],
@@ -28,9 +28,9 @@
     "tags": [
       "P-Chain",
       "Platform Chain",
-      "LuxGo APIs"
+      "Luxd APIs"
     ],
-    "description": "This page is an overview of the P-Chain API associated with LuxGo.",
+    "description": "This page is an overview of the P-Chain API associated with Luxd.",
     "sidebar_label": "API",
     "pagination_label": "P-Chain Transaction Format"
   },

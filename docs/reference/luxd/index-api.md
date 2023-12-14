@@ -1,16 +1,16 @@
 ---
-tags: [LuxGo APIs]
-description: This page is an overview of the Index API associated with LuxGo.
+tags: [Luxd APIs]
+description: This page is an overview of the Index API associated with Luxd.
 sidebar_label: Index API
 pagination_label: Index API
 ---
 
 # Index API
 
-LuxGo can be configured to run with an indexer. That is, it saves (indexes) every container (a
-block, vertex or transaction) it accepts on the X-Chain, P-Chain and C-Chain. To run LuxGo
+Luxd can be configured to run with an indexer. That is, it saves (indexes) every container (a
+block, vertex or transaction) it accepts on the X-Chain, P-Chain and C-Chain. To run Luxd
 with indexing enabled, set command line flag
-[--index-enabled](/nodes/configure/luxd-config-flags.md#apis) to true. **LuxGo
+[--index-enabled](/nodes/configure/luxd-config-flags.md#apis) to true. **Luxd
 will only index containers that are accepted when running with `--index-enabled` set to true.** To
 ensure your node has a complete index, run a node with a fresh database and `--index-enabled` set to
 true. The node will accept every block, vertex and transaction in the network history during
@@ -25,19 +25,19 @@ bootstrapping, other nodes may have accepted the container much earlier. Every c
 during bootstrapping will be timestamped with the time at which the node bootstrapped, not when it
 was first accepted by the network.
 
-If `--index-enabled` is changed to `false` from `true`, LuxGo won't start as doing so would
+If `--index-enabled` is changed to `false` from `true`, Luxd won't start as doing so would
 cause a previously complete index to become incomplete, unless the user explicitly says to do so
 with `--index-allow-incomplete`. This protects you from accidentally running with indexing disabled,
 after previously running with it enabled, which would result in an incomplete index.
 
-This document shows how to query data from LuxGo's Index API. The Index API is only available
+This document shows how to query data from Luxd's Index API. The Index API is only available
 when running with `--index-enabled`.
 
 ## Go Client
 
 There is a Go implementation of an Index API client. See documentation
 [here](https://pkg.go.dev/github.com/luxdefi/luxd/indexer#Client). This client can be used
-inside a Go program to connect to an LuxGo node that is running with the Index API enabled and
+inside a Go program to connect to an Luxd node that is running with the Index API enabled and
 make calls to the Index API.
 
 ## Format

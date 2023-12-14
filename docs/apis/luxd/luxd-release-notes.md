@@ -2,7 +2,7 @@
 
 :::info
 
-[Upgrade Your LuxGo Node](../../nodes/maintain/upgrade-your-luxd-node.md)
+[Upgrade Your Luxd Node](../../nodes/maintain/upgrade-your-luxd-node.md)
 
 :::
 
@@ -100,7 +100,7 @@ This version is backwards compatible to [v1.7.0](https://github.com/luxdefi/luxd
 **APIs**
 
 :::warning
-These API format changes are breaking changes. <https://api.lux.network> and <https://api.lux-test.network> have been updated with this format. If you are using LuxGo APIs in your code, please ensure you have updated to the latest versions. See [this doc](cb58-deprecation.md) for details about the CB58 removal.
+These API format changes are breaking changes. <https://api.lux.network> and <https://api.lux-test.network> have been updated with this format. If you are using Luxd APIs in your code, please ensure you have updated to the latest versions. See [this doc](cb58-deprecation.md) for details about the CB58 removal.
 :::
 
 - Removed `CB58` as an encoding option from all APIs
@@ -263,8 +263,8 @@ This version is backwards compatible to [v1.7.0](https://github.com/luxdefi/luxd
 
 **Logging**
 
-- Replaced LuxGo's internal logger with [uber-go/zap](https://github.com/uber-go/zap).
-- Replaced LuxGo's log rotation with [lumberjack](https://github.com/natefinch/lumberjack).
+- Replaced Luxd's internal logger with [uber-go/zap](https://github.com/uber-go/zap).
+- Replaced Luxd's log rotation with [lumberjack](https://github.com/natefinch/lumberjack).
 - Renamed `log-display-highlight` to `log-format` and added `json` option.
 - Added `log-rotater-max-size`, `log-rotater-max-files`, `log-rotater-max-age`, `log-rotater-compress-enabled` options for log rotation.
 
@@ -274,8 +274,8 @@ This version is backwards compatible to [v1.7.0](https://github.com/luxdefi/luxd
 - Logged health checks whenever a failing health check is queried
 - Added callback support for the validator set manager
 - Increased `coreth` trie tip buffer size to 32
-- Added CPU usage metrics for LuxGo and all sub-processes
-- Added Disk IO usage metrics for LuxGo and all sub-processes
+- Added CPU usage metrics for Luxd and all sub-processes
+- Added Disk IO usage metrics for Luxd and all sub-processes
 
 **Cleanup**
 
@@ -323,7 +323,7 @@ This version is backwards compatible to [v1.7.0](https://github.com/luxdefi/luxd
 
 - Fixed a bug where a deadlock on shutdown caused historical re-generation on restart.
 - Added an API endpoint to fetch the current VM Config.
-- Added LuxGo custom log formatting to the logs.
+- Added Luxd custom log formatting to the logs.
 - Removed support for the JS Tracer.
 
 **Logging**
@@ -585,7 +585,7 @@ This version is backwards compatible to [v1.7.0](https://github.com/luxdefi/luxd
 
 - Notified VMs of peer versions on `Connected`.
 - Fixed acceptance broadcasting over IPC.
-- Fixed 32-bit architecture builds for LuxGo (not Coreth).
+- Fixed 32-bit architecture builds for Luxd (not Coreth).
 
 ## v1.7.2 ([View on GitHub](https://github.com/luxdefi/luxd/releases/tag/v1.7.2))
 
@@ -905,7 +905,7 @@ More info can be found [here](https://medium.com/luxlux/apricot-phase-four-snowm
 
 **Go**
 
-The minimum Go version required to build LuxGo is now Go 1.16.8
+The minimum Go version required to build Luxd is now Go 1.16.8
 
 **Bug Fixes**
 
@@ -977,11 +977,11 @@ This version is backwards compatible to [v1.5.0](https://github.com/luxdefi/luxd
 
 **Local Networks**
 
-- Updated the start time of the validators in the local genesis. The end time for validators specified in the local config in versions before v1.5.3 is Sep. 10, 2021 00:00:00 UTC. **Because of this, you must upgrade to LuxGo v1.5.3 in order to run a local network after this time.**
+- Updated the start time of the validators in the local genesis. The end time for validators specified in the local config in versions before v1.5.3 is Sep. 10, 2021 00:00:00 UTC. **Because of this, you must upgrade to Luxd v1.5.3 in order to run a local network after this time.**
 
 **Config Options**
 
-- Added LuxGo config option `consensus-app-gossip-size`, which defines the number of peers an `AppGossip` message is gossiped to.
+- Added Luxd config option `consensus-app-gossip-size`, which defines the number of peers an `AppGossip` message is gossiped to.
 - Added C-Chain config option `log-level`. Options are: `"trace"`, `"debug"`, `"info"`, `"warn"`, `"error"`, `"crit"`. Defaults to `"debug"` (as before.)
 
 ## v1.5.2 ([View on GitHub](https://github.com/luxdefi/luxd/releases/tag/v1.5.2))
@@ -1061,7 +1061,7 @@ More info can be found [here](https://medium.com/luxlux/apricot-phase-three-c-ch
 - Removed database migration support and deamon runner.
 - Refactored node config parsing.
 - Optimized container gossiping sampling.
-- Added the ability to statically build the LuxGo and EVM binaries.
+- Added the ability to statically build the Luxd and EVM binaries.
 - Simplified the `Block` interface to only expose the parent block's ID rather than fetching the full parent block.
 - Added additional metrics for pending jobs in the consensus engines.
 - Refactored P-chain statuses to handle blockchain validation statuses separately from transaction confirmation statuses.
@@ -1105,7 +1105,7 @@ The changes in the upgrade go into effect at 3 PM EDT, August 16th 2021 on the T
 - Removed database migration support and deamon runner.
 - Refactored node config parsing.
 - Optimized container gossiping sampling.
-- Added the ability to statically build the LuxGo and EVM binaries.
+- Added the ability to statically build the Luxd and EVM binaries.
 - Simplified the `Block` interface to only expose the parent block's ID rather than fetching the full parent block.
 - Added additional metrics for pending jobs in the consensus engines.
 - Refactored P-chain statuses to handle blockchain validation statuses separately from transaction confirmation statuses.
@@ -1176,20 +1176,20 @@ This release also adds helper methods to the `utils/metric` package.
 
 **RocksDB**
 
-RocksDB is no longer built by default when running the build script, and it is not included in publicly released binaries. To build LuxGo with RocksDB, run `export ROCKSDBALLOWED=1` in your terminal and then `scripts/build.sh`. You must do this before you can use `--db-type=rocksdb`.
+RocksDB is no longer built by default when running the build script, and it is not included in publicly released binaries. To build Luxd with RocksDB, run `export ROCKSDBALLOWED=1` in your terminal and then `scripts/build.sh`. You must do this before you can use `--db-type=rocksdb`.
 
 The RocksDB database now places/looks for its files in a subdirectory `rocksdb`. Note that if you previously ran with RocksDB, you'll need to move the existing files.
 
 **Message Compression**
 
-Nodes now compress some P2P messages. If a peer is version &gt;= v1.4.11, Put, Push Query, Peer List and Multiput messages sent to the peer are compressed using gzip before being sent over the network. This reduces LuxGo's bandwidth usage.
+Nodes now compress some P2P messages. If a peer is version &gt;= v1.4.11, Put, Push Query, Peer List and Multiput messages sent to the peer are compressed using gzip before being sent over the network. This reduces Luxd's bandwidth usage.
 
 **Inbound Connection Throttling** Refactored inbound connection rate-limiting and enable it by default.
 
 **General Improvements**
 
 - Refactored and improved performance of iteration over a database served by gRPC to a plugin.
-- On Linux, clean up the C-Chain if LuxGo dies ungracefully
+- On Linux, clean up the C-Chain if Luxd dies ungracefully
 - Refactored P2P message definitions and move them from the `network` package.
 - Added VM aliases to the HTTP API server
 - Replaced `1024` with `units.KiB`, etc.

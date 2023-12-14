@@ -11,7 +11,7 @@ sidebar_position: 2
 It is possible to provide parameters for a Subnet. Parameters here apply to all
 chains in the specified Subnet.
 
-LuxGo looks for files specified with `{subnetID}.json` under
+Luxd looks for files specified with `{subnetID}.json` under
 `--subnet-config-dir` as documented
 [here](/nodes/configure/luxd-config-flags.md#subnet-configs).
 

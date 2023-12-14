@@ -21,8 +21,8 @@ keywords:
 
 ## Introducción
 
-Este artículo describe cómo ejecutar un nodo que rastrea una Subnet. Requiere construir LuxGo, agregar
-los binarios de la Máquina Virtual como complementos a su directorio de datos local y ejecutar LuxGo para rastrear estos
+Este artículo describe cómo ejecutar un nodo que rastrea una Subnet. Requiere construir Luxd, agregar
+los binarios de la Máquina Virtual como complementos a su directorio de datos local y ejecutar Luxd para rastrear estos
 binarios.
 
 Este tutorial cubre específicamente el rastreo de una Subnet construida con la
@@ -30,7 +30,7 @@ Este tutorial cubre específicamente el rastreo de una Subnet construida con la
 por defecto [Virtual Machine](/learn/lux/virtual-machines.md)
 ejecutada por las Subnets en Lux.
 
-## Construir LuxGo
+## Construir Luxd
 
 Se recomienda que primero completes [esta guía completa](/nodes/run/node-manually.md)
 que muestra cómo construir y ejecutar un nodo Lux básico. A continuación se presentan los detalles generales.
@@ -69,9 +69,9 @@ mkdir -p $GOPATH/src/github.com/luxdefi
 
 <!-- markdownlint-disable MD029 -->
 
-5. Clonar LuxGo
+5. Clonar Luxd
 
-En el `$GOPATH`, clonar [LuxGo](https://github.com/luxdefi/luxd),
+En el `$GOPATH`, clonar [Luxd](https://github.com/luxdefi/luxd),
 el motor de consenso e implementación de nodo que es el núcleo de la
 Red Lux.
 
@@ -94,7 +94,7 @@ cd $GOPATH/src/github.com/luxdefi/luxd
 
 ## Gestionar los Binarios de la Subnet
 
-_Despues de construir LuxGo exitosamente,_
+_Despues de construir Luxd exitosamente,_
 
 ### 1. Clonar [Subnet-EVM](https://github.com/luxdefi/subnet-evm)
 
@@ -142,7 +142,7 @@ echo '{"track-subnets": "28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY"}' >
 
 ## Ejecutar el Nodo
 
-Ejecute LuxGo con la bandera `--config-file` para iniciar su nodo y asegurarse de que rastree las Subnets
+Ejecute Luxd con la bandera `--config-file` para iniciar su nodo y asegurarse de que rastree las Subnets
 incluidas en el archivo de configuración.
 
 ```bash

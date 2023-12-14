@@ -1,6 +1,6 @@
 ---
-tags: [LuxGo APIs]
-description: This page is an overview of the Metrics API associated with LuxGo.
+tags: [Luxd APIs]
+description: This page is an overview of the Metrics API associated with Luxd.
 sidebar_label: Metrics API
 pagination_label: Metrics API
 ---
@@ -36,5 +36,5 @@ This API produces Prometheus compatible metrics. See
 for information on Prometheus’ formatting.
 
 [Here](/nodes/maintain/setting-up-node-monitoring) is a tutorial that
-shows how to set up Prometheus and Grafana to monitor LuxGo node using the
+shows how to set up Prometheus and Grafana to monitor Luxd node using the
 Metrics API.

@@ -21,15 +21,15 @@ keywords:
 
 ## Introduction
 
-This article describes how to run a node that tracks a Subnet. It requires building LuxGo, adding
-Virtual Machine binaries as plugins to your local data directory, and running LuxGo to track these
+This article describes how to run a node that tracks a Subnet. It requires building Luxd, adding
+Virtual Machine binaries as plugins to your local data directory, and running Luxd to track these
 binaries.
 
 This tutorial specifically covers tracking a Subnet built with Lux's
 [Subnet-EVM](https://github.com/luxdefi/subnet-evm), the default [Virtual Machine](/learn/lux/virtual-machines.md)
 run by Subnets on Lux.
 
-## Build LuxGo
+## Build Luxd
 
 It is recommended that you first complete [this comprehensive guide](/nodes/run/node-manually.md)
 which demonstrates how to build and run a basic Lux node. Below are the high level details.
@@ -67,9 +67,9 @@ mkdir -p $GOPATH/src/github.com/luxdefi
 
 <!-- markdownlint-disable MD029 -->
 
-5. Clone LuxGo
+5. Clone Luxd
 
-In the `$GOPATH`, clone [LuxGo](https://github.com/luxdefi/luxd),
+In the `$GOPATH`, clone [Luxd](https://github.com/luxdefi/luxd),
 the consensus engine and node implementation that is the core of the Lux
 Network.
 
@@ -92,7 +92,7 @@ cd $GOPATH/src/github.com/luxdefi/luxd
 
 ## Manage the Subnet Binaries
 
-_After building LuxGo successfully,_
+_After building Luxd successfully,_
 
 ### 1. Clone [Subnet-EVM](https://github.com/luxdefi/subnet-evm)
 
@@ -140,7 +140,7 @@ echo '{"track-subnets": "28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY"}' >
 
 ## Run the Node
 
-Run LuxGo with the `—config-file` flag to start your node and ensure it tracks the Subnets
+Run Luxd with the `—config-file` flag to start your node and ensure it tracks the Subnets
 included in the configuration file.
 
 ```bash

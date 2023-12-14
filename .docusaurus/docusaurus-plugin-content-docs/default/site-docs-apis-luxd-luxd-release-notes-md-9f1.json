@@ -1,7 +1,7 @@
 {
   "id": "apis/luxd/luxd-release-notes",
   "title": "Release Notes",
-  "description": "Upgrade Your LuxGo Node",
+  "description": "Upgrade Your Luxd Node",
   "source": "@site/docs/apis/luxd/luxd-release-notes.md",
   "sourceDirName": "apis/luxd",
   "slug": "/apis/luxd/luxd-release-notes",

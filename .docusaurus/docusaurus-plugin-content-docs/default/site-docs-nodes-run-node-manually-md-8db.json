@@ -15,7 +15,7 @@
       "permalink": "/tags/nodes"
     },
     {
-      "label": "LuxGo",
+      "label": "Luxd",
       "permalink": "/tags/lux-go"
     }
   ],
@@ -24,7 +24,7 @@
   "frontMatter": {
     "tags": [
       "Nodes",
-      "LuxGo"
+      "Luxd"
     ],
     "description": "The quickest way to learn about Lux is to run a node and interact with the network. This tutorial demonstrates how to install and run an Lux node, and connect to the Lux Network by compiling a node from source and running it manually.",
     "sidebar_label": "Manually",

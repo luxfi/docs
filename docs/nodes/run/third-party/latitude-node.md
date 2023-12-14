@@ -46,7 +46,7 @@ After gaining access, we’ll need to set up our Lux node. To do this, follow
 the instructions here to install and run your node
 [Set Up Lux Node With Installer](/nodes/run/with-installer/installing-luxd.md).
 
-Your LuxGo node should now be running and in the process of bootstrapping, which can take a few
+Your Luxd node should now be running and in the process of bootstrapping, which can take a few
 hours. To check if it's done, you can issue an API call using `curl`.
 The request is:
 
@@ -73,7 +73,7 @@ Once the node is finished bootstrapping, the response will be:
 }
 ```
 
-You can continue on, even if LuxGo isn't done bootstrapping.
+You can continue on, even if Luxd isn't done bootstrapping.
 In order to make your node a validator, you'll need its node ID. To get it, run:
 
 ```sh
@@ -96,7 +96,7 @@ The response contains the node ID.
 
 In the above example the node ID is `NodeID-KhDnAoZDW8iRJ3F26iQgK5xXVFMPcaYeu`.
 
-LuxGo has other APIs, such as the [Health API](https://docs.lux.network/apis/luxd/apis/health),
+Luxd has other APIs, such as the [Health API](https://docs.lux.network/apis/luxd/apis/health),
 that may be used to interact with the node. Some APIs are disabled by default. To enable such APIs,
 modify the ExecStart section of `/etc/systemd/system/luxd.service` (created during the
 installation process) to include flags that enable these endpoints. Don't manually enable any APIs
@@ -110,7 +110,7 @@ exit
 
 ### Upgrading Your Node
 
-LuxGo is an ongoing project and there are regular version upgrades. Most upgrades are
+Luxd is an ongoing project and there are regular version upgrades. Most upgrades are
 recommended but not required. Advance notice will be given for upgrades that are not backwards
 compatible. To update your node to the latest version, SSH into your server using a terminal and
 run the installer script again.
@@ -119,11 +119,11 @@ run the installer script again.
 ./luxd-installer.sh
 ```
 
-Your machine is now running the newest LuxGo version. To see the status of the LuxGo service,
+Your machine is now running the newest Luxd version. To see the status of the Luxd service,
 run `sudo systemctl status luxd.`
 
 ## Wrap Up
 
-That's it! You now have an LuxGo node running on a Latitude.sh machine. We recommend setting up
+That's it! You now have an Luxd node running on a Latitude.sh machine. We recommend setting up
 [node monitoring](https://docs.lux.network/nodes/maintain/setting-up-node-monitoring) for your
-LuxGo node.
+Luxd node.

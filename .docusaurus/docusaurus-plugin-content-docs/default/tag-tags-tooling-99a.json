@@ -43,7 +43,7 @@
     {
       "id": "tooling/luxd-postman-collection/data-visualization",
       "title": "Data Visualization",
-      "description": "The LuxGo Postman collection includes all the public API calls that are available on LuxGo instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
+      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
       "permalink": "/tooling/luxd-postman-collection/data-visualization"
     },
     {
@@ -103,7 +103,7 @@
     {
       "id": "tooling/plugin-manager",
       "title": "Lux Plugin Manager",
-      "description": "Lux Plugin Manager is a command-line tool to manage virtual machines binaries on existing LuxGo instances. It enables to add/remove nodes to Subnets, upgrade the VM plugin binaries as new versions get released to the plugin repository.",
+      "description": "Lux Plugin Manager is a command-line tool to manage virtual machines binaries on existing Luxd instances. It enables to add/remove nodes to Subnets, upgrade the VM plugin binaries as new versions get released to the plugin repository.",
       "permalink": "/tooling/plugin-manager"
     },
     {
@@ -114,8 +114,8 @@
     },
     {
       "id": "tooling/luxd-installer",
-      "title": "LuxGo Installer",
-      "description": "LuxGo Installer is a shell (bash) script that installs LuxGo on any Linux computer. This script sets up full, running node in a matter of minutes with minimal user input required. This is convenient if you want to run the node as a service on a standalone Linux installation, for example to set up a (Subnet) validator, use the node as a private RPC server and similar uses. It also makes upgrading or reinstalling the nodes easy.",
+      "title": "Luxd Installer",
+      "description": "Luxd Installer is a shell (bash) script that installs Luxd on any Linux computer. This script sets up full, running node in a matter of minutes with minimal user input required. This is convenient if you want to run the node as a service on a standalone Linux installation, for example to set up a (Subnet) validator, use the node as a private RPC server and similar uses. It also makes upgrading or reinstalling the nodes easy.",
       "permalink": "/tooling/luxd-installer"
     },
     {
@@ -133,7 +133,7 @@
     {
       "id": "tooling/luxd-postman-collection/making-api-calls",
       "title": "Making API Calls",
-      "description": "The LuxGo Postman collection includes all the public API calls that are available on LuxGo instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
+      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
       "permalink": "/tooling/luxd-postman-collection/making-api-calls"
     },
     {
@@ -181,7 +181,7 @@
     {
       "id": "tooling/luxd-postman-collection/setup",
       "title": "Setting up Postman",
-      "description": "The LuxGo Postman collection includes all the public API calls that are available on LuxGo instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
+      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
       "permalink": "/tooling/luxd-postman-collection/setup"
     },
     {
@@ -205,7 +205,7 @@
     {
       "id": "tooling/luxd-postman-collection/variables",
       "title": "Variables",
-      "description": "The LuxGo Postman collection includes all the public API calls that are available on LuxGo instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
+      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
       "permalink": "/tooling/luxd-postman-collection/variables"
     }
   ],

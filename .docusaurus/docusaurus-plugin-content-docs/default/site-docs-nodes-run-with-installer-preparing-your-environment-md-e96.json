@@ -1,7 +1,7 @@
 {
   "id": "nodes/run/with-installer/preparing-your-environment",
   "title": "Run an Lux Node Using the Install Script",
-  "description": "In this tutorial, you'll learn how to prepare your environment for LuxGo installation and configure your network settings.",
+  "description": "In this tutorial, you'll learn how to prepare your environment for Luxd installation and configure your network settings.",
   "source": "@site/docs/nodes/run/with-installer/preparing-your-environment.md",
   "sourceDirName": "nodes/run/with-installer",
   "slug": "/nodes/run/with-installer/preparing-your-environment",
@@ -21,7 +21,7 @@
     "tags": [
       "Nodes"
     ],
-    "description": "In this tutorial, you'll learn how to prepare your environment for LuxGo installation and configure your network settings.",
+    "description": "In this tutorial, you'll learn how to prepare your environment for Luxd installation and configure your network settings.",
     "sidebar_label": "Preparing Your Environment",
     "sidebar_position": 0
   },
@@ -31,7 +31,7 @@
     "permalink": "/nodes/run/node-manually"
   },
   "next": {
-    "title": "Installing LuxGo",
+    "title": "Installing Luxd",
     "permalink": "/nodes/run/with-installer/installing-luxd"
   }
 }

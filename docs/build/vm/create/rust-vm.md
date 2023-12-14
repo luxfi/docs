@@ -1195,7 +1195,7 @@ curl -X POST --data '{
 ### Plugin
 
 In order to make this VM compatible with `go-plugin`, we need to define a `main` package and method,
-which serves our VM over gRPC so that LuxGo can call its methods.
+which serves our VM over gRPC so that Luxd can call its methods.
 
 `main.rs`'s contents are:
 
@@ -1242,7 +1242,7 @@ async fn main() -> io::Result<()> {
 
 ### Installing a VM
 
-LuxGo searches for and registers VM plugins under the `plugins` [directory](/nodes/configure/luxd-config-flags.md#--plugin-dir-string).
+Luxd searches for and registers VM plugins under the `plugins` [directory](/nodes/configure/luxd-config-flags.md#--plugin-dir-string).
 
 To install the virtual machine onto your node, you need to move the built virtual machine binary
 under this directory. Virtual machine executable names must be either a full virtual machine ID
@@ -1297,7 +1297,7 @@ Now, this VM's static API can be accessed at endpoints `/ext/vm/timestampvm-rs` 
 [here](/nodes/configure/luxd-config-flags.md#vm-configs).
 
 In this tutorial, we used the VM's ID as the executable name to simplify the process. However,
-LuxGo would also accept `timestampvm-rs` or `timestamp-rs` since those are registered aliases
+Luxd would also accept `timestampvm-rs` or `timestamp-rs` since those are registered aliases
 in previous step.
 
 ## Wrapping Up

@@ -1,7 +1,7 @@
 {
   "id": "reference/subnet-evm/api",
   "title": "Subnet-EVM API",
-  "description": "This page is an overview of the Subnet-EVM API associated with LuxGo.",
+  "description": "This page is an overview of the Subnet-EVM API associated with Luxd.",
   "source": "@site/docs/reference/subnet-evm/api.md",
   "sourceDirName": "reference/subnet-evm",
   "slug": "/reference/subnet-evm/api",
@@ -20,7 +20,7 @@
     "tags": [
       "Subnet-EVM"
     ],
-    "description": "This page is an overview of the Subnet-EVM API associated with LuxGo.",
+    "description": "This page is an overview of the Subnet-EVM API associated with Luxd.",
     "sidebar_label": "API",
     "pagination_label": "Subnet-EVM API"
   },

@@ -1,7 +1,7 @@
 {
   "id": "tooling/luxd-postman-collection/setup",
   "title": "Setting up Postman",
-  "description": "The LuxGo Postman collection includes all the public API calls that are available on LuxGo instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
+  "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
   "source": "@site/docs/tooling/luxd-postman-collection/setup.md",
   "sourceDirName": "tooling/luxd-postman-collection",
   "slug": "/tooling/luxd-postman-collection/setup",
@@ -15,7 +15,7 @@
       "permalink": "/tags/tooling"
     },
     {
-      "label": "LuxGo APIs",
+      "label": "Luxd APIs",
       "permalink": "/tags/lux-go-ap-is"
     }
   ],
@@ -24,10 +24,10 @@
   "frontMatter": {
     "tags": [
       "Tooling",
-      "LuxGo APIs"
+      "Luxd APIs"
     ],
-    "description": "The LuxGo Postman collection includes all the public API calls that are available on LuxGo instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
-    "pagination_label": "LuxGo Install Script",
+    "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
+    "pagination_label": "Luxd Install Script",
     "sidebar_position": 1
   },
   "sidebar": "tooling",
@@ -36,7 +36,7 @@
     "permalink": "/tooling/ops"
   },
   "next": {
-    "title": "LuxGo Install Script",
+    "title": "Luxd Install Script",
     "permalink": "/tooling/luxd-postman-collection/making-api-calls"
   }
 }

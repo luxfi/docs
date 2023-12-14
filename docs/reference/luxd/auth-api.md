@@ -1,6 +1,6 @@
 ---
-tags: [LuxGo APIs]
-description: This page is an overview of the Auth API associated with LuxGo.
+tags: [Luxd APIs]
+description: This page is an overview of the Auth API associated with Luxd.
 sidebar_label: Auth API
 pagination_label: Auth API
 ---

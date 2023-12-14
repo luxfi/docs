@@ -1,5 +1,5 @@
 ---
-tags: [Nodes, LuxGo]
+tags: [Nodes, Luxd]
 description: The quickest way to learn about Lux is to run a node and interact with the network. This tutorial demonstrates how to install and run an Lux node, and connect to the Lux Network by compiling a node from source and running it manually.
 sidebar_label: Manually
 pagination_label: Run an Lux Node Manually
@@ -25,7 +25,7 @@ The quickest way to learn about Lux is to run a node and interact with the netwo
 
 In this tutorial, we will:
 
-- Install LuxGo and run an Lux node
+- Install Luxd and run an Lux node
 - Connect to Lux
 
 <details>
@@ -38,7 +38,7 @@ In this tutorial, we will:
 
 - If you're just interested in setting up a node for staking,
   it's recommended to follow the
-  [LuxGo Install Script](/nodes/run/with-installer/installing-luxd.md)
+  [Luxd Install Script](/nodes/run/with-installer/installing-luxd.md)
   tutorial.
 
 </p>
@@ -64,7 +64,7 @@ read/write latencies, therefore reducing performance and reliability.
 
 ## Run an Lux Node from Source
 
-The following steps walk through downloading the LuxGo source code and locally
+The following steps walk through downloading the Luxd source code and locally
 building the binary program.
 
 ### Install Dependencies
@@ -82,9 +82,9 @@ building the binary program.
 mkdir -p $GOPATH/src/github.com/luxdefi
 ```
 
-#### 3. Clone LuxGo
+#### 3. Clone Luxd
 
-In the `$GOPATH`, clone [LuxGo](https://github.com/luxdefi/luxd),
+In the `$GOPATH`, clone [Luxd](https://github.com/luxdefi/luxd),
 the consensus engine and node implementation that is the core of the Lux
 Network.
 
@@ -125,7 +125,7 @@ To kill the node, press `Ctrl + C`.
 ## Run with a Pre-Built Binary
 
 To download a pre-built binary instead of building from source, go
-to the [LuxGo releases page](https://github.com/luxdefi/luxd/releases),
+to the [Luxd releases page](https://github.com/luxdefi/luxd/releases),
 and select the desired version.
 
 ### Download
@@ -200,12 +200,12 @@ Testnet:
 
 ## Run with Docker
 
-See the [LuxGo GitHub](https://github.com/luxdefi/luxd#docker-install)
+See the [Luxd GitHub](https://github.com/luxdefi/luxd#docker-install)
 repository for more information.
 
 ## Networking
 
-To run successfully, LuxGo needs to accept connections from the Internet
+To run successfully, Luxd needs to accept connections from the Internet
 on the network port `9651`. Before you proceed with the installation, you need
 to determine the networking environment your node will run in.
 
@@ -314,7 +314,7 @@ if run on a cloud provider. The “XXX.XX.XX.XXX" should be replaced with the pu
 IP of your EC2 instance.
 
 For more information on the requests available at these endpoints, please see the
-[LuxGo API Reference](/reference) documentation.
+[Luxd API Reference](/reference) documentation.
 
 ## Going Further
 

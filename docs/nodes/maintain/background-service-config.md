@@ -15,7 +15,7 @@ a server instead of in the terminal directly.
 
 ## Prerequisites
 
-- LuxGo installed
+- Luxd installed
 
 ## Steps
 

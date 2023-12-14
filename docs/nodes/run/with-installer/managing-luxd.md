@@ -1,15 +1,15 @@
 ---
 tags: [Nodes]
-description: In this tutorial, you'll learn how to manage your LuxGo node.
-sidebar_label: Managing LuxGo
+description: In this tutorial, you'll learn how to manage your Luxd node.
+sidebar_label: Managing Luxd
 sidebar_position: 2
 ---
 
-# Managing LuxGo
+# Managing Luxd
 
 ## Stopping and Starting the Node
 
-To stop LuxGo, run:
+To stop Luxd, run:
 
 ```bash
 sudo systemctl stop luxd
@@ -23,7 +23,7 @@ sudo systemctl start luxd
 
 ## Upgrade Your Node
 
-LuxGo is an ongoing project and there are regular version upgrades. Most
+Luxd is an ongoing project and there are regular version upgrades. Most
 upgrades are recommended but not required. Advance notice will be given for
 upgrades that are not backwards compatible. When a new version of the node is
 released, you will notice log lines like:
@@ -41,14 +41,14 @@ To upgrade your node, just run the installer script again:
 ./luxd-installer.sh
 ```
 
-It will detect that you already have LuxGo installed:
+It will detect that you already have Luxd installed:
 
 ```text
-LuxGo installer
+Luxd installer
 ---------------------
 Preparing environment...
 Found 64bit Intel/AMD architecture...
-Found LuxGo systemd service already installed, switching to upgrade mode.
+Found Luxd systemd service already installed, switching to upgrade mode.
 Stopping service...
 ```
 

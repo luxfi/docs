@@ -1,11 +1,11 @@
 ---
 tags: [Nodes]
-description: In this tutorial, you'll learn how to download and install LuxGo using the installation script.
-sidebar_label: Installing LuxGo
+description: In this tutorial, you'll learn how to download and install Luxd using the installation script.
+sidebar_label: Installing Luxd
 sidebar_position: 1
 ---
 
-# Installing LuxGo Using the Script
+# Installing Luxd Using the Script
 
 ## Running the Script
 
@@ -28,7 +28,7 @@ And we're off! The output should look something like this:
 </summary>
 
 ```text
-LuxGo installer
+Luxd installer
 ---------------------
 Preparing environment...
 Found arm64 architecture...
@@ -135,7 +135,7 @@ The script is finished, and you should see the system prompt again.
 
 ## Post Installation
 
-LuxGo should be running in the background as a service. You can check that it's running with:
+Luxd should be running in the background as a service. You can check that it's running with:
 
 ```bash
 sudo systemctl status luxd
@@ -150,7 +150,7 @@ Below is an example of what the node's latest logs should look like:
 </summary>
 
 ```text
-● luxd.service - LuxGo systemd service
+● luxd.service - Luxd systemd service
 Loaded: loaded (/etc/systemd/system/luxd.service; enabled; vendor preset: enabled)
 Active: active (running) since Tue 2021-01-05 10:38:21 UTC; 51s ago
 Main PID: 2142 (luxd)

@@ -1,6 +1,6 @@
 ---
-tags: [X-Chain, LuxGo APIs]
-description: This page is an overview of the Exchange Chain (X-Chain) API associated with LuxGo.
+tags: [X-Chain, Luxd APIs]
+description: This page is an overview of the Exchange Chain (X-Chain) API associated with Luxd.
 sidebar_label: API
 pagination_label: X-Chain API
 ---

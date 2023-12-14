@@ -28,10 +28,10 @@ website.
 ### Running an Lux Node
 
 If you want to build your node form source or include it in a docker image,
-reference the [LuxGo GitHub
+reference the [Luxd GitHub
 repository](https://github.com/luxdefi/luxd). To quickly get up and
 running, you can use the [node installation script](/nodes/run/with-installer/installing-luxd.md) that automates installing
-and updating LuxGo node as a `systemd` service on Linux, using prebuilt
+and updating Luxd node as a `systemd` service on Linux, using prebuilt
 binaries.
 
 ### Configuring an Lux Node
@@ -49,7 +49,7 @@ config file. For more details, see
 [here](/nodes/configure/chain-config-flags.md#c-chain-configs).
 
 The C-Chain config file should be at
-`$HOME/.luxd/configs/chains/C/config.json`. You can also tell LuxGo
+`$HOME/.luxd/configs/chains/C/config.json`. You can also tell Luxd
 to look somewhere else for the C-Chain config file with option
 `--chain-config-dir`. An example C-Chain config file:
 
@@ -58,7 +58,7 @@ to look somewhere else for the C-Chain config file with option
 If you need Ethereum [Archive
 Node](https://ethereum.org/en/developers/docs/nodes-and-clients/#archive-node)
 functionality, you need to disable C-Chain pruning, which has been enabled by
-default since LuxGo v1.4.10. To disable pruning, include
+default since Luxd v1.4.10. To disable pruning, include
 `"pruning-enabled": false` in the C-Chain config file as shown below.
 
 :::

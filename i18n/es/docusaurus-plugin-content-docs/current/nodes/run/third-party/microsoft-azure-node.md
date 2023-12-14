@@ -194,7 +194,7 @@ Esto pondrá nuestra instancia al día con los últimos parches de seguridad par
 
 Ahora necesitaremos configurar nuestra node de Lux. Para hacer esto, sigue el tutorial [Configurar Node de Lux con el instalador](/nodes/run/with-installer/installing-luxd.md) que automatiza el proceso de instalación. Necesitarás la "IP pública IPv4" copiada del Portal de Azure que configuramos anteriormente.
 
-Una vez que la instalación esté completa, ¡nuestra node debería estar iniciando! Podemos ejecutar el siguiente comando para echar un vistazo al estado más reciente de la node LuxGo:
+Una vez que la instalación esté completa, ¡nuestra node debería estar iniciando! Podemos ejecutar el siguiente comando para echar un vistazo al estado más reciente de la node Luxd:
 
 ```text
 sudo systemctl status luxd

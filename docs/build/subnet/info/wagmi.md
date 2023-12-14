@@ -145,7 +145,7 @@ We place the `upgrade.json` file in the chain config directory, which in our cas
 `~/.luxd/configs/chains/2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt/`. After that, we
 restart the node so the upgrade file is loaded.
 
-When the node restarts, LuxGo reads the contents of the JSON file and passes it into
+When the node restarts, Luxd reads the contents of the JSON file and passes it into
 Subnet-EVM. We see a log of the chain configuration that includes the updated precompile upgrade. It
 looks like this:
 

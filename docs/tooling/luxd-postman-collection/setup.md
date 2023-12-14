@@ -1,14 +1,14 @@
 ---
-tags: [Tooling, LuxGo APIs]
-description: The LuxGo Postman collection includes all the public API calls that are available on LuxGo instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.
-pagination_label: LuxGo Install Script
+tags: [Tooling, Luxd APIs]
+description: The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.
+pagination_label: Luxd Install Script
 sidebar_position: 1
 ---
 
 # Setting up Postman
 
 We have made a Postman collection for Lux, that includes all the public
-API calls that are available on an [LuxGo instance](https://github.com/luxdefi/luxd/releases/), including environment variables,
+API calls that are available on an [Luxd instance](https://github.com/luxdefi/luxd/releases/), including environment variables,
 allowing developers to quickly issue commands to a node and see the response, without having to
 copy and paste long and complicated `curl` commands.
 

@@ -1,6 +1,6 @@
 ---
 tags: [C-Chain, Contract Chain, Transaction Format]
-description: This page is an overview of the Coreth atomic transaction format associated with LuxGo C-Chain API.
+description: This page is an overview of the Coreth atomic transaction format associated with Luxd C-Chain API.
 sidebar_label: Transaction Format
 pagination_label: C-Chain Transaction Format
 ---

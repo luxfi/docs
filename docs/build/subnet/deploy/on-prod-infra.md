@@ -29,18 +29,18 @@ intuition for the type of questions you will need to consider.
 
 Lux nodes are essential elements for running your Subnet in production. At a minimum, your
 Subnet will need validator nodes, potentially also nodes that act as RPC servers, indexers or
-explorers. Running a node is basically running an instance of [LuxGo](/nodes/README.md) on a
+explorers. Running a node is basically running an instance of [Luxd](/nodes/README.md) on a
 server.
 
 ### Server OS
 
-Although LuxGo can run on a MacOS or a Windows computer, we strongly recommend running nodes
+Although Luxd can run on a MacOS or a Windows computer, we strongly recommend running nodes
 on computers running Linux as they are designed specifically for server loads and all the tools and
 utilities needed for administering a server are native to Linux.
 
 ### Hardware Specification
 
-For running LuxGo as a validator on the Primary Network the recommended configuration is as follows:
+For running Luxd as a validator on the Primary Network the recommended configuration is as follows:
 
 - CPU: Equivalent of 8 AWS vCPU
 - RAM: 16 GiB
@@ -71,7 +71,7 @@ connected to the network physically (not over Wi-Fi), and that the router is pow
 handle a couple of thousands of persistent TCP connections and that network bandwidth can
 accommodate at least 5Mbps of steady upstream and downstream network traffic.
 
-When installing the LuxGo node on the machines, unless you have a dedicated DevOps staff that
+When installing the Luxd node on the machines, unless you have a dedicated DevOps staff that
 will take care of node setup and configuration, we recommend using the
 [installer script](/nodes/run/with-installer/installing-luxd.md) to set up the nodes.
 It will abstract most of the setup process for you, set up the node as a system
@@ -113,7 +113,7 @@ able to routinely handle at least one node being offline without your Subnet per
 
 ### Node Bootstrap
 
-Once you set up the server and install LuxGo on them, nodes will need to bootstrap (sync with
+Once you set up the server and install Luxd on them, nodes will need to bootstrap (sync with
 the network). This is a lengthy process, as the nodes need to catch up and replay all the network
 activity since the genesis up to the present moment. Full bootstrap on a node can take more than a
 week, but there are ways to shorten that process, depending on your circumstances.

@@ -136,7 +136,7 @@ module.exports = {
 ```
 
 Ten en cuenta que puedes cambiar el `protocolo`, `ip` y `puerto` si quieres dirigir
-llamadas de API a un nodo LuxGo diferente. También ten en cuenta que estamos estableciendo el
+llamadas de API a un nodo Luxd diferente. También ten en cuenta que estamos estableciendo el
 `gasPrice` y `gas` a los valores apropiados para la C-Chain de Lux.
 
 ## Añadir Storage.sol

@@ -34,7 +34,7 @@ Una vez en la página "Suscribirse a este software", verás un botón que te per
 
 ## Configura este software
 
-Esta página te permite elegir una opción de cumplimiento y una versión de software para lanzar este software. No se necesitan cambios, ya que la configuración predeterminada es suficiente. Deja la opción de "Cumplimiento" como "Imagen de máquina Amazon (AMI) de 64 bits (x86)". La versión de software es la última compilación de [el nodo completo LuxGo](https://github.com/luxdefi/luxd/releases), `v1.9.5 (22 de diciembre de 2022)`, también conocido como `Banff.5`. Esto siempre mostrará la última versión. Además, la región de implementación se puede dejar como "US East (N. Virginia)". A la derecha verás los precios del software e infraestructura. Por último, haz clic en el botón "Continuar para iniciar".
+Esta página te permite elegir una opción de cumplimiento y una versión de software para lanzar este software. No se necesitan cambios, ya que la configuración predeterminada es suficiente. Deja la opción de "Cumplimiento" como "Imagen de máquina Amazon (AMI) de 64 bits (x86)". La versión de software es la última compilación de [el nodo completo Luxd](https://github.com/luxdefi/luxd/releases), `v1.9.5 (22 de diciembre de 2022)`, también conocido como `Banff.5`. Esto siempre mostrará la última versión. Además, la región de implementación se puede dejar como "US East (N. Virginia)". A la derecha verás los precios del software e infraestructura. Por último, haz clic en el botón "Continuar para iniciar".
 
 ## Lanza este software
 
@@ -464,7 +464,7 @@ Todos estos pasos se pueden aplicar a Mainnet. Sin embargo, la cantidad mínima 
 
 El clic de un solo botón de AWS está destinado a ser utilizado en entornos automatizados, no como una solución para el usuario final. Aún puedes gestionarlo manualmente, pero no es tan fácil como una instancia de Ubuntu o usar el script:
 
-- El binario LuxGo está en `/usr/local/bin/luxd`
+- El binario Luxd está en `/usr/local/bin/luxd`
 - La configuración del nodo principal está en `/etc/luxd/conf.json`
 - El directorio de trabajo está en `/home/lux/.luxd/ (y pertenece al usuario luxd)`
 - La base de datos está en `/data/luxd`

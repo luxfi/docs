@@ -1,6 +1,6 @@
 {
   "id": "apis/luxd/cb58-deprecation",
-  "title": "CB58 Deprecation in LuxGo API",
+  "title": "CB58 Deprecation in Luxd API",
   "description": "Overview",
   "source": "@site/docs/apis/luxd/cb58-deprecation.md",
   "sourceDirName": "apis/luxd",

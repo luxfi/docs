@@ -1,6 +1,6 @@
 ---
 tags: [Standards]
-description: This document specifies the changes in Lux Banff, which was released in LuxGo v1.10.0.
+description: This document specifies the changes in Lux Banff, which was released in Luxd v1.10.0.
 sidebar_label: Banff Changes
 pagination_label: Banff Changes
 sidebar_position: 3
@@ -8,7 +8,7 @@ sidebar_position: 3
 
 # Banff Changes
 
-This document specifies the changes in Lux “Banff”, which was released in LuxGo v1.9.x.
+This document specifies the changes in Lux “Banff”, which was released in Luxd v1.9.x.
 
 ## Block Changes
 

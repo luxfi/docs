@@ -23,7 +23,7 @@ focus which requires new tooling and support for playing, working and testing wi
 feature of the Lux ecosystem.
 
 The ANR aims at being a tool for developers and system integrators alike, offering functionality to
-run networks of LuxGo nodes with support for custom node, Subnet and network configurations,
+run networks of Luxd nodes with support for custom node, Subnet and network configurations,
 allowing to locally test code before deploying to Mainnet or even public testnets like `testnet`.
 
 You can also use the [Lux Network Runner Postman collection](https://github.com/luxdefi/netrunner-postman-collection).
@@ -58,7 +58,7 @@ to Lux Network Runner. We strongly recommend that you put the following in to yo
 configuration file.
 
 ```bash
-# replace execPath with the path to LuxGo on your machine
+# replace execPath with the path to Luxd on your machine
 # e.g., ${HOME}/go/src/github.com/luxdefi/luxd/build/luxd
 LUXD_EXEC_PATH="${HOME}/go/src/github.com/luxdefi/luxd/build/luxd"
 ```
@@ -183,7 +183,7 @@ array for each blockchain, with the following possible fields:
 See the [Lux-CLI documentation](/build/subnet/deploy/local-subnet.md) for details about how to
 create and run Subnets with our _Lux-CLI_ tool.
 
-The netrunner supports LuxGo node configuration at different levels.
+The netrunner supports Luxd node configuration at different levels.
 
 1. If neither `--global-node-config` nor `--custom-node-configs` is supplied, all nodes get a
    standard set of config options. Currently this set contains:
@@ -200,7 +200,7 @@ The netrunner supports LuxGo node configuration at different levels.
    }
    ```
 
-2. `--global-node-config` is a JSON string representing a _single_ LuxGo config, which will be
+2. `--global-node-config` is a JSON string representing a _single_ Luxd config, which will be
    applied to **all nodes**. This makes it easy to define common properties to all nodes. Whatever
    is set here will be _combined_ with the standard set above.
 3. `--custom-node-configs` is a map of JSON strings representing the _complete_ network with
@@ -351,7 +351,7 @@ It's also possible to provide individual node config parameters:
 	--node-config '{"index-enabled":false, "api-admin-enabled":true,"network-peer-list-gossip-frequency":"300ms"}'
 ```
 
-`--node-config` allows to specify specific LuxGo config parameters to the new node.
+`--node-config` allows to specify specific Luxd config parameters to the new node.
 See [here](/nodes/configure/luxd-config-flags.md) for the reference of supported flags.
 
 **Note**: The following parameters will be _ignored_ if set in `--node-config`, because the network
@@ -414,7 +414,7 @@ network, err := local.NewDefaultNetwork(log, binaryPath)
 
 where `log` is a logger of type
 [`logging.Logger`](https://github.com/luxdefi/luxd/blob/master/utils/logging/logger.go#L12)
-and `binaryPath` is the path of the LuxGo binary that each node that exists on network startup
+and `binaryPath` is the path of the Luxd binary that each node that exists on network startup
 will run.
 
 For example, the below snippet creates a new network using default configurations, and each node in

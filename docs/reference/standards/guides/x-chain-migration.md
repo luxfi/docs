@@ -25,7 +25,7 @@ or the [avm.getTx](/reference/luxd/x-chain/api.md#avmgettx) API.
 However, the [avm.getTxStatus](/reference/luxd/x-chain/api.md#avmgettxstatus) endpoint is now
 deprecated and its usage should be replaced with
 [avm.getTx](/reference/luxd/x-chain/api.md#avmgettx) (which only returns accepted transactions
-for LuxGo >= v1.9.12). [avm.getTxStatus](/reference/luxd/x-chain/api.md#avmgettxstatus)
+for Luxd >= v1.9.12). [avm.getTxStatus](/reference/luxd/x-chain/api.md#avmgettxstatus)
 will still work up to and after the Cortina activation if you wish to migrate
 after the network upgrade has occurred.
 
@@ -119,7 +119,7 @@ will be similar to the [P-Chain semantics](/reference/luxd/p-chain/api.md#platfo
 
 ## Deprecated API Calls
 
-This long-term deprecation effort will better align usage of LuxGo with its purpose, to be a
+This long-term deprecation effort will better align usage of Luxd with its purpose, to be a
 minimal and efficient runtime that supports only what is required to validate the Primary Network
 and Subnets. Integrators should make plans to migrate to tools and services that are better
 optimized for serving queries over Lux Network state and avoid keeping any keys on the node
@@ -127,7 +127,7 @@ itself.
 
 :::note
 
-This deprecation ONLY applies to APIs that LuxGo exposes over the HTTP port.
+This deprecation ONLY applies to APIs that Luxd exposes over the HTTP port.
 Transaction types with similar names to these APIs are NOT being deprecated.
 
 :::

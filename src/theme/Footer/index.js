@@ -82,7 +82,7 @@ function Footer() {
               <a href="https://github.com/luxdefi">
                 <BsGithub className="footer-social"></BsGithub>
               </a>
-              <a href="https://twitter.com/LuxDevelopers">
+              <a href="https://twitter.com/luxdefi">
                 <BsTwitter className="footer-social"></BsTwitter>
               </a>
               <a href="https://www.reddit.com/r/Lux/">
@@ -145,7 +145,7 @@ function Footer() {
                 <h4 className="footer-heading">
                   {translate({ message: "Community" })}
                 </h4>
-                <a href="https://medium.com/@luxdevelopers">
+                <a href="https://medium.com/luxdefi">
                   <div className="footer-list">Medium</div>
                 </a>
                 <a href="https://www.lux.network/blog">

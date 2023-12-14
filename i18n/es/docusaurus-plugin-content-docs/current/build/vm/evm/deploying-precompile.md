@@ -53,10 +53,10 @@ netrunner server \
 
 ```
 
-Dado que ya compilamos LuxGo y Subnet-EVM/Precompile-EVM en un paso anterior, deberíamos tener
-los binarios de LuxGo y Subnet-EVM listos para usar.
+Dado que ya compilamos Luxd y Subnet-EVM/Precompile-EVM en un paso anterior, deberíamos tener
+los binarios de Luxd y Subnet-EVM listos para usar.
 
-Ahora podemos configurar las siguientes rutas. `LUXD_EXEC_PATH` apunta al último binario de LuxGo
+Ahora podemos configurar las siguientes rutas. `LUXD_EXEC_PATH` apunta al último binario de Luxd
 que acabamos de construir. `LUXD_PLUGIN_PATH` apunta a la ruta de los plugins que debería tener el
 binario de Subnet-EVM que acabamos de construir:
 
@@ -89,7 +89,7 @@ Si el inicio de la red es exitoso, deberías ver algo como esto:
 [blockchain RPC para "srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy"] "http://127.0.0.1:9658/ext/bc/2jDWMrF9yKK8gZfJaaaSfACKeMasiNgHmuZip5mWxUfhKaYoEU"
 ```
 
-Esto muestra la extensión al servidor de API en LuxGo que es específica de la instancia de Blockchain Subnet-EVM.
+Esto muestra la extensión al servidor de API en Luxd que es específica de la instancia de Blockchain Subnet-EVM.
 Para interactuar con ella, querrás agregar la extensión `/rpc`, que
 proporcionará las llamadas de API estándar de Ethereum. Por ejemplo, puedes usar la URL de RPC:
 

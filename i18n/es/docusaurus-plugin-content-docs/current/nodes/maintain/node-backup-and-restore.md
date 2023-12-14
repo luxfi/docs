@@ -12,7 +12,7 @@ Una vez que tienes tu nodo funcionando, es hora de prepararse para la recuperaci
 
 Cuando se ejecuta, una instalación completa del nodo junto con la base de datos puede llegar a tener varios gigabytes de tamaño. Tener que hacer una copia de seguridad y restaurar un volumen tan grande de datos puede ser costoso, complicado y llevar mucho tiempo. Afortunadamente, hay una mejor manera.
 
-En lugar de tener que hacer una copia de seguridad y restaurar todo, necesitamos hacer una copia de seguridad sólo de lo que es esencial, es decir, aquellos archivos que no se pueden reconstruir porque son únicos de tu nodo. Para un nodo LuxGo, los archivos únicos son aquellos que identifican tu nodo en la red, en otras palabras, los archivos que definen tu NodeID.
+En lugar de tener que hacer una copia de seguridad y restaurar todo, necesitamos hacer una copia de seguridad sólo de lo que es esencial, es decir, aquellos archivos que no se pueden reconstruir porque son únicos de tu nodo. Para un nodo Luxd, los archivos únicos son aquellos que identifican tu nodo en la red, en otras palabras, los archivos que definen tu NodeID.
 
 Incluso si tu nodo es un validador en la red y tiene múltiples delegaciones en él, no necesitas preocuparte por hacer una copia de seguridad de nada más, porque las transacciones de validación y delegación también se almacenan en la blockchain y se restaurarán durante el arranque, junto con el resto de los datos de la blockchain.
 
@@ -137,7 +137,7 @@ Este tutorial te guiará a través de la compresión de la base de datos de tu n
 
 ### Respaldo de la Base de Datos
 
-Primero, asegúrate de detener LuxGo, ejecuta:
+Primero, asegúrate de detener Luxd, ejecuta:
 
 ```bash
 sudo systemctl stop luxd
@@ -241,7 +241,7 @@ ssh -i /ruta/a/la/clave.pem ubuntu@PUBLICIP 'tar czf - .luxd/db' | tar xvzf - -C
 
 Asegúrate de reemplazar la ruta correcta de la clave y la IP correcta de la máquina de origen. Esto comprimirá la base de datos, pero en lugar de escribirla en un archivo, la enviará a través de `ssh` directamente a la máquina de destino, donde se descomprimirá y se escribirá en el disco. El proceso puede llevar mucho tiempo, asegúrate de que se complete antes de continuar.
 
-Después de que se haya completado la copia, todo lo que necesitas hacer ahora es mover la base de datos a la ubicación correcta en la máquina de destino. Suponiendo que haya una instalación predeterminada del nodo LuxGo, eliminamos la base de datos antigua y la reemplazamos con la nueva:
+Después de que se haya completado la copia, todo lo que necesitas hacer ahora es mover la base de datos a la ubicación correcta en la máquina de destino. Suponiendo que haya una instalación predeterminada del nodo Luxd, eliminamos la base de datos antigua y la reemplazamos con la nueva:
 
 ```bash
 rm -rf ~/.luxd/db

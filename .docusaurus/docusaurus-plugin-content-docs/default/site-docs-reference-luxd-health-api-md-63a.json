@@ -1,7 +1,7 @@
 {
   "id": "reference/luxd/health-api",
   "title": "Health API",
-  "description": "This page is an overview of the Health API associated with LuxGo. This API can be used for measuring node health.",
+  "description": "This page is an overview of the Health API associated with Luxd. This API can be used for measuring node health.",
   "source": "@site/docs/reference/luxd/health-api.md",
   "sourceDirName": "reference/luxd",
   "slug": "/reference/luxd/health-api",
@@ -11,16 +11,16 @@
   "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/reference/luxd/health-api.md",
   "tags": [
     {
-      "label": "LuxGo APIs",
+      "label": "Luxd APIs",
       "permalink": "/tags/lux-go-ap-is"
     }
   ],
   "version": "current",
   "frontMatter": {
     "tags": [
-      "LuxGo APIs"
+      "Luxd APIs"
     ],
-    "description": "This page is an overview of the Health API associated with LuxGo. This API can be used for measuring node health.",
+    "description": "This page is an overview of the Health API associated with Luxd. This API can be used for measuring node health.",
     "sidebar_label": "Health API",
     "pagination_label": "Health API"
   },

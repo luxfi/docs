@@ -1,7 +1,7 @@
 {
   "id": "tooling/luxd-installer",
-  "title": "LuxGo Installer",
-  "description": "LuxGo Installer is a shell (bash) script that installs LuxGo on any Linux computer. This script sets up full, running node in a matter of minutes with minimal user input required. This is convenient if you want to run the node as a service on a standalone Linux installation, for example to set up a (Subnet) validator, use the node as a private RPC server and similar uses. It also makes upgrading or reinstalling the nodes easy.",
+  "title": "Luxd Installer",
+  "description": "Luxd Installer is a shell (bash) script that installs Luxd on any Linux computer. This script sets up full, running node in a matter of minutes with minimal user input required. This is convenient if you want to run the node as a service on a standalone Linux installation, for example to set up a (Subnet) validator, use the node as a private RPC server and similar uses. It also makes upgrading or reinstalling the nodes easy.",
   "source": "@site/docs/tooling/luxd-installer.md",
   "sourceDirName": "tooling",
   "slug": "/tooling/luxd-installer",
@@ -15,7 +15,7 @@
       "permalink": "/tags/tooling"
     },
     {
-      "label": "LuxGo APIs",
+      "label": "Luxd APIs",
       "permalink": "/tags/lux-go-ap-is"
     }
   ],
@@ -23,10 +23,10 @@
   "frontMatter": {
     "tags": [
       "Tooling",
-      "LuxGo APIs"
+      "Luxd APIs"
     ],
-    "description": "LuxGo Installer is a shell (bash) script that installs LuxGo on any Linux computer. This script sets up full, running node in a matter of minutes with minimal user input required. This is convenient if you want to run the node as a service on a standalone Linux installation, for example to set up a (Subnet) validator, use the node as a private RPC server and similar uses. It also makes upgrading or reinstalling the nodes easy.",
-    "pagination_label": "LuxGo Install Script"
+    "description": "Luxd Installer is a shell (bash) script that installs Luxd on any Linux computer. This script sets up full, running node in a matter of minutes with minimal user input required. This is convenient if you want to run the node as a service on a standalone Linux installation, for example to set up a (Subnet) validator, use the node as a private RPC server and similar uses. It also makes upgrading or reinstalling the nodes easy.",
+    "pagination_label": "Luxd Install Script"
   },
   "sidebar": "tooling",
   "previous": {

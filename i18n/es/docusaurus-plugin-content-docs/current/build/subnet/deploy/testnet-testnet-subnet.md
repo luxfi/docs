@@ -598,7 +598,7 @@ podrías copiar el archivo más tarde. En cualquier caso, la herramienta va a in
 especificado por la ruta dada, o crear un nuevo archivo. Nuevamente, establece permisos de escritura.
 
 A continuación, proporciona el directorio de plugins. El comienzo de este tutorial contiene una descripción de las VM
-[Máquina Virtual](#máquina-virtual). Cada VM ejecuta su propio plugin, por lo tanto, LuxGo necesita
+[Máquina Virtual](#máquina-virtual). Cada VM ejecuta su propio plugin, por lo tanto, Luxd necesita
 poder acceder al binario de plugin correspondiente. Como este es el comando `join`, que no
 conoce aún sobre el plugin, es necesario proporcionar el directorio donde reside el plugin. Asegúrate de proporcionar
 la ubicación para tu caso:

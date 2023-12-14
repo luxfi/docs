@@ -1,6 +1,6 @@
 ---
-tags: [P-Chain, Platform Chain, LuxGo APIs]
-description: This page is an overview of the P-Chain API associated with LuxGo.
+tags: [P-Chain, Platform Chain, Luxd APIs]
+description: This page is an overview of the P-Chain API associated with Luxd.
 sidebar_label: API 
 pagination_label: P-Chain Transaction Format
 ---

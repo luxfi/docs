@@ -55,7 +55,7 @@ EVM-compatible.
 - Lux VM: Defines the Exchange Chain (X-Chain); supports operations on Lux Native
   Tokens.
 
-All three can easily be run on any computer with [LuxGo](/nodes).
+All three can easily be run on any computer with [Luxd](/nodes).
 
 Validators can install additional VMs on their node to validate additional
 [Subnets](subnets-overview.md) in the Lux ecosystem. In exchange, validators receive

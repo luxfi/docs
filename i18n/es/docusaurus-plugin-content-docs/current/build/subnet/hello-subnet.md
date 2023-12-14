@@ -116,7 +116,7 @@ Asegúrate de sustituir el nombre de tu Subnet si usaste uno diferente a `miSubn
 A continuación, selecciona `Red Local`.
 
 Este comando inicia una red Lux de cinco nodos en tu máquina. Necesita descargar las últimas
-versiones de LuxGo y Subnet-EVM. El comando puede tardar unos minutos en ejecutarse.
+versiones de Luxd y Subnet-EVM. El comando puede tardar unos minutos en ejecutarse.
 
 Nota: Si ejecutas `bash` en tu shell y estás ejecutando Lux-CLI en ARM64 en Mac,
 necesitarás Rosetta 2 para poder desplegar Subnets localmente. Puedes descargar Rosetta 2 usando

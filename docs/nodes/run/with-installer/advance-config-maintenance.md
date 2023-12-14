@@ -105,7 +105,7 @@ configure the C-Chain, as described in detail
 
 ## Using a Previous Version
 
-The installer script can also be used to install a version of LuxGo other than the latest
+The installer script can also be used to install a version of Luxd other than the latest
 version.
 
 To see a list of available versions for installation, run:
@@ -117,7 +117,7 @@ To see a list of available versions for installation, run:
 It will print out a list, something like:
 
 ```text
-LuxGo installer
+Luxd installer
 ---------------------
 Available versions:
 v1.3.2
@@ -141,7 +141,7 @@ tag of the version. For example:
 
 :::danger
 
-Note that not all LuxGo versions are compatible. You should generally run
+Note that not all Luxd versions are compatible. You should generally run
 the latest version. Running a version other than latest may lead to your node
 not working properly and, for validators, not receiving a staking reward.
 
@@ -195,7 +195,7 @@ Please note that this is irreversible and the database and node ID will be delet
 
 ## What Next?
 
-That's it, you're running an LuxGo node! Congratulations! Let us know you
+That's it, you're running an Luxd node! Congratulations! Let us know you
 did it on our [Twitter](https://twitter.com/luxdefi),
 [Telegram](https://t.me/luxdefi) or [Reddit](https://t.me/luxdefi)!
 

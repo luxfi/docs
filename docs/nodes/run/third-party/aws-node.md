@@ -206,7 +206,7 @@ with the instance and give it a public IP address that won't change.
 
 ![Assign the Elastic IP to your EC2 instance.](https://miro.medium.com/max/834/1*NW-S4LzL3EC1q2_4AkIPUg.png)
 
-## Set Up LuxGo
+## Set Up Luxd
 
 Go back to the EC2 Dashboard and select `Running Instances`.
 
@@ -271,7 +271,7 @@ Lux node. To do this, follow the [Set Up Lux Node With Installer](/nodes/run/wit
 which automates the installation process. You will need the `PUBLICIP`
 we set up earlier.
 
-Your LuxGo node should now be running and in the process of bootstrapping,
+Your Luxd node should now be running and in the process of bootstrapping,
 which can take a few hours. To check if it's done, you can issue an API call
 using `curl`. If you're making the request from the EC2 instance, the request
 is:
@@ -299,7 +299,7 @@ Once the node is finished bootstrapping, the response will be:
 }
 ```
 
-You can continue on, even if LuxGo isn't done bootstrapping.
+You can continue on, even if Luxd isn't done bootstrapping.
 
 In order to make your node a validator, you'll need its node ID. To get it, run:
 
@@ -321,7 +321,7 @@ In the above example the node ID is`NodeID-DznHmm3o7RkmpLkWMn9NqafH66mqunXbM`.
 Copy your node ID for later. Your node ID is not a secret, so you can just paste
 it into a text editor.
 
-LuxGo has other APIs, such as the [Health API](/reference/luxd/health-api.md), that may be used to interact with
+Luxd has other APIs, such as the [Health API](/reference/luxd/health-api.md), that may be used to interact with
 the node. Some APIs are disabled by default. To enable such APIs, modify the
 ExecStart section of `/etc/systemd/system/luxd.service` (created during
 the installation process) to include flags that enable these endpoints. Don't
@@ -359,7 +359,7 @@ storage not connected to the internet (like an external hard drive.)
 
 ### Upgrading Your Node
 
-LuxGo is an ongoing project and there are regular version upgrades. Most
+Luxd is an ongoing project and there are regular version upgrades. Most
 upgrades are recommended but not required. Advance notice will be given for
 upgrades that are not backwards compatible. To update your node to the latest
 version, SSH into your AWS instance as before and run the installer script
@@ -369,8 +369,8 @@ again.
 ./luxd-installer.sh
 ```
 
-Your machine is now running the newest LuxGo version. To see the status of
-the LuxGo service, run `sudo systemctl status luxd.`
+Your machine is now running the newest Luxd version. To see the status of
+the Luxd service, run `sudo systemctl status luxd.`
 
 ## Increase Volume Size
 
@@ -381,8 +381,8 @@ If you need to increase the volume size, follow these instructions from AWS:
 
 ## Wrap Up
 
-That's it! You now have an LuxGo node running on an AWS EC2 instance. We
-recommend setting up [node monitoring](/nodes/maintain/setting-up-node-monitoring.md)for your LuxGo node. We also
+That's it! You now have an Luxd node running on an AWS EC2 instance. We
+recommend setting up [node monitoring](/nodes/maintain/setting-up-node-monitoring.md)for your Luxd node. We also
 recommend setting up AWS billing alerts so you're not surprised when the bill
 arrives. If you have feedback on this tutorial, or anything else, send us a
 message on [Discord](https://chat.lux.network).

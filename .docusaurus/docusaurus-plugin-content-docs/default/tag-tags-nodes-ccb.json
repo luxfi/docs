@@ -7,13 +7,13 @@
     {
       "id": "nodes/README",
       "title": "🔗 Nodes Quick Links",
-      "description": "This section provides documents on how to build and maintain an LuxGo node, and then validate the Lux network using an LuxGo node.",
+      "description": "This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.",
       "permalink": "/nodes/"
     },
     {
       "id": "nodes/validate/add-a-validator",
       "title": "Add a Node to the Validator Set",
-      "description": "This section provides documents on how to build and maintain an LuxGo node, and then validate the Lux network using an LuxGo node.",
+      "description": "This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.",
       "permalink": "/nodes/validate/add-a-validator"
     },
     {
@@ -36,8 +36,8 @@
     },
     {
       "id": "nodes/run/with-installer/installing-luxd",
-      "title": "Installing LuxGo Using the Script",
-      "description": "In this tutorial, you'll learn how to download and install LuxGo using the installation script.",
+      "title": "Installing Luxd Using the Script",
+      "description": "In this tutorial, you'll learn how to download and install Luxd using the installation script.",
       "permalink": "/nodes/run/with-installer/installing-luxd"
     },
     {
@@ -48,20 +48,20 @@
     },
     {
       "id": "nodes/configure/luxd-config-flags",
-      "title": "LuxGo Configs and Flags",
-      "description": "This documents list all available configuration and flags for LuxGo.",
+      "title": "Luxd Configs and Flags",
+      "description": "This documents list all available configuration and flags for Luxd.",
       "permalink": "/nodes/configure/luxd-config-flags"
     },
     {
       "id": "nodes/run/with-installer/managing-luxd",
-      "title": "Managing LuxGo",
-      "description": "In this tutorial, you'll learn how to manage your LuxGo node.",
+      "title": "Managing Luxd",
+      "description": "In this tutorial, you'll learn how to manage your Luxd node.",
       "permalink": "/nodes/run/with-installer/managing-luxd"
     },
     {
       "id": "nodes/maintain/setting-up-node-monitoring",
       "title": "Monitor an Lux Node",
-      "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of LuxGo.",
+      "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.",
       "permalink": "/nodes/maintain/setting-up-node-monitoring"
     },
     {
@@ -103,7 +103,7 @@
     {
       "id": "nodes/run/with-installer/preparing-your-environment",
       "title": "Run an Lux Node Using the Install Script",
-      "description": "In this tutorial, you'll learn how to prepare your environment for LuxGo installation and configure your network settings.",
+      "description": "In this tutorial, you'll learn how to prepare your environment for Luxd installation and configure your network settings.",
       "permalink": "/nodes/run/with-installer/preparing-your-environment"
     },
     {

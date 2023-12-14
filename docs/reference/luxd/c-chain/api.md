@@ -1,7 +1,7 @@
 ---
 id: api
-tags: [C-Chain, Contract Chain, LuxGo APIs]
-description: This page is an overview of the C-Chain API associated with LuxGo. 
+tags: [C-Chain, Contract Chain, Luxd APIs]
+description: This page is an overview of the C-Chain API associated with Luxd. 
 sidebar_label: API 
 pagination_label: C-Chain API
 ---

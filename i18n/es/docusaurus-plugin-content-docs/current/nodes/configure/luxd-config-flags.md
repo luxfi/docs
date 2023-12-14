@@ -1,12 +1,12 @@
 ---
 tags: [Nodos]
-description: Este documento enumera todas las configuraciones y banderas disponibles para LuxGo.
-sidebar_label: Configuraciones + Banderas de LuxGo
-pagination_label: Configuraciones y Banderas de LuxGo
+description: Este documento enumera todas las configuraciones y banderas disponibles para Luxd.
+sidebar_label: Configuraciones + Banderas de Luxd
+pagination_label: Configuraciones y Banderas de Luxd
 sidebar_position: 0
 ---
 
-# Configuraciones y Banderas de LuxGo
+# Configuraciones y Banderas de Luxd
 
 <!-- markdownlint-disable MD001 -->
 
@@ -38,7 +38,7 @@ Ejemplo de archivo de configuración JSON:
 :::tip
 [El script de instalación](/nodes/run/with-installer/installing-luxd.md) crea el archivo de configuración del nodo
 en `~/.luxd/configs/node.json`. No se crea ningún archivo por defecto si
-[LuxGo se construye desde el código fuente](/nodes/run/node-manually.md),
+[Luxd se construye desde el código fuente](/nodes/run/node-manually.md),
 deberías crearlo manualmente si es necesario.
 :::
 
@@ -182,11 +182,11 @@ La sincronización parcial permite a los no validadores sincronizar opcionalment
 
 ## Configuraciones de la Cadena
 
-Algunas blockchains permiten que el operador del nodo proporcione configuraciones personalizadas para blockchains individuales. Estas configuraciones personalizadas se dividen en dos categorías: actualizaciones de red y configuraciones opcionales de la cadena. LuxGo lee estas configuraciones desde el directorio de configuración de la cadena y las pasa a la VM durante la inicialización.
+Algunas blockchains permiten que el operador del nodo proporcione configuraciones personalizadas para blockchains individuales. Estas configuraciones personalizadas se dividen en dos categorías: actualizaciones de red y configuraciones opcionales de la cadena. Luxd lee estas configuraciones desde el directorio de configuración de la cadena y las pasa a la VM durante la inicialización.
 
 #### `--chain-config-dir` (cadena)
 
-Especifica el directorio que contiene las configuraciones de la cadena, como se describe [aquí](chain-config-flags.md). Por defecto, es `$HOME/.luxd/configs/chains`. Si no se proporciona esta bandera y el directorio predeterminado no existe, LuxGo no saldrá ya que las configuraciones personalizadas son opcionales. Sin embargo, si se establece la bandera, la carpeta especificada debe existir, o LuxGo saldrá con un error. Esta bandera se ignora si se especifica `--chain-config-content`.
+Especifica el directorio que contiene las configuraciones de la cadena, como se describe [aquí](chain-config-flags.md). Por defecto, es `$HOME/.luxd/configs/chains`. Si no se proporciona esta bandera y el directorio predeterminado no existe, Luxd no saldrá ya que las configuraciones personalizadas son opcionales. Sin embargo, si se establece la bandera, la carpeta especificada debe existir, o Luxd saldrá con un error. Esta bandera se ignora si se especifica `--chain-config-content`.
 
 :::note
 Por favor, reemplace `chain-config-dir` y `blockchainID` con sus valores reales.
@@ -549,7 +549,7 @@ La identidad de la red a la que el nodo debe conectarse. Puede ser uno de:
 
 ## OpenTelemetry
 
-LuxGo admite recopilar y exportar trazas de [OpenTelemetry](https://opentelemetry.io/). Esto puede ser útil para la depuración, el análisis de rendimiento o el monitoreo.
+Luxd admite recopilar y exportar trazas de [OpenTelemetry](https://opentelemetry.io/). Esto puede ser útil para la depuración, el análisis de rendimiento o el monitoreo.
 
 #### `--tracing-enabled` (booleano)
 
@@ -656,13 +656,13 @@ El valor predeterminado es vacío (solo validará la Red Primaria).
 
 ### Configuraciones de Subnets
 
-Es posible proporcionar parámetros para Subnets. Estos parámetros se aplican a todas las cadenas en las Subnets especificadas. Los parámetros deben especificarse con un archivo de configuración `{subnetID}.json` bajo `--subnet-config-dir`. LuxGo carga las configuraciones para las Subnets especificadas en el parámetro `--track-subnets`.
+Es posible proporcionar parámetros para Subnets. Estos parámetros se aplican a todas las cadenas en las Subnets especificadas. Los parámetros deben especificarse con un archivo de configuración `{subnetID}.json` bajo `--subnet-config-dir`. Luxd carga las configuraciones para las Subnets especificadas en el parámetro `--track-subnets`.
 
 La referencia completa de todas las opciones de configuración para una Subnet se puede encontrar en un documento aparte de [Configuraciones de Subnet](./subnet-configs).
 
 #### `--subnet-config-dir` (`string`)
 
-Especifica el directorio que contiene las configuraciones de las Subnets, como se describe anteriormente. Por defecto, es `$HOME/.luxd/configs/subnets`. Si se establece explícitamente la bandera, la carpeta especificada debe existir, o LuxGo saldrá con un error. Esta bandera se ignora si se especifica `--subnet-config-content`.
+Especifica el directorio que contiene las configuraciones de las Subnets, como se describe anteriormente. Por defecto, es `$HOME/.luxd/configs/subnets`. Si se establece explícitamente la bandera, la carpeta especificada debe existir, o Luxd saldrá con un error. Esta bandera se ignora si se especifica `--subnet-config-content`.
 
 Ejemplo: Digamos que tenemos una Subnet con ID `p4jUwqZsA2LuSftroCd3zb4ytH8W99oXKuKVZdsty7eQ3rXD6`. Podemos crear un archivo de configuración en el directorio `subnet-config-dir` por defecto en `$HOME/.luxd/configs/subnets/p4jUwqZsA2LuSftroCd3zb4ytH8W99oXKuKVZdsty7eQ3rXD6.json`. Un archivo de configuración de ejemplo es:
 
@@ -1048,7 +1048,7 @@ Tiempo de espera al marcar un par. El valor predeterminado es `30s`.
 
 ### Limitación de velocidad de mensajes
 
-Estas banderas gobiernan la limitación de velocidad de los mensajes entrantes y salientes. Para obtener más información sobre la limitación de velocidad y las banderas a continuación, consulte el paquete `throttling` en LuxGo.
+Estas banderas gobiernan la limitación de velocidad de los mensajes entrantes y salientes. Para obtener más información sobre la limitación de velocidad y las banderas a continuación, consulte el paquete `throttling` en Luxd.
 
 #### Basado en CPU
 

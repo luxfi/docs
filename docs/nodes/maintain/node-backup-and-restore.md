@@ -20,7 +20,7 @@ better way.
 
 Instead of having to back up and restore everything, we need to back up only
 what is essential, that is, those files that cannot be reconstructed because
-they are unique to your node. For LuxGo node, unique files are those that
+they are unique to your node. For Luxd node, unique files are those that
 identify your node on the network, in other words, files that define your
 NodeID.
 
@@ -217,7 +217,7 @@ DB and moving it to another computer using `zip` and `scp`.
 
 ### Database Backup
 
-First, make sure to stop LuxGo, run:
+First, make sure to stop Luxd, run:
 
 ```bash
 sudo systemctl stop luxd
@@ -352,7 +352,7 @@ completes before continuing.
 
 After copying is done, all you need to do now is move the database to the
 correct location on the destination machine. Assuming there is a default
-LuxGo node installation, we remove the old database and replace it with
+Luxd node installation, we remove the old database and replace it with
 the new one:
 
 ```bash

@@ -19,7 +19,7 @@
       "permalink": "/tags/rpc-providers"
     },
     {
-      "label": "LuxGo APIs",
+      "label": "Luxd APIs",
       "permalink": "/tags/lux-go-ap-is"
     }
   ],
@@ -28,7 +28,7 @@
     "tags": [
       "Tooling",
       "RPC Providers",
-      "LuxGo APIs"
+      "Luxd APIs"
     ],
     "description": "There are multiple RPC providers which will work as intermediaries to help you interact with the Lux network. You'll experience different latency levels depending on the provider's configurations. You can potentially use multiple providers for redundancy and balancing.",
     "keywords": [
@@ -41,7 +41,7 @@
   },
   "sidebar": "tooling",
   "previous": {
-    "title": "LuxGo Install Script",
+    "title": "Luxd Install Script",
     "permalink": "/tooling/luxd-postman-collection/data-visualization"
   },
   "next": {

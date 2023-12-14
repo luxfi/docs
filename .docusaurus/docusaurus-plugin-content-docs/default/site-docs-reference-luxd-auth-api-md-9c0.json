@@ -1,7 +1,7 @@
 {
   "id": "reference/luxd/auth-api",
   "title": "Auth API",
-  "description": "This page is an overview of the Auth API associated with LuxGo.",
+  "description": "This page is an overview of the Auth API associated with Luxd.",
   "source": "@site/docs/reference/luxd/auth-api.md",
   "sourceDirName": "reference/luxd",
   "slug": "/reference/luxd/auth-api",
@@ -11,16 +11,16 @@
   "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/reference/luxd/auth-api.md",
   "tags": [
     {
-      "label": "LuxGo APIs",
+      "label": "Luxd APIs",
       "permalink": "/tags/lux-go-ap-is"
     }
   ],
   "version": "current",
   "frontMatter": {
     "tags": [
-      "LuxGo APIs"
+      "Luxd APIs"
     ],
-    "description": "This page is an overview of the Auth API associated with LuxGo.",
+    "description": "This page is an overview of the Auth API associated with Luxd.",
     "sidebar_label": "Auth API",
     "pagination_label": "Auth API"
   },

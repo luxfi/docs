@@ -10,7 +10,7 @@ sidebar_position: 0
 
 En el curso de la operación de una Subnet, inevitablemente necesitarás actualizar o cambiar alguna parte del
 stack de software que está ejecutando tu Subnet. Como mínimo, tendrás que actualizar el
-cliente de nodo LuxGo. Lo mismo ocurre con el binario del plugin de VM que se utiliza para ejecutar la blockchain en
+cliente de nodo Luxd. Lo mismo ocurre con el binario del plugin de VM que se utiliza para ejecutar la blockchain en
 tu Subnet, que probablemente sea el [Subnet-EVM](https://github.com/luxdefi/subnet-evm), la
 implementación de la Subnet de la máquina virtual Ethereum.
 
@@ -67,7 +67,7 @@ valor apropiado.
 
 ## Actualización de nodos validadores de la Subnet
 
-LuxGo, el cliente de nodo que ejecuta los validadores Lux, está en constante y rápido
+Luxd, el cliente de nodo que ejecuta los validadores Lux, está en constante y rápido
 desarrollo. Nuevas versiones salen a menudo (aproximadamente cada dos semanas), trayendo capacidades adicionales,
 mejoras de rendimiento o correcciones de seguridad. Las actualizaciones suelen ser opcionales, pero de vez en cuando
 (mucho menos frecuentemente que las actualizaciones regulares) habrá una actualización que incluye una actualización de red obligatoria.
@@ -76,9 +76,9 @@ no realice la actualización antes de la marca de tiempo de activación dejará 
 actualización se active.
 
 Por eso, tener una estrategia de actualización de nodos es absolutamente vital, y siempre debes actualizar al
-último cliente LuxGo inmediatamente cuando esté disponible.
+último cliente Luxd inmediatamente cuando esté disponible.
 
-Para una guía general sobre cómo actualizar LuxGo, echa un vistazo a [este tutorial](/nodes/maintain/upgrade-your-luxd-node.md). Al actualizar nodos de Subnet y
+Para una guía general sobre cómo actualizar Luxd, echa un vistazo a [este tutorial](/nodes/maintain/upgrade-your-luxd-node.md). Al actualizar nodos de Subnet y
 teniendo en cuenta la sección anterior, asegúrate de escalonar las actualizaciones de nodos y comenzar una nueva actualización
 solo una vez que el nodo anterior se haya actualizado correctamente. Usa la [API de Salud](/reference/luxd/health-api.md#healthhealth) para verificar que el valor `healthy` en la respuesta
 sea `true` en el nodo actualizado, y en otros validadores de la Subnet verifica que
@@ -91,7 +91,7 @@ Continúa el ciclo de actualización hasta que todos los nodos de la Subnet est�
 
 ## Actualización de binarios de plugin de VM de la Subnet
 
-Además del cliente LuxGo en sí, se lanzan nuevas versiones de los binarios de VM que ejecutan las
+Además del cliente Luxd en sí, se lanzan nuevas versiones de los binarios de VM que ejecutan las
 blockchains en la Subnet. En la mayoría de las Subnets, eso es el
 [Subnet-EVM](https://github.com/luxdefi/subnet-evm), por lo que este tutorial pasará por los pasos para
 actualizar el binario `subnet-evm`. El proceso de actualización será similar para actualizar cualquier binario de plugin de VM.
@@ -120,7 +120,7 @@ tar xvf subnet-evm_0.2.9_linux_amd64.tar.gz
 Esto descomprimirá y colocará el contenido del archivo en el directorio actual, el archivo `subnet-evm`
 es el binario del plugin. Ahora debes detener el nodo (si el nodo se está ejecutando como un servicio, usa el comando `sudo
 systemctl stop luxd`). Ahora debes colocar ese archivo en el directorio de plugins donde
-se encuentra el binario LuxGo. Si el nodo está instalado usando el script de instalación, la ruta será
+se encuentra el binario Luxd. Si el nodo está instalado usando el script de instalación, la ruta será
 `~/node/plugins`. En lugar del nombre de archivo `subnet-evm`, el binario de la VM debe tener el nombre
 del ID de VM de la cadena en la Subnet. Por ejemplo, para la [Subnet WAGMI](https://subnets-test.lux.network/wagmi) ese ID de VM es
 `srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy`. Entonces, el comando para
@@ -154,7 +154,7 @@ Ten en cuenta que la entrada junto al ID de VM que actualizamos correctamente di
 
 Consulta la sección anterior sobre cómo asegurarte de que el nodo esté saludable y conectado antes de pasar a actualizar el siguiente validador de la Subnet.
 
-Si no obtienes el resultado esperado, puedes detener `LuxGo`, examinar y seguir de cerca paso a paso lo anterior. Eres libre de eliminar archivos en `~/node/plugins`, sin embargo, debes tener en cuenta que eliminar archivos es para eliminar una VM binaria existente. Debes colocar el plugin de VM correcto en su lugar antes de reiniciar LuxGo.
+Si no obtienes el resultado esperado, puedes detener `Luxd`, examinar y seguir de cerca paso a paso lo anterior. Eres libre de eliminar archivos en `~/node/plugins`, sin embargo, debes tener en cuenta que eliminar archivos es para eliminar una VM binaria existente. Debes colocar el plugin de VM correcto en su lugar antes de reiniciar Luxd.
 
 ## Actualizaciones de red
 

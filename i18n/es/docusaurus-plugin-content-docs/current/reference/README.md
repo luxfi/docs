@@ -1,12 +1,12 @@
 ---
 title: 🔗 Enlaces Rápidos de Referencia
-tags: [APIs de LuxGo]
-description: LuxGo es la implementación de nodo para la red Lux, una plataforma blockchain con alta capacidad de procesamiento y transacciones rápidas. Esta página es una visión general de las APIs asociadas con LuxGo.
+tags: [APIs de Luxd]
+description: Luxd es la implementación de nodo para la red Lux, una plataforma blockchain con alta capacidad de procesamiento y transacciones rápidas. Esta página es una visión general de las APIs asociadas con Luxd.
 sidebar_label: 🔗 Enlaces Rápidos
 pagination_label: Enlaces Rápidos de Referencia de API
 ---
 
-| APIs de LuxGo                                             | Descripción                                      |
+| APIs de Luxd                                             | Descripción                                      |
 | :-------------------------------------------------------------- | :----------------------------------------------- |
 | [**API de la Cadena P**](/reference/luxd/p-chain/api.md) | Referencia de la API de la Cadena de Plataforma  |
 | [**API de la Cadena C**](/reference/luxd/c-chain/api.md) | Referencia de la API de la Cadena de Contratos   |

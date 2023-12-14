@@ -1,5 +1,5 @@
 ---
-tags: [Nodos, LuxGo]
+tags: [Nodos, Luxd]
 description: La forma más rápida de aprender sobre Lux es ejecutar un nodo e interactuar con la red. Este tutorial demuestra cómo instalar y ejecutar un nodo Lux, y conectarse a la Red Lux compilando un nodo desde el origen y ejecutándolo manualmente.
 sidebar_label: Manualmente
 pagination_label: Ejecutar un Nodo Lux Manualmente
@@ -25,7 +25,7 @@ La forma más rápida de aprender sobre Lux es ejecutar un nodo e interactuar co
 
 En este tutorial, haremos lo siguiente:
 
-- Instalar LuxGo y ejecutar un nodo Lux
+- Instalar Luxd y ejecutar un nodo Lux
 - Conectarse a Lux
 
 <details>
@@ -35,7 +35,7 @@ En este tutorial, haremos lo siguiente:
 
 - Para usar un servicio de terceros para alojar su nodo o ejecutar un validador, [vea aquí](/nodes/run/third-party/aws-node.md) tutoriales dedicados.
 
-- Si solo está interesado en configurar un nodo para hacer staking, se recomienda seguir el tutorial [LuxGo Install Script](/nodes/run/with-installer/installing-luxd.md).
+- Si solo está interesado en configurar un nodo para hacer staking, se recomienda seguir el tutorial [Luxd Install Script](/nodes/run/with-installer/installing-luxd.md).
 
 </p>
 </details>
@@ -57,7 +57,7 @@ Por favor, no intente ejecutar un nodo en un HDD, ya que puede obtener latencias
 
 ## Ejecutar un Nodo Lux desde el Código Fuente
 
-Los siguientes pasos explican cómo descargar el código fuente de LuxGo y construir localmente el programa binario.
+Los siguientes pasos explican cómo descargar el código fuente de Luxd y construir localmente el programa binario.
 
 ### Instalar Dependencias
 
@@ -74,9 +74,9 @@ Los siguientes pasos explican cómo descargar el código fuente de LuxGo y const
 mkdir -p $GOPATH/src/github.com/luxdefi
 ```
 
-#### 3. Clonar LuxGo
+#### 3. Clonar Luxd
 
-En el `$GOPATH`, clone [LuxGo](https://github.com/luxdefi/luxd), el motor de consenso e implementación de nodo que es el núcleo de la Red Lux.
+En el `$GOPATH`, clone [Luxd](https://github.com/luxdefi/luxd), el motor de consenso e implementación de nodo que es el núcleo de la Red Lux.
 
 ```bash
 cd $GOPATH/src/github.com/luxdefi
@@ -114,7 +114,7 @@ Para detener el nodo, presione `Ctrl + C`.
 
 ## Ejecutar con un Binario Pre-Construido
 
-Para descargar un binario pre-construido en lugar de construir desde el origen, vaya a la página de versiones de [LuxGo releases](https://github.com/luxdefi/luxd/releases), y seleccione la versión deseada.
+Para descargar un binario pre-construido en lugar de construir desde el origen, vaya a la página de versiones de [Luxd releases](https://github.com/luxdefi/luxd/releases), y seleccione la versión deseada.
 
 ### Descargar
 
@@ -188,11 +188,11 @@ Testnet:
 
 ## Ejecutar con Docker
 
-Consulte el repositorio [LuxGo GitHub](https://github.com/luxdefi/luxd#docker-install) para obtener más información.
+Consulte el repositorio [Luxd GitHub](https://github.com/luxdefi/luxd#docker-install) para obtener más información.
 
 ## Networking
 
-Para ejecutarse correctamente, LuxGo necesita aceptar conexiones desde Internet en el puerto de red `9651`. Antes de continuar con la instalación, debe determinar el entorno de red en el que se ejecutará su nodo.
+Para ejecutarse correctamente, Luxd necesita aceptar conexiones desde Internet en el puerto de red `9651`. Antes de continuar con la instalación, debe determinar el entorno de red en el que se ejecutará su nodo.
 
 <details>
 
@@ -281,7 +281,7 @@ si se ejecuta en un proveedor de nube. El "XXX.XX.XX.XXX" debe ser reemplazado p
 de tu instancia EC2.
 
 Para obtener más información sobre las solicitudes disponibles en estos puntos finales, consulta la
-documentación de referencia de la API de LuxGo.
+documentación de referencia de la API de Luxd.
 
 ## Ir más allá
 

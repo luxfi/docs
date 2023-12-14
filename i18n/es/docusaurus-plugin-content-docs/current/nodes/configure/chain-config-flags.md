@@ -9,11 +9,11 @@ sidebar_position: 1
 # Configuraciones de la Cadena
 
 Algunas cadenas permiten que el operador del nodo proporcione una configuración personalizada.
-LuxGo puede leer las configuraciones de la cadena desde archivos y pasarlas a las
+Luxd puede leer las configuraciones de la cadena desde archivos y pasarlas a las
 cadenas correspondientes durante la inicialización.
 
-LuxGo busca estos archivos en el directorio especificado por
-la bandera `--chain-config-dir` de LuxGo, como se documenta
+Luxd busca estos archivos en el directorio especificado por
+la bandera `--chain-config-dir` de Luxd, como se documenta
 [aquí](/nodes/configure/luxd-config-flags.md#--chain-config-dir-string). Si se omite, el valor
 por defecto es `$HOME/.luxd/configs/chains`. Este directorio puede tener
 subdirectorios cuyos nombres son ID de cadena o alias de cadena. Cada subdirectorio
@@ -39,9 +39,9 @@ La extensión de archivo que estos archivos deben tener, y el contenido de estos
 archivos, depende de la VM. Por ejemplo, algunas cadenas pueden esperar `config.txt` mientras
 que otras esperan `config.json`. Si se proporcionan varios archivos con el mismo nombre
 pero con extensiones diferentes (por ejemplo, `config.json` y `config.txt`) en el mismo
-subdirectorio, LuxGo saldrá con un error.
+subdirectorio, Luxd saldrá con un error.
 
-Para una cadena dada, LuxGo seguirá la siguiente secuencia para buscar su
+Para una cadena dada, Luxd seguirá la siguiente secuencia para buscar su
 archivo de configuración, donde todos los nombres de carpetas y archivos distinguen entre mayúsculas y minúsculas:
 
 - Primero busca un subdirectorio de configuración cuyo nombre sea el ID de la cadena - Si no
@@ -49,7 +49,7 @@ archivo de configuración, donde todos los nombres de carpetas y archivos distin
   busca un subdirectorio de configuración cuyo nombre sea otro alias para la cadena
 
 Alternativamente, para algunas configuraciones puede ser más conveniente proporcionar la configuración
-completamente a través de la línea de comandos. Para eso, puede usar la bandera `--chain-config-content` de LuxGo, como se documenta
+completamente a través de la línea de comandos. Para eso, puede usar la bandera `--chain-config-content` de Luxd, como se documenta
 [aquí](/nodes/configure/luxd-config-flags.md#--chain-config-content-string).
 
 No es necesario proporcionar estas configuraciones personalizadas. Si no se proporcionan, se utilizará una configuración predeterminada específica de la VM. Y los valores de estas
@@ -263,7 +263,7 @@ Agrega las siguientes llamadas RPC al espacio de nombres `net_*`. El valor prede
 Nota: Coreth es una máquina virtual y no tiene acceso directo a la
 capa de red, por lo que `net_listening` siempre devuelve verdadero y `net_peerCount`
 siempre devuelve 0. Para métricas precisas sobre la capa de red, los usuarios deben usar
-las API de LuxGo.
+las API de Luxd.
 
 #### `debug-tracer`
 

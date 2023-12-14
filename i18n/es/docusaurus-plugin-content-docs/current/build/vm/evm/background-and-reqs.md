@@ -87,7 +87,7 @@ Para hacer eso, ejecuta el comando: `export PATH=$PATH:$GOROOT/bin:$GOPATH/bin`
 Descarga los siguientes requisitos previos en tu `$GOPATH`:
 
 - Clona el repositorio (Subnet-EVM o Precompile-EVM) con Git
-- Clona el repositorio [LuxGo](https://github.com/luxdefi/luxd) con Git
+- Clona el repositorio [Luxd](https://github.com/luxdefi/luxd) con Git
 - Instala [Lux Network Runner](/tooling/netrunner.md)
 - Instala [solc](https://github.com/ethereum/solc-js#usage-on-the-command-line)
 - Instala [Node.js y NPM](https://nodejs.org/en/download)

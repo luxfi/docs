@@ -39,9 +39,9 @@
     "message": "Subnet FAQ",
     "description": "The label for link Subnet FAQ in sidebar subnets, linking to https://support.lux.network/en/articles/6158840-subnet-faq"
   },
-  "sidebar.apis.category.LuxGo": {
-    "message": "LuxGo",
-    "description": "The label for category LuxGo in sidebar apis"
+  "sidebar.apis.category.Luxd": {
+    "message": "Luxd",
+    "description": "The label for category Luxd in sidebar apis"
   },
   "sidebar.apis.category.APIs": {
     "message": "APIs",

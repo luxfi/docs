@@ -64,7 +64,7 @@ so your users don't have to enter the network data manually.
 ### Using the Public API Nodes or RPC Endpoints
 
 Instead of proxying network operations through MetaMask, you can use the public
-API, which consists of a number of LuxGo nodes behind a load balancer.
+API, which consists of a number of Luxd nodes behind a load balancer.
 
 The C-Chain API endpoint is
 [https://api.lux.network/ext/bc/C/rpc](https://api.lux.network/ext/bc/C/rpc)
@@ -88,7 +88,7 @@ also avoids potential issues with public API congestion and rate-limiting.
 
 For development and experimental purposes,
 [here](/nodes/run/node-manually.md) is a tutorial that shows
-how to download, build, and install LuxGo. Simpler solution is to use the
+how to download, build, and install Luxd. Simpler solution is to use the
 prebuilt binary, available on
 [GitHub](https://github.com/luxdefi/luxd/releases). If you're going to
 run a node on a Linux machine, you can use the
@@ -96,7 +96,7 @@ run a node on a Linux machine, you can use the
 `systemd` service. Script also handles node upgrading. If you want to run a node
 in a docker container, there are [build
 scripts](https://github.com/luxdefi/luxd/tree/master/scripts) in the
-LuxGo repo for various Docker configs.
+Luxd repo for various Docker configs.
 
 ### Node Configuration
 

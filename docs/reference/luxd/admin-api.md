@@ -1,6 +1,6 @@
 ---
-tags: [LuxGo APIs]
-description: This page is an overview of the Admin API associated with LuxGo. 
+tags: [Luxd APIs]
+description: This page is an overview of the Admin API associated with Luxd. 
 sidebar_label: Admin API
 pagination_label: Admin API
 ---

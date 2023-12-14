@@ -1,7 +1,7 @@
 {
   "id": "nodes/maintain/setting-up-node-monitoring",
   "title": "Monitor an Lux Node",
-  "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of LuxGo.",
+  "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.",
   "source": "@site/docs/nodes/maintain/setting-up-node-monitoring.md",
   "sourceDirName": "nodes/maintain",
   "slug": "/nodes/maintain/setting-up-node-monitoring",
@@ -21,7 +21,7 @@
     "tags": [
       "Nodes"
     ],
-    "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of LuxGo.",
+    "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.",
     "sidebar_label": "Monitoring",
     "pagination_label": "Monitor an Lux Node",
     "sidebar_position": 2

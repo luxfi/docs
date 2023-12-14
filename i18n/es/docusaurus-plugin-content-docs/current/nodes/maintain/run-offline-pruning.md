@@ -77,7 +77,7 @@ el siguiente comando (no son necesarios argumentos de línea de comandos si usas
 ./build/luxd
 ```
 
-Una vez que LuxGo inicie la C-Chain, puedes esperar ver registros de actualización del podador sin conexión:
+Una vez que Luxd inicie la C-Chain, puedes esperar ver registros de actualización del podador sin conexión:
 
 ```zsh
 INFO [02-09|00:20:15.625] Iterando instantánea de estado                 cuentas=297,231 slots=6,669,708 transcurrido=16.001s eta=1m29.03s

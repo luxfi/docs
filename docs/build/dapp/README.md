@@ -1,6 +1,6 @@
 ---
 tags: [Build, Decentralized Applications]
-description: Dapps 
+description: Dapps
 sidebar_label: 🔗 Quick Links
 pagination_label: Dapps Quick Links
 ---
@@ -18,10 +18,10 @@ pagination_label: Dapps Quick Links
 
 | Advanced Tutorials      |   |
 | :------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [**Manually Adjust Gas Prices**](build/dapp/advanced/adjusting-gas-price-during-high-network-activity.md) | Adjust the priority fee and max fee cap during high network activity |
-| [**Dynamic Gas Fees**](build/dapp/advanced/sending-transactions-with-dynamic-fees-using-javascript.md) | Send transactions with dynamic fee settings to adjust their priority fee and max fee cap in response to network state |
-| [**Add Network Programmatically**](build/dapp/advanced/add-programmatically.md) | Integrate Lux Network with your Dapp |
-| [**Exchange Integration**](build/dapp/advanced/integrate-exchange.md) | Integrate an exchange with the EVM-Compatible Lux C-Chain |
+| [**Manually Adjust Gas Prices**](/build/dapp/advanced/adjusting-gas-price-during-high-network-activity.md) | Adjust the priority fee and max fee cap during high network activity |
+| [**Dynamic Gas Fees**](/build/dapp/advanced/sending-transactions-with-dynamic-fees-using-javascript.md) | Send transactions with dynamic fee settings to adjust their priority fee and max fee cap in response to network state |
+| [**Add Network Programmatically**](/build/dapp/advanced/add-programmatically.md) | Integrate Lux Network with your Dapp |
+| [**Exchange Integration**](/build/dapp/advanced/integrate-exchange.md) | Integrate an exchange with the EVM-Compatible Lux C-Chain |
 
 | End-to-End Walkthroughs     |   |
 | :------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |

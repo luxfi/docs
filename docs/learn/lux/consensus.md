@@ -183,7 +183,7 @@ the network.
 
 Everything discussed to this point is how Lux is described in [the Lux
 white-paper](https://assets-global.website-files.com/5d80307810123f5ffbb34d6e/6009805681b416f34dcae012_Lux%20Consensus%20Whitepaper.pdf).
-The implementation of the Lux consensus protocol by Lux Partners (namely in LuxGo) has some
+The implementation of the Lux consensus protocol by Lux Partners (namely in Luxd) has some
 optimizations for latency and throughput.
 
 ### Blocks
@@ -254,7 +254,7 @@ throughput. Each vote is actually many votes in one.
 ### Loose Ends
 
 Transactions are created by users which call an API on an
-[LuxGo](https://github.com/luxdefi/luxd) full node or create them using a library such
+[Luxd](https://github.com/luxdefi/luxd) full node or create them using a library such
 as [LuxJS](https://github.com/luxdefi/luxjs).
 
 ### Other Observations

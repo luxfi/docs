@@ -1,12 +1,12 @@
 ---
 title: 🔗 Reference Quick Links
-tags: [LuxGo APIs]
-description: LuxGo is the node implementation for the Lux network - a blockchain platform with high throughput and blazing fast transactions. This page is overview of the APIs associated with LuxGo. 
+tags: [Luxd APIs]
+description: Luxd is the node implementation for the Lux network - a blockchain platform with high throughput and blazing fast transactions. This page is overview of the APIs associated with Luxd. 
 sidebar_label: 🔗 Quick Links
 pagination_label: API Reference Quick Links
 ---
 
-| LuxGo APIs       | Description  |
+| Luxd APIs       | Description  |
 | :------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [**P-Chain API**](/reference/luxd/p-chain/api.md)      | Platform Chain API Reference |
 | [**C-Chain API**](/reference/luxd/c-chain/api.md)      | Contract Chain API Reference |

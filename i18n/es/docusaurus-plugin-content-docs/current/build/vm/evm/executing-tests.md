@@ -123,11 +123,11 @@ Ahora que hemos configurado la nueva prueba de ginkgo, podemos ejecutar la prueb
 
 ## Ejecutando Pruebas E2E
 
-Antes de comenzar las pruebas, necesitaremos construir el binario LuxGo y el binario personalizado de Subnet-EVM.
+Antes de comenzar las pruebas, necesitaremos construir el binario Luxd y el binario personalizado de Subnet-EVM.
 
 Precompile-EVM agrupa Subnet-EVM y lo ejecuta bajo el capó en el archivo [`plugins/main.go`](https://github.com/luxdefi/precompile-evm/blob/hello-world-example/plugin/main.go#L24). Esto significa que el binario Precompile-EVM funciona de la misma manera que el binario Subnet-EVM. El repositorio Precompile-EVM también tiene los mismos scripts y el mismo proceso de construcción que Subnet-EVM. Los siguientes pasos también se aplican a Precompile-EVM.
 
-Deberías haber clonado [LuxGo](https://github.com/luxdefi/luxd) dentro de tu `$GOPATH` en la sección [Antecedentes y Requisitos](background-and-reqs.md), por lo que puedes construir LuxGo con el siguiente comando:
+Deberías haber clonado [Luxd](https://github.com/luxdefi/luxd) dentro de tu `$GOPATH` en la sección [Antecedentes y Requisitos](background-and-reqs.md), por lo que puedes construir Luxd con el siguiente comando:
 
 ```bash
 cd $GOPATH/src/github.com/luxdefi/luxd
@@ -136,13 +136,13 @@ cd $GOPATH/src/github.com/luxdefi/luxd
 
 
 
-Una vez que hayas construido LuxGo, puedes confirmar que fue exitoso imprimiendo la versión:
+Una vez que hayas construido Luxd, puedes confirmar que fue exitoso imprimiendo la versión:
 
 ```bash
 ./build/luxd --version
 ```
 
-Esto debería imprimir algo como lo siguiente (si estás ejecutando LuxGo v1.9.7):
+Esto debería imprimir algo como lo siguiente (si estás ejecutando Luxd v1.9.7):
 
 ```bash
 lux/1.9.7 [database=v1.4.5, rpcchainvm=22, commit=3e3e40f2f4658183d999807b724245023a13f5dc]
@@ -150,9 +150,9 @@ lux/1.9.7 [database=v1.4.5, rpcchainvm=22, commit=3e3e40f2f4658183d999807b724245
 
 Esta ruta se utilizará más adelante como la variable de entorno `LUXD_EXEC_PATH` en el ejecutor de la red.
 
-Ten en cuenta que la versión RPCChainVM de LuxGo y Subnet-EVM deben coincidir.
+Ten en cuenta que la versión RPCChainVM de Luxd y Subnet-EVM deben coincidir.
 
-Una vez que hemos construido LuxGo, podemos navegar de vuelta al repositorio y construir el binario:
+Una vez que hemos construido Luxd, podemos navegar de vuelta al repositorio y construir el binario:
 
 <!-- vale off -->
 
@@ -165,12 +165,12 @@ cd $GOPATH/src/github.com/luxdefi/subnet-evm
 ./scripts/build.sh
 ```
 
-Esto construirá el binario de Subnet-EVM y lo colocará en el directorio `build/plugins` de LuxGo de forma predeterminada
+Esto construirá el binario de Subnet-EVM y lo colocará en el directorio `build/plugins` de Luxd de forma predeterminada
 en la siguiente ruta de archivo:
 
 `$GOPATH/src/github.com/luxdefi/luxd/build/plugins/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy`
 
-Para confirmar que el binario de Subnet-EVM es compatible con LuxGo, puedes ejecutar el mismo comando de versión
+Para confirmar que el binario de Subnet-EVM es compatible con Luxd, puedes ejecutar el mismo comando de versión
 y confirmar que la versión de RPCChainVM coincide:
 
 ```bash
@@ -180,7 +180,7 @@ $GOPATH/src/github.com/luxdefi/luxd/build/plugins/srEXiWaHuhNyGwPUi444Tu47ZEDwxT
 Esto debería dar una salida similar:
 
 ```bash
-Subnet-EVM/v0.5.2@9a1c5482c83c32b29630ff171cb20ccc889d760e [LuxGo=v1.10.2, rpcchainvm=26]
+Subnet-EVM/v0.5.2@9a1c5482c83c32b29630ff171cb20ccc889d760e [Luxd=v1.10.2, rpcchainvm=26]
 ```
 
 </TabItem>
@@ -191,12 +191,12 @@ cd $GOPATH/src/github.com/luxdefi/precompile-evm
 ./scripts/build.sh
 ```
 
-Esto construirá el binario de Precompile-EVM y lo colocará en el directorio `build/plugins` de LuxGo de forma predeterminada
+Esto construirá el binario de Precompile-EVM y lo colocará en el directorio `build/plugins` de Luxd de forma predeterminada
 en la siguiente ruta de archivo:
 
 `$GOPATH/src/github.com/luxdefi/luxd/build/plugins/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy`
 
-Para confirmar que el binario de Precompile-EVM es compatible con LuxGo,
+Para confirmar que el binario de Precompile-EVM es compatible con Luxd,
 puedes ejecutar el mismo comando de versión
 y confirmar que la versión de RPCChainVM coincide:
 
@@ -207,7 +207,7 @@ $GOPATH/src/github.com/luxdefi/luxd/build/plugins/srEXiWaHuhNyGwPUi444Tu47ZEDwxT
 Esto debería dar una salida similar:
 
 ```bash
-Precompile-EVM/v0.0.0 Subnet-EVM/v0.5.2 [LuxGo=v1.10.2, rpcchainvm=26]
+Precompile-EVM/v0.0.0 Subnet-EVM/v0.5.2 [Luxd=v1.10.2, rpcchainvm=26]
 ```
 
 </TabItem>
@@ -215,10 +215,10 @@ Precompile-EVM/v0.0.0 Subnet-EVM/v0.5.2 [LuxGo=v1.10.2, rpcchainvm=26]
 
 <!-- vale on -->
 
-Si la versión del Protocolo RPCChainVM impresa no coincide con la utilizada en LuxGo, entonces Subnet-EVM
-no podrá comunicarse con LuxGo y la blockchain no se iniciará.
+Si la versión del Protocolo RPCChainVM impresa no coincide con la utilizada en Luxd, entonces Subnet-EVM
+no podrá comunicarse con Luxd y la blockchain no se iniciará.
 Puedes encontrar la tabla de compatibilidad
-para LuxGo y Subnet-EVM [aquí](https://github.com/luxdefi/subnet-evm#luxd-compatibility).
+para Luxd y Subnet-EVM [aquí](https://github.com/luxdefi/subnet-evm#luxd-compatibility).
 
 El directorio `build/plugins` se utilizará más adelante como `LUXD_PLUGIN_PATH`.
 
@@ -277,7 +277,7 @@ Will run 1 of 7 specs
 [BeforeSuite]
 /Users/avalabs/go/src/github.com/luxdefi/subnet-evm/tests/precompile/precompile_test.go:31
   > Enter [BeforeSuite] TOP-LEVEL - /Users/avalabs/go/src/github.com/luxdefi/subnet-evm/tests/precompile/precompile_test.go:31 @ 01/27/23 10:33:51.001
-INFO [01-27|10:33:51.002] Starting LuxGo node                wd=/Users/avalabs/go/src/github.com/luxdefi/subnet-evm
+INFO [01-27|10:33:51.002] Starting Luxd node                wd=/Users/avalabs/go/src/github.com/luxdefi/subnet-evm
 INFO [01-27|10:33:51.002] Executing                                cmd="./scripts/run.sh "
 [streaming output] Using branch: hello-world-tutorial-walkthrough
 ...

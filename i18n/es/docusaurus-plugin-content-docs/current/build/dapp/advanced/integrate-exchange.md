@@ -18,7 +18,7 @@ Además, Lux Partners mantiene una implementación de la [API de Rosetta](https:
 
 ### Ejecutar un nodo Lux
 
-Si desea construir su nodo desde el origen o incluirlo en una imagen de Docker, consulte el [repositorio de GitHub de LuxGo](https://github.com/luxdefi/luxd). Para ponerse en marcha rápidamente, puede utilizar el [script de instalación del nodo](/nodes/run/with-installer/installing-luxd.md) que automatiza la instalación y actualización del nodo LuxGo como un servicio `systemd` en Linux, utilizando binarios precompilados.
+Si desea construir su nodo desde el origen o incluirlo en una imagen de Docker, consulte el [repositorio de GitHub de Luxd](https://github.com/luxdefi/luxd). Para ponerse en marcha rápidamente, puede utilizar el [script de instalación del nodo](/nodes/run/with-installer/installing-luxd.md) que automatiza la instalación y actualización del nodo Luxd como un servicio `systemd` en Linux, utilizando binarios precompilados.
 
 ### Configuración de un nodo Lux
 
@@ -28,11 +28,11 @@ Puede proporcionar opciones de configuración en la línea de comandos o utiliza
 
 Las cadenas individuales, incluida la C-Chain, tienen sus propias opciones de configuración que son independientes de las opciones a nivel de nodo. Estos también se pueden especificar en un archivo de configuración. Para más detalles, consulte [aquí](/nodes/configure/chain-config-flags.md#c-chain-configs).
 
-El archivo de configuración de la C-Chain debería estar en `$HOME/.luxd/configs/chains/C/config.json`. También puede indicarle a LuxGo que busque en otro lugar el archivo de configuración de la C-Chain con la opción `--chain-config-dir`. Un ejemplo de archivo de configuración de la C-Chain:
+El archivo de configuración de la C-Chain debería estar en `$HOME/.luxd/configs/chains/C/config.json`. También puede indicarle a Luxd que busque en otro lugar el archivo de configuración de la C-Chain con la opción `--chain-config-dir`. Un ejemplo de archivo de configuración de la C-Chain:
 
 :::caution
 
-Si necesita la funcionalidad de un [nodo de archivo](https://ethereum.org/en/developers/docs/nodes-and-clients/#archive-node) de Ethereum, debe desactivar la poda de la C-Chain, que ha estado habilitada de forma predeterminada desde LuxGo v1.4.10. Para desactivar la poda, incluya `"pruning-enabled": false` en el archivo de configuración de la C-Chain como se muestra a continuación.
+Si necesita la funcionalidad de un [nodo de archivo](https://ethereum.org/en/developers/docs/nodes-and-clients/#archive-node) de Ethereum, debe desactivar la poda de la C-Chain, que ha estado habilitada de forma predeterminada desde Luxd v1.4.10. Para desactivar la poda, incluya `"pruning-enabled": false` en el archivo de configuración de la C-Chain como se muestra a continuación.
 
 :::
 

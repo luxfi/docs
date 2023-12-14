@@ -154,14 +154,14 @@
           },
           {
             "type": "link",
-            "label": "Installing LuxGo",
+            "label": "Installing Luxd",
             "href": "/nodes/run/with-installer/installing-luxd",
             "docId": "nodes/run/with-installer/installing-luxd",
             "unlisted": false
           },
           {
             "type": "link",
-            "label": "Managing LuxGo",
+            "label": "Managing Luxd",
             "href": "/nodes/run/with-installer/managing-luxd",
             "docId": "nodes/run/with-installer/managing-luxd",
             "unlisted": false
@@ -257,7 +257,7 @@
       },
       {
         "type": "link",
-        "label": "LuxGo Configs + Flags",
+        "label": "Luxd Configs + Flags",
         "href": "/nodes/configure/luxd-config-flags",
         "docId": "nodes/configure/luxd-config-flags",
         "unlisted": false
@@ -1182,7 +1182,7 @@
       },
       {
         "type": "link",
-        "label": "LuxGo Installer",
+        "label": "Luxd Installer",
         "href": "/tooling/luxd-installer",
         "docId": "tooling/luxd-installer",
         "unlisted": false
@@ -1210,7 +1210,7 @@
       },
       {
         "type": "category",
-        "label": "LuxGo Postman Collection",
+        "label": "Luxd Postman Collection",
         "collapsed": true,
         "items": [
           {
@@ -1273,7 +1273,7 @@
       },
       {
         "type": "html",
-        "value": "<span class='menu__item'><b><medium> LuxGo </medium></b></span>"
+        "value": "<span class='menu__item'><b><medium> Luxd </medium></b></span>"
       },
       {
         "type": "category",
@@ -1533,7 +1533,7 @@
     "apis/luxd/apis/index-api": {
       "id": "apis/luxd/apis/index-api",
       "title": "Index API",
-      "description": "LuxGo can be configured to run with an indexer. That is, it saves (indexes) every container (a block, vertex or transaction) it accepts on the X-Chain, P-Chain and C-Chain. To run LuxGo with indexing enabled, set command line flag --index-enabled to true. LuxGo will only index containers that are accepted when running with --index-enabled set to true. To ensure your node has a complete index, run a node with a fresh database and --index-enabled set to true. The node will accept every block, vertex and transaction in the network history during bootstrapping, ensuring your index is complete. It is OK to turn off your node if it is running with indexing enabled. If it restarts with indexing still enabled, it will accept all containers that were accepted while it was offline. The indexer should never fail to index an accepted block, vertex or transaction."
+      "description": "Luxd can be configured to run with an indexer. That is, it saves (indexes) every container (a block, vertex or transaction) it accepts on the X-Chain, P-Chain and C-Chain. To run Luxd with indexing enabled, set command line flag --index-enabled to true. Luxd will only index containers that are accepted when running with --index-enabled set to true. To ensure your node has a complete index, run a node with a fresh database and --index-enabled set to true. The node will accept every block, vertex and transaction in the network history during bootstrapping, ensuring your index is complete. It is OK to turn off your node if it is running with indexing enabled. If it restarts with indexing still enabled, it will accept all containers that were accepted while it was offline. The indexer should never fail to index an accepted block, vertex or transaction."
     },
     "apis/luxd/apis/info": {
       "id": "apis/luxd/apis/info",
@@ -1567,7 +1567,7 @@
     },
     "apis/luxd/apis/README": {
       "id": "apis/luxd/apis/README",
-      "title": "LuxGo APIs Overview",
+      "title": "Luxd APIs Overview",
       "description": "| Title                                              | Description                                                                                                                                         |"
     },
     "apis/luxd/apis/x-chain": {
@@ -1577,13 +1577,13 @@
     },
     "apis/luxd/cb58-deprecation": {
       "id": "apis/luxd/cb58-deprecation",
-      "title": "CB58 Deprecation in LuxGo API",
+      "title": "CB58 Deprecation in Luxd API",
       "description": "Overview"
     },
     "apis/luxd/luxd-release-notes": {
       "id": "apis/luxd/luxd-release-notes",
       "title": "Release Notes",
-      "description": "Upgrade Your LuxGo Node"
+      "description": "Upgrade Your Luxd Node"
     },
     "apis/luxd/postman-lux-collection": {
       "id": "apis/luxd/postman-lux-collection",
@@ -1597,8 +1597,8 @@
     },
     "apis/luxd/README": {
       "id": "apis/luxd/README",
-      "title": "LuxGo Overview",
-      "description": "APIs: Learn about all APIs provided by LuxGo server software."
+      "title": "Luxd Overview",
+      "description": "APIs: Learn about all APIs provided by Luxd server software."
     },
     "apis/luxjs/api": {
       "id": "apis/luxjs/api",
@@ -2112,8 +2112,8 @@
     },
     "nodes/configure/luxd-config-flags": {
       "id": "nodes/configure/luxd-config-flags",
-      "title": "LuxGo Configs and Flags",
-      "description": "This documents list all available configuration and flags for LuxGo.",
+      "title": "Luxd Configs and Flags",
+      "description": "This documents list all available configuration and flags for Luxd.",
       "sidebar": "nodes"
     },
     "nodes/configure/subnet-configs": {
@@ -2161,7 +2161,7 @@
     "nodes/maintain/setting-up-node-monitoring": {
       "id": "nodes/maintain/setting-up-node-monitoring",
       "title": "Monitor an Lux Node",
-      "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of LuxGo.",
+      "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.",
       "sidebar": "nodes"
     },
     "nodes/maintain/upgrade-your-luxd-node": {
@@ -2173,7 +2173,7 @@
     "nodes/README": {
       "id": "nodes/README",
       "title": "🔗 Nodes Quick Links",
-      "description": "This section provides documents on how to build and maintain an LuxGo node, and then validate the Lux network using an LuxGo node.",
+      "description": "This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.",
       "sidebar": "nodes"
     },
     "nodes/run/FAQ": {
@@ -2244,20 +2244,20 @@
     },
     "nodes/run/with-installer/installing-luxd": {
       "id": "nodes/run/with-installer/installing-luxd",
-      "title": "Installing LuxGo Using the Script",
-      "description": "In this tutorial, you'll learn how to download and install LuxGo using the installation script.",
+      "title": "Installing Luxd Using the Script",
+      "description": "In this tutorial, you'll learn how to download and install Luxd using the installation script.",
       "sidebar": "nodes"
     },
     "nodes/run/with-installer/managing-luxd": {
       "id": "nodes/run/with-installer/managing-luxd",
-      "title": "Managing LuxGo",
-      "description": "In this tutorial, you'll learn how to manage your LuxGo node.",
+      "title": "Managing Luxd",
+      "description": "In this tutorial, you'll learn how to manage your Luxd node.",
       "sidebar": "nodes"
     },
     "nodes/run/with-installer/preparing-your-environment": {
       "id": "nodes/run/with-installer/preparing-your-environment",
       "title": "Run an Lux Node Using the Install Script",
-      "description": "In this tutorial, you'll learn how to prepare your environment for LuxGo installation and configure your network settings.",
+      "description": "In this tutorial, you'll learn how to prepare your environment for Luxd installation and configure your network settings.",
       "sidebar": "nodes"
     },
     "nodes/system-requirements": {
@@ -2269,7 +2269,7 @@
     "nodes/validate/add-a-validator": {
       "id": "nodes/validate/add-a-validator",
       "title": "Add a Node to the Validator Set",
-      "description": "This section provides documents on how to build and maintain an LuxGo node, and then validate the Lux network using an LuxGo node.",
+      "description": "This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.",
       "sidebar": "nodes"
     },
     "nodes/validate/how-to-stake": {
@@ -2313,91 +2313,91 @@
     "reference/luxd/admin-api": {
       "id": "reference/luxd/admin-api",
       "title": "Admin API",
-      "description": "This page is an overview of the Admin API associated with LuxGo.",
+      "description": "This page is an overview of the Admin API associated with Luxd.",
       "sidebar": "reference"
     },
     "reference/luxd/auth-api": {
       "id": "reference/luxd/auth-api",
       "title": "Auth API",
-      "description": "This page is an overview of the Auth API associated with LuxGo.",
+      "description": "This page is an overview of the Auth API associated with Luxd.",
       "sidebar": "reference"
     },
     "reference/luxd/c-chain/api": {
       "id": "reference/luxd/c-chain/api",
       "title": "Contract Chain API",
-      "description": "This page is an overview of the C-Chain API associated with LuxGo.",
+      "description": "This page is an overview of the C-Chain API associated with Luxd.",
       "sidebar": "reference"
     },
     "reference/luxd/c-chain/txn-format": {
       "id": "reference/luxd/c-chain/txn-format",
       "title": "C-Chain Transaction Format",
-      "description": "This page is an overview of the Coreth atomic transaction format associated with LuxGo C-Chain API.",
+      "description": "This page is an overview of the Coreth atomic transaction format associated with Luxd C-Chain API.",
       "sidebar": "reference"
     },
     "reference/luxd/health-api": {
       "id": "reference/luxd/health-api",
       "title": "Health API",
-      "description": "This page is an overview of the Health API associated with LuxGo. This API can be used for measuring node health.",
+      "description": "This page is an overview of the Health API associated with Luxd. This API can be used for measuring node health.",
       "sidebar": "reference"
     },
     "reference/luxd/index-api": {
       "id": "reference/luxd/index-api",
       "title": "Index API",
-      "description": "This page is an overview of the Index API associated with LuxGo.",
+      "description": "This page is an overview of the Index API associated with Luxd.",
       "sidebar": "reference"
     },
     "reference/luxd/info-api": {
       "id": "reference/luxd/info-api",
       "title": "Info API",
-      "description": "This page is an overview of the Info API associated with LuxGo.",
+      "description": "This page is an overview of the Info API associated with Luxd.",
       "sidebar": "reference"
     },
     "reference/luxd/ipc-api": {
       "id": "reference/luxd/ipc-api",
       "title": "IPC API",
-      "description": "This page is an overview of the IPC API associated with LuxGo.",
+      "description": "This page is an overview of the IPC API associated with Luxd.",
       "sidebar": "reference"
     },
     "reference/luxd/keystore-api": {
       "id": "reference/luxd/keystore-api",
       "title": "Keystore API",
-      "description": "This page is an overview of the Keystore API associated with LuxGo.",
+      "description": "This page is an overview of the Keystore API associated with Luxd.",
       "sidebar": "reference"
     },
     "reference/luxd/metrics-api": {
       "id": "reference/luxd/metrics-api",
       "title": "Metrics API",
-      "description": "This page is an overview of the Metrics API associated with LuxGo.",
+      "description": "This page is an overview of the Metrics API associated with Luxd.",
       "sidebar": "reference"
     },
     "reference/luxd/p-chain/api": {
       "id": "reference/luxd/p-chain/api",
       "title": "Platform Chain API",
-      "description": "This page is an overview of the P-Chain API associated with LuxGo.",
+      "description": "This page is an overview of the P-Chain API associated with Luxd.",
       "sidebar": "reference"
     },
     "reference/luxd/p-chain/txn-format": {
       "id": "reference/luxd/p-chain/txn-format",
       "title": "P-Chain Transaction Format",
-      "description": "This page is an overview of the transaction format associated with LuxGo P-Chain API.",
+      "description": "This page is an overview of the transaction format associated with Luxd P-Chain API.",
       "sidebar": "reference"
     },
     "reference/luxd/x-chain/api": {
       "id": "reference/luxd/x-chain/api",
       "title": "X-Chain API",
-      "description": "This page is an overview of the Exchange Chain (X-Chain) API associated with LuxGo.",
+      "description": "This page is an overview of the Exchange Chain (X-Chain) API associated with Luxd.",
       "sidebar": "reference"
     },
     "reference/luxd/x-chain/txn-format": {
       "id": "reference/luxd/x-chain/txn-format",
       "title": "X-Chain Transaction Format",
-      "description": "This page is an overview of the AVM transaction format associated with LuxGo X-Chain API.",
+      "description": "This page is an overview of the AVM transaction format associated with Luxd X-Chain API.",
       "sidebar": "reference"
     },
     "reference/README": {
       "id": "reference/README",
       "title": "🔗 Reference Quick Links",
-      "description": "LuxGo is the node implementation for the Lux network - a blockchain platform with high throughput and blazing fast transactions. This page is overview of the APIs associated with LuxGo.",
+      "description": "Luxd is the node implementation for the Lux network - a blockchain platform with high throughput and blazing fast transactions. This page is overview of the APIs associated with Luxd.",
       "sidebar": "reference"
     },
     "reference/standards/cryptographic-primitives": {
@@ -2409,7 +2409,7 @@
     "reference/standards/guides/banff-changes": {
       "id": "reference/standards/guides/banff-changes",
       "title": "Banff Changes",
-      "description": "This document specifies the changes in Lux Banff, which was released in LuxGo v1.10.0.",
+      "description": "This document specifies the changes in Lux Banff, which was released in Luxd v1.10.0.",
       "sidebar": "reference"
     },
     "reference/standards/guides/blockchain-flow": {
@@ -2451,7 +2451,7 @@
     "reference/subnet-evm/api": {
       "id": "reference/subnet-evm/api",
       "title": "Subnet-EVM API",
-      "description": "This page is an overview of the Subnet-EVM API associated with LuxGo.",
+      "description": "This page is an overview of the Subnet-EVM API associated with Luxd.",
       "sidebar": "reference"
     },
     "specs/coreth-arc20s": {
@@ -2560,32 +2560,32 @@
     },
     "tooling/luxd-installer": {
       "id": "tooling/luxd-installer",
-      "title": "LuxGo Installer",
-      "description": "LuxGo Installer is a shell (bash) script that installs LuxGo on any Linux computer. This script sets up full, running node in a matter of minutes with minimal user input required. This is convenient if you want to run the node as a service on a standalone Linux installation, for example to set up a (Subnet) validator, use the node as a private RPC server and similar uses. It also makes upgrading or reinstalling the nodes easy.",
+      "title": "Luxd Installer",
+      "description": "Luxd Installer is a shell (bash) script that installs Luxd on any Linux computer. This script sets up full, running node in a matter of minutes with minimal user input required. This is convenient if you want to run the node as a service on a standalone Linux installation, for example to set up a (Subnet) validator, use the node as a private RPC server and similar uses. It also makes upgrading or reinstalling the nodes easy.",
       "sidebar": "tooling"
     },
     "tooling/luxd-postman-collection/data-visualization": {
       "id": "tooling/luxd-postman-collection/data-visualization",
       "title": "Data Visualization",
-      "description": "The LuxGo Postman collection includes all the public API calls that are available on LuxGo instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
+      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
       "sidebar": "tooling"
     },
     "tooling/luxd-postman-collection/making-api-calls": {
       "id": "tooling/luxd-postman-collection/making-api-calls",
       "title": "Making API Calls",
-      "description": "The LuxGo Postman collection includes all the public API calls that are available on LuxGo instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
+      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
       "sidebar": "tooling"
     },
     "tooling/luxd-postman-collection/setup": {
       "id": "tooling/luxd-postman-collection/setup",
       "title": "Setting up Postman",
-      "description": "The LuxGo Postman collection includes all the public API calls that are available on LuxGo instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
+      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
       "sidebar": "tooling"
     },
     "tooling/luxd-postman-collection/variables": {
       "id": "tooling/luxd-postman-collection/variables",
       "title": "Variables",
-      "description": "The LuxGo Postman collection includes all the public API calls that are available on LuxGo instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
+      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
       "sidebar": "tooling"
     },
     "tooling/luxjs-api": {
@@ -2663,7 +2663,7 @@
     "tooling/plugin-manager": {
       "id": "tooling/plugin-manager",
       "title": "Lux Plugin Manager",
-      "description": "Lux Plugin Manager is a command-line tool to manage virtual machines binaries on existing LuxGo instances. It enables to add/remove nodes to Subnets, upgrade the VM plugin binaries as new versions get released to the plugin repository.",
+      "description": "Lux Plugin Manager is a command-line tool to manage virtual machines binaries on existing Luxd instances. It enables to add/remove nodes to Subnets, upgrade the VM plugin binaries as new versions get released to the plugin repository.",
       "sidebar": "tooling"
     },
     "tooling/README": {

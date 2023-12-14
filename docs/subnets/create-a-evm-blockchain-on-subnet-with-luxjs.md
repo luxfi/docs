@@ -22,11 +22,11 @@ mkdir subnet-evm-demo
 cd subnet-evm-demo
 ```
 
-## Setting up LuxGo and Subnet EVM Binaries
+## Setting up Luxd and Subnet EVM Binaries
 
-Clients interact with Lux blockchain by issuing API calls to the nodes running `LuxGo`. We have to clone the repository, build its binary, and run it. If we want to deploy our blockchain, we have to put the blockchain's VM binary inside the `build/plugins` directory. Here we will also clone the `subnet-evm` repository, build the VM's binary, and copy it to the LuxGo's `build/plugins` directory. Follow the steps below -
+Clients interact with Lux blockchain by issuing API calls to the nodes running `Luxd`. We have to clone the repository, build its binary, and run it. If we want to deploy our blockchain, we have to put the blockchain's VM binary inside the `build/plugins` directory. Here we will also clone the `subnet-evm` repository, build the VM's binary, and copy it to the Luxd's `build/plugins` directory. Follow the steps below -
 
-### Clone LuxGo Repository
+### Clone Luxd Repository
 
 ```bash
 git clone https://github.com/luxdefi/luxd
@@ -50,9 +50,9 @@ git clone https://github.com/luxdefi/subnet-evm
 cd subnet-evm
 ```
 
-### Build Binary and Copy it to LuxGo Plugins
+### Build Binary and Copy it to Luxd Plugins
 
-Now run the following command to build the VM's binary inside the `build/` directory, named as `srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy`. It is the id for this VM and corresponds to the string "**subnetevm**" zero-extended in a 32-byte array and encoded in CB58. Then copy it to LuxGo's `build/plugins` directory.
+Now run the following command to build the VM's binary inside the `build/` directory, named as `srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy`. It is the id for this VM and corresponds to the string "**subnetevm**" zero-extended in a 32-byte array and encoded in CB58. Then copy it to Luxd's `build/plugins` directory.
 
 ```bash
 ./scripts/build.sh build/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy
@@ -95,7 +95,7 @@ lux-netrunner server \
 
 ### Start 5 Node Cluster
 
-Run the following command to start a network cluster of 5 validating nodes, all running the LuxGo's binary and have the plugins of the `subnet-evm` VM. Put the `luxd` binary location as per your requirement.
+Run the following command to start a network cluster of 5 validating nodes, all running the Luxd's binary and have the plugins of the `subnet-evm` VM. Put the `luxd` binary location as per your requirement.
 
 ```bash
 lux-netrunner control start \

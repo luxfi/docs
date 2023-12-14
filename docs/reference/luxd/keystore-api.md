@@ -1,6 +1,6 @@
 ---
-tags: [LuxGo APIs]
-description: This page is an overview of the Keystore API associated with LuxGo.
+tags: [Luxd APIs]
+description: This page is an overview of the Keystore API associated with Luxd.
 sidebar_label: Keystore API
 pagination_label: Keystore API
 ---

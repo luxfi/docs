@@ -178,7 +178,7 @@ Usa las teclas de flecha para navegar: ↓ ↑ → ←
 ```
 
 Este comando inicia una red Lux de cinco nodos en tu máquina. Necesita descargar las últimas
-versiones de LuxGo y Subnet-EVM. El comando puede tardar unos minutos en ejecutarse.
+versiones de Luxd y Subnet-EVM. El comando puede tardar unos minutos en ejecutarse.
 
 Si todo funciona como se espera, la salida del comando debería verse algo así:
 

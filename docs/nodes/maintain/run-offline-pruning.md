@@ -78,7 +78,7 @@ directory):
 ./build/luxd
 ```
 
-Once LuxGo starts the C-Chain, you can expect to see update logs from the offline pruner:
+Once Luxd starts the C-Chain, you can expect to see update logs from the offline pruner:
 
 ```zsh
 INFO [02-09|00:20:15.625] Iterating state snapshot                 accounts=297,231 slots=6,669,708 elapsed=16.001s eta=1m29.03s

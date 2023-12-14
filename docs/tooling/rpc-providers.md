@@ -1,5 +1,5 @@
 ---
-tags: [Tooling, RPC Providers, LuxGo APIs]
+tags: [Tooling, RPC Providers, Luxd APIs]
 description: There are multiple RPC providers which will work as intermediaries to help you interact with the Lux network. You'll experience different latency levels depending on the provider's configurations. You can potentially use multiple providers for redundancy and balancing.
 keywords: [rpc, lux rpc, endpoint, curl, rpc provider]
 ---
@@ -15,7 +15,7 @@ redundancy and balancing.
 
 There is a public API server that allows developers to access the Lux
 network without having to run a node themselves. The public API server is
-actually several [LuxGo](https://github.com/luxdefi/luxd) nodes
+actually several [Luxd](https://github.com/luxdefi/luxd) nodes
 behind a load balancer to ensure high availability and high request throughput.
 
 ### Using the Public API Nodes

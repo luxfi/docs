@@ -1,6 +1,6 @@
 ---
-tags: [LuxGo APIs]
-description: This page is an overview of the Info API associated with LuxGo.
+tags: [Luxd APIs]
+description: This page is an overview of the Info API associated with Luxd.
 sidebar_label: Info API
 pagination_label: Info API
 ---

@@ -34,24 +34,24 @@ Una blockchain se basa en dos componentes principales: el **Motor de Consenso** 
 6. Dependiendo de los resultados del consenso, el motor aceptará o rechazará el bloque
    - Lo que sucede cuando se acepta o se rechaza un bloque es específico de la implementación de la VM
 
-LuxGo proporciona el motor de consenso para cada blockchain en la Red Lux. El motor de consenso se basa en la interfaz de la VM para manejar la construcción, el análisis y el almacenamiento de bloques, así como para verificar y ejecutar en nombre del motor de consenso.
+Luxd proporciona el motor de consenso para cada blockchain en la Red Lux. El motor de consenso se basa en la interfaz de la VM para manejar la construcción, el análisis y el almacenamiento de bloques, así como para verificar y ejecutar en nombre del motor de consenso.
 
 Esta desvinculación entre la aplicación y la capa de consenso permite a los desarrolladores construir sus aplicaciones rápidamente mediante la implementación de máquinas virtuales, sin tener que preocuparse por la capa de consenso gestionada por Lux, que se ocupa de cómo los nodos acuerdan si aceptar o no un bloque.
 
 ## Instalación de una VM
 
-Las VM se suministran como binarios a un nodo que ejecuta `LuxGo`. Estos binarios deben tener el nombre del **VMID** asignado a la VM. Un VMID es un hash de 32 bytes codificado en CB58 que se genera cuando construyes tu VM.
+Las VM se suministran como binarios a un nodo que ejecuta `Luxd`. Estos binarios deben tener el nombre del **VMID** asignado a la VM. Un VMID es un hash de 32 bytes codificado en CB58 que se genera cuando construyes tu VM.
 
-Para instalar una VM, su binario debe ser instalado en la ruta de plugins de `LuxGo`. Consulta
+Para instalar una VM, su binario debe ser instalado en la ruta de plugins de `Luxd`. Consulta
 [aquí](/nodes/configure/luxd-config-flags.md#--plugin-dir-string) para más detalles.
 Se pueden instalar varias VM en esta ubicación.
 
-Cada VM se ejecuta como un proceso separado de LuxGo y se comunica con `LuxGo` mediante llamadas gRPC. Esta funcionalidad está habilitada por **RPCChainVM**, una VM especial que envuelve otras implementaciones de VM y conecta la VM y LuxGo, estableciendo un protocolo de comunicación estandarizado entre ellos.
+Cada VM se ejecuta como un proceso separado de Luxd y se comunica con `Luxd` mediante llamadas gRPC. Esta funcionalidad está habilitada por **RPCChainVM**, una VM especial que envuelve otras implementaciones de VM y conecta la VM y Luxd, estableciendo un protocolo de comunicación estandarizado entre ellos.
 
 :::info
 
-Durante la creación de la VM, se intercambian mensajes de handshake a través de **RPCChainVM** entre LuxGo y la instalación de la VM. Asegúrate de que las versiones de protocolo de **RPCChainVM** coincidan para evitar errores, actualizando tu VM o utilizando una
-[versión diferente de LuxGo](https://github.com/luxdefi/LuxGo/releases).
+Durante la creación de la VM, se intercambian mensajes de handshake a través de **RPCChainVM** entre Luxd y la instalación de la VM. Asegúrate de que las versiones de protocolo de **RPCChainVM** coincidan para evitar errores, actualizando tu VM o utilizando una
+[versión diferente de Luxd](https://github.com/luxdefi/Luxd/releases).
 
 Ten en cuenta que algunas VM pueden no ser compatibles con la última versión del protocolo.
 
@@ -70,7 +70,7 @@ Para cualquier lector familiarizado con la programación orientada a objetos, lo
 
 ### Instanciar una VM
 
-La interfaz `vm.Factory` se implementa para crear nuevas instancias de VM a partir de las cuales se puede inicializar una blockchain. El método `New` de la fábrica que se muestra a continuación proporciona a `LuxGo` una instancia de la VM. Está definido en el archivo
+La interfaz `vm.Factory` se implementa para crear nuevas instancias de VM a partir de las cuales se puede inicializar una blockchain. El método `New` de la fábrica que se muestra a continuación proporciona a `Luxd` una instancia de la VM. Está definido en el archivo
 [`factory.go`](https://github.com/luxdefi/timestampvm/blob/main/timestampvm/factory.go)
 del repositorio `timestampvm`.
 
@@ -81,7 +81,7 @@ func (f *Factory) New(*snow.Context) (interface{}, error) { return &vm.VM{}, nil
 
 ### Inicializar una VM para crear una Blockchain
 
-Antes de que una VM pueda ejecutarse, LuxGo la inicializará invocando su método `Initialize`. Aquí, la
+Antes de que una VM pueda ejecutarse, Luxd la inicializará invocando su método `Initialize`. Aquí, la
 VM se inicializará y se configurará todo lo que requiera antes de empezar a ejecutarse.
 
 Esto puede implicar configurar su base de datos, mempool, estado de génesis o cualquier otra cosa que la VM requiera para ejecutarse.

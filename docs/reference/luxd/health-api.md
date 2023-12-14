@@ -1,6 +1,6 @@
 ---
-tags: [LuxGo APIs]
-description: This page is an overview of the Health API associated with LuxGo. This API can be used for measuring node health.
+tags: [Luxd APIs]
+description: This page is an overview of the Health API associated with Luxd. This API can be used for measuring node health.
 sidebar_label: Health API
 pagination_label: Health API
 ---
@@ -25,7 +25,7 @@ When filtered, the returned results will not show the full node health,
 but only a subset of filtered health checks.
 This means the node can be still unhealthy in unfiltered checks, even if the returned results show that
 the node is healthy.
-LuxGo supports filtering tags by subnetIDs. For more information check Filtering sections below.
+Luxd supports filtering tags by subnetIDs. For more information check Filtering sections below.
 
 ## GET Request
 

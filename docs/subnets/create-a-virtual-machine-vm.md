@@ -12,16 +12,16 @@ In this tutorial, we’ll create a very simple VM. The blockchain defined by the
 
 Such a server is useful because it can be used to prove a piece of data existed at the time the block was created. Suppose you have a book manuscript, and you want to be able to prove in the future that the manuscript exists today. You can add a block to the blockchain where the block’s payload is a hash of your manuscript. In the future, you can prove that the manuscript existed today by showing that the block has the hash of your manuscript in its payload (this follows from the fact that finding the pre-image of a hash is impossible).
 
-A blockchain can run as a separate process from LuxGo and can communicate with LuxGo over gRPC. This is enabled by `rpcchainvm`, a special VM that uses [`go-plugin`](https://pkg.go.dev/github.com/hashicorp/go-plugin) and wraps another VM implementation. The C-Chain, for example, runs the [Coreth](https://github.com/luxdefi/coreth) VM in this fashion.
+A blockchain can run as a separate process from Luxd and can communicate with Luxd over gRPC. This is enabled by `rpcchainvm`, a special VM that uses [`go-plugin`](https://pkg.go.dev/github.com/hashicorp/go-plugin) and wraps another VM implementation. The C-Chain, for example, runs the [Coreth](https://github.com/luxdefi/coreth) VM in this fashion.
 
-Before we get to the implementation of a VM, we’ll look at the interface that a VM must implement to be compatible with LuxGo's consensus engine. We’ll show and explain all the code in snippets. If you want to see all the code in one place, see [this repository.](https://github.com/luxdefi/timestampvm/tree/v1.2.1)
+Before we get to the implementation of a VM, we’ll look at the interface that a VM must implement to be compatible with Luxd's consensus engine. We’ll show and explain all the code in snippets. If you want to see all the code in one place, see [this repository.](https://github.com/luxdefi/timestampvm/tree/v1.2.1)
 
 ---
 
 **NOTES**
 
 - IDs of Blockchains, Subnets, Transactions and Addresses can be different for each run/network. It means that some inputs, endpoints etc. in the tutorial can be different when you try.
-- In this tutorial we used LuxGo v1.7.4 and TimestampVM v1.2.1. The code in latest version/branch can be different than ones presented in this page.
+- In this tutorial we used Luxd v1.7.4 and TimestampVM v1.2.1. The code in latest version/branch can be different than ones presented in this page.
 
 ---
 
@@ -29,7 +29,7 @@ Before we get to the implementation of a VM, we’ll look at the interface that 
 
 ### `block.ChainVM`
 
-To reach consensus on linear blockchains (as opposed to DAG blockchains), Lux uses the Snowman consensus engine. In order to be compatible with Snowman, a VM must implement the `block.ChainVM` interface, which can be accessible from [LuxGo repository](https://github.com/luxdefi/luxd/blob/v1.7.4/snow/engine/snowman/block/vm.go).
+To reach consensus on linear blockchains (as opposed to DAG blockchains), Lux uses the Snowman consensus engine. In order to be compatible with Snowman, a VM must implement the `block.ChainVM` interface, which can be accessible from [Luxd repository](https://github.com/luxdefi/luxd/blob/v1.7.4/snow/engine/snowman/block/vm.go).
 
 The interface is big, but don’t worry, we’ll explain each method and see an implementation example, and it isn't important that you understand every detail right away. Comments in the code provide more detail about interface methods.
 
@@ -263,9 +263,9 @@ type Decidable interface {
 
 ## rpcchainvm
 
-`rpcchainvm` is a special VM that wraps a `block.ChainVM` and allows the wrapped blockchain to run in its own process separate from LuxGo. `rpcchainvm` has two important parts: a server and a client. The [server](https://github.com/luxdefi/luxd/blob/v1.7.4/vms/rpcchainvm/vm_server.go) runs the underlying `block.ChainVM` in its own process and allows the underlying VM's methods to be called via gRPC. The [client](https://github.com/luxdefi/luxd/blob/v1.7.4/vms/rpcchainvm/vm_client.go) runs as part of LuxGo and makes gRPC calls to the corresponding server in order to update or query the state of the blockchain.
+`rpcchainvm` is a special VM that wraps a `block.ChainVM` and allows the wrapped blockchain to run in its own process separate from Luxd. `rpcchainvm` has two important parts: a server and a client. The [server](https://github.com/luxdefi/luxd/blob/v1.7.4/vms/rpcchainvm/vm_server.go) runs the underlying `block.ChainVM` in its own process and allows the underlying VM's methods to be called via gRPC. The [client](https://github.com/luxdefi/luxd/blob/v1.7.4/vms/rpcchainvm/vm_client.go) runs as part of Luxd and makes gRPC calls to the corresponding server in order to update or query the state of the blockchain.
 
-To make things more concrete: suppose that LuxGo wants to retrieve a block from a chain run in this fashion. LuxGo calls the client's `GetBlock` method, which makes a gRPC call to the server, which is running in a separate process. The server calls the underlying VM's `GetBlock` method and serves the response to the client, which in turn gives the response to LuxGo.
+To make things more concrete: suppose that Luxd wants to retrieve a block from a chain run in this fashion. Luxd calls the client's `GetBlock` method, which makes a gRPC call to the server, which is running in a separate process. The server calls the underlying VM's `GetBlock` method and serves the response to the client, which in turn gives the response to Luxd.
 
 As another example, let's look at the server's `BuildBlock` method:
 
@@ -1145,7 +1145,7 @@ func (f *Factory) New(*snow.Context) (interface{}, error) { return &VM{}, nil }
 
 ### Static API
 
-A VM may have a static API, which allows clients to call methods that do not query or update the state of a particular blockchain, but rather apply to the VM as a whole. This is analagous to static methods in computer programming. LuxGo uses [Gorilla’s RPC library](https://www.gorillatoolkit.org/pkg/rpc) to implement HTTP APIs.
+A VM may have a static API, which allows clients to call methods that do not query or update the state of a particular blockchain, but rather apply to the VM as a whole. This is analagous to static methods in computer programming. Luxd uses [Gorilla’s RPC library](https://www.gorillatoolkit.org/pkg/rpc) to implement HTTP APIs.
 
 `StaticService` implements the static API for our VM.
 
@@ -1419,7 +1419,7 @@ func (s *Service) ProposeBlock(_ *http.Request, args *ProposeBlockArgs, reply *P
 
 ### Plugin
 
-In order to make this VM compatible with `go-plugin`, we need to define a `main` package and method, which serves our VM over gRPC so that LuxGo can call its methods.
+In order to make this VM compatible with `go-plugin`, we need to define a `main` package and method, which serves our VM over gRPC so that Luxd can call its methods.
 
 `main.go`'s contents are:
 
@@ -1438,7 +1438,7 @@ func main() {
 }
 ```
 
-Now LuxGo's `rpcchainvm` can connect to this plugin and calls its methods.
+Now Luxd's `rpcchainvm` can connect to this plugin and calls its methods.
 
 ### Executable Binary
 
@@ -1471,7 +1471,7 @@ It's possible to give an alias for these IDs. For example, we can alias `Timesta
 
 ### Installing a VM
 
-LuxGo searches for and registers plugins under the `plugins` directory of the
+Luxd searches for and registers plugins under the `plugins` directory of the
 [build directory](../nodes/maintain/luxd-config-flags#build-directory).
 
 To install the virtual machine onto your node, you need to move the built virtual machine binary under this directory.
@@ -1523,7 +1523,7 @@ already installed previously in the response.
 Now, this VM's static API can be accessed at endpoints `/ext/vm/timestampvm` and `/ext/vm/timestamp`.
 For more details about VM configs, see [here](../nodes/maintain/luxd-config-flags.md#vm-configs).
 
-In this tutorial, we used the VM's ID as the executable name to simplify the process. However, LuxGo would also
+In this tutorial, we used the VM's ID as the executable name to simplify the process. However, Luxd would also
 accept `timestampvm` or `timestamp` since those are registered aliases in previous step.
 
 ## Wrapping Up

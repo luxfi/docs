@@ -47,7 +47,7 @@ En la interfaz web de tu aplicación, puedes [agregar Lux programáticamente](/b
 
 ### Usando los Nodos de API Pública o Puntos de Extremo RPC
 
-En lugar de enmascarar las operaciones de red a través de MetaMask, puedes usar la API pública, que consiste en varios nodos LuxGo detrás de un balanceador de carga.
+En lugar de enmascarar las operaciones de red a través de MetaMask, puedes usar la API pública, que consiste en varios nodos Luxd detrás de un balanceador de carga.
 
 El punto final de la API de la C-Chain es [https://api.lux.network/ext/bc/C/rpc](https://api.lux.network/ext/bc/C/rpc) para la Mainnet y [https://api.lux-test.network/ext/bc/C/rpc](https://api.lux-test.network/ext/bc/C/rpc) para la testnet.
 
@@ -59,7 +59,7 @@ Sin embargo, la API pública no expone todas las API que están disponibles en e
 
 Si no quieres que tu dapp dependa de un servicio centralizado que no controlas, o tienes necesidades específicas que no pueden ser satisfechas a través de la API pública, puedes ejecutar tu propio nodo y acceder a la red de esa manera. Ejecutar tu propio nodo también evita posibles problemas de congestión y límites de velocidad de la API pública.
 
-Para fines de desarrollo y experimentación, [aquí](/nodes/run/node-manually.md) hay un tutorial que muestra cómo descargar, compilar e instalar LuxGo. Una solución más sencilla es usar el binario precompilado, disponible en [GitHub](https://github.com/luxdefi/luxd/releases). Si vas a ejecutar un nodo en una máquina Linux, puedes usar el [script de instalación](/nodes/run/with-installer/installing-luxd.md) para instalar el nodo como un servicio `systemd`. El script también se encarga de la actualización del nodo. Si quieres ejecutar un nodo en un contenedor de Docker, hay [scripts de compilación](https://github.com/luxdefi/luxd/tree/master/scripts) en el repositorio LuxGo para varias configuraciones de Docker.
+Para fines de desarrollo y experimentación, [aquí](/nodes/run/node-manually.md) hay un tutorial que muestra cómo descargar, compilar e instalar Luxd. Una solución más sencilla es usar el binario precompilado, disponible en [GitHub](https://github.com/luxdefi/luxd/releases). Si vas a ejecutar un nodo en una máquina Linux, puedes usar el [script de instalación](/nodes/run/with-installer/installing-luxd.md) para instalar el nodo como un servicio `systemd`. El script también se encarga de la actualización del nodo. Si quieres ejecutar un nodo en un contenedor de Docker, hay [scripts de compilación](https://github.com/luxdefi/luxd/tree/master/scripts) en el repositorio Luxd para varias configuraciones de Docker.
 
 ### Configuración del Nodo
 

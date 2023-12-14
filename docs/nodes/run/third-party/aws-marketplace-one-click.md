@@ -49,7 +49,7 @@ these you want to click on the "Continue to Configuration" button.
 This page lets you choose a fulfillment option and software version to launch
 this software. No changes are needed as the default settings are sufficient.
 Leave the `Fulfillment Option` as `64-bit (x86) Amazon Machine Image (AMI)`. The
-software version is the latest build of [the LuxGo full
+software version is the latest build of [the Luxd full
 node](https://github.com/luxdefi/luxd/releases), `v1.9.5 (Dec 22,
 2022)`, AKA `Banff.5`. This will always show the latest version. Also, the
 Region to deploy in can be left as `US East (N.  Virginia)`. On the right you'll
@@ -557,7 +557,7 @@ please read [this doc](/nodes/validate/how-to-stake.md#validators).
 AWS one click is meant to be used in automated environments, not as an end-user solution.
 You can still manage it manually, but it is not as easy as an Ubuntu instance or using the script:
 
-* LuxGo binary is at `/usr/local/bin/luxd`
+* Luxd binary is at `/usr/local/bin/luxd`
 * Main node config is at `/etc/luxd/conf.json`
 * Working directory is at `/home/lux/.luxd/ (and belongs to luxd user)`
 * Database is at `/data/luxd`

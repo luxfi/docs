@@ -46,7 +46,7 @@ Después de obtener acceso, necesitaremos configurar nuestro nodo Lux. Para hace
 aquí para instalar y ejecutar tu nodo
 [Configurar nodo Lux con instalador](/nodes/run/with-installer/installing-luxd.md).
 
-Tu nodo LuxGo debería estar ahora en funcionamiento y en proceso de bootstrap, lo cual puede llevar algunas
+Tu nodo Luxd debería estar ahora en funcionamiento y en proceso de bootstrap, lo cual puede llevar algunas
 horas. Para comprobar si ha terminado, puedes emitir una llamada de API usando `curl`.
 La solicitud es:
 
@@ -73,7 +73,7 @@ Una vez que el nodo haya terminado de bootstrapear, la respuesta será:
 }
 ```
 
-Puedes continuar, incluso si LuxGo no ha terminado de bootstrapear.
+Puedes continuar, incluso si Luxd no ha terminado de bootstrapear.
 Para hacer que tu nodo sea un validador, necesitarás su ID de nodo. Para obtenerlo, ejecuta:
 
 ```sh
@@ -96,7 +96,7 @@ La respuesta contiene el ID de nodo.
 
 En el ejemplo anterior, el ID de nodo es `NodeID-KhDnAoZDW8iRJ3F26iQgK5xXVFMPcaYeu`.
 
-LuxGo tiene otras APIs, como la [API de Salud](https://docs.lux.network/apis/luxd/apis/health),
+Luxd tiene otras APIs, como la [API de Salud](https://docs.lux.network/apis/luxd/apis/health),
 que se pueden utilizar para interactuar con el nodo. Algunas APIs están desactivadas por defecto. Para habilitar
 estas APIs, modifica la sección ExecStart de `/etc/systemd/system/luxd.service` (creada durante el
 proceso de instalación) para incluir banderas que habiliten estos endpoints. No habilites manualmente ninguna API
@@ -110,7 +110,7 @@ exit
 
 ### Actualizando tu nodo
 
-LuxGo es un proyecto en curso y hay actualizaciones regulares de versión. La mayoría de las actualizaciones son
+Luxd es un proyecto en curso y hay actualizaciones regulares de versión. La mayoría de las actualizaciones son
 recomendadas pero no requeridas. Se dará aviso previo para las actualizaciones que no sean compatibles con versiones
 anteriores. Para actualizar tu nodo a la última versión, haz SSH a tu servidor utilizando una terminal y
 ejecuta el script de instalación de nuevo.
@@ -119,11 +119,11 @@ ejecuta el script de instalación de nuevo.
 ./luxd-installer.sh
 ```
 
-Tu máquina ahora está ejecutando la versión más reciente de LuxGo. Para ver el estado del servicio LuxGo,
+Tu máquina ahora está ejecutando la versión más reciente de Luxd. Para ver el estado del servicio Luxd,
 ejecuta `sudo systemctl status luxd.`
 
 ## Conclusión
 
-¡Eso es todo! Ahora tienes un nodo LuxGo ejecutándose en una máquina Latitude.sh. Recomendamos configurar
+¡Eso es todo! Ahora tienes un nodo Luxd ejecutándose en una máquina Latitude.sh. Recomendamos configurar
 [monitoreo de nodo](https://docs.lux.network/nodes/maintain/setting-up-node-monitoring) para tu
-nodo LuxGo.
+nodo Luxd.

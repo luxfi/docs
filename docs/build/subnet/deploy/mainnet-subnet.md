@@ -319,8 +319,8 @@ by the given path, or create a new file. Again, set write permissions.
 #### Set Plugin Directory
 
 Next, provide the plugin directory. Each VM runs its own binary, called a plugin. Therefore, you
-need to copy your VM's plugin binary into LuxGo's plugin directory. This directory depends
-on your LuxGo install location.
+need to copy your VM's plugin binary into Luxd's plugin directory. This directory depends
+on your Luxd install location.
 
 ```text
 ✔ Path to your luxd plugin dir (likely luxd/build/plugins): /home/user/go/src/github.com/luxdefi/luxd/build/plugins

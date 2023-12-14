@@ -313,7 +313,7 @@ Proporcione la ruta a un archivo de configuración. Si este comando se ejecuta e
 
 #### Establecer Directorio de Plugins
 
-A continuación, proporcione el directorio de plugins. Cada VM ejecuta su propio binario, llamado plugin. Por lo tanto, necesita copiar el binario de plugin de su VM en el directorio de plugins de LuxGo. Este directorio depende de la ubicación de instalación de LuxGo.
+A continuación, proporcione el directorio de plugins. Cada VM ejecuta su propio binario, llamado plugin. Por lo tanto, necesita copiar el binario de plugin de su VM en el directorio de plugins de Luxd. Este directorio depende de la ubicación de instalación de Luxd.
 
 ```text
 ✔ Ruta a su directorio de plugins de luxd (probablemente luxd/build/plugins): /home/user/go/src/github.com/luxdefi/luxd/build/plugins

@@ -27,7 +27,7 @@ Iniciando red...
 ```
 
 Lux-CLI solo admite la ejecución de una red Lux local a la vez. Si otras instancias de
-LuxGo se están ejecutando simultáneamente, tu red Lux-CLI no se inicia.
+Luxd se están ejecutando simultáneamente, tu red Lux-CLI no se inicia.
 
 Para probar este error, comienza apagando cualquier nodo Lux iniciado por Lux-CLI.
 
@@ -35,7 +35,7 @@ Para probar este error, comienza apagando cualquier nodo Lux iniciado por Lux-CL
 lux network clean --hard
 ```
 
-A continuación, busca cualquier proceso de LuxGo persistente con:
+A continuación, busca cualquier proceso de Luxd persistente con:
 
 ```shell
 ps aux | grep luxd
@@ -46,7 +46,7 @@ Si hay algún proceso en ejecución, debes detenerlos antes de poder lanzar tu V
 :::warning
 
 Si estás ejecutando un nodo validador en la misma máquina que estás usando Lux-CLI, **no** finalices ninguno
-de estos procesos de LuxGo persistentes. Esto puede apagar tu validador y podría afectar
+de estos procesos de Luxd persistentes. Esto puede apagar tu validador y podría afectar
 tu tiempo de actividad de validación.
 
 :::
@@ -72,43 +72,43 @@ La cadena de bloques ha sido implementada. Espera hasta que la red lo reconozca.
 Este error tiene muchas posibles causas, pero una causa común suele ser **una
 incompatibilidad de versión de protocolo RPC.**
 
-LuxGo se comunica con las VM personalizadas a través de RPC utilizando [gRPC](https://grpc.io/). gRPC define una
-especificación de protocolo compartida tanto por LuxGo como por la VM. **Ambos componentes deben estar ejecutándose
+Luxd se comunica con las VM personalizadas a través de RPC utilizando [gRPC](https://grpc.io/). gRPC define una
+especificación de protocolo compartida tanto por Luxd como por la VM. **Ambos componentes deben estar ejecutándose
 con la misma versión de RPC para que la implementación de la VM funcione.**
 
-La versión de RPC de tu VM personalizada se establece por la versión de LuxGo que importas. Por defecto,
-Lux-CLI crea redes Avalalanche locales que ejecutan la última versión de LuxGo.
+La versión de RPC de tu VM personalizada se establece por la versión de Luxd que importas. Por defecto,
+Lux-CLI crea redes Avalalanche locales que ejecutan la última versión de Luxd.
 
 ### Ejemplo
 
-Aquí tienes un ejemplo con números reales de la página de compatibilidad de LuxGo\_:
+Aquí tienes un ejemplo con números reales de la página de compatibilidad de Luxd\_:
 
-- Si la última versión de LuxGo es la versión v1.10.11, entonces Lux-CLI implementa una red con
+- Si la última versión de Luxd es la versión v1.10.11, entonces Lux-CLI implementa una red con
   versión de RPC 28.
 - Para que tu implementación sea exitosa, tu VM también debe tener la versión de RPC 28. Debido a que solo
-  las versiones de LuxGo v1.10.9, v1.10.10 y v1.10.11 admiten la versión de RPC 28,
+  las versiones de Luxd v1.10.9, v1.10.10 y v1.10.11 admiten la versión de RPC 28,
   tu VM **debe** importar una de esas versiones.
 
 ### Solución
 
-Error: `RPCChainVM protocol version mismatch between LuxGo and Virtual Machine plugin`
+Error: `RPCChainVM protocol version mismatch between Luxd and Virtual Machine plugin`
 
 Este error ocurre cuando la versión de protocolo RPCChainVM utilizada por las VM, como Subnet-EVM,
-es incompatible con la versión de protocolo de LuxGo.
+es incompatible con la versión de protocolo de Luxd.
 
 Si tu VM tiene una incompatibilidad de versión de RPC, tienes dos opciones:
 
-1. Actualiza la versión de LuxGo que usas en tu VM. Este es el enfoque correcto a largo plazo.
-2. Utiliza Lux-CLI para implementar una versión anterior de LuxGo utilizando la bandera
+1. Actualiza la versión de Luxd que usas en tu VM. Este es el enfoque correcto a largo plazo.
+2. Utiliza Lux-CLI para implementar una versión anterior de Luxd utilizando la bandera
    `--luxd-version`. Tanto los comandos [`subnet deploy`](/tooling/cli.md#subnet-deploy)
    como [`network start`](/tooling/cli.md#network-start) admiten
-   establecer explícitamente la versión de LuxGo.
+   establecer explícitamente la versión de Luxd.
 
-Aunque es muy importante mantener tu versión de LuxGo actualizada,
+Aunque es muy importante mantener tu versión de Luxd actualizada,
 esta solución alternativa te ayuda a evitar compilaciones rotas a corto plazo.
 
 :::caution
-Debes actualizar a la última versión de LuxGo cuando implementes públicamente en
+Debes actualizar a la última versión de Luxd cuando implementes públicamente en
 Testnet o Lux Mainnet.
 :::
 
@@ -116,9 +116,9 @@ Testnet o Lux Mainnet.
 
 Se requiere una coincidencia de versiones similar en diferentes herramientas del ecosistema. Aquí tienes una tabla de compatibilidad
 que muestra qué versión de RPCChainVM implementa las versiones más recientes de
-LuxGo, Subnet-EVM, Precompile-EVM e HyperSDK.
+Luxd, Subnet-EVM, Precompile-EVM e HyperSDK.
 
-| RPCChainVM | LuxGo              | Subnet-EVM          | Precompile-EVM      | HyperSDK |
+| RPCChainVM | Luxd              | Subnet-EVM          | Precompile-EVM      | HyperSDK |
 | :--------: | :-------:                | :-------:           | :-------:           | :-------: |
 | 26         | v1.10.1-v1.10.4          | v0.5.1-v0.5.2       | v0.1.0-v0.1.1       | v0.0.6-v0.0.9 |
 | 27         | v1.10.5-v1.10.8          | v0.5.3              | v0.1.2              | v0.0.10-v0.0.12 |
@@ -128,14 +128,14 @@ LuxGo, Subnet-EVM, Precompile-EVM e HyperSDK.
 
 Puedes ver la compatibilidad completa de RPC desglosada por versión de lanzamiento para cada herramienta aquí:
 
-[LuxGo](https://github.com/luxdefi/luxd/blob/master/version/compatibility.json).
+[Luxd](https://github.com/luxdefi/luxd/blob/master/version/compatibility.json).
 
 [Subnet-EVM](https://github.com/luxdefi/subnet-evm/blob/master/compatibility.json).
 
 [Precompile-EVM](https://github.com/luxdefi/precompile-evm/blob/main/compatibility.json).
 
 :::note
-Las actualizaciones de la versión de RPC de LuxGo **no** están vinculadas a su esquema de versión semántica. Las versiones menores de LuxGo
+Las actualizaciones de la versión de RPC de Luxd **no** están vinculadas a su esquema de versión semántica. Las versiones menores de Luxd
 pueden incluir un aumento de versión de RPC que rompe la compatibilidad.
 :::
 

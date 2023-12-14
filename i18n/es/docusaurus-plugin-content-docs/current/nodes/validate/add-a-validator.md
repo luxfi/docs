@@ -1,6 +1,6 @@
 ---
 etiquetas: [Nodos]
-descripción: Esta sección proporciona documentos sobre cómo construir y mantener un nodo LuxGo, y luego validar la red Lux utilizando un nodo LuxGo.
+descripción: Esta sección proporciona documentos sobre cómo construir y mantener un nodo Luxd, y luego validar la red Lux utilizando un nodo Luxd.
 sidebar_label: Nodo ➡️ Validador
 pagination_label: Agregar un nodo al conjunto de validadores
 sidebar_position: 3
@@ -41,7 +41,7 @@ para ayudarnos a realizar llamadas de API.
 Para asegurarte de que tu nodo esté bien conectado, asegúrate de que tu nodo pueda
 recibir y enviar tráfico TCP en el puerto de participación (`9651` de forma predeterminada) y que tu nodo
 tenga una dirección IP pública (es opcional establecer --public-ip=[LA IP PÚBLICA DE TU NODO AQUÍ]
-cuando ejecutes el binario LuxGo, ya que de forma predeterminada, el nodo intentará realizar
+cuando ejecutes el binario Luxd, ya que de forma predeterminada, el nodo intentará realizar
 traversal NAT para obtener la IP del nodo según su enrutador). No hacer ninguno de
 estos puede poner en peligro tu recompensa de participación.
 

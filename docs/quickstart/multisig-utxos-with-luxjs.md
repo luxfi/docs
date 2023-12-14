@@ -765,7 +765,7 @@ Also, the `sourceChain` parameter is required for fetching exported UTXOs that d
 
 The `createInputsAndOutputs()` function will return `inputs` and `outputs` required for any transaction. The last element of the outputs array would be change output. And the order of other outputs will be the same as that in the `outputConfig`. Signature indexes corresponding to their owners are already included in the inputs. We can create an unsigned base transaction using the `BaseTx` and `UnsignedTx` classes as shown above. The `.sign()` function basically adds the required signatures from the keychain at the place indicated by signature indexes.
 
-Once the multi-sig UTXO is created, this UTXO can only be used if we have the threshold signers in our keychain. The util functions can be tweaked a little bit to create and return inputs with a part number of signers (<threshold). We can then partially sign the inputs and ask other owners to add signature index and sign.
+Once the multi-sig UTXO is created, this UTXO can only be used if we have the threshold signers in our keychain. The util functions can be tweaked a little bit to create and return inputs with a part number of signers `(<threshold)`. We can then partially sign the inputs and ask other owners to add signature index and sign.
 
 Now call the `sendBaseTx()` function by adding this line
 

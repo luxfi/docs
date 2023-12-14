@@ -1,7 +1,7 @@
 {
   "id": "reference/luxd/c-chain/api",
   "title": "Contract Chain API",
-  "description": "This page is an overview of the C-Chain API associated with LuxGo.",
+  "description": "This page is an overview of the C-Chain API associated with Luxd.",
   "source": "@site/docs/reference/luxd/c-chain/api.md",
   "sourceDirName": "reference/luxd/c-chain",
   "slug": "/reference/luxd/c-chain/api",
@@ -19,7 +19,7 @@
       "permalink": "/tags/contract-chain"
     },
     {
-      "label": "LuxGo APIs",
+      "label": "Luxd APIs",
       "permalink": "/tags/lux-go-ap-is"
     }
   ],
@@ -29,9 +29,9 @@
     "tags": [
       "C-Chain",
       "Contract Chain",
-      "LuxGo APIs"
+      "Luxd APIs"
     ],
-    "description": "This page is an overview of the C-Chain API associated with LuxGo.",
+    "description": "This page is an overview of the C-Chain API associated with Luxd.",
     "sidebar_label": "API",
     "pagination_label": "C-Chain API"
   },

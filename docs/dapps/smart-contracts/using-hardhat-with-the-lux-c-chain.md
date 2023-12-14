@@ -20,9 +20,9 @@ Next, install [yarn](https://yarnpkg.com):
 npm install -g yarn
 ```
 
-### LuxGo and Lux Network Runner
+### Luxd and Lux Network Runner
 
-[LuxGo](https://github.com/luxdefi/luxd) is an Lux node implementation written in Go. [Lux Network Runner](../../subnets/netrunner.md) is a tool to quickly deploy local test networks. Together, you can deploy local test networks and run tests on them.
+[Luxd](https://github.com/luxdefi/luxd) is an Lux node implementation written in Go. [Lux Network Runner](../../subnets/netrunner.md) is a tool to quickly deploy local test networks. Together, you can deploy local test networks and run tests on them.
 
 ### Solidity and Lux
 
@@ -115,7 +115,7 @@ Run `yarn hardhat` to list Hardhat's version, usage instructions, global options
 
 ### Run Lux Network Runner
 
-First confirm you have the latest LuxGo built.
+First confirm you have the latest Luxd built.
 
 ```text
 $ cd /path/to/luxd
@@ -124,7 +124,7 @@ $ git checkout master
 $ ./scripts/build.sh
 ```
 
-(Note that you can also [download pre-compiled LuxGo binaries](https://github.com/luxdefi/luxd/releases) rather than building from source.)
+(Note that you can also [download pre-compiled Luxd binaries](https://github.com/luxdefi/luxd/releases) rather than building from source.)
 
 Confirm you have Lux Network Runner installed by following the steps listed [here](../../quickstart/create-a-local-test-network.md#installation)
 
@@ -143,7 +143,7 @@ $ lux-netrunner server \
 ### Start a New Lux Network with Five Nodes
 
 ```bash
-# replace execPath with the path to LuxGo on your machine
+# replace execPath with the path to Luxd on your machine
 # e.g., ${HOME}/go/src/github.com/luxdefi/luxd/build/luxd
 $ LUXGO_EXEC_PATH="luxd"
 ```

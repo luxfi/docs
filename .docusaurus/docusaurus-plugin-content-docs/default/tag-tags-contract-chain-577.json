@@ -7,13 +7,13 @@
     {
       "id": "reference/luxd/c-chain/txn-format",
       "title": "C-Chain Transaction Format",
-      "description": "This page is an overview of the Coreth atomic transaction format associated with LuxGo C-Chain API.",
+      "description": "This page is an overview of the Coreth atomic transaction format associated with Luxd C-Chain API.",
       "permalink": "/reference/luxd/c-chain/txn-format"
     },
     {
       "id": "reference/luxd/c-chain/api",
       "title": "Contract Chain API",
-      "description": "This page is an overview of the C-Chain API associated with LuxGo.",
+      "description": "This page is an overview of the C-Chain API associated with Luxd.",
       "permalink": "/reference/luxd/c-chain/api"
     },
     {

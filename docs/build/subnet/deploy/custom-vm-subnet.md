@@ -178,7 +178,7 @@ Use the arrow keys to navigate: ↓ ↑ → ←
 ```
 
 This command boots a five node Lux network on your machine. It needs to download the latest
-versions of LuxGo and Subnet-EVM. The command may take a couple minutes to run.
+versions of Luxd and Subnet-EVM. The command may take a couple minutes to run.
 
 If all works as expected, the command output should look something like this:
 

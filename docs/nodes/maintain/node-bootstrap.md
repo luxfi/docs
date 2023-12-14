@@ -23,7 +23,7 @@ explicitly tracks.
 
 This document covers the high-level technical details of how bootstrapping
 works. This document glosses over some specifics, but the
-[LuxGo](https://github.com/luxdefi/luxd) codebase is open-source
+[Luxd](https://github.com/luxdefi/luxd) codebase is open-source
 and is available for curious-minded readers to learn more.
 
 ## Validators and Where to Find Them
@@ -61,7 +61,7 @@ What about the P-chain? The P-chain can't ever have an up-to-date validator set
 before completing its bootstrap. To solve this chicken-and-egg situation the
 Lux Foundation maintains a trusted default set of validators called
 beacons (but users are free to configure their own). Beacon Node-IDs and IP
-addresses are listed in the [LuxGo codebase](https://github.com/luxdefi/luxd/blob/master/genesis/bootstrappers.json).
+addresses are listed in the [Luxd codebase](https://github.com/luxdefi/luxd/blob/master/genesis/bootstrappers.json).
 Every node has the beacon list available from the start and can reach out to them
 as soon as it starts.
 
@@ -198,7 +198,7 @@ reconstructing the full chain state locally - but downloading and executing each
 container isn't the only way to do this.
 
 Starting from
-[LuxGo version 1.7.11](https://github.com/luxdefi/luxd/releases/tag/v1.7.11),
+[Luxd version 1.7.11](https://github.com/luxdefi/luxd/releases/tag/v1.7.11),
 nodes can
 use state sync to drastically cut down bootstrapping time on the C-Chain.
 Instead of executing each block, state sync uses cryptographic techniques to
@@ -254,10 +254,10 @@ have to wait for the slowest to finish. They'll restart bootstrapping in the
 meantime, to make sure they won't fall back too much with respect to the network
 accepted frontier.
 
-### Why Are LuxGo APIs Disabled During Bootstrapping?
+### Why Are Luxd APIs Disabled During Bootstrapping?
 
-LuxGo APIs are [explicitly disabled](https://github.com/luxdefi/luxd/blob/master/api/server/server.go#L367:L379)
+Luxd APIs are [explicitly disabled](https://github.com/luxdefi/luxd/blob/master/api/server/server.go#L367:L379)
 during bootstrapping. The reason is that if the node has not fully rebuilt its
-Subnets state, it can't provide accurate information. LuxGo APIs are
+Subnets state, it can't provide accurate information. Luxd APIs are
 activated once bootstrap completes and node transition into its normal operating
 mode, accepting and validating transactions.

@@ -116,7 +116,7 @@ Make sure to substitute the name of your Subnet if you used a different one than
 Next, select `Local Network`.
 
 This command boots a five node Lux network on your machine. It needs to download the latest
-versions of LuxGo and Subnet-EVM. The command may take a couple minutes to run.
+versions of Luxd and Subnet-EVM. The command may take a couple minutes to run.
 
 Note: If you run `bash` on your shell and are running Lux-CLI on ARM64 on Mac, you will 
 require Rosetta 2 to be able to deploy Subnets locally. You can download Rosetta 2 using 

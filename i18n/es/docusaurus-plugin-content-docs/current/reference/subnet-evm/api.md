@@ -1,6 +1,6 @@
 ---
 tags: [Subnet-EVM]
-description: This page is an overview of the Subnet-EVM API associated with LuxGo.
+description: This page is an overview of the Subnet-EVM API associated with Luxd.
 sidebar_label: API 
 pagination_label: Subnet-EVM API
 ---

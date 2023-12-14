@@ -1,6 +1,6 @@
 ---
 tags: [Nodos]
-description: Este tutorial demuestra cómo configurar la infraestructura para monitorear una instancia de LuxGo.
+description: Este tutorial demuestra cómo configurar la infraestructura para monitorear una instancia de Luxd.
 sidebar_label: Monitoreo
 pagination_label: Monitorear un Nodo Lux
 sidebar_position: 2
@@ -11,17 +11,17 @@ sidebar_position: 2
 ## Introducción
 
 Este tutorial demuestra cómo configurar la infraestructura para monitorear una instancia de
-[LuxGo](https://github.com/luxdefi/luxd). Utilizaremos:
+[Luxd](https://github.com/luxdefi/luxd). Utilizaremos:
 
 - [Prometheus](https://prometheus.io/) para recopilar y almacenar datos
 - [`node_exporter`](https://github.com/prometheus/node_exporter) para obtener información sobre la máquina,
-- La API de métricas de LuxGo (/reference/luxd/metrics-api.md) para obtener información sobre el nodo
+- La API de métricas de Luxd (/reference/luxd/metrics-api.md) para obtener información sobre el nodo
 - [Grafana](https://grafana.com/) para visualizar los datos en un panel de control.
 - Un conjunto de paneles de control predefinidos de Lux [Lux dashboards](https://github.com/luxdefi/monitoring/tree/main/grafana/dashboards)
 
 Requisitos previos:
 
-- Un nodo LuxGo en funcionamiento
+- Un nodo Luxd en funcionamiento
 - Acceso a la shell de la máquina que ejecuta el nodo
 - Privilegios de administrador en la máquina
 
@@ -62,10 +62,10 @@ Opciones:
 --1      Paso 1: Instala Prometheus
 --2      Paso 2: Instala Grafana
 --3      Paso 3: Instala node_exporter
---4      Paso 4: Instala paneles de control de Grafana para LuxGo
+--4      Paso 4: Instala paneles de control de Grafana para Luxd
 --5      Paso 5: (Opcional) Instala paneles de control adicionales
 
-Si se ejecuta sin ninguna opción, el script descargará e instalará la última versión de los paneles de control de LuxGo.
+Si se ejecuta sin ninguna opción, el script descargará e instalará la última versión de los paneles de control de Luxd.
 ```
 
 ¡Empecemos!
@@ -81,7 +81,7 @@ Ejecuta el script para ejecutar el primer paso:
 Debería producir una salida similar a esta:
 
 ```text
-Instalador de monitoreo de LuxGo
+Instalador de monitoreo de Luxd
 --------------------------------
 PASO 1: Instalando Prometheus
 
@@ -142,7 +142,7 @@ Ejecuta el script para ejecutar el segundo paso:
 Debería producir una salida similar a esta:
 
 ````text
-Instalador de monitoreo de LuxGo
+Instalador de monitoreo de Luxd
 --------------------------------
 PASO 2: Instalando Grafana
 
@@ -181,7 +181,7 @@ Prometheus y Grafana ahora están instalados, estamos listos para el siguiente p
 
 ## Paso 3: Configurar `node_exporter` <a id="exporter"></a>
 
-Además de las métricas de LuxGo, configuremos el monitoreo de la máquina
+Además de las métricas de Luxd, configuremos el monitoreo de la máquina
 en sí, para que podamos verificar el uso de CPU, memoria, red y disco y estar al tanto de cualquier
 anomalía. Para eso, usaremos `node_exporter`, un complemento de Prometheus.
 
@@ -194,7 +194,7 @@ Ejecuta el script para ejecutar el tercer paso:
 La salida debería verse algo así:
 
 ```bash
-Instalador de monitoreo de LuxGo
+Instalador de monitoreo de Luxd
 --------------------------------
 PASO 3: Instalando node_exporter
 
@@ -218,14 +218,14 @@ juntos ahora. Para verificarlo, en tu navegador visita la interfaz web de Promet
 `http://tu-dirección-ip-del-nodo:9090/targets`. Deberías ver tres objetivos habilitados:
 
 - Prometheus
-- LuxGo
+- Luxd
 - `luxd-machine`
 
 Asegúrate de que todos ellos tengan el estado `UP` en la columna `State`.
 
 :::info
 
-Si ejecutas tu nodo LuxGo con TLS habilitado en tu puerto de API, deberás editar manualmente el archivo `/etc/prometheus/prometheus.yml` y cambiar el
+Si ejecutas tu nodo Luxd con TLS habilitado en tu puerto de API, deberás editar manualmente el archivo `/etc/prometheus/prometheus.yml` y cambiar el
 trabajo `luxd` para que se vea así:
 
 ```yaml
@@ -258,7 +258,7 @@ Ejecuta el script para instalar los paneles de control:
 Producirá una salida algo así:
 
 ```text
-Instalador de monitoreo de LuxGo
+Instalador de monitoreo de Luxd
 --------------------------------
 
 Descargando...

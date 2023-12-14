@@ -13,7 +13,7 @@ Testnet is the Lux network's test network. You can use it to test your dapp
 or smart contract after you've developed it locally. (You can use
 [Lux Network Runner](/tooling/netrunner.md) to test things locally.) Testnet is
 typically on the same version as the Lux Mainnet, but sometimes it is
-running an unreleased version of LuxGo. In general, you can expect Testnet's
+running an unreleased version of Luxd. In general, you can expect Testnet's
 behavior to be about the same as Lux Mainnet. Tools such as a explorers
 and wallets should work with the Testnet.
 

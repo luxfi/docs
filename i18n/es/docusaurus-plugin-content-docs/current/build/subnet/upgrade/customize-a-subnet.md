@@ -1056,7 +1056,7 @@ activate the precompile again with the new configuration.
 
 See every precompile initial configuration in their relevant `Initial Configuration` sections under [Precompiles](#precompiles).
 
-## LuxGo Chain Configs
+## Luxd Chain Configs
 
 As described in [this doc](/nodes/configure/chain-config-flags.md#subnet-chain-configs), each blockchain
 of Subnets can have its own custom configuration. If a Subnet's ChainID is

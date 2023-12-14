@@ -124,7 +124,7 @@ Colocamos el archivo `upgrade.json` en el directorio de configuración de la cad
 `~/.luxd/configs/chains/2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt/`. Después de eso,
 reiniciamos el nodo para que se cargue el archivo de actualización.
 
-Cuando el nodo se reinicia, LuxGo lee el contenido del archivo JSON y lo pasa a
+Cuando el nodo se reinicia, Luxd lee el contenido del archivo JSON y lo pasa a
 Subnet-EVM. Vemos un registro de la configuración de la cadena que incluye la actualización de precompilación. Se
 ve así:
 

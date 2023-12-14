@@ -1,15 +1,15 @@
 ---
 tags: [Nodos]
-description: En este tutorial, aprenderás cómo gestionar tu nodo LuxGo.
-sidebar_label: Gestión de LuxGo
+description: En este tutorial, aprenderás cómo gestionar tu nodo Luxd.
+sidebar_label: Gestión de Luxd
 sidebar_position: 2
 ---
 
-# Gestión de LuxGo
+# Gestión de Luxd
 
 ## Detener y iniciar el nodo
 
-Para detener LuxGo, ejecuta:
+Para detener Luxd, ejecuta:
 
 ```bash
 sudo systemctl stop luxd
@@ -23,7 +23,7 @@ sudo systemctl start luxd
 
 ## Actualiza tu nodo
 
-LuxGo es un proyecto en curso y hay actualizaciones regulares de versión. La mayoría de las actualizaciones son recomendadas pero no obligatorias. Se dará aviso previo para las actualizaciones que no sean compatibles con versiones anteriores. Cuando se lanza una nueva versión del nodo, notarás líneas de registro como estas:
+Luxd es un proyecto en curso y hay actualizaciones regulares de versión. La mayoría de las actualizaciones son recomendadas pero no obligatorias. Se dará aviso previo para las actualizaciones que no sean compatibles con versiones anteriores. Cuando se lanza una nueva versión del nodo, notarás líneas de registro como estas:
 
 ```text
 Jan 08 10:26:45 ip-172-31-16-229 luxd[6335]: INFO [01-08|10:26:45] luxd/network/peer.go#526: beacon 9CkG9MBNavnw7EVSRsuFr7ws9gascDQy3 attempting to connect with newer version lux/1.1.1. You may want to update your client
@@ -37,14 +37,14 @@ Para actualizar tu nodo, simplemente ejecuta el script de instalación nuevament
 ./luxd-installer.sh
 ```
 
-Detectará que ya tienes LuxGo instalado:
+Detectará que ya tienes Luxd instalado:
 
 ```text
-LuxGo installer
+Luxd installer
 ---------------------
 Preparing environment...
 Found 64bit Intel/AMD architecture...
-Found LuxGo systemd service already installed, switching to upgrade mode.
+Found Luxd systemd service already installed, switching to upgrade mode.
 Stopping service...
 ```
 

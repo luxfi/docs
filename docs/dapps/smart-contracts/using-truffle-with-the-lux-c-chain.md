@@ -107,7 +107,7 @@ module.exports = {
 }
 ```
 
-Note that you can change the `protocol`, `ip` and `port` if you want to direct API calls to a different LuxGo node. Also note that we're setting the `gasPrice` and `gas` to the appropriate values for the Lux C-Chain.
+Note that you can change the `protocol`, `ip` and `port` if you want to direct API calls to a different Luxd node. Also note that we're setting the `gasPrice` and `gas` to the appropriate values for the Lux C-Chain.
 
 ## Add Storage.sol
 

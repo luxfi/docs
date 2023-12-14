@@ -12,7 +12,7 @@ with the following exceptions:
 
 ## Official Project/Product Names
 
-- LuxGo for [https://github.com/luxdefi/luxd]
+- Luxd for [https://github.com/luxdefi/luxd]
 - Lux-CLI for [https://github.com/luxdefi/cli]
 - Lux Network Runner for [https://github.com/luxdefi/netrunner]
 

@@ -1,7 +1,7 @@
 {
   "id": "reference/standards/guides/banff-changes",
   "title": "Banff Changes",
-  "description": "This document specifies the changes in Lux Banff, which was released in LuxGo v1.10.0.",
+  "description": "This document specifies the changes in Lux Banff, which was released in Luxd v1.10.0.",
   "source": "@site/docs/reference/standards/guides/banff-changes.md",
   "sourceDirName": "reference/standards/guides",
   "slug": "/reference/standards/guides/banff-changes",
@@ -21,7 +21,7 @@
     "tags": [
       "Standards"
     ],
-    "description": "This document specifies the changes in Lux Banff, which was released in LuxGo v1.10.0.",
+    "description": "This document specifies the changes in Lux Banff, which was released in Luxd v1.10.0.",
     "sidebar_label": "Banff Changes",
     "pagination_label": "Banff Changes",
     "sidebar_position": 3

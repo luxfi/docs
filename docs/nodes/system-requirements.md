@@ -27,7 +27,7 @@ read/write latencies, therefore reducing performance and reliability. An SSD is 
 
 ## Networking
 
-To run successfully, LuxGo needs to accept connections from the Internet
+To run successfully, Luxd needs to accept connections from the Internet
 on the network port `9651`. Before you proceed with the installation, you need
 to determine the networking environment your node will run in.
 

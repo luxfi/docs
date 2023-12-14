@@ -1,6 +1,6 @@
 ---
 tags: [Nodes]
-description: This section provides documents on how to build and maintain an LuxGo node, and then validate the Lux network using an LuxGo node.
+description: This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.
 sidebar_label: Node ➡️ Validator
 pagination_label: Add a Node to the Validator Set
 sidebar_position: 3
@@ -42,7 +42,7 @@ to help us make API calls.
 In order to ensure your node is well-connected, make sure that your node can
 receive and send TCP traffic on the staking port (`9651` by default) and your node
 has a public IP address(it's optional to set --public-ip=[YOUR NODE'S PUBLIC IP HERE]
-when executing the LuxGo binary, as by default, the node will attempt to perform
+when executing the Luxd binary, as by default, the node will attempt to perform
 NAT traversal to get the node's IP according to its router). Failing to do either of
 these may jeopardize your staking reward.
 
