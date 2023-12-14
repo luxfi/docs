@@ -32,6 +32,6 @@ Para recibir tokens de testnet, los usuarios pueden solicitar fondos desde el
 - El punto final de la API pública para Testnet no es el mismo que para Mainnet. Más información está disponible en la
   documentación del [Servidor de API Pública](/tooling/rpc-providers.md).
 - Aunque la Red Testnet es un recurso valioso, los desarrolladores también tienen la opción de explorar
-  [Lux Network Runner](https://docs.lux.network/quickstart/tools-list#netrunner-anr)
+  [Lux Netrunner](https://docs.lux.network/quickstart/tools-list#netrunner-anr)
   como un medio alternativo para probar localmente sus proyectos, asegurando una evaluación completa y
   ajustes finos antes de interactuar con la red más amplia.

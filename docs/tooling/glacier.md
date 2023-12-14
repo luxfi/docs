@@ -9,7 +9,7 @@ access the indexed blockchain data they need to build powerful applications on
 top of Lux's primary network and Subnets as well as Ethereum.
 
 If you'd like increased rate limits for accessing the Glacier API, please 
-visit [AvaCloud portal](https://luxcloud.io/).
+visit [AvaCloud portal](https://avacloud.io/).
 
 ## Benefits
 
@@ -22,7 +22,7 @@ By leveraging Glacier, developers can:
 
 ## API
 
-API documentation and more information about accessing Glacier can be found [here](https://glacier.docs.luxcloud.io/).
+API documentation and more information about accessing Glacier can be found [here](https://glacier.docs.avacloud.io/).
 
 - For feedback or feature requests, please submit them [here](https://forms.gle/gTEoZ2XtRtx4TRSw6).
 - Bug reports can be submitted [here](https://docs.google.com/forms/d/e/1FAIpQLSeJQrcp7QoNiqozMDKrVJGX5wpU827d3cVTgF8qa7t_J1Pb-g/viewform)

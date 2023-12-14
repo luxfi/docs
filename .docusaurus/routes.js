@@ -19,11 +19,11 @@ export default [
   },
   {
     path: '/',
-    component: ComponentCreator('/', '8b8'),
+    component: ComponentCreator('/', 'bee'),
     routes: [
       {
         path: '/',
-        component: ComponentCreator('/', '37b'),
+        component: ComponentCreator('/', 'a55'),
         routes: [
           {
             path: '/tags',
@@ -192,131 +192,17 @@ export default [
           },
           {
             path: '/',
-            component: ComponentCreator('/', '755'),
+            component: ComponentCreator('/', 'be7'),
             routes: [
-              {
-                path: '/apis/luxd',
-                component: ComponentCreator('/apis/luxd', 'df1'),
-                exact: true
-              },
-              {
-                path: '/apis/luxd/apis',
-                component: ComponentCreator('/apis/luxd/apis', '4a1'),
-                exact: true
-              },
-              {
-                path: '/apis/luxd/apis/admin',
-                component: ComponentCreator('/apis/luxd/apis/admin', 'ad3'),
-                exact: true
-              },
-              {
-                path: '/apis/luxd/apis/auth',
-                component: ComponentCreator('/apis/luxd/apis/auth', '0ac'),
-                exact: true
-              },
-              {
-                path: '/apis/luxd/apis/c-chain',
-                component: ComponentCreator('/apis/luxd/apis/c-chain', 'e80'),
-                exact: true
-              },
-              {
-                path: '/apis/luxd/apis/health',
-                component: ComponentCreator('/apis/luxd/apis/health', '072'),
-                exact: true
-              },
-              {
-                path: '/apis/luxd/apis/index-api',
-                component: ComponentCreator('/apis/luxd/apis/index-api', '649'),
-                exact: true
-              },
-              {
-                path: '/apis/luxd/apis/info',
-                component: ComponentCreator('/apis/luxd/apis/info', 'da6'),
-                exact: true
-              },
-              {
-                path: '/apis/luxd/apis/ipc',
-                component: ComponentCreator('/apis/luxd/apis/ipc', 'b16'),
-                exact: true
-              },
-              {
-                path: '/apis/luxd/apis/issuing-api-calls',
-                component: ComponentCreator('/apis/luxd/apis/issuing-api-calls', '95f'),
-                exact: true
-              },
-              {
-                path: '/apis/luxd/apis/keystore',
-                component: ComponentCreator('/apis/luxd/apis/keystore', '5b0'),
-                exact: true
-              },
-              {
-                path: '/apis/luxd/apis/metrics',
-                component: ComponentCreator('/apis/luxd/apis/metrics', '8ec'),
-                exact: true
-              },
-              {
-                path: '/apis/luxd/apis/p-chain',
-                component: ComponentCreator('/apis/luxd/apis/p-chain', 'd04'),
-                exact: true
-              },
-              {
-                path: '/apis/luxd/apis/x-chain',
-                component: ComponentCreator('/apis/luxd/apis/x-chain', 'c0f'),
-                exact: true
-              },
-              {
-                path: '/apis/luxd/cb58-deprecation',
-                component: ComponentCreator('/apis/luxd/cb58-deprecation', 'a44'),
-                exact: true
-              },
-              {
-                path: '/apis/luxd/luxd-release-notes',
-                component: ComponentCreator('/apis/luxd/luxd-release-notes', 'bf9'),
-                exact: true
-              },
-              {
-                path: '/apis/luxd/postman-lux-collection',
-                component: ComponentCreator('/apis/luxd/postman-lux-collection', 'f8b'),
-                exact: true
-              },
-              {
-                path: '/apis/luxd/public-api-server',
-                component: ComponentCreator('/apis/luxd/public-api-server', '2f9'),
-                exact: true
-              },
-              {
-                path: '/apis/luxjs',
-                component: ComponentCreator('/apis/luxjs', '081'),
-                exact: true
-              },
-              {
-                path: '/apis/luxjs/api',
-                component: ComponentCreator('/apis/luxjs/api', '31c'),
-                exact: true
-              },
-              {
-                path: '/apis/luxjs/create-an-asset-on-the-x-chain',
-                component: ComponentCreator('/apis/luxjs/create-an-asset-on-the-x-chain', '510'),
-                exact: true
-              },
-              {
-                path: '/apis/luxjs/generate-a-txid-using-luxjs',
-                component: ComponentCreator('/apis/luxjs/generate-a-txid-using-luxjs', '234'),
-                exact: true
-              },
-              {
-                path: '/apis/luxjs/manage-x-chain-keys',
-                component: ComponentCreator('/apis/luxjs/manage-x-chain-keys', '57b'),
-                exact: true
-              },
-              {
-                path: '/apis/luxjs/send-an-asset-on-the-x-chain',
-                component: ComponentCreator('/apis/luxjs/send-an-asset-on-the-x-chain', 'edb'),
-                exact: true
-              },
               {
                 path: '/build/dapp',
                 component: ComponentCreator('/build/dapp', '335'),
+                exact: true,
+                sidebar: "build-dapp"
+              },
+              {
+                path: '/build/dapp/advanced/add-avalanche-programmatically',
+                component: ComponentCreator('/build/dapp/advanced/add-avalanche-programmatically', '4c9'),
                 exact: true,
                 sidebar: "build-dapp"
               },
@@ -361,6 +247,11 @@ export default [
                 component: ComponentCreator('/build/dapp/explorers', '44b'),
                 exact: true,
                 sidebar: "build-dapp"
+              },
+              {
+                path: '/build/dapp/testnet-workflow',
+                component: ComponentCreator('/build/dapp/testnet-workflow', 'cec'),
+                exact: true
               },
               {
                 path: '/build/dapp/launch-dapp',
@@ -455,6 +346,12 @@ export default [
               {
                 path: '/build/subnet/deploy/custom-vm-subnet',
                 component: ComponentCreator('/build/subnet/deploy/custom-vm-subnet', '615'),
+                exact: true,
+                sidebar: "build-subnet"
+              },
+              {
+                path: '/build/subnet/deploy/testnet-testnet-subnet',
+                component: ComponentCreator('/build/subnet/deploy/testnet-testnet-subnet', '3f0'),
                 exact: true,
                 sidebar: "build-subnet"
               },
@@ -669,43 +566,293 @@ export default [
                 sidebar: "build-vm"
               },
               {
-                path: '/dapps/smart-contracts/add-lux-to-metamask-programmatically',
-                component: ComponentCreator('/dapps/smart-contracts/add-lux-to-metamask-programmatically', '9ac'),
+                path: '/deprecated/deploy-a-gnosis-safe-on-your-evm',
+                component: ComponentCreator('/deprecated/deploy-a-gnosis-safe-on-your-evm', '6d1'),
                 exact: true
               },
               {
-                path: '/dapps/smart-contracts/create-erc-20-token-on-lux-c-chain',
-                component: ComponentCreator('/dapps/smart-contracts/create-erc-20-token-on-lux-c-chain', '244'),
+                path: '/deprecated/dfk-subnet-node',
+                component: ComponentCreator('/deprecated/dfk-subnet-node', '137'),
                 exact: true
               },
               {
-                path: '/dapps/smart-contracts/deploy-a-smart-contract-on-lux-using-remix-and-metamask',
-                component: ComponentCreator('/dapps/smart-contracts/deploy-a-smart-contract-on-lux-using-remix-and-metamask', '570'),
+                path: '/deprecated/truffle',
+                component: ComponentCreator('/deprecated/truffle', '21a'),
                 exact: true
               },
               {
-                path: '/dapps/smart-contracts/using-foundry-with-the-lux-c-chain',
-                component: ComponentCreator('/dapps/smart-contracts/using-foundry-with-the-lux-c-chain', '6d2'),
+                path: '/deprecated/tutorials-contest',
+                component: ComponentCreator('/deprecated/tutorials-contest', '828'),
                 exact: true
               },
               {
-                path: '/dapps/smart-contracts/using-hardhat-with-the-lux-c-chain',
-                component: ComponentCreator('/dapps/smart-contracts/using-hardhat-with-the-lux-c-chain', '1e2'),
+                path: '/deprecated/tutorials-contest/2021',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021', '831'),
                 exact: true
               },
               {
-                path: '/dapps/smart-contracts/using-truffle-with-the-lux-c-chain',
-                component: ComponentCreator('/dapps/smart-contracts/using-truffle-with-the-lux-c-chain', '986'),
+                path: '/deprecated/tutorials-contest/2021/avalanche-DAO',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/avalanche-DAO', 'beb'),
                 exact: true
               },
               {
-                path: '/dapps/smart-contracts/verify-smart-contract-using-hardhat-and-snowtrace',
-                component: ComponentCreator('/dapps/smart-contracts/verify-smart-contract-using-hardhat-and-snowtrace', '869'),
+                path: '/deprecated/tutorials-contest/2021/avax-chat-dapp',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/avax-chat-dapp', 'a9f'),
                 exact: true
               },
               {
-                path: '/dapps/smart-contracts/verify-smart-contracts-with-truffle-verify',
-                component: ComponentCreator('/dapps/smart-contracts/verify-smart-contracts-with-truffle-verify', 'b8f'),
+                path: '/deprecated/tutorials-contest/2021/distributed-file-manager',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/distributed-file-manager', '96b'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js', 'ca9'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSUploader.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSUploader.js', '9d7'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSViewer.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSViewer.js', '532'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/drizzle-auction-manager',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/drizzle-auction-manager', 'c7e'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/Auction.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/Auction.js', 'fbd'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/AuctionList.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/AuctionList.js', '886'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/CreateAuction.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/CreateAuction.js', 'b5c'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/evoting-avalanche-dapp',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-avalanche-dapp', '1df'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/ActiveElections.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/ActiveElections.js', 'd81'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/CreateElection.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/CreateElection.js', '489'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/VoteModal.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/VoteModal.js', 'b96'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/hardhat-fork',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/hardhat-fork', 'c3c'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/how-to-mint-erc721-using-openzeppelin/tutorial',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/how-to-mint-erc721-using-openzeppelin/tutorial', '2e5'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche', '3d2'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend', '27e'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/public/index-html',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/public/index-html', 'e51'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/App.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/App.js', '3d8'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/index.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/index.js', '91c'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js', 'af2'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/setupTests.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/setupTests.js', '1dc'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/pangolin-token-subgraph',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/pangolin-token-subgraph', '091'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial', '31f'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial/ansible-chainlink-avalanche-setup',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial/ansible-chainlink-avalanche-setup', '2e4'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial/chainlink-external-adaptor',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial/chainlink-external-adaptor', 'd13'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2021/red-dev-sig-verify-tutorial',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-sig-verify-tutorial', '9d3'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022', 'cc3'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/avalanche-theGraph-index',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/avalanche-theGraph-index', '588'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/avax-subnet-customization',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/avax-subnet-customization', '4b8'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token', '681'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/chains.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/chains.js', '6e0'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/nativeMinterAddress.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/nativeMinterAddress.js', '6ac'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol', '66b'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol', '981'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol', '327'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol', 'ece'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBalance.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBalance.js', '469'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBurnOrLock.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBurnOrLock.js', '326'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterDeploy.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterDeploy.js', '61a'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/relayer.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/relayer.js', 'cdf'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/balance.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/balance.js', '961'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/burnOrLock.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/burnOrLock.js', '36b'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/deploy.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/deploy.js', '4fb'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initContracts.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initContracts.js', 'ab1'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initProviders.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initProviders.js', 'b07'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initSigners.js',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initSigners.js', '125'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/local-subnet-development',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/local-subnet-development', '90d'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/local-subnet-development/hardhat.config.ts',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/local-subnet-development/hardhat.config.ts', '612'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/AllowList',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/AllowList', '111'),
+                exact: true
+              },
+              {
+                path: '/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/NativeMinter',
+                component: ComponentCreator('/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/NativeMinter', 'ba6'),
+                exact: true
+              },
+              {
+                path: '/deprecated/verify-truffle',
+                component: ComponentCreator('/deprecated/verify-truffle', '523'),
                 exact: true
               },
               {
@@ -716,9 +863,54 @@ export default [
               },
               {
                 path: '/intro',
+                component: ComponentCreator('/intro', '421'),
+                exact: true
+              },
+              {
+                path: '/intro',
                 component: ComponentCreator('/intro', '2fc'),
                 exact: true,
                 sidebar: "learn"
+              },
+              {
+                path: '/learn/avalanche/avalanche-consensus',
+                component: ComponentCreator('/learn/avalanche/avalanche-consensus', '3f8'),
+                exact: true
+              },
+              {
+                path: '/learn/avalanche/avalanche-platform',
+                component: ComponentCreator('/learn/avalanche/avalanche-platform', 'b13'),
+                exact: true
+              },
+              {
+                path: '/learn/avalanche/avax',
+                component: ComponentCreator('/learn/avalanche/avax', '144'),
+                exact: true
+              },
+              {
+                path: '/learn/avalanche/awm',
+                component: ComponentCreator('/learn/avalanche/awm', 'f18'),
+                exact: true
+              },
+              {
+                path: '/learn/avalanche/testnet',
+                component: ComponentCreator('/learn/avalanche/testnet', '11e'),
+                exact: true
+              },
+              {
+                path: '/learn/avalanche/mainnet',
+                component: ComponentCreator('/learn/avalanche/mainnet', 'ebd'),
+                exact: true
+              },
+              {
+                path: '/learn/avalanche/subnets-overview',
+                component: ComponentCreator('/learn/avalanche/subnets-overview', '876'),
+                exact: true
+              },
+              {
+                path: '/learn/avalanche/virtual-machines',
+                component: ComponentCreator('/learn/avalanche/virtual-machines', '3d1'),
+                exact: true
               },
               {
                 path: '/learn/lux',
@@ -795,6 +987,12 @@ export default [
                 exact: true
               },
               {
+                path: '/nodes/configure/avalanchego-config-flags',
+                component: ComponentCreator('/nodes/configure/avalanchego-config-flags', 'cf0'),
+                exact: true,
+                sidebar: "nodes"
+              },
+              {
                 path: '/nodes/configure/chain-config-flags',
                 component: ComponentCreator('/nodes/configure/chain-config-flags', 'cd7'),
                 exact: true,
@@ -813,14 +1011,14 @@ export default [
                 sidebar: "nodes"
               },
               {
-                path: '/nodes/maintain/background-service-config',
-                component: ComponentCreator('/nodes/maintain/background-service-config', '4ad'),
+                path: '/nodes/maintain/avalanche-notify',
+                component: ComponentCreator('/nodes/maintain/avalanche-notify', '5d5'),
                 exact: true,
                 sidebar: "nodes"
               },
               {
-                path: '/nodes/maintain/lux-notify',
-                component: ComponentCreator('/nodes/maintain/lux-notify', 'd81'),
+                path: '/nodes/maintain/background-service-config',
+                component: ComponentCreator('/nodes/maintain/background-service-config', '4ad'),
                 exact: true,
                 sidebar: "nodes"
               },
@@ -843,6 +1041,12 @@ export default [
                 sidebar: "nodes"
               },
               {
+                path: '/nodes/maintain/notify',
+                component: ComponentCreator('/nodes/maintain/notify', 'dc4'),
+                exact: true,
+                sidebar: "nodes"
+              },
+              {
                 path: '/nodes/maintain/run-offline-pruning',
                 component: ComponentCreator('/nodes/maintain/run-offline-pruning', 'd47'),
                 exact: true,
@@ -851,6 +1055,12 @@ export default [
               {
                 path: '/nodes/maintain/setting-up-node-monitoring',
                 component: ComponentCreator('/nodes/maintain/setting-up-node-monitoring', 'c9e'),
+                exact: true,
+                sidebar: "nodes"
+              },
+              {
+                path: '/nodes/maintain/upgrade-your-avalanchego-node',
+                component: ComponentCreator('/nodes/maintain/upgrade-your-avalanchego-node', '566'),
                 exact: true,
                 sidebar: "nodes"
               },
@@ -927,8 +1137,20 @@ export default [
                 sidebar: "nodes"
               },
               {
+                path: '/nodes/run/with-installer/installing-avalanchego',
+                component: ComponentCreator('/nodes/run/with-installer/installing-avalanchego', '85c'),
+                exact: true,
+                sidebar: "nodes"
+              },
+              {
                 path: '/nodes/run/with-installer/installing-luxd',
                 component: ComponentCreator('/nodes/run/with-installer/installing-luxd', '184'),
+                exact: true,
+                sidebar: "nodes"
+              },
+              {
+                path: '/nodes/run/with-installer/managing-avalanchego',
+                component: ComponentCreator('/nodes/run/with-installer/managing-avalanchego', '0cc'),
                 exact: true,
                 sidebar: "nodes"
               },
@@ -973,16 +1195,6 @@ export default [
                 component: ComponentCreator('/nodes/validate/what-is-staking', 'da4'),
                 exact: true,
                 sidebar: "nodes"
-              },
-              {
-                path: '/overview/getting-started/lux-consensus',
-                component: ComponentCreator('/overview/getting-started/lux-consensus', 'f4f'),
-                exact: true
-              },
-              {
-                path: '/overview/getting-started/lux-platform',
-                component: ComponentCreator('/overview/getting-started/lux-platform', 'cb9'),
-                exact: true
               },
               {
                 path: '/quickstart/integrate-exchange-with-lux',
@@ -1085,6 +1297,11 @@ export default [
                 sidebar: "reference"
               },
               {
+                path: '/reference/standards/avalanche-network-protocol',
+                component: ComponentCreator('/reference/standards/avalanche-network-protocol', '7d6'),
+                exact: true
+              },
+              {
                 path: '/reference/standards/cryptographic-primitives',
                 component: ComponentCreator('/reference/standards/cryptographic-primitives', 'cd3'),
                 exact: true,
@@ -1139,30 +1356,95 @@ export default [
                 sidebar: "reference"
               },
               {
-                path: '/specs/coreth-arc20s',
-                component: ComponentCreator('/specs/coreth-arc20s', '0a4'),
-                exact: true
-              },
-              {
-                path: '/subnets/create-a-evm-blockchain-on-subnet-with-luxjs',
-                component: ComponentCreator('/subnets/create-a-evm-blockchain-on-subnet-with-luxjs', '4d4'),
-                exact: true
-              },
-              {
-                path: '/subnets/create-a-virtual-machine-vm',
-                component: ComponentCreator('/subnets/create-a-virtual-machine-vm', 'c30'),
-                exact: true
-              },
-              {
-                path: '/subnets/lux-subnet-faucet',
-                component: ComponentCreator('/subnets/lux-subnet-faucet', 'eac'),
-                exact: true
-              },
-              {
                 path: '/tooling',
                 component: ComponentCreator('/tooling', '3a1'),
                 exact: true,
                 sidebar: "tooling"
+              },
+              {
+                path: '/tooling/avalanche-cli',
+                component: ComponentCreator('/tooling/avalanche-cli', '281'),
+                exact: true
+              },
+              {
+                path: '/tooling/avalanche-ops',
+                component: ComponentCreator('/tooling/avalanche-ops', 'd59'),
+                exact: true
+              },
+              {
+                path: '/tooling/avalanche-plugin-manager',
+                component: ComponentCreator('/tooling/avalanche-plugin-manager', '6a3'),
+                exact: true
+              },
+              {
+                path: '/tooling/avalanchego-installer',
+                component: ComponentCreator('/tooling/avalanchego-installer', '479'),
+                exact: true
+              },
+              {
+                path: '/tooling/avalanchego-postman-collection/data-visualization',
+                component: ComponentCreator('/tooling/avalanchego-postman-collection/data-visualization', '632'),
+                exact: true
+              },
+              {
+                path: '/tooling/avalanchego-postman-collection/making-api-calls',
+                component: ComponentCreator('/tooling/avalanchego-postman-collection/making-api-calls', 'b03'),
+                exact: true
+              },
+              {
+                path: '/tooling/avalanchego-postman-collection/setup',
+                component: ComponentCreator('/tooling/avalanchego-postman-collection/setup', 'f44'),
+                exact: true
+              },
+              {
+                path: '/tooling/avalanchego-postman-collection/variables',
+                component: ComponentCreator('/tooling/avalanchego-postman-collection/variables', 'f20'),
+                exact: true
+              },
+              {
+                path: '/tooling/avalanchejs-api',
+                component: ComponentCreator('/tooling/avalanchejs-api', 'e58'),
+                exact: true
+              },
+              {
+                path: '/tooling/avalanchejs-guides/create-an-asset-on-the-x-chain',
+                component: ComponentCreator('/tooling/avalanchejs-guides/create-an-asset-on-the-x-chain', 'cf1'),
+                exact: true
+              },
+              {
+                path: '/tooling/avalanchejs-guides/cross-chain-transfers',
+                component: ComponentCreator('/tooling/avalanchejs-guides/cross-chain-transfers', '4bf'),
+                exact: true
+              },
+              {
+                path: '/tooling/avalanchejs-guides/generate-a-txid-using-avalanchejs',
+                component: ComponentCreator('/tooling/avalanchejs-guides/generate-a-txid-using-avalanchejs', '626'),
+                exact: true
+              },
+              {
+                path: '/tooling/avalanchejs-guides/generate-key-pair',
+                component: ComponentCreator('/tooling/avalanchejs-guides/generate-key-pair', 'e78'),
+                exact: true
+              },
+              {
+                path: '/tooling/avalanchejs-guides/manage-x-chain-keys',
+                component: ComponentCreator('/tooling/avalanchejs-guides/manage-x-chain-keys', '51f'),
+                exact: true
+              },
+              {
+                path: '/tooling/avalanchejs-guides/multisig-utxos-with-avalanchejs',
+                component: ComponentCreator('/tooling/avalanchejs-guides/multisig-utxos-with-avalanchejs', '0f3'),
+                exact: true
+              },
+              {
+                path: '/tooling/avalanchejs-guides/send-an-asset-on-the-x-chain',
+                component: ComponentCreator('/tooling/avalanchejs-guides/send-an-asset-on-the-x-chain', '074'),
+                exact: true
+              },
+              {
+                path: '/tooling/avalanchejs-overview',
+                component: ComponentCreator('/tooling/avalanchejs-overview', '1fc'),
+                exact: true
               },
               {
                 path: '/tooling/cli',
@@ -1185,6 +1467,12 @@ export default [
               {
                 path: '/tooling/cli-guides/import-subnet',
                 component: ComponentCreator('/tooling/cli-guides/import-subnet', '987'),
+                exact: true,
+                sidebar: "tooling"
+              },
+              {
+                path: '/tooling/cli-guides/install-avalanche-cli',
+                component: ComponentCreator('/tooling/cli-guides/install-avalanche-cli', 'e0d'),
                 exact: true,
                 sidebar: "tooling"
               },
@@ -1343,6 +1631,11 @@ export default [
                 component: ComponentCreator('/tooling/netrunner', 'daa'),
                 exact: true,
                 sidebar: "tooling"
+              },
+              {
+                path: '/tooling/netrunner',
+                component: ComponentCreator('/tooling/netrunner', 'b67'),
+                exact: true
               },
               {
                 path: '/tooling/ops',

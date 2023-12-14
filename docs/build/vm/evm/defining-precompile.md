@@ -533,7 +533,7 @@ For Precompile-EVM there is a [`plugin/main.go`](https://github.com/luxdefi/prec
 file in Precompile-EVM that orchestrates this precompile registration.
 
 ```go
-// (c) 2019-2023, Lux Partners Limited All rights reserved.
+// (c) 2019-2023, Lux Partners, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 package main

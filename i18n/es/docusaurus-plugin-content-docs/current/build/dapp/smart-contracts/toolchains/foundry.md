@@ -26,11 +26,11 @@ Esta guía muestra cómo implementar e interactuar con contratos inteligentes ut
 - Has [instalado Foundry](https://github.com/foundry-rs/foundry#installation) y ejecutado `foundryup`. Esta instalación incluye los binarios `forge` y `cast` utilizados en este recorrido.
 - [NodeJS](https://nodejs.org/en) versión `16.x`
 
-### Luxd y Lux Network Runner
+### Luxd y Lux Netrunner
 
 [Luxd](https://github.com/luxdefi/luxd) es una implementación de nodo Lux escrita en Go.
 
-[Lux Network Runner](/tooling/netrunner.md) es una herramienta para implementar rápidamente redes de prueba locales. Juntos, pueden implementar redes de prueba locales y ejecutar pruebas en ellas.
+[Lux Netrunner](/tooling/netrunner.md) es una herramienta para implementar rápidamente redes de prueba locales. Juntos, pueden implementar redes de prueba locales y ejecutar pruebas en ellas.
 
 Inicia una red Lux local de cinco nodos:
 
@@ -292,7 +292,7 @@ export PRIVATE_KEY=<TU-CLAVE-PRIVADA>
 
 El flujo de trabajo en Testnet se puede adaptar a una red local siguiendo estos pasos:
 
-En una nueva terminal, navega al directorio de [Lux Network Runner](/tooling/netrunner.md).
+En una nueva terminal, navega al directorio de [Lux Netrunner](/tooling/netrunner.md).
 
 ```zsh
 cd /ruta/a/Lux-Network-Runner
@@ -313,7 +313,7 @@ export PRIVATE_KEY=56289e99c94b6912bfc12adc093c9b51124f0dc54ac7a766b2bc5ccf558d8
 
 :::warning
 
-La clave privada de ejemplo proporcionada arriba ofrece una cuenta prefinanciada en Lux Network Runner y debe usarse SOLO PARA DESARROLLO LOCAL.
+La clave privada de ejemplo proporcionada arriba ofrece una cuenta prefinanciada en Lux Netrunner y debe usarse SOLO PARA DESARROLLO LOCAL.
 
 :::
 

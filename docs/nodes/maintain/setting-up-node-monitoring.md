@@ -325,7 +325,7 @@ This will add the Subnets dashboard. It allows you to monitor operational data
 for any Subnet that is synced on the node. There is a Subnet switcher that
 allows you to switch between different Subnets. As there are many Subnets and
 not every node will have all of them, by default, it comes populated only with
-Spaces and WAGMI Subnets that exist on Testnet testnet:
+Spaces and WAGMI Subnets that exist on Testnet:
 
 ![Subnets switcher](/img/monitoring-03-subnets.png)
 

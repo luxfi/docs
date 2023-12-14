@@ -2,11 +2,11 @@
   "label": "Virtual Machines",
   "permalink": "/tags/virtual-machines",
   "allTagsPath": "/tags",
-  "count": 14,
+  "count": 15,
   "items": [
     {
       "id": "build/vm/README",
-      "title": "▼ Virtual Machines",
+      "title": "🔺 Virtual Machines",
       "description": "Virtual Machines",
       "permalink": "/build/vm/"
     },
@@ -75,6 +75,12 @@
       "title": "Stateful Precompile Generation Tutorial",
       "description": "Getting started with building stateful precompiles for Subnet-EVM and Precompile-EVM",
       "permalink": "/build/vm/evm/intro"
+    },
+    {
+      "id": "learn/avalanche/virtual-machines",
+      "title": "Virtual Machines",
+      "description": "Virtual Machine is a virtual environment inside blockchain networks that executes smart contracts and transactions according to predetermined rules and protocols.",
+      "permalink": "/learn/avalanche/virtual-machines"
     },
     {
       "id": "learn/lux/virtual-machines",

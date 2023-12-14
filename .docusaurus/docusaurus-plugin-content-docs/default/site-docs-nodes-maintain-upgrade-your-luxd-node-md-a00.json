@@ -21,7 +21,7 @@
     "permalink": "/nodes/maintain/setting-up-node-monitoring"
   },
   "next": {
-    "title": "Reduce a Node's Disk Space: Run C-Chain Offline Pruning",
-    "permalink": "/nodes/maintain/run-offline-pruning"
+    "title": "Upgrade Your Luxd Node",
+    "permalink": "/nodes/maintain/upgrade-your-avalanchego-node"
   }
 }

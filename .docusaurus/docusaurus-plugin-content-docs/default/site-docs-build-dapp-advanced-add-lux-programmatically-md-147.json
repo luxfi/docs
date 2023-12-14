@@ -33,8 +33,8 @@
   },
   "sidebar": "build-dapp",
   "previous": {
-    "title": "Sending Transactions with Dynamic Fees using JavaScript",
-    "permalink": "/build/dapp/advanced/sending-transactions-with-dynamic-fees-using-javascript"
+    "title": "Add Lux Network Programmatically",
+    "permalink": "/build/dapp/advanced/add-avalanche-programmatically"
   },
   "next": {
     "title": "C-Chain Exchange Integration",

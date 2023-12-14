@@ -20,7 +20,7 @@ To get started, you'll need:
 - A terminal with which to SSH into your Latitude.sh machine
 
 For the instructions on creating an account and server with Lattitude.sh, please reference their
-[GitHub tutorial](https://github.com/NottherealIllest/Latitude.sh-post/blob/main/lux/lux-copy.md)
+[GitHub tutorial](https://github.com/NottherealIllest/Latitude.sh-post/blob/main/avalanhe/lux-copy.md)
 , or visit [this page](https://www.latitude.sh/dashboard/signup) to sign up and create your first project.
 
 This tutorial assumes your local machine has a Unix-style terminal. If you're on Windows, you'll have

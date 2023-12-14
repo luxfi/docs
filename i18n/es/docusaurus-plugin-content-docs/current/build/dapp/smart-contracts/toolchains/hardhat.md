@@ -26,10 +26,10 @@ A continuación, instala [yarn](https://yarnpkg.com):
 npm install -g yarn
 ```
 
-### Luxd y Lux Network Runner
+### Luxd y Lux Netrunner
 
 [Luxd](https://github.com/luxdefi/luxd) es una implementación de nodo Lux
-escrita en Go. [Lux Network Runner](/tooling/netrunner.md) es una herramienta para desplegar rápidamente redes de prueba locales.
+escrita en Go. [Lux Netrunner](/tooling/netrunner.md) es una herramienta para desplegar rápidamente redes de prueba locales.
 Juntos, puedes desplegar redes de prueba locales y ejecutar pruebas en ellas.
 
 ### Solidity y Lux
@@ -198,7 +198,7 @@ task(
 
 ### Cuentas
 
-Imprime una lista de cuentas en la red local de Lux Network Runner.
+Imprime una lista de cuentas en la red local de Lux Netrunner.
 
 ```text
 npx hardhat accounts --network local
@@ -216,7 +216,7 @@ npx hardhat accounts --network local
 
 ### Saldos
 
-Imprime una lista de cuentas y sus saldos LUX correspondientes en la red local de Lux Network Runner.
+Imprime una lista de cuentas y sus saldos LUX correspondientes en la red local de Lux Netrunner.
 
 ```text
 npx hardhat balances --network local
@@ -263,9 +263,9 @@ El ejemplo utiliza la [API pública de la C-Chain](/reference/luxd/c-chain/api#e
 
 Ejecuta `yarn hardhat` para listar la versión de Hardhat, las instrucciones de uso, las opciones globales y las tareas disponibles.
 
-## Flujo de trabajo típico con Lux Network Runner
+## Flujo de trabajo típico con Lux Netrunner
 
-### Ejecutar Lux Network Runner
+### Ejecutar Lux Netrunner
 
 Primero, confirma que tienes la última versión de Luxd construida.
 
@@ -278,9 +278,9 @@ git checkout master
 
 (Ten en cuenta que también puedes [descargar binarios precompilados de Luxd](https://github.com/luxdefi/luxd/releases) en lugar de construir desde el código fuente).
 
-Confirma que tienes Lux Network Runner instalado siguiendo los pasos enumerados [aquí](/tooling/netrunner.md).
+Confirma que tienes Lux Netrunner instalado siguiendo los pasos enumerados [aquí](/tooling/netrunner.md).
 
-Inicia Lux Network Runner y ejecuta un script para iniciar una nueva red local.
+Inicia Lux Netrunner y ejecuta un script para iniciar una nueva red local.
 
 ### Iniciar el servidor
 

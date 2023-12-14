@@ -16,7 +16,7 @@ con la precompilación de Hello World activada.
 
 Inicia el servidor en una terminal en una nueva pestaña usando netrunner. Por favor, revisa
 [este enlace](/tooling/netrunner.md) para obtener más información sobre Lux
-Network Runner, cómo descargarlo y cómo usarlo. El servidor estará en modo "escucha",
+Netrunner, cómo descargarlo y cómo usarlo. El servidor estará en modo "escucha",
 esperando llamadas de API.
 
 Iniciaremos el servidor desde el directorio Subnet-EVM para que podamos usar una ruta de archivo relativa

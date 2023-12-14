@@ -1,5 +1,5 @@
 ---
-title: ▼ Lux Subnets
+title: 🔺 Lux Subnets
 tags: [Build, Subnets]
 description: Subnets
 sidebar_label: 🔗 Quick Links

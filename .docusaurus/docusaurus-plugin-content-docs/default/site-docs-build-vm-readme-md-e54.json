@@ -1,6 +1,6 @@
 {
   "id": "build/vm/README",
-  "title": "▼ Virtual Machines",
+  "title": "🔺 Virtual Machines",
   "description": "Virtual Machines",
   "source": "@site/docs/build/vm/README.md",
   "sourceDirName": "build/vm",
@@ -21,7 +21,7 @@
   ],
   "version": "current",
   "frontMatter": {
-    "title": "▼ Virtual Machines",
+    "title": "🔺 Virtual Machines",
     "tags": [
       "Build",
       "Virtual Machines"

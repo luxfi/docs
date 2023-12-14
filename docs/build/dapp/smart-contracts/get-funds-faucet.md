@@ -1,6 +1,6 @@
 ---
 tags: [Build, Dapps]
-description: This tutorial focuses on how to get a "drip" of LUX from the Testnet testnet faucet.
+description: This tutorial focuses on how to get a "drip" of LUX from the Testnet faucet.
 sidebar_label: 💰 Get Test Funds
 pagination_label: Get Test Funds from the Testnet Faucet
 ---

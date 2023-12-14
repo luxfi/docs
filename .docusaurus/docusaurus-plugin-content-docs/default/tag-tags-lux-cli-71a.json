@@ -2,7 +2,7 @@
   "label": "Lux-CLI",
   "permalink": "/tags/lux-cli",
   "allTagsPath": "/tags",
-  "count": 13,
+  "count": 15,
   "items": [
     {
       "id": "tooling/cli-guides/validate-subnets",
@@ -47,10 +47,22 @@
       "permalink": "/build/subnet/maintain/how-to-transfer-funds"
     },
     {
+      "id": "tooling/cli-guides/install-avalanche-cli",
+      "title": "Install Lux-CLI",
+      "description": "This guide demonstrates how to install Lux-CLI.",
+      "permalink": "/tooling/cli-guides/install-avalanche-cli"
+    },
+    {
       "id": "tooling/cli-guides/install-lux-cli",
       "title": "Install Lux-CLI",
       "description": "This guide demonstrates how to install Lux-CLI.",
       "permalink": "/tooling/cli-guides/install-lux-cli"
+    },
+    {
+      "id": "tooling/avalanche-cli",
+      "title": "Lux-CLI",
+      "description": "Lux-CLI is a command-line tool that gives developers access to everything Lux. This release specializes in helping developers build and test Subnets.",
+      "permalink": "/tooling/avalanche-cli"
     },
     {
       "id": "tooling/cli",

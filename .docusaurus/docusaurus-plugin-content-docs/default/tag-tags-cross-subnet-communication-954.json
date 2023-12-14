@@ -2,8 +2,14 @@
   "label": "Cross-Subnet Communication",
   "permalink": "/tags/cross-subnet-communication",
   "allTagsPath": "/tags",
-  "count": 1,
+  "count": 2,
   "items": [
+    {
+      "id": "learn/avalanche/awm",
+      "title": "Lux Warp Messaging",
+      "description": "AWM allows seamless communication between different subnetworks on Lux, enabling developers to establish custom communication protocols.",
+      "permalink": "/learn/avalanche/awm"
+    },
     {
       "id": "learn/lux/awm",
       "title": "Lux Warp Messaging",

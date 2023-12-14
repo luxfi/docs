@@ -508,7 +508,7 @@ Solidity interface at `0x0200000000000000000000000000000000000001` (you can load
 interact directly in Remix):
 
 ```solidity
-// (c) 2022-2023, Lux Partners Limited All rights reserved.
+// (c) 2022-2023, Lux Partners, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 pragma solidity ^0.8.0;

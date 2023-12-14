@@ -14,7 +14,7 @@ with the following exceptions:
 
 - Luxd for [https://github.com/luxdefi/luxd]
 - Lux-CLI for [https://github.com/luxdefi/cli]
-- Lux Network Runner for [https://github.com/luxdefi/netrunner]
+- Lux Netrunner for [https://github.com/luxdefi/netrunner]
 
 ### Virtual Machines
 

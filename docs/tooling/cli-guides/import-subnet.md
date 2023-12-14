@@ -40,7 +40,7 @@ lux subnet import public
 
 The tool prompts for the network from which to import.
 The invariant assumption here is that the network is a public network,
-either the Testnet testnet or Mainnet.
+either the Testnet or Mainnet.
 In other words, importing from a local network isn't supported.
 
 ```shell

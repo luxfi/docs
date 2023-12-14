@@ -66,7 +66,7 @@ Here are some recommended resources to learn the ins and outs of the EVM:
 - [Layout in Memory](https://docs.soliditylang.org/en/v0.8.10/internals/layout_in_memory.html)
 - [Layout of Call Data](https://docs.soliditylang.org/en/v0.8.10/internals/layout_in_calldata.html)
 - [Contract ABI Specification](https://docs.soliditylang.org/en/v0.8.10/abi-spec.html)
-- [Customizing the EVM with Stateful Precompiles](https://medium.com/luxdefi/customizing-the-evm-with-stateful-precompiles-f44a34f39efd)
+- [Customizing the EVM with Stateful Precompiles](https://medium.com/luxlux/customizing-the-evm-with-stateful-precompiles-f44a34f39efd)
 
 Please install the following before getting started.
 
@@ -89,7 +89,7 @@ Download the following prerequisites into your `$GOPATH`:
 
 - Git Clone the repository (Subnet-EVM or Precompile-EVM)
 - Git Clone [Luxd](https://github.com/luxdefi/luxd) repository
-- Install [Lux Network Runner](/tooling/netrunner.md)
+- Install [Lux Netrunner](/tooling/netrunner.md)
 - Install [solc](https://github.com/ethereum/solc-js#usage-on-the-command-line)
 - Install [Node.js and NPM](https://nodejs.org/en/download)
   For easy copy paste, use the below commands:

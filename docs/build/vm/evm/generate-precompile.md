@@ -50,7 +50,7 @@ cd contracts/
 Create a new file called `IHelloWorld.sol` and copy and paste the below code:
 
 ```sol
-// (c) 2022-2023, Lux Partners Limited All rights reserved.
+// (c) 2022-2023, Lux Partners, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;

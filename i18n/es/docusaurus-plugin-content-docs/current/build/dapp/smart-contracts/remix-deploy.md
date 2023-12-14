@@ -36,7 +36,7 @@ Para cambiar a la **red de prueba Testnet**, ve a Configuración, selecciona Ava
 
 </div>
 
-Configuración de la **Red de Prueba Local (Lux Network Runner)**: [(Tutorial del Lux Network Runner)](/tooling/netrunner.md)
+Configuración de la **Red de Prueba Local (Lux Netrunner)**: [(Tutorial del Lux Netrunner)](/tooling/netrunner.md)
 
 - **Nombre de la Red**: Lux Local C-Chain
 - **Nueva URL RPC**:

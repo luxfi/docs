@@ -115,7 +115,7 @@ Los valores de configuración predeterminados para la C-Chain se pueden ver [aqu
 
 ### Ejecutando una Red de Pruebas Local
 
-Si necesitas una red de prueba privada para probar tu dapp, [Lux Network Runner](https://github.com/luxdefi/netrunner) es un cliente de shell para lanzar redes Lux locales, similar a Ganache en Ethereum.
+Si necesitas una red de prueba privada para probar tu dapp, [Lux Netrunner](https://github.com/luxdefi/netrunner) es un cliente de shell para lanzar redes Lux locales, similar a Ganache en Ethereum.
 
 Para obtener más información, consulta la [documentación](/tooling/netrunner.md).
 

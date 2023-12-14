@@ -36,7 +36,7 @@ To switch to the **Testnet test network**, go to Settings, select Advanced, and 
 
 </div>
 
-**Local Testnet (Lux Network Runner) Settings:** [(Lux Network Runner Tutorial)](/tooling/netrunner.md)
+**Local Testnet (Lux Netrunner) Settings:** [(Lux Netrunner Tutorial)](/tooling/netrunner.md)
 
 - **Network Name**: Lux Local C-Chain
 - **New RPC URL**:

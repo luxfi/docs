@@ -21,7 +21,7 @@ options and their usage:
   has no historical data
 - `db-dir` - use to provide the full path to the location where the database
   will be stored
-- `testnet` - node will connect to Testnet testnet instead of the Mainnet
+- `testnet` - node will connect to Testnet instead of the Mainnet
 - `index` - [Index API](/reference/luxd/index-api.md) will be
   enabled
 - `ip` - use `dynamic`, `static` arguments, of enter a desired IP directly to be
@@ -196,8 +196,8 @@ Please note that this is irreversible and the database and node ID will be delet
 ## What Next?
 
 That's it, you're running an Luxd node! Congratulations! Let us know you
-did it on our [Twitter](https://twitter.com/luxdefi),
-[Telegram](https://t.me/luxdefi) or [Reddit](https://t.me/luxdefi)!
+did it on our [Twitter](https://twitter.com/luxlux),
+[Telegram](https://t.me/luxlux) or [Reddit](https://t.me/luxlux)!
 
 If you're on a residential network (dynamic IP), don't forget to set up port
 forwarding. If you're on a cloud service provider, you're good to go.

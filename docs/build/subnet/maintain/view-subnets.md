@@ -30,7 +30,7 @@ To see detailed information about your deployed Subnets, add the `--deployed` fl
 ```text
 > lux subnet list --deployed
 +-------------+-------------+---------------------------------------------------+---------------+-----------------------------------------------------------------+---------+
-|   SUBNET    |    CHAIN    |                       VM ID                       | LOCAL NETWORK |                          TESTNET (TESTNET)                         | MAINNET |
+|   SUBNET    |    CHAIN    |                       VM ID                       | LOCAL NETWORK |                          FUJI (TESTNET)                         | MAINNET |
 +-------------+-------------+---------------------------------------------------+---------------+-----------------------------------------------------------------+---------+
 | test        | test        | tGBrM2SXkAdNsqzb3SaFZZWMNdzjjFEUKteheTa4dhUwnfQyu | Yes           | SubnetID: XTK7AM2Pw5A4cCtQ3rTugqbeLCU9mVixML3YwwLYUJ4WXN2Kt     | No      |
 +             +             +                                                   +               +-----------------------------------------------------------------+---------+

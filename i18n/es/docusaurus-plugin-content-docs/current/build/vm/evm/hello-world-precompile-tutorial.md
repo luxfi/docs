@@ -241,7 +241,7 @@ Download the following prerequisites into your `$GOPATH`:
 
 - Git Clone the repository (Subnet-EVM or Precompile-EVM)
 - Git Clone [Luxd](https://github.com/luxdefi/luxd) repository
-- Install [Lux Network Runner](/tooling/netrunner.md)
+- Install [Lux Netrunner](/tooling/netrunner.md)
 - Install [solc](https://github.com/ethereum/solc-js#usage-on-the-command-line)
 - Install [Node.js and NPM](https://nodejs.org/en/download)
   For easy copy paste, use the below commands:
@@ -1927,7 +1927,7 @@ with the Hello World precompile activated.
 
 Start the server in a terminal in a new tab using netrunner. Please check out
 [this link](/tooling/netrunner.md) for more information on Lux
-Network Runner, how to download it, and how to use it. The server will be in "listening" mode
+Netrunner, how to download it, and how to use it. The server will be in "listening" mode
 waiting for API calls.
 
 We will start the server from the Subnet-EVM directory so that we can use a relative file path

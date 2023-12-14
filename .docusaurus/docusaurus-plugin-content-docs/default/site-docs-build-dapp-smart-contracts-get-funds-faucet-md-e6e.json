@@ -1,7 +1,7 @@
 {
   "id": "build/dapp/smart-contracts/get-funds-faucet",
   "title": "Get Test Funds from the Testnet Faucet",
-  "description": "This tutorial focuses on how to get a \"drip\" of LUX from the Testnet testnet faucet.",
+  "description": "This tutorial focuses on how to get a \"drip\" of LUX from the Testnet faucet.",
   "source": "@site/docs/build/dapp/smart-contracts/get-funds-faucet.md",
   "sourceDirName": "build/dapp/smart-contracts",
   "slug": "/build/dapp/smart-contracts/get-funds-faucet",
@@ -25,13 +25,13 @@
       "Build",
       "Dapps"
     ],
-    "description": "This tutorial focuses on how to get a \"drip\" of LUX from the Testnet testnet faucet.",
+    "description": "This tutorial focuses on how to get a \"drip\" of LUX from the Testnet faucet.",
     "sidebar_label": "💰 Get Test Funds",
     "pagination_label": "Get Test Funds from the Testnet Faucet"
   },
   "sidebar": "build-dapp",
   "previous": {
-    "title": "Lux Network Runner",
+    "title": "Lux Netrunner",
     "permalink": "/tooling/netrunner"
   },
   "next": {

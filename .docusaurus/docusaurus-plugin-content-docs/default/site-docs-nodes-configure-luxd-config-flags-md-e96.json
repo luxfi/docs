@@ -28,8 +28,8 @@
   },
   "sidebar": "nodes",
   "previous": {
-    "title": "Common Errors While Building a Node",
-    "permalink": "/nodes/run/FAQ"
+    "title": "Luxd Configs and Flags",
+    "permalink": "/nodes/configure/avalanchego-config-flags"
   },
   "next": {
     "title": "Chain Configs",

@@ -2,25 +2,31 @@
   "label": "Build",
   "permalink": "/tags/build",
   "allTagsPath": "/tags",
-  "count": 60,
+  "count": 66,
   "items": [
-    {
-      "id": "build/subnet/README",
-      "title": "▼ Lux Subnets",
-      "description": "Subnets",
-      "permalink": "/build/subnet/"
-    },
-    {
-      "id": "build/vm/README",
-      "title": "▼ Virtual Machines",
-      "description": "Virtual Machines",
-      "permalink": "/build/vm/"
-    },
     {
       "id": "build/dapp/README",
       "title": "🔗 Dapps Quick Links",
       "description": "Dapps",
       "permalink": "/build/dapp/"
+    },
+    {
+      "id": "build/subnet/README",
+      "title": "🔺 Lux Subnets",
+      "description": "Subnets",
+      "permalink": "/build/subnet/"
+    },
+    {
+      "id": "build/vm/README",
+      "title": "🔺 Virtual Machines",
+      "description": "Virtual Machines",
+      "permalink": "/build/vm/"
+    },
+    {
+      "id": "build/dapp/advanced/add-avalanche-programmatically",
+      "title": "Add Lux Network Programmatically",
+      "description": "This document shows how to integrate Lux Network with your Dapp, either by Core or MetaMask.",
+      "permalink": "/build/dapp/advanced/add-avalanche-programmatically"
     },
     {
       "id": "build/dapp/advanced/add-lux-programmatically",
@@ -93,6 +99,12 @@
       "title": "Deploy a Permissioned Subnet on Mainnet",
       "description": "This tutorial demonstrates how to deploy a permissioned Subnet on Lux Mainnet.",
       "permalink": "/build/subnet/deploy/mainnet-subnet"
+    },
+    {
+      "id": "build/subnet/deploy/testnet-testnet-subnet",
+      "title": "Deploy a Permissioned Subnet on Testnet",
+      "description": "This tutorial demonstrates how to deploy a permissioned Subnet on Testnet.",
+      "permalink": "/build/subnet/deploy/testnet-testnet-subnet"
     },
     {
       "id": "build/subnet/deploy/testnet-subnet",
@@ -169,7 +181,7 @@
     {
       "id": "build/dapp/smart-contracts/get-funds-faucet",
       "title": "Get Test Funds from the Testnet Faucet",
-      "description": "This tutorial focuses on how to get a \"drip\" of LUX from the Testnet testnet faucet.",
+      "description": "This tutorial focuses on how to get a \"drip\" of LUX from the Testnet faucet.",
       "permalink": "/build/dapp/smart-contracts/get-funds-faucet"
     },
     {
@@ -282,8 +294,14 @@
     },
     {
       "id": "tooling/netrunner",
-      "title": "Lux Network Runner",
-      "description": "The Lux Network Runner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
+      "title": "Lux Netrunner",
+      "description": "The Lux Netrunner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
+      "permalink": "/tooling/netrunner"
+    },
+    {
+      "id": "tooling/netrunner",
+      "title": "Lux Netrunner",
+      "description": "The Lux Netrunner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
       "permalink": "/tooling/netrunner"
     },
     {
@@ -311,6 +329,12 @@
       "permalink": "/build/dapp/testnet-workflow"
     },
     {
+      "id": "build/dapp/testnet-workflow",
+      "title": "Testnet Workflow",
+      "description": "An end-to-end walkthrough of necessary development activities for a bare-bones decentralized application.",
+      "permalink": "/build/dapp/testnet-workflow"
+    },
+    {
       "id": "build/subnet/info/troubleshoot-subnet",
       "title": "Troubleshooting Subnet Deployments",
       "description": "A reference for tips to resolve common issues while deploying Subnets on Lux.",
@@ -329,6 +353,12 @@
       "permalink": "/build/dapp/smart-contracts/toolchains/hardhat"
     },
     {
+      "id": "deprecated/truffle",
+      "title": "Using Truffle with the Lux C-Chain",
+      "description": "Launching any new or existing Solidity decentralized app on Lux C-Chain fosters the same developer experience as Ethereum, but benefits from the security, speed, and interoperability of the Lux Network.",
+      "permalink": "/deprecated/truffle"
+    },
+    {
       "id": "build/dapp/smart-contracts/verification/verify-smart-contracts",
       "title": "Verify Smart Contracts on the C-Chain Explorer",
       "description": "This tutorial walks through verifying a smart contract on the Snowtrace block explorer.",
@@ -339,6 +369,12 @@
       "title": "Verifying Smart Contracts Using Hardhat and Snowtrace",
       "description": "This tutorial walks through verifying a smart contract on a block explorer using Hardhat after deploying it to Avalance C-Chain.",
       "permalink": "/build/dapp/smart-contracts/verification/verify-hardhat"
+    },
+    {
+      "id": "deprecated/verify-truffle",
+      "title": "Verifying Smart Contracts with Truffle Verify",
+      "description": "This tutorial walks through verifying a smart contract on a block explorer using Truffle after deploying it to Avalance C-Chain.",
+      "permalink": "/deprecated/verify-truffle"
     },
     {
       "id": "build/subnet/info/wagmi",

@@ -11,7 +11,7 @@ pagination_label: Flujo de trabajo de Testnet
 
 Testnet es la red de prueba de la red Lux. Puedes usarla para probar tu dapp
 o contrato inteligente después de haberlo desarrollado localmente. (Puedes usar
-[Lux Network Runner](/tooling/netrunner.md) para probar cosas localmente). Testnet está
+[Lux Netrunner](/tooling/netrunner.md) para probar cosas localmente). Testnet está
 típicamente en la misma versión que la Lux Mainnet, pero a veces está
 ejecutando una versión no lanzada de Luxd. En general, puedes esperar que el comportamiento de Testnet sea más o menos el mismo que el de Lux Mainnet. Herramientas como exploradores
 y billeteras deberían funcionar con la Testnet.

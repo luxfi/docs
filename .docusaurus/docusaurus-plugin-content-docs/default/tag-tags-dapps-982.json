@@ -2,8 +2,14 @@
   "label": "Dapps",
   "permalink": "/tags/dapps",
   "allTagsPath": "/tags",
-  "count": 21,
+  "count": 26,
   "items": [
+    {
+      "id": "build/dapp/advanced/add-avalanche-programmatically",
+      "title": "Add Lux Network Programmatically",
+      "description": "This document shows how to integrate Lux Network with your Dapp, either by Core or MetaMask.",
+      "permalink": "/build/dapp/advanced/add-avalanche-programmatically"
+    },
     {
       "id": "build/dapp/advanced/add-lux-programmatically",
       "title": "Add Lux Network Programmatically",
@@ -55,7 +61,7 @@
     {
       "id": "build/dapp/smart-contracts/get-funds-faucet",
       "title": "Get Test Funds from the Testnet Faucet",
-      "description": "This tutorial focuses on how to get a \"drip\" of LUX from the Testnet testnet faucet.",
+      "description": "This tutorial focuses on how to get a \"drip\" of LUX from the Testnet faucet.",
       "permalink": "/build/dapp/smart-contracts/get-funds-faucet"
     },
     {
@@ -84,8 +90,14 @@
     },
     {
       "id": "tooling/netrunner",
-      "title": "Lux Network Runner",
-      "description": "The Lux Network Runner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
+      "title": "Lux Netrunner",
+      "description": "The Lux Netrunner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
+      "permalink": "/tooling/netrunner"
+    },
+    {
+      "id": "tooling/netrunner",
+      "title": "Lux Netrunner",
+      "description": "The Lux Netrunner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
       "permalink": "/tooling/netrunner"
     },
     {
@@ -107,6 +119,12 @@
       "permalink": "/build/dapp/testnet-workflow"
     },
     {
+      "id": "build/dapp/testnet-workflow",
+      "title": "Testnet Workflow",
+      "description": "An end-to-end walkthrough of necessary development activities for a bare-bones decentralized application.",
+      "permalink": "/build/dapp/testnet-workflow"
+    },
+    {
       "id": "build/dapp/smart-contracts/toolchains/foundry",
       "title": "Using Foundry with the Lux C-Chain",
       "description": "This guide shows how to deploy and interact with smart contracts using foundry on a local Lux Network and the Testnet C-Chain.",
@@ -119,6 +137,12 @@
       "permalink": "/build/dapp/smart-contracts/toolchains/hardhat"
     },
     {
+      "id": "deprecated/truffle",
+      "title": "Using Truffle with the Lux C-Chain",
+      "description": "Launching any new or existing Solidity decentralized app on Lux C-Chain fosters the same developer experience as Ethereum, but benefits from the security, speed, and interoperability of the Lux Network.",
+      "permalink": "/deprecated/truffle"
+    },
+    {
       "id": "build/dapp/smart-contracts/verification/verify-smart-contracts",
       "title": "Verify Smart Contracts on the C-Chain Explorer",
       "description": "This tutorial walks through verifying a smart contract on the Snowtrace block explorer.",
@@ -129,6 +153,12 @@
       "title": "Verifying Smart Contracts Using Hardhat and Snowtrace",
       "description": "This tutorial walks through verifying a smart contract on a block explorer using Hardhat after deploying it to Avalance C-Chain.",
       "permalink": "/build/dapp/smart-contracts/verification/verify-hardhat"
+    },
+    {
+      "id": "deprecated/verify-truffle",
+      "title": "Verifying Smart Contracts with Truffle Verify",
+      "description": "This tutorial walks through verifying a smart contract on a block explorer using Truffle after deploying it to Avalance C-Chain.",
+      "permalink": "/deprecated/verify-truffle"
     }
   ],
   "unlisted": false

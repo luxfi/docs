@@ -18,7 +18,7 @@ All configuration options and their default values are described [here](../nodes
 
 You can supply configuration options on the command line, or use a config file, which can be easier to work with when supplying many options. You can specify the config file location with `—config-file=config.json`, where `config.json` is a JSON file whose keys and values are option names and values.
 
-Individual chains, including the C-Chain, have their own configuration options which are separate from the node-level options. These can also be specified in a config file. For more details, see [here](../nodes/maintain/chain-config-flags.md#c-chain-configs).
+Individual chains, including the C-Chain, have their own configuration options which are separate from the node-level options. These can also be specified in a config file. For more details, see [here](../nodes/configure/chain-config-flags.md#c-chain-configs).
 
 The C-Chain config file should be at `$HOME/.luxd/configs/chains/C/config.json`. You can also tell Luxd to look somewhere else for the C-Chain config file with option `--chain-config-dir`. An example C-Chain config file:
 

@@ -1,7 +1,7 @@
 {
   "id": "tooling/netrunner",
-  "title": "Lux Network Runner",
-  "description": "The Lux Network Runner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
+  "title": "Lux Netrunner",
+  "description": "The Lux Netrunner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
   "source": "@site/docs/tooling/netrunner.md",
   "sourceDirName": "tooling",
   "slug": "/tooling/netrunner",
@@ -30,9 +30,9 @@
       "Tooling",
       "Dapps"
     ],
-    "description": "The Lux Network Runner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
-    "sidebar_label": "Lux Network Runner",
-    "pagination_label": "Lux Network Runner"
+    "description": "The Lux Netrunner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
+    "sidebar_label": "Lux Netrunner",
+    "pagination_label": "Lux Netrunner"
   },
   "sidebar": "tooling",
   "previous": {

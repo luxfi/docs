@@ -2,13 +2,25 @@
   "label": "Lux",
   "permalink": "/tags/lux",
   "allTagsPath": "/tags",
-  "count": 2,
+  "count": 4,
   "items": [
+    {
+      "id": "learn/avalanche/avax",
+      "title": "LUX",
+      "description": "LUX is the limited-supply token of the Lux network, used to cover fees, enhance security via staking, and facilitate transactions across its various Subnets.",
+      "permalink": "/learn/avalanche/avax"
+    },
     {
       "id": "learn/lux/lux",
       "title": "LUX",
       "description": "LUX is the limited-supply token of the Lux network, used to cover fees, enhance security via staking, and facilitate transactions across its various Subnets.",
       "permalink": "/learn/lux/"
+    },
+    {
+      "id": "learn/avalanche/intro",
+      "title": "What Is Lux?",
+      "description": "Lux is an open-source platform for building dApps in an interoperable, decentralized, and highly scalable ecosystem.",
+      "permalink": "/intro"
     },
     {
       "id": "learn/lux/intro",

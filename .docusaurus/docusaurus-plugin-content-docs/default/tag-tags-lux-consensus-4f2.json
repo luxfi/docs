@@ -2,8 +2,14 @@
   "label": "Lux Consensus",
   "permalink": "/tags/lux-consensus",
   "allTagsPath": "/tags",
-  "count": 1,
+  "count": 2,
   "items": [
+    {
+      "id": "learn/avalanche/avalanche-consensus",
+      "title": "Lux Consensus",
+      "description": "Lux Consensus is a consensus protocol that is scalable, robust, and decentralized.",
+      "permalink": "/learn/avalanche/avalanche-consensus"
+    },
     {
       "id": "learn/lux/consensus",
       "title": "Lux Consensus",

@@ -19,13 +19,13 @@
     },
     "config": "5e9f5e1a"
   },
-  "/-8b8": {
+  "/-bee": {
     "__comp": "5e95c892",
     "__context": {
       "plugin": "059fabf7"
     }
   },
-  "/-37b": {
+  "/-a55": {
     "__comp": "a7bd4aaa",
     "version": "935f2afb"
   },
@@ -161,108 +161,16 @@
     "__comp": "df203c0f",
     "tag": "f5249aae"
   },
-  "/-755": {
+  "/-be7": {
     "__comp": "a94703ab"
-  },
-  "/apis/luxd-df1": {
-    "__comp": "17896441",
-    "content": "1de7a2d3"
-  },
-  "/apis/luxd/apis-4a1": {
-    "__comp": "17896441",
-    "content": "be6523a3"
-  },
-  "/apis/luxd/apis/admin-ad3": {
-    "__comp": "17896441",
-    "content": "1ad2b5dd"
-  },
-  "/apis/luxd/apis/auth-0ac": {
-    "__comp": "17896441",
-    "content": "43539479"
-  },
-  "/apis/luxd/apis/c-chain-e80": {
-    "__comp": "17896441",
-    "content": "8553d7fa"
-  },
-  "/apis/luxd/apis/health-072": {
-    "__comp": "17896441",
-    "content": "39c23c41"
-  },
-  "/apis/luxd/apis/index-api-649": {
-    "__comp": "17896441",
-    "content": "2f173aa1"
-  },
-  "/apis/luxd/apis/info-da6": {
-    "__comp": "17896441",
-    "content": "3391559b"
-  },
-  "/apis/luxd/apis/ipc-b16": {
-    "__comp": "17896441",
-    "content": "c49424a1"
-  },
-  "/apis/luxd/apis/issuing-api-calls-95f": {
-    "__comp": "17896441",
-    "content": "e0958e9b"
-  },
-  "/apis/luxd/apis/keystore-5b0": {
-    "__comp": "17896441",
-    "content": "967c2818"
-  },
-  "/apis/luxd/apis/metrics-8ec": {
-    "__comp": "17896441",
-    "content": "5208961d"
-  },
-  "/apis/luxd/apis/p-chain-d04": {
-    "__comp": "17896441",
-    "content": "ee9d13f5"
-  },
-  "/apis/luxd/apis/x-chain-c0f": {
-    "__comp": "17896441",
-    "content": "10d5b7cb"
-  },
-  "/apis/luxd/cb58-deprecation-a44": {
-    "__comp": "17896441",
-    "content": "4c200229"
-  },
-  "/apis/luxd/luxd-release-notes-bf9": {
-    "__comp": "17896441",
-    "content": "9f1144b3"
-  },
-  "/apis/luxd/postman-lux-collection-f8b": {
-    "__comp": "17896441",
-    "content": "fee6c828"
-  },
-  "/apis/luxd/public-api-server-2f9": {
-    "__comp": "17896441",
-    "content": "8575d5aa"
-  },
-  "/apis/luxjs-081": {
-    "__comp": "17896441",
-    "content": "78ea86e7"
-  },
-  "/apis/luxjs/api-31c": {
-    "__comp": "17896441",
-    "content": "0267da6b"
-  },
-  "/apis/luxjs/create-an-asset-on-the-x-chain-510": {
-    "__comp": "17896441",
-    "content": "c83cfc3f"
-  },
-  "/apis/luxjs/generate-a-txid-using-luxjs-234": {
-    "__comp": "17896441",
-    "content": "8beefc43"
-  },
-  "/apis/luxjs/manage-x-chain-keys-57b": {
-    "__comp": "17896441",
-    "content": "719de541"
-  },
-  "/apis/luxjs/send-an-asset-on-the-x-chain-edb": {
-    "__comp": "17896441",
-    "content": "69d79fcb"
   },
   "/build/dapp-335": {
     "__comp": "17896441",
     "content": "fa959038"
+  },
+  "/build/dapp/advanced/add-avalanche-programmatically-4c9": {
+    "__comp": "17896441",
+    "content": "b3155149"
   },
   "/build/dapp/advanced/add-lux-programmatically-ada": {
     "__comp": "17896441",
@@ -291,6 +199,10 @@
   "/build/dapp/explorers-44b": {
     "__comp": "17896441",
     "content": "a7ad87e9"
+  },
+  "/build/dapp/testnet-workflow-cec": {
+    "__comp": "17896441",
+    "content": "e3f3307c"
   },
   "/build/dapp/launch-dapp-bca": {
     "__comp": "17896441",
@@ -355,6 +267,10 @@
   "/build/subnet/deploy/custom-vm-subnet-615": {
     "__comp": "17896441",
     "content": "f3f42adb"
+  },
+  "/build/subnet/deploy/testnet-testnet-subnet-3f0": {
+    "__comp": "17896441",
+    "content": "af8620c0"
   },
   "/build/subnet/deploy/local-subnet-b61": {
     "__comp": "17896441",
@@ -496,45 +412,281 @@
     "__comp": "17896441",
     "content": "dd6bb706"
   },
-  "/dapps/smart-contracts/add-lux-to-metamask-programmatically-9ac": {
+  "/deprecated/deploy-a-gnosis-safe-on-your-evm-6d1": {
     "__comp": "17896441",
-    "content": "0f89f7b0"
+    "content": "159176cf"
   },
-  "/dapps/smart-contracts/create-erc-20-token-on-lux-c-chain-244": {
+  "/deprecated/dfk-subnet-node-137": {
     "__comp": "17896441",
-    "content": "0a1081a1"
+    "content": "c1fd324e"
   },
-  "/dapps/smart-contracts/deploy-a-smart-contract-on-lux-using-remix-and-metamask-570": {
+  "/deprecated/truffle-21a": {
     "__comp": "17896441",
-    "content": "52baeb6f"
+    "content": "6f10a64f"
   },
-  "/dapps/smart-contracts/using-foundry-with-the-lux-c-chain-6d2": {
+  "/deprecated/tutorials-contest-828": {
     "__comp": "17896441",
-    "content": "0c80e987"
+    "content": "e48e6003"
   },
-  "/dapps/smart-contracts/using-hardhat-with-the-lux-c-chain-1e2": {
+  "/deprecated/tutorials-contest/2021-831": {
     "__comp": "17896441",
-    "content": "369fcfa1"
+    "content": "df50f526"
   },
-  "/dapps/smart-contracts/using-truffle-with-the-lux-c-chain-986": {
+  "/deprecated/tutorials-contest/2021/avalanche-DAO-beb": {
     "__comp": "17896441",
-    "content": "135f78e9"
+    "content": "ed9544f6"
   },
-  "/dapps/smart-contracts/verify-smart-contract-using-hardhat-and-snowtrace-869": {
+  "/deprecated/tutorials-contest/2021/avax-chat-dapp-a9f": {
     "__comp": "17896441",
-    "content": "e45ecd7f"
+    "content": "7d2e5a22"
   },
-  "/dapps/smart-contracts/verify-smart-contracts-with-truffle-verify-b8f": {
+  "/deprecated/tutorials-contest/2021/distributed-file-manager-96b": {
     "__comp": "17896441",
-    "content": "669e5047"
+    "content": "7c03bc8d"
+  },
+  "/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js-ca9": {
+    "__comp": "17896441",
+    "content": "560e82c1"
+  },
+  "/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSUploader.js-9d7": {
+    "__comp": "17896441",
+    "content": "c5414cd2"
+  },
+  "/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSViewer.js-532": {
+    "__comp": "17896441",
+    "content": "fb1872b3"
+  },
+  "/deprecated/tutorials-contest/2021/drizzle-auction-manager-c7e": {
+    "__comp": "17896441",
+    "content": "d675a267"
+  },
+  "/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/Auction.js-fbd": {
+    "__comp": "17896441",
+    "content": "204287cf"
+  },
+  "/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/AuctionList.js-886": {
+    "__comp": "17896441",
+    "content": "6d3fe493"
+  },
+  "/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/CreateAuction.js-b5c": {
+    "__comp": "17896441",
+    "content": "f88b702c"
+  },
+  "/deprecated/tutorials-contest/2021/evoting-avalanche-dapp-1df": {
+    "__comp": "17896441",
+    "content": "1a72dc8c"
+  },
+  "/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/ActiveElections.js-d81": {
+    "__comp": "17896441",
+    "content": "3c6be50c"
+  },
+  "/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/CreateElection.js-489": {
+    "__comp": "17896441",
+    "content": "131c504e"
+  },
+  "/deprecated/tutorials-contest/2021/evoting-avalanche-dapp/frontend/VoteModal.js-b96": {
+    "__comp": "17896441",
+    "content": "c0388875"
+  },
+  "/deprecated/tutorials-contest/2021/hardhat-fork-c3c": {
+    "__comp": "17896441",
+    "content": "2a379531"
+  },
+  "/deprecated/tutorials-contest/2021/how-to-mint-erc721-using-openzeppelin/tutorial-2e5": {
+    "__comp": "17896441",
+    "content": "031e2e02"
+  },
+  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche-3d2": {
+    "__comp": "17896441",
+    "content": "0d7fb457"
+  },
+  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend-27e": {
+    "__comp": "17896441",
+    "content": "74146cdf"
+  },
+  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/public/index-html-e51": {
+    "__comp": "17896441",
+    "content": "58d82291"
+  },
+  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/App.js-3d8": {
+    "__comp": "17896441",
+    "content": "f7b7a261"
+  },
+  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/index.js-91c": {
+    "__comp": "17896441",
+    "content": "28c5bf7b"
+  },
+  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js-af2": {
+    "__comp": "17896441",
+    "content": "a5d0229d"
+  },
+  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Avalanche/NFT-Marketplace-dApp/frontend/src/setupTests.js-1dc": {
+    "__comp": "17896441",
+    "content": "853d4bb3"
+  },
+  "/deprecated/tutorials-contest/2021/pangolin-token-subgraph-091": {
+    "__comp": "17896441",
+    "content": "6e07e3fc"
+  },
+  "/deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial-31f": {
+    "__comp": "17896441",
+    "content": "88340757"
+  },
+  "/deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial/ansible-chainlink-avalanche-setup-2e4": {
+    "__comp": "17896441",
+    "content": "97b8a149"
+  },
+  "/deprecated/tutorials-contest/2021/red-dev-avalanche-chainlink-tutorial/chainlink-external-adaptor-d13": {
+    "__comp": "17896441",
+    "content": "eef65897"
+  },
+  "/deprecated/tutorials-contest/2021/red-dev-sig-verify-tutorial-9d3": {
+    "__comp": "17896441",
+    "content": "f86a6424"
+  },
+  "/deprecated/tutorials-contest/2022-cc3": {
+    "__comp": "17896441",
+    "content": "b993aca4"
+  },
+  "/deprecated/tutorials-contest/2022/avalanche-theGraph-index-588": {
+    "__comp": "17896441",
+    "content": "68864c43"
+  },
+  "/deprecated/tutorials-contest/2022/avax-subnet-customization-4b8": {
+    "__comp": "17896441",
+    "content": "e475b380"
+  },
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token-681": {
+    "__comp": "17896441",
+    "content": "9c7f80f3"
+  },
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/chains.js-6e0": {
+    "__comp": "17896441",
+    "content": "d5df6fb5"
+  },
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/nativeMinterAddress.js-6ac": {
+    "__comp": "17896441",
+    "content": "06ffb84a"
+  },
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol-66b": {
+    "__comp": "17896441",
+    "content": "6a7690aa"
+  },
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol-981": {
+    "__comp": "17896441",
+    "content": "b8a3e4df"
+  },
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol-327": {
+    "__comp": "17896441",
+    "content": "e8b41ddf"
+  },
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol-ece": {
+    "__comp": "17896441",
+    "content": "0d596c36"
+  },
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBalance.js-469": {
+    "__comp": "17896441",
+    "content": "24cc31c0"
+  },
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBurnOrLock.js-326": {
+    "__comp": "17896441",
+    "content": "b130e201"
+  },
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterDeploy.js-61a": {
+    "__comp": "17896441",
+    "content": "954d3aeb"
+  },
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/relayer.js-cdf": {
+    "__comp": "17896441",
+    "content": "dd1e8c99"
+  },
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/balance.js-961": {
+    "__comp": "17896441",
+    "content": "b11725b0"
+  },
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/burnOrLock.js-36b": {
+    "__comp": "17896441",
+    "content": "de6d98db"
+  },
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/deploy.js-4fb": {
+    "__comp": "17896441",
+    "content": "7d8c2e33"
+  },
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initContracts.js-ab1": {
+    "__comp": "17896441",
+    "content": "9155e35e"
+  },
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initProviders.js-b07": {
+    "__comp": "17896441",
+    "content": "90a32d0a"
+  },
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initSigners.js-125": {
+    "__comp": "17896441",
+    "content": "10809184"
+  },
+  "/deprecated/tutorials-contest/2022/local-subnet-development-90d": {
+    "__comp": "17896441",
+    "content": "ad5891fc"
+  },
+  "/deprecated/tutorials-contest/2022/local-subnet-development/hardhat.config.ts-612": {
+    "__comp": "17896441",
+    "content": "fb847014"
+  },
+  "/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/AllowList-111": {
+    "__comp": "17896441",
+    "content": "b98c7182"
+  },
+  "/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/NativeMinter-ba6": {
+    "__comp": "17896441",
+    "content": "a17a0f86"
+  },
+  "/deprecated/verify-truffle-523": {
+    "__comp": "17896441",
+    "content": "a017eab4"
   },
   "/disclaimer-76c": {
     "__comp": "17896441",
     "content": "fe0242b1"
   },
+  "/intro-421": {
+    "__comp": "17896441",
+    "content": "50319dad"
+  },
   "/intro-2fc": {
     "__comp": "17896441",
     "content": "5ccc9166"
+  },
+  "/learn/avalanche/avalanche-consensus-3f8": {
+    "__comp": "17896441",
+    "content": "3d437d4a"
+  },
+  "/learn/avalanche/avalanche-platform-b13": {
+    "__comp": "17896441",
+    "content": "90f14f37"
+  },
+  "/learn/avalanche/avax-144": {
+    "__comp": "17896441",
+    "content": "71b1316d"
+  },
+  "/learn/avalanche/awm-f18": {
+    "__comp": "17896441",
+    "content": "b05bf875"
+  },
+  "/learn/avalanche/testnet-11e": {
+    "__comp": "17896441",
+    "content": "f438ab60"
+  },
+  "/learn/avalanche/mainnet-ebd": {
+    "__comp": "17896441",
+    "content": "2ff9e933"
+  },
+  "/learn/avalanche/subnets-overview-876": {
+    "__comp": "17896441",
+    "content": "a193fa86"
+  },
+  "/learn/avalanche/virtual-machines-3d1": {
+    "__comp": "17896441",
+    "content": "14ebc3de"
   },
   "/learn/lux-787": {
     "__comp": "17896441",
@@ -588,6 +740,10 @@
     "__comp": "17896441",
     "content": "78134a83"
   },
+  "/nodes/configure/avalanchego-config-flags-cf0": {
+    "__comp": "17896441",
+    "content": "64217976"
+  },
   "/nodes/configure/chain-config-flags-cd7": {
     "__comp": "17896441",
     "content": "773f2174"
@@ -600,13 +756,13 @@
     "__comp": "17896441",
     "content": "c04397f4"
   },
+  "/nodes/maintain/avalanche-notify-5d5": {
+    "__comp": "17896441",
+    "content": "ccf0aac9"
+  },
   "/nodes/maintain/background-service-config-4ad": {
     "__comp": "17896441",
     "content": "c5898dc1"
-  },
-  "/nodes/maintain/lux-notify-d81": {
-    "__comp": "17896441",
-    "content": "3cd90470"
   },
   "/nodes/maintain/luxd-config-flags-832": {
     "__comp": "17896441",
@@ -620,6 +776,10 @@
     "__comp": "17896441",
     "content": "1ccd99e2"
   },
+  "/nodes/maintain/notify-dc4": {
+    "__comp": "17896441",
+    "content": "889a5e00"
+  },
   "/nodes/maintain/run-offline-pruning-d47": {
     "__comp": "17896441",
     "content": "9bd2e3a7"
@@ -627,6 +787,10 @@
   "/nodes/maintain/setting-up-node-monitoring-c9e": {
     "__comp": "17896441",
     "content": "a01ad309"
+  },
+  "/nodes/maintain/upgrade-your-avalanchego-node-566": {
+    "__comp": "17896441",
+    "content": "44c47c07"
   },
   "/nodes/maintain/upgrade-your-luxd-node-48d": {
     "__comp": "17896441",
@@ -676,9 +840,17 @@
     "__comp": "17896441",
     "content": "aca3d6c2"
   },
+  "/nodes/run/with-installer/installing-avalanchego-85c": {
+    "__comp": "17896441",
+    "content": "69f92ee2"
+  },
   "/nodes/run/with-installer/installing-luxd-184": {
     "__comp": "17896441",
     "content": "677a56c3"
+  },
+  "/nodes/run/with-installer/managing-avalanchego-0cc": {
+    "__comp": "17896441",
+    "content": "e5a5a0e2"
   },
   "/nodes/run/with-installer/managing-luxd-f06": {
     "__comp": "17896441",
@@ -707,14 +879,6 @@
   "/nodes/validate/what-is-staking-da4": {
     "__comp": "17896441",
     "content": "120df418"
-  },
-  "/overview/getting-started/lux-consensus-f4f": {
-    "__comp": "17896441",
-    "content": "12592878"
-  },
-  "/overview/getting-started/lux-platform-cb9": {
-    "__comp": "17896441",
-    "content": "ca0c2faa"
   },
   "/quickstart/integrate-exchange-with-lux-ba7": {
     "__comp": "17896441",
@@ -784,6 +948,10 @@
     "__comp": "17896441",
     "content": "30e67e48"
   },
+  "/reference/standards/avalanche-network-protocol-7d6": {
+    "__comp": "17896441",
+    "content": "7e506ae0"
+  },
   "/reference/standards/cryptographic-primitives-cd3": {
     "__comp": "17896441",
     "content": "4e2aa73e"
@@ -820,25 +988,77 @@
     "__comp": "17896441",
     "content": "9f3e435b"
   },
-  "/specs/coreth-arc20s-0a4": {
-    "__comp": "17896441",
-    "content": "a5cbe27d"
-  },
-  "/subnets/create-a-evm-blockchain-on-subnet-with-luxjs-4d4": {
-    "__comp": "17896441",
-    "content": "d010c78a"
-  },
-  "/subnets/create-a-virtual-machine-vm-c30": {
-    "__comp": "17896441",
-    "content": "250c8ee5"
-  },
-  "/subnets/lux-subnet-faucet-eac": {
-    "__comp": "17896441",
-    "content": "71150146"
-  },
   "/tooling-3a1": {
     "__comp": "17896441",
     "content": "583667c9"
+  },
+  "/tooling/avalanche-cli-281": {
+    "__comp": "17896441",
+    "content": "4a66da68"
+  },
+  "/tooling/avalanche-ops-d59": {
+    "__comp": "17896441",
+    "content": "08777f3a"
+  },
+  "/tooling/avalanche-plugin-manager-6a3": {
+    "__comp": "17896441",
+    "content": "868411af"
+  },
+  "/tooling/avalanchego-installer-479": {
+    "__comp": "17896441",
+    "content": "844a9fc3"
+  },
+  "/tooling/avalanchego-postman-collection/data-visualization-632": {
+    "__comp": "17896441",
+    "content": "2a56f6d8"
+  },
+  "/tooling/avalanchego-postman-collection/making-api-calls-b03": {
+    "__comp": "17896441",
+    "content": "1da824ee"
+  },
+  "/tooling/avalanchego-postman-collection/setup-f44": {
+    "__comp": "17896441",
+    "content": "b1f6bcf6"
+  },
+  "/tooling/avalanchego-postman-collection/variables-f20": {
+    "__comp": "17896441",
+    "content": "ff50614d"
+  },
+  "/tooling/avalanchejs-api-e58": {
+    "__comp": "17896441",
+    "content": "96df260d"
+  },
+  "/tooling/avalanchejs-guides/create-an-asset-on-the-x-chain-cf1": {
+    "__comp": "17896441",
+    "content": "817b2174"
+  },
+  "/tooling/avalanchejs-guides/cross-chain-transfers-4bf": {
+    "__comp": "17896441",
+    "content": "14a16f35"
+  },
+  "/tooling/avalanchejs-guides/generate-a-txid-using-avalanchejs-626": {
+    "__comp": "17896441",
+    "content": "8c1443b2"
+  },
+  "/tooling/avalanchejs-guides/generate-key-pair-e78": {
+    "__comp": "17896441",
+    "content": "bc21accd"
+  },
+  "/tooling/avalanchejs-guides/manage-x-chain-keys-51f": {
+    "__comp": "17896441",
+    "content": "2cf22a10"
+  },
+  "/tooling/avalanchejs-guides/multisig-utxos-with-avalanchejs-0f3": {
+    "__comp": "17896441",
+    "content": "65685aba"
+  },
+  "/tooling/avalanchejs-guides/send-an-asset-on-the-x-chain-074": {
+    "__comp": "17896441",
+    "content": "2bea6b38"
+  },
+  "/tooling/avalanchejs-overview-1fc": {
+    "__comp": "17896441",
+    "content": "31e12e42"
   },
   "/tooling/cli-410": {
     "__comp": "17896441",
@@ -855,6 +1075,10 @@
   "/tooling/cli-guides/import-subnet-987": {
     "__comp": "17896441",
     "content": "ea10ddd0"
+  },
+  "/tooling/cli-guides/install-avalanche-cli-e0d": {
+    "__comp": "17896441",
+    "content": "c2efae35"
   },
   "/tooling/cli-guides/install-lux-cli-589": {
     "__comp": "17896441",
@@ -959,6 +1183,10 @@
   "/tooling/netrunner-daa": {
     "__comp": "17896441",
     "content": "29266d55"
+  },
+  "/tooling/netrunner-b67": {
+    "__comp": "17896441",
+    "content": "9569fdf7"
   },
   "/tooling/ops-c27": {
     "__comp": "17896441",

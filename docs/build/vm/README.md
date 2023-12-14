@@ -1,5 +1,5 @@
 ---
-title: ▼ Virtual Machines
+title: 🔺 Virtual Machines
 tags: [Build, Virtual Machines]
 description: Virtual Machines 
 sidebar_label: 🔗 Quick Links

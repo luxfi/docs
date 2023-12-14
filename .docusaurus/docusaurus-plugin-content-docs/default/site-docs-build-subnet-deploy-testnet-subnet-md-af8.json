@@ -1,14 +1,14 @@
 {
-  "id": "build/subnet/deploy/fuji-testnet-subnet",
+  "id": "build/subnet/deploy/testnet-subnet",
   "title": "Deploy a Permissioned Subnet on Testnet",
   "description": "This tutorial demonstrates how to deploy a permissioned Subnet on Testnet.",
-  "source": "@site/docs/build/subnet/deploy/fuji-testnet-subnet.md",
+  "source": "@site/docs/build/subnet/deploy/testnet-subnet.md",
   "sourceDirName": "build/subnet/deploy",
-  "slug": "/build/subnet/deploy/fuji-testnet-subnet",
-  "permalink": "/build/subnet/deploy/fuji-testnet-subnet",
+  "slug": "/build/subnet/deploy/testnet-subnet",
+  "permalink": "/build/subnet/deploy/testnet-subnet",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/build/subnet/deploy/fuji-testnet-subnet.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/build/subnet/deploy/testnet-subnet.md",
   "tags": [
     {
       "label": "Build",

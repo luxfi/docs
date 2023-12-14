@@ -37,7 +37,7 @@ para obtener fondos en tu dirección de C-Chain.
 
 ## Iniciar una Red Lux Local
 
-[Lux Network Runner](https://github.com/luxdefi/netrunner)
+[Lux Netrunner](https://github.com/luxdefi/netrunner)
 te permite iniciar despliegues de redes de prueba privadas. Inicia una red Lux local de cinco nodos:
 
 ```text
@@ -288,7 +288,7 @@ Debes enviar al menos `135422040` nLUX a la cuenta para cubrir el costo de despl
 
 ### APIs Personales
 
-Las APIs personales interactúan con las cuentas del nodo. `web3` tiene algunas funciones que la utilizan, por ejemplo: `web3.eth.personal.newAccount`, `web3.eth.personal.unlockAccount`, etc... Sin embargo, esta API está desactivada por defecto. Puede ser activada con las configuraciones de `C-chain`/`Coreth`. El Lux Network Runner actualmente no soporta la activación de esta API. Así que si quieres usar estas características, necesitas ejecutar tu propia red manualmente con la API `internal-private-personal` habilitada a través de la bandera `eth-apis`. Consulta y
+Las APIs personales interactúan con las cuentas del nodo. `web3` tiene algunas funciones que la utilizan, por ejemplo: `web3.eth.personal.newAccount`, `web3.eth.personal.unlockAccount`, etc... Sin embargo, esta API está desactivada por defecto. Puede ser activada con las configuraciones de `C-chain`/`Coreth`. El Lux Netrunner actualmente no soporta la activación de esta API. Así que si quieres usar estas características, necesitas ejecutar tu propia red manualmente con la API `internal-private-personal` habilitada a través de la bandera `eth-apis`. Consulta y
 [Configuraciones de C-Chain](/nodes/configure/chain-config-flags.md#c-chain-configs).
 
 ## Ejecutar Migraciones

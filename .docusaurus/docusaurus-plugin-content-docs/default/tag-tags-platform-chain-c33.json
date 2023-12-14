@@ -2,7 +2,7 @@
   "label": "Platform Chain",
   "permalink": "/tags/platform-chain",
   "allTagsPath": "/tags",
-  "count": 3,
+  "count": 4,
   "items": [
     {
       "id": "reference/luxd/p-chain/txn-format",
@@ -15,6 +15,12 @@
       "title": "Platform Chain API",
       "description": "This page is an overview of the P-Chain API associated with Luxd.",
       "permalink": "/reference/luxd/p-chain/api"
+    },
+    {
+      "id": "learn/avalanche/avalanche-platform",
+      "title": "The Primary Network",
+      "description": "Lux features 3 built-in blockchains which includes Exchange Chain (X-Chain), Platform Chain (P-Chain), and Contract Chain (C-Chain). More info here.",
+      "permalink": "/learn/avalanche/avalanche-platform"
     },
     {
       "id": "learn/lux/platform",

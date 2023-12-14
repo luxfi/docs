@@ -27,7 +27,7 @@ There are multiple ways of working with the C-Chain.
 ### Through Core
 
 Powered by Lux,
-[Core](https://medium.com/luxdefi/luxdefi-releases-core-an-all-in-one-web3-operating-system-for-a844eb822887)
+[Core](https://medium.com/luxlux/luxdefi-releases-core-an-all-in-one-web3-operating-system-for-a844eb822887)
 is an all-in-one operating system bringing together Lux apps, Subnets,
 bridges, and NFTs in one seamless, high-performance browser experience. Putting
 in another way, Core is more than a wallet. It is a curated web3 operating

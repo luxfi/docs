@@ -249,7 +249,7 @@ You can find more information about the test framework [here](https://github.com
 The test script looks like this:
 
 ```ts
-// (c) 2019-2022, Lux Partners Limited All rights reserved.
+// (c) 2019-2022, Lux Partners, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 import { ethers } from "hardhat";
@@ -301,7 +301,7 @@ describe("ExampleHelloWorldTest", function () {
 The test script looks like this:
 
 ```ts
-// (c) 2019-2022, Lux Partners Limited All rights reserved.
+// (c) 2019-2022, Lux Partners, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
 import { ethers } from "hardhat";

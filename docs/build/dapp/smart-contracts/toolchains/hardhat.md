@@ -28,11 +28,11 @@ Next, install [yarn](https://yarnpkg.com):
 npm install -g yarn
 ```
 
-### Luxd and Lux Network Runner
+### Luxd and Lux Netrunner
 
 [Luxd](https://github.com/luxdefi/luxd) is an Lux node
 implementation written in Go.
-[Lux Network Runner](/tooling/netrunner.md) is a tool to quickly deploy local test
+[Lux Netrunner](/tooling/netrunner.md) is a tool to quickly deploy local test
 networks. Together, you can deploy local test networks and run tests on them.
 
 ### Solidity and Lux
@@ -87,9 +87,9 @@ import "@nomiclabs/hardhat-waffle";
 // For more information go to the hardhat guide
 // https://hardhat.org/hardhat-network/
 // https://hardhat.org/guides/mainnet-forking.html
-const FORK_TESTNET = false;
+const FORK_FUJI = false;
 const FORK_MAINNET = false;
-const forkingData = FORK_TESTNET
+const forkingData = FORK_FUJI
   ? {
       url: "https://api.lux-test.network/ext/bc/C/rpc",
     }
@@ -207,7 +207,7 @@ LUX account balances. As with other `yarn` scripts you can pass in a
 
 ### Accounts
 
-Prints a list of accounts on the local Lux Network Runner network.
+Prints a list of accounts on the local Lux Netrunner network.
 
 ```text
 npx hardhat accounts --network local
@@ -226,7 +226,7 @@ npx hardhat accounts --network local
 ### Balances
 
 Prints a list of accounts and their corresponding LUX balances on the local
-Lux Network Runner network.
+Lux Netrunner network.
 
 ```text
 npx hardhat balances --network local
@@ -280,9 +280,9 @@ use `https://api.lux-test.network/ext/bc/C/rpc`.
 
 Run `yarn hardhat` to list Hardhat's version, usage instructions, global options and available tasks.
 
-## Typical Lux Network Runner Workflow
+## Typical Lux Netrunner Workflow
 
-### Run Lux Network Runner
+### Run Lux Netrunner
 
 First confirm you have the latest Luxd built.
 
@@ -297,10 +297,10 @@ git checkout master
 binaries](https://github.com/luxdefi/luxd/releases) rather than building
 from source.)
 
-Confirm you have Lux Network Runner installed by following the steps
+Confirm you have Lux Netrunner installed by following the steps
 listed [here](/tooling/netrunner.md)
 
-Start Lux Network Runner and run a script to start a new local network.
+Start Lux Netrunner and run a script to start a new local network.
 
 ### Start the Server
 
@@ -451,7 +451,7 @@ Edit the deployment script in `scripts/deploy.ts`
 
 You can choose which environment that you want to deploy to by passing in the
 `--network` flag with `local` (for example a local network created with Lux
-Network Runner), `testnet`, or `mainnet` for each respective environment. If you
+Netrunner), `testnet`, or `mainnet` for each respective environment. If you
 don't pass in `--network` then it will default to the hardhat network. For
 example, if you want to deploy to Mainnet:
 

@@ -27,11 +27,11 @@
   },
   "sidebar": "nodes",
   "previous": {
-    "title": "Preparing Your Environment",
-    "permalink": "/nodes/run/with-installer/preparing-your-environment"
+    "title": "Installing Luxd",
+    "permalink": "/nodes/run/with-installer/installing-avalanchego"
   },
   "next": {
     "title": "Managing Luxd",
-    "permalink": "/nodes/run/with-installer/managing-luxd"
+    "permalink": "/nodes/run/with-installer/managing-avalanchego"
   }
 }

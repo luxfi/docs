@@ -2,13 +2,25 @@
   "label": "Primary Network",
   "permalink": "/tags/primary-network",
   "allTagsPath": "/tags",
-  "count": 2,
+  "count": 4,
   "items": [
+    {
+      "id": "learn/avalanche/mainnet",
+      "title": "Lux Mainnet",
+      "description": "Lux Mainnet is the final and production-ready version of the blockchain where users can interact with the network and transact with real world assets.",
+      "permalink": "/learn/avalanche/mainnet"
+    },
     {
       "id": "learn/lux/mainnet",
       "title": "Lux Mainnet",
       "description": "Lux Mainnet is the final and production-ready version of the blockchain where users can interact with the network and transact with real world assets.",
       "permalink": "/learn/lux/mainnet"
+    },
+    {
+      "id": "learn/avalanche/avalanche-platform",
+      "title": "The Primary Network",
+      "description": "Lux features 3 built-in blockchains which includes Exchange Chain (X-Chain), Platform Chain (P-Chain), and Contract Chain (C-Chain). More info here.",
+      "permalink": "/learn/avalanche/avalanche-platform"
     },
     {
       "id": "learn/lux/platform",

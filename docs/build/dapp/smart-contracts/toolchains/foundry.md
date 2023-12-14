@@ -35,12 +35,12 @@ command-line.
   walk-through.
 - [NodeJS](https://nodejs.org/en) version `16.x`
 
-### Luxd and Lux Network Runner
+### Luxd and Lux Netrunner
 
 [Luxd](https://github.com/luxdefi/luxd) is an Lux node
 implementation written in Go.
 
-[Lux Network Runner](/tooling/netrunner.md) is a tool to quickly
+[Lux Netrunner](/tooling/netrunner.md) is a tool to quickly
 deploy local test networks. Together, you can deploy local test networks and run
 tests on them.
 
@@ -184,7 +184,7 @@ export RPC_URL=<YOUR-RPC-ENDPOINT>
 export PRIVATE_KEY=<YOUR-PRIVATE-KEY>
 ```
 
-Since we are deploying to Testnet testnet, our `RPC_URL` export should be:
+Since we are deploying to Testnet, our `RPC_URL` export should be:
 
 ```zsh
 export RPC_URL=https://api.lux-test.network/ext/bc/C/rpc
@@ -353,7 +353,7 @@ export PRIVATE_KEY=<YOUR-PRIVATE-KEY>
 
 The Testnet workflow above can be adapted to a Local Network by doing following:
 
-In a new terminal navigate to your [Lux Network Runner](/tooling/netrunner.md) directory.
+In a new terminal navigate to your [Lux Netrunner](/tooling/netrunner.md) directory.
 
 ```zsh
 cd /path/to/Lux-Network-Runner
@@ -375,7 +375,7 @@ export PRIVATE_KEY=56289e99c94b6912bfc12adc093c9b51124f0dc54ac7a766b2bc5ccf558d8
 :::warning
 
 The example PRIVATE_KEY variable above provides a pre-funded account on
-Lux Network Runner and should be used for LOCAL DEVELOPMENT ONLY.
+Lux Netrunner and should be used for LOCAL DEVELOPMENT ONLY.
 
 :::
 

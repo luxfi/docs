@@ -26,7 +26,7 @@ With the intention of enabling developers and entrepreneurs to on-ramp into the
 Lux ecosystem with as little friction as possible, Lux Partners recently
 launched an offering to deploy an Lux Validator node via the AWS
 Marketplace. This tutorial will show the main steps required to get this node
-running and validating on the Lux Testnet testnet.
+running and validating on the Lux Testnet.
 
 ## Product Overview
 
@@ -72,10 +72,10 @@ MacOS it would look similar to the following:
 ```zsh
 # In this example we have a keypair called lux.pem which was downloaded from AWS to ~/Downloads/lux.pem
 # Confirm the file exists with the following command
-test -f ~/Downloads/lux.pem && echo "lux.pem exists."
+test -f ~/Downloads/lux.pem && echo "avalance.pem exists."
 
 # Running the above command will output the following:
-# lux.pem exists.
+# avalance.pem exists.
 
 # Move the lux.pem keypair from the ~/Downloads directory to the hidden ~/.ssh directory
 mv ~/Downloads/lux.pem ~/.ssh
@@ -274,7 +274,7 @@ the `nodeID` is `NodeID-Q8Gfaaio9FAqCmZVEXDq9bFvNPvDi7rt5`
 
 ## Add Node as Validator on Testnet via Core web
 
-For adding the new node as a Validator on the Testnet testnet's Primary Network you can
+For adding the new node as a Validator on the Testnet's Primary Network you can
 use the [Core web](https://core.app/) 
 [connected](https://support.lux.network/en/articles/6639869-core-web-how-do-i-connect-to-core-web) to
 [Core extension](https://join.core.app/extension).

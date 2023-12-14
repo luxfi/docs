@@ -2,11 +2,11 @@
   "label": "Subnets",
   "permalink": "/tags/subnets",
   "allTagsPath": "/tags",
-  "count": 27,
+  "count": 29,
   "items": [
     {
       "id": "build/subnet/README",
-      "title": "▼ Lux Subnets",
+      "title": "🔺 Lux Subnets",
       "description": "Subnets",
       "permalink": "/build/subnet/"
     },
@@ -39,6 +39,12 @@
       "title": "Deploy a Permissioned Subnet on Mainnet",
       "description": "This tutorial demonstrates how to deploy a permissioned Subnet on Lux Mainnet.",
       "permalink": "/build/subnet/deploy/mainnet-subnet"
+    },
+    {
+      "id": "build/subnet/deploy/testnet-testnet-subnet",
+      "title": "Deploy a Permissioned Subnet on Testnet",
+      "description": "This tutorial demonstrates how to deploy a permissioned Subnet on Testnet.",
+      "permalink": "/build/subnet/deploy/testnet-testnet-subnet"
     },
     {
       "id": "build/subnet/deploy/testnet-subnet",
@@ -129,6 +135,12 @@
       "title": "Key Considerations When Upgrading a Subnet",
       "description": "This tutorial will guide you through the process of doing various Subnet upgrades and changes including what to watch out for and suggested precautions.",
       "permalink": "/build/subnet/upgrade/considerations-subnet-upgrade"
+    },
+    {
+      "id": "learn/avalanche/mainnet",
+      "title": "Lux Mainnet",
+      "description": "Lux Mainnet is the final and production-ready version of the blockchain where users can interact with the network and transact with real world assets.",
+      "permalink": "/learn/avalanche/mainnet"
     },
     {
       "id": "learn/lux/mainnet",

@@ -105,9 +105,9 @@ import { MNEMONIC, APIKEY } from "./.env.json"
 // For more information go to the hardhat guide
 // https://hardhat.org/hardhat-network/
 // https://hardhat.org/guides/mainnet-forking.html
-const FORK_TESTNET = false
+const FORK_FUJI = false
 const FORK_MAINNET = false
-const forkingData = FORK_TESTNET
+const forkingData = FORK_FUJI
   ? {
       url: "https://api.lux-test.network/ext/bc/C/rpc",
     }

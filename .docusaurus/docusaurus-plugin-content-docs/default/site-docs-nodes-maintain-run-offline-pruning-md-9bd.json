@@ -29,10 +29,10 @@
   "sidebar": "nodes",
   "previous": {
     "title": "Upgrade Your Luxd Node",
-    "permalink": "/nodes/maintain/upgrade-your-luxd-node"
+    "permalink": "/nodes/maintain/upgrade-your-avalanchego-node"
   },
   "next": {
-    "title": "Luxd Config and Flags",
-    "permalink": "/nodes/maintain/luxd-config-flags"
+    "title": "Enroll in Lux Notify",
+    "permalink": "/nodes/maintain/avalanche-notify"
   }
 }

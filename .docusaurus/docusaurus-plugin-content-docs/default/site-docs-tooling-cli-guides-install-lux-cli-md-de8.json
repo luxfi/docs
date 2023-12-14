@@ -33,8 +33,8 @@
   },
   "sidebar": "tooling",
   "previous": {
-    "title": "Lux-CLI",
-    "permalink": "/tooling/cli"
+    "title": "Install Lux-CLI",
+    "permalink": "/tooling/cli-guides/install-avalanche-cli"
   },
   "next": {
     "title": "How to Run Lux-CLI with Docker",
