@@ -2948,7 +2948,7 @@ html[data-theme='dark'] {
   }
 
 .navbar__toggle {
-      display: inherit
+      display: none
   }
 
 .navbar__item {

@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[9202],{48890:a=>{a.exports=JSON.parse('{"label":"Decentralized Applications","permalink":"/tags/decentralized-applications","allTagsPath":"/tags","count":1,"items":[{"id":"build/dapp/README","title":"\ud83d\udd17 Dapps Quick Links","description":"Dapps","permalink":"/build/dapp/"}],"unlisted":false}')}}]);

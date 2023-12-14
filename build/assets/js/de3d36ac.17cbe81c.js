@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[7561],{27610:e=>{e.exports=JSON.parse('{"label":"Testnet","permalink":"/tags/testnet","allTagsPath":"/tags","count":1,"items":[{"id":"learn/lux/testnet","title":"Testnet","description":"Testnet is the official testnet for the Lux ecosystem.","permalink":"/learn/lux/testnet"}],"unlisted":false}')}}]);

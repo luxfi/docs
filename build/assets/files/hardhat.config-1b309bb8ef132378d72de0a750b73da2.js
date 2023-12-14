@@ -1,1 +1,0 @@
-require("@nomiclabs/hardhat-waffle");const PRIVATE_KEY="";module.exports={solidity:{version:"0.7.0",settings:{optimizer:{enabled:!0,runs:200}}},networks:{testnet:{url:"https://api.lux-test.network/ext/bc/C/rpc",chainId:43113,accounts:[""]},mainnet:{url:"https://api.lux.network/ext/bc/C/rpc",chainId:43114,accounts:[""]}}};
