@@ -97,7 +97,7 @@ function Home() {
               <Card
                 to="https://github.com/luxdefi/hypersdk"
                 header={{
-                  label: translate({ message: "🛠️ HyperSDK" }),
+                  label: translate({ message: "🛠️ LuxSDK" }),
                 }}
                 body={{
                   label: translate({

@@ -445,8 +445,8 @@
     "message": "Aprende todo lo que necesitas para desplegar un contrato inteligente compatible con EVM",
     "description": "Translation for the fifth card description"
   },
-  "🛠️ HyperSDK": {
-    "message": "🛠️ HyperSDK",
+  "🛠️ LuxSDK": {
+    "message": "🛠️ LuxSDK",
     "description": "Translation for the sixth card label"
   },
   "Opinionated Framework for Building Hyper-Scalable Blockchains on Lux": {

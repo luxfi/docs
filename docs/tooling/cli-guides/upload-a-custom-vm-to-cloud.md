@@ -34,7 +34,7 @@ services in the near future.
 ## Deploying the VM
 
 We will be deploying the [TokenVM](https://github.com/luxdefi/hypersdk/tree/main/examples/tokenvm)
-example built with the HyperSDK.
+example built with the LuxSDK.
 
 The following settings will be used:
 

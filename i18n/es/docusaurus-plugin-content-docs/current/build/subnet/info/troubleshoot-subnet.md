@@ -116,9 +116,9 @@ Testnet o Lux Mainnet.
 
 Se requiere una coincidencia de versiones similar en diferentes herramientas del ecosistema. Aquí tienes una tabla de compatibilidad
 que muestra qué versión de RPCChainVM implementa las versiones más recientes de
-Luxd, Subnet-EVM, Precompile-EVM e HyperSDK.
+Luxd, Subnet-EVM, Precompile-EVM e LuxSDK.
 
-| RPCChainVM | Luxd              | Subnet-EVM          | Precompile-EVM      | HyperSDK |
+| RPCChainVM | Luxd              | Subnet-EVM          | Precompile-EVM      | LuxSDK |
 | :--------: | :-------:                | :-------:           | :-------:           | :-------: |
 | 26         | v1.10.1-v1.10.4          | v0.5.1-v0.5.2       | v0.1.0-v0.1.1       | v0.0.6-v0.0.9 |
 | 27         | v1.10.5-v1.10.8          | v0.5.3              | v0.1.2              | v0.0.10-v0.0.12 |

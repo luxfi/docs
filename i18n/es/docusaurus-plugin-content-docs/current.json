@@ -55,9 +55,9 @@
     "message": "📎 Lux-CLI: Subnets",
     "description": "The label for the doc item 📎 Lux-CLI: Subnets in sidebar build-subnet, linking to the doc tooling/cli"
   },
-  "sidebar.build-vm.link.HyperSDK": {
-    "message": "HyperSDK",
-    "description": "The label for link HyperSDK in sidebar build-vm, linking to https://github.com/luxdefi/hypersdk#readme"
+  "sidebar.build-vm.link.LuxSDK": {
+    "message": "LuxSDK",
+    "description": "The label for link LuxSDK in sidebar build-vm, linking to https://github.com/luxdefi/hypersdk#readme"
   },
   "sidebar.build-vm.doc.📎 Manage VM Binaries": {
     "message": "📎 Manage VM Binaries",
@@ -67,9 +67,9 @@
     "message": "Guides",
     "description": "The label for category Guides in sidebar tooling"
   },
-  "sidebar.tooling.link.HyperSDK": {
-    "message": "HyperSDK",
-    "description": "The label for link HyperSDK in sidebar tooling, linking to https://github.com/luxdefi/hypersdk#readme"
+  "sidebar.tooling.link.LuxSDK": {
+    "message": "LuxSDK",
+    "description": "The label for link LuxSDK in sidebar tooling, linking to https://github.com/luxdefi/hypersdk#readme"
   },
   "sidebar.reference.category.P-Chain": {
     "message": "P-Chain",
