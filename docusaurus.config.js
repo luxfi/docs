@@ -171,7 +171,7 @@ const config = {
           customCss: require.resolve("./src/css/custom.css"),
         },
         googleTagManager: {
-          containerId: "GTM-MHVBTGVC",
+          containerId: "",
         },
       }),
     ],
@@ -265,11 +265,6 @@ const config = {
             position: "right",
           },
           {
-            href: "https://chat.lux.network/",
-            className: "header-discord-link",
-            position: "right",
-          },
-          {
             href: "https://github.com/luxdefi",
             className: "header-github-link",
             position: "right",
@@ -289,8 +284,8 @@ const config = {
         additionalLanguages: ["rust"],
       },
       algolia: {
-        appId: "UAFD8IBIF7",
-        apiKey: "20006f8de4bf55970ebca9129c345a1d",
+        appId: "4842GXJR5Q",
+        apiKey: "cc3134a8cc2d1e92406233a86e59bfec",
         indexName: "lux",
         contextualSearch: true,
       },
