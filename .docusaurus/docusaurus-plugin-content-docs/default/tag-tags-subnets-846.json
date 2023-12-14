@@ -41,10 +41,10 @@
       "permalink": "/build/subnet/deploy/mainnet-subnet"
     },
     {
-      "id": "build/subnet/deploy/fuji-testnet-subnet",
+      "id": "build/subnet/deploy/testnet-subnet",
       "title": "Deploy a Permissioned Subnet on Testnet",
       "description": "This tutorial demonstrates how to deploy a permissioned Subnet on Testnet.",
-      "permalink": "/build/subnet/deploy/fuji-testnet-subnet"
+      "permalink": "/build/subnet/deploy/testnet-subnet"
     },
     {
       "id": "build/subnet/utility/deploy-smart-contract-to-subnet",

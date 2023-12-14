@@ -19,11 +19,11 @@ export default [
   },
   {
     path: '/',
-    component: ComponentCreator('/', 'fd8'),
+    component: ComponentCreator('/', '8b8'),
     routes: [
       {
         path: '/',
-        component: ComponentCreator('/', '36f'),
+        component: ComponentCreator('/', '37b'),
         routes: [
           {
             path: '/tags',
@@ -192,7 +192,7 @@ export default [
           },
           {
             path: '/',
-            component: ComponentCreator('/', 'fae'),
+            component: ComponentCreator('/', '755'),
             routes: [
               {
                 path: '/apis/luxd',
@@ -459,12 +459,6 @@ export default [
                 sidebar: "build-subnet"
               },
               {
-                path: '/build/subnet/deploy/fuji-testnet-subnet',
-                component: ComponentCreator('/build/subnet/deploy/fuji-testnet-subnet', '3f0'),
-                exact: true,
-                sidebar: "build-subnet"
-              },
-              {
                 path: '/build/subnet/deploy/local-subnet',
                 component: ComponentCreator('/build/subnet/deploy/local-subnet', 'b61'),
                 exact: true,
@@ -485,6 +479,12 @@ export default [
               {
                 path: '/build/subnet/deploy/on-prod-infra',
                 component: ComponentCreator('/build/subnet/deploy/on-prod-infra', 'bf8'),
+                exact: true,
+                sidebar: "build-subnet"
+              },
+              {
+                path: '/build/subnet/deploy/testnet-subnet',
+                component: ComponentCreator('/build/subnet/deploy/testnet-subnet', 'e5a'),
                 exact: true,
                 sidebar: "build-subnet"
               },

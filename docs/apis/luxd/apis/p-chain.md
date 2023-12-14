@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Platform Chain (P-Chain) API
 
-This API allows clients to interact with the [P-Chain](../../../overview/getting-started/lux-platform.md#platform-chain-p-chain), which maintains Lux’s [validator](../../../nodes/validate/staking.md#validators) set and handles blockchain creation.
+This API allows clients to interact with the [P-Chain](../../../overview/getting-started/lux-platform.md#platform-chain-p-chain), which maintains Lux’s [validator](../../../nodes/validate/what-is-staking.md#validators) set and handles blockchain creation.
 
 ## Endpoint
 

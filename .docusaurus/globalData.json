@@ -228,11 +228,6 @@
               "sidebar": "build-subnet"
             },
             {
-              "id": "build/subnet/deploy/fuji-testnet-subnet",
-              "path": "/build/subnet/deploy/fuji-testnet-subnet",
-              "sidebar": "build-subnet"
-            },
-            {
               "id": "build/subnet/deploy/local-subnet",
               "path": "/build/subnet/deploy/local-subnet",
               "sidebar": "build-subnet"
@@ -250,6 +245,11 @@
             {
               "id": "build/subnet/deploy/on-prod-infra",
               "path": "/build/subnet/deploy/on-prod-infra",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/deploy/testnet-subnet",
+              "path": "/build/subnet/deploy/testnet-subnet",
               "sidebar": "build-subnet"
             },
             {

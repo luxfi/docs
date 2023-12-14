@@ -19,13 +19,13 @@
     },
     "config": "5e9f5e1a"
   },
-  "/-fd8": {
+  "/-8b8": {
     "__comp": "5e95c892",
     "__context": {
       "plugin": "059fabf7"
     }
   },
-  "/-36f": {
+  "/-37b": {
     "__comp": "a7bd4aaa",
     "version": "935f2afb"
   },
@@ -161,7 +161,7 @@
     "__comp": "df203c0f",
     "tag": "f5249aae"
   },
-  "/-fae": {
+  "/-755": {
     "__comp": "a94703ab"
   },
   "/apis/luxd-df1": {
@@ -356,10 +356,6 @@
     "__comp": "17896441",
     "content": "f3f42adb"
   },
-  "/build/subnet/deploy/fuji-testnet-subnet-3f0": {
-    "__comp": "17896441",
-    "content": "af8620c0"
-  },
   "/build/subnet/deploy/local-subnet-b61": {
     "__comp": "17896441",
     "content": "a25a4579"
@@ -375,6 +371,10 @@
   "/build/subnet/deploy/on-prod-infra-bf8": {
     "__comp": "17896441",
     "content": "3c54f941"
+  },
+  "/build/subnet/deploy/testnet-subnet-e5a": {
+    "__comp": "17896441",
+    "content": "a2332d11"
   },
   "/build/subnet/elastic/elastic-parameters-806": {
     "__comp": "17896441",

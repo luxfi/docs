@@ -644,8 +644,8 @@
       {
         "type": "link",
         "label": "On Testnet",
-        "href": "/build/subnet/deploy/fuji-testnet-subnet",
-        "docId": "build/subnet/deploy/fuji-testnet-subnet",
+        "href": "/build/subnet/deploy/testnet-subnet",
+        "docId": "build/subnet/deploy/testnet-subnet",
         "unlisted": false
       },
       {
@@ -1768,12 +1768,6 @@
       "description": "This tutorial demonstrates the process of creating a Subnet with a custom virtual machine and deploying it locally.",
       "sidebar": "build-subnet"
     },
-    "build/subnet/deploy/fuji-testnet-subnet": {
-      "id": "build/subnet/deploy/fuji-testnet-subnet",
-      "title": "Deploy a Permissioned Subnet on Testnet",
-      "description": "This tutorial demonstrates how to deploy a permissioned Subnet on Testnet.",
-      "sidebar": "build-subnet"
-    },
     "build/subnet/deploy/local-subnet": {
       "id": "build/subnet/deploy/local-subnet",
       "title": "How to Deploy a Subnet on a Local Network",
@@ -1796,6 +1790,12 @@
       "id": "build/subnet/deploy/on-prod-infra",
       "title": "Deploy Subnets on Production Infrastructure",
       "description": "This tutorial demonstrates how to deploy a Subnet to production environment.",
+      "sidebar": "build-subnet"
+    },
+    "build/subnet/deploy/testnet-subnet": {
+      "id": "build/subnet/deploy/testnet-subnet",
+      "title": "Deploy a Permissioned Subnet on Testnet",
+      "description": "This tutorial demonstrates how to deploy a permissioned Subnet on Testnet.",
       "sidebar": "build-subnet"
     },
     "build/subnet/elastic/elastic-parameters": {
