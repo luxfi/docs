@@ -19,11 +19,11 @@ export default [
   },
   {
     path: '/',
-    component: ComponentCreator('/', '28c'),
+    component: ComponentCreator('/', 'fd8'),
     routes: [
       {
         path: '/',
-        component: ComponentCreator('/', 'd5e'),
+        component: ComponentCreator('/', '36f'),
         routes: [
           {
             path: '/tags',
@@ -86,16 +86,6 @@ export default [
             exact: true
           },
           {
-            path: '/tags/lux-go',
-            component: ComponentCreator('/tags/lux-go', '883'),
-            exact: true
-          },
-          {
-            path: '/tags/lux-go-ap-is',
-            component: ComponentCreator('/tags/lux-go-ap-is', '9d7'),
-            exact: true
-          },
-          {
             path: '/tags/lux-js',
             component: ComponentCreator('/tags/lux-js', 'e72'),
             exact: true
@@ -108,6 +98,16 @@ export default [
           {
             path: '/tags/lux-warp-messaging',
             component: ComponentCreator('/tags/lux-warp-messaging', 'df4'),
+            exact: true
+          },
+          {
+            path: '/tags/luxd',
+            component: ComponentCreator('/tags/luxd', '7b7'),
+            exact: true
+          },
+          {
+            path: '/tags/luxd-ap-is',
+            component: ComponentCreator('/tags/luxd-ap-is', '3b7'),
             exact: true
           },
           {

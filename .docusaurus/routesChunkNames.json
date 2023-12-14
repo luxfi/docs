@@ -19,13 +19,13 @@
     },
     "config": "5e9f5e1a"
   },
-  "/-28c": {
+  "/-fd8": {
     "__comp": "5e95c892",
     "__context": {
       "plugin": "059fabf7"
     }
   },
-  "/-d5e": {
+  "/-36f": {
     "__comp": "a7bd4aaa",
     "version": "935f2afb"
   },
@@ -77,14 +77,6 @@
     "__comp": "df203c0f",
     "tag": "58fb25d9"
   },
-  "/tags/lux-go-883": {
-    "__comp": "df203c0f",
-    "tag": "b65386e5"
-  },
-  "/tags/lux-go-ap-is-9d7": {
-    "__comp": "df203c0f",
-    "tag": "02c746fa"
-  },
   "/tags/lux-js-e72": {
     "__comp": "df203c0f",
     "tag": "9e9c62ce"
@@ -96,6 +88,14 @@
   "/tags/lux-warp-messaging-df4": {
     "__comp": "df203c0f",
     "tag": "ca51fc89"
+  },
+  "/tags/luxd-7b7": {
+    "__comp": "df203c0f",
+    "tag": "644c9130"
+  },
+  "/tags/luxd-ap-is-3b7": {
+    "__comp": "df203c0f",
+    "tag": "0c65ef50"
   },
   "/tags/metrics-api-608": {
     "__comp": "df203c0f",
