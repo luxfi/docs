@@ -162,7 +162,7 @@ const config = {
       ({
         docs: {
           routeBasePath: "/",
-          editUrl: "https://github.com/luxdefi/docs/edit/master/",
+          editUrl: "https://github.com/luxdefi/docs/edit/main/",
           sidebarPath: "./sidebars.json",
           remarkPlugins: [math],
           rehypePlugins: [katex],
@@ -171,7 +171,7 @@ const config = {
           customCss: require.resolve("./src/css/custom.css"),
         },
         googleTagManager: {
-          containerId: "",
+          containerId: "GTM-PLV38BFX",
         },
       }),
     ],
@@ -261,10 +261,6 @@ const config = {
             label: "Reference",
           },
           {
-            type: "localeDropdown",
-            position: "right",
-          },
-          {
             href: "https://github.com/luxdefi",
             className: "header-github-link",
             position: "right",
@@ -279,8 +275,8 @@ const config = {
         },
       },
       prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
+        theme: darkCodeTheme,
+        darkTheme: lightCodeTheme,
         additionalLanguages: ["rust"],
       },
       algolia: {

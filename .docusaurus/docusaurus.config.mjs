@@ -137,7 +137,7 @@ export default {
       {
         "docs": {
           "routeBasePath": "/",
-          "editUrl": "https://github.com/luxdefi/docs/edit/master/",
+          "editUrl": "https://github.com/luxdefi/docs/edit/main/",
           "sidebarPath": "./sidebars.json",
           "remarkPlugins": [
             null
@@ -150,7 +150,7 @@ export default {
           "customCss": "/Users/z/work/lux/docs/src/css/custom.css"
         },
         "googleTagManager": {
-          "containerId": "GTM-MHVBTGVC"
+          "containerId": "GTM-PLV38BFX"
         }
       }
     ]
@@ -237,17 +237,6 @@ export default {
           "label": "Reference"
         },
         {
-          "type": "localeDropdown",
-          "position": "right",
-          "dropdownItemsBefore": [],
-          "dropdownItemsAfter": []
-        },
-        {
-          "href": "https://chat.lux.network/",
-          "className": "header-discord-link",
-          "position": "right"
-        },
-        {
           "href": "https://github.com/luxdefi",
           "className": "header-github-link",
           "position": "right"
@@ -265,6 +254,95 @@ export default {
     },
     "prism": {
       "theme": {
+        "plain": {
+          "color": "#F8F8F2",
+          "backgroundColor": "#282A36"
+        },
+        "styles": [
+          {
+            "types": [
+              "prolog",
+              "constant",
+              "builtin"
+            ],
+            "style": {
+              "color": "rgb(189, 147, 249)"
+            }
+          },
+          {
+            "types": [
+              "inserted",
+              "function"
+            ],
+            "style": {
+              "color": "rgb(80, 250, 123)"
+            }
+          },
+          {
+            "types": [
+              "deleted"
+            ],
+            "style": {
+              "color": "rgb(255, 85, 85)"
+            }
+          },
+          {
+            "types": [
+              "changed"
+            ],
+            "style": {
+              "color": "rgb(255, 184, 108)"
+            }
+          },
+          {
+            "types": [
+              "punctuation",
+              "symbol"
+            ],
+            "style": {
+              "color": "rgb(248, 248, 242)"
+            }
+          },
+          {
+            "types": [
+              "string",
+              "char",
+              "tag",
+              "selector"
+            ],
+            "style": {
+              "color": "rgb(255, 121, 198)"
+            }
+          },
+          {
+            "types": [
+              "keyword",
+              "variable"
+            ],
+            "style": {
+              "color": "rgb(189, 147, 249)",
+              "fontStyle": "italic"
+            }
+          },
+          {
+            "types": [
+              "comment"
+            ],
+            "style": {
+              "color": "rgb(98, 114, 164)"
+            }
+          },
+          {
+            "types": [
+              "attr-name"
+            ],
+            "style": {
+              "color": "rgb(241, 250, 140)"
+            }
+          }
+        ]
+      },
+      "darkTheme": {
         "plain": {
           "color": "#393A34",
           "backgroundColor": "#f6f8fa"
@@ -366,95 +444,6 @@ export default {
           }
         ]
       },
-      "darkTheme": {
-        "plain": {
-          "color": "#F8F8F2",
-          "backgroundColor": "#282A36"
-        },
-        "styles": [
-          {
-            "types": [
-              "prolog",
-              "constant",
-              "builtin"
-            ],
-            "style": {
-              "color": "rgb(189, 147, 249)"
-            }
-          },
-          {
-            "types": [
-              "inserted",
-              "function"
-            ],
-            "style": {
-              "color": "rgb(80, 250, 123)"
-            }
-          },
-          {
-            "types": [
-              "deleted"
-            ],
-            "style": {
-              "color": "rgb(255, 85, 85)"
-            }
-          },
-          {
-            "types": [
-              "changed"
-            ],
-            "style": {
-              "color": "rgb(255, 184, 108)"
-            }
-          },
-          {
-            "types": [
-              "punctuation",
-              "symbol"
-            ],
-            "style": {
-              "color": "rgb(248, 248, 242)"
-            }
-          },
-          {
-            "types": [
-              "string",
-              "char",
-              "tag",
-              "selector"
-            ],
-            "style": {
-              "color": "rgb(255, 121, 198)"
-            }
-          },
-          {
-            "types": [
-              "keyword",
-              "variable"
-            ],
-            "style": {
-              "color": "rgb(189, 147, 249)",
-              "fontStyle": "italic"
-            }
-          },
-          {
-            "types": [
-              "comment"
-            ],
-            "style": {
-              "color": "rgb(98, 114, 164)"
-            }
-          },
-          {
-            "types": [
-              "attr-name"
-            ],
-            "style": {
-              "color": "rgb(241, 250, 140)"
-            }
-          }
-        ]
-      },
       "additionalLanguages": [
         "rust"
       ],
@@ -470,8 +459,8 @@ export default {
       ]
     },
     "algolia": {
-      "appId": "UAFD8IBIF7",
-      "apiKey": "20006f8de4bf55970ebca9129c345a1d",
+      "appId": "4842GXJR5Q",
+      "apiKey": "cc3134a8cc2d1e92406233a86e59bfec",
       "indexName": "lux",
       "contextualSearch": true,
       "searchParameters": {},
