@@ -2,13 +2,13 @@
   "label": "Dapps",
   "permalink": "/tags/dapps",
   "allTagsPath": "/tags",
-  "count": 26,
+  "count": 25,
   "items": [
     {
-      "id": "build/dapp/advanced/add-lux-programmatically",
+      "id": "build/dapp/advanced/add-avalanche-programmatically",
       "title": "Add Lux Network Programmatically",
       "description": "This document shows how to integrate Lux Network with your Dapp, either by Core or MetaMask.",
-      "permalink": "/build/dapp/advanced/add-lux-programmatically"
+      "permalink": "/build/dapp/advanced/add-avalanche-programmatically"
     },
     {
       "id": "build/dapp/advanced/add-lux-programmatically",
@@ -93,12 +93,6 @@
       "title": "Lux Netrunner",
       "description": "The Lux Netrunner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
       "permalink": "/tooling/netrunner"
-    },
-    {
-      "id": "tooling/network-runner",
-      "title": "Lux Netrunner",
-      "description": "The Lux Netrunner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
-      "permalink": "/tooling/network-runner"
     },
     {
       "id": "build/dapp/smart-contracts/nfts/preparing-nft-files",

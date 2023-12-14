@@ -1,14 +1,14 @@
 {
-  "id": "learn/lux/lux-consensus",
+  "id": "learn/avalanche/avalanche-consensus",
   "title": "Lux Consensus",
   "description": "Lux Consensus is a consensus protocol that is scalable, robust, and decentralized.",
-  "source": "@site/docs/learn/lux/lux-consensus.md",
-  "sourceDirName": "learn/lux",
-  "slug": "/learn/lux/lux-consensus",
-  "permalink": "/learn/lux/lux-consensus",
+  "source": "@site/docs/learn/avalanche/avalanche-consensus.md",
+  "sourceDirName": "learn/avalanche",
+  "slug": "/learn/avalanche/avalanche-consensus",
+  "permalink": "/learn/avalanche/avalanche-consensus",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/learn/lux/lux-consensus.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/learn/avalanche/avalanche-consensus.md",
   "tags": [
     {
       "label": "Lux Consensus",

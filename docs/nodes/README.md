@@ -23,7 +23,6 @@ node, and then validate the Lux network using an Luxd node.
 | [**Google Cloud Platform**](/nodes/run/third-party/google-cloud-node.md)                      | Create a node that runs on Google GCP       |
 | [**Alibaba Cloud**](/nodes/run/third-party/alibaba-cloud-node.md)     | Create a node that runs on Alibaba Cloud       |
 | [**Tencent Cloud**](/nodes/run/third-party/tencent-cloud-node.md)     | Create a node that runs on Tencent Cloud       |
-| [**Latitude**](/nodes/run/third-party/latitude-node.md)     | Create a node that runs on Latitude.sh      |
 
 
 |    Configure                                                                         |                                                             |

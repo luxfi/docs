@@ -268,7 +268,7 @@ Success! TXID: 2uQvMcPZjmPXAyvz9cdKBphDDSmnxxx3vsUrxqpj3U92hsfQcc
 
 That's it! You've transferred LUX from the X-Chain to C-Chain!
 
-You can verify this TX by copy / pasting the import TXID into [Luxscan](https://testnet.luxscan.io/blockchain/c/tx/2uQvMcPZjmPXAyvz9cdKBphDDSmnxxx3vsUrxqpj3U92hsfQcc).
+You can verify this TX by copy / pasting the import TXID into [Avascan](https://testnet.avascan.info/blockchain/c/tx/2uQvMcPZjmPXAyvz9cdKBphDDSmnxxx3vsUrxqpj3U92hsfQcc).
 
 ### Transfer from the C-Chain to the X-Chain
 

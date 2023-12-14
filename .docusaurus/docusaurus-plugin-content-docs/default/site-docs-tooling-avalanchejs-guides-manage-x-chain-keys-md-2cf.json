@@ -1,14 +1,14 @@
 {
-  "id": "tooling/luxjs-guides/manage-x-chain-keys",
+  "id": "tooling/avalanchejs-guides/manage-x-chain-keys",
   "title": "Manage X-Chain Keys",
   "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
-  "source": "@site/docs/tooling/luxjs-guides/manage-x-chain-keys.md",
-  "sourceDirName": "tooling/luxjs-guides",
-  "slug": "/tooling/luxjs-guides/manage-x-chain-keys",
-  "permalink": "/tooling/luxjs-guides/manage-x-chain-keys",
+  "source": "@site/docs/tooling/avalanchejs-guides/manage-x-chain-keys.md",
+  "sourceDirName": "tooling/avalanchejs-guides",
+  "slug": "/tooling/avalanchejs-guides/manage-x-chain-keys",
+  "permalink": "/tooling/avalanchejs-guides/manage-x-chain-keys",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/luxjs-guides/manage-x-chain-keys.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/avalanchejs-guides/manage-x-chain-keys.md",
   "tags": [
     {
       "label": "Tooling",

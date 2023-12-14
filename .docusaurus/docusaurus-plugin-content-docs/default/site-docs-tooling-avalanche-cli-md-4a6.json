@@ -1,14 +1,14 @@
 {
-  "id": "tooling/cli",
+  "id": "tooling/avalanche-cli",
   "title": "Lux-CLI",
   "description": "Lux-CLI is a command-line tool that gives developers access to everything Lux. This release specializes in helping developers build and test Subnets.",
-  "source": "@site/docs/tooling/cli.md",
+  "source": "@site/docs/tooling/avalanche-cli.md",
   "sourceDirName": "tooling",
-  "slug": "/tooling/cli",
-  "permalink": "/tooling/cli",
+  "slug": "/tooling/avalanche-cli",
+  "permalink": "/tooling/avalanche-cli",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/cli.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/avalanche-cli.md",
   "tags": [
     {
       "label": "Tooling",

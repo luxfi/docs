@@ -1,14 +1,14 @@
 {
-  "id": "tooling/luxd-installer",
+  "id": "tooling/avalanchego-installer",
   "title": "Luxd Installer",
   "description": "Luxd Installer is a shell (bash) script that installs Luxd on any Linux computer. This script sets up full, running node in a matter of minutes with minimal user input required. This is convenient if you want to run the node as a service on a standalone Linux installation, for example to set up a (Subnet) validator, use the node as a private RPC server and similar uses. It also makes upgrading or reinstalling the nodes easy.",
-  "source": "@site/docs/tooling/luxd-installer.md",
+  "source": "@site/docs/tooling/avalanchego-installer.md",
   "sourceDirName": "tooling",
-  "slug": "/tooling/luxd-installer",
-  "permalink": "/tooling/luxd-installer",
+  "slug": "/tooling/avalanchego-installer",
+  "permalink": "/tooling/avalanchego-installer",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/luxd-installer.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/avalanchego-installer.md",
   "tags": [
     {
       "label": "Tooling",

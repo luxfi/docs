@@ -2,12 +2,12 @@
   {
     "label": "Build",
     "permalink": "/tags/build",
-    "count": 66
+    "count": 65
   },
   {
     "label": "Dapps",
     "permalink": "/tags/dapps",
-    "count": 26
+    "count": 25
   },
   {
     "label": "Decentralized Applications",
@@ -22,7 +22,7 @@
   {
     "label": "Lux-CLI",
     "permalink": "/tags/lux-cli",
-    "count": 15
+    "count": 13
   },
   {
     "label": "Virtual Machines",
@@ -70,16 +70,6 @@
     "count": 4
   },
   {
-    "label": "Lux",
-    "permalink": "/tags/lux",
-    "count": 4
-  },
-  {
-    "label": "Tokenomics",
-    "permalink": "/tags/tokenomics",
-    "count": 2
-  },
-  {
     "label": "Lux Warp Messaging",
     "permalink": "/tags/lux-warp-messaging",
     "count": 2
@@ -95,6 +85,11 @@
     "count": 2
   },
   {
+    "label": "Lux",
+    "permalink": "/tags/lux",
+    "count": 3
+  },
+  {
     "label": "Subnet",
     "permalink": "/tags/subnet",
     "count": 2
@@ -105,9 +100,14 @@
     "count": 3
   },
   {
+    "label": "Tokenomics",
+    "permalink": "/tags/tokenomics",
+    "count": 1
+  },
+  {
     "label": "Nodes",
     "permalink": "/tags/nodes",
-    "count": 33
+    "count": 32
   },
   {
     "label": "Luxd",
@@ -117,7 +117,7 @@
   {
     "label": "Luxd APIs",
     "permalink": "/tags/luxd-ap-is",
-    "count": 23
+    "count": 18
   },
   {
     "label": "Transaction Format",
@@ -132,12 +132,7 @@
   {
     "label": "Tooling",
     "permalink": "/tags/tooling",
-    "count": 53
-  },
-  {
-    "label": "LuxJS",
-    "permalink": "/tags/lux-js",
-    "count": 18
+    "count": 35
   },
   {
     "label": "Glacier API",
@@ -148,6 +143,11 @@
     "label": "Indexers",
     "permalink": "/tags/indexers",
     "count": 1
+  },
+  {
+    "label": "LuxJS",
+    "permalink": "/tags/lux-js",
+    "count": 9
   },
   {
     "label": "Metrics API",

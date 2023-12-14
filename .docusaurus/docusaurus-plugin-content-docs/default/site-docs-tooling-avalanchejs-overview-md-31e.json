@@ -1,14 +1,14 @@
 {
-  "id": "tooling/luxjs-overview",
+  "id": "tooling/avalanchejs-overview",
   "title": "LuxJS Overview",
   "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
-  "source": "@site/docs/tooling/luxjs-overview.md",
+  "source": "@site/docs/tooling/avalanchejs-overview.md",
   "sourceDirName": "tooling",
-  "slug": "/tooling/luxjs-overview",
-  "permalink": "/tooling/luxjs-overview",
+  "slug": "/tooling/avalanchejs-overview",
+  "permalink": "/tooling/avalanchejs-overview",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/luxjs-overview.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/avalanchejs-overview.md",
   "tags": [
     {
       "label": "Tooling",

@@ -28,7 +28,7 @@
   "sidebar": "nodes",
   "previous": {
     "title": "Managing Luxd",
-    "permalink": "/nodes/run/with-installer/managing-luxd"
+    "permalink": "/nodes/run/with-installer/managing-avalanchego"
   },
   "next": {
     "title": "Node Config and Maintenance",

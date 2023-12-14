@@ -2,7 +2,7 @@
   "label": "Lux-CLI",
   "permalink": "/tags/lux-cli",
   "allTagsPath": "/tags",
-  "count": 15,
+  "count": 13,
   "items": [
     {
       "id": "tooling/cli-guides/validate-subnets",
@@ -51,18 +51,6 @@
       "title": "Install Lux-CLI",
       "description": "This guide demonstrates how to install Lux-CLI.",
       "permalink": "/tooling/cli-guides/install-cli"
-    },
-    {
-      "id": "tooling/cli-guides/install-lux-cli",
-      "title": "Install Lux-CLI",
-      "description": "This guide demonstrates how to install Lux-CLI.",
-      "permalink": "/tooling/cli-guides/install-lux-cli"
-    },
-    {
-      "id": "tooling/cli",
-      "title": "Lux-CLI",
-      "description": "Lux-CLI is a command-line tool that gives developers access to everything Lux. This release specializes in helping developers build and test Subnets.",
-      "permalink": "/tooling/cli"
     },
     {
       "id": "tooling/cli",

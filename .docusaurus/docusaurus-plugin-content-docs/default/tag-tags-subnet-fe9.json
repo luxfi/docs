@@ -5,10 +5,10 @@
   "count": 2,
   "items": [
     {
-      "id": "learn/lux/subnets-overview",
+      "id": "learn/avalanche/subnets-overview",
       "title": "What Is a Subnet?",
       "description": "A Subnet is a dynamic set of validators working together to achieve consensus on the state of a set of blockchain networks.",
-      "permalink": "/learn/lux/subnets-overview"
+      "permalink": "/learn/avalanche/subnets-overview"
     },
     {
       "id": "learn/lux/subnets-overview",

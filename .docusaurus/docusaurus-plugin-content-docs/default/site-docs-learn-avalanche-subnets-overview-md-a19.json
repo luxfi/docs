@@ -1,14 +1,14 @@
 {
-  "id": "learn/lux/subnets-overview",
+  "id": "learn/avalanche/subnets-overview",
   "title": "What Is a Subnet?",
   "description": "A Subnet is a dynamic set of validators working together to achieve consensus on the state of a set of blockchain networks.",
-  "source": "@site/docs/learn/lux/subnets-overview.md",
-  "sourceDirName": "learn/lux",
-  "slug": "/learn/lux/subnets-overview",
-  "permalink": "/learn/lux/subnets-overview",
+  "source": "@site/docs/learn/avalanche/subnets-overview.md",
+  "sourceDirName": "learn/avalanche",
+  "slug": "/learn/avalanche/subnets-overview",
+  "permalink": "/learn/avalanche/subnets-overview",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/learn/lux/subnets-overview.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/learn/avalanche/subnets-overview.md",
   "tags": [
     {
       "label": "Subnet",

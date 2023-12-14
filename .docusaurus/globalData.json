@@ -17,8 +17,8 @@
           "mainDocId": "learn/lux/intro",
           "docs": [
             {
-              "id": "build/dapp/advanced/add-lux-programmatically",
-              "path": "/build/dapp/advanced/add-lux-programmatically",
+              "id": "build/dapp/advanced/add-avalanche-programmatically",
+              "path": "/build/dapp/advanced/add-avalanche-programmatically",
               "sidebar": "build-dapp"
             },
             {
@@ -246,11 +246,6 @@
               "sidebar": "build-subnet"
             },
             {
-              "id": "build/subnet/utility/lux-subnet-faucet",
-              "path": "/build/subnet/utility/lux-subnet-faucet",
-              "sidebar": "build-subnet"
-            },
-            {
               "id": "build/subnet/utility/cross-chain-evm-bridge",
               "path": "/build/subnet/utility/cross-chain-evm-bridge",
               "sidebar": "build-subnet"
@@ -258,6 +253,11 @@
             {
               "id": "build/subnet/utility/deploy-smart-contract-to-subnet",
               "path": "/build/subnet/utility/deploy-smart-contract-to-subnet",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/utility/subnet-faucet",
+              "path": "/build/subnet/utility/subnet-faucet",
               "sidebar": "build-subnet"
             },
             {
@@ -342,14 +342,6 @@
               "path": "/deprecated/tutorials-contest/2021"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/lux-DAO/README",
-              "path": "/deprecated/tutorials-contest/2021/lux-DAO/"
-            },
-            {
-              "id": "deprecated/tutorials-contest/2021/lux-chat-dapp/README",
-              "path": "/deprecated/tutorials-contest/2021/lux-chat-dapp/"
-            },
-            {
               "id": "deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js",
               "path": "/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js"
             },
@@ -406,6 +398,14 @@
               "path": "/deprecated/tutorials-contest/2021/how-to-mint-erc721-using-openzeppelin/tutorial"
             },
             {
+              "id": "deprecated/tutorials-contest/2021/lux-chat-dapp/README",
+              "path": "/deprecated/tutorials-contest/2021/lux-chat-dapp/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/lux-DAO/README",
+              "path": "/deprecated/tutorials-contest/2021/lux-DAO/"
+            },
+            {
               "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html",
               "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html"
             },
@@ -438,8 +438,8 @@
               "path": "/deprecated/tutorials-contest/2021/pangolin-token-subgraph/"
             },
             {
-              "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup/README",
-              "path": "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup/"
+              "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-avalanche-setup/README",
+              "path": "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-avalanche-setup/"
             },
             {
               "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/chainlink-external-adaptor/README",
@@ -458,14 +458,6 @@
               "path": "/deprecated/tutorials-contest/2022"
             },
             {
-              "id": "deprecated/tutorials-contest/2022/lux-theGraph-index/README",
-              "path": "/deprecated/tutorials-contest/2022/lux-theGraph-index/"
-            },
-            {
-              "id": "deprecated/tutorials-contest/2022/lux-subnet-customization/README",
-              "path": "/deprecated/tutorials-contest/2022/lux-subnet-customization/"
-            },
-            {
               "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/chains.js",
               "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/chains.js"
             },
@@ -474,16 +466,16 @@
               "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/nativeMinterAddress.js"
             },
             {
-              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol",
-              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol"
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol"
             },
             {
               "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol",
               "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol"
             },
             {
-              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol",
-              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol"
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol"
             },
             {
               "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol",
@@ -550,6 +542,14 @@
               "path": "/deprecated/tutorials-contest/2022/local-subnet-development/"
             },
             {
+              "id": "deprecated/tutorials-contest/2022/lux-subnet-customization/README",
+              "path": "/deprecated/tutorials-contest/2022/lux-subnet-customization/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/lux-theGraph-index/README",
+              "path": "/deprecated/tutorials-contest/2022/lux-theGraph-index/"
+            },
+            {
               "id": "deprecated/tutorials-contest/README",
               "path": "/deprecated/tutorials-contest/"
             },
@@ -563,40 +563,36 @@
               "sidebar": "learn"
             },
             {
-              "id": "learn/lux/lux-consensus",
-              "path": "/learn/lux/lux-consensus"
+              "id": "learn/avalanche/avalanche-consensus",
+              "path": "/learn/avalanche/avalanche-consensus"
             },
             {
-              "id": "learn/lux/lux-platform",
-              "path": "/learn/lux/lux-platform"
+              "id": "learn/avalanche/avalanche-platform",
+              "path": "/learn/avalanche/avalanche-platform"
             },
             {
-              "id": "learn/lux/lux",
-              "path": "/learn/lux/lux"
+              "id": "learn/avalanche/awm",
+              "path": "/learn/avalanche/awm"
             },
             {
-              "id": "learn/lux/awm",
-              "path": "/learn/lux/awm"
+              "id": "learn/avalanche/fuji",
+              "path": "/learn/avalanche/fuji"
             },
             {
-              "id": "learn/lux/fuji",
-              "path": "/learn/lux/fuji"
-            },
-            {
-              "id": "learn/lux/intro",
+              "id": "learn/avalanche/intro",
               "path": "/intro"
             },
             {
-              "id": "learn/lux/mainnet",
-              "path": "/learn/lux/mainnet"
+              "id": "learn/avalanche/mainnet",
+              "path": "/learn/avalanche/mainnet"
             },
             {
-              "id": "learn/lux/subnets-overview",
-              "path": "/learn/lux/subnets-overview"
+              "id": "learn/avalanche/subnets-overview",
+              "path": "/learn/avalanche/subnets-overview"
             },
             {
-              "id": "learn/lux/virtual-machines",
-              "path": "/learn/lux/virtual-machines"
+              "id": "learn/avalanche/virtual-machines",
+              "path": "/learn/avalanche/virtual-machines"
             },
             {
               "id": "learn/lux/awm",
@@ -660,8 +656,8 @@
               "path": "/nodes/build/setting-up-an-lux-node-with-amazon-web-services-aws"
             },
             {
-              "id": "nodes/configure/luxd-config-flags",
-              "path": "/nodes/configure/luxd-config-flags",
+              "id": "nodes/configure/avalanchego-config-flags",
+              "path": "/nodes/configure/avalanchego-config-flags",
               "sidebar": "nodes"
             },
             {
@@ -680,8 +676,8 @@
               "sidebar": "nodes"
             },
             {
-              "id": "nodes/maintain/lux-notify",
-              "path": "/nodes/maintain/lux-notify",
+              "id": "nodes/maintain/avalanche-notify",
+              "path": "/nodes/maintain/avalanche-notify",
               "sidebar": "nodes"
             },
             {
@@ -720,8 +716,8 @@
               "sidebar": "nodes"
             },
             {
-              "id": "nodes/maintain/upgrade-your-luxd-node",
-              "path": "/nodes/maintain/upgrade-your-luxd-node",
+              "id": "nodes/maintain/upgrade-your-avalanchego-node",
+              "path": "/nodes/maintain/upgrade-your-avalanchego-node",
               "sidebar": "nodes"
             },
             {
@@ -770,11 +766,6 @@
               "sidebar": "nodes"
             },
             {
-              "id": "nodes/run/third-party/latitude-node",
-              "path": "/nodes/run/third-party/latitude-node",
-              "sidebar": "nodes"
-            },
-            {
               "id": "nodes/run/third-party/microsoft-azure-node",
               "path": "/nodes/run/third-party/microsoft-azure-node",
               "sidebar": "nodes"
@@ -790,8 +781,8 @@
               "sidebar": "nodes"
             },
             {
-              "id": "nodes/run/with-installer/installing-luxd",
-              "path": "/nodes/run/with-installer/installing-luxd",
+              "id": "nodes/run/with-installer/installing-avalanchego",
+              "path": "/nodes/run/with-installer/installing-avalanchego",
               "sidebar": "nodes"
             },
             {
@@ -800,8 +791,8 @@
               "sidebar": "nodes"
             },
             {
-              "id": "nodes/run/with-installer/managing-luxd",
-              "path": "/nodes/run/with-installer/managing-luxd",
+              "id": "nodes/run/with-installer/managing-avalanchego",
+              "path": "/nodes/run/with-installer/managing-avalanchego",
               "sidebar": "nodes"
             },
             {
@@ -923,8 +914,8 @@
               "sidebar": "reference"
             },
             {
-              "id": "reference/standards/lux-network-protocol",
-              "path": "/reference/standards/lux-network-protocol"
+              "id": "reference/standards/avalanche-network-protocol",
+              "path": "/reference/standards/avalanche-network-protocol"
             },
             {
               "id": "reference/standards/cryptographic-primitives",
@@ -973,74 +964,6 @@
             },
             {
               "id": "tooling/cli",
-              "path": "/tooling/cli"
-            },
-            {
-              "id": "tooling/lux-ops",
-              "path": "/tooling/lux-ops"
-            },
-            {
-              "id": "tooling/lux-plugin-manager",
-              "path": "/tooling/lux-plugin-manager"
-            },
-            {
-              "id": "tooling/luxd-installer",
-              "path": "/tooling/luxd-installer"
-            },
-            {
-              "id": "tooling/luxd-postman-collection/data-visualization",
-              "path": "/tooling/luxd-postman-collection/data-visualization"
-            },
-            {
-              "id": "tooling/luxd-postman-collection/making-api-calls",
-              "path": "/tooling/luxd-postman-collection/making-api-calls"
-            },
-            {
-              "id": "tooling/luxd-postman-collection/setup",
-              "path": "/tooling/luxd-postman-collection/setup"
-            },
-            {
-              "id": "tooling/luxd-postman-collection/variables",
-              "path": "/tooling/luxd-postman-collection/variables"
-            },
-            {
-              "id": "tooling/luxjs-api",
-              "path": "/tooling/luxjs-api"
-            },
-            {
-              "id": "tooling/luxjs-guides/create-an-asset-on-the-x-chain",
-              "path": "/tooling/luxjs-guides/create-an-asset-on-the-x-chain"
-            },
-            {
-              "id": "tooling/luxjs-guides/cross-chain-transfers",
-              "path": "/tooling/luxjs-guides/cross-chain-transfers"
-            },
-            {
-              "id": "tooling/luxjs-guides/generate-a-txid-using-luxjs",
-              "path": "/tooling/luxjs-guides/generate-a-txid-using-luxjs"
-            },
-            {
-              "id": "tooling/luxjs-guides/generate-key-pair",
-              "path": "/tooling/luxjs-guides/generate-key-pair"
-            },
-            {
-              "id": "tooling/luxjs-guides/manage-x-chain-keys",
-              "path": "/tooling/luxjs-guides/manage-x-chain-keys"
-            },
-            {
-              "id": "tooling/luxjs-guides/multisig-utxos-with-luxjs",
-              "path": "/tooling/luxjs-guides/multisig-utxos-with-luxjs"
-            },
-            {
-              "id": "tooling/luxjs-guides/send-an-asset-on-the-x-chain",
-              "path": "/tooling/luxjs-guides/send-an-asset-on-the-x-chain"
-            },
-            {
-              "id": "tooling/luxjs-overview",
-              "path": "/tooling/luxjs-overview"
-            },
-            {
-              "id": "tooling/cli",
               "path": "/tooling/cli",
               "sidebar": "tooling"
             },
@@ -1062,11 +985,6 @@
             {
               "id": "tooling/cli-guides/install-cli",
               "path": "/tooling/cli-guides/install-cli",
-              "sidebar": "tooling"
-            },
-            {
-              "id": "tooling/cli-guides/install-lux-cli",
-              "path": "/tooling/cli-guides/install-lux-cli",
               "sidebar": "tooling"
             },
             {
@@ -1113,6 +1031,10 @@
               "id": "tooling/indexers",
               "path": "/tooling/indexers",
               "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/lux-plugin-manager",
+              "path": "/tooling/lux-plugin-manager"
             },
             {
               "id": "tooling/luxd-installer",
@@ -1193,10 +1115,6 @@
               "id": "tooling/netrunner",
               "path": "/tooling/netrunner",
               "sidebar": "tooling"
-            },
-            {
-              "id": "tooling/network-runner",
-              "path": "/tooling/network-runner"
             },
             {
               "id": "tooling/ops",

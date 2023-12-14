@@ -224,9 +224,9 @@ function getPrivateKey(mnemonic, activeIndex = 0) {
   const seed = mnemonicHelper.mnemonicToSeedSync(mnemonic);
   const hdNode = new HDNode(seed);
 
-  const luxPath = `m/44'/9000'/0'/0/${activeIndex}`;
+  const avaPath = `m/44'/9000'/0'/0/${activeIndex}`;
 
-  return hdNode.derive(luxPath).privateKeyCB58;
+  return hdNode.derive(avaPath).privateKeyCB58;
 }
 
 // importing keys in the key chain - use this if you have any private keys
@@ -1235,7 +1235,7 @@ importP();
 
 ![multisig UTXOs 6](/img/multisig-utxos-6.png)
 
-You can use [Luxscan](https://testnet.luxscan.io/) to view import and export transactions on C-Chain.
+You can use [Avascan](https://testnet.avascan.info/) to view import and export transactions on C-Chain.
 
 ## Add Delegator Transaction
 

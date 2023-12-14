@@ -2,7 +2,7 @@
   "label": "Build",
   "permalink": "/tags/build",
   "allTagsPath": "/tags",
-  "count": 66,
+  "count": 65,
   "items": [
     {
       "id": "build/dapp/README",
@@ -23,10 +23,10 @@
       "permalink": "/build/vm/"
     },
     {
-      "id": "build/dapp/advanced/add-lux-programmatically",
+      "id": "build/dapp/advanced/add-avalanche-programmatically",
       "title": "Add Lux Network Programmatically",
       "description": "This document shows how to integrate Lux Network with your Dapp, either by Core or MetaMask.",
-      "permalink": "/build/dapp/advanced/add-lux-programmatically"
+      "permalink": "/build/dapp/advanced/add-avalanche-programmatically"
     },
     {
       "id": "build/dapp/advanced/add-lux-programmatically",
@@ -161,10 +161,10 @@
       "permalink": "/build/subnet/elastic/elastic-parameters"
     },
     {
-      "id": "build/subnet/utility/lux-subnet-faucet",
+      "id": "build/subnet/utility/subnet-faucet",
       "title": "Enable Testnet Capabilities on a Subnet with Lux Subnet Faucet",
       "description": "Deploy a custom testnet faucet for your Subnet with features like multiple chain support, custom rate-limiting, CAPTCHA verification, and concurrent transaction handling.",
-      "permalink": "/build/subnet/utility/lux-subnet-faucet"
+      "permalink": "/build/subnet/utility/subnet-faucet"
     },
     {
       "id": "build/vm/evm/executing-tests",
@@ -297,12 +297,6 @@
       "title": "Lux Netrunner",
       "description": "The Lux Netrunner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
       "permalink": "/tooling/netrunner"
-    },
-    {
-      "id": "tooling/network-runner",
-      "title": "Lux Netrunner",
-      "description": "The Lux Netrunner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
-      "permalink": "/tooling/network-runner"
     },
     {
       "id": "build/dapp/smart-contracts/nfts/preparing-nft-files",

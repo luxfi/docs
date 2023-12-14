@@ -34,7 +34,7 @@
   "sidebar": "tooling",
   "previous": {
     "title": "Install Lux-CLI",
-    "permalink": "/tooling/cli-guides/install-lux-cli"
+    "permalink": "/tooling/cli-guides/install-cli"
   },
   "next": {
     "title": "How to Import a Subnet into Lux-CLI",

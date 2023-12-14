@@ -1,14 +1,14 @@
 {
-  "id": "reference/standards/lux-network-protocol",
+  "id": "reference/standards/avalanche-network-protocol",
   "title": "Lux Network Protocol",
   "description": "Lux network defines the core communication format between Lux nodes.",
-  "source": "@site/docs/reference/standards/lux-network-protocol.md",
+  "source": "@site/docs/reference/standards/avalanche-network-protocol.md",
   "sourceDirName": "reference/standards",
-  "slug": "/reference/standards/lux-network-protocol",
-  "permalink": "/reference/standards/lux-network-protocol",
+  "slug": "/reference/standards/avalanche-network-protocol",
+  "permalink": "/reference/standards/avalanche-network-protocol",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/reference/standards/lux-network-protocol.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/reference/standards/avalanche-network-protocol.md",
   "tags": [
     {
       "label": "Standards",

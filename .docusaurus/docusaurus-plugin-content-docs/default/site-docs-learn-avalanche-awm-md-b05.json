@@ -1,14 +1,14 @@
 {
-  "id": "learn/lux/awm",
+  "id": "learn/avalanche/awm",
   "title": "Lux Warp Messaging",
   "description": "AWM allows seamless communication between different subnetworks on Lux, enabling developers to establish custom communication protocols.",
-  "source": "@site/docs/learn/lux/awm.md",
-  "sourceDirName": "learn/lux",
-  "slug": "/learn/lux/awm",
-  "permalink": "/learn/lux/awm",
+  "source": "@site/docs/learn/avalanche/awm.md",
+  "sourceDirName": "learn/avalanche",
+  "slug": "/learn/avalanche/awm",
+  "permalink": "/learn/avalanche/awm",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/learn/lux/awm.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/learn/avalanche/awm.md",
   "tags": [
     {
       "label": "Lux Warp Messaging",

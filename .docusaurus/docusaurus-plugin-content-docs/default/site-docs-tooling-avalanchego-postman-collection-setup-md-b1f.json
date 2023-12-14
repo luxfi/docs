@@ -1,14 +1,14 @@
 {
-  "id": "tooling/luxd-postman-collection/setup",
+  "id": "tooling/avalanchego-postman-collection/setup",
   "title": "Setting up Postman",
   "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
-  "source": "@site/docs/tooling/luxd-postman-collection/setup.md",
-  "sourceDirName": "tooling/luxd-postman-collection",
-  "slug": "/tooling/luxd-postman-collection/setup",
-  "permalink": "/tooling/luxd-postman-collection/setup",
+  "source": "@site/docs/tooling/avalanchego-postman-collection/setup.md",
+  "sourceDirName": "tooling/avalanchego-postman-collection",
+  "slug": "/tooling/avalanchego-postman-collection/setup",
+  "permalink": "/tooling/avalanchego-postman-collection/setup",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/luxd-postman-collection/setup.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/avalanchego-postman-collection/setup.md",
   "tags": [
     {
       "label": "Tooling",

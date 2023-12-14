@@ -1,14 +1,14 @@
 {
-  "id": "build/subnet/utility/lux-subnet-faucet",
+  "id": "build/subnet/utility/avalanche-subnet-faucet",
   "title": "Enable Testnet Capabilities on a Subnet with Lux Subnet Faucet",
   "description": "Deploy a custom testnet faucet for your Subnet with features like multiple chain support, custom rate-limiting, CAPTCHA verification, and concurrent transaction handling.",
-  "source": "@site/docs/build/subnet/utility/lux-subnet-faucet.md",
+  "source": "@site/docs/build/subnet/utility/avalanche-subnet-faucet.md",
   "sourceDirName": "build/subnet/utility",
-  "slug": "/build/subnet/utility/lux-subnet-faucet",
-  "permalink": "/build/subnet/utility/lux-subnet-faucet",
+  "slug": "/build/subnet/utility/avalanche-subnet-faucet",
+  "permalink": "/build/subnet/utility/avalanche-subnet-faucet",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/build/subnet/utility/lux-subnet-faucet.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/build/subnet/utility/avalanche-subnet-faucet.md",
   "tags": [
     {
       "label": "Build",

@@ -23,10 +23,10 @@
       "permalink": "/reference/standards/guides/issuing-api-calls"
     },
     {
-      "id": "reference/standards/lux-network-protocol",
+      "id": "reference/standards/avalanche-network-protocol",
       "title": "Lux Network Protocol",
       "description": "Lux network defines the core communication format between Lux nodes.",
-      "permalink": "/reference/standards/lux-network-protocol"
+      "permalink": "/reference/standards/avalanche-network-protocol"
     },
     {
       "id": "reference/standards/network-protocol",

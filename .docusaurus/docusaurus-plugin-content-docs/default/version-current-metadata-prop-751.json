@@ -155,8 +155,8 @@
           {
             "type": "link",
             "label": "Installing Luxd",
-            "href": "/nodes/run/with-installer/installing-luxd",
-            "docId": "nodes/run/with-installer/installing-luxd",
+            "href": "/nodes/run/with-installer/installing-avalanchego",
+            "docId": "nodes/run/with-installer/installing-avalanchego",
             "unlisted": false
           },
           {
@@ -169,8 +169,8 @@
           {
             "type": "link",
             "label": "Managing Luxd",
-            "href": "/nodes/run/with-installer/managing-luxd",
-            "docId": "nodes/run/with-installer/managing-luxd",
+            "href": "/nodes/run/with-installer/managing-avalanchego",
+            "docId": "nodes/run/with-installer/managing-avalanchego",
             "unlisted": false
           },
           {
@@ -232,13 +232,6 @@
           },
           {
             "type": "link",
-            "label": "Latitude",
-            "href": "/nodes/run/third-party/latitude-node",
-            "docId": "nodes/run/third-party/latitude-node",
-            "unlisted": false
-          },
-          {
-            "type": "link",
             "label": "Alibaba Cloud",
             "href": "/nodes/run/third-party/alibaba-cloud-node",
             "docId": "nodes/run/third-party/alibaba-cloud-node",
@@ -272,8 +265,8 @@
       {
         "type": "link",
         "label": "Luxd Configs + Flags",
-        "href": "/nodes/configure/luxd-config-flags",
-        "docId": "nodes/configure/luxd-config-flags",
+        "href": "/nodes/configure/avalanchego-config-flags",
+        "docId": "nodes/configure/avalanchego-config-flags",
         "unlisted": false
       },
       {
@@ -372,8 +365,8 @@
       {
         "type": "link",
         "label": "Upgrade",
-        "href": "/nodes/maintain/upgrade-your-luxd-node",
-        "docId": "nodes/maintain/upgrade-your-luxd-node",
+        "href": "/nodes/maintain/upgrade-your-avalanchego-node",
+        "docId": "nodes/maintain/upgrade-your-avalanchego-node",
         "unlisted": false
       },
       {
@@ -386,8 +379,8 @@
       {
         "type": "link",
         "label": "Enroll in Lux Notify",
-        "href": "/nodes/maintain/lux-notify",
-        "docId": "nodes/maintain/lux-notify",
+        "href": "/nodes/maintain/avalanche-notify",
+        "docId": "nodes/maintain/avalanche-notify",
         "unlisted": false
       },
       {
@@ -594,8 +587,8 @@
       {
         "type": "link",
         "label": "Add Network Programmatically",
-        "href": "/build/dapp/advanced/add-lux-programmatically",
-        "docId": "build/dapp/advanced/add-lux-programmatically",
+        "href": "/build/dapp/advanced/add-avalanche-programmatically",
+        "docId": "build/dapp/advanced/add-avalanche-programmatically",
         "unlisted": false
       },
       {
@@ -806,8 +799,8 @@
           {
             "type": "link",
             "label": "Add a Testnet Faucet",
-            "href": "/build/subnet/utility/lux-subnet-faucet",
-            "docId": "build/subnet/utility/lux-subnet-faucet",
+            "href": "/build/subnet/utility/subnet-faucet",
+            "docId": "build/subnet/utility/subnet-faucet",
             "unlisted": false
           },
           {
@@ -1052,13 +1045,6 @@
             "label": "Install Lux-CLI",
             "href": "/tooling/cli-guides/install-cli",
             "docId": "tooling/cli-guides/install-cli",
-            "unlisted": false
-          },
-          {
-            "type": "link",
-            "label": "Install Lux-CLI",
-            "href": "/tooling/cli-guides/install-lux-cli",
-            "docId": "tooling/cli-guides/install-lux-cli",
             "unlisted": false
           },
           {
@@ -1566,8 +1552,8 @@
     ]
   },
   "docs": {
-    "build/dapp/advanced/add-lux-programmatically": {
-      "id": "build/dapp/advanced/add-lux-programmatically",
+    "build/dapp/advanced/add-avalanche-programmatically": {
+      "id": "build/dapp/advanced/add-avalanche-programmatically",
       "title": "Add Lux Network Programmatically",
       "description": "This document shows how to integrate Lux Network with your Dapp, either by Core or MetaMask.",
       "sidebar": "build-dapp"
@@ -1841,12 +1827,6 @@
       "description": "This how-to guide explains how to upgrade a deployed Subnet's Virtual Machine.",
       "sidebar": "build-subnet"
     },
-    "build/subnet/utility/lux-subnet-faucet": {
-      "id": "build/subnet/utility/lux-subnet-faucet",
-      "title": "Enable Testnet Capabilities on a Subnet with Lux Subnet Faucet",
-      "description": "Deploy a custom testnet faucet for your Subnet with features like multiple chain support, custom rate-limiting, CAPTCHA verification, and concurrent transaction handling.",
-      "sidebar": "build-subnet"
-    },
     "build/subnet/utility/cross-chain-evm-bridge": {
       "id": "build/subnet/utility/cross-chain-evm-bridge",
       "title": "Deploy a Cross-Chain EVM Bridge",
@@ -1857,6 +1837,12 @@
       "id": "build/subnet/utility/deploy-smart-contract-to-subnet",
       "title": "Deploy a Smart Contract on Your Subnet-EVM Using Remix and Core",
       "description": "This tutorial demonstrates the process of deploying a smart contract to an EVM-based Subnet.",
+      "sidebar": "build-subnet"
+    },
+    "build/subnet/utility/subnet-faucet": {
+      "id": "build/subnet/utility/subnet-faucet",
+      "title": "Enable Testnet Capabilities on a Subnet with Lux Subnet Faucet",
+      "description": "Deploy a custom testnet faucet for your Subnet with features like multiple chain support, custom rate-limiting, CAPTCHA verification, and concurrent transaction handling.",
       "sidebar": "build-subnet"
     },
     "build/vm/create/any-lang-vm": {
@@ -1957,16 +1943,6 @@
       "title": "2021 Winners",
       "description": "These tutorials were published as a snapshot of when they were written,"
     },
-    "deprecated/tutorials-contest/2021/lux-DAO/README": {
-      "id": "deprecated/tutorials-contest/2021/lux-DAO/README",
-      "title": "How to Create Your Own DAO with Lux",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/2021/lux-chat-dapp/README": {
-      "id": "deprecated/tutorials-contest/2021/lux-chat-dapp/README",
-      "title": "Create a Chat Dapp Using Solidity and ReactJS",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
     "deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js": {
       "id": "deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js",
       "title": "App.js",
@@ -2037,6 +2013,16 @@
       "title": "How to Mint Your Own ERC721 on Lux Using Open Zeppelin",
       "description": "These tutorials were published as a snapshot of when they were written,"
     },
+    "deprecated/tutorials-contest/2021/lux-chat-dapp/README": {
+      "id": "deprecated/tutorials-contest/2021/lux-chat-dapp/README",
+      "title": "Create a Chat Dapp Using Solidity and ReactJS",
+      "description": "These tutorials were published as a snapshot of when they were written,"
+    },
+    "deprecated/tutorials-contest/2021/lux-DAO/README": {
+      "id": "deprecated/tutorials-contest/2021/lux-DAO/README",
+      "title": "How to Create Your Own DAO with Lux",
+      "description": "These tutorials were published as a snapshot of when they were written,"
+    },
     "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html": {
       "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html",
       "title": "Index.html",
@@ -2077,8 +2063,8 @@
       "title": "How to Use The Graph to Query Lux Data",
       "description": "These tutorials were published as a snapshot of when they were written,"
     },
-    "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup/README": {
-      "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup/README",
+    "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-avalanche-setup/README": {
+      "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-avalanche-setup/README",
       "title": "Reddev Infrastructure Automation Repository",
       "description": "Setup requirements:"
     },
@@ -2102,16 +2088,6 @@
       "title": "2022 Winners",
       "description": "These tutorials were published as a snapshot of when they were written,"
     },
-    "deprecated/tutorials-contest/2022/lux-theGraph-index/README": {
-      "id": "deprecated/tutorials-contest/2022/lux-theGraph-index/README",
-      "title": "Indexing an Lux Local Subnet with The Graph",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/2022/lux-subnet-customization/README": {
-      "id": "deprecated/tutorials-contest/2022/lux-subnet-customization/README",
-      "title": "Lux - Creating a Genesis File for Your Subnet",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
     "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/chains.js": {
       "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/chains.js",
       "title": "Chains.js",
@@ -2122,8 +2098,8 @@
       "title": "NativeMinterAddress.js",
       "description": ""
     },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol",
+    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol": {
+      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol",
       "title": "LuxBridge.sol",
       "description": ""
     },
@@ -2132,8 +2108,8 @@
       "title": "SubnetBridge.sol",
       "description": ""
     },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol",
+    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol": {
+      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol",
       "title": "LuxToken.sol",
       "description": ""
     },
@@ -2217,6 +2193,16 @@
       "title": "Set up Your Development Environment for Local Subnet Development",
       "description": "These tutorials were published as a snapshot of when they were written,"
     },
+    "deprecated/tutorials-contest/2022/lux-subnet-customization/README": {
+      "id": "deprecated/tutorials-contest/2022/lux-subnet-customization/README",
+      "title": "Lux - Creating a Genesis File for Your Subnet",
+      "description": "These tutorials were published as a snapshot of when they were written,"
+    },
+    "deprecated/tutorials-contest/2022/lux-theGraph-index/README": {
+      "id": "deprecated/tutorials-contest/2022/lux-theGraph-index/README",
+      "title": "Indexing an Lux Local Subnet with The Graph",
+      "description": "These tutorials were published as a snapshot of when they were written,"
+    },
     "deprecated/tutorials-contest/README": {
       "id": "deprecated/tutorials-contest/README",
       "title": "Contest Overview",
@@ -2233,48 +2219,43 @@
       "description": "The Knowledge Base, including all the Help articles on this site, is provided for technical support purposes only, without representation, warranty or guarantee of any kind. Not an offer to sell or solicitation of an offer to buy any security or other regulated financial instrument. Not technical, investment, financial, accounting, tax, legal or other advice; please consult your own professionals. Please conduct your own research before connecting to or interacting with any dapp or third party or making any investment or financial decisions. MoonPay, ParaSwap and any other third party services or dapps you access are offered by third parties unaffiliated with us. Please review this Notice and the Terms of Use.",
       "sidebar": "learn"
     },
-    "learn/lux/lux-consensus": {
-      "id": "learn/lux/lux-consensus",
+    "learn/avalanche/avalanche-consensus": {
+      "id": "learn/avalanche/avalanche-consensus",
       "title": "Lux Consensus",
       "description": "Lux Consensus is a consensus protocol that is scalable, robust, and decentralized."
     },
-    "learn/lux/lux-platform": {
-      "id": "learn/lux/lux-platform",
+    "learn/avalanche/avalanche-platform": {
+      "id": "learn/avalanche/avalanche-platform",
       "title": "The Primary Network",
       "description": "Lux features 3 built-in blockchains which includes Exchange Chain (X-Chain), Platform Chain (P-Chain), and Contract Chain (C-Chain). More info here."
     },
-    "learn/lux/lux": {
-      "id": "learn/lux/lux",
-      "title": "LUX",
-      "description": "LUX is the limited-supply token of the Lux network, used to cover fees, enhance security via staking, and facilitate transactions across its various Subnets."
-    },
-    "learn/lux/awm": {
-      "id": "learn/lux/awm",
+    "learn/avalanche/awm": {
+      "id": "learn/avalanche/awm",
       "title": "Lux Warp Messaging",
       "description": "AWM allows seamless communication between different subnetworks on Lux, enabling developers to establish custom communication protocols."
     },
-    "learn/lux/fuji": {
-      "id": "learn/lux/fuji",
+    "learn/avalanche/fuji": {
+      "id": "learn/avalanche/fuji",
       "title": "Testnet",
       "description": "Testnet is the official testnet for the Lux ecosystem."
     },
-    "learn/lux/intro": {
-      "id": "learn/lux/intro",
+    "learn/avalanche/intro": {
+      "id": "learn/avalanche/intro",
       "title": "What Is Lux?",
       "description": "Lux is an open-source platform for building dApps in an interoperable, decentralized, and highly scalable ecosystem."
     },
-    "learn/lux/mainnet": {
-      "id": "learn/lux/mainnet",
+    "learn/avalanche/mainnet": {
+      "id": "learn/avalanche/mainnet",
       "title": "Lux Mainnet",
       "description": "Lux Mainnet is the final and production-ready version of the blockchain where users can interact with the network and transact with real world assets."
     },
-    "learn/lux/subnets-overview": {
-      "id": "learn/lux/subnets-overview",
+    "learn/avalanche/subnets-overview": {
+      "id": "learn/avalanche/subnets-overview",
       "title": "What Is a Subnet?",
       "description": "A Subnet is a dynamic set of validators working together to achieve consensus on the state of a set of blockchain networks."
     },
-    "learn/lux/virtual-machines": {
-      "id": "learn/lux/virtual-machines",
+    "learn/avalanche/virtual-machines": {
+      "id": "learn/avalanche/virtual-machines",
       "title": "Virtual Machines",
       "description": "Virtual Machine is a virtual environment inside blockchain networks that executes smart contracts and transactions according to predetermined rules and protocols."
     },
@@ -2352,8 +2333,8 @@
       "title": "Run an Lux Node with Amazon Web Services (AWS)",
       "description": "This tutorial will guide you through setting up an Lux node on Amazon Web Services (AWS). Cloud services like AWS are a good way to ensure that your node is highly secure, available, and accessible."
     },
-    "nodes/configure/luxd-config-flags": {
-      "id": "nodes/configure/luxd-config-flags",
+    "nodes/configure/avalanchego-config-flags": {
+      "id": "nodes/configure/avalanchego-config-flags",
       "title": "Luxd Configs and Flags",
       "description": "This documents list all available configuration and flags for Luxd.",
       "sidebar": "nodes"
@@ -2376,8 +2357,8 @@
       "description": "Reference for all available Subnet config options and flags.",
       "sidebar": "nodes"
     },
-    "nodes/maintain/lux-notify": {
-      "id": "nodes/maintain/lux-notify",
+    "nodes/maintain/avalanche-notify": {
+      "id": "nodes/maintain/avalanche-notify",
       "title": "Lux Notify",
       "description": "Lux Notify is an active monitoring system that checks a validator's responsiveness each minute. To receive email alerts if a validator becomes unresponsive or out-of-date, sign up with the Lux Notify tool.",
       "sidebar": "nodes"
@@ -2424,8 +2405,8 @@
       "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.",
       "sidebar": "nodes"
     },
-    "nodes/maintain/upgrade-your-luxd-node": {
-      "id": "nodes/maintain/upgrade-your-luxd-node",
+    "nodes/maintain/upgrade-your-avalanchego-node": {
+      "id": "nodes/maintain/upgrade-your-avalanchego-node",
       "title": "Upgrade Your Luxd Node",
       "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.",
       "sidebar": "nodes"
@@ -2484,12 +2465,6 @@
       "description": "Launch an Lux Node on Google Cloud Platform.",
       "sidebar": "nodes"
     },
-    "nodes/run/third-party/latitude-node": {
-      "id": "nodes/run/third-party/latitude-node",
-      "title": "Run an Lux Node with Latitude.sh",
-      "description": "Detailed instructions for running an Lux node with Latitude.sh",
-      "sidebar": "nodes"
-    },
     "nodes/run/third-party/microsoft-azure-node": {
       "id": "nodes/run/third-party/microsoft-azure-node",
       "title": "Run an Lux Node with Microsoft Azure",
@@ -2508,8 +2483,8 @@
       "description": "In this tutorial, you'll learn about advanced Lux node configuration options and maintenance tasks.",
       "sidebar": "nodes"
     },
-    "nodes/run/with-installer/installing-luxd": {
-      "id": "nodes/run/with-installer/installing-luxd",
+    "nodes/run/with-installer/installing-avalanchego": {
+      "id": "nodes/run/with-installer/installing-avalanchego",
       "title": "Installing Luxd Using the Script",
       "description": "In this tutorial, you'll learn how to download and install Luxd using the installation script.",
       "sidebar": "nodes"
@@ -2520,8 +2495,8 @@
       "description": "In this tutorial, you'll learn how to download and install Luxd using the installation script.",
       "sidebar": "nodes"
     },
-    "nodes/run/with-installer/managing-luxd": {
-      "id": "nodes/run/with-installer/managing-luxd",
+    "nodes/run/with-installer/managing-avalanchego": {
+      "id": "nodes/run/with-installer/managing-avalanchego",
       "title": "Managing Luxd",
       "description": "In this tutorial, you'll learn how to manage your Luxd node.",
       "sidebar": "nodes"
@@ -2668,8 +2643,8 @@
       "description": "Luxd is the node implementation for the Lux network - a blockchain platform with high throughput and blazing fast transactions. This page is overview of the APIs associated with Luxd.",
       "sidebar": "reference"
     },
-    "reference/standards/lux-network-protocol": {
-      "id": "reference/standards/lux-network-protocol",
+    "reference/standards/avalanche-network-protocol": {
+      "id": "reference/standards/avalanche-network-protocol",
       "title": "Lux Network Protocol",
       "description": "Lux network defines the core communication format between Lux nodes."
     },
@@ -2730,91 +2705,6 @@
     "tooling/cli": {
       "id": "tooling/cli",
       "title": "Lux-CLI",
-      "description": "Lux-CLI is a command-line tool that gives developers access to everything Lux. This release specializes in helping developers build and test Subnets."
-    },
-    "tooling/lux-ops": {
-      "id": "tooling/lux-ops",
-      "title": "Lux Ops",
-      "description": "Lux Ops is a suite of commands that enables you to launch and configure network infrastructure (virtual machines or cloud instances) and installs Lux nodes from scratch allowing for various configuration requirements. It provisions all resources required to run a node or network with recommended setups (configurable). This tool is intended for quickly creating, testing and iterating over various Lux network infrastructure configurations for testing and simulation purposes. Use this to play with various setups and reproduce potential problems and issues with possible configurations."
-    },
-    "tooling/lux-plugin-manager": {
-      "id": "tooling/lux-plugin-manager",
-      "title": "Lux Plugin Manager",
-      "description": "Lux Plugin Manager is a command-line tool to manage virtual machines binaries on existing Luxd instances. It enables to add/remove nodes to Subnets, upgrade the VM plugin binaries as new versions get released to the plugin repository."
-    },
-    "tooling/luxd-installer": {
-      "id": "tooling/luxd-installer",
-      "title": "Luxd Installer",
-      "description": "Luxd Installer is a shell (bash) script that installs Luxd on any Linux computer. This script sets up full, running node in a matter of minutes with minimal user input required. This is convenient if you want to run the node as a service on a standalone Linux installation, for example to set up a (Subnet) validator, use the node as a private RPC server and similar uses. It also makes upgrading or reinstalling the nodes easy."
-    },
-    "tooling/luxd-postman-collection/data-visualization": {
-      "id": "tooling/luxd-postman-collection/data-visualization",
-      "title": "Data Visualization",
-      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands."
-    },
-    "tooling/luxd-postman-collection/making-api-calls": {
-      "id": "tooling/luxd-postman-collection/making-api-calls",
-      "title": "Making API Calls",
-      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands."
-    },
-    "tooling/luxd-postman-collection/setup": {
-      "id": "tooling/luxd-postman-collection/setup",
-      "title": "Setting up Postman",
-      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands."
-    },
-    "tooling/luxd-postman-collection/variables": {
-      "id": "tooling/luxd-postman-collection/variables",
-      "title": "Variables",
-      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands."
-    },
-    "tooling/luxjs-api": {
-      "id": "tooling/luxjs-api",
-      "title": "LuxJS API",
-      "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs."
-    },
-    "tooling/luxjs-guides/create-an-asset-on-the-x-chain": {
-      "id": "tooling/luxjs-guides/create-an-asset-on-the-x-chain",
-      "title": "Create an Asset on the X-Chain",
-      "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs."
-    },
-    "tooling/luxjs-guides/cross-chain-transfers": {
-      "id": "tooling/luxjs-guides/cross-chain-transfers",
-      "title": "Transfer LUX Tokens Between Chains",
-      "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs."
-    },
-    "tooling/luxjs-guides/generate-a-txid-using-luxjs": {
-      "id": "tooling/luxjs-guides/generate-a-txid-using-luxjs",
-      "title": "Generate a Transaction ID Using LuxJS",
-      "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs."
-    },
-    "tooling/luxjs-guides/generate-key-pair": {
-      "id": "tooling/luxjs-guides/generate-key-pair",
-      "title": "Manual Creation of Public-Private Key Pairs using LuxJS",
-      "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs."
-    },
-    "tooling/luxjs-guides/manage-x-chain-keys": {
-      "id": "tooling/luxjs-guides/manage-x-chain-keys",
-      "title": "Manage X-Chain Keys",
-      "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs."
-    },
-    "tooling/luxjs-guides/multisig-utxos-with-luxjs": {
-      "id": "tooling/luxjs-guides/multisig-utxos-with-luxjs",
-      "title": "Multi Signature UTXOs with LuxJS",
-      "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs."
-    },
-    "tooling/luxjs-guides/send-an-asset-on-the-x-chain": {
-      "id": "tooling/luxjs-guides/send-an-asset-on-the-x-chain",
-      "title": "Send an Asset on the X-Chain",
-      "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs."
-    },
-    "tooling/luxjs-overview": {
-      "id": "tooling/luxjs-overview",
-      "title": "LuxJS Overview",
-      "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs."
-    },
-    "tooling/cli": {
-      "id": "tooling/cli",
-      "title": "Lux-CLI",
       "description": "Lux-CLI is a command-line tool that gives developers access to everything Lux. This release specializes in helping developers build and test Subnets.",
       "sidebar": "tooling"
     },
@@ -2838,12 +2728,6 @@
     },
     "tooling/cli-guides/install-cli": {
       "id": "tooling/cli-guides/install-cli",
-      "title": "Install Lux-CLI",
-      "description": "This guide demonstrates how to install Lux-CLI.",
-      "sidebar": "tooling"
-    },
-    "tooling/cli-guides/install-lux-cli": {
-      "id": "tooling/cli-guides/install-lux-cli",
       "title": "Install Lux-CLI",
       "description": "This guide demonstrates how to install Lux-CLI.",
       "sidebar": "tooling"
@@ -2901,6 +2785,11 @@
       "title": "🗄️ Indexers",
       "description": "tools or services that facilitate efficient and quick access to data stored on Lux network.",
       "sidebar": "tooling"
+    },
+    "tooling/lux-plugin-manager": {
+      "id": "tooling/lux-plugin-manager",
+      "title": "Lux Plugin Manager",
+      "description": "Lux Plugin Manager is a command-line tool to manage virtual machines binaries on existing Luxd instances. It enables to add/remove nodes to Subnets, upgrade the VM plugin binaries as new versions get released to the plugin repository."
     },
     "tooling/luxd-installer": {
       "id": "tooling/luxd-installer",
@@ -2997,11 +2886,6 @@
       "title": "Lux Netrunner",
       "description": "The Lux Netrunner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
       "sidebar": "tooling"
-    },
-    "tooling/network-runner": {
-      "id": "tooling/network-runner",
-      "title": "Lux Netrunner",
-      "description": "The Lux Netrunner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing."
     },
     "tooling/ops": {
       "id": "tooling/ops",

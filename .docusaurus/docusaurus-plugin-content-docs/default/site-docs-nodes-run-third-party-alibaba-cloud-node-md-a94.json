@@ -28,8 +28,8 @@
   },
   "sidebar": "nodes",
   "previous": {
-    "title": "Run an Lux Node with Latitude.sh",
-    "permalink": "/nodes/run/third-party/latitude-node"
+    "title": "Run an Lux Node with Google Cloud Platform",
+    "permalink": "/nodes/run/third-party/google-cloud-node"
   },
   "next": {
     "title": "Run an Lux Node with Tencent Cloud",

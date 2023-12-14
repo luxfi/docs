@@ -32,7 +32,7 @@
     "permalink": "/nodes/run/third-party/microsoft-azure-node"
   },
   "next": {
-    "title": "Run an Lux Node with Latitude.sh",
-    "permalink": "/nodes/run/third-party/latitude-node"
+    "title": "Run an Lux Node with Alibaba Cloud",
+    "permalink": "/nodes/run/third-party/alibaba-cloud-node"
   }
 }

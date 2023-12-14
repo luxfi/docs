@@ -28,10 +28,10 @@
   "sidebar": "nodes",
   "previous": {
     "title": "Installing Luxd",
-    "permalink": "/nodes/run/with-installer/installing-luxd"
+    "permalink": "/nodes/run/with-installer/installing-avalanchego"
   },
   "next": {
     "title": "Managing Luxd",
-    "permalink": "/nodes/run/with-installer/managing-luxd"
+    "permalink": "/nodes/run/with-installer/managing-avalanchego"
   }
 }

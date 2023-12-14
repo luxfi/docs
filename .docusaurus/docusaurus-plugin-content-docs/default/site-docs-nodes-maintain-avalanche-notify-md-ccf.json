@@ -1,14 +1,14 @@
 {
-  "id": "nodes/maintain/lux-notify",
+  "id": "nodes/maintain/avalanche-notify",
   "title": "Lux Notify",
   "description": "Lux Notify is an active monitoring system that checks a validator's responsiveness each minute. To receive email alerts if a validator becomes unresponsive or out-of-date, sign up with the Lux Notify tool.",
-  "source": "@site/docs/nodes/maintain/lux-notify.md",
+  "source": "@site/docs/nodes/maintain/avalanche-notify.md",
   "sourceDirName": "nodes/maintain",
-  "slug": "/nodes/maintain/lux-notify",
-  "permalink": "/nodes/maintain/lux-notify",
+  "slug": "/nodes/maintain/avalanche-notify",
+  "permalink": "/nodes/maintain/avalanche-notify",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/maintain/lux-notify.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/maintain/avalanche-notify.md",
   "tags": [
     {
       "label": "Nodes",

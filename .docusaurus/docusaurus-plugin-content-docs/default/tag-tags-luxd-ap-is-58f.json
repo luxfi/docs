@@ -2,7 +2,7 @@
   "label": "Luxd APIs",
   "permalink": "/tags/luxd-ap-is",
   "allTagsPath": "/tags",
-  "count": 23,
+  "count": 18,
   "items": [
     {
       "id": "tooling/rpc-providers",
@@ -33,12 +33,6 @@
       "title": "Contract Chain API",
       "description": "This page is an overview of the C-Chain API associated with Luxd.",
       "permalink": "/reference/luxd/c-chain/api"
-    },
-    {
-      "id": "tooling/luxd-postman-collection/data-visualization",
-      "title": "Data Visualization",
-      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
-      "permalink": "/tooling/luxd-postman-collection/data-visualization"
     },
     {
       "id": "tooling/luxd-postman-collection/data-visualization",
@@ -83,18 +77,6 @@
       "permalink": "/tooling/luxd-installer"
     },
     {
-      "id": "tooling/luxd-installer",
-      "title": "Luxd Installer",
-      "description": "Luxd Installer is a shell (bash) script that installs Luxd on any Linux computer. This script sets up full, running node in a matter of minutes with minimal user input required. This is convenient if you want to run the node as a service on a standalone Linux installation, for example to set up a (Subnet) validator, use the node as a private RPC server and similar uses. It also makes upgrading or reinstalling the nodes easy.",
-      "permalink": "/tooling/luxd-installer"
-    },
-    {
-      "id": "tooling/luxd-postman-collection/making-api-calls",
-      "title": "Making API Calls",
-      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
-      "permalink": "/tooling/luxd-postman-collection/making-api-calls"
-    },
-    {
       "id": "tooling/luxd-postman-collection/making-api-calls",
       "title": "Making API Calls",
       "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
@@ -117,18 +99,6 @@
       "title": "Setting up Postman",
       "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
       "permalink": "/tooling/luxd-postman-collection/setup"
-    },
-    {
-      "id": "tooling/luxd-postman-collection/setup",
-      "title": "Setting up Postman",
-      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
-      "permalink": "/tooling/luxd-postman-collection/setup"
-    },
-    {
-      "id": "tooling/luxd-postman-collection/variables",
-      "title": "Variables",
-      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
-      "permalink": "/tooling/luxd-postman-collection/variables"
     },
     {
       "id": "tooling/luxd-postman-collection/variables",

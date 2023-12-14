@@ -1,14 +1,14 @@
 {
-  "id": "tooling/luxjs-guides/generate-key-pair",
+  "id": "tooling/avalanchejs-guides/generate-key-pair",
   "title": "Manual Creation of Public-Private Key Pairs using LuxJS",
   "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
-  "source": "@site/docs/tooling/luxjs-guides/generate-key-pair.md",
-  "sourceDirName": "tooling/luxjs-guides",
-  "slug": "/tooling/luxjs-guides/generate-key-pair",
-  "permalink": "/tooling/luxjs-guides/generate-key-pair",
+  "source": "@site/docs/tooling/avalanchejs-guides/generate-key-pair.md",
+  "sourceDirName": "tooling/avalanchejs-guides",
+  "slug": "/tooling/avalanchejs-guides/generate-key-pair",
+  "permalink": "/tooling/avalanchejs-guides/generate-key-pair",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/luxjs-guides/generate-key-pair.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/avalanchejs-guides/generate-key-pair.md",
   "tags": [
     {
       "label": "Tooling",

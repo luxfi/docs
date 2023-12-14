@@ -1,14 +1,14 @@
 {
-  "id": "nodes/maintain/upgrade-your-luxd-node",
+  "id": "nodes/maintain/upgrade-your-avalanchego-node",
   "title": "Upgrade Your Luxd Node",
   "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.",
-  "source": "@site/docs/nodes/maintain/upgrade-your-luxd-node.md",
+  "source": "@site/docs/nodes/maintain/upgrade-your-avalanchego-node.md",
   "sourceDirName": "nodes/maintain",
-  "slug": "/nodes/maintain/upgrade-your-luxd-node",
-  "permalink": "/nodes/maintain/upgrade-your-luxd-node",
+  "slug": "/nodes/maintain/upgrade-your-avalanchego-node",
+  "permalink": "/nodes/maintain/upgrade-your-avalanchego-node",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/maintain/upgrade-your-luxd-node.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/maintain/upgrade-your-avalanchego-node.md",
   "tags": [
     {
       "label": "Nodes",

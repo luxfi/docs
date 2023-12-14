@@ -34,7 +34,7 @@
   "sidebar": "build-subnet",
   "previous": {
     "title": "Lux Subnet Faucet",
-    "permalink": "/build/subnet/utility/lux-subnet-faucet"
+    "permalink": "/build/subnet/utility/subnet-faucet"
   },
   "next": {
     "title": "Key Considerations When Upgrading a Subnet",

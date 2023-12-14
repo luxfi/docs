@@ -1,14 +1,14 @@
 {
-  "id": "tooling/luxjs-guides/multisig-utxos-with-luxjs",
+  "id": "tooling/avalanchejs-guides/multisig-utxos-with-avalanchejs",
   "title": "Multi Signature UTXOs with LuxJS",
   "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
-  "source": "@site/docs/tooling/luxjs-guides/multisig-utxos-with-luxjs.md",
-  "sourceDirName": "tooling/luxjs-guides",
-  "slug": "/tooling/luxjs-guides/multisig-utxos-with-luxjs",
-  "permalink": "/tooling/luxjs-guides/multisig-utxos-with-luxjs",
+  "source": "@site/docs/tooling/avalanchejs-guides/multisig-utxos-with-avalanchejs.md",
+  "sourceDirName": "tooling/avalanchejs-guides",
+  "slug": "/tooling/avalanchejs-guides/multisig-utxos-with-avalanchejs",
+  "permalink": "/tooling/avalanchejs-guides/multisig-utxos-with-avalanchejs",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/luxjs-guides/multisig-utxos-with-luxjs.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/avalanchejs-guides/multisig-utxos-with-avalanchejs.md",
   "tags": [
     {
       "label": "Tooling",

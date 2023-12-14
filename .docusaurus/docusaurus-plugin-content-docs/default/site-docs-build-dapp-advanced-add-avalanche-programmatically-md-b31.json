@@ -1,14 +1,14 @@
 {
-  "id": "build/dapp/advanced/add-lux-programmatically",
+  "id": "build/dapp/advanced/add-avalanche-programmatically",
   "title": "Add Lux Network Programmatically",
   "description": "This document shows how to integrate Lux Network with your Dapp, either by Core or MetaMask.",
-  "source": "@site/docs/build/dapp/advanced/add-lux-programmatically.md",
+  "source": "@site/docs/build/dapp/advanced/add-avalanche-programmatically.md",
   "sourceDirName": "build/dapp/advanced",
-  "slug": "/build/dapp/advanced/add-lux-programmatically",
-  "permalink": "/build/dapp/advanced/add-lux-programmatically",
+  "slug": "/build/dapp/advanced/add-avalanche-programmatically",
+  "permalink": "/build/dapp/advanced/add-avalanche-programmatically",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/build/dapp/advanced/add-lux-programmatically.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/build/dapp/advanced/add-avalanche-programmatically.md",
   "tags": [
     {
       "label": "Build",

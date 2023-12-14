@@ -5,10 +5,10 @@
   "count": 2,
   "items": [
     {
-      "id": "learn/lux/fuji",
+      "id": "learn/avalanche/fuji",
       "title": "Testnet",
       "description": "Testnet is the official testnet for the Lux ecosystem.",
-      "permalink": "/learn/lux/fuji"
+      "permalink": "/learn/avalanche/fuji"
     },
     {
       "id": "learn/lux/testnet",

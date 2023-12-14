@@ -2,7 +2,7 @@
   "label": "Tooling",
   "permalink": "/tags/tooling",
   "allTagsPath": "/tags",
-  "count": 53,
+  "count": 35,
   "items": [
     {
       "id": "tooling/rpc-providers",
@@ -41,18 +41,6 @@
       "permalink": "/tooling/luxjs-guides/create-an-asset-on-the-x-chain"
     },
     {
-      "id": "tooling/luxjs-guides/create-an-asset-on-the-x-chain",
-      "title": "Create an Asset on the X-Chain",
-      "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
-      "permalink": "/tooling/luxjs-guides/create-an-asset-on-the-x-chain"
-    },
-    {
-      "id": "tooling/luxd-postman-collection/data-visualization",
-      "title": "Data Visualization",
-      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
-      "permalink": "/tooling/luxd-postman-collection/data-visualization"
-    },
-    {
       "id": "tooling/luxd-postman-collection/data-visualization",
       "title": "Data Visualization",
       "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
@@ -69,12 +57,6 @@
       "title": "Execute a SSH command on a Cluster",
       "description": "This page demonstrates how to execute a SSH command on all nodes of a Cluster using the Lux-CLI.",
       "permalink": "/tooling/cli-guides/node-ssh"
-    },
-    {
-      "id": "tooling/luxjs-guides/generate-a-txid-using-luxjs",
-      "title": "Generate a Transaction ID Using LuxJS",
-      "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
-      "permalink": "/tooling/luxjs-guides/generate-a-txid-using-luxjs"
     },
     {
       "id": "tooling/luxjs-guides/generate-a-txid-using-luxjs",
@@ -107,28 +89,10 @@
       "permalink": "/tooling/cli-guides/install-cli"
     },
     {
-      "id": "tooling/cli-guides/install-lux-cli",
-      "title": "Install Lux-CLI",
-      "description": "This guide demonstrates how to install Lux-CLI.",
-      "permalink": "/tooling/cli-guides/install-lux-cli"
-    },
-    {
       "id": "tooling/netrunner",
       "title": "Lux Netrunner",
       "description": "The Lux Netrunner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
       "permalink": "/tooling/netrunner"
-    },
-    {
-      "id": "tooling/network-runner",
-      "title": "Lux Netrunner",
-      "description": "The Lux Netrunner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
-      "permalink": "/tooling/network-runner"
-    },
-    {
-      "id": "tooling/lux-ops",
-      "title": "Lux Ops",
-      "description": "Lux Ops is a suite of commands that enables you to launch and configure network infrastructure (virtual machines or cloud instances) and installs Lux nodes from scratch allowing for various configuration requirements. It provisions all resources required to run a node or network with recommended setups (configurable). This tool is intended for quickly creating, testing and iterating over various Lux network infrastructure configurations for testing and simulation purposes. Use this to play with various setups and reproduce potential problems and issues with possible configurations.",
-      "permalink": "/tooling/lux-ops"
     },
     {
       "id": "tooling/ops",
@@ -155,28 +119,10 @@
       "permalink": "/tooling/cli"
     },
     {
-      "id": "tooling/cli",
-      "title": "Lux-CLI",
-      "description": "Lux-CLI is a command-line tool that gives developers access to everything Lux. This release specializes in helping developers build and test Subnets.",
-      "permalink": "/tooling/cli"
-    },
-    {
       "id": "tooling/luxd-installer",
       "title": "Luxd Installer",
       "description": "Luxd Installer is a shell (bash) script that installs Luxd on any Linux computer. This script sets up full, running node in a matter of minutes with minimal user input required. This is convenient if you want to run the node as a service on a standalone Linux installation, for example to set up a (Subnet) validator, use the node as a private RPC server and similar uses. It also makes upgrading or reinstalling the nodes easy.",
       "permalink": "/tooling/luxd-installer"
-    },
-    {
-      "id": "tooling/luxd-installer",
-      "title": "Luxd Installer",
-      "description": "Luxd Installer is a shell (bash) script that installs Luxd on any Linux computer. This script sets up full, running node in a matter of minutes with minimal user input required. This is convenient if you want to run the node as a service on a standalone Linux installation, for example to set up a (Subnet) validator, use the node as a private RPC server and similar uses. It also makes upgrading or reinstalling the nodes easy.",
-      "permalink": "/tooling/luxd-installer"
-    },
-    {
-      "id": "tooling/luxjs-api",
-      "title": "LuxJS API",
-      "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
-      "permalink": "/tooling/luxjs-api"
     },
     {
       "id": "tooling/luxjs-api",
@@ -191,18 +137,6 @@
       "permalink": "/tooling/luxjs-overview"
     },
     {
-      "id": "tooling/luxjs-overview",
-      "title": "LuxJS Overview",
-      "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
-      "permalink": "/tooling/luxjs-overview"
-    },
-    {
-      "id": "tooling/luxd-postman-collection/making-api-calls",
-      "title": "Making API Calls",
-      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
-      "permalink": "/tooling/luxd-postman-collection/making-api-calls"
-    },
-    {
       "id": "tooling/luxd-postman-collection/making-api-calls",
       "title": "Making API Calls",
       "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
@@ -213,18 +147,6 @@
       "title": "Manage X-Chain Keys",
       "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
       "permalink": "/tooling/luxjs-guides/manage-x-chain-keys"
-    },
-    {
-      "id": "tooling/luxjs-guides/manage-x-chain-keys",
-      "title": "Manage X-Chain Keys",
-      "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
-      "permalink": "/tooling/luxjs-guides/manage-x-chain-keys"
-    },
-    {
-      "id": "tooling/luxjs-guides/generate-key-pair",
-      "title": "Manual Creation of Public-Private Key Pairs using LuxJS",
-      "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
-      "permalink": "/tooling/luxjs-guides/generate-key-pair"
     },
     {
       "id": "tooling/luxjs-guides/generate-key-pair",
@@ -237,12 +159,6 @@
       "title": "Metrics API",
       "description": "Power your analytics with Lux Metrics API such as Subnet usage, staking operations, and more.",
       "permalink": "/tooling/metrics"
-    },
-    {
-      "id": "tooling/luxjs-guides/multisig-utxos-with-luxjs",
-      "title": "Multi Signature UTXOs with LuxJS",
-      "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
-      "permalink": "/tooling/luxjs-guides/multisig-utxos-with-luxjs"
     },
     {
       "id": "tooling/luxjs-guides/multisig-utxos-with-luxjs",
@@ -269,18 +185,6 @@
       "permalink": "/tooling/luxjs-guides/send-an-asset-on-the-x-chain"
     },
     {
-      "id": "tooling/luxjs-guides/send-an-asset-on-the-x-chain",
-      "title": "Send an Asset on the X-Chain",
-      "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
-      "permalink": "/tooling/luxjs-guides/send-an-asset-on-the-x-chain"
-    },
-    {
-      "id": "tooling/luxd-postman-collection/setup",
-      "title": "Setting up Postman",
-      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
-      "permalink": "/tooling/luxd-postman-collection/setup"
-    },
-    {
       "id": "tooling/luxd-postman-collection/setup",
       "title": "Setting up Postman",
       "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
@@ -303,18 +207,6 @@
       "title": "Transfer LUX Tokens Between Chains",
       "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
       "permalink": "/tooling/luxjs-guides/cross-chain-transfers"
-    },
-    {
-      "id": "tooling/luxjs-guides/cross-chain-transfers",
-      "title": "Transfer LUX Tokens Between Chains",
-      "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
-      "permalink": "/tooling/luxjs-guides/cross-chain-transfers"
-    },
-    {
-      "id": "tooling/luxd-postman-collection/variables",
-      "title": "Variables",
-      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
-      "permalink": "/tooling/luxd-postman-collection/variables"
     },
     {
       "id": "tooling/luxd-postman-collection/variables",

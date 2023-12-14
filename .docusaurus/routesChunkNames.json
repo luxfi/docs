@@ -19,13 +19,13 @@
     },
     "config": "5e9f5e1a"
   },
-  "/-bee": {
+  "/-126": {
     "__comp": "5e95c892",
     "__context": {
       "plugin": "059fabf7"
     }
   },
-  "/-a55": {
+  "/-500": {
     "__comp": "a7bd4aaa",
     "version": "935f2afb"
   },
@@ -161,14 +161,14 @@
     "__comp": "df203c0f",
     "tag": "f5249aae"
   },
-  "/-be7": {
+  "/-200": {
     "__comp": "a94703ab"
   },
   "/build/dapp-335": {
     "__comp": "17896441",
     "content": "fa959038"
   },
-  "/build/dapp/advanced/add-lux-programmatically-4c9": {
+  "/build/dapp/advanced/add-avalanche-programmatically-4c9": {
     "__comp": "17896441",
     "content": "b3155149"
   },
@@ -348,10 +348,6 @@
     "__comp": "17896441",
     "content": "3c286722"
   },
-  "/build/subnet/utility/lux-subnet-faucet-d04": {
-    "__comp": "17896441",
-    "content": "8bfb1345"
-  },
   "/build/subnet/utility/cross-chain-evm-bridge-692": {
     "__comp": "17896441",
     "content": "06b6ef99"
@@ -359,6 +355,10 @@
   "/build/subnet/utility/deploy-smart-contract-to-subnet-1d5": {
     "__comp": "17896441",
     "content": "d12935d0"
+  },
+  "/build/subnet/utility/subnet-faucet-9ee": {
+    "__comp": "17896441",
+    "content": "3e4f29dd"
   },
   "/build/vm-709": {
     "__comp": "17896441",
@@ -432,14 +432,6 @@
     "__comp": "17896441",
     "content": "df50f526"
   },
-  "/deprecated/tutorials-contest/2021/lux-DAO-beb": {
-    "__comp": "17896441",
-    "content": "ed9544f6"
-  },
-  "/deprecated/tutorials-contest/2021/lux-chat-dapp-a9f": {
-    "__comp": "17896441",
-    "content": "7d2e5a22"
-  },
   "/deprecated/tutorials-contest/2021/distributed-file-manager-96b": {
     "__comp": "17896441",
     "content": "7c03bc8d"
@@ -472,21 +464,21 @@
     "__comp": "17896441",
     "content": "f88b702c"
   },
-  "/deprecated/tutorials-contest/2021/evoting-lux-dapp-1df": {
+  "/deprecated/tutorials-contest/2021/evoting-lux-dapp-c81": {
     "__comp": "17896441",
-    "content": "1a72dc8c"
+    "content": "208b37ae"
   },
-  "/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/ActiveElections.js-d81": {
+  "/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/ActiveElections.js-07e": {
     "__comp": "17896441",
-    "content": "3c6be50c"
+    "content": "33396eab"
   },
-  "/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/CreateElection.js-489": {
+  "/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/CreateElection.js-593": {
     "__comp": "17896441",
-    "content": "131c504e"
+    "content": "999d97da"
   },
-  "/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/VoteModal.js-b96": {
+  "/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/VoteModal.js-703": {
     "__comp": "17896441",
-    "content": "c0388875"
+    "content": "994dbdf0"
   },
   "/deprecated/tutorials-contest/2021/hardhat-fork-c3c": {
     "__comp": "17896441",
@@ -496,49 +488,57 @@
     "__comp": "17896441",
     "content": "031e2e02"
   },
-  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux-3d2": {
+  "/deprecated/tutorials-contest/2021/lux-chat-dapp-3b2": {
     "__comp": "17896441",
-    "content": "0d7fb457"
+    "content": "3e62336d"
   },
-  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend-27e": {
+  "/deprecated/tutorials-contest/2021/lux-DAO-2d5": {
     "__comp": "17896441",
-    "content": "74146cdf"
+    "content": "7acf1672"
   },
-  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html-e51": {
+  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux-bf2": {
     "__comp": "17896441",
-    "content": "58d82291"
+    "content": "5be5dade"
   },
-  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/App.js-3d8": {
+  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend-490": {
     "__comp": "17896441",
-    "content": "f7b7a261"
+    "content": "74a7032f"
   },
-  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/index.js-91c": {
+  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html-d5c": {
     "__comp": "17896441",
-    "content": "28c5bf7b"
+    "content": "a64d055c"
   },
-  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js-af2": {
+  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/App.js-6ab": {
     "__comp": "17896441",
-    "content": "a5d0229d"
+    "content": "8f2909b5"
   },
-  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/setupTests.js-1dc": {
+  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/index.js-7f5": {
     "__comp": "17896441",
-    "content": "853d4bb3"
+    "content": "f069a303"
+  },
+  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js-fc2": {
+    "__comp": "17896441",
+    "content": "0cba92a3"
+  },
+  "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/setupTests.js-285": {
+    "__comp": "17896441",
+    "content": "f65f58e5"
   },
   "/deprecated/tutorials-contest/2021/pangolin-token-subgraph-091": {
     "__comp": "17896441",
     "content": "6e07e3fc"
   },
-  "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial-31f": {
+  "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial-d4f": {
     "__comp": "17896441",
-    "content": "88340757"
+    "content": "e38627e4"
   },
-  "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup-2e4": {
+  "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-avalanche-setup-f1c": {
     "__comp": "17896441",
-    "content": "97b8a149"
+    "content": "1c014736"
   },
-  "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/chainlink-external-adaptor-d13": {
+  "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/chainlink-external-adaptor-47d": {
     "__comp": "17896441",
-    "content": "eef65897"
+    "content": "de6e7a95"
   },
   "/deprecated/tutorials-contest/2021/red-dev-sig-verify-tutorial-9d3": {
     "__comp": "17896441",
@@ -547,14 +547,6 @@
   "/deprecated/tutorials-contest/2022-cc3": {
     "__comp": "17896441",
     "content": "b993aca4"
-  },
-  "/deprecated/tutorials-contest/2022/lux-theGraph-index-588": {
-    "__comp": "17896441",
-    "content": "68864c43"
-  },
-  "/deprecated/tutorials-contest/2022/lux-subnet-customization-4b8": {
-    "__comp": "17896441",
-    "content": "e475b380"
   },
   "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token-681": {
     "__comp": "17896441",
@@ -568,7 +560,7 @@
     "__comp": "17896441",
     "content": "06ffb84a"
   },
-  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol-66b": {
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol-66b": {
     "__comp": "17896441",
     "content": "6a7690aa"
   },
@@ -576,7 +568,7 @@
     "__comp": "17896441",
     "content": "b8a3e4df"
   },
-  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol-327": {
+  "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol-327": {
     "__comp": "17896441",
     "content": "e8b41ddf"
   },
@@ -640,6 +632,14 @@
     "__comp": "17896441",
     "content": "a17a0f86"
   },
+  "/deprecated/tutorials-contest/2022/lux-subnet-customization-aef": {
+    "__comp": "17896441",
+    "content": "9a8a1361"
+  },
+  "/deprecated/tutorials-contest/2022/lux-theGraph-index-420": {
+    "__comp": "17896441",
+    "content": "72a0ac4d"
+  },
   "/deprecated/verify-truffle-523": {
     "__comp": "17896441",
     "content": "a017eab4"
@@ -656,35 +656,31 @@
     "__comp": "17896441",
     "content": "5ccc9166"
   },
-  "/learn/lux/lux-consensus-3f8": {
+  "/learn/avalanche/avalanche-consensus-3f8": {
     "__comp": "17896441",
     "content": "3d437d4a"
   },
-  "/learn/lux/lux-platform-b13": {
+  "/learn/avalanche/avalanche-platform-b13": {
     "__comp": "17896441",
     "content": "90f14f37"
   },
-  "/learn/lux/lux-144": {
-    "__comp": "17896441",
-    "content": "71b1316d"
-  },
-  "/learn/lux/awm-f18": {
+  "/learn/avalanche/awm-f18": {
     "__comp": "17896441",
     "content": "b05bf875"
   },
-  "/learn/lux/fuji-11e": {
+  "/learn/avalanche/fuji-11e": {
     "__comp": "17896441",
     "content": "f438ab60"
   },
-  "/learn/lux/mainnet-ebd": {
+  "/learn/avalanche/mainnet-ebd": {
     "__comp": "17896441",
     "content": "2ff9e933"
   },
-  "/learn/lux/subnets-overview-876": {
+  "/learn/avalanche/subnets-overview-876": {
     "__comp": "17896441",
     "content": "a193fa86"
   },
-  "/learn/lux/virtual-machines-3d1": {
+  "/learn/avalanche/virtual-machines-3d1": {
     "__comp": "17896441",
     "content": "14ebc3de"
   },
@@ -740,7 +736,7 @@
     "__comp": "17896441",
     "content": "78134a83"
   },
-  "/nodes/configure/luxd-config-flags-cf0": {
+  "/nodes/configure/avalanchego-config-flags-cf0": {
     "__comp": "17896441",
     "content": "64217976"
   },
@@ -756,7 +752,7 @@
     "__comp": "17896441",
     "content": "c04397f4"
   },
-  "/nodes/maintain/lux-notify-5d5": {
+  "/nodes/maintain/avalanche-notify-5d5": {
     "__comp": "17896441",
     "content": "ccf0aac9"
   },
@@ -788,7 +784,7 @@
     "__comp": "17896441",
     "content": "a01ad309"
   },
-  "/nodes/maintain/upgrade-your-luxd-node-566": {
+  "/nodes/maintain/upgrade-your-avalanchego-node-566": {
     "__comp": "17896441",
     "content": "44c47c07"
   },
@@ -824,10 +820,6 @@
     "__comp": "17896441",
     "content": "324628ce"
   },
-  "/nodes/run/third-party/latitude-node-16a": {
-    "__comp": "17896441",
-    "content": "bce833ff"
-  },
   "/nodes/run/third-party/microsoft-azure-node-49f": {
     "__comp": "17896441",
     "content": "244a6424"
@@ -840,7 +832,7 @@
     "__comp": "17896441",
     "content": "aca3d6c2"
   },
-  "/nodes/run/with-installer/installing-luxd-85c": {
+  "/nodes/run/with-installer/installing-avalanchego-85c": {
     "__comp": "17896441",
     "content": "69f92ee2"
   },
@@ -848,7 +840,7 @@
     "__comp": "17896441",
     "content": "677a56c3"
   },
-  "/nodes/run/with-installer/managing-luxd-0cc": {
+  "/nodes/run/with-installer/managing-avalanchego-0cc": {
     "__comp": "17896441",
     "content": "e5a5a0e2"
   },
@@ -948,7 +940,7 @@
     "__comp": "17896441",
     "content": "30e67e48"
   },
-  "/reference/standards/lux-network-protocol-7d6": {
+  "/reference/standards/avalanche-network-protocol-7d6": {
     "__comp": "17896441",
     "content": "7e506ae0"
   },
@@ -992,74 +984,6 @@
     "__comp": "17896441",
     "content": "583667c9"
   },
-  "/tooling/cli-281": {
-    "__comp": "17896441",
-    "content": "4a66da68"
-  },
-  "/tooling/lux-ops-d59": {
-    "__comp": "17896441",
-    "content": "08777f3a"
-  },
-  "/tooling/lux-plugin-manager-6a3": {
-    "__comp": "17896441",
-    "content": "868411af"
-  },
-  "/tooling/luxd-installer-479": {
-    "__comp": "17896441",
-    "content": "844a9fc3"
-  },
-  "/tooling/luxd-postman-collection/data-visualization-632": {
-    "__comp": "17896441",
-    "content": "2a56f6d8"
-  },
-  "/tooling/luxd-postman-collection/making-api-calls-b03": {
-    "__comp": "17896441",
-    "content": "1da824ee"
-  },
-  "/tooling/luxd-postman-collection/setup-f44": {
-    "__comp": "17896441",
-    "content": "b1f6bcf6"
-  },
-  "/tooling/luxd-postman-collection/variables-f20": {
-    "__comp": "17896441",
-    "content": "ff50614d"
-  },
-  "/tooling/luxjs-api-e58": {
-    "__comp": "17896441",
-    "content": "96df260d"
-  },
-  "/tooling/luxjs-guides/create-an-asset-on-the-x-chain-cf1": {
-    "__comp": "17896441",
-    "content": "817b2174"
-  },
-  "/tooling/luxjs-guides/cross-chain-transfers-4bf": {
-    "__comp": "17896441",
-    "content": "14a16f35"
-  },
-  "/tooling/luxjs-guides/generate-a-txid-using-luxjs-626": {
-    "__comp": "17896441",
-    "content": "8c1443b2"
-  },
-  "/tooling/luxjs-guides/generate-key-pair-e78": {
-    "__comp": "17896441",
-    "content": "bc21accd"
-  },
-  "/tooling/luxjs-guides/manage-x-chain-keys-51f": {
-    "__comp": "17896441",
-    "content": "2cf22a10"
-  },
-  "/tooling/luxjs-guides/multisig-utxos-with-luxjs-0f3": {
-    "__comp": "17896441",
-    "content": "65685aba"
-  },
-  "/tooling/luxjs-guides/send-an-asset-on-the-x-chain-074": {
-    "__comp": "17896441",
-    "content": "2bea6b38"
-  },
-  "/tooling/luxjs-overview-1fc": {
-    "__comp": "17896441",
-    "content": "31e12e42"
-  },
   "/tooling/cli-410": {
     "__comp": "17896441",
     "content": "da3371cb"
@@ -1076,13 +1000,9 @@
     "__comp": "17896441",
     "content": "ea10ddd0"
   },
-  "/tooling/cli-guides/install-cli-e0d": {
+  "/tooling/cli-guides/install-cli-3b9": {
     "__comp": "17896441",
-    "content": "c2efae35"
-  },
-  "/tooling/cli-guides/install-lux-cli-589": {
-    "__comp": "17896441",
-    "content": "de823d18"
+    "content": "fbd3fcb4"
   },
   "/tooling/cli-guides/node-ssh-183": {
     "__comp": "17896441",
@@ -1119,6 +1039,10 @@
   "/tooling/indexers-a93": {
     "__comp": "17896441",
     "content": "b112293b"
+  },
+  "/tooling/lux-plugin-manager-22e": {
+    "__comp": "17896441",
+    "content": "699b6c19"
   },
   "/tooling/luxd-installer-476": {
     "__comp": "17896441",
@@ -1183,10 +1107,6 @@
   "/tooling/netrunner-daa": {
     "__comp": "17896441",
     "content": "29266d55"
-  },
-  "/tooling/network-runner-b67": {
-    "__comp": "17896441",
-    "content": "9569fdf7"
   },
   "/tooling/ops-c27": {
     "__comp": "17896441",

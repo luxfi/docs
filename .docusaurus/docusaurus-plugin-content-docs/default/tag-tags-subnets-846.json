@@ -77,10 +77,10 @@
       "permalink": "/build/subnet/elastic/elastic-parameters"
     },
     {
-      "id": "build/subnet/utility/lux-subnet-faucet",
+      "id": "build/subnet/utility/subnet-faucet",
       "title": "Enable Testnet Capabilities on a Subnet with Lux Subnet Faucet",
       "description": "Deploy a custom testnet faucet for your Subnet with features like multiple chain support, custom rate-limiting, CAPTCHA verification, and concurrent transaction handling.",
-      "permalink": "/build/subnet/utility/lux-subnet-faucet"
+      "permalink": "/build/subnet/utility/subnet-faucet"
     },
     {
       "id": "build/subnet/maintain/delete-subnet",
@@ -137,10 +137,10 @@
       "permalink": "/build/subnet/upgrade/considerations-subnet-upgrade"
     },
     {
-      "id": "learn/lux/mainnet",
+      "id": "learn/avalanche/mainnet",
       "title": "Lux Mainnet",
       "description": "Lux Mainnet is the final and production-ready version of the blockchain where users can interact with the network and transact with real world assets.",
-      "permalink": "/learn/lux/mainnet"
+      "permalink": "/learn/avalanche/mainnet"
     },
     {
       "id": "learn/lux/mainnet",

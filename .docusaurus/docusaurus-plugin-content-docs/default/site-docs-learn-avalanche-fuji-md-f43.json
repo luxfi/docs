@@ -1,14 +1,14 @@
 {
-  "id": "learn/lux/fuji",
+  "id": "learn/avalanche/fuji",
   "title": "Testnet",
   "description": "Testnet is the official testnet for the Lux ecosystem.",
-  "source": "@site/docs/learn/lux/fuji.md",
-  "sourceDirName": "learn/lux",
-  "slug": "/learn/lux/fuji",
-  "permalink": "/learn/lux/fuji",
+  "source": "@site/docs/learn/avalanche/fuji.md",
+  "sourceDirName": "learn/avalanche",
+  "slug": "/learn/avalanche/fuji",
+  "permalink": "/learn/avalanche/fuji",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/learn/lux/fuji.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/learn/avalanche/fuji.md",
   "tags": [
     {
       "label": "Testnet",

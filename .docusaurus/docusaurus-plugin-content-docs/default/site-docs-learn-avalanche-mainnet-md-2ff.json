@@ -1,14 +1,14 @@
 {
-  "id": "learn/lux/mainnet",
+  "id": "learn/avalanche/mainnet",
   "title": "Lux Mainnet",
   "description": "Lux Mainnet is the final and production-ready version of the blockchain where users can interact with the network and transact with real world assets.",
-  "source": "@site/docs/learn/lux/mainnet.md",
-  "sourceDirName": "learn/lux",
-  "slug": "/learn/lux/mainnet",
-  "permalink": "/learn/lux/mainnet",
+  "source": "@site/docs/learn/avalanche/mainnet.md",
+  "sourceDirName": "learn/avalanche",
+  "slug": "/learn/avalanche/mainnet",
+  "permalink": "/learn/avalanche/mainnet",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/learn/lux/mainnet.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/learn/avalanche/mainnet.md",
   "tags": [
     {
       "label": "Primary Network",

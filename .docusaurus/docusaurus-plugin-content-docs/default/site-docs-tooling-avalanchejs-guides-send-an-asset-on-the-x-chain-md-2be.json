@@ -1,14 +1,14 @@
 {
-  "id": "tooling/luxjs-guides/send-an-asset-on-the-x-chain",
+  "id": "tooling/avalanchejs-guides/send-an-asset-on-the-x-chain",
   "title": "Send an Asset on the X-Chain",
   "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
-  "source": "@site/docs/tooling/luxjs-guides/send-an-asset-on-the-x-chain.md",
-  "sourceDirName": "tooling/luxjs-guides",
-  "slug": "/tooling/luxjs-guides/send-an-asset-on-the-x-chain",
-  "permalink": "/tooling/luxjs-guides/send-an-asset-on-the-x-chain",
+  "source": "@site/docs/tooling/avalanchejs-guides/send-an-asset-on-the-x-chain.md",
+  "sourceDirName": "tooling/avalanchejs-guides",
+  "slug": "/tooling/avalanchejs-guides/send-an-asset-on-the-x-chain",
+  "permalink": "/tooling/avalanchejs-guides/send-an-asset-on-the-x-chain",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/luxjs-guides/send-an-asset-on-the-x-chain.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/avalanchejs-guides/send-an-asset-on-the-x-chain.md",
   "tags": [
     {
       "label": "Tooling",
