@@ -1,0 +1,5 @@
+{
+    "port": 8081,
+    "lux_server" : "http://localhost",
+    "lux_port" : 9650
+}
