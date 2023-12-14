@@ -7,7 +7,7 @@ pagination_label: P-Chain Transaction Format
 # Platform Chain API
 
 This API allows clients to interact with the
-[P-Chain](/learn/lux/platform.md#p-chain), which
+[P-Chain](/learn/lux/lux-platform.md#p-chain), which
 maintains Lux’s [validator](/nodes/validate/how-to-stake#validators) set and handles
 blockchain creation.
 

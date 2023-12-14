@@ -1,0 +1,36 @@
+{
+  "id": "reference/luxd/index-api",
+  "title": "Index API",
+  "description": "This page is an overview of the Index API associated with Luxd.",
+  "source": "@site/docs/reference/luxd/index-api.md",
+  "sourceDirName": "reference/luxd",
+  "slug": "/reference/luxd/index-api",
+  "permalink": "/reference/luxd/index-api",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/reference/luxd/index-api.md",
+  "tags": [
+    {
+      "label": "Luxd APIs",
+      "permalink": "/tags/luxd-ap-is"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "Luxd APIs"
+    ],
+    "description": "This page is an overview of the Index API associated with Luxd.",
+    "sidebar_label": "Index API",
+    "pagination_label": "Index API"
+  },
+  "sidebar": "reference",
+  "previous": {
+    "title": "Health API",
+    "permalink": "/reference/luxd/health-api"
+  },
+  "next": {
+    "title": "Info API",
+    "permalink": "/reference/luxd/info-api"
+  }
+}

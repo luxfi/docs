@@ -1,0 +1,57 @@
+{
+  "label": "Standards",
+  "permalink": "/tags/standards",
+  "allTagsPath": "/tags",
+  "count": 8,
+  "items": [
+    {
+      "id": "reference/standards/guides/banff-changes",
+      "title": "Banff Changes",
+      "description": "This document specifies the changes in Lux Banff, which was released in Luxd v1.10.0.",
+      "permalink": "/reference/standards/guides/banff-changes"
+    },
+    {
+      "id": "reference/standards/cryptographic-primitives",
+      "title": "Cryptographic Primitives",
+      "description": "This file summarizes the type and kind of cryptography used by Lux at the network and blockchain layers.",
+      "permalink": "/reference/standards/cryptographic-primitives"
+    },
+    {
+      "id": "reference/standards/guides/issuing-api-calls",
+      "title": "Issuing API Calls",
+      "description": "This guide explains how to make calls to APIs exposed by Lux nodes.",
+      "permalink": "/reference/standards/guides/issuing-api-calls"
+    },
+    {
+      "id": "reference/standards/avalanche-network-protocol",
+      "title": "Lux Network Protocol",
+      "description": "Lux network defines the core communication format between Lux nodes.",
+      "permalink": "/reference/standards/avalanche-network-protocol"
+    },
+    {
+      "id": "reference/standards/network-protocol",
+      "title": "Lux Network Protocol",
+      "description": "Lux network defines the core communication format between Lux nodes.",
+      "permalink": "/reference/standards/network-protocol"
+    },
+    {
+      "id": "reference/standards/guides/txn-fees",
+      "title": "Lux Transaction Fee",
+      "description": "In order to prevent spam, transactions require the payment of a transaction fee.",
+      "permalink": "/reference/standards/guides/txn-fees"
+    },
+    {
+      "id": "reference/standards/serialization-primitives",
+      "title": "Serialization Primitives",
+      "description": "This document describes how primitive types are encoded on the Lux platform.",
+      "permalink": "/reference/standards/serialization-primitives"
+    },
+    {
+      "id": "reference/standards/guides/x-chain-migration",
+      "title": "X-Chain Migration Guide",
+      "description": "This document summarizes all of the changes made to the X-Chain API to support Lux Cortina (v1.10.0).",
+      "permalink": "/reference/standards/guides/x-chain-migration"
+    }
+  ],
+  "unlisted": false
+}

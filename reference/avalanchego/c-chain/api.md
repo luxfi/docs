@@ -10,7 +10,7 @@ pagination_label: C-Chain API
 :::info
 Ethereum has its own notion of `networkID` and `chainID`. These have no relationship to
 Lux’s view of networkID and chainID and are purely internal to the
-[C-Chain](/learn/lux/platform.md#c-chain). On
+[C-Chain](/learn/lux/lux-platform.md#c-chain). On
 Mainnet, the C-Chain uses `1` and `43114` for these values. On the Testnet, it uses `1` and
 `43113` for these values. `networkID` and `chainID` can also be obtained using the `net_version` and
 `eth_chainId` methods.

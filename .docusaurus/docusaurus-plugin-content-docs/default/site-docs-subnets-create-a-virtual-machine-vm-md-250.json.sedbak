@@ -1,0 +1,18 @@
+{
+  "id": "subnets/create-a-virtual-machine-vm",
+  "title": "Create a Virtual Machine (VM)",
+  "description": "Introduction",
+  "source": "@site/docs/subnets/create-a-virtual-machine-vm.md",
+  "sourceDirName": "subnets",
+  "slug": "/subnets/create-a-virtual-machine-vm",
+  "permalink": "/subnets/create-a-virtual-machine-vm",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/subnets/create-a-virtual-machine-vm.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4
+  }
+}

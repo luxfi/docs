@@ -1,0 +1,15 @@
+{
+  "id": "apis/luxjs/README",
+  "title": "LuxJS Overview",
+  "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
+  "source": "@site/docs/apis/luxjs/README.md",
+  "sourceDirName": "apis/luxjs",
+  "slug": "/apis/luxjs/",
+  "permalink": "/apis/luxjs/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/apis/luxjs/README.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {}
+}

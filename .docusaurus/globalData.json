@@ -563,45 +563,8 @@
               "sidebar": "learn"
             },
             {
-              "id": "learn/avalanche/avalanche-consensus",
-              "path": "/learn/avalanche/avalanche-consensus"
-            },
-            {
-              "id": "learn/avalanche/avalanche-platform",
-              "path": "/learn/avalanche/avalanche-platform"
-            },
-            {
-              "id": "learn/avalanche/awm",
-              "path": "/learn/avalanche/awm"
-            },
-            {
-              "id": "learn/avalanche/fuji",
-              "path": "/learn/avalanche/fuji"
-            },
-            {
-              "id": "learn/avalanche/intro",
-              "path": "/intro"
-            },
-            {
-              "id": "learn/avalanche/mainnet",
-              "path": "/learn/avalanche/mainnet"
-            },
-            {
-              "id": "learn/avalanche/subnets-overview",
-              "path": "/learn/avalanche/subnets-overview"
-            },
-            {
-              "id": "learn/avalanche/virtual-machines",
-              "path": "/learn/avalanche/virtual-machines"
-            },
-            {
               "id": "learn/lux/awm",
               "path": "/learn/lux/awm",
-              "sidebar": "learn"
-            },
-            {
-              "id": "learn/lux/consensus",
-              "path": "/learn/lux/consensus",
               "sidebar": "learn"
             },
             {
@@ -610,18 +573,18 @@
               "sidebar": "learn"
             },
             {
-              "id": "learn/lux/lux",
-              "path": "/learn/lux/",
+              "id": "learn/lux/lux-consensus",
+              "path": "/learn/lux/lux-consensus",
+              "sidebar": "learn"
+            },
+            {
+              "id": "learn/lux/lux-platform",
+              "path": "/learn/lux/lux-platform",
               "sidebar": "learn"
             },
             {
               "id": "learn/lux/mainnet",
               "path": "/learn/lux/mainnet",
-              "sidebar": "learn"
-            },
-            {
-              "id": "learn/lux/platform",
-              "path": "/learn/lux/platform",
               "sidebar": "learn"
             },
             {
@@ -638,22 +601,6 @@
               "id": "learn/lux/virtual-machines",
               "path": "/learn/lux/virtual-machines",
               "sidebar": "learn"
-            },
-            {
-              "id": "nodes/build/run-lux-node-manually",
-              "path": "/nodes/build/run-lux-node-manually"
-            },
-            {
-              "id": "nodes/build/set-up-an-lux-node-with-google-cloud-platform",
-              "path": "/nodes/build/set-up-an-lux-node-with-google-cloud-platform"
-            },
-            {
-              "id": "nodes/build/set-up-an-lux-node-with-microsoft-azure",
-              "path": "/nodes/build/set-up-an-lux-node-with-microsoft-azure"
-            },
-            {
-              "id": "nodes/build/setting-up-an-lux-node-with-amazon-web-services-aws",
-              "path": "/nodes/build/setting-up-an-lux-node-with-amazon-web-services-aws"
             },
             {
               "id": "nodes/configure/avalanchego-config-flags",
@@ -676,18 +623,8 @@
               "sidebar": "nodes"
             },
             {
-              "id": "nodes/maintain/avalanche-notify",
-              "path": "/nodes/maintain/avalanche-notify",
-              "sidebar": "nodes"
-            },
-            {
               "id": "nodes/maintain/background-service-config",
               "path": "/nodes/maintain/background-service-config",
-              "sidebar": "nodes"
-            },
-            {
-              "id": "nodes/maintain/luxd-config-flags",
-              "path": "/nodes/maintain/luxd-config-flags",
               "sidebar": "nodes"
             },
             {
@@ -713,11 +650,6 @@
             {
               "id": "nodes/maintain/setting-up-node-monitoring",
               "path": "/nodes/maintain/setting-up-node-monitoring",
-              "sidebar": "nodes"
-            },
-            {
-              "id": "nodes/maintain/upgrade-your-avalanchego-node",
-              "path": "/nodes/maintain/upgrade-your-avalanchego-node",
               "sidebar": "nodes"
             },
             {

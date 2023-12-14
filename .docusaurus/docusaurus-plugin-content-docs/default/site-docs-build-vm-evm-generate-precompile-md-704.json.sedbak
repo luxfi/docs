@@ -1,0 +1,43 @@
+{
+  "id": "build/vm/evm/generate-precompile",
+  "title": "Generating Your Precompile",
+  "description": "Generating Your Precompile",
+  "source": "@site/docs/build/vm/evm/generate-precompile.md",
+  "sourceDirName": "build/vm/evm",
+  "slug": "/build/vm/evm/generate-precompile",
+  "permalink": "/build/vm/evm/generate-precompile",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/build/vm/evm/generate-precompile.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Virtual Machines",
+      "permalink": "/tags/virtual-machines"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Virtual Machines"
+    ],
+    "description": "Generating Your Precompile",
+    "sidebar_label": "Generating Your Precompile",
+    "pagination_label": "Generating Your Precompile",
+    "sidebar_position": 2
+  },
+  "sidebar": "build-vm",
+  "previous": {
+    "title": "Background and Requirements",
+    "permalink": "/build/vm/evm/background-and-reqs"
+  },
+  "next": {
+    "title": "Defining Your Precompile",
+    "permalink": "/build/vm/evm/defining-precompile"
+  }
+}

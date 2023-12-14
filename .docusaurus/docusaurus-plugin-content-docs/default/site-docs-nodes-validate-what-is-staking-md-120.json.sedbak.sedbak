@@ -1,0 +1,38 @@
+{
+  "id": "nodes/validate/what-is-staking",
+  "title": "What Is Staking?",
+  "description": "Staking is an essential part of proof-of-stake (PoS) consensus mechanisms used by many blockchain networks, including Lux.",
+  "source": "@site/docs/nodes/validate/what-is-staking.md",
+  "sourceDirName": "nodes/validate",
+  "slug": "/nodes/validate/what-is-staking",
+  "permalink": "/nodes/validate/what-is-staking",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/validate/what-is-staking.md",
+  "tags": [
+    {
+      "label": "Nodes",
+      "permalink": "/tags/nodes"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 0,
+  "frontMatter": {
+    "tags": [
+      "Nodes"
+    ],
+    "description": "Staking is an essential part of proof-of-stake (PoS) consensus mechanisms used by many blockchain networks, including Lux.",
+    "sidebar_label": "What Is Staking?",
+    "pagination_label": "What Is Staking?",
+    "sidebar_position": 0
+  },
+  "sidebar": "nodes",
+  "previous": {
+    "title": "Subnet Configs",
+    "permalink": "/nodes/configure/subnet-configs"
+  },
+  "next": {
+    "title": "Validate vs. Delegate",
+    "permalink": "/nodes/validate/validate-or-delegate"
+  }
+}

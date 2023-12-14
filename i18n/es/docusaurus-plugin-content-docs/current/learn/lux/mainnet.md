@@ -19,7 +19,7 @@ y ejecuciones de contratos inteligentes. Es la versión final y lista para produ
 blockchain donde los usuarios pueden interactuar con la red y transaccionar con activos del mundo real.
 
 Una _red de redes_, la Lux Mainnet incluye la
-[Red Primaria](/learn/lux/platform.md)
+[Red Primaria](/learn/lux/lux-platform.md)
 formada por las cadenas X, P y C, así como todas las Subnets
 [en producción](/learn/lux/subnets-overview.md). Estas Subnets son Subnets de blockchain independientes
 que pueden adaptarse a casos de uso de aplicaciones específicas, utilizar sus propios mecanismos de consenso, definir

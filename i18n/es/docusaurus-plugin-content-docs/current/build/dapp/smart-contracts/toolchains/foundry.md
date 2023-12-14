@@ -18,7 +18,7 @@ Esta guía muestra cómo implementar e interactuar con contratos inteligentes ut
 
 - Comprensión básica de [Solidity](https://docs.soliditylang.org) y Lux.
 - Estás familiarizado con el [Inicio rápido de contratos inteligentes de Lux](https://github.com/luxdefi/smart-contract-quickstart).
-- Comprensión básica de la [arquitectura de Lux](/learn/lux/platform.md).
+- Comprensión básica de la [arquitectura de Lux](/learn/lux/lux-platform.md).
 - Realizaste un intercambio cruzado de cadenas a través de este [tutorial](https://support.lux.network/en/articles/6169872-how-to-make-a-cross-chain-transfer-in-the-wallet) para obtener fondos en tu dirección de C-Chain.
 
 ## Requisitos

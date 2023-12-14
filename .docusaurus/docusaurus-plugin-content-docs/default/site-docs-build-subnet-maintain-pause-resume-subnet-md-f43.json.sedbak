@@ -1,0 +1,43 @@
+{
+  "id": "build/subnet/maintain/pause-resume-subnet",
+  "title": "How to Pause and Resume Local Subnets",
+  "description": "Gracefully pause and resume a local subnet while preserving state.",
+  "source": "@site/docs/build/subnet/maintain/pause-resume-subnet.md",
+  "sourceDirName": "build/subnet/maintain",
+  "slug": "/build/subnet/maintain/pause-resume-subnet",
+  "permalink": "/build/subnet/maintain/pause-resume-subnet",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/build/subnet/maintain/pause-resume-subnet.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Subnets",
+      "permalink": "/tags/subnets"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Subnets"
+    ],
+    "description": "Gracefully pause and resume a local subnet while preserving state.",
+    "sidebar_label": "Pause and Resume",
+    "pagination_label": "Pause and Resume Local Subnets",
+    "sidebar_position": 1
+  },
+  "sidebar": "build-subnet",
+  "previous": {
+    "title": "View Your Created Subnets",
+    "permalink": "/build/subnet/maintain/view-subnets"
+  },
+  "next": {
+    "title": "How to Delete a Subnet",
+    "permalink": "/build/subnet/maintain/delete-subnet"
+  }
+}

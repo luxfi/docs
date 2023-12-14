@@ -1,0 +1,32 @@
+{
+  "id": "deprecated/verify-truffle",
+  "title": "Verifying Smart Contracts with Truffle Verify",
+  "description": "This tutorial walks through verifying a smart contract on a block explorer using Truffle after deploying it to Lux C-Chain.",
+  "source": "@site/docs/deprecated/verify-truffle.md",
+  "sourceDirName": "deprecated",
+  "slug": "/deprecated/verify-truffle",
+  "permalink": "/deprecated/verify-truffle",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/deprecated/verify-truffle.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Dapps",
+      "permalink": "/tags/dapps"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Dapps"
+    ],
+    "description": "This tutorial walks through verifying a smart contract on a block explorer using Truffle after deploying it to Lux C-Chain.",
+    "sidebar_label": "Using Truffle",
+    "pagination_label": "Verifying Smart Contracts with Truffle Verify"
+  }
+}

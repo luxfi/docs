@@ -1,0 +1,43 @@
+{
+  "id": "tooling/cli-guides/validate-subnets",
+  "title": "Configure a Node to Validate a Subnet with Lux-CLI",
+  "description": "This page demonstrates how to configure nodes to validate an Lux Subnet. Validation via Lux-CLI is currently only supported on Testnet.",
+  "source": "@site/docs/tooling/cli-guides/validate-subnets.md",
+  "sourceDirName": "tooling/cli-guides",
+  "slug": "/tooling/cli-guides/validate-subnets",
+  "permalink": "/tooling/cli-guides/validate-subnets",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/cli-guides/validate-subnets.md",
+  "tags": [
+    {
+      "label": "Tooling",
+      "permalink": "/tags/tooling"
+    },
+    {
+      "label": "Lux-CLI",
+      "permalink": "/tags/lux-cli"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "tags": [
+      "Tooling",
+      "Lux-CLI"
+    ],
+    "description": "This page demonstrates how to configure nodes to validate an Lux Subnet. Validation via Lux-CLI is currently only supported on Testnet.",
+    "pagination_label": "Configure Nodes to Validate a Subnet with Lux-CLI",
+    "sidebar_label": "Validate a Subnet",
+    "sidebar_position": 5
+  },
+  "sidebar": "tooling",
+  "previous": {
+    "title": "Configure Nodes to Validate the Primary Network with Lux-CLI",
+    "permalink": "/tooling/cli-guides/validate-primary-network"
+  },
+  "next": {
+    "title": "Stop Nodes Originally Created with Lux-CLI",
+    "permalink": "/tooling/cli-guides/stop-node"
+  }
+}

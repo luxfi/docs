@@ -17,7 +17,7 @@ If you are looking for how to transfer LUX tokens using the web wallet, please c
 
 ## Prerequisites
 
-- You are familiar with [Lux's architecture](/learn/lux/platform.md).
+- You are familiar with [Lux's architecture](/learn/lux/lux-platform.md).
 - You have completed [Run an Lux Node](/nodes/run/node-manually.md).
 - You are familiar with [LuxJS](https://github.com/luxdefi/LuxJS).
 - You have installed

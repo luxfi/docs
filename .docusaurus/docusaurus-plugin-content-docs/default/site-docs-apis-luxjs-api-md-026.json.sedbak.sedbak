@@ -1,0 +1,15 @@
+{
+  "id": "apis/luxjs/api",
+  "title": "API",
+  "description": "LuxJS - v3.15.0",
+  "source": "@site/docs/apis/luxjs/api.md",
+  "sourceDirName": "apis/luxjs",
+  "slug": "/apis/luxjs/api",
+  "permalink": "/apis/luxjs/api",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/apis/luxjs/api.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {}
+}

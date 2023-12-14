@@ -1,0 +1,43 @@
+{
+  "id": "tooling/cli-guides/import-subnet",
+  "title": "How to Import a Subnet into Lux-CLI",
+  "description": "This guide demonstrates the process of importing a Subnet to the Lux-CLI to enable better management of the Subnet's configuration. This how-to uses the WAGMI Subnet deployed on Testnet as the example Subnet.",
+  "source": "@site/docs/tooling/cli-guides/import-subnet.md",
+  "sourceDirName": "tooling/cli-guides",
+  "slug": "/tooling/cli-guides/import-subnet",
+  "permalink": "/tooling/cli-guides/import-subnet",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/cli-guides/import-subnet.md",
+  "tags": [
+    {
+      "label": "Tooling",
+      "permalink": "/tags/tooling"
+    },
+    {
+      "label": "Lux-CLI",
+      "permalink": "/tags/lux-cli"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "tags": [
+      "Tooling",
+      "Lux-CLI"
+    ],
+    "description": "This guide demonstrates the process of importing a Subnet to the Lux-CLI to enable better management of the Subnet's configuration. This how-to uses the WAGMI Subnet deployed on Testnet as the example Subnet.",
+    "pagination_label": "How to Import a Subnet into Lux-CLI",
+    "sidebar_label": "Import a Subnet",
+    "sidebar_position": 2
+  },
+  "sidebar": "tooling",
+  "previous": {
+    "title": "How to Run Lux-CLI with Docker",
+    "permalink": "/tooling/cli-guides/run-with-docker"
+  },
+  "next": {
+    "title": "Run Lux Validators with One Lux-CLI Command",
+    "permalink": "/tooling/cli-guides/create-a-validator-aws"
+  }
+}

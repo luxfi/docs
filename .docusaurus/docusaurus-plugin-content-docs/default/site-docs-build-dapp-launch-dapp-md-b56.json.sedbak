@@ -1,0 +1,37 @@
+{
+  "id": "build/dapp/launch-dapp",
+  "title": "Launch an Ethereum Dapp on Lux",
+  "description": "Launching any new or existing Solidity decentralized app on Lux C-Chain fosters the same developer experience as Ethereum, but benefits from the security, speed, and interoperability of the Lux Network.",
+  "source": "@site/docs/build/dapp/launch-dapp.md",
+  "sourceDirName": "build/dapp",
+  "slug": "/build/dapp/launch-dapp",
+  "permalink": "/build/dapp/launch-dapp",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/build/dapp/launch-dapp.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Dapps",
+      "permalink": "/tags/dapps"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Dapps"
+    ],
+    "description": "Launching any new or existing Solidity decentralized app on Lux C-Chain fosters the same developer experience as Ethereum, but benefits from the security, speed, and interoperability of the Lux Network.",
+    "sidebar_label": "Launch an Ethereum Dapp",
+    "pagination_label": "Launch a Ethereum Dapp on Lux"
+  },
+  "sidebar": "build-dapp",
+  "previous": {
+    "title": "Testnet Workflow",
+    "permalink": "/build/dapp/testnet-workflow"
+  }
+}

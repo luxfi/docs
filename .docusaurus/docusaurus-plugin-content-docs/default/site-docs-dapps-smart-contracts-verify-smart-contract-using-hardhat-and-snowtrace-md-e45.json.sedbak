@@ -1,0 +1,15 @@
+{
+  "id": "dapps/smart-contracts/verify-smart-contract-using-hardhat-and-snowtrace",
+  "title": "Verifying Smart Contracts Using Hardhat and Snowtrace",
+  "description": "This tutorial assumes that the contract was deployed using Hardhat and that all Hardhat dependencies are properly installed.",
+  "source": "@site/docs/dapps/smart-contracts/verify-smart-contract-using-hardhat-and-snowtrace.md",
+  "sourceDirName": "dapps/smart-contracts",
+  "slug": "/dapps/smart-contracts/verify-smart-contract-using-hardhat-and-snowtrace",
+  "permalink": "/dapps/smart-contracts/verify-smart-contract-using-hardhat-and-snowtrace",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/dapps/smart-contracts/verify-smart-contract-using-hardhat-and-snowtrace.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {}
+}

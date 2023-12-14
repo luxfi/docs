@@ -1,0 +1,15 @@
+{
+  "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol",
+  "title": "LuxToken.sol",
+  "description": "",
+  "source": "@site/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol.md",
+  "sourceDirName": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token",
+  "slug": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol",
+  "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {}
+}

@@ -1,0 +1,34 @@
+{
+  "id": "learn/lux/intro",
+  "title": "What Is Lux?",
+  "description": "Lux is an open-source platform for building dApps in an interoperable, decentralized, and highly scalable ecosystem.",
+  "source": "@site/docs/learn/lux/intro.md",
+  "sourceDirName": "learn/lux",
+  "slug": "/intro",
+  "permalink": "/intro",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/learn/lux/intro.md",
+  "tags": [
+    {
+      "label": "Lux",
+      "permalink": "/tags/lux"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "slug": "/intro",
+    "tags": [
+      "Lux"
+    ],
+    "description": "Lux is an open-source platform for building dApps in an interoperable, decentralized, and highly scalable ecosystem.",
+    "keywords": [
+      "docs",
+      "lux",
+      "scalability",
+      "build on lux",
+      "dApps"
+    ],
+    "sidebar_label": "🔺 What is Lux?"
+  }
+}

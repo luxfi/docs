@@ -1,0 +1,20 @@
+{
+  "id": "reference/standards/guides/blockchain-flow",
+  "title": "Flow of a Single Blockchain",
+  "description": "Blockchain Flow",
+  "source": "@site/docs/reference/standards/guides/blockchain-flow.md",
+  "sourceDirName": "reference/standards/guides",
+  "slug": "/reference/standards/guides/blockchain-flow",
+  "permalink": "/reference/standards/guides/blockchain-flow",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/reference/standards/guides/blockchain-flow.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "reference",
+  "previous": {
+    "title": "Banff Changes",
+    "permalink": "/reference/standards/guides/banff-changes"
+  }
+}

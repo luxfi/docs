@@ -1,0 +1,41 @@
+{
+  "id": "tooling/cli",
+  "title": "Lux-CLI",
+  "description": "Lux-CLI is a command-line tool that gives developers access to everything Lux. This release specializes in helping developers build and test Subnets.",
+  "source": "@site/docs/tooling/cli.md",
+  "sourceDirName": "tooling",
+  "slug": "/tooling/cli",
+  "permalink": "/tooling/cli",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/cli.md",
+  "tags": [
+    {
+      "label": "Tooling",
+      "permalink": "/tags/tooling"
+    },
+    {
+      "label": "Lux-CLI",
+      "permalink": "/tags/lux-cli"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "Tooling",
+      "Lux-CLI"
+    ],
+    "description": "Lux-CLI is a command-line tool that gives developers access to everything Lux. This release specializes in helping developers build and test Subnets.",
+    "pagination_label": "Lux-CLI",
+    "sidebar_postion": 0
+  },
+  "sidebar": "tooling",
+  "previous": {
+    "title": "Tooling Quick Links",
+    "permalink": "/tooling/"
+  },
+  "next": {
+    "title": "Install Lux-CLI",
+    "permalink": "/tooling/cli-guides/install-cli"
+  }
+}

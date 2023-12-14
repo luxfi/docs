@@ -1,0 +1,38 @@
+{
+  "id": "nodes/configure/subnet-configs",
+  "title": "Subnet Configs",
+  "description": "Reference for all available Subnet config options and flags.",
+  "source": "@site/docs/nodes/configure/subnet-configs.md",
+  "sourceDirName": "nodes/configure",
+  "slug": "/nodes/configure/subnet-configs",
+  "permalink": "/nodes/configure/subnet-configs",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/configure/subnet-configs.md",
+  "tags": [
+    {
+      "label": "Nodes",
+      "permalink": "/tags/nodes"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "tags": [
+      "Nodes"
+    ],
+    "description": "Reference for all available Subnet config options and flags.",
+    "sidebar_label": "Subnet Configs",
+    "pagination_label": "Subnet Configs",
+    "sidebar_position": 2
+  },
+  "sidebar": "nodes",
+  "previous": {
+    "title": "Chain Configs",
+    "permalink": "/nodes/configure/chain-config-flags"
+  },
+  "next": {
+    "title": "What Is Staking?",
+    "permalink": "/nodes/validate/what-is-staking"
+  }
+}

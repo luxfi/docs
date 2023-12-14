@@ -1,0 +1,15 @@
+{
+  "id": "dapps/smart-contracts/verify-smart-contracts-with-truffle-verify",
+  "title": "Verifying Smart Contracts with Truffle Verify",
+  "description": "This tutorial includes items from the truffle quickstart docs",
+  "source": "@site/docs/dapps/smart-contracts/verify-smart-contracts-with-truffle-verify.md",
+  "sourceDirName": "dapps/smart-contracts",
+  "slug": "/dapps/smart-contracts/verify-smart-contracts-with-truffle-verify",
+  "permalink": "/dapps/smart-contracts/verify-smart-contracts-with-truffle-verify",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/dapps/smart-contracts/verify-smart-contracts-with-truffle-verify.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {}
+}

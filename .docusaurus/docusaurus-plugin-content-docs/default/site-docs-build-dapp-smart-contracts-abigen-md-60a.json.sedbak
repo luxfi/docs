@@ -1,0 +1,41 @@
+{
+  "id": "build/dapp/smart-contracts/abigen",
+  "title": "Interact with a Solidity Smart Contract from a Golang Application",
+  "description": "This tutorial demonstrates how to compile a solidity contract into Golang to deploy and call contracts programmatically.",
+  "source": "@site/docs/build/dapp/smart-contracts/abigen.md",
+  "sourceDirName": "build/dapp/smart-contracts",
+  "slug": "/build/dapp/smart-contracts/abigen",
+  "permalink": "/build/dapp/smart-contracts/abigen",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/build/dapp/smart-contracts/abigen.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Dapps",
+      "permalink": "/tags/dapps"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Dapps"
+    ],
+    "description": "This tutorial demonstrates how to compile a solidity contract into Golang to deploy and call contracts programmatically.",
+    "sidebar_label": "Interact From a Golang App",
+    "pagination_label": "Interact with a Solidity Smart Contract from a Go Application"
+  },
+  "sidebar": "build-dapp",
+  "previous": {
+    "title": "Using Foundry with the Lux C-Chain",
+    "permalink": "/build/dapp/smart-contracts/toolchains/foundry"
+  },
+  "next": {
+    "title": "Adjusting Gas Price During High Network Activity",
+    "permalink": "/build/dapp/advanced/adjusting-gas-price-during-high-network-activity"
+  }
+}

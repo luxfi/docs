@@ -1,0 +1,117 @@
+{
+  "label": "Luxd APIs",
+  "permalink": "/tags/lux-go-ap-is",
+  "allTagsPath": "/tags",
+  "count": 18,
+  "items": [
+    {
+      "id": "tooling/rpc-providers",
+      "title": "🔌 RPC Providers",
+      "description": "There are multiple RPC providers which will work as intermediaries to help you interact with the Lux network. You'll experience different latency levels depending on the provider's configurations. You can potentially use multiple providers for redundancy and balancing.",
+      "permalink": "/tooling/rpc-providers"
+    },
+    {
+      "id": "reference/README",
+      "title": "🔗 Reference Quick Links",
+      "description": "Luxd is the node implementation for the Lux network - a blockchain platform with high throughput and blazing fast transactions. This page is overview of the APIs associated with Luxd.",
+      "permalink": "/reference/"
+    },
+    {
+      "id": "reference/luxd/admin-api",
+      "title": "Admin API",
+      "description": "This page is an overview of the Admin API associated with Luxd.",
+      "permalink": "/reference/luxd/admin-api"
+    },
+    {
+      "id": "reference/luxd/auth-api",
+      "title": "Auth API",
+      "description": "This page is an overview of the Auth API associated with Luxd.",
+      "permalink": "/reference/luxd/auth-api"
+    },
+    {
+      "id": "reference/luxd/c-chain/api",
+      "title": "Contract Chain API",
+      "description": "This page is an overview of the C-Chain API associated with Luxd.",
+      "permalink": "/reference/luxd/c-chain/api"
+    },
+    {
+      "id": "tooling/luxd-postman-collection/data-visualization",
+      "title": "Data Visualization",
+      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
+      "permalink": "/tooling/luxd-postman-collection/data-visualization"
+    },
+    {
+      "id": "reference/luxd/health-api",
+      "title": "Health API",
+      "description": "This page is an overview of the Health API associated with Luxd. This API can be used for measuring node health.",
+      "permalink": "/reference/luxd/health-api"
+    },
+    {
+      "id": "reference/luxd/index-api",
+      "title": "Index API",
+      "description": "This page is an overview of the Index API associated with Luxd.",
+      "permalink": "/reference/luxd/index-api"
+    },
+    {
+      "id": "reference/luxd/info-api",
+      "title": "Info API",
+      "description": "This page is an overview of the Info API associated with Luxd.",
+      "permalink": "/reference/luxd/info-api"
+    },
+    {
+      "id": "reference/luxd/ipc-api",
+      "title": "IPC API",
+      "description": "This page is an overview of the IPC API associated with Luxd.",
+      "permalink": "/reference/luxd/ipc-api"
+    },
+    {
+      "id": "reference/luxd/keystore-api",
+      "title": "Keystore API",
+      "description": "This page is an overview of the Keystore API associated with Luxd.",
+      "permalink": "/reference/luxd/keystore-api"
+    },
+    {
+      "id": "tooling/luxd-installer",
+      "title": "Luxd Installer",
+      "description": "Luxd Installer is a shell (bash) script that installs Luxd on any Linux computer. This script sets up full, running node in a matter of minutes with minimal user input required. This is convenient if you want to run the node as a service on a standalone Linux installation, for example to set up a (Subnet) validator, use the node as a private RPC server and similar uses. It also makes upgrading or reinstalling the nodes easy.",
+      "permalink": "/tooling/luxd-installer"
+    },
+    {
+      "id": "tooling/luxd-postman-collection/making-api-calls",
+      "title": "Making API Calls",
+      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
+      "permalink": "/tooling/luxd-postman-collection/making-api-calls"
+    },
+    {
+      "id": "reference/luxd/metrics-api",
+      "title": "Metrics API",
+      "description": "This page is an overview of the Metrics API associated with Luxd.",
+      "permalink": "/reference/luxd/metrics-api"
+    },
+    {
+      "id": "reference/luxd/p-chain/api",
+      "title": "Platform Chain API",
+      "description": "This page is an overview of the P-Chain API associated with Luxd.",
+      "permalink": "/reference/luxd/p-chain/api"
+    },
+    {
+      "id": "tooling/luxd-postman-collection/setup",
+      "title": "Setting up Postman",
+      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
+      "permalink": "/tooling/luxd-postman-collection/setup"
+    },
+    {
+      "id": "tooling/luxd-postman-collection/variables",
+      "title": "Variables",
+      "description": "The Luxd Postman collection includes all the public API calls that are available on Luxd instance, allowing you to quickly issue commands to your node and see the response, without having to copy and paste long and complicated `curl` commands.",
+      "permalink": "/tooling/luxd-postman-collection/variables"
+    },
+    {
+      "id": "reference/luxd/x-chain/api",
+      "title": "X-Chain API",
+      "description": "This page is an overview of the Exchange Chain (X-Chain) API associated with Luxd.",
+      "permalink": "/reference/luxd/x-chain/api"
+    }
+  ],
+  "unlisted": false
+}

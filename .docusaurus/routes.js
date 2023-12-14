@@ -19,11 +19,11 @@ export default [
   },
   {
     path: '/',
-    component: ComponentCreator('/', 'eba'),
+    component: ComponentCreator('/', 'fc6'),
     routes: [
       {
         path: '/',
-        component: ComponentCreator('/', 'e9f'),
+        component: ComponentCreator('/', 'dbd'),
         routes: [
           {
             path: '/tags',
@@ -166,11 +166,6 @@ export default [
             exact: true
           },
           {
-            path: '/tags/tokenomics',
-            component: ComponentCreator('/tags/tokenomics', 'df1'),
-            exact: true
-          },
-          {
             path: '/tags/tooling',
             component: ComponentCreator('/tags/tooling', 'b8d'),
             exact: true
@@ -192,7 +187,7 @@ export default [
           },
           {
             path: '/',
-            component: ComponentCreator('/', 'fe6'),
+            component: ComponentCreator('/', '5ee'),
             routes: [
               {
                 path: '/build/dapp',
@@ -863,53 +858,7 @@ export default [
               },
               {
                 path: '/intro',
-                component: ComponentCreator('/intro', '421'),
-                exact: true
-              },
-              {
-                path: '/intro',
                 component: ComponentCreator('/intro', '2fc'),
-                exact: true,
-                sidebar: "learn"
-              },
-              {
-                path: '/learn/avalanche/avalanche-consensus',
-                component: ComponentCreator('/learn/avalanche/avalanche-consensus', '3f8'),
-                exact: true
-              },
-              {
-                path: '/learn/avalanche/avalanche-platform',
-                component: ComponentCreator('/learn/avalanche/avalanche-platform', 'b13'),
-                exact: true
-              },
-              {
-                path: '/learn/avalanche/awm',
-                component: ComponentCreator('/learn/avalanche/awm', 'f18'),
-                exact: true
-              },
-              {
-                path: '/learn/avalanche/fuji',
-                component: ComponentCreator('/learn/avalanche/fuji', '11e'),
-                exact: true
-              },
-              {
-                path: '/learn/avalanche/mainnet',
-                component: ComponentCreator('/learn/avalanche/mainnet', 'ebd'),
-                exact: true
-              },
-              {
-                path: '/learn/avalanche/subnets-overview',
-                component: ComponentCreator('/learn/avalanche/subnets-overview', '876'),
-                exact: true
-              },
-              {
-                path: '/learn/avalanche/virtual-machines',
-                component: ComponentCreator('/learn/avalanche/virtual-machines', '3d1'),
-                exact: true
-              },
-              {
-                path: '/learn/lux',
-                component: ComponentCreator('/learn/lux', '787'),
                 exact: true,
                 sidebar: "learn"
               },
@@ -920,20 +869,20 @@ export default [
                 sidebar: "learn"
               },
               {
-                path: '/learn/lux/consensus',
-                component: ComponentCreator('/learn/lux/consensus', 'c72'),
+                path: '/learn/lux/lux-consensus',
+                component: ComponentCreator('/learn/lux/lux-consensus', '2b2'),
+                exact: true,
+                sidebar: "learn"
+              },
+              {
+                path: '/learn/lux/lux-platform',
+                component: ComponentCreator('/learn/lux/lux-platform', 'b07'),
                 exact: true,
                 sidebar: "learn"
               },
               {
                 path: '/learn/lux/mainnet',
                 component: ComponentCreator('/learn/lux/mainnet', '2e7'),
-                exact: true,
-                sidebar: "learn"
-              },
-              {
-                path: '/learn/lux/platform',
-                component: ComponentCreator('/learn/lux/platform', '0a7'),
                 exact: true,
                 sidebar: "learn"
               },
@@ -962,26 +911,6 @@ export default [
                 sidebar: "nodes"
               },
               {
-                path: '/nodes/build/run-lux-node-manually',
-                component: ComponentCreator('/nodes/build/run-lux-node-manually', '01c'),
-                exact: true
-              },
-              {
-                path: '/nodes/build/set-up-an-lux-node-with-google-cloud-platform',
-                component: ComponentCreator('/nodes/build/set-up-an-lux-node-with-google-cloud-platform', 'e51'),
-                exact: true
-              },
-              {
-                path: '/nodes/build/set-up-an-lux-node-with-microsoft-azure',
-                component: ComponentCreator('/nodes/build/set-up-an-lux-node-with-microsoft-azure', '8ca'),
-                exact: true
-              },
-              {
-                path: '/nodes/build/setting-up-an-lux-node-with-amazon-web-services-aws',
-                component: ComponentCreator('/nodes/build/setting-up-an-lux-node-with-amazon-web-services-aws', '9d4'),
-                exact: true
-              },
-              {
                 path: '/nodes/configure/avalanchego-config-flags',
                 component: ComponentCreator('/nodes/configure/avalanchego-config-flags', 'cf0'),
                 exact: true,
@@ -1006,20 +935,8 @@ export default [
                 sidebar: "nodes"
               },
               {
-                path: '/nodes/maintain/avalanche-notify',
-                component: ComponentCreator('/nodes/maintain/avalanche-notify', '5d5'),
-                exact: true,
-                sidebar: "nodes"
-              },
-              {
                 path: '/nodes/maintain/background-service-config',
                 component: ComponentCreator('/nodes/maintain/background-service-config', '4ad'),
-                exact: true,
-                sidebar: "nodes"
-              },
-              {
-                path: '/nodes/maintain/luxd-config-flags',
-                component: ComponentCreator('/nodes/maintain/luxd-config-flags', '832'),
                 exact: true,
                 sidebar: "nodes"
               },
@@ -1050,12 +967,6 @@ export default [
               {
                 path: '/nodes/maintain/setting-up-node-monitoring',
                 component: ComponentCreator('/nodes/maintain/setting-up-node-monitoring', 'c9e'),
-                exact: true,
-                sidebar: "nodes"
-              },
-              {
-                path: '/nodes/maintain/upgrade-your-avalanchego-node',
-                component: ComponentCreator('/nodes/maintain/upgrade-your-avalanchego-node', '566'),
                 exact: true,
                 sidebar: "nodes"
               },

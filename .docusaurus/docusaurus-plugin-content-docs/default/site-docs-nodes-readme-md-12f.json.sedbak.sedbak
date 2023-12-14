@@ -1,0 +1,32 @@
+{
+  "id": "nodes/README",
+  "title": "🔗 Nodes Quick Links",
+  "description": "This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.",
+  "source": "@site/docs/nodes/README.md",
+  "sourceDirName": "nodes",
+  "slug": "/nodes/",
+  "permalink": "/nodes/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/README.md",
+  "tags": [
+    {
+      "label": "Nodes",
+      "permalink": "/tags/nodes"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "Nodes"
+    ],
+    "description": "This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.",
+    "sidebar_label": "🔗 Quick Links",
+    "pagination_label": "🔗 Nodes Quick Links"
+  },
+  "sidebar": "nodes",
+  "next": {
+    "title": "System Requirements for Running an Lux Node",
+    "permalink": "/nodes/system-requirements"
+  }
+}

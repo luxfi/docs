@@ -1,0 +1,15 @@
+{
+  "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/burnOrLock.js",
+  "title": "BurnOrLock.js",
+  "description": "",
+  "source": "@site/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/burnOrLock.js.md",
+  "sourceDirName": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts",
+  "slug": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/burnOrLock.js",
+  "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/burnOrLock.js",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/burnOrLock.js.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {}
+}

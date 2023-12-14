@@ -1,0 +1,15 @@
+{
+  "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol",
+  "title": "INativeMinter.sol",
+  "description": "",
+  "source": "@site/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol.md",
+  "sourceDirName": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token",
+  "slug": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol",
+  "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {}
+}

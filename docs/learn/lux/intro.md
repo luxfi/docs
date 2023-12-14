@@ -3,14 +3,14 @@ slug: /intro
 tags: [Lux]
 description: Lux is an open-source platform for building dApps in an interoperable, decentralized, and highly scalable ecosystem.
 keywords: [docs, lux, scalability, build on lux, dApps]
-sidebar_label: ▼ What is Lux?
+sidebar_label: 🔺 What is Lux?
 ---
 
 # What Is Lux?
 
 Lux is an open-source platform for building decentralized applications in one
 interoperable, decentralized, and highly scalable ecosystem.
-Powered by [a uniquely powerful consensus mechanism](/learn/lux/consensus.md),
+Powered by [a uniquely powerful consensus mechanism](/learn/lux/lux-consensus.md),
 Lux is the first ecosystem designed to
 accommodate the scale of global finance, with near-instant transaction finality.
 

@@ -1,0 +1,1138 @@
+{
+  "docusaurus-plugin-google-tag-manager": {
+    "default": {
+      "containerId": "GTM-MHVBTGVC",
+      "id": "default"
+    }
+  },
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/",
+          "mainDocId": "learn/lux/intro",
+          "docs": [
+            {
+              "id": "build/dapp/advanced/add-avalanche-programmatically",
+              "path": "/build/dapp/advanced/add-avalanche-programmatically",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/advanced/add-lux-programmatically",
+              "path": "/build/dapp/advanced/add-lux-programmatically",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/advanced/adjusting-gas-price-during-high-network-activity",
+              "path": "/build/dapp/advanced/adjusting-gas-price-during-high-network-activity",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/advanced/integrate-exchange",
+              "path": "/build/dapp/advanced/integrate-exchange",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/advanced/sending-transactions-with-dynamic-fees-using-javascript",
+              "path": "/build/dapp/advanced/sending-transactions-with-dynamic-fees-using-javascript",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/c-chain-evm",
+              "path": "/build/dapp/c-chain-evm",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/chain-settings",
+              "path": "/build/dapp/chain-settings",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/explorers",
+              "path": "/build/dapp/explorers",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/fuji-workflow",
+              "path": "/build/dapp/fuji-workflow"
+            },
+            {
+              "id": "build/dapp/launch-dapp",
+              "path": "/build/dapp/launch-dapp",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/README",
+              "path": "/build/dapp/",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/smart-contracts/abigen",
+              "path": "/build/dapp/smart-contracts/abigen",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/smart-contracts/erc-20",
+              "path": "/build/dapp/smart-contracts/erc-20",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/smart-contracts/get-funds-faucet",
+              "path": "/build/dapp/smart-contracts/get-funds-faucet",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/smart-contracts/nfts/deploy-collection",
+              "path": "/build/dapp/smart-contracts/nfts/deploy-collection",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/smart-contracts/nfts/preparing-nft-files",
+              "path": "/build/dapp/smart-contracts/nfts/preparing-nft-files",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/smart-contracts/remix-deploy",
+              "path": "/build/dapp/smart-contracts/remix-deploy",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/smart-contracts/toolchains/foundry",
+              "path": "/build/dapp/smart-contracts/toolchains/foundry",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/smart-contracts/toolchains/hardhat",
+              "path": "/build/dapp/smart-contracts/toolchains/hardhat",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/smart-contracts/toolchains/thirdweb",
+              "path": "/build/dapp/smart-contracts/toolchains/thirdweb",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/smart-contracts/verification/verify-hardhat",
+              "path": "/build/dapp/smart-contracts/verification/verify-hardhat",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/smart-contracts/verification/verify-smart-contracts",
+              "path": "/build/dapp/smart-contracts/verification/verify-smart-contracts",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/dapp/testnet-workflow",
+              "path": "/build/dapp/testnet-workflow",
+              "sidebar": "build-dapp"
+            },
+            {
+              "id": "build/subnet/c-chain-vs-subnet",
+              "path": "/build/subnet/c-chain-vs-subnet",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/deploy/custom-vm-subnet",
+              "path": "/build/subnet/deploy/custom-vm-subnet",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/deploy/fuji-testnet-subnet",
+              "path": "/build/subnet/deploy/fuji-testnet-subnet",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/deploy/local-subnet",
+              "path": "/build/subnet/deploy/local-subnet",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/deploy/mainnet-subnet",
+              "path": "/build/subnet/deploy/mainnet-subnet",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/deploy/multisig-auth",
+              "path": "/build/subnet/deploy/multisig-auth",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/deploy/on-prod-infra",
+              "path": "/build/subnet/deploy/on-prod-infra",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/deploy/testnet-subnet",
+              "path": "/build/subnet/deploy/testnet-subnet",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/elastic/elastic-parameters",
+              "path": "/build/subnet/elastic/elastic-parameters",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/elastic/transform-to-elastic-subnet",
+              "path": "/build/subnet/elastic/transform-to-elastic-subnet",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/getting-started",
+              "path": "/build/subnet/getting-started",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/hello-subnet",
+              "path": "/build/subnet/hello-subnet",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/info/troubleshoot-subnet",
+              "path": "/build/subnet/info/troubleshoot-subnet",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/info/wagmi",
+              "path": "/build/subnet/info/wagmi",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/maintain/delete-subnet",
+              "path": "/build/subnet/maintain/delete-subnet",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/maintain/how-to-transfer-funds",
+              "path": "/build/subnet/maintain/how-to-transfer-funds",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/maintain/pause-resume-subnet",
+              "path": "/build/subnet/maintain/pause-resume-subnet",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/maintain/view-subnets",
+              "path": "/build/subnet/maintain/view-subnets",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/README",
+              "path": "/build/subnet/",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/upgrade/considerations-subnet-upgrade",
+              "path": "/build/subnet/upgrade/considerations-subnet-upgrade",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/upgrade/customize-a-subnet",
+              "path": "/build/subnet/upgrade/customize-a-subnet",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/upgrade/upgrade-precompile",
+              "path": "/build/subnet/upgrade/upgrade-precompile",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/upgrade/upgrade-subnet-vm",
+              "path": "/build/subnet/upgrade/upgrade-subnet-vm",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/utility/cross-chain-evm-bridge",
+              "path": "/build/subnet/utility/cross-chain-evm-bridge",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/utility/deploy-smart-contract-to-subnet",
+              "path": "/build/subnet/utility/deploy-smart-contract-to-subnet",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/subnet/utility/subnet-faucet",
+              "path": "/build/subnet/utility/subnet-faucet",
+              "sidebar": "build-subnet"
+            },
+            {
+              "id": "build/vm/create/any-lang-vm",
+              "path": "/build/vm/create/any-lang-vm",
+              "sidebar": "build-vm"
+            },
+            {
+              "id": "build/vm/create/golang-vm-complex",
+              "path": "/build/vm/create/golang-vm-complex",
+              "sidebar": "build-vm"
+            },
+            {
+              "id": "build/vm/create/golang-vm-simple",
+              "path": "/build/vm/create/golang-vm-simple",
+              "sidebar": "build-vm"
+            },
+            {
+              "id": "build/vm/create/rust-vm",
+              "path": "/build/vm/create/rust-vm",
+              "sidebar": "build-vm"
+            },
+            {
+              "id": "build/vm/evm/background-and-reqs",
+              "path": "/build/vm/evm/background-and-reqs",
+              "sidebar": "build-vm"
+            },
+            {
+              "id": "build/vm/evm/defining-precompile",
+              "path": "/build/vm/evm/defining-precompile",
+              "sidebar": "build-vm"
+            },
+            {
+              "id": "build/vm/evm/defining-tests",
+              "path": "/build/vm/evm/defining-tests",
+              "sidebar": "build-vm"
+            },
+            {
+              "id": "build/vm/evm/deploying-precompile",
+              "path": "/build/vm/evm/deploying-precompile",
+              "sidebar": "build-vm"
+            },
+            {
+              "id": "build/vm/evm/executing-tests",
+              "path": "/build/vm/evm/executing-tests",
+              "sidebar": "build-vm"
+            },
+            {
+              "id": "build/vm/evm/generate-precompile",
+              "path": "/build/vm/evm/generate-precompile",
+              "sidebar": "build-vm"
+            },
+            {
+              "id": "build/vm/evm/intro",
+              "path": "/build/vm/evm/intro",
+              "sidebar": "build-vm"
+            },
+            {
+              "id": "build/vm/intro",
+              "path": "/build/vm/intro",
+              "sidebar": "build-vm"
+            },
+            {
+              "id": "build/vm/README",
+              "path": "/build/vm/",
+              "sidebar": "build-vm"
+            },
+            {
+              "id": "deprecated/deploy-a-gnosis-safe-on-your-evm",
+              "path": "/deprecated/deploy-a-gnosis-safe-on-your-evm"
+            },
+            {
+              "id": "deprecated/dfk-subnet-node",
+              "path": "/deprecated/dfk-subnet-node"
+            },
+            {
+              "id": "deprecated/truffle",
+              "path": "/deprecated/truffle"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021",
+              "path": "/deprecated/tutorials-contest/2021"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js",
+              "path": "/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSUploader.js",
+              "path": "/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSUploader.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSViewer.js",
+              "path": "/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSViewer.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/distributed-file-manager/README",
+              "path": "/deprecated/tutorials-contest/2021/distributed-file-manager/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/Auction.js",
+              "path": "/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/Auction.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/AuctionList.js",
+              "path": "/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/AuctionList.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/CreateAuction.js",
+              "path": "/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/CreateAuction.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/drizzle-auction-manager/README",
+              "path": "/deprecated/tutorials-contest/2021/drizzle-auction-manager/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/ActiveElections.js",
+              "path": "/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/ActiveElections.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/CreateElection.js",
+              "path": "/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/CreateElection.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/VoteModal.js",
+              "path": "/deprecated/tutorials-contest/2021/evoting-lux-dapp/frontend/VoteModal.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/evoting-lux-dapp/README",
+              "path": "/deprecated/tutorials-contest/2021/evoting-lux-dapp/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/hardhat-fork/README",
+              "path": "/deprecated/tutorials-contest/2021/hardhat-fork/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/how-to-mint-erc721-using-openzeppelin/tutorial",
+              "path": "/deprecated/tutorials-contest/2021/how-to-mint-erc721-using-openzeppelin/tutorial"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/lux-chat-dapp/README",
+              "path": "/deprecated/tutorials-contest/2021/lux-chat-dapp/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/lux-DAO/README",
+              "path": "/deprecated/tutorials-contest/2021/lux-DAO/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html",
+              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/README",
+              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/App.js",
+              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/App.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/index.js",
+              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/index.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js",
+              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/setupTests.js",
+              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/setupTests.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/README",
+              "path": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/pangolin-token-subgraph/README",
+              "path": "/deprecated/tutorials-contest/2021/pangolin-token-subgraph/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup/README",
+              "path": "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/chainlink-external-adaptor/README",
+              "path": "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/chainlink-external-adaptor/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/README",
+              "path": "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2021/red-dev-sig-verify-tutorial/README",
+              "path": "/deprecated/tutorials-contest/2021/red-dev-sig-verify-tutorial/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022",
+              "path": "/deprecated/tutorials-contest/2022"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/chains.js",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/chains.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/nativeMinterAddress.js",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/nativeMinterAddress.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/AvaxBridge.sol"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/AvaxToken.sol"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBalance.js",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBalance.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBurnOrLock.js",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBurnOrLock.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterDeploy.js",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterDeploy.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/relayer.js",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/relayer.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/balance.js",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/balance.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/burnOrLock.js",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/burnOrLock.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/deploy.js",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/deploy.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initContracts.js",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initContracts.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initProviders.js",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initProviders.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initSigners.js",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initSigners.js"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/README",
+              "path": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/local-subnet-development/hardhat.config.ts",
+              "path": "/deprecated/tutorials-contest/2022/local-subnet-development/hardhat.config.ts"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/local-subnet-development/precompiles/AllowList",
+              "path": "/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/AllowList"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/local-subnet-development/precompiles/NativeMinter",
+              "path": "/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/NativeMinter"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/local-subnet-development/README",
+              "path": "/deprecated/tutorials-contest/2022/local-subnet-development/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/lux-subnet-customization/README",
+              "path": "/deprecated/tutorials-contest/2022/lux-subnet-customization/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/2022/lux-theGraph-index/README",
+              "path": "/deprecated/tutorials-contest/2022/lux-theGraph-index/"
+            },
+            {
+              "id": "deprecated/tutorials-contest/README",
+              "path": "/deprecated/tutorials-contest/"
+            },
+            {
+              "id": "deprecated/verify-truffle",
+              "path": "/deprecated/verify-truffle"
+            },
+            {
+              "id": "disclaimer",
+              "path": "/disclaimer",
+              "sidebar": "learn"
+            },
+            {
+              "id": "learn/lux/awm",
+              "path": "/learn/lux/awm",
+              "sidebar": "learn"
+            },
+            {
+              "id": "learn/lux/intro",
+              "path": "/intro",
+              "sidebar": "learn"
+            },
+            {
+              "id": "learn/lux/lux-consensus",
+              "path": "/learn/lux/lux-consensus",
+              "sidebar": "learn"
+            },
+            {
+              "id": "learn/lux/lux-platform",
+              "path": "/learn/lux/lux-platform",
+              "sidebar": "learn"
+            },
+            {
+              "id": "learn/lux/mainnet",
+              "path": "/learn/lux/mainnet",
+              "sidebar": "learn"
+            },
+            {
+              "id": "learn/lux/subnets-overview",
+              "path": "/learn/lux/subnets-overview",
+              "sidebar": "learn"
+            },
+            {
+              "id": "learn/lux/testnet",
+              "path": "/learn/lux/testnet",
+              "sidebar": "learn"
+            },
+            {
+              "id": "learn/lux/virtual-machines",
+              "path": "/learn/lux/virtual-machines",
+              "sidebar": "learn"
+            },
+            {
+              "id": "nodes/build/run-lux-node-manually",
+              "path": "/nodes/build/run-lux-node-manually"
+            },
+            {
+              "id": "nodes/build/set-up-an-lux-node-with-google-cloud-platform",
+              "path": "/nodes/build/set-up-an-lux-node-with-google-cloud-platform"
+            },
+            {
+              "id": "nodes/build/set-up-an-lux-node-with-microsoft-azure",
+              "path": "/nodes/build/set-up-an-lux-node-with-microsoft-azure"
+            },
+            {
+              "id": "nodes/build/setting-up-an-lux-node-with-amazon-web-services-aws",
+              "path": "/nodes/build/setting-up-an-lux-node-with-amazon-web-services-aws"
+            },
+            {
+              "id": "nodes/configure/avalanchego-config-flags",
+              "path": "/nodes/configure/avalanchego-config-flags",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/configure/chain-config-flags",
+              "path": "/nodes/configure/chain-config-flags",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/configure/luxd-config-flags",
+              "path": "/nodes/configure/luxd-config-flags",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/configure/subnet-configs",
+              "path": "/nodes/configure/subnet-configs",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/maintain/background-service-config",
+              "path": "/nodes/maintain/background-service-config",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/maintain/node-backup-and-restore",
+              "path": "/nodes/maintain/node-backup-and-restore",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/maintain/node-bootstrap",
+              "path": "/nodes/maintain/node-bootstrap",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/maintain/notify",
+              "path": "/nodes/maintain/notify",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/maintain/run-offline-pruning",
+              "path": "/nodes/maintain/run-offline-pruning",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/maintain/setting-up-node-monitoring",
+              "path": "/nodes/maintain/setting-up-node-monitoring",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/maintain/upgrade-your-luxd-node",
+              "path": "/nodes/maintain/upgrade-your-luxd-node",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/README",
+              "path": "/nodes/",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/run/FAQ",
+              "path": "/nodes/run/FAQ",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/run/node-manually",
+              "path": "/nodes/run/node-manually",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/run/subnet-node",
+              "path": "/nodes/run/subnet-node",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/run/third-party/alibaba-cloud-node",
+              "path": "/nodes/run/third-party/alibaba-cloud-node",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/run/third-party/aws-marketplace-one-click",
+              "path": "/nodes/run/third-party/aws-marketplace-one-click",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/run/third-party/aws-node",
+              "path": "/nodes/run/third-party/aws-node",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/run/third-party/google-cloud-node",
+              "path": "/nodes/run/third-party/google-cloud-node",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/run/third-party/microsoft-azure-node",
+              "path": "/nodes/run/third-party/microsoft-azure-node",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/run/third-party/tencent-cloud-node",
+              "path": "/nodes/run/third-party/tencent-cloud-node",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/run/with-installer/advance-config-maintenance",
+              "path": "/nodes/run/with-installer/advance-config-maintenance",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/run/with-installer/installing-avalanchego",
+              "path": "/nodes/run/with-installer/installing-avalanchego",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/run/with-installer/installing-luxd",
+              "path": "/nodes/run/with-installer/installing-luxd",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/run/with-installer/managing-avalanchego",
+              "path": "/nodes/run/with-installer/managing-avalanchego",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/run/with-installer/managing-luxd",
+              "path": "/nodes/run/with-installer/managing-luxd",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/run/with-installer/preparing-your-environment",
+              "path": "/nodes/run/with-installer/preparing-your-environment",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/system-requirements",
+              "path": "/nodes/system-requirements",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/validate/add-a-validator",
+              "path": "/nodes/validate/add-a-validator",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/validate/how-to-stake",
+              "path": "/nodes/validate/how-to-stake",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/validate/validate-or-delegate",
+              "path": "/nodes/validate/validate-or-delegate",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "nodes/validate/what-is-staking",
+              "path": "/nodes/validate/what-is-staking",
+              "sidebar": "nodes"
+            },
+            {
+              "id": "quickstart/integrate-exchange-with-lux",
+              "path": "/quickstart/integrate-exchange-with-lux"
+            },
+            {
+              "id": "quickstart/multisig-utxos-with-luxjs",
+              "path": "/quickstart/multisig-utxos-with-luxjs"
+            },
+            {
+              "id": "reference/luxd/admin-api",
+              "path": "/reference/luxd/admin-api",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/luxd/auth-api",
+              "path": "/reference/luxd/auth-api",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/luxd/c-chain/api",
+              "path": "/reference/luxd/c-chain/api",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/luxd/c-chain/txn-format",
+              "path": "/reference/luxd/c-chain/txn-format",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/luxd/health-api",
+              "path": "/reference/luxd/health-api",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/luxd/index-api",
+              "path": "/reference/luxd/index-api",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/luxd/info-api",
+              "path": "/reference/luxd/info-api",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/luxd/ipc-api",
+              "path": "/reference/luxd/ipc-api",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/luxd/keystore-api",
+              "path": "/reference/luxd/keystore-api",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/luxd/metrics-api",
+              "path": "/reference/luxd/metrics-api",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/luxd/p-chain/api",
+              "path": "/reference/luxd/p-chain/api",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/luxd/p-chain/txn-format",
+              "path": "/reference/luxd/p-chain/txn-format",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/luxd/x-chain/api",
+              "path": "/reference/luxd/x-chain/api",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/luxd/x-chain/txn-format",
+              "path": "/reference/luxd/x-chain/txn-format",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/README",
+              "path": "/reference/",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/standards/avalanche-network-protocol",
+              "path": "/reference/standards/avalanche-network-protocol"
+            },
+            {
+              "id": "reference/standards/cryptographic-primitives",
+              "path": "/reference/standards/cryptographic-primitives",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/standards/guides/banff-changes",
+              "path": "/reference/standards/guides/banff-changes",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/standards/guides/blockchain-flow",
+              "path": "/reference/standards/guides/blockchain-flow",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/standards/guides/issuing-api-calls",
+              "path": "/reference/standards/guides/issuing-api-calls",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/standards/guides/txn-fees",
+              "path": "/reference/standards/guides/txn-fees",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/standards/guides/x-chain-migration",
+              "path": "/reference/standards/guides/x-chain-migration",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/standards/network-protocol",
+              "path": "/reference/standards/network-protocol",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/standards/serialization-primitives",
+              "path": "/reference/standards/serialization-primitives",
+              "sidebar": "reference"
+            },
+            {
+              "id": "reference/subnet-evm/api",
+              "path": "/reference/subnet-evm/api",
+              "sidebar": "reference"
+            },
+            {
+              "id": "tooling/cli",
+              "path": "/tooling/cli",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/cli-guides/create-a-validator-aws",
+              "path": "/tooling/cli-guides/create-a-validator-aws",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/cli-guides/create-a-validator-gcp",
+              "path": "/tooling/cli-guides/create-a-validator-gcp",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/cli-guides/import-subnet",
+              "path": "/tooling/cli-guides/import-subnet",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/cli-guides/install-cli",
+              "path": "/tooling/cli-guides/install-cli",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/cli-guides/node-ssh",
+              "path": "/tooling/cli-guides/node-ssh",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/cli-guides/run-with-docker",
+              "path": "/tooling/cli-guides/run-with-docker",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/cli-guides/setup-a-devnet",
+              "path": "/tooling/cli-guides/setup-a-devnet",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/cli-guides/stop-node",
+              "path": "/tooling/cli-guides/stop-node",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/cli-guides/upload-a-custom-vm-to-cloud",
+              "path": "/tooling/cli-guides/upload-a-custom-vm-to-cloud",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/cli-guides/validate-primary-network",
+              "path": "/tooling/cli-guides/validate-primary-network",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/cli-guides/validate-subnets",
+              "path": "/tooling/cli-guides/validate-subnets",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/glacier",
+              "path": "/tooling/glacier",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/indexers",
+              "path": "/tooling/indexers",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/lux-plugin-manager",
+              "path": "/tooling/lux-plugin-manager"
+            },
+            {
+              "id": "tooling/luxd-installer",
+              "path": "/tooling/luxd-installer",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/luxd-postman-collection/data-visualization",
+              "path": "/tooling/luxd-postman-collection/data-visualization",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/luxd-postman-collection/making-api-calls",
+              "path": "/tooling/luxd-postman-collection/making-api-calls",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/luxd-postman-collection/setup",
+              "path": "/tooling/luxd-postman-collection/setup",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/luxd-postman-collection/variables",
+              "path": "/tooling/luxd-postman-collection/variables",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/luxjs-api",
+              "path": "/tooling/luxjs-api",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/luxjs-guides/create-an-asset-on-the-x-chain",
+              "path": "/tooling/luxjs-guides/create-an-asset-on-the-x-chain",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/luxjs-guides/cross-chain-transfers",
+              "path": "/tooling/luxjs-guides/cross-chain-transfers",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/luxjs-guides/generate-a-txid-using-luxjs",
+              "path": "/tooling/luxjs-guides/generate-a-txid-using-luxjs",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/luxjs-guides/generate-key-pair",
+              "path": "/tooling/luxjs-guides/generate-key-pair",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/luxjs-guides/manage-x-chain-keys",
+              "path": "/tooling/luxjs-guides/manage-x-chain-keys",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/luxjs-guides/multisig-utxos-with-luxjs",
+              "path": "/tooling/luxjs-guides/multisig-utxos-with-luxjs",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/luxjs-guides/send-an-asset-on-the-x-chain",
+              "path": "/tooling/luxjs-guides/send-an-asset-on-the-x-chain",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/luxjs-overview",
+              "path": "/tooling/luxjs-overview",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/metrics",
+              "path": "/tooling/metrics",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/netrunner",
+              "path": "/tooling/netrunner",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/ops",
+              "path": "/tooling/ops",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/plugin-manager",
+              "path": "/tooling/plugin-manager",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/README",
+              "path": "/tooling/",
+              "sidebar": "tooling"
+            },
+            {
+              "id": "tooling/rpc-providers",
+              "path": "/tooling/rpc-providers",
+              "sidebar": "tooling"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "learn": {
+              "link": {
+                "path": "/intro",
+                "label": "learn/lux/intro"
+              }
+            },
+            "nodes": {
+              "link": {
+                "path": "/nodes/",
+                "label": "nodes/README"
+              }
+            },
+            "build-dapp": {
+              "link": {
+                "path": "/build/dapp/",
+                "label": "build/dapp/README"
+              }
+            },
+            "build-subnet": {
+              "link": {
+                "path": "/build/subnet/",
+                "label": "build/subnet/README"
+              }
+            },
+            "build-vm": {
+              "link": {
+                "path": "/build/vm/",
+                "label": "build/vm/README"
+              }
+            },
+            "tooling": {
+              "link": {
+                "path": "/tooling/",
+                "label": "tooling/README"
+              }
+            },
+            "reference": {
+              "link": {
+                "path": "/reference/",
+                "label": "reference/README"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

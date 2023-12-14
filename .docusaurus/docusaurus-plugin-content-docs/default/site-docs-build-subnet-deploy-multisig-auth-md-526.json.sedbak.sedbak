@@ -1,0 +1,43 @@
+{
+  "id": "build/subnet/deploy/multisig-auth",
+  "title": "Deploy a Subnet with Multisig Authorization",
+  "description": "This tutorial demonstrates how to deploy a permissioned Subnet on Lux Mainnet.",
+  "source": "@site/docs/build/subnet/deploy/multisig-auth.md",
+  "sourceDirName": "build/subnet/deploy",
+  "slug": "/build/subnet/deploy/multisig-auth",
+  "permalink": "/build/subnet/deploy/multisig-auth",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/build/subnet/deploy/multisig-auth.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Subnets",
+      "permalink": "/tags/subnets"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Subnets"
+    ],
+    "description": "This tutorial demonstrates how to deploy a permissioned Subnet on Lux Mainnet.",
+    "sidebar_label": "With Multisig Authorization",
+    "pagination_label": "Deploy a Subnet with Multisig Authorization",
+    "sidebar_position": 4
+  },
+  "sidebar": "build-subnet",
+  "previous": {
+    "title": "Deploy Subnets on Production Infrastructure",
+    "permalink": "/build/subnet/deploy/on-prod-infra"
+  },
+  "next": {
+    "title": "Deploy a Subnet with Multisig Authorization",
+    "permalink": "/build/subnet/deploy/custom-vm-subnet"
+  }
+}

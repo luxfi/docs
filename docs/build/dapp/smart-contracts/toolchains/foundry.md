@@ -22,7 +22,7 @@ command-line.
 
 - Basic understanding of [Solidity](https://docs.soliditylang.org) and Lux.
 - You are familiar with [Lux Smart Contract Quickstart](https://github.com/luxdefi/smart-contract-quickstart).
-- Basic understanding of the [Lux's architecture](/learn/lux/platform.md)
+- Basic understanding of the [Lux's architecture](/learn/lux/lux-platform.md)
 - performed a cross-chain swap via this [this
   tutorial](https://support.lux.network/en/articles/6169872-how-to-make-a-cross-chain-transfer-in-the-wallet)
   to get funds to your C-Chain address.

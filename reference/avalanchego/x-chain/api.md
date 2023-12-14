@@ -7,7 +7,7 @@ pagination_label: X-Chain API
 
 # X-Chain API
 
-The [X-Chain](/learn/lux/platform.md#exchange-chain-x-chain),
+The [X-Chain](/learn/lux/lux-platform.md#exchange-chain-x-chain),
 Lux’s native platform for creating and trading assets, is an instance of the Lux Virtual
 Machine (AVM). This API allows clients to create and trade assets on the X-Chain and other instances
 of the AVM.

@@ -1,0 +1,15 @@
+{
+  "id": "apis/luxjs/manage-x-chain-keys",
+  "title": "Manage X-Chain Keys",
+  "description": "LuxJS comes with its own AVM Keychain. This KeyChain is used in the functions of the API, enabling them to sign using keys it's registered. The first step in this process is to create an instance of LuxJS connected to our Lux platform endpoint of choice.",
+  "source": "@site/docs/apis/luxjs/manage-x-chain-keys.md",
+  "sourceDirName": "apis/luxjs",
+  "slug": "/apis/luxjs/manage-x-chain-keys",
+  "permalink": "/apis/luxjs/manage-x-chain-keys",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/apis/luxjs/manage-x-chain-keys.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {}
+}

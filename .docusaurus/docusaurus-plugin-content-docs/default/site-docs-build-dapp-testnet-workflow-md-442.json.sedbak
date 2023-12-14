@@ -1,0 +1,41 @@
+{
+  "id": "build/dapp/testnet-workflow",
+  "title": "Testnet Workflow",
+  "description": "An end-to-end walkthrough of necessary development activities for a bare-bones decentralized application.",
+  "source": "@site/docs/build/dapp/testnet-workflow.md",
+  "sourceDirName": "build/dapp",
+  "slug": "/build/dapp/testnet-workflow",
+  "permalink": "/build/dapp/testnet-workflow",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/build/dapp/testnet-workflow.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Dapps",
+      "permalink": "/tags/dapps"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Dapps"
+    ],
+    "description": "An end-to-end walkthrough of necessary development activities for a bare-bones decentralized application.",
+    "sidebar_label": "Testnet Workflow",
+    "pagination_label": "Testnet Workflow"
+  },
+  "sidebar": "build-dapp",
+  "previous": {
+    "title": "C-Chain Exchange Integration",
+    "permalink": "/build/dapp/advanced/integrate-exchange"
+  },
+  "next": {
+    "title": "Launch a Ethereum Dapp on Lux",
+    "permalink": "/build/dapp/launch-dapp"
+  }
+}

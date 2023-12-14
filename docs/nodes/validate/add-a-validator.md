@@ -10,7 +10,7 @@ sidebar_position: 3
 
 ## Introduction
 
-The [Primary Network](/learn/lux/platform.md)
+The [Primary Network](/learn/lux/lux-platform.md)
 is inherent to the Lux platform and validates Lux’s built-in
 blockchains. In this
 tutorial, we’ll add a node to the Primary Network on Lux.
@@ -34,7 +34,7 @@ our [Discord](https://chat.lux.network/) to ask questions.
 ## Requirements
 
 You've completed [Run an Lux Node](/nodes/run/node-manually.md) and are familiar with
-[Lux's architecture](/learn/lux/platform.md). In this
+[Lux's architecture](/learn/lux/lux-platform.md). In this
 tutorial, we use [LuxJS](/tooling/luxjs-overview.md) and
 [Lux’s Postman collection](/tooling/luxd-postman-collection/setup.md) 
 to help us make API calls.

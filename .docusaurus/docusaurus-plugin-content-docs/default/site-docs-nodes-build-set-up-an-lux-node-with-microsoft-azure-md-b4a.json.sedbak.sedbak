@@ -1,0 +1,19 @@
+{
+  "id": "nodes/build/set-up-an-lux-node-with-microsoft-azure",
+  "title": "Run an Lux Node with Microsoft Azure",
+  "description": "Running a validator and staking with Lux provides extremely competitive rewards of between 9% and 11% depending on the length you stake for. Find out more info here.",
+  "source": "@site/docs/nodes/build/set-up-an-lux-node-with-microsoft-azure.md",
+  "sourceDirName": "nodes/build",
+  "slug": "/nodes/build/set-up-an-lux-node-with-microsoft-azure",
+  "permalink": "/nodes/build/set-up-an-lux-node-with-microsoft-azure",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/build/set-up-an-lux-node-with-microsoft-azure.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "description": "Running a validator and staking with Lux provides extremely competitive rewards of between 9% and 11% depending on the length you stake for. Find out more info here.",
+    "sidebar_position": 4
+  }
+}

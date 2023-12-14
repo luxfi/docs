@@ -31,9 +31,9 @@ cadenas separadas para diferentes aplicaciones.
 
 La Red Primaria es una [Subnet](subnets-overview.md) especial que ejecuta tres blockchains:
 
-- La Cadena de Contratos [(C-Chain)](platform.md#c-chain)
-- La Cadena de Plataforma [(P-Chain)](platform.md#p-chain)
-- La Cadena de Intercambio [(X-Chain)](platform.md#x-chain)
+- La Cadena de Contratos [(C-Chain)](lux-platform.md#c-chain)
+- La Cadena de Plataforma [(P-Chain)](lux-platform.md#p-chain)
+- La Cadena de Intercambio [(X-Chain)](lux-platform.md#x-chain)
 
 :::note
 La [Mainnet de Lux](/learn/lux/mainnet.md) está compuesta por la Red Primaria

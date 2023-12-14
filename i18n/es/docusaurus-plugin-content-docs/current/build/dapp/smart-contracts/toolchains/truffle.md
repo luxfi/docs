@@ -21,7 +21,7 @@ la C-Chain de Lux, que es una instancia de la EVM.
 Has completado [Ejecutar un Nodo Lux
 ](/nodes/run/node-manually.md) y estás familiarizado con
 la [arquitectura de Lux
-](/learn/lux/platform.md). También has
+](/learn/lux/lux-platform.md). También has
 realizado un intercambio cruzado de cadenas a través de este [este
 tutorial](https://support.lux.network/en/articles/6169872-how-to-make-a-cross-chain-transfer-in-the-wallet)
 para obtener fondos en tu dirección de C-Chain.

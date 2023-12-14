@@ -156,7 +156,7 @@ standard `go-ethereum` Ethereum client does not compute block hashes correctly
 [ExtDataHash](https://github.com/luxdefi/coreth/blob/2c3cfac5f766ce5f32a2eddc43451bdb473b84f1/core/types/block.go#L98)
 header field in Lux C-Chain blocks, which is used move LUX between chains
 (X-Chain and P-Chain). You can read more about our multi-chain abstraction
-[here](/learn/lux/platform.md) (out of scope for a
+[here](/learn/lux/lux-platform.md) (out of scope for a
 normal C-Chain integration).
 
 If you plan on reading JSON responses directly or use web3.js (doesn't recompute

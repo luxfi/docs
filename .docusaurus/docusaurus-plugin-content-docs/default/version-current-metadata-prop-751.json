@@ -15,7 +15,7 @@
       },
       {
         "type": "link",
-        "label": "▼ What is Lux?",
+        "label": "🔺 What is Lux?",
         "href": "/intro",
         "docId": "learn/lux/intro",
         "unlisted": false
@@ -23,8 +23,8 @@
       {
         "type": "link",
         "label": "The Primary Network",
-        "href": "/learn/lux/platform",
-        "docId": "learn/lux/platform",
+        "href": "/learn/lux/lux-platform",
+        "docId": "learn/lux/lux-platform",
         "unlisted": false
       },
       {
@@ -52,15 +52,8 @@
       {
         "type": "link",
         "label": "Lux Consensus",
-        "href": "/learn/lux/consensus",
-        "docId": "learn/lux/consensus",
-        "unlisted": false
-      },
-      {
-        "type": "link",
-        "label": "LUX Token",
-        "href": "/learn/lux/",
-        "docId": "learn/lux/lux",
+        "href": "/learn/lux/lux-consensus",
+        "docId": "learn/lux/lux-consensus",
         "unlisted": false
       },
       {
@@ -357,16 +350,9 @@
       },
       {
         "type": "link",
-        "label": "Upgrade Your Luxd Node",
+        "label": "Upgrade",
         "href": "/nodes/maintain/upgrade-your-luxd-node",
         "docId": "nodes/maintain/upgrade-your-luxd-node",
-        "unlisted": false
-      },
-      {
-        "type": "link",
-        "label": "Upgrade",
-        "href": "/nodes/maintain/upgrade-your-avalanchego-node",
-        "docId": "nodes/maintain/upgrade-your-avalanchego-node",
         "unlisted": false
       },
       {
@@ -379,15 +365,8 @@
       {
         "type": "link",
         "label": "Enroll in Lux Notify",
-        "href": "/nodes/maintain/avalanche-notify",
-        "docId": "nodes/maintain/avalanche-notify",
-        "unlisted": false
-      },
-      {
-        "type": "link",
-        "label": "Luxd Config and Flags",
-        "href": "/nodes/maintain/luxd-config-flags",
-        "docId": "nodes/maintain/luxd-config-flags",
+        "href": "/nodes/maintain/notify",
+        "docId": "nodes/maintain/notify",
         "unlisted": false
       },
       {
@@ -395,13 +374,6 @@
         "label": "Run as a Background Service",
         "href": "/nodes/maintain/background-service-config",
         "docId": "nodes/maintain/background-service-config",
-        "unlisted": false
-      },
-      {
-        "type": "link",
-        "label": "Lux Notify",
-        "href": "/nodes/maintain/notify",
-        "docId": "nodes/maintain/notify",
         "unlisted": false
       }
     ],
@@ -2219,56 +2191,10 @@
       "description": "The Knowledge Base, including all the Help articles on this site, is provided for technical support purposes only, without representation, warranty or guarantee of any kind. Not an offer to sell or solicitation of an offer to buy any security or other regulated financial instrument. Not technical, investment, financial, accounting, tax, legal or other advice; please consult your own professionals. Please conduct your own research before connecting to or interacting with any dapp or third party or making any investment or financial decisions. MoonPay, ParaSwap and any other third party services or dapps you access are offered by third parties unaffiliated with us. Please review this Notice and the Terms of Use.",
       "sidebar": "learn"
     },
-    "learn/avalanche/avalanche-consensus": {
-      "id": "learn/avalanche/avalanche-consensus",
-      "title": "Lux Consensus",
-      "description": "Lux Consensus is a consensus protocol that is scalable, robust, and decentralized."
-    },
-    "learn/avalanche/avalanche-platform": {
-      "id": "learn/avalanche/avalanche-platform",
-      "title": "The Primary Network",
-      "description": "Lux features 3 built-in blockchains which includes Exchange Chain (X-Chain), Platform Chain (P-Chain), and Contract Chain (C-Chain). More info here."
-    },
-    "learn/avalanche/awm": {
-      "id": "learn/avalanche/awm",
-      "title": "Lux Warp Messaging",
-      "description": "AWM allows seamless communication between different subnetworks on Lux, enabling developers to establish custom communication protocols."
-    },
-    "learn/avalanche/fuji": {
-      "id": "learn/avalanche/fuji",
-      "title": "Testnet",
-      "description": "Testnet is the official testnet for the Lux ecosystem."
-    },
-    "learn/avalanche/intro": {
-      "id": "learn/avalanche/intro",
-      "title": "What Is Lux?",
-      "description": "Lux is an open-source platform for building dApps in an interoperable, decentralized, and highly scalable ecosystem."
-    },
-    "learn/avalanche/mainnet": {
-      "id": "learn/avalanche/mainnet",
-      "title": "Lux Mainnet",
-      "description": "Lux Mainnet is the final and production-ready version of the blockchain where users can interact with the network and transact with real world assets."
-    },
-    "learn/avalanche/subnets-overview": {
-      "id": "learn/avalanche/subnets-overview",
-      "title": "What Is a Subnet?",
-      "description": "A Subnet is a dynamic set of validators working together to achieve consensus on the state of a set of blockchain networks."
-    },
-    "learn/avalanche/virtual-machines": {
-      "id": "learn/avalanche/virtual-machines",
-      "title": "Virtual Machines",
-      "description": "Virtual Machine is a virtual environment inside blockchain networks that executes smart contracts and transactions according to predetermined rules and protocols."
-    },
     "learn/lux/awm": {
       "id": "learn/lux/awm",
       "title": "Lux Warp Messaging",
       "description": "AWM allows seamless communication between different subnetworks on Lux, enabling developers to establish custom communication protocols.",
-      "sidebar": "learn"
-    },
-    "learn/lux/consensus": {
-      "id": "learn/lux/consensus",
-      "title": "Lux Consensus",
-      "description": "Lux Consensus is a consensus protocol that is scalable, robust, and decentralized.",
       "sidebar": "learn"
     },
     "learn/lux/intro": {
@@ -2277,22 +2203,22 @@
       "description": "Lux is an open-source platform for building dApps in an interoperable, decentralized, and highly scalable ecosystem.",
       "sidebar": "learn"
     },
-    "learn/lux/lux": {
-      "id": "learn/lux/lux",
-      "title": "LUX",
-      "description": "LUX is the limited-supply token of the Lux network, used to cover fees, enhance security via staking, and facilitate transactions across its various Subnets.",
+    "learn/lux/lux-consensus": {
+      "id": "learn/lux/lux-consensus",
+      "title": "Lux Consensus",
+      "description": "Lux Consensus is a consensus protocol that is scalable, robust, and decentralized.",
+      "sidebar": "learn"
+    },
+    "learn/lux/lux-platform": {
+      "id": "learn/lux/lux-platform",
+      "title": "The Primary Network",
+      "description": "Lux features 3 built-in blockchains which includes Exchange Chain (X-Chain), Platform Chain (P-Chain), and Contract Chain (C-Chain). More info here.",
       "sidebar": "learn"
     },
     "learn/lux/mainnet": {
       "id": "learn/lux/mainnet",
       "title": "Lux Mainnet",
       "description": "Lux Mainnet is the final and production-ready version of the blockchain where users can interact with the network and transact with real world assets.",
-      "sidebar": "learn"
-    },
-    "learn/lux/platform": {
-      "id": "learn/lux/platform",
-      "title": "The Primary Network",
-      "description": "Lux features 3 built-in blockchains which includes Exchange Chain (X-Chain), Platform Chain (P-Chain), and Contract Chain (C-Chain). More info here.",
       "sidebar": "learn"
     },
     "learn/lux/subnets-overview": {
@@ -2312,26 +2238,6 @@
       "title": "Virtual Machines",
       "description": "Virtual Machine is a virtual environment inside blockchain networks that executes smart contracts and transactions according to predetermined rules and protocols.",
       "sidebar": "learn"
-    },
-    "nodes/build/run-lux-node-manually": {
-      "id": "nodes/build/run-lux-node-manually",
-      "title": "Run an Lux Node Manually",
-      "description": "The quickest way to learn about Lux is to run a node and interact with the network and geared toward people interested in how the Lux Platform works."
-    },
-    "nodes/build/set-up-an-lux-node-with-google-cloud-platform": {
-      "id": "nodes/build/set-up-an-lux-node-with-google-cloud-platform",
-      "title": "Run an Lux Node with Google Cloud Platform",
-      "description": "GCP Validator Provisioning"
-    },
-    "nodes/build/set-up-an-lux-node-with-microsoft-azure": {
-      "id": "nodes/build/set-up-an-lux-node-with-microsoft-azure",
-      "title": "Run an Lux Node with Microsoft Azure",
-      "description": "Running a validator and staking with Lux provides extremely competitive rewards of between 9% and 11% depending on the length you stake for. Find out more info here."
-    },
-    "nodes/build/setting-up-an-lux-node-with-amazon-web-services-aws": {
-      "id": "nodes/build/setting-up-an-lux-node-with-amazon-web-services-aws",
-      "title": "Run an Lux Node with Amazon Web Services (AWS)",
-      "description": "This tutorial will guide you through setting up an Lux node on Amazon Web Services (AWS). Cloud services like AWS are a good way to ensure that your node is highly secure, available, and accessible."
     },
     "nodes/configure/avalanchego-config-flags": {
       "id": "nodes/configure/avalanchego-config-flags",
@@ -2357,22 +2263,10 @@
       "description": "Reference for all available Subnet config options and flags.",
       "sidebar": "nodes"
     },
-    "nodes/maintain/avalanche-notify": {
-      "id": "nodes/maintain/avalanche-notify",
-      "title": "Lux Notify",
-      "description": "Lux Notify is an active monitoring system that checks a validator's responsiveness each minute. To receive email alerts if a validator becomes unresponsive or out-of-date, sign up with the Lux Notify tool.",
-      "sidebar": "nodes"
-    },
     "nodes/maintain/background-service-config": {
       "id": "nodes/maintain/background-service-config",
       "title": "Run an Lux Node as a Background Service",
       "description": "This page demonstrates how to set up a `luxd.service` file to enable a manually deployed validator node to run in the background of a server instead of in the terminal directly.",
-      "sidebar": "nodes"
-    },
-    "nodes/maintain/luxd-config-flags": {
-      "id": "nodes/maintain/luxd-config-flags",
-      "title": "Luxd Config and Flags",
-      "description": "This documents list all available configuration and flags for Luxd.",
       "sidebar": "nodes"
     },
     "nodes/maintain/node-backup-and-restore": {
@@ -2390,7 +2284,7 @@
     "nodes/maintain/notify": {
       "id": "nodes/maintain/notify",
       "title": "Lux Notify",
-      "description": "To receive email alerts if a validator becomes unresponsive or out-of-date, sign up with the Lux Notify tool//notify.lux.network.",
+      "description": "Lux Notify is an active monitoring system that checks a validator's responsiveness each minute. To receive email alerts if a validator becomes unresponsive or out-of-date, sign up with the Lux Notify tool.",
       "sidebar": "nodes"
     },
     "nodes/maintain/run-offline-pruning": {
@@ -2405,16 +2299,10 @@
       "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.",
       "sidebar": "nodes"
     },
-    "nodes/maintain/upgrade-your-avalanchego-node": {
-      "id": "nodes/maintain/upgrade-your-avalanchego-node",
-      "title": "Upgrade Your Luxd Node",
-      "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.",
-      "sidebar": "nodes"
-    },
     "nodes/maintain/upgrade-your-luxd-node": {
       "id": "nodes/maintain/upgrade-your-luxd-node",
       "title": "Upgrade Your Luxd Node",
-      "description": "Backup Your Node",
+      "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.",
       "sidebar": "nodes"
     },
     "nodes/README": {

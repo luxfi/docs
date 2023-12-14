@@ -1,0 +1,53 @@
+{
+  "id": "nodes/run/subnet-node",
+  "title": "Run a Subnet Node",
+  "description": "Detailed instructions for running an Lux node that tracks a Subnet.",
+  "source": "@site/docs/nodes/run/subnet-node.md",
+  "sourceDirName": "nodes/run",
+  "slug": "/nodes/run/subnet-node",
+  "permalink": "/nodes/run/subnet-node",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/run/subnet-node.md",
+  "tags": [
+    {
+      "label": "Nodes",
+      "permalink": "/tags/nodes"
+    },
+    {
+      "label": "Subnets",
+      "permalink": "/tags/subnets"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "tags": [
+      "Nodes",
+      "Subnets"
+    ],
+    "description": "Detailed instructions for running an Lux node that tracks a Subnet.",
+    "sidebar_label": "Subnet Nodes",
+    "pagination_label": "Run a Subnet Node",
+    "sidebar_position": 2,
+    "keywords": [
+      "subnet",
+      "lux",
+      "lux subnet",
+      "run a subnet node",
+      "subnet node",
+      "track subnet",
+      "virtual machine",
+      "binary"
+    ]
+  },
+  "sidebar": "nodes",
+  "previous": {
+    "title": "Node Config and Maintenance",
+    "permalink": "/nodes/run/with-installer/advance-config-maintenance"
+  },
+  "next": {
+    "title": "Run an Lux Node with Amazon Web Services",
+    "permalink": "/nodes/run/third-party/aws-node"
+  }
+}

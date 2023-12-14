@@ -1,0 +1,43 @@
+{
+  "id": "build/vm/create/golang-vm-simple",
+  "title": "How to Build a Simple Golang VM",
+  "description": "Learn how to build a simple virtual machine on Lux using Golang.",
+  "source": "@site/docs/build/vm/create/golang-vm-simple.md",
+  "sourceDirName": "build/vm/create",
+  "slug": "/build/vm/create/golang-vm-simple",
+  "permalink": "/build/vm/create/golang-vm-simple",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/build/vm/create/golang-vm-simple.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Virtual Machines",
+      "permalink": "/tags/virtual-machines"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Virtual Machines"
+    ],
+    "description": "Learn how to build a simple virtual machine on Lux using Golang.",
+    "sidebar_label": "Simple Golang VM",
+    "pagination_label": "Build a Simple Golang VM",
+    "sidebar_position": 1
+  },
+  "sidebar": "build-vm",
+  "previous": {
+    "title": "Build a Simple VM From Scratch",
+    "permalink": "/build/vm/create/any-lang-vm"
+  },
+  "next": {
+    "title": "Build a Complex Golang VM",
+    "permalink": "/build/vm/create/golang-vm-complex"
+  }
+}

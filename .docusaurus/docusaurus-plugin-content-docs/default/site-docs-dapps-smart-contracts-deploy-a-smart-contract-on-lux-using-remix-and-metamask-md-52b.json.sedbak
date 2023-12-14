@@ -1,0 +1,17 @@
+{
+  "id": "dapps/smart-contracts/deploy-a-smart-contract-on-lux-using-remix-and-metamask",
+  "title": "Deploy a Smart Contract on Lux Using Remix and MetaMask",
+  "description": "Introduction",
+  "source": "@site/docs/dapps/smart-contracts/deploy-a-smart-contract-on-lux-using-remix-and-metamask.md",
+  "sourceDirName": "dapps/smart-contracts",
+  "slug": "/dapps/smart-contracts/deploy-a-smart-contract-on-lux-using-remix-and-metamask",
+  "permalink": "/dapps/smart-contracts/deploy-a-smart-contract-on-lux-using-remix-and-metamask",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/dapps/smart-contracts/deploy-a-smart-contract-on-lux-using-remix-and-metamask.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "decription": "In this doc, learn how to deploy and test a smart contract on Lux using Remix and MetaMask."
+  }
+}

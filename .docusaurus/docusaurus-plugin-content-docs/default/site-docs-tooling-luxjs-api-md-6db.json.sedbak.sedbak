@@ -1,0 +1,43 @@
+{
+  "id": "tooling/luxjs-api",
+  "title": "LuxJS API",
+  "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
+  "source": "@site/docs/tooling/luxjs-api.md",
+  "sourceDirName": "tooling",
+  "slug": "/tooling/luxjs-api",
+  "permalink": "/tooling/luxjs-api",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/tooling/luxjs-api.md",
+  "tags": [
+    {
+      "label": "Tooling",
+      "permalink": "/tags/tooling"
+    },
+    {
+      "label": "LuxJS",
+      "permalink": "/tags/lux-js"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "tags": [
+      "Tooling",
+      "LuxJS"
+    ],
+    "description": "LuxJS is a JavaScript Library for interfacing with the Lux platform. It is built using TypeScript and intended to support both browser and Node.js. The LuxJS library allows one to issue commands to the Lux node APIs.",
+    "pagination_label": "LuxJS API Reference",
+    "sidebar_label": "API Reference",
+    "sidebar_position": 1
+  },
+  "sidebar": "tooling",
+  "previous": {
+    "title": "LuxJS",
+    "permalink": "/tooling/luxjs-overview"
+  },
+  "next": {
+    "title": "Manual Creation of Public-Private Key Pairs using LuxJS",
+    "permalink": "/tooling/luxjs-guides/generate-key-pair"
+  }
+}

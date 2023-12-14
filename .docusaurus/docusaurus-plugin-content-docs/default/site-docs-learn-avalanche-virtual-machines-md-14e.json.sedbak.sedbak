@@ -1,0 +1,38 @@
+{
+  "id": "learn/avalanche/virtual-machines",
+  "title": "Virtual Machines",
+  "description": "Virtual Machine is a virtual environment inside blockchain networks that executes smart contracts and transactions according to predetermined rules and protocols.",
+  "source": "@site/docs/learn/avalanche/virtual-machines.md",
+  "sourceDirName": "learn/avalanche",
+  "slug": "/learn/avalanche/virtual-machines",
+  "permalink": "/learn/avalanche/virtual-machines",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/learn/avalanche/virtual-machines.md",
+  "tags": [
+    {
+      "label": "Virtual Machines",
+      "permalink": "/tags/virtual-machines"
+    },
+    {
+      "label": "Subnet-EVM",
+      "permalink": "/tags/subnet-evm"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "Virtual Machines",
+      "Subnet-EVM"
+    ],
+    "description": "Virtual Machine is a virtual environment inside blockchain networks that executes smart contracts and transactions according to predetermined rules and protocols.",
+    "keywords": [
+      "docs",
+      "lux",
+      "virtual machines",
+      "subnets",
+      "Subnet EVM"
+    ],
+    "sidebar_label": "Virtual Machines"
+  }
+}

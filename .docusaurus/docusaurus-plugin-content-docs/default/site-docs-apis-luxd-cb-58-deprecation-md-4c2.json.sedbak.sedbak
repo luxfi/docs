@@ -1,0 +1,15 @@
+{
+  "id": "apis/luxd/cb58-deprecation",
+  "title": "CB58 Deprecation in Luxd API",
+  "description": "Overview",
+  "source": "@site/docs/apis/luxd/cb58-deprecation.md",
+  "sourceDirName": "apis/luxd",
+  "slug": "/apis/luxd/cb58-deprecation",
+  "permalink": "/apis/luxd/cb58-deprecation",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/apis/luxd/cb58-deprecation.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {}
+}

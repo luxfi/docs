@@ -19,13 +19,13 @@
     },
     "config": "5e9f5e1a"
   },
-  "/-eba": {
+  "/-fc6": {
     "__comp": "5e95c892",
     "__context": {
       "plugin": "059fabf7"
     }
   },
-  "/-e9f": {
+  "/-dbd": {
     "__comp": "a7bd4aaa",
     "version": "935f2afb"
   },
@@ -141,10 +141,6 @@
     "__comp": "df203c0f",
     "tag": "de3d36ac"
   },
-  "/tags/tokenomics-df1": {
-    "__comp": "df203c0f",
-    "tag": "8a2d69b3"
-  },
   "/tags/tooling-b8d": {
     "__comp": "df203c0f",
     "tag": "3fa6c59c"
@@ -161,7 +157,7 @@
     "__comp": "df203c0f",
     "tag": "f5249aae"
   },
-  "/-fe6": {
+  "/-5ee": {
     "__comp": "a94703ab"
   },
   "/build/dapp-335": {
@@ -648,61 +644,25 @@
     "__comp": "17896441",
     "content": "fe0242b1"
   },
-  "/intro-421": {
-    "__comp": "17896441",
-    "content": "50319dad"
-  },
   "/intro-2fc": {
     "__comp": "17896441",
     "content": "5ccc9166"
-  },
-  "/learn/avalanche/avalanche-consensus-3f8": {
-    "__comp": "17896441",
-    "content": "3d437d4a"
-  },
-  "/learn/avalanche/avalanche-platform-b13": {
-    "__comp": "17896441",
-    "content": "90f14f37"
-  },
-  "/learn/avalanche/awm-f18": {
-    "__comp": "17896441",
-    "content": "b05bf875"
-  },
-  "/learn/avalanche/fuji-11e": {
-    "__comp": "17896441",
-    "content": "f438ab60"
-  },
-  "/learn/avalanche/mainnet-ebd": {
-    "__comp": "17896441",
-    "content": "2ff9e933"
-  },
-  "/learn/avalanche/subnets-overview-876": {
-    "__comp": "17896441",
-    "content": "a193fa86"
-  },
-  "/learn/avalanche/virtual-machines-3d1": {
-    "__comp": "17896441",
-    "content": "14ebc3de"
-  },
-  "/learn/lux-787": {
-    "__comp": "17896441",
-    "content": "35500e05"
   },
   "/learn/lux/awm-c5c": {
     "__comp": "17896441",
     "content": "14290e8e"
   },
-  "/learn/lux/consensus-c72": {
+  "/learn/lux/lux-consensus-2b2": {
     "__comp": "17896441",
-    "content": "7929a72c"
+    "content": "26db4a40"
+  },
+  "/learn/lux/lux-platform-b07": {
+    "__comp": "17896441",
+    "content": "7979724c"
   },
   "/learn/lux/mainnet-2e7": {
     "__comp": "17896441",
     "content": "468e8a76"
-  },
-  "/learn/lux/platform-0a7": {
-    "__comp": "17896441",
-    "content": "e1ed5168"
   },
   "/learn/lux/subnets-overview-3cc": {
     "__comp": "17896441",
@@ -720,22 +680,6 @@
     "__comp": "17896441",
     "content": "12fd64a5"
   },
-  "/nodes/build/run-lux-node-manually-01c": {
-    "__comp": "17896441",
-    "content": "f4fd3817"
-  },
-  "/nodes/build/set-up-an-lux-node-with-google-cloud-platform-e51": {
-    "__comp": "17896441",
-    "content": "bc4f950b"
-  },
-  "/nodes/build/set-up-an-lux-node-with-microsoft-azure-8ca": {
-    "__comp": "17896441",
-    "content": "b4a82811"
-  },
-  "/nodes/build/setting-up-an-lux-node-with-amazon-web-services-aws-9d4": {
-    "__comp": "17896441",
-    "content": "78134a83"
-  },
   "/nodes/configure/avalanchego-config-flags-cf0": {
     "__comp": "17896441",
     "content": "64217976"
@@ -752,17 +696,9 @@
     "__comp": "17896441",
     "content": "c04397f4"
   },
-  "/nodes/maintain/avalanche-notify-5d5": {
-    "__comp": "17896441",
-    "content": "ccf0aac9"
-  },
   "/nodes/maintain/background-service-config-4ad": {
     "__comp": "17896441",
     "content": "c5898dc1"
-  },
-  "/nodes/maintain/luxd-config-flags-832": {
-    "__comp": "17896441",
-    "content": "833bd715"
   },
   "/nodes/maintain/node-backup-and-restore-a02": {
     "__comp": "17896441",
@@ -783,10 +719,6 @@
   "/nodes/maintain/setting-up-node-monitoring-c9e": {
     "__comp": "17896441",
     "content": "a01ad309"
-  },
-  "/nodes/maintain/upgrade-your-avalanchego-node-566": {
-    "__comp": "17896441",
-    "content": "44c47c07"
   },
   "/nodes/maintain/upgrade-your-luxd-node-48d": {
     "__comp": "17896441",

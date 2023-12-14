@@ -8,7 +8,7 @@ sidebar_label: ▼ ¿Qué es Lux?
 
 # ¿Qué es Lux?
 
-Lux es una plataforma de código abierto para construir aplicaciones descentralizadas en un ecosistema interoperable, descentralizado y altamente escalable. Impulsado por [un mecanismo de consenso poderoso y único](/learn/lux/consensus.md), Lux es el primer ecosistema diseñado para acomodar la escala de las finanzas globales, con una finalidad de transacción casi instantánea.
+Lux es una plataforma de código abierto para construir aplicaciones descentralizadas en un ecosistema interoperable, descentralizado y altamente escalable. Impulsado por [un mecanismo de consenso poderoso y único](/learn/lux/lux-consensus.md), Lux es el primer ecosistema diseñado para acomodar la escala de las finanzas globales, con una finalidad de transacción casi instantánea.
 
 ## ¿Por qué elegir Lux?
 

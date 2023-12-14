@@ -37,7 +37,7 @@ node, and then validate the Lux network using an Luxd node.
 | [**What is Staking?**](/nodes/validate/what-is-staking.md)        | Explains the concept of staking                                                         |
 | [**Key Differences Between Validation and Delegation**](/nodes/validate/validate-or-delegate.md)        | This section details the difference between staking and delegating on Lux                                                      |
 | [**How to Stake LUX**](/nodes/validate/how-to-stake.md)        | This section provides documents on how to stake LUX on the Lux Network
-| [**Add a Node as a Validator**](nodes/validate/add-a-validator.md) | Add a node as a validator to the [Primary Network](/learn/lux/platform.md) |
+| [**Add a Node as a Validator**](nodes/validate/add-a-validator.md) | Add a node as a validator to the [Primary Network](/learn/lux/lux-platform.md) |
 
 |    Maintain                                                                         |                                                             |
 | :------------------------------------------------------------------------------- | :---------------------------------------------------------- |

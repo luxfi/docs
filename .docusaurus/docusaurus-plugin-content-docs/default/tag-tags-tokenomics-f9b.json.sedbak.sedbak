@@ -1,0 +1,15 @@
+{
+  "label": "Tokenomics",
+  "permalink": "/tags/tokenomics",
+  "allTagsPath": "/tags",
+  "count": 1,
+  "items": [
+    {
+      "id": "learn/lux/lux",
+      "title": "LUX",
+      "description": "LUX is the limited-supply token of the Lux network, used to cover fees, enhance security via staking, and facilitate transactions across its various Subnets.",
+      "permalink": "/learn/lux/"
+    }
+  ],
+  "unlisted": false
+}

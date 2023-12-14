@@ -5,15 +5,14 @@
       "value": "<span class='menu__item'><b><medium> The Lux Protocol </medium></b></span>"
     },
     "learn/lux/intro",
-    "learn/lux/platform",
+    "learn/lux/lux-platform",
     {
       "type": "category",
       "label": "Networks",
       "collapsed": false,
       "items": ["learn/lux/mainnet", "learn/lux/testnet"]
     },
-    "learn/lux/consensus",
-    "learn/lux/lux",
+    "learn/lux/lux-consensus",
     "learn/lux/subnets-overview",
     "learn/lux/virtual-machines",
     "learn/lux/awm",

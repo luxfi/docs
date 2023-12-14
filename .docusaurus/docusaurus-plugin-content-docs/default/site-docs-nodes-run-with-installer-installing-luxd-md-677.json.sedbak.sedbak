@@ -1,0 +1,37 @@
+{
+  "id": "nodes/run/with-installer/installing-luxd",
+  "title": "Installing Luxd Using the Script",
+  "description": "In this tutorial, you'll learn how to download and install Luxd using the installation script.",
+  "source": "@site/docs/nodes/run/with-installer/installing-luxd.md",
+  "sourceDirName": "nodes/run/with-installer",
+  "slug": "/nodes/run/with-installer/installing-luxd",
+  "permalink": "/nodes/run/with-installer/installing-luxd",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/run/with-installer/installing-luxd.md",
+  "tags": [
+    {
+      "label": "Nodes",
+      "permalink": "/tags/nodes"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "tags": [
+      "Nodes"
+    ],
+    "description": "In this tutorial, you'll learn how to download and install Luxd using the installation script.",
+    "sidebar_label": "Installing Luxd",
+    "sidebar_position": 1
+  },
+  "sidebar": "nodes",
+  "previous": {
+    "title": "Installing Luxd",
+    "permalink": "/nodes/run/with-installer/installing-avalanchego"
+  },
+  "next": {
+    "title": "Managing Luxd",
+    "permalink": "/nodes/run/with-installer/managing-avalanchego"
+  }
+}

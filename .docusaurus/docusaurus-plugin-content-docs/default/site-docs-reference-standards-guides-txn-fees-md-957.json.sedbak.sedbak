@@ -1,0 +1,38 @@
+{
+  "id": "reference/standards/guides/txn-fees",
+  "title": "Lux Transaction Fee",
+  "description": "In order to prevent spam, transactions require the payment of a transaction fee.",
+  "source": "@site/docs/reference/standards/guides/txn-fees.md",
+  "sourceDirName": "reference/standards/guides",
+  "slug": "/reference/standards/guides/txn-fees",
+  "permalink": "/reference/standards/guides/txn-fees",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/reference/standards/guides/txn-fees.md",
+  "tags": [
+    {
+      "label": "Standards",
+      "permalink": "/tags/standards"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "tags": [
+      "Standards"
+    ],
+    "description": "In order to prevent spam, transactions require the payment of a transaction fee.",
+    "sidebar_label": "Transaction Fees",
+    "pagination_label": "Lux Transaction Fees",
+    "sidebar_position": 1
+  },
+  "sidebar": "reference",
+  "previous": {
+    "title": "Issuing API Calls",
+    "permalink": "/reference/standards/guides/issuing-api-calls"
+  },
+  "next": {
+    "title": "X-Chain Migration Guide - Lux Cortina",
+    "permalink": "/reference/standards/guides/x-chain-migration"
+  }
+}

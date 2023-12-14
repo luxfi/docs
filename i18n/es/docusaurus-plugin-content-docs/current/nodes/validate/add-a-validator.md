@@ -10,7 +10,7 @@ sidebar_position: 3
 
 ## Introducción
 
-La [Red Primaria](/learn/lux/platform.md)
+La [Red Primaria](/learn/lux/lux-platform.md)
 es inherente a la plataforma Lux y valida las blockchains incorporadas en Lux.
 En este tutorial, agregaremos un nodo a la Red Primaria en Lux.
 
@@ -33,7 +33,7 @@ a nuestro [Discord](https://chat.lux.network/) para hacer preguntas.
 ## Requisitos
 
 Has completado [Ejecutar un Nodo Lux](/nodes/run/node-manually.md) y estás familiarizado con
-la arquitectura de Lux](/learn/lux/platform.md). En este
+la arquitectura de Lux](/learn/lux/lux-platform.md). En este
 tutorial, usamos [LuxJS](/tooling/luxjs-overview.md) y
 [la colección de Postman de Lux](/tooling/luxd-postman-collection/setup.md)
 para ayudarnos a realizar llamadas de API.

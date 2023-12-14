@@ -12,7 +12,7 @@ and smart contract executions occur. It is the final and production-ready versio
 blockchain where users can interact with the network and transact with real world assets.
 
 A _network of networks_, Lux Mainnet includes the 
-[Primary Network](/learn/lux/platform.md)
+[Primary Network](/learn/lux/lux-platform.md)
 formed by the X, P, and C-Chain, as well as all in-production 
 [Subnets](/learn/lux/subnets-overview.md). These Subnets are independent blockchain sub-networks
 that can be tailored to specific application use cases, use their own consensus mechanisms, define

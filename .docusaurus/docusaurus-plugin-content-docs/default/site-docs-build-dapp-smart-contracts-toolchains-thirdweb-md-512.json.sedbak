@@ -1,0 +1,50 @@
+{
+  "id": "build/dapp/smart-contracts/toolchains/thirdweb",
+  "title": "Deploy a Smart Contract on Lux Using thirdweb",
+  "description": "Launching any new or existing Solidity decentralized app on Lux C-Chain fosters the same developer experience as Ethereum, but benefits from the security, speed, and interoperability of the Lux Network.",
+  "source": "@site/docs/build/dapp/smart-contracts/toolchains/thirdweb.md",
+  "sourceDirName": "build/dapp/smart-contracts/toolchains",
+  "slug": "/build/dapp/smart-contracts/toolchains/thirdweb",
+  "permalink": "/build/dapp/smart-contracts/toolchains/thirdweb",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/build/dapp/smart-contracts/toolchains/thirdweb.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Dapps",
+      "permalink": "/tags/dapps"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Dapps"
+    ],
+    "description": "Launching any new or existing Solidity decentralized app on Lux C-Chain fosters the same developer experience as Ethereum, but benefits from the security, speed, and interoperability of the Lux Network.",
+    "sidebar_label": "Thirdweb",
+    "pagination_label": "Using thirdweb with the Lux C-Chain",
+    "sidebar_position": 1,
+    "keywords": [
+      "make a smartcontract",
+      "deploy a smartcontract",
+      "smartcontract development",
+      "thirdweb sdk",
+      "use thirdweb to deploy a smartcontract"
+    ]
+  },
+  "sidebar": "build-dapp",
+  "previous": {
+    "title": "Using Hardhat with the Lux C-Chain",
+    "permalink": "/build/dapp/smart-contracts/toolchains/hardhat"
+  },
+  "next": {
+    "title": "Using Foundry with the Lux C-Chain",
+    "permalink": "/build/dapp/smart-contracts/toolchains/foundry"
+  }
+}

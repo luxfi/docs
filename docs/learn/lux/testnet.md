@@ -10,14 +10,14 @@ sidebar_label: Testnet
 The Testnet serves as the official testnet for the Lux ecosystem. 
 
 Testnet's infrastructure imitates Lux Mainnet. It's comprised of a
-[Primary Network](/learn/lux/platform.md) formed by instances of X, P, and C-Chain,
+[Primary Network](/learn/lux/lux-platform.md) formed by instances of X, P, and C-Chain,
 as well as many test Subnets. 
 
 ## Why Use Testnet Over Mainnet?
 
 Testnet provides users with a platform to simulate the conditions found in the Mainnet environment. It
 enables developers to deploy demo Smart Contracts, allowing them to test and refine their applications
-before deploying them on the [Primary Network](/learn/lux/platform.md). 
+before deploying them on the [Primary Network](/learn/lux/lux-platform.md). 
 
 Users interested in experimenting with Lux can receive free testnet LUX, allowing them to
 explore the platform without any risk. These testnet tokens have no value in the real world and are
