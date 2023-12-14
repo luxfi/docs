@@ -211,7 +211,7 @@ const config = {
         title: "",
         logo: {
           alt: "Lux Logo",
-          src: "img/Lux_Horizontal_Red.svg",
+          src: "img/lux-logo-white.png",
         },
         items: [
           {
@@ -266,7 +266,7 @@ const config = {
         links: [],
         copyright: `Copyright © ${new Date().getFullYear()} Lux Partners Limited`,
         logo: {
-          src: "/img/Lux_Horizontal_Red.svg",
+          src: "/img/lux-logo-white.png",
         },
       },
       prism: {

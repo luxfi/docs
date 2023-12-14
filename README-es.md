@@ -1,7 +1,7 @@
 # Lux Docs
 
 <div align="center">
-  <img src="static/LuxLogoRed.png?raw=true"/>
+  <img src="static/lux-logo-white.png?raw=true"/>
 </div>
 
 ---

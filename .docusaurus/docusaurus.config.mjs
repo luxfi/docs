@@ -178,7 +178,7 @@ export default {
       "title": "",
       "logo": {
         "alt": "Lux Logo",
-        "src": "img/Lux_Horizontal_Red.svg"
+        "src": "img/lux-logo-white.png"
       },
       "items": [
         {
@@ -234,7 +234,7 @@ export default {
       "links": [],
       "copyright": "Copyright © 2023 Lux Partners Limited",
       "logo": {
-        "src": "/img/Lux_Horizontal_Red.svg"
+        "src": "/img/lux-logo-white.png"
       },
       "style": "light"
     },
