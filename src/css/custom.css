@@ -301,3 +301,16 @@ and (max-width: 996px) {
     margin-left: 24px;
   }
 }
+
+.footer--dark {
+    --ifm-footer-background-color: black;
+}
+
+.navbar {
+  background-color: rgba(0,0,0,0.9);
+}
+
+html[data-theme="dark"] {
+  --ifm-background-color: #0d0d0d;
+  --ifm-background-surface-color: #000000;
+}

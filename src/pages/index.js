@@ -10,7 +10,7 @@ function Home() {
   const { siteConfig = {} } = context;
 
   return (
-    <Layout title="Homepage" description="Lux Dev Docs">
+    <Layout title="Homepage" description="Lux Network Docs">
       <main className={styles.main}>
         <br />
         <h1
@@ -22,7 +22,7 @@ function Home() {
             fontSize: "x-large",
           }}
         >
-          {translate({ message: "Welcome to Lux Dev Docs" })}
+          {translate({ message: "Welcome to Lux Network Docs" })}
         </h1>
         <section className={styles.features}>
           <div className="container">
