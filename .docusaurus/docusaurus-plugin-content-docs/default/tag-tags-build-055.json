@@ -23,10 +23,10 @@
       "permalink": "/build/vm/"
     },
     {
-      "id": "build/dapp/advanced/add-avalanche-programmatically",
+      "id": "build/dapp/advanced/add-lux-programmatically",
       "title": "Add Lux Network Programmatically",
       "description": "This document shows how to integrate Lux Network with your Dapp, either by Core or MetaMask.",
-      "permalink": "/build/dapp/advanced/add-avalanche-programmatically"
+      "permalink": "/build/dapp/advanced/add-lux-programmatically"
     },
     {
       "id": "build/dapp/advanced/add-lux-programmatically",

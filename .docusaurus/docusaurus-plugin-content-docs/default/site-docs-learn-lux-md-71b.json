@@ -1,14 +1,14 @@
 {
-  "id": "learn/avalanche/avax",
+  "id": "learn/lux/lux",
   "title": "LUX",
   "description": "LUX is the limited-supply token of the Lux network, used to cover fees, enhance security via staking, and facilitate transactions across its various Subnets.",
-  "source": "@site/docs/learn/avalanche/avax.md",
-  "sourceDirName": "learn/avalanche",
-  "slug": "/learn/avalanche/avax",
-  "permalink": "/learn/avalanche/avax",
+  "source": "@site/docs/learn/lux/lux.md",
+  "sourceDirName": "learn/lux",
+  "slug": "/learn/lux/lux",
+  "permalink": "/learn/lux/lux",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/learn/avalanche/avax.md",
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/learn/lux/lux.md",
   "tags": [
     {
       "label": "Lux",
