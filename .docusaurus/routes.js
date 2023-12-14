@@ -19,11 +19,11 @@ export default [
   },
   {
     path: '/',
-    component: ComponentCreator('/', '126'),
+    component: ComponentCreator('/', 'eba'),
     routes: [
       {
         path: '/',
-        component: ComponentCreator('/', '500'),
+        component: ComponentCreator('/', 'e9f'),
         routes: [
           {
             path: '/tags',
@@ -192,7 +192,7 @@ export default [
           },
           {
             path: '/',
-            component: ComponentCreator('/', '200'),
+            component: ComponentCreator('/', 'fe6'),
             routes: [
               {
                 path: '/build/dapp',
@@ -716,8 +716,8 @@ export default [
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-avalanche-setup',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-avalanche-setup', 'f1c'),
+                path: '/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup',
+                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup', '17d'),
                 exact: true
               },
               {

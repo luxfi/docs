@@ -2063,8 +2063,8 @@
       "title": "How to Use The Graph to Query Lux Data",
       "description": "These tutorials were published as a snapshot of when they were written,"
     },
-    "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-avalanche-setup/README": {
-      "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-avalanche-setup/README",
+    "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup/README": {
+      "id": "deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup/README",
       "title": "Reddev Infrastructure Automation Repository",
       "description": "Setup requirements:"
     },

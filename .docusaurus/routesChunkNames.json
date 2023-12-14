@@ -19,13 +19,13 @@
     },
     "config": "5e9f5e1a"
   },
-  "/-126": {
+  "/-eba": {
     "__comp": "5e95c892",
     "__context": {
       "plugin": "059fabf7"
     }
   },
-  "/-500": {
+  "/-e9f": {
     "__comp": "a7bd4aaa",
     "version": "935f2afb"
   },
@@ -161,7 +161,7 @@
     "__comp": "df203c0f",
     "tag": "f5249aae"
   },
-  "/-200": {
+  "/-fe6": {
     "__comp": "a94703ab"
   },
   "/build/dapp-335": {
@@ -532,9 +532,9 @@
     "__comp": "17896441",
     "content": "e38627e4"
   },
-  "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-avalanche-setup-f1c": {
+  "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/ansible-chainlink-lux-setup-17d": {
     "__comp": "17896441",
-    "content": "1c014736"
+    "content": "beca5195"
   },
   "/deprecated/tutorials-contest/2021/red-dev-lux-chainlink-tutorial/chainlink-external-adaptor-47d": {
     "__comp": "17896441",
