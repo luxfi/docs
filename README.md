@@ -1,12 +1,6 @@
-# Lux Docs
-
-<div align="center">
-  <img src="static/LuxLogoRed.png?raw=true">
-</div>
+# Lux Network Docs
 
 ---
-
-[Español](README-es.md)
 
 ## Overview
 
@@ -32,7 +26,7 @@ repository. Simply:
   and include any extra details in the description
 - Hit "Sign off and commit changes" to raise a PR with your proposed changes
 
-![](https://github.com/luxdefi/docs/blob/master/static/img/quick-edit-readme.gif)
+![](https://github.com/luxdefi/docs/blob/main/static/img/quick-edit-readme.gif)
 
 ### New Content or Extensive Changes
 
@@ -69,10 +63,10 @@ To propose new docs or large edits to our existing pages, follow the steps accor
 
 ### Pull Request (PR)
 
-- All PRs should be made against the `master` branch.
+- All PRs should be made against the `main` branch.
 - Following a successful build, Cloudflare Pages will comment on the PR with a link to
   \*.docs.pages.dev where you can verify your changes.
-- Once your PR is merged into `master`, [https://docs.lux.network/](https://docs.lux.network/)
+- Once your PR is merged into `main`, [https://docs.lux.network/](https://docs.lux.network/)
   will be updated with your changes.
 
 ### Installation
@@ -105,7 +99,7 @@ contents hosting service.
 ## Search
 
 Search is powered by Algolia and the config file is located
-[here](https://github.com/algolia/docsearch-configs/blob/master/configs/lux.json).
+[here](https://github.com/algolia/docsearch-configs/blob/main/configs/lux.json).
 
 ## New or Missing Content Requests
 
