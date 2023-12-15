@@ -1,11 +1,11 @@
 ---
 tags: [Nodes]
-description: In this tutorial, you'll learn how to download and install Luxd using the installation script.
-sidebar_label: Installing Luxd
+description: In this tutorial, you'll learn how to download and install Lux Node using the installation script.
+sidebar_label: Installing Lux Node
 sidebar_position: 1
 ---
 
-# Installing Luxd Using the Script
+# Installing Lux Node Using the Script
 
 ## Running the Script
 

@@ -1,15 +1,15 @@
 ---
 tags: [Nodes]
-description: In this tutorial, you'll learn how to manage your Luxd node.
-sidebar_label: Managing Luxd
+description: In this tutorial, you'll learn how to manage your Lux Node.
+sidebar_label: Managing Lux Node
 sidebar_position: 2
 ---
 
-# Managing Luxd
+# Managing Lux Node
 
 ## Stopping and Starting the Node
 
-To stop Luxd, run:
+To stop `luxd`, run:
 
 ```bash
 sudo systemctl stop luxd
@@ -23,7 +23,7 @@ sudo systemctl start luxd
 
 ## Upgrade Your Node
 
-Luxd is an ongoing project and there are regular version upgrades. Most
+Lux Node is an ongoing project and there are regular version upgrades. Most
 upgrades are recommended but not required. Advance notice will be given for
 upgrades that are not backwards compatible. When a new version of the node is
 released, you will notice log lines like:
@@ -41,10 +41,10 @@ To upgrade your node, just run the installer script again:
 ./luxd-installer.sh
 ```
 
-It will detect that you already have Luxd installed:
+It will detect that you already have `luxd` installed:
 
 ```text
-Luxd installer
+luxd installer
 ---------------------
 Preparing environment...
 Found 64bit Intel/AMD architecture...
