@@ -1,6 +1,6 @@
 ---
 tags: [Nodes]
-description: This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.
+description: This section provides documents on how to build and maintain an Lux Node, and then validate the Lux network using an Lux Node.
 sidebar_label: 🔗 Quick Links
 pagination_label: 🔗 Nodes Quick Links
 ---
@@ -27,7 +27,7 @@ node, and then validate the Lux network using an Luxd node.
 
 |    Configure                                                                         |                                                             |
 | :------------------------------------------------------------------------------- | :---------------------------------------------------------- |
-| [**Luxd Configs and Flags**](/nodes/configure/luxd-config-flags.md) | This documents list all available configuration and flags for Luxd    |
+| [**Node Configs and Flags**](/nodes/configure/luxd-config-flags.md) | This documents list all available configuration and flags for Luxd    |
 | [**Chain Configs and Flags**](/nodes/configure/chain-config-flags.md)             | Reference for all available chain config options and flags    |
 | [**Subnet Configs**](/nodes/configure/subnet-configs.md)             | Reference for all available Subnet config options and flags   |
 
