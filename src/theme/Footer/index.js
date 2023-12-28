@@ -168,7 +168,7 @@ function Footer() {
                 <a href="https://github.com/luxdefi/audits">
                   <div className="footer-list">Audits</div>
                 </a>
-                <a href="mailto:legal@.lux.partners">
+                <a href="mailto:legal@lux.partners">
                   <div className="footer-list">Legal</div>
                 </a>
               </div>
