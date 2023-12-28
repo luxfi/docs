@@ -10,32 +10,32 @@ sidebar_position: 2
 ## How to Make an API Call
 
 After [installing Postman](../luxd-postman-collection/setup#setup)
-and importing the [Lux collection](../luxd-postman-collection/setup#collection-import), you can choose an API to make the call. 
+and importing the [Lux collection](../luxd-postman-collection/setup#collection-import), you can choose an API to make the call.
 
 You should also make sure the URL is the correct one for the call.
-This URL consists of the base URL and the endpoint: 
+This URL consists of the base URL and the endpoint:
 
 * The base URL is set by an environment variable called `baseURL`, and it is by
 default Lux's [public API](../../tooling/rpc-providers.md#mainnet-rpc---public-api-server).
-If you need to make a local API call, simply change the URL to localhost. 
+If you need to make a local API call, simply change the URL to localhost.
 This can be done by changing the value
 of the `baseURL` variable or changing the URL directly on the call tab.
 Check out the [RPC providers](../rpc-providers.md) to see all public URLs.
 
-* The API endpoint depends on which API is used. Please check out 
+* The API endpoint depends on which API is used. Please check out
 [our APIs](../../reference/luxd/c-chain/api.md) to find the proper endpoint.
 
 
-The last step is to add the needed parameters for the call. 
+The last step is to add the needed parameters for the call.
 For example, if a user wants to fetch data
 about a certain transaction, the transaction hash is needed. For fetching data about a
 block, depending on the call used, the block hash or number will be required.
 
 After clicking the **Send** button, if the call is successfully, the output will be displayed in the **Body** tab.
 
-:::info 
-Data visualization is available for a number of methods. 
-Learn how to use it with the help of 
+:::info
+Data visualization is available for a number of methods.
+Learn how to use it with the help of
 [this](../luxd-postman-collection/data-visualization.md) guide.
 :::
 
@@ -49,19 +49,25 @@ Learn how to use it with the help of
 
 Fetching data about a C-Chain transaction using `eth_getTransactionByHash`.
 
+<!--
 <iframe src="https://www.youtube.com/embed/B9jVNOrrZ_w?modestbranding=1&rel=0&color=white&autoplay=0" allow='autoplay' width="1000" height="800" frameborder="0" allowfullscreen></iframe>
+-->
 
 ### X-Chain Public API Call
 
 Fetching data about an X-Chain block using `avm.getBlock`.
 
+<!--
 <iframe src="https://www.youtube.com/embed/4Yu2G3Zvrdo?modestbranding=1&rel=0&color=white&autoplay=0" allow='autoplay' width="1000" height="800" frameborder="0" allowfullscreen></iframe>
+-->
 
 ### P-Chain Public API Call
 
 Getting the current P-Chain height using `platform.getHeight`.
 
+<!--
 <iframe src="https://www.youtube.com/embed/9d5VPNcODDw?modestbranding=1&rel=0&color=white&autoplay=0" allow='autoplay' width="1000" height="800" frameborder="0" allowfullscreen></iframe>
+-->
 
 ### API Call Using Variables
 
@@ -78,4 +84,6 @@ We can set up an environment variable with the transaction hash as value and use
 Find out more about variables [here](../luxd-postman-collection/variables.md).
 :::
 
+<!--
 <iframe src="https://www.youtube.com/embed/26xCiawBRjM?modestbranding=1&rel=0&color=white&autoplay=0" allow='autoplay' width="1000" height="800" frameborder="0" allowfullscreen></iframe>
+-->

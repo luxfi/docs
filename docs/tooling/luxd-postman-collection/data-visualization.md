@@ -9,7 +9,7 @@ sidebar_position: 4
 
 ## API calls with Data Visualization
 
-Data visualization is available for a number of API calls whose responses 
+Data visualization is available for a number of API calls whose responses
 are transformed and presented in tabular format for easy reference.
 
 Please check out
@@ -17,7 +17,7 @@ Please check out
 [Making API Calls](../luxd-postman-collection/making-api-calls.md)
 beforehand, as this guide assumes that the user has already gone through these steps.
 
-Data visualizations are available for following API calls: 
+Data visualizations are available for following API calls:
 
 ### C-Chain
 
@@ -43,9 +43,10 @@ Data visualizations are available for following API calls:
 * [`avm.getBlockByHeight`](../../reference/luxd/x-chain/api#avmgetblockbyheight)
 * [`avm.getTx`](../../reference/luxd/x-chain/api#avmgettx)
 
-<iframe src="https://www.youtube.com/embed/2jS5EFWLoGs?modestbranding=1&rel=0&color=white&autoplay=1" allow='autoplay' width="1000" height="800" frameborder="0" allowfullscreen></iframe>
-
-
+<!-- <iframe
+src="https://www.youtube.com/embed/2jS5EFWLoGs?modestbranding=1&rel=0&color=white&autoplay=1"
+allow='autoplay' width="1000" height="800" frameborder="0"
+allowfullscreen></iframe> -->
 
 ## Data Visualization Features
 
@@ -78,7 +79,7 @@ of gas was used our of the `gasLimit`.
 * Convert the output for atomic transactions from hexadecimal to user readable.
 
 :::info
-Please note that this only works for C-Chain Mainnet, not Testnet. 
+Please note that this only works for C-Chain Mainnet, not Testnet.
 :::
 
 
@@ -88,15 +89,15 @@ Please note that this only works for C-Chain Mainnet, not Testnet.
 
 1. After [installing Postman](../luxd-postman-collection/setup#postman-installation)
 and importing the [Lux collection](../luxd-postman-collection/setup#collection-import),
-choose an API to make the call. 
+choose an API to make the call.
 
-2. Make the call. 
+2. Make the call.
 
 3. Click on the **Visualize** tab.
 
 4. Now all data from the output is displayed in tabular format.
 
-:::info 
+:::info
 Learn how to make an API call with Postman with the help of this guide.
 :::
 

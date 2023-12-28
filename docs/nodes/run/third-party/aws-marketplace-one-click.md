@@ -10,6 +10,7 @@ sidebar_position: 1
 
 ## How to Launch an Lux Validator using AWS
 
+<!--
 <iframe src="https://www.youtube.com/embed/4RPmgpbC_Cc"
         width="100%"
         height="480px"
@@ -21,6 +22,7 @@ sidebar_position: 1
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen>
 </iframe>
+-->
 
 With the intention of enabling developers and entrepreneurs to on-ramp into the
 Lux ecosystem with as little friction as possible, Lux Partners recently
