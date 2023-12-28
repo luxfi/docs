@@ -17,8 +17,8 @@ You must take the full responsibility to ensure your bridge's security.
 
 ## Introduction
 
-In this tutorial, we will be building a bridge between **[DINO](/build/subnet/info/wagmi.md)** and
-**[Testnet](/learn/lux/testnet.md)**. This bridge will help us to transfer native **WGM** coin
+In this tutorial, we will be building a bridge between **[DINO](/build/subnet/info/dino.md)** and
+**[Testnet](/learn/lux/testnet.md)**. This bridge will help us to transfer native **DINO** coin
 wrapped into **wDINO** back and forth from the DINO chain to the Testnet chain. Using this guide, you
 can deploy a bridge between any EVM-based chains for any ERC20 tokens.
 
@@ -60,13 +60,13 @@ chain.
 
 These are the requirement to follow this tutorial -
 
-- Set up [DINO](/build/subnet/info/wagmi.md#adding-wagmi-to-core) and
+- Set up [DINO](/build/subnet/info/dino.md#adding-dino-to-core) and
 [Testnet](/build/dapp/testnet-workflow.md#set-up-testnet-network-on-core-optional) on Core
 - Import `wDINO` token (asset) on the DINO network (Core). Here is the address - `0x3Ee7094DADda15810F191DD6AcF7E4FFa37571e4`
-- `WGM` coins on the DINO chain. Drip `1 WGM` from the [DINO Faucet](https://faucet.trywagmi.xyz/).
+- `DINO` coins on the DINO chain. Drip `1 DINO` from the [DINO Faucet](https://faucet.trydino.xyz/).
 - `LUX` coins on the Testnet chain. Drip `10 LUX` from the [Testnet Faucet](https://faucet.lux.network/)
-- Wrapped `WGM` tokens on the DINO chain. Send a few `WGM` coins to the `wDINO` token address (see
-second point), to receive the same amount of `wDINO`. Always keep some `WGM` coins, to cover transaction
+- Wrapped `DINO` tokens on the DINO chain. Send a few `DINO` coins to the `wDINO` token address (see
+second point), to receive the same amount of `wDINO`. Always keep some `DINO` coins, to cover transaction
 fees.
 
 ## Setting Up Environment
@@ -101,7 +101,7 @@ issue a command. Move back to the `deploy-bridge` directory (main project direct
 new file `configVars`. Put the following contents inside it -
 
 ```env
-SRC_GATEWAY=https://subnets.lux.network/wagmi/wagmi-chain-testnet/rpc
+SRC_GATEWAY=https://subnets.lux.network/dino/dino-chain-testnet/rpc
 DST_GATEWAY=https://api.lux-test.network/ext/bc/C/rpc
 
 SRC_ADDR="<Your address on DINO>"
@@ -115,7 +115,7 @@ RESOURCE_ID="0x00"
 
 - `SRC_ADDR` and `DST_ADDR` are the addresses that will deploy bridge contracts and will act as a relayer.
 - `SRC_TOKEN` is the token that we want to bridge. Here is the address of the wrapped ERC20 version
-of the WGM coin aka wDINO.
+of the DINO coin aka wDINO.
 - `RESOURCE_ID` could be anything. It identifies our bridged ERC20 tokens on both sides (DINO and Testnet).
 
 Every time we make changes to these config variables, we have to update our bash environment. Run
@@ -386,7 +386,7 @@ in the other terminal session.
 ### Approve Handler to Spend my Tokens
 
 Now, let's deposit tokens on the DINO bridge. But before that, we need to approve the handler to
-spend (lock or burn) tokens on our (here `SRC_PK`) behalf. The amount here is in Wei (1 ether (WGM)
+spend (lock or burn) tokens on our (here `SRC_PK`) behalf. The amount here is in Wei (1 ether (DINO)
 = 10^18 Wei). We will be approving 0.1 wDINO.
 
 ```bash
@@ -429,5 +429,6 @@ We need a large set of relayers and a high threshold to avoid any kind of centra
 
 You can learn more about these contracts and implementations by reading ChainSafe's
 [ChainBridge](https://chainbridge.chainsafe.io/) documentation.
+
 
 
