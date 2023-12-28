@@ -95,14 +95,14 @@ function Home() {
               />
 
               <Card
-                to="https://github.com/luxdefi/hypersdk"
+                to="https://github.com/luxdefi/vmsdk"
                 header={{
-                  label: translate({ message: "🛠️ LuxSDK" }),
+                  label: translate({ message: "🛠️ Virtual Machine SDK" }),
                 }}
                 body={{
                   label: translate({
                     message:
-                      "Opinionated Framework for Building Hyper-Scalable Blockchains on Lux",
+                      "Build Hyper-Scalable Blockchains on Lux Network",
                   }),
                 }}
               />
@@ -121,13 +121,13 @@ function Home() {
             fontSize: "x-large",
           }}
         >
-          {translate({ message: "Learn with Lux Academy" })}
+          {translate({ message: "Learn with Lux AI" })}
         </h1>
         <section className={styles.features}>
           <div className="container">
             <div className="row cards__container">
               <Card
-                to="https://academy.lux.network/course/fundamentals?utm_source=dev-docs&utm_medium=website&utm_content=learn-lux"
+                to="https://lux.chat"
                 header={{
                   label: translate({ message: "▼ Lux Fundamentals" }),
                 }}
@@ -140,7 +140,7 @@ function Home() {
               />
 
               <Card
-                to="https://academy.lux.network/course/subnet-architecture?utm_source=dev-docs&utm_medium=website&utm_content=learn-lux"
+                to="https://lux.chat"
                 header={{
                   label: translate({ message: "🌐 Subnet Architecture" }),
                 }}
@@ -153,7 +153,7 @@ function Home() {
               />
 
               <Card
-                to="https://academy.lux.network/course/customize-evm?utm_source=dev-docs&utm_medium=website&utm_content=learn-lux"
+                to="https://lux.chat"
                 header={{
                   label: translate({ message: "🛠️ Customize the EVM" }),
                 }}

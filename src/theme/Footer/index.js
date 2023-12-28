@@ -41,7 +41,7 @@ function Footer() {
             <div className="footer-row">
               <Link
                 className="footer-main-list"
-                href="https://subnets.lux.network/"
+                href="https://explore.lux.network/"
               >
                 <h3>{translate({ message: "Explorer" })}</h3>
               </Link>
@@ -49,10 +49,10 @@ function Footer() {
             <div className="footer-row">
               <Link
                 className="footer-main-list"
-                href="https://academy.lux.com/?utm_source=dev-docs&utm_medium=website&utm_content=footer"
+                href="https://lux.chat"
               >
                 <h3>
-                  {translate({ message: "Academy" })}{" "}
+                  {translate({ message: "AI" })}{" "}
                   <FaGraduationCap className="footer-academy-cap"></FaGraduationCap>
                 </h3>
               </Link>
@@ -60,13 +60,13 @@ function Footer() {
             <div className="footer-row">
               <Link
                 className="footer-main-list"
-                href="https://support.lux.network/en/"
+                href="https://help.lux.network/"
               >
                 <h3>{translate({ message: "Support" })}</h3>
               </Link>
             </div>
             <div className="footer-row">
-              <Link className="footer-main-list" href="https://core.app/en/">
+              <Link className="footer-main-list" href="https://wallet.lux.network/">
                 <h3>{translate({ message: "Wallet" })}</h3>
               </Link>
             </div>
