@@ -73,10 +73,10 @@ function Footer() {
           </div>
           <div class="col">
             <div className="footer-row">
-              <a href="https://t.me/+KDajA4iToKY2ZjBk">
+              <a href="https://t.me/luxdefi">
                 <BsTelegram className="footer-social"></BsTelegram>
               </a>
-              <a href="https://chat.lux.network/">
+              <a href="https://discord.gg/MxFdWsQY">
                 <BsDiscord className="footer-social"></BsDiscord>
               </a>
               <a href="https://github.com/luxdefi">
@@ -85,10 +85,10 @@ function Footer() {
               <a href="https://twitter.com/luxdefi">
                 <BsTwitter className="footer-social"></BsTwitter>
               </a>
-              <a href="https://www.reddit.com/r/Lux/">
+              <a href="https://www.reddit.com/r/luxdefi/">
                 <BsReddit className="footer-social"></BsReddit>
               </a>
-              <a href="https://www.youtube.com/@Luxlux">
+              <a href="https://www.youtube.com/@luxdefi">
                 <BsYoutube className="footer-social"></BsYoutube>
               </a>
               <a href="https://www.linkedin.com/company/luxdefi">
@@ -106,14 +106,14 @@ function Footer() {
                 <h4 className="footer-heading">
                   {translate({ message: "Developers" })}
                 </h4>
-                <a href={translate({ message: "https://forum.lux.network/" })}>
+                <a href={translate({ message: "https://github.com/orgs/luxdefi/discussions" })}>
                   <div className="footer-list">
-                    {translate({ message: "Forum" })}
+                    {translate({ message: "Discussions" })}
                   </div>
                 </a>
                 <a
                   href={translate({
-                    message: "https://stats.lux.network/dashboard/overview/",
+                    message: "https://explore.lux.network/stats",
                   })}
                 >
                   <div className="footer-list">
@@ -123,7 +123,7 @@ function Footer() {
                 <a
                   href={translate({
                     message:
-                      "https://www.youtube.com/playlist?list=PLRHl-ulWK4-GTJhSLF9omG2x_qn7E1O7n",
+                      "https://www.youtube.com/@luxdefi",
                   })}
                 >
                   <div className="footer-list">
@@ -133,7 +133,7 @@ function Footer() {
                 <a
                   href={translate({
                     message:
-                      "https://hackenproof.com/lux/protocol",
+                      "https://hackenproof.com/luxdefi",
                   })}
                 >
                   <div className="footer-list">
@@ -148,30 +148,27 @@ function Footer() {
                 <a href="https://medium.com/luxdefi">
                   <div className="footer-list">Medium</div>
                 </a>
-                <a href="https://www.lux.network/blog">
+                <a href="https://blog.lux.network/">
                   <div className="footer-list">Blog</div>
                 </a>
-                <a href="https://shop.lux.network/">
+                <a href="https://lux.shop/">
                   <div className="footer-list">Merch</div>
-                </a>
-                <a href="/deprecated/tutorials-contest">
-                  <div className="footer-list">Tutorials Contest</div>
                 </a>
               </div>
               <div class="col">
                 <h4 className="footer-heading">
                   {translate({ message: "More" })}
                 </h4>
-                <a href="https://www.lux.network/whitepapers">
+                <a href="https://drive.google.com/drive/folders/1vDXeyAeJUQLzeua447CT0Xn_h2YVq-6G">
                   <div className="footer-list">Whitepapers</div>
                 </a>
-                <a href="https://luxcloud.io/">
+                <a href="https://lux.partners/">
                   <div className="footer-list">Enterprise Solutions</div>
                 </a>
                 <a href="https://github.com/luxdefi/audits">
                   <div className="footer-list">Audits</div>
                 </a>
-                <a href="https://www.lux.network/legal">
+                <a href="mailto:legal@.lux.partners">
                   <div className="footer-list">Legal</div>
                 </a>
               </div>
@@ -184,7 +181,7 @@ function Footer() {
             style={{ fontSize: "small", padding: "15px" }}
           >
             Copyright © {new Date().getFullYear()}{" "}
-            <a href="https://www.lux.network/terms-of-use" className="hover">
+            <a href="https://lux.partners/terms" className="hover">
               Lux Partners Limited
             </a>
           </div>
