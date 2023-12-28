@@ -229,7 +229,7 @@ Once the node is finished bootstrapping, the response will be:
 }
 ```
 
-**Note** that initially the response is `false` because the network is still syncing.  
+**Note** that initially the response is `false` because the network is still syncing.
 When you're adding your node as a Validator on the Lux Mainnet you'll want to wait for this response
 to return `true` so that you don't suffer from any downtime while validating.
 For this tutorial you're not going to wait for it to finish syncing as it's not
@@ -275,25 +275,23 @@ the `nodeID` is `NodeID-Q8Gfaaio9FAqCmZVEXDq9bFvNPvDi7rt5`
 ## Add Node as Validator on Testnet via Core web
 
 For adding the new node as a Validator on the Testnet's Primary Network you can
-use the [Core web](https://core.app/) 
+use the [Core web](https://core.app/)
 [connected](https://support.lux.network/en/articles/6639869-core-web-how-do-i-connect-to-core-web) to
 [Core extension](https://join.core.app/extension).
 If you don't have a Core extension already, check out this
 [guide](https://support.lux.network/en/articles/6100129-core-extension-how-do-i-create-a-new-wallet).
-If you'd like to import an existing wallet to Core extension, follow 
+If you'd like to import an existing wallet to Core extension, follow
 [these steps](https://support.lux.network/en/articles/6078933-core-extension-how-do-i-access-my-existing-account).
 
-![Core web](/img/one-click-validator-node/core-web.png)
-
 Core web is a free, all-in-one command center that gives users a more intuitive and comprehensive way to view
-assets, and use dApps across the Lux network, its various Subnets, and Ethereum. 
+assets, and use dApps across the Lux network, its various Subnets, and Ethereum.
 Core web is optimized for use with the Core browser extension and Core mobile (available on both iOS & Android).
 Together, they are key components of the Core product suite that brings dApps,
 NFTs, Lux Bridge, Subnets, L2s, and more, directly to users.
 
 ### Switching to Testnet Mode
 
-By default, Core web and Core extension are connected to Mainnet. 
+By default, Core web and Core extension are connected to Mainnet.
 For the sake of this demo, you want to connect to the Testnet.
 
 #### On Core Extension
@@ -316,7 +314,7 @@ You can follow the same steps for switching back to Mainnet.
 
 :::info
 
-* Node ID: A unique ID derived from each individual node’s staker certificate. 
+* Node ID: A unique ID derived from each individual node’s staker certificate.
 Use the `NodeID` which was returned in the `info.getNodeID` response.
 In this example it's `NodeID-Q8Gfaaio9FAqCmZVEXDq9bFvNPvDi7rt5`
 
@@ -334,7 +332,7 @@ staking rewards.
 
 :::
 
-To add a node as a Validator, first select the Stake tab on Core web, 
+To add a node as a Validator, first select the Stake tab on Core web,
 in the left hand nav menu. Next click the Validate button, and select
 Get Started.
 
@@ -358,10 +356,10 @@ of time. For this example, 22 days were chosen.
 
 <img src="/img/one-click-validator-node/core-web-staking-duration.png"/>
 
-Choose the address that the network will send rewards to. 
+Choose the address that the network will send rewards to.
 Make sure it's the correct address because once the transaction
 is submitted this cannot be changed later or undone. You can choose the
-wallet's P-Chain address, or a custom P-Chain address. 
+wallet's P-Chain address, or a custom P-Chain address.
 After entering the address, click Next.
 
 <img src="/img/one-click-validator-node/core-web-reward-address.png"/>
@@ -373,7 +371,7 @@ You will claim this percent of the rewards from the delegators on your node. Cli
 
 After entering all these details, a summary of your validation will show up.
 If everything is correct, you can proceed and click on Submit Validation.
-A new page will open up, prompting you to accept the transaction. 
+A new page will open up, prompting you to accept the transaction.
 Here, please approve the transaction.
 
 <img src="/img/one-click-validator-node/core-web-validation-summary.png"/>
@@ -383,9 +381,9 @@ validation transaction was submitted.
 
 <img src="/img/one-click-validator-node/core-web-accepted-tx.png"/>
 
-If you click on View on explorer, a new browser tab will open with the details of the 
-`AddValidatorTx`. It will show details such as the total value of LUX transferred, any 
-LUX which were burned, the blockchainID, the blockID, the NodeID of the validator, 
+If you click on View on explorer, a new browser tab will open with the details of the
+`AddValidatorTx`. It will show details such as the total value of LUX transferred, any
+LUX which were burned, the blockchainID, the blockID, the NodeID of the validator,
 and the total time which has elapsed from the entire Validation period.
 
 <img src="/img/one-click-validator-node/explorer-transaction-details.png"/>

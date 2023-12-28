@@ -3,41 +3,6 @@ import ComponentCreator from '@docusaurus/ComponentCreator';
 
 export default [
   {
-    path: '/__docusaurus/debug',
-    component: ComponentCreator('/__docusaurus/debug', '5c1'),
-    exact: true
-  },
-  {
-    path: '/__docusaurus/debug/config',
-    component: ComponentCreator('/__docusaurus/debug/config', '213'),
-    exact: true
-  },
-  {
-    path: '/__docusaurus/debug/content',
-    component: ComponentCreator('/__docusaurus/debug/content', '375'),
-    exact: true
-  },
-  {
-    path: '/__docusaurus/debug/globalData',
-    component: ComponentCreator('/__docusaurus/debug/globalData', '8f5'),
-    exact: true
-  },
-  {
-    path: '/__docusaurus/debug/metadata',
-    component: ComponentCreator('/__docusaurus/debug/metadata', 'f45'),
-    exact: true
-  },
-  {
-    path: '/__docusaurus/debug/registry',
-    component: ComponentCreator('/__docusaurus/debug/registry', '829'),
-    exact: true
-  },
-  {
-    path: '/__docusaurus/debug/routes',
-    component: ComponentCreator('/__docusaurus/debug/routes', 'eaa'),
-    exact: true
-  },
-  {
     path: '/markdown-page',
     component: ComponentCreator('/markdown-page', '7fc'),
     exact: true
@@ -54,11 +19,11 @@ export default [
   },
   {
     path: '/',
-    component: ComponentCreator('/', 'e7b'),
+    component: ComponentCreator('/', 'efa'),
     routes: [
       {
         path: '/',
-        component: ComponentCreator('/', 'd03'),
+        component: ComponentCreator('/', '2df'),
         routes: [
           {
             path: '/tags',
@@ -222,7 +187,7 @@ export default [
           },
           {
             path: '/',
-            component: ComponentCreator('/', 'a36'),
+            component: ComponentCreator('/', 'b35'),
             routes: [
               {
                 path: '/build/dapp',
@@ -594,281 +559,6 @@ export default [
                 exact: true
               },
               {
-                path: '/deprecated/tutorials-contest',
-                component: ComponentCreator('/deprecated/tutorials-contest', '828'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021', '831'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/DAO',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/DAO', 'bf4'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/distributed-file-manager',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/distributed-file-manager', '96b'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js', 'ca9'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSUploader.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSUploader.js', '9d7'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSViewer.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSViewer.js', '532'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/drizzle-auction-manager',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/drizzle-auction-manager', 'c7e'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/Auction.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/Auction.js', 'fbd'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/AuctionList.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/AuctionList.js', '886'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/CreateAuction.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/CreateAuction.js', 'b5c'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/evoting-dapp',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-dapp', '333'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/evoting-dapp/frontend/ActiveElections.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-dapp/frontend/ActiveElections.js', '19d'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/evoting-dapp/frontend/CreateElection.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-dapp/frontend/CreateElection.js', '26b'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/evoting-dapp/frontend/VoteModal.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/evoting-dapp/frontend/VoteModal.js', '905'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/hardhat-fork',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/hardhat-fork', 'c3c'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/how-to-mint-erc721-using-openzeppelin/tutorial',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/how-to-mint-erc721-using-openzeppelin/tutorial', '2e5'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/lux-chat-dapp',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/lux-chat-dapp', '3b2'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux', 'bf2'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend', '490'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html', 'd5c'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/App.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/App.js', '6ab'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/index.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/index.js', '7f5'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js', 'fc2'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/setupTests.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/setupTests.js', '285'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/pangolin-token-subgraph',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/pangolin-token-subgraph', '091'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial', '09e'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/ansible-chainlink-lux-setup',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/ansible-chainlink-lux-setup', '16b'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/chainlink-external-adaptor',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/chainlink-external-adaptor', '273'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2021/red-dev-sig-verify-tutorial',
-                component: ComponentCreator('/deprecated/tutorials-contest/2021/red-dev-sig-verify-tutorial', '9d3'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022', 'cc3'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token', '681'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/chains.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/chains.js', '6e0'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/nativeMinterAddress.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/nativeMinterAddress.js', '6ac'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol', '58d'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol', '981'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol', 'ece'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol', '248'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBalance.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBalance.js', '469'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBurnOrLock.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBurnOrLock.js', '326'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterDeploy.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterDeploy.js', '61a'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/relayer.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/relayer.js', 'cdf'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/balance.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/balance.js', '961'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/burnOrLock.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/burnOrLock.js', '36b'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/deploy.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/deploy.js', '4fb'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initContracts.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initContracts.js', 'ab1'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initProviders.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initProviders.js', 'b07'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initSigners.js',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initSigners.js', '125'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/local-subnet-development',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/local-subnet-development', '90d'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/local-subnet-development/hardhat.config.ts',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/local-subnet-development/hardhat.config.ts', '612'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/AllowList',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/AllowList', '111'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/NativeMinter',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/NativeMinter', 'ba6'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/lux-subnet-customization',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/lux-subnet-customization', 'aef'),
-                exact: true
-              },
-              {
-                path: '/deprecated/tutorials-contest/2022/theGraph-index',
-                component: ComponentCreator('/deprecated/tutorials-contest/2022/theGraph-index', 'fc6'),
-                exact: true
-              },
-              {
-                path: '/deprecated/verify-truffle',
-                component: ComponentCreator('/deprecated/verify-truffle', '523'),
-                exact: true
-              },
-              {
                 path: '/disclaimer',
                 component: ComponentCreator('/disclaimer', '76c'),
                 exact: true,
@@ -1055,20 +745,8 @@ export default [
                 sidebar: "nodes"
               },
               {
-                path: '/nodes/run/with-installer/installing-avalanchego',
-                component: ComponentCreator('/nodes/run/with-installer/installing-avalanchego', '85c'),
-                exact: true,
-                sidebar: "nodes"
-              },
-              {
                 path: '/nodes/run/with-installer/installing-luxd',
                 component: ComponentCreator('/nodes/run/with-installer/installing-luxd', '184'),
-                exact: true,
-                sidebar: "nodes"
-              },
-              {
-                path: '/nodes/run/with-installer/managing-avalanchego',
-                component: ComponentCreator('/nodes/run/with-installer/managing-avalanchego', '0cc'),
                 exact: true,
                 sidebar: "nodes"
               },

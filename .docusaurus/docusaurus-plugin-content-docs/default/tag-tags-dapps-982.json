@@ -2,7 +2,7 @@
   "label": "Dapps",
   "permalink": "/tags/dapps",
   "allTagsPath": "/tags",
-  "count": 23,
+  "count": 22,
   "items": [
     {
       "id": "build/dapp/advanced/add-lux-programmatically",
@@ -135,12 +135,6 @@
       "title": "Verifying Smart Contracts Using Hardhat and Snowtrace",
       "description": "This tutorial walks through verifying a smart contract on a block explorer using Hardhat after deploying it to Lux C-Chain.",
       "permalink": "/build/dapp/smart-contracts/verification/verify-hardhat"
-    },
-    {
-      "id": "deprecated/verify-truffle",
-      "title": "Verifying Smart Contracts with Truffle Verify",
-      "description": "This tutorial walks through verifying a smart contract on a block explorer using Truffle after deploying it to Lux C-Chain.",
-      "permalink": "/deprecated/verify-truffle"
     }
   ],
   "unlisted": false

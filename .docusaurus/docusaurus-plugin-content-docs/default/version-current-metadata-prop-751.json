@@ -147,28 +147,14 @@
           },
           {
             "type": "link",
-            "label": "Installing Luxd",
-            "href": "/nodes/run/with-installer/installing-avalanchego",
-            "docId": "nodes/run/with-installer/installing-avalanchego",
-            "unlisted": false
-          },
-          {
-            "type": "link",
-            "label": "Installing Luxd",
+            "label": "Installing Lux Node",
             "href": "/nodes/run/with-installer/installing-luxd",
             "docId": "nodes/run/with-installer/installing-luxd",
             "unlisted": false
           },
           {
             "type": "link",
-            "label": "Managing Luxd",
-            "href": "/nodes/run/with-installer/managing-avalanchego",
-            "docId": "nodes/run/with-installer/managing-avalanchego",
-            "unlisted": false
-          },
-          {
-            "type": "link",
-            "label": "Managing Luxd",
+            "label": "Managing Lux Node",
             "href": "/nodes/run/with-installer/managing-luxd",
             "docId": "nodes/run/with-installer/managing-luxd",
             "unlisted": false
@@ -1879,281 +1865,6 @@
       "title": "Using Truffle with the Lux C-Chain",
       "description": "Launching any new or existing Solidity decentralized app on Lux C-Chain fosters the same developer experience as Ethereum, but benefits from the security, speed, and interoperability of the Lux Network."
     },
-    "deprecated/tutorials-contest/2021": {
-      "id": "deprecated/tutorials-contest/2021",
-      "title": "2021 Winners",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/2021/DAO/README": {
-      "id": "deprecated/tutorials-contest/2021/DAO/README",
-      "title": "How to Create Your Own DAO with Lux",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js": {
-      "id": "deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js",
-      "title": "App.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSUploader.js": {
-      "id": "deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSUploader.js",
-      "title": "IPFSUploader.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSViewer.js": {
-      "id": "deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSViewer.js",
-      "title": "IPFSViewer.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2021/distributed-file-manager/README": {
-      "id": "deprecated/tutorials-contest/2021/distributed-file-manager/README",
-      "title": "Distributed File Manager (DFM) using Lux, IPFS and ReactJS",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/Auction.js": {
-      "id": "deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/Auction.js",
-      "title": "Auction.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/AuctionList.js": {
-      "id": "deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/AuctionList.js",
-      "title": "AuctionList.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/CreateAuction.js": {
-      "id": "deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/CreateAuction.js",
-      "title": "CreateAuction.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2021/drizzle-auction-manager/README": {
-      "id": "deprecated/tutorials-contest/2021/drizzle-auction-manager/README",
-      "title": "Create an Auction Bidding on Lux using ReactJS",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/2021/evoting-dapp/frontend/ActiveElections.js": {
-      "id": "deprecated/tutorials-contest/2021/evoting-dapp/frontend/ActiveElections.js",
-      "title": "ActiveElections.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2021/evoting-dapp/frontend/CreateElection.js": {
-      "id": "deprecated/tutorials-contest/2021/evoting-dapp/frontend/CreateElection.js",
-      "title": "CreateElection.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2021/evoting-dapp/frontend/VoteModal.js": {
-      "id": "deprecated/tutorials-contest/2021/evoting-dapp/frontend/VoteModal.js",
-      "title": "VoteModal.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2021/evoting-dapp/README": {
-      "id": "deprecated/tutorials-contest/2021/evoting-dapp/README",
-      "title": "Create a Voting Dapp on Lux Using ReactJS",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/2021/hardhat-fork/README": {
-      "id": "deprecated/tutorials-contest/2021/hardhat-fork/README",
-      "title": "Introduction",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/2021/how-to-mint-erc721-using-openzeppelin/tutorial": {
-      "id": "deprecated/tutorials-contest/2021/how-to-mint-erc721-using-openzeppelin/tutorial",
-      "title": "How to Mint Your Own ERC721 on Lux Using Open Zeppelin",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/2021/lux-chat-dapp/README": {
-      "id": "deprecated/tutorials-contest/2021/lux-chat-dapp/README",
-      "title": "Create a Chat Dapp Using Solidity and ReactJS",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html": {
-      "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html",
-      "title": "Index.html",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/README": {
-      "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/README",
-      "title": "Getting Started with Create React App",
-      "description": "This project was bootstrapped with Create React App."
-    },
-    "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/App.js": {
-      "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/App.js",
-      "title": "App.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/index.js": {
-      "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/index.js",
-      "title": "Index.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js": {
-      "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js",
-      "title": "ReportWebVitals.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/setupTests.js": {
-      "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/setupTests.js",
-      "title": "SetupTests.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/README": {
-      "id": "deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/README",
-      "title": "NFT Marketplace on Lux",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/2021/pangolin-token-subgraph/README": {
-      "id": "deprecated/tutorials-contest/2021/pangolin-token-subgraph/README",
-      "title": "How to Use The Graph to Query Lux Data",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/ansible-chainlink-lux-setup/README": {
-      "id": "deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/ansible-chainlink-lux-setup/README",
-      "title": "Reddev Infrastructure Automation Repository",
-      "description": "Setup requirements:"
-    },
-    "deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/chainlink-external-adaptor/README": {
-      "id": "deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/chainlink-external-adaptor/README",
-      "title": "Chainlink External Adaptor",
-      "description": "Adaptor for communicating smart contract with real world data"
-    },
-    "deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/README": {
-      "id": "deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/README",
-      "title": "How to Configure and Use Your Own Chainlink Node And External Adapter In Your Lux dapp",
-      "description": "This tutorial will show you how to setup a Chainlink node with the Lux Testnet and create dapp smart contracts utilizing a Chainlink node."
-    },
-    "deprecated/tutorials-contest/2021/red-dev-sig-verify-tutorial/README": {
-      "id": "deprecated/tutorials-contest/2021/red-dev-sig-verify-tutorial/README",
-      "title": "Tutorial: Lux Signature Verification in a dapp",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/2022": {
-      "id": "deprecated/tutorials-contest/2022",
-      "title": "2022 Winners",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/chains.js": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/chains.js",
-      "title": "Chains.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/nativeMinterAddress.js": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/nativeMinterAddress.js",
-      "title": "NativeMinterAddress.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol",
-      "title": "LuxBridge.sol",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol",
-      "title": "SubnetBridge.sol",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol",
-      "title": "INativeMinter.sol",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol",
-      "title": "LuxToken.sol",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBalance.js": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBalance.js",
-      "title": "HardhatConfigAfterBalance.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBurnOrLock.js": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBurnOrLock.js",
-      "title": "HardhatConfigAfterBurnOrLock.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterDeploy.js": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterDeploy.js",
-      "title": "HardhatConfigAfterDeploy.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/relayer.js": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/relayer.js",
-      "title": "relayer.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/balance.js": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/balance.js",
-      "title": "Balance.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/burnOrLock.js": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/burnOrLock.js",
-      "title": "BurnOrLock.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/deploy.js": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/deploy.js",
-      "title": "Deploy.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initContracts.js": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initContracts.js",
-      "title": "InitContracts.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initProviders.js": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initProviders.js",
-      "title": "InitProviders.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initSigners.js": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initSigners.js",
-      "title": "InitSigners.js",
-      "description": "As you see, we have used process.env.. Reason behind that is"
-    },
-    "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/README": {
-      "id": "deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/README",
-      "title": "How to Use a ERC-20 C-chain Token as the Gas Fee Token",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/2022/local-subnet-development/hardhat.config.ts": {
-      "id": "deprecated/tutorials-contest/2022/local-subnet-development/hardhat.config.ts",
-      "title": "hardhat.config.js",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2022/local-subnet-development/precompiles/AllowList": {
-      "id": "deprecated/tutorials-contest/2022/local-subnet-development/precompiles/AllowList",
-      "title": "AllowList",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2022/local-subnet-development/precompiles/NativeMinter": {
-      "id": "deprecated/tutorials-contest/2022/local-subnet-development/precompiles/NativeMinter",
-      "title": "NativeMinter",
-      "description": ""
-    },
-    "deprecated/tutorials-contest/2022/local-subnet-development/README": {
-      "id": "deprecated/tutorials-contest/2022/local-subnet-development/README",
-      "title": "Set up Your Development Environment for Local Subnet Development",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/2022/lux-subnet-customization/README": {
-      "id": "deprecated/tutorials-contest/2022/lux-subnet-customization/README",
-      "title": "Lux - Creating a Genesis File for Your Subnet",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/2022/theGraph-index/README": {
-      "id": "deprecated/tutorials-contest/2022/theGraph-index/README",
-      "title": "Indexing an Lux Local Subnet with The Graph",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/tutorials-contest/README": {
-      "id": "deprecated/tutorials-contest/README",
-      "title": "Contest Overview",
-      "description": "These tutorials were published as a snapshot of when they were written,"
-    },
-    "deprecated/verify-truffle": {
-      "id": "deprecated/verify-truffle",
-      "title": "Verifying Smart Contracts with Truffle Verify",
-      "description": "This tutorial walks through verifying a smart contract on a block explorer using Truffle after deploying it to Lux C-Chain."
-    },
     "disclaimer": {
       "id": "disclaimer",
       "title": "Disclaimer",
@@ -2277,7 +1988,7 @@
     "nodes/README": {
       "id": "nodes/README",
       "title": "🔗 Nodes Quick Links",
-      "description": "This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.",
+      "description": "This section provides documents on how to build and maintain an Lux Node, and then validate the Lux network using an Lux Node.",
       "sidebar": "nodes"
     },
     "nodes/run/FAQ": {
@@ -2340,28 +2051,16 @@
       "description": "In this tutorial, you'll learn about advanced Lux node configuration options and maintenance tasks.",
       "sidebar": "nodes"
     },
-    "nodes/run/with-installer/installing-avalanchego": {
-      "id": "nodes/run/with-installer/installing-avalanchego",
-      "title": "Installing Luxd Using the Script",
-      "description": "In this tutorial, you'll learn how to download and install Luxd using the installation script.",
-      "sidebar": "nodes"
-    },
     "nodes/run/with-installer/installing-luxd": {
       "id": "nodes/run/with-installer/installing-luxd",
-      "title": "Installing Luxd Using the Script",
-      "description": "In this tutorial, you'll learn how to download and install Luxd using the installation script.",
-      "sidebar": "nodes"
-    },
-    "nodes/run/with-installer/managing-avalanchego": {
-      "id": "nodes/run/with-installer/managing-avalanchego",
-      "title": "Managing Luxd",
-      "description": "In this tutorial, you'll learn how to manage your Luxd node.",
+      "title": "Installing Lux Node Using the Script",
+      "description": "In this tutorial, you'll learn how to download and install Lux Node using the installation script.",
       "sidebar": "nodes"
     },
     "nodes/run/with-installer/managing-luxd": {
       "id": "nodes/run/with-installer/managing-luxd",
-      "title": "Managing Luxd",
-      "description": "In this tutorial, you'll learn how to manage your Luxd node.",
+      "title": "Managing Lux Node",
+      "description": "In this tutorial, you'll learn how to manage your Lux Node.",
       "sidebar": "nodes"
     },
     "nodes/run/with-installer/preparing-your-environment": {

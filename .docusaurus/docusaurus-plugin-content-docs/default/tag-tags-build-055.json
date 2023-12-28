@@ -2,7 +2,7 @@
   "label": "Build",
   "permalink": "/tags/build",
   "allTagsPath": "/tags",
-  "count": 62,
+  "count": 61,
   "items": [
     {
       "id": "build/subnet/README",
@@ -345,12 +345,6 @@
       "title": "Verifying Smart Contracts Using Hardhat and Snowtrace",
       "description": "This tutorial walks through verifying a smart contract on a block explorer using Hardhat after deploying it to Lux C-Chain.",
       "permalink": "/build/dapp/smart-contracts/verification/verify-hardhat"
-    },
-    {
-      "id": "deprecated/verify-truffle",
-      "title": "Verifying Smart Contracts with Truffle Verify",
-      "description": "This tutorial walks through verifying a smart contract on a block explorer using Truffle after deploying it to Lux C-Chain.",
-      "permalink": "/deprecated/verify-truffle"
     },
     {
       "id": "build/subnet/info/wagmi",

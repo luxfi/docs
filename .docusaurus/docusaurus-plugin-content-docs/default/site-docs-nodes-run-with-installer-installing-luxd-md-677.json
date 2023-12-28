@@ -1,7 +1,7 @@
 {
   "id": "nodes/run/with-installer/installing-luxd",
-  "title": "Installing Luxd Using the Script",
-  "description": "In this tutorial, you'll learn how to download and install Luxd using the installation script.",
+  "title": "Installing Lux Node Using the Script",
+  "description": "In this tutorial, you'll learn how to download and install Lux Node using the installation script.",
   "source": "@site/docs/nodes/run/with-installer/installing-luxd.md",
   "sourceDirName": "nodes/run/with-installer",
   "slug": "/nodes/run/with-installer/installing-luxd",
@@ -21,17 +21,17 @@
     "tags": [
       "Nodes"
     ],
-    "description": "In this tutorial, you'll learn how to download and install Luxd using the installation script.",
-    "sidebar_label": "Installing Luxd",
+    "description": "In this tutorial, you'll learn how to download and install Lux Node using the installation script.",
+    "sidebar_label": "Installing Lux Node",
     "sidebar_position": 1
   },
   "sidebar": "nodes",
   "previous": {
-    "title": "Installing Luxd",
-    "permalink": "/nodes/run/with-installer/installing-avalanchego"
+    "title": "Preparing Your Environment",
+    "permalink": "/nodes/run/with-installer/preparing-your-environment"
   },
   "next": {
-    "title": "Managing Luxd",
-    "permalink": "/nodes/run/with-installer/managing-avalanchego"
+    "title": "Managing Lux Node",
+    "permalink": "/nodes/run/with-installer/managing-luxd"
   }
 }

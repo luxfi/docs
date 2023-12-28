@@ -2,12 +2,12 @@
   "label": "Nodes",
   "permalink": "/tags/nodes",
   "allTagsPath": "/tags",
-  "count": 32,
+  "count": 30,
   "items": [
     {
       "id": "nodes/README",
       "title": "🔗 Nodes Quick Links",
-      "description": "This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.",
+      "description": "This section provides documents on how to build and maintain an Lux Node, and then validate the Lux network using an Lux Node.",
       "permalink": "/nodes/"
     },
     {
@@ -35,15 +35,9 @@
       "permalink": "/nodes/validate/how-to-stake"
     },
     {
-      "id": "nodes/run/with-installer/installing-avalanchego",
-      "title": "Installing Luxd Using the Script",
-      "description": "In this tutorial, you'll learn how to download and install Luxd using the installation script.",
-      "permalink": "/nodes/run/with-installer/installing-avalanchego"
-    },
-    {
       "id": "nodes/run/with-installer/installing-luxd",
-      "title": "Installing Luxd Using the Script",
-      "description": "In this tutorial, you'll learn how to download and install Luxd using the installation script.",
+      "title": "Installing Lux Node Using the Script",
+      "description": "In this tutorial, you'll learn how to download and install Lux Node using the installation script.",
       "permalink": "/nodes/run/with-installer/installing-luxd"
     },
     {
@@ -71,15 +65,9 @@
       "permalink": "/nodes/configure/luxd-config-flags"
     },
     {
-      "id": "nodes/run/with-installer/managing-avalanchego",
-      "title": "Managing Luxd",
-      "description": "In this tutorial, you'll learn how to manage your Luxd node.",
-      "permalink": "/nodes/run/with-installer/managing-avalanchego"
-    },
-    {
       "id": "nodes/run/with-installer/managing-luxd",
-      "title": "Managing Luxd",
-      "description": "In this tutorial, you'll learn how to manage your Luxd node.",
+      "title": "Managing Lux Node",
+      "description": "In this tutorial, you'll learn how to manage your Lux Node.",
       "permalink": "/nodes/run/with-installer/managing-luxd"
     },
     {

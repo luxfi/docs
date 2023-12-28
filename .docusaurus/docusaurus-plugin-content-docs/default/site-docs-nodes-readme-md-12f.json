@@ -1,7 +1,7 @@
 {
   "id": "nodes/README",
   "title": "🔗 Nodes Quick Links",
-  "description": "This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.",
+  "description": "This section provides documents on how to build and maintain an Lux Node, and then validate the Lux network using an Lux Node.",
   "source": "@site/docs/nodes/README.md",
   "sourceDirName": "nodes",
   "slug": "/nodes/",
@@ -20,7 +20,7 @@
     "tags": [
       "Nodes"
     ],
-    "description": "This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.",
+    "description": "This section provides documents on how to build and maintain an Lux Node, and then validate the Lux network using an Lux Node.",
     "sidebar_label": "🔗 Quick Links",
     "pagination_label": "🔗 Nodes Quick Links"
   },
