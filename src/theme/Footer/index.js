@@ -41,14 +41,6 @@ function Footer() {
             <div className="footer-row">
               <Link
                 className="footer-main-list"
-                href="https://explore.lux.network/"
-              >
-                <h3>{translate({ message: "Explorer" })}</h3>
-              </Link>
-            </div>
-            <div className="footer-row">
-              <Link
-                className="footer-main-list"
                 href="https://lux.chat"
               >
                 <h3>
@@ -60,9 +52,17 @@ function Footer() {
             <div className="footer-row">
               <Link
                 className="footer-main-list"
+                href="https://explore.lux.network/"
+              >
+                <h3>{translate({ message: "Explore" })}</h3>
+              </Link>
+            </div>
+            <div className="footer-row">
+              <Link
+                className="footer-main-list"
                 href="https://help.lux.network/"
               >
-                <h3>{translate({ message: "Support" })}</h3>
+                <h3>{translate({ message: "Help" })}</h3>
               </Link>
             </div>
             <div className="footer-row">
