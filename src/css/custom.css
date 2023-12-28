@@ -5,7 +5,7 @@
  */
 
 /* You can override the default Infima variables here. */
-:root {
+html[data-theme='light'] {
   --ifm-color-primary: #000000;
   --ifm-color-primary-dark: #222222;
   --ifm-color-primary-darker: #111111;
@@ -20,7 +20,9 @@
   --ifm-heading-color: black;
 }
 
-html[data-theme='dark'] :root {
+html[data-theme='dark'] {
+  --ifm-background-color: #0d0d0d;
+  --ifm-background-surface-color: #000000;
   --ifm-color-primary: #ffffff;
   --ifm-color-primary-dark: #222222;
   --ifm-color-primary-darker: #111111;
@@ -29,10 +31,46 @@ html[data-theme='dark'] :root {
   --ifm-color-primary-lighter: #dddddd;
   --ifm-color-primary-lightest: #eeeeee;
   --ifm-code-font-size: 95%;
+  --ifm-navbar-link-color: white;
+  --ifm-navbar-link-hover-color: grey;
+  --ifm-navbar-link-active-color: lightgrey;
+  --ifm-heading-color: white;
 }
 
-a.navbar__link.card div.card__body p {
+html[data-theme='light'] .footer--dark {
+  --ifm-color-primary: white;
+  --ifm-footer-color: white;
+  --ifm-heading-color: white;
+  --ifm-link-color: white;
+  --ifm-link-hover-color: lightgrey;
+}
+
+html[data-theme='dark'] a {
+  --ifm-link-color: white;
+}
+
+html[data-theme='light'] a.navbar__link.card div.card__body p {
   color: #222;
+}
+
+html[data-theme='light'] .navbar__items > div button.clean-btn {
+  background-color: white;
+}
+
+html[data-theme='dark'] main h1 {
+  color: white;
+}
+
+html[data-theme='dark'] a.navbar__link.card div.card__header h3 {
+  color: white;
+}
+
+html[data-theme='dark'] a.navbar__link.card div.card__body p {
+  color: white;
+}
+
+html[data-theme='dark'] .navbar__items > div button.clean-btn {
+  background-color: black;
 }
 
 .docusaurus-highlight-code-line {
@@ -327,9 +365,4 @@ and (max-width: 996px) {
 
 .navbar {
   background-color: rgba(0,0,0,0.9);
-}
-
-html[data-theme="dark"] {
-  --ifm-background-color: #0d0d0d;
-  --ifm-background-surface-color: #000000;
 }
