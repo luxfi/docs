@@ -6,7 +6,7 @@ pagination_label: Run an Lux Node with Google Cloud Platform
 sidebar_position: 3
 ---
 
-# Run an Lux Node with Google Cloud Platform
+# Run a Lux Node with Google Cloud Platform
 
 :::caution
 This document was written by a community member, some information may be outdated.
