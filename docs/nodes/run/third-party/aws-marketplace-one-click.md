@@ -6,7 +6,7 @@ pagination_label: Run an Lux Node with Amazon Web Services with one click
 sidebar_position: 1
 ---
 
-# Launch an Lux Validator on AWS with One Click
+# Launch a Lux Validator on AWS with One Click
 
 ## How to Launch an Lux Validator using AWS
 
