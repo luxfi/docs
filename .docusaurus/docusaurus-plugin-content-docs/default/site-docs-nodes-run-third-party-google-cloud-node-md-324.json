@@ -1,7 +1,7 @@
 {
   "id": "nodes/run/third-party/google-cloud-node",
-  "title": "Run an Lux Node with Google Cloud Platform",
-  "description": "Launch an Lux Node on Google Cloud Platform.",
+  "title": "Run a Lux Node with Google Cloud Platform",
+  "description": "Launch a Lux Node on Google Cloud Platform.",
   "source": "@site/docs/nodes/run/third-party/google-cloud-node.md",
   "sourceDirName": "nodes/run/third-party",
   "slug": "/nodes/run/third-party/google-cloud-node",
@@ -21,18 +21,18 @@
     "tags": [
       "Nodes"
     ],
-    "description": "Launch an Lux Node on Google Cloud Platform.",
+    "description": "Launch a Lux Node on Google Cloud Platform.",
     "sidebar_label": "Google Cloud",
-    "pagination_label": "Run an Lux Node with Google Cloud Platform",
+    "pagination_label": "Run a Lux Node with Google Cloud Platform",
     "sidebar_position": 3
   },
   "sidebar": "nodes",
   "previous": {
-    "title": "Run an Lux Node with Microsoft Azure",
+    "title": "Run a Lux Node with Microsoft Azure",
     "permalink": "/nodes/run/third-party/microsoft-azure-node"
   },
   "next": {
-    "title": "Run an Lux Node with Alibaba Cloud",
-    "permalink": "/nodes/run/third-party/alibaba-cloud-node"
+    "title": "Common Errors While Building a Node",
+    "permalink": "/nodes/run/FAQ"
   }
 }

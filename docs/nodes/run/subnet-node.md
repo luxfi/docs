@@ -1,6 +1,6 @@
 ---
 tags: [Nodes, Subnets]
-description: Detailed instructions for running an Lux node that tracks a Subnet.
+description: Detailed instructions for running a Lux node that tracks a Subnet.
 sidebar_label: Subnet Nodes
 pagination_label: Run a Subnet Node
 sidebar_position: 2

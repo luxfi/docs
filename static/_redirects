@@ -503,8 +503,6 @@
 /nodes/build/set-up-an-node-with-microsoft-azure /nodes/run/third-party/microsoft-azure-node 301
 /nodes/build/setting-up-an-node-with-amazon-web-services-aws /nodes/run/third-party/aws-node 301
 /nodes/build/launch-an-validator-on-aws-with-one-click /nodes/run/third-party/aws-marketplace-one-click 301
-/nodes/build/set-up-node-on-alibaba-cloud /nodes/run/third-party/aws-node/alibaba-cloud-node 301
-/nodes/build/set-up-node-on-tencent-cloud /nodes/run/third-party/aws-node/tencent-cloud-node 301
 /nodes/build/set-up-node-with-installer /nodes/run/with-installer 301
 /nodes/build/FAQ /nodes/run/FAQ 301
 
@@ -550,5 +548,5 @@
 /nodes/run/with-installer /nodes/run/with-installer/preparing-your-environment 301
 /es/nodes/run/with-installer /es/nodes/run/with-installer/preparing-your-environment 301
 
-# teleporter marketing 
+# teleporter marketing
 /teleporter /learn/lux/awm 301

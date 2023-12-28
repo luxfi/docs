@@ -15,7 +15,7 @@ also makes upgrading or reinstalling the nodes easy.
 
 GitHub: [https://github.com/luxdefi/docs/blob/master/scripts/luxd-installer.sh](https://github.com/luxdefi/docs/blob/master/scripts/luxd-installer.sh)
 
-How-to: [Run an Lux Node Using the Install Script](/nodes/run/with-installer/installing-luxd.md)
+How-to: [Run a Lux Node Using the Install Script](/nodes/run/with-installer/installing-luxd.md)
 
 If you want to run a node in a more complex environment, like in a docker or
 Kubernetes container, or as a part of an installation orchestrated using a tool

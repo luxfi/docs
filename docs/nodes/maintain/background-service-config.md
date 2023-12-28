@@ -2,10 +2,10 @@
 tags: [Nodes]
 description: This page demonstrates how to set up a `luxd.service` file to enable a manually deployed validator node to run in the background of a server instead of in the terminal directly.
 sidebar_label: Run as a Background Service
-pagination_label: Run an Lux Node as a Background Service
+pagination_label: Run a Lux Node as a Background Service
 sidebar_position: 6
 ---
-# Run an Lux Node as a Background Service
+# Run a Lux Node as a Background Service
 
 ## Overview
 

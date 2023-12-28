@@ -78,7 +78,7 @@ parts to a Bech32 address scheme. In order of appearance:
 - A base-32 encoded string representing the 20 byte address.
 - A 6-character base-32 encoded error correction code.
 
-Additionally, an Lux address is prefixed with the alias of the chain it
+Additionally, a Lux address is prefixed with the alias of the chain it
 exists on, followed by a dash. For example, X-Chain addresses are prefixed with
 `X-`.
 

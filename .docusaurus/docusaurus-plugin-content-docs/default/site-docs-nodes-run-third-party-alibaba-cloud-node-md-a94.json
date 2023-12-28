@@ -1,7 +1,7 @@
 {
   "id": "nodes/run/third-party/alibaba-cloud-node",
-  "title": "Run an Lux Node with Alibaba Cloud",
-  "description": "Detailed instructions for running an Lux node with Alibaba Cloud",
+  "title": "Run a Lux Node with Alibaba Cloud",
+  "description": "Detailed instructions for running a Lux node with Alibaba Cloud",
   "source": "@site/docs/nodes/run/third-party/alibaba-cloud-node.md",
   "sourceDirName": "nodes/run/third-party",
   "slug": "/nodes/run/third-party/alibaba-cloud-node",
@@ -21,18 +21,18 @@
     "tags": [
       "Nodes"
     ],
-    "description": "Detailed instructions for running an Lux node with Alibaba Cloud",
+    "description": "Detailed instructions for running a Lux node with Alibaba Cloud",
     "sidebar_label": "Alibaba Cloud",
-    "pagination_label": "Run an Lux Node with Alibaba Cloud",
+    "pagination_label": "Run a Lux Node with Alibaba Cloud",
     "sidebar_position": 5
   },
   "sidebar": "nodes",
   "previous": {
-    "title": "Run an Lux Node with Google Cloud Platform",
+    "title": "Run a Lux Node with Google Cloud Platform",
     "permalink": "/nodes/run/third-party/google-cloud-node"
   },
   "next": {
-    "title": "Run an Lux Node with Tencent Cloud",
+    "title": "Run a Lux Node with Tencent Cloud",
     "permalink": "/nodes/run/third-party/tencent-cloud-node"
   }
 }

@@ -2,11 +2,11 @@
 tags: [Nodes]
 description: This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.
 sidebar_label: Monitoring
-pagination_label: Monitor an Lux Node
+pagination_label: Monitor a Lux Node
 sidebar_position: 2
 ---
 
-# Monitor an Lux Node
+# Monitor a Lux Node
 
 ## Introduction
 

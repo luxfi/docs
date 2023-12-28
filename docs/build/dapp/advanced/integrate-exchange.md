@@ -25,7 +25,7 @@ website.
 
 ## Integration Using EVM Endpoints
 
-### Running an Lux Node
+### Running a Lux Node
 
 If you want to build your node form source or include it in a docker image,
 reference the [Luxd GitHub
@@ -34,7 +34,7 @@ running, you can use the [node installation script](/nodes/run/with-installer/in
 and updating Luxd node as a `systemd` service on Linux, using prebuilt
 binaries.
 
-### Configuring an Lux Node
+### Configuring a Lux Node
 
 All configuration options and their default values are described [here](/nodes/configure/luxd-config-flags.md).
 

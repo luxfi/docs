@@ -2,11 +2,11 @@
 tags: [Nodes]
 description: Running a validator and staking with Lux using Microsoft Azure infrastructure provides extremely competitive rewards. Find out more info here.
 sidebar_label: Microsoft Azure
-pagination_label: Run an Lux Node with Microsoft Azure
+pagination_label: Run a Lux Node with Microsoft Azure
 sidebar_position: 2
 ---
 
-# Run an Lux Node with Microsoft Azure
+# Run a Lux Node with Microsoft Azure
 
 :::caution
 This document was written by a community member, some information may be out of date.
@@ -379,7 +379,7 @@ You should now be connected to your Node.
 
 ![Image for post](https://miro.medium.com/max/967/1*Kc3rna-3SQV3tnMMLkMi6A.png)
 
-The following section is taken from Colin’s excellent tutorial for [configuring an Lux Node on Amazon’s AWS](/nodes/run/third-party/aws-node.md).
+The following section is taken from Colin’s excellent tutorial for [configuring a Lux Node on Amazon’s AWS](/nodes/run/third-party/aws-node.md).
 
 ### Update Linux with Security Patches
 

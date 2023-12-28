@@ -25,7 +25,7 @@
     {
       "id": "tooling/cli-guides/validate-subnets",
       "title": "Configure a Node to Validate a Subnet with Lux-CLI",
-      "description": "This page demonstrates how to configure nodes to validate an Lux Subnet. Validation via Lux-CLI is currently only supported on Testnet.",
+      "description": "This page demonstrates how to configure nodes to validate a Lux Subnet. Validation via Lux-CLI is currently only supported on Testnet.",
       "permalink": "/tooling/cli-guides/validate-subnets"
     },
     {
@@ -168,13 +168,13 @@
     },
     {
       "id": "tooling/cli-guides/create-a-validator-aws",
-      "title": "Run an Lux Validator on AWS with One Lux-CLI Command",
+      "title": "Run a Lux Validator on AWS with One Lux-CLI Command",
       "description": "This page demonstrates how to deploy Lux validators using just one Lux-CLI command.",
       "permalink": "/tooling/cli-guides/create-a-validator-aws"
     },
     {
       "id": "tooling/cli-guides/create-a-validator-gcp",
-      "title": "Run an Lux Validator on GCP with One Lux-CLI Command",
+      "title": "Run a Lux Validator on GCP with One Lux-CLI Command",
       "description": "This page demonstrates how to deploy Lux validators using just one Lux-CLI command.",
       "permalink": "/tooling/cli-guides/create-a-validator-gcp"
     },

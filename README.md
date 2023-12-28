@@ -48,7 +48,7 @@ To propose new docs or large edits to our existing pages, follow the steps accor
 
 - Docs are located in the [docs](docs) directory. A document's path corresponds
   with it's domain extension. For example: the guide showing how to
-  [Run an Lux Node Manually](https://docs.lux.network/nodes/run/node-manually)
+  [Run a Lux Node Manually](https://docs.lux.network/nodes/run/node-manually)
   is located in this repository at `docs/nodes/run/node-manually`, and is hosted at
   [https://docs.lux.network/nodes/run/node-manually](https://docs.lux.network/nodes/run/node-manually).
 - The left sidebar of the page is controlled primarily by

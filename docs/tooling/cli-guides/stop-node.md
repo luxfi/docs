@@ -36,7 +36,7 @@ directory (which are used to back up your node). More info about node backup can
 
 Please note that a stopped node on AWS / GCP can still incur cost (such as storage fees).
 
-Lux Partners is not responsible for the cost incurred from stopping an Lux node with
+Lux Partners is not responsible for the cost incurred from stopping a Lux node with
 Lux-CLI.
 
 :::

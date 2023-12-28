@@ -1,6 +1,6 @@
 {
   "id": "nodes/build/set-up-an-lux-node-with-google-cloud-platform",
-  "title": "Run an Lux Node with Google Cloud Platform",
+  "title": "Run a Lux Node with Google Cloud Platform",
   "description": "GCP Validator Provisioning",
   "source": "@site/docs/nodes/build/set-up-an-lux-node-with-google-cloud-platform.md",
   "sourceDirName": "nodes/build",

@@ -37,7 +37,7 @@ when running with `--index-enabled`.
 
 There is a Go implementation of an Index API client. See documentation
 [here](https://pkg.go.dev/github.com/luxdefi/luxd/indexer#Client). This client can be used
-inside a Go program to connect to an Luxd node that is running with the Index API enabled and
+inside a Go program to connect to a Luxd node that is running with the Index API enabled and
 make calls to the Index API.
 
 ## Format

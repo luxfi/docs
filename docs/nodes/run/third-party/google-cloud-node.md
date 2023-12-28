@@ -1,8 +1,8 @@
 ---
 tags: [Nodes]
-description: Launch an Lux Node on Google Cloud Platform.
+description: Launch a Lux Node on Google Cloud Platform.
 sidebar_label: Google Cloud
-pagination_label: Run an Lux Node with Google Cloud Platform
+pagination_label: Run a Lux Node with Google Cloud Platform
 sidebar_position: 3
 ---
 

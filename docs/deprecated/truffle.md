@@ -21,7 +21,7 @@ Lux's C-Chain, which is an instance of the EVM.
 
 ## Requirements
 
-You've completed [Run an Lux Node](/nodes/run/node-manually.md) and are familiar with
+You've completed [Run a Lux Node](/nodes/run/node-manually.md) and are familiar with
 [Lux's architecture](/learn/lux/lux-platform.md). You've also
 performed a cross-chain swap via this [this
 tutorial](https://support.lux.network/en/articles/6169872-how-to-make-a-cross-chain-transfer-in-the-wallet)

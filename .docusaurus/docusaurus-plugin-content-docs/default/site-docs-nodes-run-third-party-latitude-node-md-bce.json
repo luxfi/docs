@@ -1,7 +1,7 @@
 {
   "id": "nodes/run/third-party/latitude-node",
-  "title": "Run an Lux Node with Latitude.sh",
-  "description": "Detailed instructions for running an Lux node with Latitude.sh",
+  "title": "Run a Lux Node with Latitude.sh",
+  "description": "Detailed instructions for running a Lux node with Latitude.sh",
   "source": "@site/docs/nodes/run/third-party/latitude-node.md",
   "sourceDirName": "nodes/run/third-party",
   "slug": "/nodes/run/third-party/latitude-node",
@@ -21,18 +21,18 @@
     "tags": [
       "Nodes"
     ],
-    "description": "Detailed instructions for running an Lux node with Latitude.sh",
+    "description": "Detailed instructions for running a Lux node with Latitude.sh",
     "sidebar_label": "Latitude",
-    "pagination_label": "Run an Lux Node with Latitude.sh",
+    "pagination_label": "Run a Lux Node with Latitude.sh",
     "sidebar_position": 3
   },
   "sidebar": "nodes",
   "previous": {
-    "title": "Run an Lux Node with Google Cloud Platform",
+    "title": "Run a Lux Node with Google Cloud Platform",
     "permalink": "/nodes/run/third-party/google-cloud-node"
   },
   "next": {
-    "title": "Run an Lux Node with Alibaba Cloud",
+    "title": "Run a Lux Node with Alibaba Cloud",
     "permalink": "/nodes/run/third-party/alibaba-cloud-node"
   }
 }

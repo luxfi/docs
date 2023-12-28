@@ -36,5 +36,5 @@ accommodate the scale of global finance, with near-instant transaction finality.
 
 - Lux consensus scales to thousands of concurrent validators without suffering performance
   degradation making it one of the most secure protocols for internet scaling systems.
-- Permissionless and permissioned custom blockchains deployed as an Lux Subnets can include custom
+- Permissionless and permissioned custom blockchains deployed as a Lux Subnets can include custom
   rulesets designed to be compliant with legal and jurisdictional considerations.

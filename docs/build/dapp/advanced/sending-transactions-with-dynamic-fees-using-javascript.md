@@ -78,7 +78,7 @@ const HTTPSProvider = new ethers.providers.JsonRpcProvider(nodeURL);
 ## Setting up C-Chain APIs for Estimating Base and Priority Fees
 
 To estimate the max fee and max priority fee on the network, we will be using
-C-Chain APIs. We can use the C-Chain through an LuxJS instance connected
+C-Chain APIs. We can use the C-Chain through a LuxJS instance connected
 to the network as shown below.
 
 ```javascript

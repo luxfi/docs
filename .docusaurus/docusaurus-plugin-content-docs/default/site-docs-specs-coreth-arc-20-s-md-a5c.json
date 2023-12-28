@@ -1,7 +1,7 @@
 {
   "id": "specs/coreth-arc20s",
   "title": "Lux Native Tokens and ARC-20s",
-  "description": "What is an Lux Native Token?",
+  "description": "What is a Lux Native Token?",
   "source": "@site/docs/specs/coreth-arc20s.md",
   "sourceDirName": "specs",
   "slug": "/specs/coreth-arc20s",

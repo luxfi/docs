@@ -49,7 +49,7 @@ most other Ethereum client features.
 ## Testnet
 
 For this tutorial, it's recommended that you follow
-[Run an Lux Node Manually](/nodes/run/node-manually.md#connect-to-testnet)
+[Run a Lux Node Manually](/nodes/run/node-manually.md#connect-to-testnet)
 and this step below particularly to start your node on `Testnet`:
 
 _To connect to the Testnet instead of the main net, use argument `--network-id=Testnet`_

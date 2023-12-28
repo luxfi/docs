@@ -1,7 +1,7 @@
 {
   "id": "nodes/validate/add-a-validator",
   "title": "Add a Node to the Validator Set",
-  "description": "This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.",
+  "description": "This section provides documents on how to build and maintain a Luxd node, and then validate the Lux network using a Luxd node.",
   "source": "@site/docs/nodes/validate/add-a-validator.md",
   "sourceDirName": "nodes/validate",
   "slug": "/nodes/validate/add-a-validator",
@@ -21,7 +21,7 @@
     "tags": [
       "Nodes"
     ],
-    "description": "This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.",
+    "description": "This section provides documents on how to build and maintain a Luxd node, and then validate the Lux network using a Luxd node.",
     "sidebar_label": "Node ➡️ Validator",
     "pagination_label": "Add a Node to the Validator Set",
     "sidebar_position": 3

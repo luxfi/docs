@@ -24,7 +24,7 @@ Primary Network.
 
 ### Primary AddValidator
 
-The `primary addValidator` command adds an Lux node as a validator in the Lux Primary
+The `primary addValidator` command adds a Lux node as a validator in the Lux Primary
 Network with [AddPermissionlessValidatorTx](/reference/standards/guides/banff-changes.md#addpermissionlessvalidatortx).
 
 This command requires the node's BLS key and proof of possession key, more information regarding BLS

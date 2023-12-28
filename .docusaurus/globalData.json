@@ -444,11 +444,6 @@
               "sidebar": "nodes"
             },
             {
-              "id": "nodes/run/third-party/alibaba-cloud-node",
-              "path": "/nodes/run/third-party/alibaba-cloud-node",
-              "sidebar": "nodes"
-            },
-            {
               "id": "nodes/run/third-party/aws-marketplace-one-click",
               "path": "/nodes/run/third-party/aws-marketplace-one-click",
               "sidebar": "nodes"
@@ -466,11 +461,6 @@
             {
               "id": "nodes/run/third-party/microsoft-azure-node",
               "path": "/nodes/run/third-party/microsoft-azure-node",
-              "sidebar": "nodes"
-            },
-            {
-              "id": "nodes/run/third-party/tencent-cloud-node",
-              "path": "/nodes/run/third-party/tencent-cloud-node",
               "sidebar": "nodes"
             },
             {

@@ -3356,7 +3356,7 @@
             },
             {
               "id": "deprecated/tutorials-contest/2022/theGraph-index/README",
-              "title": "Indexing an Lux Local Subnet with The Graph",
+              "title": "Indexing a Lux Local Subnet with The Graph",
               "description": "These tutorials were published as a snapshot of when they were written,",
               "source": "@site/docs/deprecated/tutorials-contest/2022/theGraph-index/README.md",
               "sourceDirName": "deprecated/tutorials-contest/2022/theGraph-index",
@@ -3972,7 +3972,7 @@
             },
             {
               "id": "nodes/maintain/background-service-config",
-              "title": "Run an Lux Node as a Background Service",
+              "title": "Run a Lux Node as a Background Service",
               "description": "This page demonstrates how to set up a `luxd.service` file to enable a manually deployed validator node to run in the background of a server instead of in the terminal directly.",
               "source": "@site/docs/nodes/maintain/background-service-config.md",
               "sourceDirName": "nodes/maintain",
@@ -3995,7 +3995,7 @@
                 ],
                 "description": "This page demonstrates how to set up a `luxd.service` file to enable a manually deployed validator node to run in the background of a server instead of in the terminal directly.",
                 "sidebar_label": "Run as a Background Service",
-                "pagination_label": "Run an Lux Node as a Background Service",
+                "pagination_label": "Run a Lux Node as a Background Service",
                 "sidebar_position": 6
               },
               "sidebar": "nodes",
@@ -4038,7 +4038,7 @@
                 "permalink": "/nodes/maintain/node-bootstrap"
               },
               "next": {
-                "title": "Monitor an Lux Node",
+                "title": "Monitor a Lux Node",
                 "permalink": "/nodes/maintain/setting-up-node-monitoring"
               }
             },
@@ -4114,7 +4114,7 @@
                 "permalink": "/nodes/maintain/run-offline-pruning"
               },
               "next": {
-                "title": "Run an Lux Node as a Background Service",
+                "title": "Run a Lux Node as a Background Service",
                 "permalink": "/nodes/maintain/background-service-config"
               }
             },
@@ -4158,7 +4158,7 @@
             },
             {
               "id": "nodes/maintain/setting-up-node-monitoring",
-              "title": "Monitor an Lux Node",
+              "title": "Monitor a Lux Node",
               "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.",
               "source": "@site/docs/nodes/maintain/setting-up-node-monitoring.md",
               "sourceDirName": "nodes/maintain",
@@ -4181,7 +4181,7 @@
                 ],
                 "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.",
                 "sidebar_label": "Monitoring",
-                "pagination_label": "Monitor an Lux Node",
+                "pagination_label": "Monitor a Lux Node",
                 "sidebar_position": 2
               },
               "sidebar": "nodes",
@@ -4224,7 +4224,7 @@
               },
               "sidebar": "nodes",
               "previous": {
-                "title": "Monitor an Lux Node",
+                "title": "Monitor a Lux Node",
                 "permalink": "/nodes/maintain/setting-up-node-monitoring"
               },
               "next": {
@@ -4235,7 +4235,7 @@
             {
               "id": "nodes/README",
               "title": "🔗 Nodes Quick Links",
-              "description": "This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.",
+              "description": "This section provides documents on how to build and maintain a Luxd node, and then validate the Lux network using a Luxd node.",
               "source": "@site/docs/nodes/README.md",
               "sourceDirName": "nodes",
               "slug": "/nodes/",
@@ -4254,13 +4254,13 @@
                 "tags": [
                   "Nodes"
                 ],
-                "description": "This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.",
+                "description": "This section provides documents on how to build and maintain a Luxd node, and then validate the Lux network using a Luxd node.",
                 "sidebar_label": "🔗 Quick Links",
                 "pagination_label": "🔗 Nodes Quick Links"
               },
               "sidebar": "nodes",
               "next": {
-                "title": "System Requirements for Running an Lux Node",
+                "title": "System Requirements for Running a Lux Node",
                 "permalink": "/nodes/system-requirements"
               }
             },
@@ -4294,7 +4294,7 @@
               },
               "sidebar": "nodes",
               "previous": {
-                "title": "Run an Lux Node with Tencent Cloud",
+                "title": "Run a Lux Node with Tencent Cloud",
                 "permalink": "/nodes/run/third-party/tencent-cloud-node"
               },
               "next": {
@@ -4304,8 +4304,8 @@
             },
             {
               "id": "nodes/run/node-manually",
-              "title": "Run an Lux Node Manually",
-              "description": "The quickest way to learn about Lux is to run a node and interact with the network. This tutorial demonstrates how to install and run an Lux node, and connect to the Lux Network by compiling a node from source and running it manually.",
+              "title": "Run a Lux Node Manually",
+              "description": "The quickest way to learn about Lux is to run a node and interact with the network. This tutorial demonstrates how to install and run a Lux node, and connect to the Lux Network by compiling a node from source and running it manually.",
               "source": "@site/docs/nodes/run/node-manually.md",
               "sourceDirName": "nodes/run",
               "slug": "/nodes/run/node-manually",
@@ -4330,9 +4330,9 @@
                   "Nodes",
                   "Luxd"
                 ],
-                "description": "The quickest way to learn about Lux is to run a node and interact with the network. This tutorial demonstrates how to install and run an Lux node, and connect to the Lux Network by compiling a node from source and running it manually.",
+                "description": "The quickest way to learn about Lux is to run a node and interact with the network. This tutorial demonstrates how to install and run a Lux node, and connect to the Lux Network by compiling a node from source and running it manually.",
                 "sidebar_label": "Manually",
-                "pagination_label": "Run an Lux Node Manually",
+                "pagination_label": "Run a Lux Node Manually",
                 "sidebar_position": 0,
                 "keywords": [
                   "lux node",
@@ -4349,7 +4349,7 @@
               },
               "sidebar": "nodes",
               "previous": {
-                "title": "System Requirements for Running an Lux Node",
+                "title": "System Requirements for Running a Lux Node",
                 "permalink": "/nodes/system-requirements"
               },
               "next": {
@@ -4360,7 +4360,7 @@
             {
               "id": "nodes/run/subnet-node",
               "title": "Run a Subnet Node",
-              "description": "Detailed instructions for running an Lux node that tracks a Subnet.",
+              "description": "Detailed instructions for running a Lux node that tracks a Subnet.",
               "source": "@site/docs/nodes/run/subnet-node.md",
               "sourceDirName": "nodes/run",
               "slug": "/nodes/run/subnet-node",
@@ -4385,7 +4385,7 @@
                   "Nodes",
                   "Subnets"
                 ],
-                "description": "Detailed instructions for running an Lux node that tracks a Subnet.",
+                "description": "Detailed instructions for running a Lux node that tracks a Subnet.",
                 "sidebar_label": "Subnet Nodes",
                 "pagination_label": "Run a Subnet Node",
                 "sidebar_position": 2,
@@ -4406,14 +4406,14 @@
                 "permalink": "/nodes/run/with-installer/advance-config-maintenance"
               },
               "next": {
-                "title": "Run an Lux Node with Amazon Web Services",
+                "title": "Run a Lux Node with Amazon Web Services",
                 "permalink": "/nodes/run/third-party/aws-node"
               }
             },
             {
               "id": "nodes/run/third-party/alibaba-cloud-node",
-              "title": "Run an Lux Node with Alibaba Cloud",
-              "description": "Detailed instructions for running an Lux node with Alibaba Cloud",
+              "title": "Run a Lux Node with Alibaba Cloud",
+              "description": "Detailed instructions for running a Lux node with Alibaba Cloud",
               "source": "@site/docs/nodes/run/third-party/alibaba-cloud-node.md",
               "sourceDirName": "nodes/run/third-party",
               "slug": "/nodes/run/third-party/alibaba-cloud-node",
@@ -4433,25 +4433,25 @@
                 "tags": [
                   "Nodes"
                 ],
-                "description": "Detailed instructions for running an Lux node with Alibaba Cloud",
+                "description": "Detailed instructions for running a Lux node with Alibaba Cloud",
                 "sidebar_label": "Alibaba Cloud",
-                "pagination_label": "Run an Lux Node with Alibaba Cloud",
+                "pagination_label": "Run a Lux Node with Alibaba Cloud",
                 "sidebar_position": 5
               },
               "sidebar": "nodes",
               "previous": {
-                "title": "Run an Lux Node with Google Cloud Platform",
+                "title": "Run a Lux Node with Google Cloud Platform",
                 "permalink": "/nodes/run/third-party/google-cloud-node"
               },
               "next": {
-                "title": "Run an Lux Node with Tencent Cloud",
+                "title": "Run a Lux Node with Tencent Cloud",
                 "permalink": "/nodes/run/third-party/tencent-cloud-node"
               }
             },
             {
               "id": "nodes/run/third-party/aws-marketplace-one-click",
-              "title": "Launch an Lux Validator on AWS with One Click",
-              "description": "This tutorial will guide you through spinning up an Lux node via the one-click validator node through the AWS Marketplace. This includes subscribing to the software, launching it on EC2, connecting to the node over ssh, calling curl commands, adding the node as a validator on the Testnet network using the Lux Web wallet, and confirming the node is a pending validator.",
+              "title": "Launch a Lux Validator on AWS with One Click",
+              "description": "This tutorial will guide you through spinning up a Lux node via the one-click validator node through the AWS Marketplace. This includes subscribing to the software, launching it on EC2, connecting to the node over ssh, calling curl commands, adding the node as a validator on the Testnet network using the Lux Web wallet, and confirming the node is a pending validator.",
               "source": "@site/docs/nodes/run/third-party/aws-marketplace-one-click.md",
               "sourceDirName": "nodes/run/third-party",
               "slug": "/nodes/run/third-party/aws-marketplace-one-click",
@@ -4471,25 +4471,25 @@
                 "tags": [
                   "Nodes"
                 ],
-                "description": "This tutorial will guide you through spinning up an Lux node via the one-click validator node through the AWS Marketplace. This includes subscribing to the software, launching it on EC2, connecting to the node over ssh, calling curl commands, adding the node as a validator on the Testnet network using the Lux Web wallet, and confirming the node is a pending validator.",
+                "description": "This tutorial will guide you through spinning up a Lux node via the one-click validator node through the AWS Marketplace. This includes subscribing to the software, launching it on EC2, connecting to the node over ssh, calling curl commands, adding the node as a validator on the Testnet network using the Lux Web wallet, and confirming the node is a pending validator.",
                 "sidebar_label": "AWS Marketplace",
-                "pagination_label": "Run an Lux Node with Amazon Web Services with one click",
+                "pagination_label": "Run a Lux Node with Amazon Web Services with one click",
                 "sidebar_position": 1
               },
               "sidebar": "nodes",
               "previous": {
-                "title": "Run an Lux Node with Amazon Web Services",
+                "title": "Run a Lux Node with Amazon Web Services",
                 "permalink": "/nodes/run/third-party/aws-node"
               },
               "next": {
-                "title": "Run an Lux Node with Microsoft Azure",
+                "title": "Run a Lux Node with Microsoft Azure",
                 "permalink": "/nodes/run/third-party/microsoft-azure-node"
               }
             },
             {
               "id": "nodes/run/third-party/aws-node",
-              "title": "Run an Lux Node with Amazon Web Services (AWS)",
-              "description": "This tutorial will guide you through setting up an Lux node on Amazon Web Services (AWS). Cloud services like AWS are a good way to ensure that your node is highly secure, available, and accessible.",
+              "title": "Run a Lux Node with Amazon Web Services (AWS)",
+              "description": "This tutorial will guide you through setting up a Lux node on Amazon Web Services (AWS). Cloud services like AWS are a good way to ensure that your node is highly secure, available, and accessible.",
               "source": "@site/docs/nodes/run/third-party/aws-node.md",
               "sourceDirName": "nodes/run/third-party",
               "slug": "/nodes/run/third-party/aws-node",
@@ -4509,9 +4509,9 @@
                 "tags": [
                   "Nodes"
                 ],
-                "description": "This tutorial will guide you through setting up an Lux node on Amazon Web Services (AWS). Cloud services like AWS are a good way to ensure that your node is highly secure, available, and accessible.",
+                "description": "This tutorial will guide you through setting up a Lux node on Amazon Web Services (AWS). Cloud services like AWS are a good way to ensure that your node is highly secure, available, and accessible.",
                 "sidebar_label": "Amazon Web Services",
-                "pagination_label": "Run an Lux Node with Amazon Web Services",
+                "pagination_label": "Run a Lux Node with Amazon Web Services",
                 "sidebar_position": 0
               },
               "sidebar": "nodes",
@@ -4520,14 +4520,14 @@
                 "permalink": "/nodes/run/subnet-node"
               },
               "next": {
-                "title": "Run an Lux Node with Amazon Web Services with one click",
+                "title": "Run a Lux Node with Amazon Web Services with one click",
                 "permalink": "/nodes/run/third-party/aws-marketplace-one-click"
               }
             },
             {
               "id": "nodes/run/third-party/google-cloud-node",
-              "title": "Run an Lux Node with Google Cloud Platform",
-              "description": "Launch an Lux Node on Google Cloud Platform.",
+              "title": "Run a Lux Node with Google Cloud Platform",
+              "description": "Launch a Lux Node on Google Cloud Platform.",
               "source": "@site/docs/nodes/run/third-party/google-cloud-node.md",
               "sourceDirName": "nodes/run/third-party",
               "slug": "/nodes/run/third-party/google-cloud-node",
@@ -4547,24 +4547,24 @@
                 "tags": [
                   "Nodes"
                 ],
-                "description": "Launch an Lux Node on Google Cloud Platform.",
+                "description": "Launch a Lux Node on Google Cloud Platform.",
                 "sidebar_label": "Google Cloud",
-                "pagination_label": "Run an Lux Node with Google Cloud Platform",
+                "pagination_label": "Run a Lux Node with Google Cloud Platform",
                 "sidebar_position": 3
               },
               "sidebar": "nodes",
               "previous": {
-                "title": "Run an Lux Node with Microsoft Azure",
+                "title": "Run a Lux Node with Microsoft Azure",
                 "permalink": "/nodes/run/third-party/microsoft-azure-node"
               },
               "next": {
-                "title": "Run an Lux Node with Alibaba Cloud",
+                "title": "Run a Lux Node with Alibaba Cloud",
                 "permalink": "/nodes/run/third-party/alibaba-cloud-node"
               }
             },
             {
               "id": "nodes/run/third-party/microsoft-azure-node",
-              "title": "Run an Lux Node with Microsoft Azure",
+              "title": "Run a Lux Node with Microsoft Azure",
               "description": "Running a validator and staking with Lux using Microsoft Azure infrastructure provides extremely competitive rewards. Find out more info here.",
               "source": "@site/docs/nodes/run/third-party/microsoft-azure-node.md",
               "sourceDirName": "nodes/run/third-party",
@@ -4587,23 +4587,23 @@
                 ],
                 "description": "Running a validator and staking with Lux using Microsoft Azure infrastructure provides extremely competitive rewards. Find out more info here.",
                 "sidebar_label": "Microsoft Azure",
-                "pagination_label": "Run an Lux Node with Microsoft Azure",
+                "pagination_label": "Run a Lux Node with Microsoft Azure",
                 "sidebar_position": 2
               },
               "sidebar": "nodes",
               "previous": {
-                "title": "Run an Lux Node with Amazon Web Services with one click",
+                "title": "Run a Lux Node with Amazon Web Services with one click",
                 "permalink": "/nodes/run/third-party/aws-marketplace-one-click"
               },
               "next": {
-                "title": "Run an Lux Node with Google Cloud Platform",
+                "title": "Run a Lux Node with Google Cloud Platform",
                 "permalink": "/nodes/run/third-party/google-cloud-node"
               }
             },
             {
               "id": "nodes/run/third-party/tencent-cloud-node",
-              "title": "Run an Lux Node with Tencent Cloud",
-              "description": "Detailed instructions for running an Lux node with Tencent Cloud",
+              "title": "Run a Lux Node with Tencent Cloud",
+              "description": "Detailed instructions for running a Lux node with Tencent Cloud",
               "source": "@site/docs/nodes/run/third-party/tencent-cloud-node.md",
               "sourceDirName": "nodes/run/third-party",
               "slug": "/nodes/run/third-party/tencent-cloud-node",
@@ -4623,14 +4623,14 @@
                 "tags": [
                   "Nodes"
                 ],
-                "description": "Detailed instructions for running an Lux node with Tencent Cloud",
+                "description": "Detailed instructions for running a Lux node with Tencent Cloud",
                 "sidebar_label": "Tencent Cloud",
-                "pagination_label": "Run an Lux Node with Tencent Cloud",
+                "pagination_label": "Run a Lux Node with Tencent Cloud",
                 "sidebar_position": 5
               },
               "sidebar": "nodes",
               "previous": {
-                "title": "Run an Lux Node with Alibaba Cloud",
+                "title": "Run a Lux Node with Alibaba Cloud",
                 "permalink": "/nodes/run/third-party/alibaba-cloud-node"
               },
               "next": {
@@ -4825,7 +4825,7 @@
             },
             {
               "id": "nodes/run/with-installer/preparing-your-environment",
-              "title": "Run an Lux Node Using the Install Script",
+              "title": "Run a Lux Node Using the Install Script",
               "description": "In this tutorial, you'll learn how to prepare your environment for Luxd installation and configure your network settings.",
               "source": "@site/docs/nodes/run/with-installer/preparing-your-environment.md",
               "sourceDirName": "nodes/run/with-installer",
@@ -4852,7 +4852,7 @@
               },
               "sidebar": "nodes",
               "previous": {
-                "title": "Run an Lux Node Manually",
+                "title": "Run a Lux Node Manually",
                 "permalink": "/nodes/run/node-manually"
               },
               "next": {
@@ -4862,7 +4862,7 @@
             },
             {
               "id": "nodes/system-requirements",
-              "title": "System Requirements for Running an Lux Node",
+              "title": "System Requirements for Running a Lux Node",
               "description": "Lux is an incredibly lightweight protocol, so nodes can run on commodity hardware. Note that as network usage increases, hardware requirements may change.",
               "source": "@site/docs/nodes/system-requirements.md",
               "sourceDirName": "nodes",
@@ -4884,7 +4884,7 @@
                 ],
                 "description": "Lux is an incredibly lightweight protocol, so nodes can run on commodity hardware. Note that as network usage increases, hardware requirements may change.",
                 "sidebar_label": "System Requirements",
-                "pagination_label": "System Requirements for Running an Lux Node"
+                "pagination_label": "System Requirements for Running a Lux Node"
               },
               "sidebar": "nodes",
               "previous": {
@@ -4892,14 +4892,14 @@
                 "permalink": "/nodes/"
               },
               "next": {
-                "title": "Run an Lux Node Manually",
+                "title": "Run a Lux Node Manually",
                 "permalink": "/nodes/run/node-manually"
               }
             },
             {
               "id": "nodes/validate/add-a-validator",
               "title": "Add a Node to the Validator Set",
-              "description": "This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.",
+              "description": "This section provides documents on how to build and maintain a Luxd node, and then validate the Lux network using a Luxd node.",
               "source": "@site/docs/nodes/validate/add-a-validator.md",
               "sourceDirName": "nodes/validate",
               "slug": "/nodes/validate/add-a-validator",
@@ -4919,7 +4919,7 @@
                 "tags": [
                   "Nodes"
                 ],
-                "description": "This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.",
+                "description": "This section provides documents on how to build and maintain a Luxd node, and then validate the Lux network using a Luxd node.",
                 "sidebar_label": "Node ➡️ Validator",
                 "pagination_label": "Add a Node to the Validator Set",
                 "sidebar_position": 3
@@ -6022,7 +6022,7 @@
             },
             {
               "id": "tooling/cli-guides/create-a-validator-aws",
-              "title": "Run an Lux Validator on AWS with One Lux-CLI Command",
+              "title": "Run a Lux Validator on AWS with One Lux-CLI Command",
               "description": "This page demonstrates how to deploy Lux validators using just one Lux-CLI command.",
               "source": "@site/docs/tooling/cli-guides/create-a-validator-aws.md",
               "sourceDirName": "tooling/cli-guides",
@@ -6065,7 +6065,7 @@
             },
             {
               "id": "tooling/cli-guides/create-a-validator-gcp",
-              "title": "Run an Lux Validator on GCP with One Lux-CLI Command",
+              "title": "Run a Lux Validator on GCP with One Lux-CLI Command",
               "description": "This page demonstrates how to deploy Lux validators using just one Lux-CLI command.",
               "source": "@site/docs/tooling/cli-guides/create-a-validator-gcp.md",
               "sourceDirName": "tooling/cli-guides",
@@ -6453,7 +6453,7 @@
             {
               "id": "tooling/cli-guides/validate-subnets",
               "title": "Configure a Node to Validate a Subnet with Lux-CLI",
-              "description": "This page demonstrates how to configure nodes to validate an Lux Subnet. Validation via Lux-CLI is currently only supported on Testnet.",
+              "description": "This page demonstrates how to configure nodes to validate a Lux Subnet. Validation via Lux-CLI is currently only supported on Testnet.",
               "source": "@site/docs/tooling/cli-guides/validate-subnets.md",
               "sourceDirName": "tooling/cli-guides",
               "slug": "/tooling/cli-guides/validate-subnets",
@@ -6478,7 +6478,7 @@
                   "Tooling",
                   "Lux-CLI"
                 ],
-                "description": "This page demonstrates how to configure nodes to validate an Lux Subnet. Validation via Lux-CLI is currently only supported on Testnet.",
+                "description": "This page demonstrates how to configure nodes to validate a Lux Subnet. Validation via Lux-CLI is currently only supported on Testnet.",
                 "pagination_label": "Configure Nodes to Validate a Subnet with Lux-CLI",
                 "sidebar_label": "Validate a Subnet",
                 "sidebar_position": 5

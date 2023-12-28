@@ -2,10 +2,10 @@
 tags: [Nodes]
 description: Lux is an incredibly lightweight protocol, so nodes can run on commodity hardware. Note that as network usage increases, hardware requirements may change.
 sidebar_label: System Requirements
-pagination_label: System Requirements for Running an Lux Node
+pagination_label: System Requirements for Running a Lux Node
 ---
 
-# System Requirements for Running an Lux Node
+# System Requirements for Running a Lux Node
 
 ## Hardware and Operating Systems
 

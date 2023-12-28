@@ -26,7 +26,7 @@ for Postman, that defines common variables such as IP address of the node,
 Lux addresses and similar common elements of the queries, so you don't
 have to enter them multiple times.
 
-Combined, they will allow you to easily keep tabs on an Lux node, check 
+Combined, they will allow you to easily keep tabs on a Lux node, check 
 on its state and do quick queries to find out details about its operation.
 
 ## Setup

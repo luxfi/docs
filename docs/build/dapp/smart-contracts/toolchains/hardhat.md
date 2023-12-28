@@ -30,7 +30,7 @@ npm install -g yarn
 
 ### Luxd and Lux Netrunner
 
-[Luxd](https://github.com/luxdefi/luxd) is an Lux node
+[Luxd](https://github.com/luxdefi/luxd) is a Lux node
 implementation written in Go.
 [Lux Netrunner](/tooling/netrunner.md) is a tool to quickly deploy local test
 networks. Together, you can deploy local test networks and run tests on them.

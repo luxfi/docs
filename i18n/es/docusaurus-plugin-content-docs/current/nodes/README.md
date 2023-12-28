@@ -19,10 +19,8 @@ y luego validar la red Lux usando un nodo Luxd.
 | **Usando un Servicio en la Nube de Terceros**                                                             |                                                                                       |
 | [**Amazon Web Services**](/nodes/run/third-party/aws-node.md)                                             | Crear un nodo que se ejecuta en AWS                                                   |
 | [**AWS Marketplace: Implementación de un Solo Clic**](nodes/run/third-party/aws-marketplace-one-click.md) | Implementar un nodo que se ejecuta en AWS a través de una instalación de un solo clic |
-| [**Microsoft Azure**](/nodes/run/third-party/microsoft-azure-node.md)                                     | Crear un nodo que se ejecuta en Microsoft Azure                                       |
 | [**Google Cloud Platform**](/nodes/run/third-party/google-cloud-node.md)                                  | Crear un nodo que se ejecuta en Google GCP                                            |
-| [**Alibaba Cloud**](/nodes/run/third-party/alibaba-cloud-node.md)                                         | Crear un nodo que se ejecuta en Alibaba Cloud                                         |
-| [**Tencent Cloud**](/nodes/run/third-party/tencent-cloud-node.md)                                         | Crear un nodo que se ejecuta en Tencent Cloud                                         |
+| [**Microsoft Azure**](/nodes/run/third-party/microsoft-azure-node.md)                                     | Crear un nodo que se ejecuta en Microsoft Azure                                       |
 | [**Latitude**](/nodes/run/third-party/latitude-node.md)                                                   | Crear un nodo que se ejecuta en Latitude.sh                                           |
 
 | Configurar                                                                                    |                                                                                          |

@@ -18,7 +18,7 @@ If you are looking for how to transfer LUX tokens using the web wallet, please c
 ## Prerequisites
 
 - You are familiar with [Lux's architecture](/learn/lux/lux-platform.md).
-- You have completed [Run an Lux Node](/nodes/run/node-manually.md).
+- You have completed [Run a Lux Node](/nodes/run/node-manually.md).
 - You are familiar with [LuxJS](https://github.com/luxdefi/LuxJS).
 - You have installed
   [ts-node](https://www.npmjs.com/package/ts-node#installation) so that you can
@@ -47,7 +47,7 @@ or add it to an existing project:
 yarn add --dev lux
 ```
 
-For this tutorial we will use `ts-node` to run the example scripts directly from an LuxJS directory.
+For this tutorial we will use `ts-node` to run the example scripts directly from a LuxJS directory.
 
 In order to send LUX, you need to have some LUX. You can use a pre-funded
 account on local network or get testnet LUX from the [Lux

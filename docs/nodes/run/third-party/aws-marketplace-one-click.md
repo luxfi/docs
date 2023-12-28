@@ -1,20 +1,20 @@
 ---
 tags: [Nodes]
-description: This tutorial will guide you through spinning up an Lux node via the one-click validator node through the AWS Marketplace. This includes subscribing to the software, launching it on EC2, connecting to the node over ssh, calling curl commands, adding the node as a validator on the Testnet network using the Lux Web wallet, and confirming the node is a pending validator.
+description: This tutorial will guide you through spinning up a Lux node via the one-click validator node through the AWS Marketplace. This includes subscribing to the software, launching it on EC2, connecting to the node over ssh, calling curl commands, adding the node as a validator on the Testnet network using the Lux Web wallet, and confirming the node is a pending validator.
 sidebar_label: AWS Marketplace
-pagination_label: Run an Lux Node with Amazon Web Services with one click
+pagination_label: Run a Lux Node with Amazon Web Services with one click
 sidebar_position: 1
 ---
 
 # Launch a Lux Validator on AWS with One Click
 
-## How to Launch an Lux Validator using AWS
+## How to Launch a Lux Validator using AWS
 
 <!--
 <iframe src="https://www.youtube.com/embed/4RPmgpbC_Cc"
         width="100%"
         height="480px"
-        title="How to Launch an Lux Validator using AWS?"
+        title="How to Launch a Lux Validator using AWS?"
         className="video-container"
         display="initial"
         position="relative"
@@ -26,7 +26,7 @@ sidebar_position: 1
 
 With the intention of enabling developers and entrepreneurs to on-ramp into the
 Lux ecosystem with as little friction as possible, Lux Partners recently
-launched an offering to deploy an Lux Validator node via the AWS
+launched an offering to deploy a Lux Validator node via the AWS
 Marketplace. This tutorial will show the main steps required to get this node
 running and validating on the Lux Testnet.
 
@@ -94,7 +94,7 @@ To make that happen click the "Launch" button
 
 ![launch successful](/img/one-click-validator-node/launch-successful.png)
 
-You now have an Lux node deployed on an AWS EC2 instance! Copy
+You now have a Lux node deployed on an AWS EC2 instance! Copy
 the `AMI ID` and click on the `EC2 Console` link for the next step.
 
 ## EC2 Console

@@ -1,6 +1,6 @@
 {
   "id": "nodes/build/run-lux-node-manually",
-  "title": "Run an Lux Node Manually",
+  "title": "Run a Lux Node Manually",
   "description": "The quickest way to learn about Lux is to run a node and interact with the network and geared toward people interested in how the Lux Platform works.",
   "source": "@site/docs/nodes/build/run-lux-node-manually.md",
   "sourceDirName": "nodes/build",

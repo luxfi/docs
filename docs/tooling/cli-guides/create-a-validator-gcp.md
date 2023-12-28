@@ -6,7 +6,7 @@ sidebar_label: Run Validators on GCP
 sidebar_position: 3
 ---
 
-# Run an Lux Validator on GCP with One Lux-CLI Command 
+# Run a Lux Validator on GCP with One Lux-CLI Command 
 
 This page demonstrates how to deploy Lux validators on GCP using just one Lux-CLI 
 command.
@@ -46,7 +46,7 @@ cluster `clusterName` will apply to all nodes in the cluster.
 
 Please note that running a validator on GCP will incur costs.
 
-Lux Partners is not responsible for the cost incurred from running an Lux validator on cloud 
+Lux Partners is not responsible for the cost incurred from running a Lux validator on cloud 
 services via Lux-CLI.
 
 :::

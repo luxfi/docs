@@ -19,11 +19,11 @@ export default [
   },
   {
     path: '/',
-    component: ComponentCreator('/', 'efa'),
+    component: ComponentCreator('/', '850'),
     routes: [
       {
         path: '/',
-        component: ComponentCreator('/', '2df'),
+        component: ComponentCreator('/', '15d'),
         routes: [
           {
             path: '/tags',
@@ -187,7 +187,7 @@ export default [
           },
           {
             path: '/',
-            component: ComponentCreator('/', 'b35'),
+            component: ComponentCreator('/', '09e'),
             routes: [
               {
                 path: '/build/dapp',
@@ -703,12 +703,6 @@ export default [
                 sidebar: "nodes"
               },
               {
-                path: '/nodes/run/third-party/alibaba-cloud-node',
-                component: ComponentCreator('/nodes/run/third-party/alibaba-cloud-node', '905'),
-                exact: true,
-                sidebar: "nodes"
-              },
-              {
                 path: '/nodes/run/third-party/aws-marketplace-one-click',
                 component: ComponentCreator('/nodes/run/third-party/aws-marketplace-one-click', '4a3'),
                 exact: true,
@@ -729,12 +723,6 @@ export default [
               {
                 path: '/nodes/run/third-party/microsoft-azure-node',
                 component: ComponentCreator('/nodes/run/third-party/microsoft-azure-node', '49f'),
-                exact: true,
-                sidebar: "nodes"
-              },
-              {
-                path: '/nodes/run/third-party/tencent-cloud-node',
-                component: ComponentCreator('/nodes/run/third-party/tencent-cloud-node', 'be1'),
                 exact: true,
                 sidebar: "nodes"
               },

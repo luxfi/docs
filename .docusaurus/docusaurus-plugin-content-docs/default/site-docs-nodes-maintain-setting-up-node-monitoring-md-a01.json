@@ -1,6 +1,6 @@
 {
   "id": "nodes/maintain/setting-up-node-monitoring",
-  "title": "Monitor an Lux Node",
+  "title": "Monitor a Lux Node",
   "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.",
   "source": "@site/docs/nodes/maintain/setting-up-node-monitoring.md",
   "sourceDirName": "nodes/maintain",
@@ -23,7 +23,7 @@
     ],
     "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.",
     "sidebar_label": "Monitoring",
-    "pagination_label": "Monitor an Lux Node",
+    "pagination_label": "Monitor a Lux Node",
     "sidebar_position": 2
   },
   "sidebar": "nodes",

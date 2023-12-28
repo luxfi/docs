@@ -1,8 +1,8 @@
 ---
 tags: [Nodes, Luxd]
-description: The quickest way to learn about Lux is to run a node and interact with the network. This tutorial demonstrates how to install and run an Lux node, and connect to the Lux Network by compiling a node from source and running it manually.
+description: The quickest way to learn about Lux is to run a node and interact with the network. This tutorial demonstrates how to install and run a Lux node, and connect to the Lux Network by compiling a node from source and running it manually.
 sidebar_label: Manually
-pagination_label: Run an Lux Node Manually
+pagination_label: Run a Lux Node Manually
 sidebar_position: 0
 keywords:
   [
@@ -19,13 +19,13 @@ keywords:
   ]
 ---
 
-# Run an Lux Node Manually
+# Run a Lux Node Manually
 
 The quickest way to learn about Lux is to run a node and interact with the network.
 
 In this tutorial, we will:
 
-- Install Luxd and run an Lux node
+- Install Luxd and run a Lux node
 - Connect to Lux
 
 <details>
@@ -62,7 +62,7 @@ read/write latencies, therefore reducing performance and reliability.
 
 :::
 
-## Run an Lux Node from Source
+## Run a Lux Node from Source
 
 The following steps walk through downloading the Luxd source code and locally
 building the binary program.

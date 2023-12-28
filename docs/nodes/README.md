@@ -1,28 +1,26 @@
 ---
 tags: [Nodes]
-description: This section provides documents on how to build and maintain an Lux Node, and then validate the Lux network using an Lux Node.
+description: This section provides documents on how to build and maintain a Lux Node, and then validate the Lux network using a Lux Node.
 sidebar_label: 🔗 Quick Links
 pagination_label: 🔗 Nodes Quick Links
 ---
 
 # 🔗 Nodes Quick Links
 
-This section provides documents on how to build and maintain an Luxd
-node, and then validate the Lux network using an Luxd node.
+This section provides documents on how to build and maintain a Luxd
+node, and then validate the Lux network using a Luxd node.
 
 |   Run a Node   |                                             |
 | :------------------------------------------------------- | :------------------------------------------ |
-| [**Manually**](/nodes/run/node-manually.md)      | Compile an Lux node from source and run it manually |
+| [**Manually**](/nodes/run/node-manually.md)      | Compile a Lux node from source and run it manually |
 | [**Using the Install Script**](/nodes/run/with-installer/installing-luxd.md)     | How to install and run Luxd with the installer script    |
 | [**Run a Subnet Node**](/nodes/run/subnet-node.md) | How to run a Subnet node              |
 | [**Common Errors**](nodes/run/FAQ.md)     | Learn about common errors when building your node       |
 |   **Using a Third-Party Cloud Service**   |                                             |
 | [**Amazon Web Services**](/nodes/run/third-party/aws-node.md) | Create a node that runs on AWS              |
 | [**AWS Marketplace: One Click Deployment**](nodes/run/third-party/aws-marketplace-one-click.md) | Deploy a node that runs on AWS via a one-click install              |
-| [**Microsoft Azure**](/nodes/run/third-party/microsoft-azure-node.md)                       | Create a node that runs on Microsoft Azure  |
 | [**Google Cloud Platform**](/nodes/run/third-party/google-cloud-node.md)                      | Create a node that runs on Google GCP       |
-| [**Alibaba Cloud**](/nodes/run/third-party/alibaba-cloud-node.md)     | Create a node that runs on Alibaba Cloud       |
-| [**Tencent Cloud**](/nodes/run/third-party/tencent-cloud-node.md)     | Create a node that runs on Tencent Cloud       |
+| [**Microsoft Azure**](/nodes/run/third-party/microsoft-azure-node.md)                       | Create a node that runs on Microsoft Azure  |
 
 
 |    Configure                                                                         |                                                             |
@@ -43,7 +41,7 @@ node, and then validate the Lux network using an Luxd node.
 | :------------------------------------------------------------------------------- | :---------------------------------------------------------- |
 | [**Node Bootstrapping: What to Expect**](/nodes/maintain/node-bootstrap.md)     | Understand how a node bootstraps                                     |
 | [**Node Backup and Restore**](/nodes/maintain/node-backup-and-restore.md)             | Back up important files to be able to restore your node     |
-| [**Monitor an Lux Node**](/nodes/maintain/setting-up-node-monitoring.md)        | Set up infrastructure to monitor an instance of Luxd |
+| [**Monitor a Lux Node**](/nodes/maintain/setting-up-node-monitoring.md)        | Set up infrastructure to monitor an instance of Luxd |
 | [**Upgrade Your Luxd Node**](/nodes/maintain/upgrade-your-luxd-node.md) | How to upgrade your Lux node                                 |
 | [**Reduce Disk Usage by running C-Chain Offline Pruning**](/nodes/maintain/run-offline-pruning.md)          | How to reduce the disk space used by Luxd                                     |
 | [**Enroll A Node in Lux Notify**](/nodes/maintain/notify.md)       | To receive email alerts if a validator becomes unresponsive or out-of-date, sign up with the Lux Notify tool                       |

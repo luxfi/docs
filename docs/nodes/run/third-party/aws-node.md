@@ -1,16 +1,16 @@
 ---
 tags: [Nodes]
-description: This tutorial will guide you through setting up an Lux node on Amazon Web Services (AWS). Cloud services like AWS are a good way to ensure that your node is highly secure, available, and accessible.
+description: This tutorial will guide you through setting up a Lux node on Amazon Web Services (AWS). Cloud services like AWS are a good way to ensure that your node is highly secure, available, and accessible.
 sidebar_label: Amazon Web Services
-pagination_label: Run an Lux Node with Amazon Web Services
+pagination_label: Run a Lux Node with Amazon Web Services
 sidebar_position: 0
 ---
 
-# Run an Lux Node with Amazon Web Services (AWS)
+# Run a Lux Node with Amazon Web Services (AWS)
 
 ## Introduction
 
-This tutorial will guide you through setting up an Lux node on [Amazon Web
+This tutorial will guide you through setting up a Lux node on [Amazon Web
 Services (AWS)](https://aws.amazon.com/). Cloud services like AWS are a good way
 to ensure that your node is highly secure, available, and accessible.
 
@@ -381,7 +381,7 @@ If you need to increase the volume size, follow these instructions from AWS:
 
 ## Wrap Up
 
-That's it! You now have an Luxd node running on an AWS EC2 instance. We
+That's it! You now have a Luxd node running on an AWS EC2 instance. We
 recommend setting up [node monitoring](/nodes/maintain/setting-up-node-monitoring.md)for your Luxd node. We also
 recommend setting up AWS billing alerts so you're not surprised when the bill
 arrives. If you have feedback on this tutorial, or anything else, send us a

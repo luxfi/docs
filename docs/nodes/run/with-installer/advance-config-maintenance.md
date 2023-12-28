@@ -195,7 +195,7 @@ Please note that this is irreversible and the database and node ID will be delet
 
 ## What Next?
 
-That's it, you're running an Luxd node! Congratulations! Let us know you
+That's it, you're running a Luxd node! Congratulations! Let us know you
 did it on our [Twitter](https://twitter.com/luxlux),
 [Telegram](https://t.me/luxlux) or [Reddit](https://t.me/luxlux)!
 

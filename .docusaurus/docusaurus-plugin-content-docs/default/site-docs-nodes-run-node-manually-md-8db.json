@@ -1,7 +1,7 @@
 {
   "id": "nodes/run/node-manually",
-  "title": "Run an Lux Node Manually",
-  "description": "The quickest way to learn about Lux is to run a node and interact with the network. This tutorial demonstrates how to install and run an Lux node, and connect to the Lux Network by compiling a node from source and running it manually.",
+  "title": "Run a Lux Node Manually",
+  "description": "The quickest way to learn about Lux is to run a node and interact with the network. This tutorial demonstrates how to install and run a Lux node, and connect to the Lux Network by compiling a node from source and running it manually.",
   "source": "@site/docs/nodes/run/node-manually.md",
   "sourceDirName": "nodes/run",
   "slug": "/nodes/run/node-manually",
@@ -26,9 +26,9 @@
       "Nodes",
       "Luxd"
     ],
-    "description": "The quickest way to learn about Lux is to run a node and interact with the network. This tutorial demonstrates how to install and run an Lux node, and connect to the Lux Network by compiling a node from source and running it manually.",
+    "description": "The quickest way to learn about Lux is to run a node and interact with the network. This tutorial demonstrates how to install and run a Lux node, and connect to the Lux Network by compiling a node from source and running it manually.",
     "sidebar_label": "Manually",
-    "pagination_label": "Run an Lux Node Manually",
+    "pagination_label": "Run a Lux Node Manually",
     "sidebar_position": 0,
     "keywords": [
       "lux node",
@@ -45,7 +45,7 @@
   },
   "sidebar": "nodes",
   "previous": {
-    "title": "System Requirements for Running an Lux Node",
+    "title": "System Requirements for Running a Lux Node",
     "permalink": "/nodes/system-requirements"
   },
   "next": {

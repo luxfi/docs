@@ -1,7 +1,7 @@
 {
   "id": "nodes/run/subnet-node",
   "title": "Run a Subnet Node",
-  "description": "Detailed instructions for running an Lux node that tracks a Subnet.",
+  "description": "Detailed instructions for running a Lux node that tracks a Subnet.",
   "source": "@site/docs/nodes/run/subnet-node.md",
   "sourceDirName": "nodes/run",
   "slug": "/nodes/run/subnet-node",
@@ -26,7 +26,7 @@
       "Nodes",
       "Subnets"
     ],
-    "description": "Detailed instructions for running an Lux node that tracks a Subnet.",
+    "description": "Detailed instructions for running a Lux node that tracks a Subnet.",
     "sidebar_label": "Subnet Nodes",
     "pagination_label": "Run a Subnet Node",
     "sidebar_position": 2,
@@ -47,7 +47,7 @@
     "permalink": "/nodes/run/with-installer/advance-config-maintenance"
   },
   "next": {
-    "title": "Run an Lux Node with Amazon Web Services",
+    "title": "Run a Lux Node with Amazon Web Services",
     "permalink": "/nodes/run/third-party/aws-node"
   }
 }

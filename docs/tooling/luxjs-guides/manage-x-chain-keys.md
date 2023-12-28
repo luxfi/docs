@@ -59,7 +59,7 @@ let mypk = bintools.avaDeserialize(
 let newAddress2 = myKeychain.importKey(mypk) //returns a Buffer for the address
 ```
 
-… or an Lux serialized string works, too:
+… or a Lux serialized string works, too:
 
 ```ts
 let mypk = "24jUJ9vZexUM6expyMcT48LBx27k1m7xpraoV62oSQAHdziao5"

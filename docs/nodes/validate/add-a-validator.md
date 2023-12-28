@@ -1,6 +1,6 @@
 ---
 tags: [Nodes]
-description: This section provides documents on how to build and maintain an Luxd node, and then validate the Lux network using an Luxd node.
+description: This section provides documents on how to build and maintain a Luxd node, and then validate the Lux network using a Luxd node.
 sidebar_label: Node ➡️ Validator
 pagination_label: Add a Node to the Validator Set
 sidebar_position: 3
@@ -33,7 +33,7 @@ our [Discord](https://chat.lux.network/) to ask questions.
 
 ## Requirements
 
-You've completed [Run an Lux Node](/nodes/run/node-manually.md) and are familiar with
+You've completed [Run a Lux Node](/nodes/run/node-manually.md) and are familiar with
 [Lux's architecture](/learn/lux/lux-platform.md). In this
 tutorial, we use [LuxJS](/tooling/luxjs-overview.md) and
 [Lux’s Postman collection](/tooling/luxd-postman-collection/setup.md) 
@@ -134,7 +134,7 @@ yarn add @luxdefi/luxjs
 ```
 
 For this tutorial we will use [`ts-node`](https://www.npmjs.com/package/ts-node)
-to run the example scripts directly from an LuxJS directory.
+to run the example scripts directly from a LuxJS directory.
 
 ### Testnet Workflow
 

@@ -1,6 +1,6 @@
 {
   "id": "nodes/system-requirements",
-  "title": "System Requirements for Running an Lux Node",
+  "title": "System Requirements for Running a Lux Node",
   "description": "Lux is an incredibly lightweight protocol, so nodes can run on commodity hardware. Note that as network usage increases, hardware requirements may change.",
   "source": "@site/docs/nodes/system-requirements.md",
   "sourceDirName": "nodes",
@@ -22,7 +22,7 @@
     ],
     "description": "Lux is an incredibly lightweight protocol, so nodes can run on commodity hardware. Note that as network usage increases, hardware requirements may change.",
     "sidebar_label": "System Requirements",
-    "pagination_label": "System Requirements for Running an Lux Node"
+    "pagination_label": "System Requirements for Running a Lux Node"
   },
   "sidebar": "nodes",
   "previous": {
@@ -30,7 +30,7 @@
     "permalink": "/nodes/"
   },
   "next": {
-    "title": "Run an Lux Node Manually",
+    "title": "Run a Lux Node Manually",
     "permalink": "/nodes/run/node-manually"
   }
 }
