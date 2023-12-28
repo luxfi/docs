@@ -17,22 +17,22 @@ You must take the full responsibility to ensure your bridge's security.
 
 ## Introduction
 
-In this tutorial, we will be building a bridge between **[WAGMI](/build/subnet/info/wagmi.md)** and
+In this tutorial, we will be building a bridge between **[DINO](/build/subnet/info/wagmi.md)** and
 **[Testnet](/learn/lux/testnet.md)**. This bridge will help us to transfer native **WGM** coin
-wrapped into **wWGM** back and forth from the WAGMI chain to the Testnet chain. Using this guide, you
+wrapped into **wDINO** back and forth from the DINO chain to the Testnet chain. Using this guide, you
 can deploy a bridge between any EVM-based chains for any ERC20 tokens.
 
 The wrapped version of a native coin is its pegged ERC20 representation. Wrapping it with the ERC20
 standard makes certain processes like delegated transactions much easier. You can easily get wrapped
 tokens by sending the native coin to the wrapped token contract address.
 
-> WAGMI is an independent EVM-based test chain deployed on a custom Subnet on the Lux network.
+> DINO is an independent EVM-based test chain deployed on a custom Subnet on the Lux network.
 
 We will be using **ChainSafe**'s bridge repository, to easily set up a robust and secure bridge.
 
 ## Workflow of the Bridge
 
-WAGMI and Testnet chains are not interconnected by default, however, we could make them communicate.
+DINO and Testnet chains are not interconnected by default, however, we could make them communicate.
 Relayers watch for events (by polling blocks) on one chain and perform necessary action using those
 events on the other chain. This way we can also perform bridging of tokens from one chain to the
 other chain through the use of smart contracts.
@@ -60,13 +60,13 @@ chain.
 
 These are the requirement to follow this tutorial -
 
-- Set up [WAGMI](/build/subnet/info/wagmi.md#adding-wagmi-to-core) and
+- Set up [DINO](/build/subnet/info/wagmi.md#adding-wagmi-to-core) and
 [Testnet](/build/dapp/testnet-workflow.md#set-up-testnet-network-on-core-optional) on Core
-- Import `wWGM` token (asset) on the WAGMI network (Core). Here is the address - `0x3Ee7094DADda15810F191DD6AcF7E4FFa37571e4`
-- `WGM` coins on the WAGMI chain. Drip `1 WGM` from the [WAGMI Faucet](https://faucet.trywagmi.xyz/).
+- Import `wDINO` token (asset) on the DINO network (Core). Here is the address - `0x3Ee7094DADda15810F191DD6AcF7E4FFa37571e4`
+- `WGM` coins on the DINO chain. Drip `1 WGM` from the [DINO Faucet](https://faucet.trywagmi.xyz/).
 - `LUX` coins on the Testnet chain. Drip `10 LUX` from the [Testnet Faucet](https://faucet.lux.network/)
-- Wrapped `WGM` tokens on the WAGMI chain. Send a few `WGM` coins to the `wWGM` token address (see
-second point), to receive the same amount of `wWGM`. Always keep some `WGM` coins, to cover transaction
+- Wrapped `WGM` tokens on the DINO chain. Send a few `WGM` coins to the `wDINO` token address (see
+second point), to receive the same amount of `wDINO`. Always keep some `WGM` coins, to cover transaction
 fees.
 
 ## Setting Up Environment
@@ -104,8 +104,8 @@ new file `configVars`. Put the following contents inside it -
 SRC_GATEWAY=https://subnets.lux.network/wagmi/wagmi-chain-testnet/rpc
 DST_GATEWAY=https://api.lux-test.network/ext/bc/C/rpc
 
-SRC_ADDR="<Your address on WAGMI>"
-SRC_PK="<your private key on WAGMI>"
+SRC_ADDR="<Your address on DINO>"
+SRC_PK="<your private key on DINO>"
 DST_ADDR="<Your address on Testnet>"
 DST_PK="<your private key on Testnet>"
 
@@ -115,8 +115,8 @@ RESOURCE_ID="0x00"
 
 - `SRC_ADDR` and `DST_ADDR` are the addresses that will deploy bridge contracts and will act as a relayer.
 - `SRC_TOKEN` is the token that we want to bridge. Here is the address of the wrapped ERC20 version
-of the WGM coin aka wWGM.
-- `RESOURCE_ID` could be anything. It identifies our bridged ERC20 tokens on both sides (WAGMI and Testnet).
+of the WGM coin aka wDINO.
+- `RESOURCE_ID` could be anything. It identifies our bridged ERC20 tokens on both sides (DINO and Testnet).
 
 Every time we make changes to these config variables, we have to update our bash environment. Run
 the following command according to the relative location of the file. These variables are temporary
@@ -133,13 +133,13 @@ source ./configVars
 We need to set up our source chain as follows -
 
 - Deploy Bridge and Handler contract with `$SRC_ADDR` as default and only relayer
-- Register the `wWGM` token as a resource on the bridge
+- Register the `wDINO` token as a resource on the bridge
 
 ### Deploy Source Contracts
 
 The command-line tool `cb-sol-cli` will help us to deploy the contracts. Run the following command
 in the terminal session where the config vars are loaded. It will add `SRC_ADDR` as the default
-relayer for relaying events from the WAGMI chain (source) to the Testnet chain (destination).
+relayer for relaying events from the DINO chain (source) to the Testnet chain (destination).
 
 **One of the most important parameter to take care of while deploying bridge contract is the `expiry`**
 **value. It is the number of blocks after which a proposal is considered cancelled. By default it is**
@@ -174,7 +174,7 @@ Make sure to load these using the `source` command.
 
 ### Configure Resource on Bridge
 
-Run the following command to register the `wWGM` token as a resource on the source bridge.
+Run the following command to register the `wDINO` token as a resource on the source bridge.
 
 ```bash
 cb-sol-cli --url $SRC_GATEWAY --privateKey $SRC_PK --gasPrice 25000000000 bridge register-resource \
@@ -189,16 +189,16 @@ cb-sol-cli --url $SRC_GATEWAY --privateKey $SRC_PK --gasPrice 25000000000 bridge
 We need to set up our destination chain as follows -
 
 - Deploy Bridge and Handler contract with `$DST_ADDR` as default and only relayer
-- Deploy mintable and burnable ERC20 contract representing bridged `wWGM` token
-- Register the `wWGM` token as a resource on the bridge
-- Register the` wWGM` token as mintable/burnable on the bridge
-- Giving permissions to Handler contract to mint new `wWGM` tokens
+- Deploy mintable and burnable ERC20 contract representing bridged `wDINO` token
+- Register the `wDINO` token as a resource on the bridge
+- Register the` wDINO` token as mintable/burnable on the bridge
+- Giving permissions to Handler contract to mint new `wDINO` tokens
 
 ### Deploy Destination Contracts
 
-Run the following command to deploy Bridge, ERC20 Handler, and `wWGM` token contracts on the Testnet
+Run the following command to deploy Bridge, ERC20 Handler, and `wDINO` token contracts on the Testnet
 chain. Again it will set `DST_ADDR` as the default relayer for relaying events from Testnet chain
-(destination) to WAGMI chain (source). For this example, both `SRC_ADDR` and `DST_ADDR` represent
+(destination) to DINO chain (source). For this example, both `SRC_ADDR` and `DST_ADDR` represent
 the same thing.
 
 ```bash
@@ -220,7 +220,7 @@ DST_TOKEN="<resulting erc20 token address>"
 
 ### Configuring Resource on Bridge
 
-Run the following command to register deployed `wWGM` token as a resource on the bridge.
+Run the following command to register deployed `wDINO` token as a resource on the bridge.
 
 ```bash
 cb-sol-cli --url $DST_GATEWAY --privateKey $DST_PK --gasPrice 25000000000 bridge register-resource \
@@ -251,7 +251,7 @@ cb-sol-cli --url $DST_GATEWAY --privateKey $DST_PK --gasPrice 25000000000 bridge
 
 ### Authorizing Handler to Mint New Tokens
 
-Now let's permit the handler to mint the deployed ERC20 (wWGM) token on the destination chain. Run
+Now let's permit the handler to mint the deployed ERC20 (wDINO) token on the destination chain. Run
 the following command.
 
 ```bash
@@ -308,7 +308,7 @@ details in it. You can update these details, as per your need.
 echo "{
   \"chains\": [
     {
-      \"name\": \"WAGMI\",
+      \"name\": \"DINO\",
       \"type\": \"ethereum\",
       \"id\": \"0\",
       \"endpoint\": \"$SRC_GATEWAY\",
@@ -385,9 +385,9 @@ in the other terminal session.
 
 ### Approve Handler to Spend my Tokens
 
-Now, let's deposit tokens on the WAGMI bridge. But before that, we need to approve the handler to
+Now, let's deposit tokens on the DINO bridge. But before that, we need to approve the handler to
 spend (lock or burn) tokens on our (here `SRC_PK`) behalf. The amount here is in Wei (1 ether (WGM)
-= 10^18 Wei). We will be approving 0.1 wWGM.
+= 10^18 Wei). We will be approving 0.1 wDINO.
 
 ```bash
 cb-sol-cli --url $SRC_GATEWAY --privateKey $SRC_PK --gasPrice 25000000000 erc20 approve \
@@ -398,8 +398,8 @@ cb-sol-cli --url $SRC_GATEWAY --privateKey $SRC_PK --gasPrice 25000000000 erc20 
 
 ### Deposit Tokens to the Bridge
 
-Once approved, we can send a deposit transaction. Now let's deposit 0.1 wWGM on the bridge. The
-handler will lock (transfer to token safe) 0.1 wWGM from our address (here `SRC_PK`) and mint the
+Once approved, we can send a deposit transaction. Now let's deposit 0.1 wDINO on the bridge. The
+handler will lock (transfer to token safe) 0.1 wDINO from our address (here `SRC_PK`) and mint the
 new tokens on the destination chain to the recipient (here `DST_ADDR`).
 
 ```bash
@@ -411,14 +411,14 @@ cb-sol-cli --url $SRC_GATEWAY --privateKey $SRC_PK --gasPrice 25000000000 erc20 
     --resourceId $RESOURCE_ID
 ```
 
-This transaction will transfer 0.1 wWGM to token safe and emit a `Deposit` event, which will be
+This transaction will transfer 0.1 wDINO to token safe and emit a `Deposit` event, which will be
 captured by the relayer. Following this event, it will send a voting proposal to the destination
-chain. Since the threshold is 1, the bridge will execute the proposal, and new wWGM minted to the
+chain. Since the threshold is 1, the bridge will execute the proposal, and new wDINO minted to the
 recipient's address. Here is the screenshot of the output from the relayer.
 
 ![output](/img/chainsafe-bridge-2-relayer-output.png)
 
-Similarly, we can transfer the tokens back to the WAGMI chain.
+Similarly, we can transfer the tokens back to the DINO chain.
 
 ## Conclusion
 
@@ -429,3 +429,5 @@ We need a large set of relayers and a high threshold to avoid any kind of centra
 
 You can learn more about these contracts and implementations by reading ChainSafe's
 [ChainBridge](https://chainbridge.chainsafe.io/) documentation.
+
+
