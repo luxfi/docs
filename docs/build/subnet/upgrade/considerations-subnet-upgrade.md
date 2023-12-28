@@ -127,7 +127,7 @@ is the plugin binary. You need to stop the node now (if the node is running as a
 systemctl stop luxd` command). You need to place that file into the plugins directory where
 the Luxd binary is located. If the node is installed using the install script, the path will
 be `~/node/plugins` Instead of the `subnet-evm` filename, VM binary needs to be named as
-the VM ID of the chain on the Subnet. For example, for the [WAGMI
+the VM ID of the chain on the Subnet. For example, for the [ZOO
 Subnet](https://subnets-test.lux.network/wagmi) that VM ID is
 `srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy`. So, the command to copy the new plugin binary
 would look like:

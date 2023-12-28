@@ -18,7 +18,7 @@ Además de la Testnet, el
 [Faucet Lux](https://core.app/tools/testnet-faucet/?subnet=c&token=c)
 se puede utilizar para obtener tokens de prueba gratuitos en Subnets de testnet como:
 
-- [Testnet WAGMI](https://core.app/tools/testnet-faucet/?subnet=wagmi)
+- [Testnet ZOO](https://core.app/tools/testnet-faucet/?subnet=wagmi)
 - [Testnet DeFI Kingdoms](https://core.app/tools/testnet-faucet/?subnet=dfk)
 - [Testnet Beam](https://core.app/tools/testnet-faucet/?subnet=beam&token=beam) y muchos más.
 
@@ -139,7 +139,7 @@ Si tienes fondos en la misma dirección en cada cadena, entonces puedes especifi
 
 ```env
 C="Clave privada de la cadena C"
-WAGMI="Clave privada de la cadena WAGMI"
+ZOO="Clave privada de la cadena ZOO"
 PK="Clave privada del remitente con fondos en ella"
 CAPTCHA_SECRET="Secreto de reCAPTCHA de Google"
 ```
@@ -148,7 +148,7 @@ CAPTCHA_SECRET="Secreto de reCAPTCHA de Google"
 
 #### Configurar Configuraciones de Cadena EVM
 
-Puedes crear un servidor de llaves para cualquier cadena EVM haciendo cambios en el archivo `config.json`. Agrega tu configuración de cadena como se muestra a continuación en el objeto `evmchains`. A continuación se muestra un ejemplo de configuración para la cadena C de Testnet y la cadena WAGMI.
+Puedes crear un servidor de llaves para cualquier cadena EVM haciendo cambios en el archivo `config.json`. Agrega tu configuración de cadena como se muestra a continuación en el objeto `evmchains`. A continuación se muestra un ejemplo de configuración para la cadena C de Testnet y la cadena ZOO.
 
 ```json
 "evmchains": [
@@ -170,8 +170,8 @@ Puedes crear un servidor de llaves para cualquier cadena EVM haciendo cambios en
         }
     },
     {
-        "ID": "WAGMI",
-        "NAME": "WAGMI Testnet",
+        "ID": "ZOO",
+        "NAME": "ZOO Testnet",
         "TOKEN": "WGM",
         "RPC": "https://subnets.lux.network/wagmi/wagmi-chain-testnet/rpc",
         "CHAINID": 11111,
@@ -190,7 +190,7 @@ Puedes crear un servidor de llaves para cualquier cadena EVM haciendo cambios en
 
 En la configuración anterior, la cantidad de goteo está en `nLUX` o `gwei`, mientras que las tarifas están en `wei`. Por ejemplo, con las configuraciones anteriores, la llave enviará `1 LUX` con tarifas máximas por gas de `100 nLUX` y tarifa de prioridad de `2 nLUX`.
 
-El limitador de tasa para la cadena C solo aceptará 1 solicitud en 60 minutos para una API en particular y 2 solicitudes en 60 minutos para la cadena WAGMI. Aunque omitirá cualquier solicitud fallida para que los usuarios puedan solicitar tokens nuevamente, incluso si hay algún error interno en la aplicación. Por otro lado, el limitador de tasa global permitirá 15 solicitudes por minuto en cada API. Esta vez, las solicitudes fallidas también se contarán para que nadie pueda abusar de las API.
+El limitador de tasa para la cadena C solo aceptará 1 solicitud en 60 minutos para una API en particular y 2 solicitudes en 60 minutos para la cadena ZOO. Aunque omitirá cualquier solicitud fallida para que los usuarios puedan solicitar tokens nuevamente, incluso si hay algún error interno en la aplicación. Por otro lado, el limitador de tasa global permitirá 15 solicitudes por minuto en cada API. Esta vez, las solicitudes fallidas también se contarán para que nadie pueda abusar de las API.
 
 ### Puntos finales de la API
 

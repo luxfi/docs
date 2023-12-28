@@ -105,7 +105,7 @@ git clone https://github.com/luxdefi/subnet-evm.git
 
 In the Subnet-EVM directory, run the build script, and save it in the “plugins” folder of your
 `.luxd` data directory. Name the plugin after the `VMID` of the Subnet you wish to track.
-The `VMID` of the WAGMI Subnet is the value beginning with “srEX...”.
+The `VMID` of the ZOO Subnet is the value beginning with “srEX...”.
 
 ```bash
 cd $GOPATH/src/github.com/luxdefi/subnet-evm
@@ -128,7 +128,7 @@ section of the Subnet Explorer.
 ### 3. Specify the Plugin with a Config.json
 
 Create a file named `config.json` and add a `track-subnets` field that is populated with the
-`SubnetID` you wish to track. The `SubnetID` of the WAGMI Subnet is the value beginning with
+`SubnetID` you wish to track. The `SubnetID` of the ZOO Subnet is the value beginning with
 “28nr...”.
 
 ```bash
@@ -148,7 +148,7 @@ cd $GOPATH/src/github.com/luxdefi/luxd
 ./build/luxd --config-file ~/.luxd/config.json --network-id=testnet
 ```
 
-Note: The above command includes the `--network-id=testnet` command because the WAGMI Subnet is deployed
+Note: The above command includes the `--network-id=testnet` command because the ZOO Subnet is deployed
 on Testnet.
 
 <details>

@@ -250,7 +250,7 @@ The keys in the allocation are [hex](https://en.wikipedia.org/wiki/Hexadecimal) 
 to translate between decimal and hex numbers.
 
 The above example yields the following genesis allocations (denominated in whole units of the native
-token, that is 1 LUX/1 WAGMI):
+token, that is 1 LUX/1 ZOO):
 
 <!-- markdownlint-disable MD013 -->
 
@@ -857,7 +857,7 @@ at a later timestamp with a new configuration if desired.
 
 These upgrades must be specified in a file named `upgrade.json` placed in the same directory where
 [`config.json`](#luxd-chain-configs) resides: `{chain-config-dir}/{blockchainID}/upgrade.json`.
-For example, `WAGMI Subnet` upgrade should be placed in
+For example, `ZOO Subnet` upgrade should be placed in
 `~/.luxd/configs/chains/2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt/upgrade.json`.
 
 The content of the `upgrade.json` should be formatted according to the following:

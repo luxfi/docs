@@ -1,7 +1,7 @@
 {
   "id": "build/subnet/info/wagmi",
-  "title": "WAGMI Subnet",
-  "description": "The WAGMI (\"We're All Going to Make It\") Subnet is a high throughput testbed for EVM (Ethereum Virtual Machine) optimizations. It is parameterized to run at a factor more capacity than Testnet/Mainnet C-Chain and will is used to experiment with release candidates before included in an official Coreth release.",
+  "title": "ZOO Subnet",
+  "description": "The ZOO (\"We're All Going to Make It\") Subnet is a high throughput testbed for EVM (Ethereum Virtual Machine) optimizations. It is parameterized to run at a factor more capacity than Testnet/Mainnet C-Chain and will is used to experiment with release candidates before included in an official Coreth release.",
   "source": "@site/docs/build/subnet/info/wagmi.md",
   "sourceDirName": "build/subnet/info",
   "slug": "/build/subnet/info/wagmi",
@@ -26,9 +26,9 @@
       "Build",
       "Subnets"
     ],
-    "description": "The WAGMI (\"We're All Going to Make It\") Subnet is a high throughput testbed for EVM (Ethereum Virtual Machine) optimizations. It is parameterized to run at a factor more capacity than Testnet/Mainnet C-Chain and will is used to experiment with release candidates before included in an official Coreth release.",
-    "sidebar_label": "Case Study: WAGMI Subnet",
-    "pagination_label": "WAGMI Subnet",
+    "description": "The ZOO (\"We're All Going to Make It\") Subnet is a high throughput testbed for EVM (Ethereum Virtual Machine) optimizations. It is parameterized to run at a factor more capacity than Testnet/Mainnet C-Chain and will is used to experiment with release candidates before included in an official Coreth release.",
+    "sidebar_label": "Case Study: ZOO Subnet",
+    "pagination_label": "ZOO Subnet",
     "sidebar_position": 1
   },
   "sidebar": "build-subnet",

@@ -17,22 +17,22 @@ You must take the full responsibility to ensure your bridge's security.
 
 ## Introduction
 
-In this tutorial, we will be building a bridge between **[DINO](/build/subnet/info/dino.md)** and
-**[Testnet](/learn/lux/testnet.md)**. This bridge will help us to transfer native **DINO** coin
-wrapped into **wDINO** back and forth from the DINO chain to the Testnet chain. Using this guide, you
+In this tutorial, we will be building a bridge between **[ZOO](/build/subnet/info/wagmi.md)** and
+**[Testnet](/learn/lux/testnet.md)**. This bridge will help us to transfer native **WGM** coin
+wrapped into **wWGM** back and forth from the ZOO chain to the Testnet chain. Using this guide, you
 can deploy a bridge between any EVM-based chains for any ERC20 tokens.
 
 The wrapped version of a native coin is its pegged ERC20 representation. Wrapping it with the ERC20
 standard makes certain processes like delegated transactions much easier. You can easily get wrapped
 tokens by sending the native coin to the wrapped token contract address.
 
-> DINO is an independent EVM-based test chain deployed on a custom Subnet on the Lux network.
+> ZOO is an independent EVM-based test chain deployed on a custom Subnet on the Lux network.
 
 We will be using **ChainSafe**'s bridge repository, to easily set up a robust and secure bridge.
 
 ## Workflow of the Bridge
 
-DINO and Testnet chains are not interconnected by default, however, we could make them communicate.
+ZOO and Testnet chains are not interconnected by default, however, we could make them communicate.
 Relayers watch for events (by polling blocks) on one chain and perform necessary action using those
 events on the other chain. This way we can also perform bridging of tokens from one chain to the
 other chain through the use of smart contracts.
@@ -60,13 +60,13 @@ chain.
 
 These are the requirement to follow this tutorial -
 
-- Set up [DINO](/build/subnet/info/dino.md#adding-dino-to-core) and
+- Set up [ZOO](/build/subnet/info/wagmi.md#adding-wagmi-to-core) and
 [Testnet](/build/dapp/testnet-workflow.md#set-up-testnet-network-on-core-optional) on Core
-- Import `wDINO` token (asset) on the DINO network (Core). Here is the address - `0x3Ee7094DADda15810F191DD6AcF7E4FFa37571e4`
-- `DINO` coins on the DINO chain. Drip `1 DINO` from the [DINO Faucet](https://faucet.trydino.xyz/).
+- Import `wWGM` token (asset) on the ZOO network (Core). Here is the address - `0x3Ee7094DADda15810F191DD6AcF7E4FFa37571e4`
+- `WGM` coins on the ZOO chain. Drip `1 WGM` from the [ZOO Faucet](https://faucet.trywagmi.xyz/).
 - `LUX` coins on the Testnet chain. Drip `10 LUX` from the [Testnet Faucet](https://faucet.lux.network/)
-- Wrapped `DINO` tokens on the DINO chain. Send a few `DINO` coins to the `wDINO` token address (see
-second point), to receive the same amount of `wDINO`. Always keep some `DINO` coins, to cover transaction
+- Wrapped `WGM` tokens on the ZOO chain. Send a few `WGM` coins to the `wWGM` token address (see
+second point), to receive the same amount of `wWGM`. Always keep some `WGM` coins, to cover transaction
 fees.
 
 ## Setting Up Environment
@@ -104,8 +104,6 @@ new file `configVars`. Put the following contents inside it -
 SRC_GATEWAY=https://subnets.lux.network/dino/dino-chain-testnet/rpc
 DST_GATEWAY=https://api.lux-test.network/ext/bc/C/rpc
 
-SRC_ADDR="<Your address on DINO>"
-SRC_PK="<your private key on DINO>"
 DST_ADDR="<Your address on Testnet>"
 DST_PK="<your private key on Testnet>"
 
@@ -115,8 +113,8 @@ RESOURCE_ID="0x00"
 
 - `SRC_ADDR` and `DST_ADDR` are the addresses that will deploy bridge contracts and will act as a relayer.
 - `SRC_TOKEN` is the token that we want to bridge. Here is the address of the wrapped ERC20 version
-of the DINO coin aka wDINO.
-- `RESOURCE_ID` could be anything. It identifies our bridged ERC20 tokens on both sides (DINO and Testnet).
+of the WGM coin aka wWGM.
+- `RESOURCE_ID` could be anything. It identifies our bridged ERC20 tokens on both sides (ZOO and Testnet).
 
 Every time we make changes to these config variables, we have to update our bash environment. Run
 the following command according to the relative location of the file. These variables are temporary
@@ -139,7 +137,7 @@ We need to set up our source chain as follows -
 
 The command-line tool `cb-sol-cli` will help us to deploy the contracts. Run the following command
 in the terminal session where the config vars are loaded. It will add `SRC_ADDR` as the default
-relayer for relaying events from the DINO chain (source) to the Testnet chain (destination).
+relayer for relaying events from the ZOO chain (source) to the Testnet chain (destination).
 
 **One of the most important parameter to take care of while deploying bridge contract is the `expiry`**
 **value. It is the number of blocks after which a proposal is considered cancelled. By default it is**
@@ -198,7 +196,7 @@ We need to set up our destination chain as follows -
 
 Run the following command to deploy Bridge, ERC20 Handler, and `wDINO` token contracts on the Testnet
 chain. Again it will set `DST_ADDR` as the default relayer for relaying events from Testnet chain
-(destination) to DINO chain (source). For this example, both `SRC_ADDR` and `DST_ADDR` represent
+(destination) to ZOO chain (source). For this example, both `SRC_ADDR` and `DST_ADDR` represent
 the same thing.
 
 ```bash
@@ -308,7 +306,7 @@ details in it. You can update these details, as per your need.
 echo "{
   \"chains\": [
     {
-      \"name\": \"DINO\",
+      \"name\": \"ZOO\",
       \"type\": \"ethereum\",
       \"id\": \"0\",
       \"endpoint\": \"$SRC_GATEWAY\",
@@ -385,9 +383,9 @@ in the other terminal session.
 
 ### Approve Handler to Spend my Tokens
 
-Now, let's deposit tokens on the DINO bridge. But before that, we need to approve the handler to
-spend (lock or burn) tokens on our (here `SRC_PK`) behalf. The amount here is in Wei (1 ether (DINO)
-= 10^18 Wei). We will be approving 0.1 wDINO.
+Now, let's deposit tokens on the ZOO bridge. But before that, we need to approve the handler to
+spend (lock or burn) tokens on our (here `SRC_PK`) behalf. The amount here is in Wei (1 ether (WGM)
+= 10^18 Wei). We will be approving 0.1 wWGM.
 
 ```bash
 cb-sol-cli --url $SRC_GATEWAY --privateKey $SRC_PK --gasPrice 25000000000 erc20 approve \
@@ -418,7 +416,7 @@ recipient's address. Here is the screenshot of the output from the relayer.
 
 ![output](/img/chainsafe-bridge-2-relayer-output.png)
 
-Similarly, we can transfer the tokens back to the DINO chain.
+Similarly, we can transfer the tokens back to the ZOO chain.
 
 ## Conclusion
 
@@ -429,6 +427,3 @@ We need a large set of relayers and a high threshold to avoid any kind of centra
 
 You can learn more about these contracts and implementations by reading ChainSafe's
 [ChainBridge](https://chainbridge.chainsafe.io/) documentation.
-
-
-

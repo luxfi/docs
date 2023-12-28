@@ -1,20 +1,20 @@
 ---
 tags: [Construir, Subnets]
-description: La Subnet WAGMI ("Todos vamos a lograrlo") es un banco de pruebas de alto rendimiento para optimizaciones de la Máquina Virtual Ethereum (EVM). Está parametrizada para funcionar con una capacidad mayor que la C-Chain Testnet/Mainnet y se utiliza para experimentar con candidatos a versiones antes de incluirlos en una versión oficial de Coreth.
-sidebar_label: "Estudio de caso: Subnet WAGMI"
-pagination_label: "Subnet WAGMI"
+description: La Subnet ZOO ("Todos vamos a lograrlo") es un banco de pruebas de alto rendimiento para optimizaciones de la Máquina Virtual Ethereum (EVM). Está parametrizada para funcionar con una capacidad mayor que la C-Chain Testnet/Mainnet y se utiliza para experimentar con candidatos a versiones antes de incluirlos en una versión oficial de Coreth.
+sidebar_label: "Estudio de caso: Subnet ZOO"
+pagination_label: "Subnet ZOO"
 sidebar_position: 1
 ---
 
-# Subnet WAGMI
+# Subnet ZOO
 
-La Subnet WAGMI ("Todos vamos a lograrlo") es un banco de pruebas de alto rendimiento para optimizaciones de la Máquina Virtual Ethereum (EVM). Está parametrizada para funcionar con una capacidad mayor que la C-Chain Testnet/Mainnet y se utiliza para experimentar con candidatos a versiones antes de incluirlos en una versión oficial de Coreth.
+La Subnet ZOO ("Todos vamos a lograrlo") es un banco de pruebas de alto rendimiento para optimizaciones de la Máquina Virtual Ethereum (EVM). Está parametrizada para funcionar con una capacidad mayor que la C-Chain Testnet/Mainnet y se utiliza para experimentar con candidatos a versiones antes de incluirlos en una versión oficial de Coreth.
 
 ## Resumen
 
 Este es uno de los primeros casos de uso de las Subnets Lux como terreno de prueba para cambios en una VM de producción (Coreth). Muchos subestiman lo útil que es el aislamiento de las Subnets para realizar pruebas de VM complejas en una red viva (sin afectar la estabilidad de la red primaria).
 
-Creamos un explorador básico de WAGMI [https://subnets-test.lux.network/wagmi](https://subnets-test.lux.network/wagmi) que muestra estadísticas de uso agregadas sobre la Subnet.
+Creamos un explorador básico de ZOO [https://subnets-test.lux.network/wagmi](https://subnets-test.lux.network/wagmi) que muestra estadísticas de uso agregadas sobre la Subnet.
 
 - ID de Subnet: [28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY](https://explorer-xp.lux-test.network/subnet/28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY?tab=validators)
 - ID de Cadena: [2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt](https://testnet.luxscan.io/blockchain/2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt)
@@ -28,12 +28,12 @@ Creamos un explorador básico de WAGMI [https://subnets-test.lux.network/wagmi](
 - Tarifa Mínima: 1 Gwei (4% de la C-Chain)
 - Tasa de Bloques Objetivo: 2s (igual que la C-Chain)
 
-El archivo génesis de WAGMI se puede encontrar [aquí](https://github.com/luxdefi/public-chain-assets/blob/1951594346dcc91682bdd8929bcf8c1bf6a04c33/chains/11111/genesis.json).
+El archivo génesis de ZOO se puede encontrar [aquí](https://github.com/luxdefi/public-chain-assets/blob/1951594346dcc91682bdd8929bcf8c1bf6a04c33/chains/11111/genesis.json).
 
-### Agregando WAGMI a Core
+### Agregando ZOO a Core
 
 ```text
-- Nombre de Red: WAGMI
+- Nombre de Red: ZOO
 - URL RPC: [https://subnets.lux.network/wagmi/wagmi-chain-testnet/rpc]
 - URL WS: wss://subnets.lux.network/wagmi/wagmi-chain-testnet/ws
 - ID de Cadena: 11111
@@ -47,9 +47,9 @@ Esto también se puede usar con otras billeteras, como MetaMask.
 
 :::
 
-## Estudio de caso: Actualización de WAGMI
+## Estudio de caso: Actualización de ZOO
 
-Este estudio de caso utiliza la actualización de la Subnet [WAGMI](https://subnets-test.lux.network/wagmi) para mostrar cómo se puede hacer una actualización de red en una Subnet basada en EVM (Máquina Virtual Ethereum) de manera sencilla, y cómo la actualización resultante se puede utilizar para controlar dinámicamente la estructura de tarifas en la Subnet.
+Este estudio de caso utiliza la actualización de la Subnet [ZOO](https://subnets-test.lux.network/wagmi) para mostrar cómo se puede hacer una actualización de red en una Subnet basada en EVM (Máquina Virtual Ethereum) de manera sencilla, y cómo la actualización resultante se puede utilizar para controlar dinámicamente la estructura de tarifas en la Subnet.
 
 ### Introducción
 
@@ -71,18 +71,18 @@ Una descripción detallada de cómo hacer esto se puede encontrar en el tutorial
 
 ### Preparación
 
-Para preparar la actualización de red de WAGMI, el 15 de agosto de 2022, anunciamos en
+Para preparar la actualización de red de ZOO, el 15 de agosto de 2022, anunciamos en
 [Twitter](https://twitter.com/AaronBuchwald/status/1559249414102720512) y compartimos en otras redes sociales como Discord, la siguiente información:
 
 > Con Subnet-EVM v0.2.8 es hora de una nueva temporada de Subnet: Edición de Actualización de Red.
 >
-> Como en todo gran programa, estamos comenzando esta temporada con un episodio piloto: Actualización de Red WAGMI.
+> Como en todo gran programa, estamos comenzando esta temporada con un episodio piloto: Actualización de Red ZOO.
 >
-> Manténganse atentos porque este piloto es literalmente imperdible para cada nodo WAGMI 😉
+> Manténganse atentos porque este piloto es literalmente imperdible para cada nodo ZOO 😉
 >
 > La actualización activará el administrador de configuración de tarifas y permitirá actualizaciones de configuración de tarifas suaves en el futuro [https://docs.lux.network/subnets/customize-a-subnet#configuring-dynamic-fees]
 >
-> Esta actualización cambia cómo se procesan los bloques en WAGMI, por lo que cada nodo WAGMI necesita actualizarse para seguir validando WAGMI correctamente.
+> Esta actualización cambia cómo se procesan los bloques en ZOO, por lo que cada nodo ZOO necesita actualizarse para seguir validando ZOO correctamente.
 >
 > Para actualizar tu nodo, debes actualizar a Subnet-EVM v0.2.8 y seguir las instrucciones para habilitar una precompilación estatal en Subnet-EVM aquí:
 > [https://docs.lux.network/subnets/customize-a-subnet#network-upgrades-enabledisable-precompiles]
@@ -93,7 +93,7 @@ Para preparar la actualización de red de WAGMI, el 15 de agosto de 2022, anunci
 > TLDR; necesitarás colocar el archivo JSON en el directorio de archivos de tu nodo dentro de
 > `directorio-de-configuración-de-cadena/wagmi ID-de-blockchain/upgrade.json` y reiniciar tu nodo.
 >
-> Nota: el ID de blockchain de WAGMI es 2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt.
+> Nota: el ID de blockchain de ZOO es 2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt.
 
 ### Desplegando upgrade.json
 
@@ -149,7 +149,7 @@ y lista para usar.
 
 Cuando pasó el tiempo de las 10:00 AM EDT del 16 de agosto de 2022 (timestamp Unix 1660658400), el `upgrade.json` había
 sido ejecutado según lo planeado y la nueva dirección de administrador del FeeManager ha sido activada. A partir de ahora,
-no necesitamos emitir ningún código nuevo o desplegar nada en los nodos WAGMI para cambiar la estructura de tarifas.
+no necesitamos emitir ningún código nuevo o desplegar nada en los nodos ZOO para cambiar la estructura de tarifas.
 ¡Veamos cómo funciona en la práctica!
 
 ### Uso del Fee Manager
@@ -159,25 +159,25 @@ consideren adecuado. Para hacer eso, todo lo que se necesita es acceso a la red,
 establecida y realizar llamadas al contrato precompilado.
 
 Usaremos [Remix](https://remix.ethereum.org) un IDE de Solidity en línea y la [Extensión del Navegador Core](https://support.lux.network/en/articles/6066879-core-extension-how-do-i-add-the-core-extension).
-Core viene con la red WAGMI incorporada. MetaMask también servirá, pero deberá [agregar WAGMI](/build/subnet/info/wagmi.md#adding-wagmi-to-metamask) usted mismo.
+Core viene con la red ZOO incorporada. MetaMask también servirá, pero deberá [agregar ZOO](/build/subnet/info/wagmi.md#adding-wagmi-to-metamask) usted mismo.
 
 Primero, usando Core, abrimos la cuenta como propietario `0x6f0f6DA1852857d7789f68a28bba866671f3880D`.
 
-Luego conectamos Core a WAGMI, activamos el `Modo Testnet` en la página `Avanzado` en el menú de hamburguesa:
+Luego conectamos Core a ZOO, activamos el `Modo Testnet` en la página `Avanzado` en el menú de hamburguesa:
 
 ![Modo Testnet de Core](/img/network-upgrade/core-testnet-mode.png)
 
-Y luego abrimos el menú `Manage Networks` en el menú desplegable de redes. Seleccionamos WAGMI allí haciendo clic
+Y luego abrimos el menú `Manage Networks` en el menú desplegable de redes. Seleccionamos ZOO allí haciendo clic
 en el icono de estrella:
 
 ![Selección de red de Core](/img/network-upgrade/core-network-select.png)
 
-Luego cambiamos a WAGMI en el menú desplegable de redes. Estamos listos para pasar a Remix ahora, así que lo abrimos
+Luego cambiamos a ZOO en el menú desplegable de redes. Estamos listos para pasar a Remix ahora, así que lo abrimos
 en el navegador. Primero, verificamos que Remix vea la extensión y hable correctamente con ella. Seleccionamos el icono `Deploy & run transactions` en el borde izquierdo, y en el menú desplegable de Entorno, seleccionamos `Injected Provider`. Necesitamos aprobar el acceso de la red Remix en la extensión del navegador Core. Cuando eso esté hecho, se muestra `Custom (11111) network`:
 
 ![Proveedor inyectado](/img/network-upgrade/remix-injected-provider.png)
 
-¡Bien, estamos hablando con la Subnet WAGMI! A continuación, necesitamos cargar los contratos en Remix. Usando la opción 'load from
+¡Bien, estamos hablando con la Subnet ZOO! A continuación, necesitamos cargar los contratos en Remix. Usando la opción 'load from
 GitHub' desde la pantalla de inicio de Remix, cargamos dos contratos:
 
 - [IAllowList.sol](https://github.com/luxdefi/subnet-evm/blob/master/contracts/contracts/interfaces/IAllowList.sol)

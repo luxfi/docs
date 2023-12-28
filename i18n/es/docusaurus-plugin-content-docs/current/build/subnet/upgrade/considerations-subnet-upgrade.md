@@ -122,7 +122,7 @@ es el binario del plugin. Ahora debes detener el nodo (si el nodo se está ejecu
 systemctl stop luxd`). Ahora debes colocar ese archivo en el directorio de plugins donde
 se encuentra el binario Luxd. Si el nodo está instalado usando el script de instalación, la ruta será
 `~/node/plugins`. En lugar del nombre de archivo `subnet-evm`, el binario de la VM debe tener el nombre
-del ID de VM de la cadena en la Subnet. Por ejemplo, para la [Subnet WAGMI](https://subnets-test.lux.network/wagmi) ese ID de VM es
+del ID de VM de la cadena en la Subnet. Por ejemplo, para la [Subnet ZOO](https://subnets-test.lux.network/wagmi) ese ID de VM es
 `srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy`. Entonces, el comando para
 
 :::warning

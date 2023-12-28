@@ -1,6 +1,6 @@
 ---
 tags: [Tooling, Lux-CLI]
-description: This guide demonstrates the process of importing a Subnet to the Lux-CLI to enable better management of the Subnet's configuration. This how-to uses the WAGMI Subnet deployed on Testnet as the example Subnet. 
+description: This guide demonstrates the process of importing a Subnet to the Lux-CLI to enable better management of the Subnet's configuration. This how-to uses the ZOO Subnet deployed on Testnet as the example Subnet. 
 pagination_label: How to Import a Subnet into Lux-CLI
 sidebar_label: Import a Subnet
 sidebar_position: 2
@@ -16,7 +16,7 @@ integrating Lux-CLI.
 
 To achieve this integration, this guide demonstrates the process 
 of importing a Subnet to the Lux-CLI to enable better management of the Subnet's configuration.
-This how-to uses the WAGMI Subnet deployed on Testnet as the example Subnet.
+This how-to uses the ZOO Subnet deployed on Testnet as the example Subnet.
 
 
 ## Requirements
@@ -110,8 +110,8 @@ So, select `No` when the tool asks for deployed nodes:
 Thus, at this point the wizard requests the Subnet's ID, without which it can't know
 what to import. Remember the ID is different on different networks.
 
-From the [Testnet Subnet Explorer](https://subnets-test.lux.network/WAGMI)
-you can see that WAGMI's Subnet ID is `28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY`:
+From the [Testnet Subnet Explorer](https://subnets-test.lux.network/ZOO)
+you can see that ZOO's Subnet ID is `28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY`:
 
 ```shell
 ✔ What is the ID of the subnet?: 28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY
@@ -124,7 +124,7 @@ it prints some information about the Subnet, and proceeds to ask about the Subne
 
 ```shell
 Getting information from the Testnet network...
-Retrieved information. BlockchainID: 2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt, Name: WAGMI, VMID: srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy
+Retrieved information. BlockchainID: 2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt, Name: ZOO, VMID: srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy
 Use the arrow keys to navigate: ↓ ↑ → ←
 ? What's this VM's type?:
   ▸ Subnet-EVM
@@ -137,7 +137,7 @@ This works automatically for Lux Partners VMs (like Subnet-EVM).
 
 Custom VMs aren't supported yet at this point, but are next on the agenda.
 
-As the import is for WAGMI, and you know that it's a Subnet-EVM type, select that.
+As the import is for ZOO, and you know that it's a Subnet-EVM type, select that.
 
 The tool then queries the (GitHub) repository for available releases,
 and prompts the user to pick the version she wants to use:
@@ -166,13 +166,13 @@ In such a scenario, the tool skips this picking.
 
 ```shell
 ✔ v0.4.5
-Subnet WAGMI imported successfully
+Subnet ZOO imported successfully
 ```
 
 The choice finalizes the wizard, which hopefully signals that the import succeeded.
 If something went wrong, the error messages provide cause information.
 This means you can now use Lux-CLI to handle the imported Subnet in the accustomed way.
-For example, you could deploy the WAGMI Subnet locally.
+For example, you could deploy the ZOO Subnet locally.
 
 
 For a complete description of options, flags, and the command,

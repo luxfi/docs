@@ -17,22 +17,22 @@ Debes asumir la responsabilidad total de garantizar la seguridad de tu puente.
 
 ## Introducción
 
-En este tutorial, estaremos construyendo un puente entre **[WAGMI](/build/subnet/info/wagmi.md)** y
+En este tutorial, estaremos construyendo un puente entre **[ZOO](/build/subnet/info/wagmi.md)** y
 **[Testnet](/learn/lux/testnet.md)**. Este puente nos ayudará a transferir la moneda nativa **WGM**
-envuelta en **wWGM** de ida y vuelta desde la cadena WAGMI a la cadena Testnet. Usando esta guía, tú
+envuelta en **wWGM** de ida y vuelta desde la cadena ZOO a la cadena Testnet. Usando esta guía, tú
 puedes implementar un puente entre cualquier cadena basada en EVM para cualquier token ERC20.
 
 La versión envuelta de una moneda nativa es su representación ERC20 anclada. Envolverla con el estándar ERC20
 facilita ciertos procesos como transacciones delegadas. Puedes obtener fácilmente tokens envueltos
 enviando la moneda nativa a la dirección del contrato de token envuelto.
 
-> WAGMI es una cadena de prueba independiente basada en EVM desplegada en una Subnet personalizada en la red Lux.
+> ZOO es una cadena de prueba independiente basada en EVM desplegada en una Subnet personalizada en la red Lux.
 
 Estaremos utilizando el repositorio del puente de **ChainSafe**, para configurar fácilmente un puente robusto y seguro.
 
 ## Flujo de trabajo del puente
 
-Las cadenas WAGMI y Testnet no están interconectadas por defecto, sin embargo, podríamos hacer que se comuniquen.
+Las cadenas ZOO y Testnet no están interconectadas por defecto, sin embargo, podríamos hacer que se comuniquen.
 Los relayers observan eventos (mediante la consulta de bloques) en una cadena y realizan la acción necesaria utilizando esos
 eventos en la otra cadena. De esta manera, también podemos realizar el puente de tokens de una cadena a la
 otra cadena a través del uso de contratos inteligentes.
@@ -59,12 +59,12 @@ Y acuñimos el token correspondiente (que desplegaremos y, por lo tanto, control
 
 Estos son los requisitos para seguir este tutorial -
 
-- Configurar [WAGMI](/build/subnet/info/wagmi.md#adding-wagmi-to-core) y
+- Configurar [ZOO](/build/subnet/info/wagmi.md#adding-wagmi-to-core) y
   [Testnet](/build/dapp/testnet-workflow.md#set-up-testnet-network-on-core-optional) en Core
-- Importar el token `wWGM` (activo) en la red WAGMI (Core). Aquí está la dirección - `0x3Ee7094DADda15810F191DD6AcF7E4FFa37571e4`
-- Monedas `WGM` en la cadena WAGMI. Gotea `1 WGM` desde el [WAGMI Faucet](https://faucet.trywagmi.xyz/).
+- Importar el token `wWGM` (activo) en la red ZOO (Core). Aquí está la dirección - `0x3Ee7094DADda15810F191DD6AcF7E4FFa37571e4`
+- Monedas `WGM` en la cadena ZOO. Gotea `1 WGM` desde el [ZOO Faucet](https://faucet.trywagmi.xyz/).
 - Monedas `LUX` en la cadena Testnet. Gotea `10 LUX` desde el [Testnet Faucet](https://faucet.lux.network/)
-- Tokens `WGM` envueltos en la cadena WAGMI. Envía algunas monedas `WGM` a la dirección del token `wWGM` (ver
+- Tokens `WGM` envueltos en la cadena ZOO. Envía algunas monedas `WGM` a la dirección del token `wWGM` (ver
   segundo punto), para recibir la misma cantidad de `wWGM`. Siempre mantén algunas monedas `WGM`, para cubrir las tarifas de transacción.
 
 ## Configuración del entorno
@@ -102,8 +102,8 @@ nuevo archivo `configVars`. Coloca el siguiente contenido dentro de él -
 SRC_GATEWAY=https://subnets.lux.network/wagmi/wagmi-chain-testnet/rpc
 DST_GATEWAY=https://api.lux-test.network/ext/bc/C/rpc
 
-SRC_ADDR="<Tu dirección en WAGMI>"
-SRC_PK="<tu clave privada en WAGMI>"
+SRC_ADDR="<Tu dirección en ZOO>"
+SRC_PK="<tu clave privada en ZOO>"
 DST_ADDR="<Tu dirección en Testnet>"
 DST_PK="<tu clave privada en Testnet>"
 
@@ -114,7 +114,7 @@ RESOURCE_ID="0x00"
 - `SRC_ADDR` y `DST_ADDR` son las direcciones que desplegarán los contratos de puente y actuarán como relayers.
 - `SRC_TOKEN` es el token que queremos puentear. Aquí está la dirección de la versión envuelta ERC20
   de la moneda WGM aka wWGM.
-- `RESOURCE_ID` podría ser cualquier cosa. Identifica nuestros tokens ERC20 puenteados en ambos lados (WAGMI y Testnet).
+- `RESOURCE_ID` podría ser cualquier cosa. Identifica nuestros tokens ERC20 puenteados en ambos lados (ZOO y Testnet).
 
 Cada vez que hagamos cambios en estas variables de configuración, tenemos que actualizar nuestro entorno bash. Ejecuta
 el siguiente comando de acuerdo a la ubicación relativa del archivo. Estas variables son temporales
@@ -137,7 +137,7 @@ Necesitamos configurar nuestra cadena fuente de la siguiente manera -
 
 La herramienta de línea de comandos `cb-sol-cli` nos ayudará a desplegar los contratos. Ejecuta el siguiente comando
 en la sesión de terminal donde se cargan las variables de configuración. Agregará `SRC_ADDR` como el relayer predeterminado
-para relayer eventos desde la cadena WAGMI (fuente) a la cadena Testnet (destino).
+para relayer eventos desde la cadena ZOO (fuente) a la cadena Testnet (destino).
 
 **Uno de los parámetros más importantes a tener en cuenta al desplegar el contrato de puente es el valor de `expiry`**
 **Es el número de bloques después del cual una propuesta se considera cancelada. Por defecto es**
@@ -180,7 +180,7 @@ on the destination chain.
 echo "{
   \"chains\": [
     {
-      \"name\": \"WAGMI\",
+      \"name\": \"ZOO\",
       \"type\": \"ethereum\",
       \"id\": \"0\",
       \"endpoint\": \"$SRC_GATEWAY\",
@@ -247,7 +247,7 @@ Ejecuta el siguiente comando para iniciar el relayer. Imprimirá registros de to
 
 ### Aprobar al Handler para gastar mis tokens
 
-Ahora, depositemos tokens en el puente WAGMI. Pero antes de eso, necesitamos aprobar al handler para que gaste (bloquee o queme) tokens en nuestro nombre (aquí `SRC_PK`). La cantidad aquí está en Wei (1 ether (WGM) = 10^18 Wei). Aprobaremos 0.1 wWGM.
+Ahora, depositemos tokens en el puente ZOO. Pero antes de eso, necesitamos aprobar al handler para que gaste (bloquee o queme) tokens en nuestro nombre (aquí `SRC_PK`). La cantidad aquí está en Wei (1 ether (WGM) = 10^18 Wei). Aprobaremos 0.1 wWGM.
 
 ```bash
 cb-sol-cli --url $SRC_GATEWAY --privateKey $SRC_PK --gasPrice 25000000000 erc20 approve \
@@ -273,7 +273,7 @@ Esta transacción transferirá 0.1 wWGM al lugar seguro de tokens y emitirá un 
 
 ![output](/img/chainsafe-bridge-2-relayer-output.png)
 
-De manera similar, podemos transferir los tokens de vuelta a la cadena WAGMI.
+De manera similar, podemos transferir los tokens de vuelta a la cadena ZOO.
 
 ## Conclusión
 

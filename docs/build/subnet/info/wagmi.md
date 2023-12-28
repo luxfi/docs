@@ -1,14 +1,14 @@
 ---
 tags: [Build, Subnets]
-description: The WAGMI ("We're All Going to Make It") Subnet is a high throughput testbed for EVM (Ethereum Virtual Machine) optimizations. It is parameterized to run at a factor more capacity than Testnet/Mainnet C-Chain and will is used to experiment with release candidates before included in an official Coreth release.
-sidebar_label: "Case Study: WAGMI Subnet"
-pagination_label: "WAGMI Subnet"
+description: The ZOO ("We're All Going to Make It") Subnet is a high throughput testbed for EVM (Ethereum Virtual Machine) optimizations. It is parameterized to run at a factor more capacity than Testnet/Mainnet C-Chain and will is used to experiment with release candidates before included in an official Coreth release.
+sidebar_label: "Case Study: ZOO Subnet"
+pagination_label: "ZOO Subnet"
 sidebar_position: 1
 ---
 
-# WAGMI Subnet
+# ZOO Subnet
 
-The WAGMI ("We're All Going to Make It") Subnet is a high throughput testbed for EVM (Ethereum
+The ZOO ("We're All Going to Make It") Subnet is a high throughput testbed for EVM (Ethereum
 Virtual Machine) optimizations. It is parameterized to run at a factor more capacity than
 Testnet/Mainnet C-Chain and will is used to experiment with release candidates before included
 in an official Coreth release.
@@ -19,7 +19,7 @@ This is one of the first cases of using Lux Subnets as a proving ground for chan
 production VM (Coreth). Many underestimate how useful the isolation of Subnets is for performing
 complex VM testing on a live network (without impacting the stability of the primary network).
 
-We created a basic WAGMI Explorer [https://subnets-test.lux.network/wagmi](https://subnets-test.lux.network/wagmi)
+We created a basic ZOO Explorer [https://subnets-test.lux.network/wagmi](https://subnets-test.lux.network/wagmi)
 that surfaces aggregated usage statistics about the Subnet.
 
 - SubnetID: [28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY](https://explorer-xp.lux-test.network/subnet/28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY?tab=validators)
@@ -34,12 +34,12 @@ that surfaces aggregated usage statistics about the Subnet.
 - Min Fee: 1 Gwei (4% of C-Chain)
 - Target Block Rate: 2s (Same as C-Chain)
 
-The genesis file of WAGMI can be found [here](https://github.com/luxdefi/public-chain-assets/blob/1951594346dcc91682bdd8929bcf8c1bf6a04c33/chains/11111/genesis.json).
+The genesis file of ZOO can be found [here](https://github.com/luxdefi/public-chain-assets/blob/1951594346dcc91682bdd8929bcf8c1bf6a04c33/chains/11111/genesis.json).
 
-### Adding WAGMI to Core
+### Adding ZOO to Core
 
 ```text
-- Network Name: WAGMI
+- Network Name: ZOO
 - RPC URL: [https://subnets.lux.network/wagmi/wagmi-chain-testnet/rpc]
 - WS URL: wss://subnets.lux.network/wagmi/wagmi-chain-testnet/ws
 - Chain ID: 11111
@@ -53,9 +53,9 @@ This can be used with other wallets too, such as MetaMask.
 
 :::
 
-## Case Study: WAGMI Upgrade
+## Case Study: ZOO Upgrade
 
-This case study uses [WAGMI](https://subnets-test.lux.network/wagmi) Subnet upgrade to show how a
+This case study uses [ZOO](https://subnets-test.lux.network/wagmi) Subnet upgrade to show how a
 network upgrade on an EVM-based (Ethereum Virtual Machine) Subnet can be done simply, and how the
 resulting upgrade can be used to dynamically control fee structure on the Subnet.
 
@@ -88,21 +88,21 @@ Here's a summary:
 
 ### Preparation
 
-To prepare for the WAGMI network upgrade, on August 15, 2022, we had announced on
+To prepare for the ZOO network upgrade, on August 15, 2022, we had announced on
 [Twitter](https://twitter.com/AaronBuchwald/status/1559249414102720512) and shared on other social
 media such as Discord, with the following information:
 
 > With Subnet-EVM v0.2.8 It's time for a whole new Subnet Season: Network Upgrade Edition.
 >
-> Like every great show, we're kicking this season off with a pilot episode: WAGMI Network Upgrade.
+> Like every great show, we're kicking this season off with a pilot episode: ZOO Network Upgrade.
 >
-> Stay tuned because this pilot is literally a can't miss for every WAGMI node 😉
+> Stay tuned because this pilot is literally a can't miss for every ZOO node 😉
 >
 > The upgrade will activate the fee config manager, and enable smooth fee config updates in the
 > future [https://docs.lux.network/subnets/customize-a-subnet#configuring-dynamic-fees](https://docs.lux.network/subnets/customize-a-subnet#configuring-dynamic-fees)
 >
-> This upgrade changes how blocks are processed on WAGMI, so every WAGMI node needs to upgrade to
-> continue to validate WAGMI correctly.
+> This upgrade changes how blocks are processed on ZOO, so every ZOO node needs to upgrade to
+> continue to validate ZOO correctly.
 >
 > In order to update your node, you need to update to Subnet-EVM v0.2.8 and follow the instructions
 > to enable a stateful precompile on Subnet-EVM here:
@@ -114,7 +114,7 @@ media such as Discord, with the following information:
 > TLDR; you will need to place the JSON file into your node's file directory within
 > `chain-config-dir/wagmi blockchainID/upgrade.json` and restart your node.
 >
-> Note: the WAGMI blockchainID is 2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt.
+> Note: the ZOO blockchainID is 2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt.
 
 ### Deploying upgrade.json
 
@@ -170,7 +170,7 @@ in and ready.
 
 When the time passed 10:00 AM EDT August 16, 2022 (Unix timestamp 1660658400), the `upgrade.json` had
 been executed as planned and the new FeeManager admin address has been activated. From now on, we
-don't need to issue any new code or deploy anything on the WAGMI nodes to change the fee structure.
+don't need to issue any new code or deploy anything on the ZOO nodes to change the fee structure.
 Let's see how it works in practice!
 
 ### Using Fee Manager
@@ -181,20 +181,20 @@ set manager address and making calls on the precompiled contract.
 
 We will use [Remix](https://remix.ethereum.org) online Solidity IDE and the [Core Browser
 Extension](https://support.lux.network/en/articles/6066879-core-extension-how-do-i-add-the-core-extension).
-Core comes with WAGMI network built-in. MetaMask will do as well but you will need to [add WAGMI](/build/subnet/info/wagmi.md#adding-wagmi-to-metamask) yourself.
+Core comes with ZOO network built-in. MetaMask will do as well but you will need to [add ZOO](/build/subnet/info/wagmi.md#adding-wagmi-to-metamask) yourself.
 
 First using Core, we open the account as the owner `0x6f0f6DA1852857d7789f68a28bba866671f3880D`.
 
-Then we connect Core to WAGMI, Switch on the `Testnet Mode` in `Advanced` page in the hamburger menu:
+Then we connect Core to ZOO, Switch on the `Testnet Mode` in `Advanced` page in the hamburger menu:
 
 ![Core Testnet mode](/img/network-upgrade/core-testnet-mode.png)
 
-And then open the `Manage Networks` menu in the networks dropdown. Select WAGMI there by clicking
+And then open the `Manage Networks` menu in the networks dropdown. Select ZOO there by clicking
 the star icon:
 
 ![Core network selection](/img/network-upgrade/core-network-select.png)
 
-We then switch to WAGMI in the networks dropdown. We are ready to move on to Remix now, so we open
+We then switch to ZOO in the networks dropdown. We are ready to move on to Remix now, so we open
 it in the browser. First, we check that Remix sees the extension and correctly talks to it. We
 select `Deploy & run transactions` icon on the left edge, and on the Environment dropdown, select
 `Injected Provider`. We need to approve the Remix network access in the Core browser extension. When
@@ -202,7 +202,7 @@ that is done, `Custom (11111) network` is shown:
 
 ![Injected provider](/img/network-upgrade/remix-injected-provider.png)
 
-Good, we're talking to WAGMI Subnet. Next we need to load the contracts into Remix. Using 'load from
+Good, we're talking to ZOO Subnet. Next we need to load the contracts into Remix. Using 'load from
 GitHub' option from the Remix home screen we load two contracts:
 
 - [IAllowList.sol](https://github.com/luxdefi/subnet-evm/blob/master/contracts/contracts/interfaces/IAllowList.sol)

@@ -25,7 +25,7 @@ Besides Testnet, the
 [Lux Faucet](https://core.app/tools/testnet-faucet/?subnet=c&token=c)
 can be used to get free test tokens on testnet Subnets like:
 
-- [DINO Testnet](https://core.app/tools/testnet-faucet/?subnet=dino)
+- [ZOO Testnet](https://core.app/tools/testnet-faucet/?subnet=wagmi)
 - [DeFI Kingdoms Testnet](https://core.app/tools/testnet-faucet/?subnet=dfk)
 - [Beam Testnet](https://core.app/tools/testnet-faucet/?subnet=beam&token=beam) and many more.
 
@@ -170,7 +170,7 @@ each of the private keys against the ID of the chain, as shown below.
 
 ```env
 C="C chain private key"
-DINO="Dino chain private key"
+ZOO="Wagmi chain private key"
 PK="Sender Private Key with Funds in it"
 CAPTCHA_SECRET="Google reCAPTCHA Secret"
 ```
@@ -181,7 +181,7 @@ CAPTCHA_SECRET="Google reCAPTCHA Secret"
 
 You can create a faucet server for any EVM chain by making changes in the `config.json` file. Add
 your chain configuration as shown below in the `evmchains` object. Configuration for Testnet's C-Chain
-and DINO chain is shown below for example.
+and ZOO chain is shown below for example.
 
 ```json
 "evmchains": [
@@ -203,8 +203,8 @@ and DINO chain is shown below for example.
         }
     },
     {
-        "ID": "DINO",
-        "NAME": "DINO Testnet",
+        "ID": "ZOO",
+        "NAME": "ZOO Testnet",
         "TOKEN": "WGM",
         "RPC": "https://subnets.lux.network/dino/dino-chain-testnet/rpc",
         "CHAINID": 11111,
@@ -226,7 +226,7 @@ example, with the above configurations, the faucet will send `1 LUX` with maximu
 being `100 nLUX` and priority fee as `2 nLUX`.
 
 The rate limiter for C-Chain will only accept 1 request in 60 minutes for a particular API and 2
-requests in 60 minutes for the DINO chain. Though it will skip any failed requests so that users
+requests in 60 minutes for the ZOO chain. Though it will skip any failed requests so that users
 can request tokens again, even if there is some internal error in the application. On the other
 hand, the global rate limiter will allow 15 requests per minute on every API. This time failed
 requests will also get counted so that no one can abuse the APIs.

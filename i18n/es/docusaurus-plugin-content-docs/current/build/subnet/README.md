@@ -46,5 +46,5 @@ Las Subnets de Lux son un subconjunto de validadores de la red primaria de Lux q
 | Más                                                                                       |     |
 | :---------------------------------------------------------------------------------------- | --- |
 | [**Comandos de Subnet Lux-CLI**](/tooling/cli.md)                         |
-| [**Estudio de caso: Subnet WAGMI**](build/subnet/info/wagmi.md)                           |
+| [**Estudio de caso: Subnet ZOO**](build/subnet/info/wagmi.md)                           |
 | [**Solución de problemas de implementaciones**](build/subnet/info/troubleshoot-subnet.md) |

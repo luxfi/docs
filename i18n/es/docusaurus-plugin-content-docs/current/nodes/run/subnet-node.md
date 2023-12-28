@@ -107,7 +107,7 @@ git clone https://github.com/luxdefi/subnet-evm.git
 
 En el directorio de Subnet-EVM, ejecutar el script de construcción y guardarlo en la carpeta "plugins" de su
 directorio de datos `.luxd`. Nombre el complemento con el `VMID` de la Subnet que desea rastrear.
-El `VMID` de la Subnet WAGMI es el valor que comienza con "srEX...".
+El `VMID` de la Subnet ZOO es el valor que comienza con "srEX...".
 
 ```bash
 cd $GOPATH/src/github.com/luxdefi/subnet-evm
@@ -130,7 +130,7 @@ del Subnet Explorer.
 ### 3. Especificar el Complemento con un Config.json
 
 Cree un archivo llamado `config.json` y agregue un campo `track-subnets` que esté poblado con el
-`SubnetID` que desea rastrear. El `SubnetID` de la Subnet WAGMI es el valor que comienza con
+`SubnetID` que desea rastrear. El `SubnetID` de la Subnet ZOO es el valor que comienza con
 "28nr...".
 
 ```bash
@@ -150,7 +150,7 @@ cd $GOPATH/src/github.com/luxdefi/luxd
 ./build/luxd --config-file ~/.luxd/config.json --network-id=testnet
 ```
 
-Nota: El comando anterior incluye el comando `--network-id=testnet` porque la Subnet WAGMI está desplegada
+Nota: El comando anterior incluye el comando `--network-id=testnet` porque la Subnet ZOO está desplegada
 en la Testnet.
 
 <details>
