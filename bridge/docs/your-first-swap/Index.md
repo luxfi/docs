@@ -20,17 +20,15 @@ These guides help you swap from networks to exchanges effortlessly. The general 
 
 **Note**: For transfers from Loopring or ImmutableX, please refer to specific guides for a seamless experience.
 
+### [Lux Bridge from Loopring]()
+![Loopring Logo](loopring-logo.png)
+
+### [Lux Bridge from Immutable X]()
+![Immutable Logo](immutable-logo.png)
+
 ### Confirmation
 - **Transaction Completion**: After the transaction, a confirmation note will appear indicating the successful swap.
 
 **Need Help?**
 - Feel free to contact us on [Discord](#) for assistance!
 ```
-
-This markdown format presents a concise, step-by-step guide for transferring assets to CEXes using Lux Bridge, with placeholders for images to visually aid each step.
-### [Lux Bridge from Loopring](https://braavos.app/)
-![Braavos Wallet Logo](braavoswallet-logo.png)
-The Braavos users are redirected to Lux for depositing funds to the wallet from CEXes and other chains.
-
-### [Lux Bridge from Immutable X](https://token.im/)
-![imToken Logo](imtoken-logo.png)
