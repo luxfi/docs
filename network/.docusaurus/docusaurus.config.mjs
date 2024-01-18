@@ -138,7 +138,7 @@ export default {
           ]
         },
         "theme": {
-          "customCss": "/Users/z/work/lux/docs/src/css/custom.css"
+          "customCss": "/Users/z/work/lux/docs/network/src/css/custom.css"
         },
         "googleTagManager": {
           "containerId": "GTM-PLV38BFX"
