@@ -21,7 +21,7 @@ These guides help you swap from networks to exchanges effortlessly. The general 
 **Note**: For transfers from Loopring or ImmutableX, please refer to specific guides for a seamless experience.
 
 ### [Lux Bridge from Loopring]()
-![Loopring Logo](../../static/img/loopring-logo.png)
+![Loopring Logo](../../../static/img/loopring-logo.png)
 
 ### [Lux Bridge from Immutable X]()
 ![Immutable Logo](/img/immutable-logo.png)
