@@ -5,7 +5,7 @@ Lux Bridge is actively collaborating with various decentralized exchanges (DEXes
 ## How to Partner with Us?
 
 ### Partnership Inquiries
-Interested in collaborating or integrating with us? Please [fill in this form](#) to connect with the Lux team.
+Interested in collaborating or integrating with us? Please email partnerships@lux.network
 
 ### API Integration
 Our Lux Bridge SDK is crafted for smooth integration, offering extensive customizations tailored to the needs and objectives of our partners. Discover how Lux Bridge can enhance your Web3 project:
@@ -16,7 +16,7 @@ Our Lux Bridge SDK is crafted for smooth integration, offering extensive customi
 #### Lux Bridge Integrations
 Lux Bridge proudly partners with a variety of Web3 projects. Some notable examples include:
 
-### [Immutablex](https://www.immutable.com/)
+### [Immutable X](https://www.immutable.com/)
 ![ImmutableX Logo](immutablex-logo.png)
 Lux is integrated with Immutable Core SDK allowing gamers and traders to easily move funds to ImmutableX.
 
