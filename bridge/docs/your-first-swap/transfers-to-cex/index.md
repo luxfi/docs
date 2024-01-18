@@ -21,10 +21,10 @@ These guides help you swap from networks to exchanges effortlessly. The general 
 **Note**: For transfers from Loopring or ImmutableX, please refer to specific guides for a seamless experience.
 
 ### [Lux Bridge from Loopring]()
-![Loopring Logo](loopring-logo.png)
+![Loopring Logo](/img/loopring-logo.png)
 
 ### [Lux Bridge from Immutable X]()
-![Immutable Logo](immutable-logo.png)
+![Immutable Logo](/img/immutable-logo.png)
 
 ### Confirmation
 - **Transaction Completion**: After the transaction, a confirmation note will appear indicating the successful swap.
