@@ -1,0 +1,43 @@
+{
+  "id": "build/dapp/advanced/adjusting-gas-price-during-high-network-activity",
+  "title": "Adjusting Gas Price During High Network Activity",
+  "description": "This tutorial will help users to adjust their priority fee and max fee cap during high network activity and take advantage of the benefits of dynamic fee transactions.",
+  "source": "@site/docs/build/dapp/advanced/adjusting-gas-price-during-high-network-activity.md",
+  "sourceDirName": "build/dapp/advanced",
+  "slug": "/build/dapp/advanced/adjusting-gas-price-during-high-network-activity",
+  "permalink": "/build/dapp/advanced/adjusting-gas-price-during-high-network-activity",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/advanced/adjusting-gas-price-during-high-network-activity.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Dapps",
+      "permalink": "/tags/dapps"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 0,
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Dapps"
+    ],
+    "description": "This tutorial will help users to adjust their priority fee and max fee cap during high network activity and take advantage of the benefits of dynamic fee transactions.",
+    "sidebar_label": "Manually Adjust Gas Price",
+    "pagination_label": "Adjusting Gas Price During High Network Activity",
+    "sidebar_position": 0
+  },
+  "sidebar": "build-dapp",
+  "previous": {
+    "title": "Interact with a Solidity Smart Contract from a Go Application",
+    "permalink": "/build/dapp/smart-contracts/abigen"
+  },
+  "next": {
+    "title": "Sending Transactions with Dynamic Fees using JavaScript",
+    "permalink": "/build/dapp/advanced/sending-transactions-with-dynamic-fees-using-javascript"
+  }
+}

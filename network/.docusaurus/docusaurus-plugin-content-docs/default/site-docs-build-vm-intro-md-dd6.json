@@ -1,0 +1,41 @@
+{
+  "id": "build/vm/intro",
+  "title": "Introduction to Virtual Machines",
+  "description": "A Virtual Machine is a blueprint for a blockchain. VMs can define anything you want, but will generally define transactions that are executed and how blocks are created.",
+  "source": "@site/docs/build/vm/intro.md",
+  "sourceDirName": "build/vm",
+  "slug": "/build/vm/intro",
+  "permalink": "/build/vm/intro",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/vm/intro.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Virtual Machines",
+      "permalink": "/tags/virtual-machines"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Virtual Machines"
+    ],
+    "description": "A Virtual Machine is a blueprint for a blockchain. VMs can define anything you want, but will generally define transactions that are executed and how blocks are created.",
+    "sidebar_label": "Introduction to VMs",
+    "pagination_label": "Introduction to Virtual Machines"
+  },
+  "sidebar": "build-vm",
+  "previous": {
+    "title": "Virtual Machines Quick Links",
+    "permalink": "/build/vm/"
+  },
+  "next": {
+    "title": "Build a Simple VM From Scratch",
+    "permalink": "/build/vm/create/any-lang-vm"
+  }
+}

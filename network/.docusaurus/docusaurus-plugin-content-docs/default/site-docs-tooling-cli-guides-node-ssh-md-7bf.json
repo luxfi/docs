@@ -1,0 +1,43 @@
+{
+  "id": "tooling/cli-guides/node-ssh",
+  "title": "Execute a SSH command on a Cluster",
+  "description": "This page demonstrates how to execute a SSH command on all nodes of a Cluster using the Lux-CLI.",
+  "source": "@site/docs/tooling/cli-guides/node-ssh.md",
+  "sourceDirName": "tooling/cli-guides",
+  "slug": "/tooling/cli-guides/node-ssh",
+  "permalink": "/tooling/cli-guides/node-ssh",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/cli-guides/node-ssh.md",
+  "tags": [
+    {
+      "label": "Tooling",
+      "permalink": "/tags/tooling"
+    },
+    {
+      "label": "Lux-CLI",
+      "permalink": "/tags/lux-cli"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 9,
+  "frontMatter": {
+    "tags": [
+      "Tooling",
+      "Lux-CLI"
+    ],
+    "description": "This page demonstrates how to execute a SSH command on all nodes of a Cluster using the Lux-CLI.",
+    "pagination_label": "Execute a SSH command on all nodes of a Cluster.",
+    "sidebar_label": "Execute a SSH command on a Cluster",
+    "sidebar_position": 9
+  },
+  "sidebar": "tooling",
+  "previous": {
+    "title": "Setup a Devnet of Cloud-Based validators using Lux-CLI",
+    "permalink": "/tooling/cli-guides/setup-a-devnet"
+  },
+  "next": {
+    "title": "LuxJS",
+    "permalink": "/tooling/luxjs-overview"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "nodes/run/third-party/aws-node",
+  "title": "Run a Lux Node with Amazon Web Services (AWS)",
+  "description": "This tutorial will guide you through setting up a Lux node on Amazon Web Services (AWS). Cloud services like AWS are a good way to ensure that your node is highly secure, available, and accessible.",
+  "source": "@site/docs/nodes/run/third-party/aws-node.md",
+  "sourceDirName": "nodes/run/third-party",
+  "slug": "/nodes/run/third-party/aws-node",
+  "permalink": "/nodes/run/third-party/aws-node",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/run/third-party/aws-node.md",
+  "tags": [
+    {
+      "label": "Nodes",
+      "permalink": "/tags/nodes"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 0,
+  "frontMatter": {
+    "tags": [
+      "Nodes"
+    ],
+    "description": "This tutorial will guide you through setting up a Lux node on Amazon Web Services (AWS). Cloud services like AWS are a good way to ensure that your node is highly secure, available, and accessible.",
+    "sidebar_label": "Amazon Web Services",
+    "pagination_label": "Run a Lux Node with Amazon Web Services",
+    "sidebar_position": 0
+  },
+  "sidebar": "nodes",
+  "previous": {
+    "title": "Run a Subnet Node",
+    "permalink": "/nodes/run/subnet-node"
+  },
+  "next": {
+    "title": "Run a Lux Node with Amazon Web Services with one click",
+    "permalink": "/nodes/run/third-party/aws-marketplace-one-click"
+  }
+}

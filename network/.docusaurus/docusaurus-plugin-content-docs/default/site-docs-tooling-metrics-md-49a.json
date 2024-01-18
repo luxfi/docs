@@ -1,0 +1,39 @@
+{
+  "id": "tooling/metrics",
+  "title": "Metrics API",
+  "description": "Power your analytics with Lux Metrics API such as Subnet usage, staking operations, and more.",
+  "source": "@site/docs/tooling/metrics.md",
+  "sourceDirName": "tooling",
+  "slug": "/tooling/metrics",
+  "permalink": "/tooling/metrics",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/metrics.md",
+  "tags": [
+    {
+      "label": "Tooling",
+      "permalink": "/tags/tooling"
+    },
+    {
+      "label": "Metrics API",
+      "permalink": "/tags/metrics-api"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "Tooling",
+      "Metrics API"
+    ],
+    "description": "Power your analytics with Lux Metrics API such as Subnet usage, staking operations, and more."
+  },
+  "sidebar": "tooling",
+  "previous": {
+    "title": "Glacier API",
+    "permalink": "/tooling/glacier"
+  },
+  "next": {
+    "title": "Luxd Install Script",
+    "permalink": "/tooling/luxd-installer"
+  }
+}

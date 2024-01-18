@@ -1,0 +1,47 @@
+{
+  "id": "learn/lux/lux",
+  "title": "LUX",
+  "description": "LUX is the limited-supply token of the Lux network, used to cover fees, enhance security via staking, and facilitate transactions across its various Subnets.",
+  "source": "@site/docs/learn/lux/lux.md",
+  "sourceDirName": "learn/lux",
+  "slug": "/learn/lux/",
+  "permalink": "/learn/lux/",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/learn/lux/lux.md",
+  "tags": [
+    {
+      "label": "Lux",
+      "permalink": "/tags/lux"
+    },
+    {
+      "label": "Tokenomics",
+      "permalink": "/tags/tokenomics"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "Lux",
+      "Tokenomics"
+    ],
+    "description": "LUX is the limited-supply token of the Lux network, used to cover fees, enhance security via staking, and facilitate transactions across its various Subnets.",
+    "keywords": [
+      "documentation",
+      "lux",
+      "lux token",
+      "tokenomics",
+      "lux utility"
+    ],
+    "sidebar_label": "LUX Token"
+  },
+  "sidebar": "learn",
+  "previous": {
+    "title": "Lux Consensus",
+    "permalink": "/learn/lux/consensus"
+  },
+  "next": {
+    "title": "Subnets",
+    "permalink": "/learn/lux/subnets-overview"
+  }
+}

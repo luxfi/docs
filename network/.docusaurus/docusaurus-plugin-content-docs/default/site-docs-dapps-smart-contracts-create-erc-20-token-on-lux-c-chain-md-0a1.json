@@ -1,0 +1,17 @@
+{
+  "id": "dapps/smart-contracts/create-erc-20-token-on-lux-c-chain",
+  "title": "Create an ERC-20 Token Using Solidity",
+  "description": "ERC-20 tokens are the most fundamental and essential concept in Ethereum. This same token standard is adopted in the Lux ecosystem.",
+  "source": "@site/docs/dapps/smart-contracts/create-erc-20-token-on-lux-c-chain.md",
+  "sourceDirName": "dapps/smart-contracts",
+  "slug": "/dapps/smart-contracts/create-erc-20-token-on-lux-c-chain",
+  "permalink": "/dapps/smart-contracts/create-erc-20-token-on-lux-c-chain",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/dapps/smart-contracts/create-erc-20-token-on-lux-c-chain.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "description": "ERC-20 tokens are the most fundamental and essential concept in Ethereum. This same token standard is adopted in the Lux ecosystem."
+  }
+}

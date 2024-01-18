@@ -1,0 +1,43 @@
+{
+  "id": "tooling/cli-guides/run-with-docker",
+  "title": "How to Run Lux-CLI with Docker",
+  "description": "This guide demonstrates how to run Lux-CLI in a docker container.",
+  "source": "@site/docs/tooling/cli-guides/run-with-docker.md",
+  "sourceDirName": "tooling/cli-guides",
+  "slug": "/tooling/cli-guides/run-with-docker",
+  "permalink": "/tooling/cli-guides/run-with-docker",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/cli-guides/run-with-docker.md",
+  "tags": [
+    {
+      "label": "Tooling",
+      "permalink": "/tags/tooling"
+    },
+    {
+      "label": "Lux-CLI",
+      "permalink": "/tags/lux-cli"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "tags": [
+      "Tooling",
+      "Lux-CLI"
+    ],
+    "description": "This guide demonstrates how to run Lux-CLI in a docker container.",
+    "pagination_label": "How to Run Lux-CLI with Docker",
+    "sidebar_label": "Run with Docker",
+    "sidebar_position": 1
+  },
+  "sidebar": "tooling",
+  "previous": {
+    "title": "Install Lux-CLI",
+    "permalink": "/tooling/cli-guides/install-cli"
+  },
+  "next": {
+    "title": "How to Import a Subnet into Lux-CLI",
+    "permalink": "/tooling/cli-guides/import-subnet"
+  }
+}

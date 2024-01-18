@@ -1,0 +1,35 @@
+{
+  "id": "tooling/ops",
+  "title": "Lux Ops",
+  "description": "Lux Ops is a suite of commands that enables you to launch and configure network infrastructure (virtual machines or cloud instances) and installs Lux nodes from scratch allowing for various configuration requirements. It provisions all resources required to run a node or network with recommended setups (configurable). This tool is intended for quickly creating, testing and iterating over various Lux network infrastructure configurations for testing and simulation purposes. Use this to play with various setups and reproduce potential problems and issues with possible configurations.",
+  "source": "@site/docs/tooling/ops.md",
+  "sourceDirName": "tooling",
+  "slug": "/tooling/ops",
+  "permalink": "/tooling/ops",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/ops.md",
+  "tags": [
+    {
+      "label": "Tooling",
+      "permalink": "/tags/tooling"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "Tooling"
+    ],
+    "description": "Lux Ops is a suite of commands that enables you to launch and configure network infrastructure (virtual machines or cloud instances) and installs Lux nodes from scratch allowing for various configuration requirements. It provisions all resources required to run a node or network with recommended setups (configurable). This tool is intended for quickly creating, testing and iterating over various Lux network infrastructure configurations for testing and simulation purposes. Use this to play with various setups and reproduce potential problems and issues with possible configurations.",
+    "pagination_label": "Lux Ops"
+  },
+  "sidebar": "tooling",
+  "previous": {
+    "title": "Lux Plugin Manager",
+    "permalink": "/tooling/plugin-manager"
+  },
+  "next": {
+    "title": "Luxd Install Script",
+    "permalink": "/tooling/luxd-postman-collection/setup"
+  }
+}

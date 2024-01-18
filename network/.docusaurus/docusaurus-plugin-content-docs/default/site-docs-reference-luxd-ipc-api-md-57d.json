@@ -1,0 +1,36 @@
+{
+  "id": "reference/luxd/ipc-api",
+  "title": "IPC API",
+  "description": "This page is an overview of the IPC API associated with Luxd.",
+  "source": "@site/docs/reference/luxd/ipc-api.md",
+  "sourceDirName": "reference/luxd",
+  "slug": "/reference/luxd/ipc-api",
+  "permalink": "/reference/luxd/ipc-api",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/luxd/ipc-api.md",
+  "tags": [
+    {
+      "label": "Luxd APIs",
+      "permalink": "/tags/luxd-ap-is"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "Luxd APIs"
+    ],
+    "description": "This page is an overview of the IPC API associated with Luxd.",
+    "sidebar_label": "IPC API",
+    "pagination_label": "IPC API"
+  },
+  "sidebar": "reference",
+  "previous": {
+    "title": "Info API",
+    "permalink": "/reference/luxd/info-api"
+  },
+  "next": {
+    "title": "Keystore API",
+    "permalink": "/reference/luxd/keystore-api"
+  }
+}

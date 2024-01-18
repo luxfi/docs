@@ -1,0 +1,36 @@
+{
+  "id": "reference/subnet-evm/api",
+  "title": "Subnet-EVM API",
+  "description": "This page is an overview of the Subnet-EVM API associated with Luxd.",
+  "source": "@site/docs/reference/subnet-evm/api.md",
+  "sourceDirName": "reference/subnet-evm",
+  "slug": "/reference/subnet-evm/api",
+  "permalink": "/reference/subnet-evm/api",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/subnet-evm/api.md",
+  "tags": [
+    {
+      "label": "Subnet-EVM",
+      "permalink": "/tags/subnet-evm"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "Subnet-EVM"
+    ],
+    "description": "This page is an overview of the Subnet-EVM API associated with Luxd.",
+    "sidebar_label": "API",
+    "pagination_label": "Subnet-EVM API"
+  },
+  "sidebar": "reference",
+  "previous": {
+    "title": "Metrics API",
+    "permalink": "/reference/luxd/metrics-api"
+  },
+  "next": {
+    "title": "Lux Network Protocol",
+    "permalink": "/reference/standards/network-protocol"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "nodes/maintain/upgrade-your-avalanchego-node",
+  "title": "Upgrade Your Luxd Node",
+  "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.",
+  "source": "@site/docs/nodes/maintain/upgrade-your-avalanchego-node.md",
+  "sourceDirName": "nodes/maintain",
+  "slug": "/nodes/maintain/upgrade-your-avalanchego-node",
+  "permalink": "/nodes/maintain/upgrade-your-avalanchego-node",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/maintain/upgrade-your-avalanchego-node.md",
+  "tags": [
+    {
+      "label": "Nodes",
+      "permalink": "/tags/nodes"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "tags": [
+      "Nodes"
+    ],
+    "description": "This tutorial demonstrates how to set up infrastructure to monitor an instance of Luxd.",
+    "sidebar_label": "Upgrade",
+    "pagination_label": "Upgrade Your Luxd Node",
+    "sidebar_position": 3
+  },
+  "sidebar": "nodes",
+  "previous": {
+    "title": "Upgrade Your Luxd Node",
+    "permalink": "/nodes/maintain/upgrade-your-luxd-node"
+  },
+  "next": {
+    "title": "Reduce a Node's Disk Space: Run C-Chain Offline Pruning",
+    "permalink": "/nodes/maintain/run-offline-pruning"
+  }
+}

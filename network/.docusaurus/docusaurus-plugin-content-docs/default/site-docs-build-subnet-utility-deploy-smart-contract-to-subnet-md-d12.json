@@ -1,0 +1,43 @@
+{
+  "id": "build/subnet/utility/deploy-smart-contract-to-subnet",
+  "title": "Deploy a Smart Contract on Your Subnet-EVM Using Remix and Core",
+  "description": "This tutorial demonstrates the process of deploying a smart contract to an EVM-based Subnet.",
+  "source": "@site/docs/build/subnet/utility/deploy-smart-contract-to-subnet.md",
+  "sourceDirName": "build/subnet/utility",
+  "slug": "/build/subnet/utility/deploy-smart-contract-to-subnet",
+  "permalink": "/build/subnet/utility/deploy-smart-contract-to-subnet",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/utility/deploy-smart-contract-to-subnet.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Subnets",
+      "permalink": "/tags/subnets"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 0,
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Subnets"
+    ],
+    "description": "This tutorial demonstrates the process of deploying a smart contract to an EVM-based Subnet.",
+    "sidebar_label": "Deploy a Smart Contract",
+    "pagination_label": "Deploy a Smart Contract on Your Subnet-EVM Using Remix and Core",
+    "sidebar_position": 0
+  },
+  "sidebar": "build-subnet",
+  "previous": {
+    "title": "How to Use Lux-CLI to Transfer P-Chain Funds",
+    "permalink": "/build/subnet/maintain/how-to-transfer-funds"
+  },
+  "next": {
+    "title": "Lux Subnet Faucet",
+    "permalink": "/build/subnet/utility/subnet-faucet"
+  }
+}
