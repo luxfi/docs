@@ -1,0 +1,46 @@
+{
+  "id": "reference/luxd/p-chain/txn-format",
+  "title": "P-Chain Transaction Format",
+  "description": "This page is an overview of the transaction format associated with Luxd P-Chain API.",
+  "source": "@site/docs/reference/luxd/p-chain/txn-format.md",
+  "sourceDirName": "reference/luxd/p-chain",
+  "slug": "/reference/luxd/p-chain/txn-format",
+  "permalink": "/reference/luxd/p-chain/txn-format",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/luxd/p-chain/txn-format.md",
+  "tags": [
+    {
+      "label": "P-Chain",
+      "permalink": "/tags/p-chain"
+    },
+    {
+      "label": "Platform Chain",
+      "permalink": "/tags/platform-chain"
+    },
+    {
+      "label": "Transaction Format",
+      "permalink": "/tags/transaction-format"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "P-Chain",
+      "Platform Chain",
+      "Transaction Format"
+    ],
+    "description": "This page is an overview of the transaction format associated with Luxd P-Chain API.",
+    "sidebar_label": "Transaction Format",
+    "pagination_label": "P-Chain Transaction Format"
+  },
+  "sidebar": "reference",
+  "previous": {
+    "title": "P-Chain Transaction Format",
+    "permalink": "/reference/luxd/p-chain/api"
+  },
+  "next": {
+    "title": "C-Chain API",
+    "permalink": "/reference/luxd/c-chain/api"
+  }
+}

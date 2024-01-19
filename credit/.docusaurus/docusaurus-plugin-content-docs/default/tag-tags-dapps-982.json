@@ -1,0 +1,141 @@
+{
+  "label": "Dapps",
+  "permalink": "/tags/dapps",
+  "allTagsPath": "/tags",
+  "count": 22,
+  "items": [
+    {
+      "id": "build/dapp/advanced/add-lux-programmatically",
+      "title": "Add Lux Network Programmatically",
+      "description": "This document shows how to integrate Lux Network with your Dapp, either by Core or MetaMask.",
+      "permalink": "/build/dapp/advanced/add-lux-programmatically"
+    },
+    {
+      "id": "build/dapp/advanced/adjusting-gas-price-during-high-network-activity",
+      "title": "Adjusting Gas Price During High Network Activity",
+      "description": "This tutorial will help users to adjust their priority fee and max fee cap during high network activity and take advantage of the benefits of dynamic fee transactions.",
+      "permalink": "/build/dapp/advanced/adjusting-gas-price-during-high-network-activity"
+    },
+    {
+      "id": "build/dapp/c-chain-evm",
+      "title": "Building on the C-Chain",
+      "description": "Lux C-Chain is a blockchain that can run all the Solidity smart contracts from Ethereum, but with much greater transaction bandwidth and instant finality from Lux's revolutionary consensus mechanism.",
+      "permalink": "/build/dapp/c-chain-evm"
+    },
+    {
+      "id": "build/dapp/advanced/integrate-exchange",
+      "title": "C-Chain Exchange Integration",
+      "description": "The objective of this document is to provide a brief overview of how to integrate with the EVM-Compatible Lux C-Chain.",
+      "permalink": "/build/dapp/advanced/integrate-exchange"
+    },
+    {
+      "id": "build/dapp/smart-contracts/erc-20",
+      "title": "Create an ERC-20 Token Using Solidity",
+      "description": "ERC-20 tokens are the most fundamental and essential concept in Ethereum. This same token standard is adopted in the Lux ecosystem.",
+      "permalink": "/build/dapp/smart-contracts/erc-20"
+    },
+    {
+      "id": "build/dapp/smart-contracts/remix-deploy",
+      "title": "Deploy a Smart Contract on Lux Using Remix and Core",
+      "description": "In this doc, learn how to deploy and test a smart contract on Lux using Remix and Core.",
+      "permalink": "/build/dapp/smart-contracts/remix-deploy"
+    },
+    {
+      "id": "build/dapp/smart-contracts/toolchains/thirdweb",
+      "title": "Deploy a Smart Contract on Lux Using thirdweb",
+      "description": "Launching any new or existing Solidity decentralized app on Lux C-Chain fosters the same developer experience as Ethereum, but benefits from the security, speed, and interoperability of the Lux Network.",
+      "permalink": "/build/dapp/smart-contracts/toolchains/thirdweb"
+    },
+    {
+      "id": "build/dapp/smart-contracts/nfts/deploy-collection",
+      "title": "Deploy an ERC-721 NFT Collection on Lux",
+      "description": "This tutorial will walkthrough deploying a basic ERC-721 (NFT) smart contract on the Lux Network. This is a beginner friendly tutorial; No previous development experience necessary.",
+      "permalink": "/build/dapp/smart-contracts/nfts/deploy-collection"
+    },
+    {
+      "id": "build/dapp/smart-contracts/get-funds-faucet",
+      "title": "Get Test Funds from the Testnet Faucet",
+      "description": "This tutorial focuses on how to get a \"drip\" of LUX from the Testnet faucet.",
+      "permalink": "/build/dapp/smart-contracts/get-funds-faucet"
+    },
+    {
+      "id": "build/dapp/smart-contracts/abigen",
+      "title": "Interact with a Solidity Smart Contract from a Golang Application",
+      "description": "This tutorial demonstrates how to compile a solidity contract into Golang to deploy and call contracts programmatically.",
+      "permalink": "/build/dapp/smart-contracts/abigen"
+    },
+    {
+      "id": "build/dapp/launch-dapp",
+      "title": "Launch an Ethereum Dapp on Lux",
+      "description": "Launching any new or existing Solidity decentralized app on Lux C-Chain fosters the same developer experience as Ethereum, but benefits from the security, speed, and interoperability of the Lux Network.",
+      "permalink": "/build/dapp/launch-dapp"
+    },
+    {
+      "id": "build/dapp/explorers",
+      "title": "Lux Block Explorer",
+      "description": "These Lux Block Explorers allow you to query historical Mainnet, testnet, and Subnet block data.",
+      "permalink": "/build/dapp/explorers"
+    },
+    {
+      "id": "build/dapp/chain-settings",
+      "title": "Lux C-Chain Settings",
+      "description": "Launching any new or existing Solidity decentralized app on Lux C-Chain fosters the same developer experience as Ethereum, but benefits from the security, speed, and interoperability of the Lux Network. Get connected with Lux C-Chain Settings",
+      "permalink": "/build/dapp/chain-settings"
+    },
+    {
+      "id": "tooling/netrunner",
+      "title": "Lux Netrunner",
+      "description": "The Lux Netrunner (ANR) allows a user to define, create and interact with a network of Lux nodes. It can be used for development and testing.",
+      "permalink": "/tooling/netrunner"
+    },
+    {
+      "id": "build/dapp/smart-contracts/nfts/preparing-nft-files",
+      "title": "Preparing NFT Files for an ERC721 Smart Contract",
+      "description": "ERC-721 tokens are one of the most fundamental and essential concepts in Ethereum. This same token standard is adopted in the Lux ecosystem.",
+      "permalink": "/build/dapp/smart-contracts/nfts/preparing-nft-files"
+    },
+    {
+      "id": "build/dapp/advanced/sending-transactions-with-dynamic-fees-using-javascript",
+      "title": "Sending Transactions with Dynamic Fees using JavaScript",
+      "description": "This tutorial will help users to send transactions with dynamic fee settings to adjust their priority fee and max fee cap during high network activity using javascript.",
+      "permalink": "/build/dapp/advanced/sending-transactions-with-dynamic-fees-using-javascript"
+    },
+    {
+      "id": "build/dapp/testnet-workflow",
+      "title": "Testnet Workflow",
+      "description": "An end-to-end walkthrough of necessary development activities for a bare-bones decentralized application.",
+      "permalink": "/build/dapp/testnet-workflow"
+    },
+    {
+      "id": "build/dapp/smart-contracts/toolchains/foundry",
+      "title": "Using Foundry with the Lux C-Chain",
+      "description": "This guide shows how to deploy and interact with smart contracts using foundry on a local Lux Network and the Testnet C-Chain.",
+      "permalink": "/build/dapp/smart-contracts/toolchains/foundry"
+    },
+    {
+      "id": "build/dapp/smart-contracts/toolchains/hardhat",
+      "title": "Using Hardhat with the Lux C-Chain",
+      "description": "The goal of this guide is to lay out best practices regarding writing, testing and deployment of smart contracts to Lux's C-Chain using Hardhat.",
+      "permalink": "/build/dapp/smart-contracts/toolchains/hardhat"
+    },
+    {
+      "id": "deprecated/truffle",
+      "title": "Using Truffle with the Lux C-Chain",
+      "description": "Launching any new or existing Solidity decentralized app on Lux C-Chain fosters the same developer experience as Ethereum, but benefits from the security, speed, and interoperability of the Lux Network.",
+      "permalink": "/deprecated/truffle"
+    },
+    {
+      "id": "build/dapp/smart-contracts/verification/verify-smart-contracts",
+      "title": "Verify Smart Contracts on the C-Chain Explorer",
+      "description": "This tutorial walks through verifying a smart contract on the Snowtrace block explorer.",
+      "permalink": "/build/dapp/smart-contracts/verification/verify-smart-contracts"
+    },
+    {
+      "id": "build/dapp/smart-contracts/verification/verify-hardhat",
+      "title": "Verifying Smart Contracts Using Hardhat and Snowtrace",
+      "description": "This tutorial walks through verifying a smart contract on a block explorer using Hardhat after deploying it to Lux C-Chain.",
+      "permalink": "/build/dapp/smart-contracts/verification/verify-hardhat"
+    }
+  ],
+  "unlisted": false
+}

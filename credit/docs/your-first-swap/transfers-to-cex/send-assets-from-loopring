@@ -1,0 +1,36 @@
+# Send Assets from Loopring
+Learn how to send assets from Loopring using Lux Bridge.
+
+## Sending Assets
+To transfer from Loopring to Lux Bridge, follow these steps:
+
+1. **Review Information**
+   Check the info that needs to be filled in the Loopring app.
+   ![Step 1 Screenshot](l1.png)
+
+2. **Open Loopring Web App**
+   Go to the Loopring web app and click on "L2 Assets".
+   ![Step 2 Screenshot](l2.png)
+
+3. **Select Asset**
+   Find the asset you want to transfer and click "Send".
+   ![Step 3 Screenshot](l3.png)
+
+4. **Sending Options**
+   Select "To Another Loopring L2 Account".
+   ![Step 4 Screenshot](l4.png)
+
+5. **Enter Details**
+   Choose the token and amount. Paste the recipient address provided by Lux Bridge in the "Recipient" field. Note: Ignore the "address has not yet activated Loopring L2" message if it appears.
+   ![Step 5 Screenshot](l5.png)
+
+6. **Address Type**
+   Select "EOA Wallet" as the address type.
+   ![Step 6 Screenshot](l6.png)
+
+7. **Confirm Transaction**
+   Click on "Confirm" to initiate the swap.
+   ![Step 7 Screenshot](l7.png)
+
+Your swap should be completed soon!
+

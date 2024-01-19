@@ -1,0 +1,21 @@
+{
+  "label": "Subnet-EVM",
+  "permalink": "/tags/subnet-evm",
+  "allTagsPath": "/tags",
+  "count": 2,
+  "items": [
+    {
+      "id": "reference/subnet-evm/api",
+      "title": "Subnet-EVM API",
+      "description": "This page is an overview of the Subnet-EVM API associated with Luxd.",
+      "permalink": "/reference/subnet-evm/api"
+    },
+    {
+      "id": "learn/lux/virtual-machines",
+      "title": "Virtual Machines",
+      "description": "Virtual Machine is a virtual environment inside blockchain networks that executes smart contracts and transactions according to predetermined rules and protocols.",
+      "permalink": "/learn/lux/virtual-machines"
+    }
+  ],
+  "unlisted": false
+}

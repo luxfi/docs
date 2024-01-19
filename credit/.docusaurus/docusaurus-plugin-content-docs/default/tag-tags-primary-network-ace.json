@@ -1,0 +1,21 @@
+{
+  "label": "Primary Network",
+  "permalink": "/tags/primary-network",
+  "allTagsPath": "/tags",
+  "count": 2,
+  "items": [
+    {
+      "id": "learn/lux/mainnet",
+      "title": "Lux Mainnet",
+      "description": "Lux Mainnet is the final and production-ready version of the blockchain where users can interact with the network and transact with real world assets.",
+      "permalink": "/learn/lux/mainnet"
+    },
+    {
+      "id": "learn/lux/lux-platform",
+      "title": "The Primary Network",
+      "description": "Lux features 3 built-in blockchains which includes Exchange Chain (X-Chain), Platform Chain (P-Chain), and Contract Chain (C-Chain). More info here.",
+      "permalink": "/learn/lux/lux-platform"
+    }
+  ],
+  "unlisted": false
+}

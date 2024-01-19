@@ -1,0 +1,41 @@
+{
+  "id": "build/dapp/smart-contracts/erc-20",
+  "title": "Create an ERC-20 Token Using Solidity",
+  "description": "ERC-20 tokens are the most fundamental and essential concept in Ethereum. This same token standard is adopted in the Lux ecosystem.",
+  "source": "@site/docs/build/dapp/smart-contracts/erc-20.md",
+  "sourceDirName": "build/dapp/smart-contracts",
+  "slug": "/build/dapp/smart-contracts/erc-20",
+  "permalink": "/build/dapp/smart-contracts/erc-20",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/smart-contracts/erc-20.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Dapps",
+      "permalink": "/tags/dapps"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Dapps"
+    ],
+    "description": "ERC-20 tokens are the most fundamental and essential concept in Ethereum. This same token standard is adopted in the Lux ecosystem.",
+    "sidebar_label": "Create an ERC-20 Token",
+    "pagination_label": "Create an ERC-20 Token Using Solidity"
+  },
+  "sidebar": "build-dapp",
+  "previous": {
+    "title": "Deploy a Smart Contract on Lux Using Remix and Core",
+    "permalink": "/build/dapp/smart-contracts/remix-deploy"
+  },
+  "next": {
+    "title": "Deploy an ERC-721 NFT Collection on Lux",
+    "permalink": "/build/dapp/smart-contracts/nfts/deploy-collection"
+  }
+}

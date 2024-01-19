@@ -1,0 +1,43 @@
+{
+  "id": "build/dapp/advanced/integrate-exchange",
+  "title": "C-Chain Exchange Integration",
+  "description": "The objective of this document is to provide a brief overview of how to integrate with the EVM-Compatible Lux C-Chain.",
+  "source": "@site/docs/build/dapp/advanced/integrate-exchange.md",
+  "sourceDirName": "build/dapp/advanced",
+  "slug": "/build/dapp/advanced/integrate-exchange",
+  "permalink": "/build/dapp/advanced/integrate-exchange",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/advanced/integrate-exchange.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Dapps",
+      "permalink": "/tags/dapps"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Dapps"
+    ],
+    "description": "The objective of this document is to provide a brief overview of how to integrate with the EVM-Compatible Lux C-Chain.",
+    "sidebar_label": "Exchange Integration",
+    "pagination_label": "C-Chain Exchange Integration",
+    "sidebar_position": 3
+  },
+  "sidebar": "build-dapp",
+  "previous": {
+    "title": "Add Lux Network Programmatically",
+    "permalink": "/build/dapp/advanced/add-lux-programmatically"
+  },
+  "next": {
+    "title": "Testnet Workflow",
+    "permalink": "/build/dapp/testnet-workflow"
+  }
+}

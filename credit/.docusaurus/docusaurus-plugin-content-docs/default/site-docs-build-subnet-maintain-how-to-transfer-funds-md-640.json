@@ -1,0 +1,48 @@
+{
+  "id": "build/subnet/maintain/how-to-transfer-funds",
+  "title": "How to Use Lux-CLI to Transfer P-Chain Funds",
+  "description": "If you need to send funds to your Subnet control key or need to move funds from one Ledger address index to another, this guide will demostrate how to enable direct transfers between ledger P-Chain addresses using the Lux-CLI command `lux key transfer`.",
+  "source": "@site/docs/build/subnet/maintain/how-to-transfer-funds.md",
+  "sourceDirName": "build/subnet/maintain",
+  "slug": "/build/subnet/maintain/how-to-transfer-funds",
+  "permalink": "/build/subnet/maintain/how-to-transfer-funds",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/maintain/how-to-transfer-funds.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Subnets",
+      "permalink": "/tags/subnets"
+    },
+    {
+      "label": "Lux-CLI",
+      "permalink": "/tags/lux-cli"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Subnets",
+      "Lux-CLI"
+    ],
+    "description": "If you need to send funds to your Subnet control key or need to move funds from one Ledger address index to another, this guide will demostrate how to enable direct transfers between ledger P-Chain addresses using the Lux-CLI command `lux key transfer`.",
+    "sidebar_label": "Transfer P-Chain Funds",
+    "pagination_label": "How to Use Lux-CLI to Transfer P-Chain Funds",
+    "sidebar_position": 3
+  },
+  "sidebar": "build-subnet",
+  "previous": {
+    "title": "How to Delete a Subnet",
+    "permalink": "/build/subnet/maintain/delete-subnet"
+  },
+  "next": {
+    "title": "Deploy a Smart Contract on Your Subnet-EVM Using Remix and Core",
+    "permalink": "/build/subnet/utility/deploy-smart-contract-to-subnet"
+  }
+}

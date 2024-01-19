@@ -1,0 +1,41 @@
+{
+  "id": "build/dapp/explorers",
+  "title": "Lux Block Explorer",
+  "description": "These Lux Block Explorers allow you to query historical Mainnet, testnet, and Subnet block data.",
+  "source": "@site/docs/build/dapp/explorers.md",
+  "sourceDirName": "build/dapp",
+  "slug": "/build/dapp/explorers",
+  "permalink": "/build/dapp/explorers",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/explorers.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Dapps",
+      "permalink": "/tags/dapps"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Dapps"
+    ],
+    "description": "These Lux Block Explorers allow you to query historical Mainnet, testnet, and Subnet block data.",
+    "sidebar_label": "Block Explorers",
+    "pagination_label": "Lux Block Explorer"
+  },
+  "sidebar": "build-dapp",
+  "previous": {
+    "title": "Lux C-Chain Settings",
+    "permalink": "/build/dapp/chain-settings"
+  },
+  "next": {
+    "title": "Lux Netrunner",
+    "permalink": "/tooling/netrunner"
+  }
+}

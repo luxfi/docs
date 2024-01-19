@@ -1,0 +1,39 @@
+{
+  "id": "build/vm/evm/deploying-precompile",
+  "title": "Deploying Your Precompile",
+  "description": "In this guide, we will explain the steps to deploy our precompile on a local network.",
+  "source": "@site/docs/build/vm/evm/deploying-precompile.md",
+  "sourceDirName": "build/vm/evm",
+  "slug": "/build/vm/evm/deploying-precompile",
+  "permalink": "/build/vm/evm/deploying-precompile",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/vm/evm/deploying-precompile.md",
+  "tags": [
+    {
+      "label": "Build",
+      "permalink": "/tags/build"
+    },
+    {
+      "label": "Virtual Machines",
+      "permalink": "/tags/virtual-machines"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 6,
+  "frontMatter": {
+    "tags": [
+      "Build",
+      "Virtual Machines"
+    ],
+    "description": "In this guide, we will explain the steps to deploy our precompile on a local network.",
+    "sidebar_label": "Deploying Your Precompile",
+    "pagination_label": "Deploying Your Precompile",
+    "sidebar_position": 6
+  },
+  "sidebar": "build-vm",
+  "previous": {
+    "title": "Executing Your Test Cases",
+    "permalink": "/build/vm/evm/executing-tests"
+  }
+}

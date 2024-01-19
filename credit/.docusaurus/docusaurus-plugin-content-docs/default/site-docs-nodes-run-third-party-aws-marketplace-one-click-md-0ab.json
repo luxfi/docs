@@ -1,0 +1,38 @@
+{
+  "id": "nodes/run/third-party/aws-marketplace-one-click",
+  "title": "Launch a Lux Validator on AWS with One Click",
+  "description": "This tutorial will guide you through spinning up a Lux node via the one-click validator node through the AWS Marketplace. This includes subscribing to the software, launching it on EC2, connecting to the node over ssh, calling curl commands, adding the node as a validator on the Testnet network using the Lux Web wallet, and confirming the node is a pending validator.",
+  "source": "@site/docs/nodes/run/third-party/aws-marketplace-one-click.md",
+  "sourceDirName": "nodes/run/third-party",
+  "slug": "/nodes/run/third-party/aws-marketplace-one-click",
+  "permalink": "/nodes/run/third-party/aws-marketplace-one-click",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/run/third-party/aws-marketplace-one-click.md",
+  "tags": [
+    {
+      "label": "Nodes",
+      "permalink": "/tags/nodes"
+    }
+  ],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "tags": [
+      "Nodes"
+    ],
+    "description": "This tutorial will guide you through spinning up a Lux node via the one-click validator node through the AWS Marketplace. This includes subscribing to the software, launching it on EC2, connecting to the node over ssh, calling curl commands, adding the node as a validator on the Testnet network using the Lux Web wallet, and confirming the node is a pending validator.",
+    "sidebar_label": "AWS Marketplace",
+    "pagination_label": "Run a Lux Node with Amazon Web Services with one click",
+    "sidebar_position": 1
+  },
+  "sidebar": "nodes",
+  "previous": {
+    "title": "Run a Lux Node with Amazon Web Services",
+    "permalink": "/nodes/run/third-party/aws-node"
+  },
+  "next": {
+    "title": "Run a Lux Node with Microsoft Azure",
+    "permalink": "/nodes/run/third-party/microsoft-azure-node"
+  }
+}

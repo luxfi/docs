@@ -1,0 +1,28 @@
+{
+  "id": "nodes/maintain/luxd-config-flags",
+  "title": "Luxd Config and Flags",
+  "description": "This documents list all available configuration and flags for Luxd.",
+  "source": "@site/docs/nodes/maintain/luxd-config-flags.md",
+  "sourceDirName": "nodes/maintain",
+  "slug": "/nodes/maintain/luxd-config-flags",
+  "permalink": "/nodes/maintain/luxd-config-flags",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/luxdefi/docs/edit/master/docs/nodes/maintain/luxd-config-flags.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 5,
+  "frontMatter": {
+    "sidebar_position": 5,
+    "description": "This documents list all available configuration and flags for Luxd."
+  },
+  "sidebar": "nodes",
+  "previous": {
+    "title": "Enroll in Lux Notify",
+    "permalink": "/nodes/maintain/avalanche-notify"
+  },
+  "next": {
+    "title": "Run a Lux Node as a Background Service",
+    "permalink": "/nodes/maintain/background-service-config"
+  }
+}
