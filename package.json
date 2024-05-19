@@ -19,7 +19,8 @@
     "build:all": "pnpm build:bridge && pnpm build:credit && pnpm build:network",
     "build:bridge": "pnpm --filter @luxdocs/bridge build",
     "build:credit": "pnpm --filter @luxdocs/credit build",
-    "build:network": "pnpm --filter @luxdocs/network build"
+    "build:network": "pnpm --filter @luxdocs/network build",
+    "start:network": "pnpm --filter @luxdocs/network start"
   },
   "devDependencies_": {
     "@babel/preset-typescript": "^7.18.6",
