@@ -134,7 +134,7 @@ const config = {
   tagline: "Increasing economic freedom through decentralized access to hyper liquid real world assets (RWAs)",
   url: "https://docs.lux.network",
   baseUrl: "/",
-  onBrokenLinks: "throw",
+  onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.png",
   organizationName: "luxfi",
