@@ -1,10 +1,10 @@
 ---
 title: 🔗 Tooling Quick Links
 tags: [Tooling]
-description: The Lux Ecosystem includes a multitude of tooling, maintenance, testing services, including a wide range of helpful resources and utilities for developers building on the platform. These tools are designed to streamline development, improve integration, and maximize the potential of decentralized applications and custom blockchains in the Lux ecosystem. 
+description: The Lux Ecosystem includes a multitude of tooling, maintenance, testing services, including a wide range of helpful resources and utilities for developers building on the platform. These tools are designed to streamline development, improve integration, and maximize the potential of decentralized applications and custom blockchains in the Lux ecosystem.
 sidebar_label: 🔗 Quick Links
 pagination_label: Tooling Quick Links
---- 
+---
 
 | Tool       | Description | Links |
 | :------------------------------------------------- | :--------------------------------------------------------- | :--------------------------------------------------------- |
@@ -12,7 +12,7 @@ pagination_label: Tooling Quick Links
 | [**LuxJS**](/tooling/luxjs-overview.md)      | JavaScript Library for interfacing with the Lux platform | [GitHub](https://github.com/luxfi/luxjs) |
 | [**🔌 RPC Providers**](/tooling/rpc-providers.md)      | List of RPC endpoints available for the Lux Network |  |
 | [**🗄️ Indexers**](/tooling/indexers.md)      | Indexers that support the Lux Network |  |
-| [**Glacier API**](/tooling/glacier.md)      | Lux's performant API that allows web3 developers to more easily access indexed blockchain data | [API](https://glacier-api.lux.network/api#/) |
+| [**Aurora API**](/tooling/aurora.md)      | Lux's performant API that allows web3 developers to more easily access indexed blockchain data | [API](https://aurora-api.lux.network/api#/) |
 | [**Metrics API**](/tooling/metrics.md)      | Power your analytics with metrics such as Subnet usage, staking operations, and more | [API](https://metrics.lux.network/) |
 | [**Hyper SDK**](https://github.com/luxfi/hypersdk#readme)      | Opinionated framework for building hyper-scalable blockchains on Lux | [GitHub](https://github.com/luxfi/hypersdk#readme) |
 | [**Luxd Installer Script**](/tooling/luxd-installer.md)      | A shell (bash) script that installs Luxd on any Linux computer | [GitHub](https://github.com/luxfi/docs/blob/master/scripts/luxd-installer.sh#readme) |

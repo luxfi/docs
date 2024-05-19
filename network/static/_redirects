@@ -472,7 +472,7 @@
 /quickstart/tools-list docs/tooling 301
 /subnets/netrunner /tooling/netrunner 301
 /subnets/reference-cli-commands /tooling/cli 301
-/apis/glacier /tooling/glacier 301
+/apis/aurora /tooling/aurora 301
 /apis/metrics /tooling/metrics 301
 /apis/luxd/postman-collection /tooling/luxd-postman-collection/setup  301
 /apis/luxd/public-api-server /tooling/rpc-providers 301

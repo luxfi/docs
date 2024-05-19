@@ -382,7 +382,7 @@
       "type": "html",
       "value": "<hr/>"
     },
-    "tooling/glacier",
+    "tooling/aurora",
     "tooling/metrics",
     {
       "type": "link",
