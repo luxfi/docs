@@ -2,17 +2,16 @@
 tags: [Nodes]
 description: This section provides documents on how to build and maintain a Lux Node, and then validate the Lux network using a Lux Node.
 sidebar_label: 🔗 Quick Links
-pagination_label: 🔗 Nodes Quick Links
+pagination_label: 🔗 Lux Node Quick Links
 ---
 
 # 🔗 Nodes Quick Links
 
-This section provides documents on how to build and maintain a Luxd
-node, and then validate the Lux network using a Luxd node.
+This section provides documents on how to build and maintain a Lux Node, and then validate the Lux network.
 
 |   Run a Node   |                                             |
 | :------------------------------------------------------- | :------------------------------------------ |
-| [**Manually**](/nodes/run/node-manually.md)      | Compile a Lux node from source and run it manually |
+| [**Manually**](/nodes/run/node-manually.md)      | Compile Lux Node from source and run it manually |
 | [**Using the Install Script**](/nodes/run/with-installer/installing-luxd.md)     | How to install and run Luxd with the installer script    |
 | [**Run a Subnet Node**](/nodes/run/subnet-node.md) | How to run a Subnet node              |
 | [**Common Errors**](nodes/run/FAQ.md)     | Learn about common errors when building your node       |
@@ -25,7 +24,7 @@ node, and then validate the Lux network using a Luxd node.
 
 |    Configure                                                                         |                                                             |
 | :------------------------------------------------------------------------------- | :---------------------------------------------------------- |
-| [**Node Configs and Flags**](/nodes/configure/luxd-config-flags.md) | This documents list all available configuration and flags for Luxd    |
+| [**Node Configs and Flags**](/nodes/configure/luxd-config-flags.md) | This documents list all available configuration and flags for luxd    |
 | [**Chain Configs and Flags**](/nodes/configure/chain-config-flags.md)             | Reference for all available chain config options and flags    |
 | [**Subnet Configs**](/nodes/configure/subnet-configs.md)             | Reference for all available Subnet config options and flags   |
 
