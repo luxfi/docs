@@ -1,4 +1,6 @@
 node_modules
 *.sedbak
-build
 .docusaurus
+bridge/build
+credit/build
+network/build
