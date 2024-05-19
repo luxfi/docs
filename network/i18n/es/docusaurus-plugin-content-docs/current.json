@@ -51,9 +51,9 @@
     "message": "❓FAQ",
     "description": "The label for link ❓FAQ in sidebar build-subnet, linking to https://support.lux.network/en/articles/6158840-subnet-faq"
   },
-  "sidebar.build-subnet.doc.📎 Lux-CLI: Subnets": {
-    "message": "📎 Lux-CLI: Subnets",
-    "description": "The label for the doc item 📎 Lux-CLI: Subnets in sidebar build-subnet, linking to the doc tooling/cli"
+  "sidebar.build-subnet.doc.📎 Lux CLI: Subnets": {
+    "message": "📎 Lux CLI: Subnets",
+    "description": "The label for the doc item 📎 Lux CLI: Subnets in sidebar build-subnet, linking to the doc tooling/cli"
   },
   "sidebar.build-vm.link.LuxSDK": {
     "message": "LuxSDK",

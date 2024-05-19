@@ -26,7 +26,7 @@ Failing to do so can potentially grind your network to a halt.
 :::
 
 This tutorial assumes that you have already
-[installed](/tooling/cli-guides/install-cli.md) Lux-CLI.
+[installed](/tooling/cli-guides/install-cli.md) Lux CLI.
 It assumes you have already created and deployed a Subnet called `testSubnet`.
 
 ## Generate the Upgrade File
@@ -259,7 +259,7 @@ So at this point you can either:
 
 - Deploy your upgrade bytes locally
 - Export your upgrade bytes to a file, for installation on a validator running on another machine
-- Import a file into a different machine running Lux-CLI
+- Import a file into a different machine running Lux CLI
 
 ## How To Upgrade a Local Network
 
@@ -364,7 +364,7 @@ If not, you would not find the `Testnet` entry here.
 :::important
 
 This scenario assumes that you are running the `testnet` validator on the same machine
-which is running Lux-CLI.
+which is running Lux CLI.
 
 :::
 
@@ -393,7 +393,7 @@ Trying to install the upgrade files at the provided /home/fabio/.luxd/chains pat
 Successfully installed upgrade file
 ```
 
-If however the node is _not_ running on this same machine where you are executing Lux-CLI,
+If however the node is _not_ running on this same machine where you are executing Lux CLI,
 there is no point in running this command for a Testnet node.
 In this case, you might rather export the file and install it at the right location.
 
@@ -459,7 +459,7 @@ You can now take that file and copy it to validator nodes, see preceding instruc
 ## Import the Upgrade File
 
 You or someone else might have generated the file elsewhere, or on another machine.
-And now you want to install it on the validator machine, using Lux-CLI.
+And now you want to install it on the validator machine, using Lux CLI.
 
 You can import the file:
 

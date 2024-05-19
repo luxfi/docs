@@ -1,14 +1,14 @@
 ---
-tags: [Tooling, Lux-CLI]
-description: This page demonstrates how to deploy Lux validators using just one Lux-CLI command.
-pagination_label: Run Lux Validators with One Lux-CLI Command
+tags: [Tooling, Lux CLI]
+description: This page demonstrates how to deploy Lux validators using just one Lux CLI command.
+pagination_label: Run Lux Validators with One Lux CLI Command
 sidebar_label: Run Validators on GCP
 sidebar_position: 3
 ---
 
-# Run a Lux Validator on GCP with One Lux-CLI Command 
+# Run a Lux Validator on GCP with One Lux CLI Command 
 
-This page demonstrates how to deploy Lux validators on GCP using just one Lux-CLI 
+This page demonstrates how to deploy Lux validators on GCP using just one Lux CLI 
 command.
 
 :::info
@@ -47,7 +47,7 @@ cluster `clusterName` will apply to all nodes in the cluster.
 Please note that running a validator on GCP will incur costs.
 
 Lux Partners is not responsible for the cost incurred from running a Lux validator on cloud 
-services via Lux-CLI.
+services via Lux CLI.
 
 :::
 
@@ -73,12 +73,12 @@ You can choose `default` (which will install the latest version) or you can ente
 Subnet created with CLI that you plan to be validated by this node (we will get the latest version 
 that is compatible with the deployed Subnet's RPC version).
 
-Once the command has successfully completed, Lux-CLI outputs all the created cloud server 
+Once the command has successfully completed, Lux CLI outputs all the created cloud server 
 node IDs as well as the public IP that each node can be reached at.
 
-Lux-CLI also outputs the command that you can use to ssh into each cloud server node.
+Lux CLI also outputs the command that you can use to ssh into each cloud server node.
 
-By the end of successful run of `create` command, Lux-CLI would have:
+By the end of successful run of `create` command, Lux CLI would have:
 
 - Installed Lux Go in cloud server
 - Installed Lux CLI in cloud server

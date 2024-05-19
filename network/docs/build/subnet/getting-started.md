@@ -68,11 +68,11 @@ your team in the genesis, setting how gas fees rates on your network, or changin
 behavior of your VM via precompiles. These customizations are hard to get right on paper and usually
 require some trial and error to determine correctly. See [Customize Your EVM-Powered Subnet](/build/subnet/upgrade/customize-a-subnet.md) for instructions on configuring Subnet-EVM.
 
-## Learn Lux-CLI
+## Learn Lux CLI
 
-Now that you've specified your Subnet requirements, the next step is learning Lux-CLI.
+Now that you've specified your Subnet requirements, the next step is learning Lux CLI.
 
-Lux-CLI is the best tool for rapidly prototyping Subnets and deploying them to production. You
+Lux CLI is the best tool for rapidly prototyping Subnets and deploying them to production. You
 can use it throughout the entire Subnet development lifecycle. To get started, take a look at [Build Your First Subnet](/build/subnet/hello-subnet.md).
 
 ### Deploy Your Subnet Locally

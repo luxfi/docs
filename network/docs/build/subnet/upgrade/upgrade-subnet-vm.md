@@ -40,7 +40,7 @@ After starting the Subnet Upgrade Wizard, you should see something like this:
     Existing local deployment
 ```
 
-If you select the first option, Lux-CLI updates your Subnet's config and any future calls to
+If you select the first option, Lux CLI updates your Subnet's config and any future calls to
 `lux subnet deploy` use the new version you select. However, any existing local deployments
 continue to use the old version.
 

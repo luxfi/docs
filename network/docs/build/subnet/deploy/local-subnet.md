@@ -13,7 +13,7 @@ local Lux network.
 
 ## Prerequisites
 
-- [Lux-CLI installed](/tooling/cli-guides/install-cli.md)
+- [Lux CLI installed](/tooling/cli-guides/install-cli.md)
 - You have [created a Subnet configuration](/build/subnet/hello-subnet#create-your-subnet-configuration)
 
 ## Deploying Subnets Locally
@@ -32,7 +32,7 @@ the `--local` flag. For example:
 
 The command may take a couple minutes to run.
 
-Note: If you run `bash` on your shell and are running Lux-CLI on ARM64 on Mac, you will 
+Note: If you run `bash` on your shell and are running Lux CLI on ARM64 on Mac, you will 
 require Rosetta 2 to be able to deploy Subnets locally. You can download Rosetta 2 using 
 `softwareupdate --install-rosetta` .
 

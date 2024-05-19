@@ -1,13 +1,13 @@
 ---
-tags: [Tooling, Lux-CLI]
-description: Lux-CLI is a command-line tool that gives developers access to everything Lux. This release specializes in helping developers build and test Subnets.
-pagination_label: Lux-CLI
+tags: [Tooling, Lux CLI]
+description: Lux CLI is a command-line tool that gives developers access to everything Lux. This release specializes in helping developers build and test Subnets.
+pagination_label: Lux CLI
 sidebar_postion: 0
 ---
 
-# Lux-CLI
+# Lux CLI
 
-Lux-CLI is a command-line tool that gives developers access to
+Lux CLI is a command-line tool that gives developers access to
 everything Lux. This release specializes in helping developers
 build and test Subnets.
 
@@ -215,7 +215,7 @@ The `subnet deploy` command deploys your Subnet configuration locally, to Testne
 
 At the end of the call, the command prints the RPC URL you can use to interact with the Subnet.
 
-Lux-CLI only supports deploying an individual Subnet once per network. Subsequent
+Lux CLI only supports deploying an individual Subnet once per network. Subsequent
 attempts to deploy the same Subnet to the same network (local, Testnet, Mainnet) aren't
 allowed. If you'd like to redeploy a Subnet locally for testing, you must first call
 [lux network clean](#network-clean) to reset all deployed chain state. Subsequent local
@@ -297,7 +297,7 @@ lux subnet export [subnetName] [flags]
 
 ### Subnet Import
 
-The `subnet import` command imports configurations into Lux-CLI.
+The `subnet import` command imports configurations into Lux CLI.
 
 This command supports importing from a file created on another computer,
 or importing from Subnets running public networks
@@ -1258,7 +1258,7 @@ lux key delete [keyName] [flags]
 ### Key Export
 
 The `key export` command exports a created signing key. You can use an exported key in other
-applications or import it into another instance of Lux-CLI.
+applications or import it into another instance of Lux CLI.
 
 By default, the tool writes the hex encoded key to stdout. If you provide the `--output`
 flag, the command writes the key to a file of your choosing.

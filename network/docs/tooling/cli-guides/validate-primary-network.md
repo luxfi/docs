@@ -1,15 +1,15 @@
 ---
-tags: [Tooling, Lux-CLI]
-description: This page demonstrates how to configure nodes to validate the Lux Primary Network. Validation via Lux-CLI is currently only supported on Testnet.
-pagination_label: Configure Nodes to Validate the Primary Network with Lux-CLI
+tags: [Tooling, Lux CLI]
+description: This page demonstrates how to configure nodes to validate the Lux Primary Network. Validation via Lux CLI is currently only supported on Testnet.
+pagination_label: Configure Nodes to Validate the Primary Network with Lux CLI
 sidebar_label: Validate the Primary Network
 sidebar_position: 4
 ---
 
-# Configure Nodes to Validate the Primary Network with Lux-CLI
+# Configure Nodes to Validate the Primary Network with Lux CLI
 
 This page demonstrates how to configure nodes to validate the Primary Network.
-Validation via Lux-CLI is currently only supported on Testnet.
+Validation via Lux CLI is currently only supported on Testnet.
 
 :::warning
 

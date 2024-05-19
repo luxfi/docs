@@ -15,7 +15,7 @@ elastic (or permissionless) Subnet.
 
 ## Prerequisites
 
-- [Lux-CLI installed](/tooling/cli-guides/install-cli.md)
+- [Lux CLI installed](/tooling/cli-guides/install-cli.md)
 - You have deployed a permissioned Subnet on [local](/build/subnet/deploy/local-subnet.md), on 
 [Testnet](/build/subnet/deploy/testnet-subnet.md) or on [Mainnet](/build/subnet/deploy/mainnet-subnet.md)
 

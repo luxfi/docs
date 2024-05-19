@@ -10,7 +10,7 @@ sidebar_position: 1
 
 :::note
 
-This document describes how to use the new Lux-CLI to deploy a Subnet on `Testnet`.
+This document describes how to use the new Lux CLI to deploy a Subnet on `Testnet`.
 
 :::
 
@@ -31,7 +31,7 @@ run-through of this tutorial.
 
 - 1+ nodes running and fully bootstrapped on `Testnet` Testnet. Check out the section
   [Nodes](/nodes/README.md) on how to run a node and become a validator.
-- [`Lux-CLI`](https://github.com/luxfi/cli) installed
+- [`Lux CLI`](https://github.com/luxfi/cli) installed
 
 ## Virtual Machine
 
@@ -91,9 +91,9 @@ to shorten the time for bootstrapping.
 
 :::
 
-## Lux-CLI
+## Lux CLI
 
-If not yet installed, install `Lux-CLI` following the tutorial at [Lux-CLI installation](/tooling/cli-guides/install-cli.md)
+If not yet installed, install `Lux CLI` following the tutorial at [Lux CLI installation](/tooling/cli-guides/install-cli.md)
 
 ### Private Key
 
@@ -103,7 +103,7 @@ a connected ledger device.
 This tutorial focuses on stored key usage and leave ledger operation details for the `Mainnet`
 deploy one, as `Mainnet` operations requires ledger usage, while for `Testnet` it's optional.
 
-`Lux-CLI` supports the following key operations:
+`Lux CLI` supports the following key operations:
 
 - create
 - delete
@@ -230,7 +230,7 @@ After following these 3 steps, your test key should now have a balance on the P-
 
 ## Create an EVM Subnet
 
-Creating a Subnet with `Lux-CLI` for `Testnet` works the same way as with a
+Creating a Subnet with `Lux CLI` for `Testnet` works the same way as with a
 [local network](/build/subnet/deploy/local-subnet.md#create-a-custom-subnet-configuration). In fact,
 the `create` commands only creates a specification of your Subnet on the local file system.
 Afterwards the

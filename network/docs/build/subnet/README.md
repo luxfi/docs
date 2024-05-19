@@ -17,7 +17,7 @@ for a broad overview.
 | :----------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------ |
 | [**Getting Started**](/build/subnet/getting-started.md)      | Planning a successful Subnet deployment starts by determining your application's needs                        |
 | [**C-Chain or Subnet?**](/build/subnet/c-chain-vs-subnet.md) | Help developers determine the best place to launch their application                                          |
-| [**Build Your First Subnet**](/build/subnet/hello-subnet.md) | How to use Lux-CLI to create a Subnet, deploy it to a local network, and connect to it with Core wallet |
+| [**Build Your First Subnet**](/build/subnet/hello-subnet.md) | How to use Lux CLI to create a Subnet, deploy it to a local network, and connect to it with Core wallet |
 
 | Deploy a Subnet                                                                |     |
 | :----------------------------------------------------------------------------- | --- |
@@ -48,6 +48,6 @@ for a broad overview.
 
 | More                                                                        |     |
 | :-------------------------------------------------------------------------- | --- |
-| [**Lux-CLI Subnet Commands**](/tooling/cli.md)              |
+| [**Lux CLI Subnet Commands**](/tooling/cli.md)              |
 | [**Case Study: ZOO Subnet**](build/subnet/info/zoo.md)                  |
 | [**Troubleshooting Deployments**](build/subnet/info/troubleshoot-subnet.md) |

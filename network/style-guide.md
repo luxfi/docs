@@ -13,7 +13,7 @@ with the following exceptions:
 ## Official Project/Product Names
 
 - Luxd for [https://github.com/luxfi/luxd]
-- Lux-CLI for [https://github.com/luxfi/cli]
+- Lux CLI for [https://github.com/luxfi/cli]
 - Lux Netrunner for [https://github.com/luxfi/netrunner]
 
 ### Virtual Machines

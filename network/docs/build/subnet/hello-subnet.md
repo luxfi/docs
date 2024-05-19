@@ -1,20 +1,20 @@
 ---
 tags: [Build, Subnets]
-description: This tutorial walks you through the process of using Lux-CLI to create a Subnet, deploy it to a local network, and connect to it with Core wallet.
+description: This tutorial walks you through the process of using Lux CLI to create a Subnet, deploy it to a local network, and connect to it with Core wallet.
 sidebar_label: Build Your First Subnet
 pagination_label: Build Your First Subnet
 ---
 
 # Build Your First Subnet
 
-This tutorial walks you through the process of using Lux-CLI to create a Subnet,
+This tutorial walks you through the process of using Lux CLI to create a Subnet,
 deploy it to a local network, and connect to it with Core wallet.
 
-The first step of learning Subnet development is learning to use [Lux-CLI](https://github.com/luxfi/cli).
+The first step of learning Subnet development is learning to use [Lux CLI](https://github.com/luxfi/cli).
 
 ## Installation
 
-The fastest way to install the latest Lux-CLI binary is by running the install script:
+The fastest way to install the latest Lux CLI binary is by running the install script:
 
 ```shell
 curl -sSfL https://raw.githubusercontent.com/luxfi/cli/main/scripts/install.sh | sh -s
@@ -35,7 +35,7 @@ If you add it to your path, you should be able to call the program anywhere with
 To add it to your path permanently, add an export command to your shell initialization script
 (ex: .bashrc or .zshrc).
 
-For more detailed installation instructions, see [Lux-CLI Installation](/tooling/cli-guides/install-cli.md)
+For more detailed installation instructions, see [Lux CLI Installation](/tooling/cli-guides/install-cli.md)
 
 ## Create Your Subnet Configuration
 
@@ -118,7 +118,7 @@ Next, select `Local Network`.
 This command boots a five node Lux network on your machine. It needs to download the latest
 versions of Luxd and Subnet-EVM. The command may take a couple minutes to run.
 
-Note: If you run `bash` on your shell and are running Lux-CLI on ARM64 on Mac, you will 
+Note: If you run `bash` on your shell and are running Lux CLI on ARM64 on Mac, you will 
 require Rosetta 2 to be able to deploy Subnets locally. You can download Rosetta 2 using 
 `softwareupdate --install-rosetta` .
 

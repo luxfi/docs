@@ -8,7 +8,7 @@ pagination_label: Tooling Quick Links
 
 | Tool       | Description | Links |
 | :------------------------------------------------- | :--------------------------------------------------------- | :--------------------------------------------------------- |
-| [**Lux-CLI**](/tooling/cli.md)      | Command-line tool that gives developers access to everything Lux|  [GitHub](https://github.com/luxfi/cli) |
+| [**Lux CLI**](/tooling/cli.md)      | Command-line tool that gives developers access to everything Lux|  [GitHub](https://github.com/luxfi/cli) |
 | [**LuxJS**](/tooling/luxjs-overview.md)      | JavaScript Library for interfacing with the Lux platform | [GitHub](https://github.com/luxfi/luxjs) |
 | [**🔌 RPC Providers**](/tooling/rpc-providers.md)      | List of RPC endpoints available for the Lux Network |  |
 | [**🗄️ Indexers**](/tooling/indexers.md)      | Indexers that support the Lux Network |  |

@@ -1,14 +1,14 @@
 ---
-tags: [Tooling, Lux-CLI]
-description: This page demonstrates how to deploy a blockchain run with a custom virtual machine using cloud-based validators using the Lux-CLI.
-pagination_label: Deploy a Custom VM to a set of Cloud-Based validators using Lux-CLI
+tags: [Tooling, Lux CLI]
+description: This page demonstrates how to deploy a blockchain run with a custom virtual machine using cloud-based validators using the Lux CLI.
+pagination_label: Deploy a Custom VM to a set of Cloud-Based validators using Lux CLI
 sidebar_label: Deploy a Custom VM
 sidebar_position: 7
 ---
 
-# Deploy a Custom VM Using Lux-CLI
+# Deploy a Custom VM Using Lux CLI
 
-This page demonstrates how to deploy a custom VM into cloud-based validators using Lux-CLI.
+This page demonstrates how to deploy a custom VM into cloud-based validators using Lux CLI.
 
 :::info
 Currently, only Testnet network and Devnets are supported.
@@ -205,7 +205,7 @@ Now creating blockchain...
 
 ## Set the Config Files
 
-Lux-CLI supports uploading the full set of configuration
+Lux CLI supports uploading the full set of configuration
 files for a blockchain:
 
 - Genesis File

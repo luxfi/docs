@@ -1,16 +1,16 @@
 ---
-tags: [Tooling, Lux-CLI]
-description: This guide demonstrates how to install Lux-CLI. 
-pagination_label: Install Lux-CLI
-sidebar_label: Install Lux-CLI
+tags: [Tooling, Lux CLI]
+description: This guide demonstrates how to install Lux CLI. 
+pagination_label: Install Lux CLI
+sidebar_label: Install Lux CLI
 sidebar_position: 0
 ---
 
-# Install Lux-CLI
+# Install Lux CLI
 
 ## Compatibility
 
-Lux-CLI runs on Linux and Mac. Windows is currently not supported.
+Lux CLI runs on Linux and Mac. Windows is currently not supported.
 
 ## Instructions
 
@@ -23,7 +23,7 @@ curl -sSfL https://raw.githubusercontent.com/luxfi/cli/main/scripts/install.sh |
 The script installs the binary inside the `~/bin` directory. If the directory doesn't exist,
 it will be created.
 
-## Adding Lux-CLI to Your PATH
+## Adding Lux CLI to Your PATH
 
 To call the `lux` binary from anywhere, you'll need to add it to your system path. If you installed
 the binary into the default location, you can run the following snippet to add it to your path.

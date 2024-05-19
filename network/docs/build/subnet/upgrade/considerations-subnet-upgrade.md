@@ -103,7 +103,7 @@ binary.
 All the considerations for doing staggered node upgrades as discussed in previous section are valid
 for VM upgrades as well.
 
-In the future, VM upgrades will be handled by the [Lux-CLI
+In the future, VM upgrades will be handled by the [Lux CLI
 tool](https://github.com/luxfi/cli), but for now we need to do it manually.
 
 Go to the [releases page](https://github.com/luxfi/subnet-evm/releases) of the Subnet-EVM

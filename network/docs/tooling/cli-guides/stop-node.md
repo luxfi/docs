@@ -1,13 +1,13 @@
 ---
-tags: [Tooling, Lux-CLI]
-description: This page provides instructions for halting cloud server nodes established by Lux-CLI.
-pagination_label: Stop Nodes Originally Created with Lux-CLI
+tags: [Tooling, Lux CLI]
+description: This page provides instructions for halting cloud server nodes established by Lux CLI.
+pagination_label: Stop Nodes Originally Created with Lux CLI
 sidebar_label: Stop a Node
 sidebar_position: 6
 ---
-# Stop Nodes Originally Created with Lux-CLI
+# Stop Nodes Originally Created with Lux CLI
 
-This page provides instructions for halting cloud server nodes established by Lux-CLI.
+This page provides instructions for halting cloud server nodes established by Lux CLI.
 
 :::warning
 
@@ -37,7 +37,7 @@ directory (which are used to back up your node). More info about node backup can
 Please note that a stopped node on AWS / GCP can still incur cost (such as storage fees).
 
 Lux Partners is not responsible for the cost incurred from stopping a Lux node with
-Lux-CLI.
+Lux CLI.
 
 :::
 

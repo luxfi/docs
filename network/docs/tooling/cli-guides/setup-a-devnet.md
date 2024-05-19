@@ -1,14 +1,14 @@
 ---
-tags: [Tooling, Lux-CLI]
-description: This page demonstrates how to setup a Devnet of cloud-based validators using the Lux-CLI.
-pagination_label: Setup a Devnet of Cloud-Based validators using Lux-CLI
+tags: [Tooling, Lux CLI]
+description: This page demonstrates how to setup a Devnet of cloud-based validators using the Lux CLI.
+pagination_label: Setup a Devnet of Cloud-Based validators using Lux CLI
 sidebar_label: Setup a Devnet
 sidebar_position: 8
 ---
 
-# Setup a Devnet Using Lux-CLI
+# Setup a Devnet Using Lux CLI
 
-This page demonstrates how to setup a Devnet of cloud-based validators using Lux-CLI, 
+This page demonstrates how to setup a Devnet of cloud-based validators using Lux CLI, 
 and deploy a VM into it.
 
 Devnets (Developer Networks) are isolated lux networks deployed on the cloud. Similar to local networks
@@ -90,7 +90,7 @@ Then select the AWS region `us-east-1`:
 Give authorization to access AWS resources on behalf of the user:
 
 ```text
-? I authorize Lux-CLI to access my AWS account:
+? I authorize Lux CLI to access my AWS account:
   ▸ Yes
     No
 ```
@@ -111,7 +111,7 @@ New EC2 instance(s) successfully created in AWS!
 
 ...
 
-Luxd and Lux-CLI installed and node(s) are bootstrapping!
+Luxd and Lux CLI installed and node(s) are bootstrapping!
 ```
 
 You can check the Devnet setup with the `node status` command:

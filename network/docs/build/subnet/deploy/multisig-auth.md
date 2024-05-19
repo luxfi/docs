@@ -17,14 +17,14 @@ want your signing threshold to be.
 
 :::note
 
-Lux-CLI requires Ledgers for Mainnet deployments. This how-to guide assumes the use of Ledgers
+Lux CLI requires Ledgers for Mainnet deployments. This how-to guide assumes the use of Ledgers
 for setting up your multisig.
 
 :::
 
 ## Prerequisites
 
-- [`Lux-CLI`](https://github.com/luxfi/cli) installed
+- [`Lux CLI`](https://github.com/luxfi/cli) installed
 - Familiarity with process of [Deploying a Subnet on Testnet](/build/subnet/deploy/testnet-subnet.md)
  and [Deploying a Permissioned Subnet on Mainnet](/build/subnet/deploy/mainnet-subnet.md)
 - Multiple Ledger devices [configured for Lux](/build/subnet/deploy/mainnet-subnet.md#setting-up-your-ledger)
@@ -260,7 +260,7 @@ remaining keys and the `partiallySigned.txt` file.
 
 ### Issue the Command to Sign the Chain Creation TX
 
-Lux-CLI can detect the deployment network automatically. For `Mainnet` TXs, it uses your
+Lux CLI can detect the deployment network automatically. For `Mainnet` TXs, it uses your
 Ledger automatically. For `Testnet`, the CLI prompts the user to choose the signing mechanism.
 
 You can start the signing process with the `transaction sign` command:
@@ -451,7 +451,7 @@ remaining keys and the `partialAddValidatorTx.txt` file.
 
 ### Issue the Command to Sign the Add Validator TX
 
-Lux-CLI can detect the deployment network automatically. For `Mainnet` TXs, it uses your Ledger
+Lux CLI can detect the deployment network automatically. For `Mainnet` TXs, it uses your Ledger
 automatically. For `Testnet`, the CLI prompts the user to choose the signing mechanism.
 
 ```bash

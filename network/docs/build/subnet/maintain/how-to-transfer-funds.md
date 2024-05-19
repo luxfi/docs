@@ -1,12 +1,12 @@
 ---
-tags: [Build, Subnets, Lux-CLI]
-description:  If you need to send funds to your Subnet control key or need to move funds from one Ledger address index to another, this guide will demostrate how to enable direct transfers between ledger P-Chain addresses using the Lux-CLI command `lux key transfer`.
+tags: [Build, Subnets, Lux CLI]
+description:  If you need to send funds to your Subnet control key or need to move funds from one Ledger address index to another, this guide will demostrate how to enable direct transfers between ledger P-Chain addresses using the Lux CLI command `lux key transfer`.
 sidebar_label: Transfer P-Chain Funds
-pagination_label: How to Use Lux-CLI to Transfer P-Chain Funds
+pagination_label: How to Use Lux CLI to Transfer P-Chain Funds
 sidebar_position: 3
 ---
 
-# How to Use Lux-CLI to Transfer P-Chain Funds
+# How to Use Lux CLI to Transfer P-Chain Funds
 
 Transferring funds between P-Chain wallets becomes necessary in certain situations:
 
@@ -16,7 +16,7 @@ support for Subnet operations.
 2. Funds need to be moved from one Ledger address index to another. A Ledger manages an
 infinite sequence of addresses all derived from a master private key and
 can sign for any of those addresses. Each one is referred to by an index, or the associated 
-address. Lux-CLI usually expects to use index 0, but sometimes, the funds are in a 
+address. Lux CLI usually expects to use index 0, but sometimes, the funds are in a 
 different index. Occasionally, a transfer made to a ledger can be made to an address different
 from the default one used by the CLI.
 
@@ -36,7 +36,7 @@ This how-to guide focuses on transferring funds between ledger accounts.
 
 ## Prerequisites
 
-- [`Lux-CLI`](/tooling/cli-guides/install-cli) installed
+- [`Lux CLI`](/tooling/cli-guides/install-cli) installed
 - Multiple Ledger devices [configured for Lux](/build/subnet/deploy/mainnet-subnet.md#setting-up-your-ledger)
 
 ## Example: Sending All Funds From One Ledger to Another

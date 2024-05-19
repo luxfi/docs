@@ -1,15 +1,15 @@
 ---
-tags: [Tooling, Lux-CLI]
-description: This page demonstrates how to configure nodes to validate a Lux Subnet. Validation via Lux-CLI is currently only supported on Testnet.
-pagination_label: Configure Nodes to Validate a Subnet with Lux-CLI
+tags: [Tooling, Lux CLI]
+description: This page demonstrates how to configure nodes to validate a Lux Subnet. Validation via Lux CLI is currently only supported on Testnet.
+pagination_label: Configure Nodes to Validate a Subnet with Lux CLI
 sidebar_label: Validate a Subnet
 sidebar_position: 5
 ---
 
-# Configure a Node to Validate a Subnet with Lux-CLI
+# Configure a Node to Validate a Subnet with Lux CLI
 
 This page demonstrates how to configure nodes to validate a Lux Subnet.
-Validation via Lux-CLI is currently only supported on Testnet.
+Validation via Lux CLI is currently only supported on Testnet.
 
 :::warning
 

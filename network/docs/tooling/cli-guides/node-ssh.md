@@ -1,6 +1,6 @@
 ---
-tags: [Tooling, Lux-CLI]
-description: This page demonstrates how to execute a SSH command on all nodes of a Cluster using the Lux-CLI.
+tags: [Tooling, Lux CLI]
+description: This page demonstrates how to execute a SSH command on all nodes of a Cluster using the Lux CLI.
 pagination_label: Execute a SSH command on all nodes of a Cluster.
 sidebar_label: Execute a SSH command on a Cluster
 sidebar_position: 9
@@ -8,7 +8,7 @@ sidebar_position: 9
 
 # Execute a SSH command on a Cluster
 
-This page demonstrates how to execute a SSH command on a Cluster managed by Lux-CLI
+This page demonstrates how to execute a SSH command on a Cluster managed by Lux CLI
 
 :::warning
 

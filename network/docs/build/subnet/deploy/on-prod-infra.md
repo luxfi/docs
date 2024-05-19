@@ -144,9 +144,9 @@ which will impact your validator's uptime, thus staking rewards, and the stabili
 ## Subnet Deploy
 
 Once you have the nodes set up you are ready to deploy the actual Subnet. Right now, the recommended
-tool to do that is [Lux-CLI](https://github.com/luxfi/cli).
+tool to do that is [Lux CLI](https://github.com/luxfi/cli).
 
-Instructions for deployment by Lux-CLI can be found [here](/build/subnet/deploy/mainnet-subnet.md).
+Instructions for deployment by Lux CLI can be found [here](/build/subnet/deploy/mainnet-subnet.md).
 
 ### Ledger HW Wallet
 

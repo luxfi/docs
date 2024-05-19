@@ -1,21 +1,21 @@
 ---
-tags: [Tooling, Lux-CLI]
-description: This guide demonstrates the process of importing a Subnet to the Lux-CLI to enable better management of the Subnet's configuration. This how-to uses the ZOO Subnet deployed on Testnet as the example Subnet. 
-pagination_label: How to Import a Subnet into Lux-CLI
+tags: [Tooling, Lux CLI]
+description: This guide demonstrates the process of importing a Subnet to the Lux CLI to enable better management of the Subnet's configuration. This how-to uses the ZOO Subnet deployed on Testnet as the example Subnet. 
+pagination_label: How to Import a Subnet into Lux CLI
 sidebar_label: Import a Subnet
 sidebar_position: 2
 ---
 
-# How to Import a Subnet into Lux-CLI
+# How to Import a Subnet into Lux CLI
 
 ## Context
 
 In previous instances, Subnets might have been manually created through transaction issuance to node
 APIs, whether it was done using a local node or public API nodes. However, the current focus is on 
-integrating Lux-CLI. 
+integrating Lux CLI. 
 
 To achieve this integration, this guide demonstrates the process 
-of importing a Subnet to the Lux-CLI to enable better management of the Subnet's configuration.
+of importing a Subnet to the Lux CLI to enable better management of the Subnet's configuration.
 This how-to uses the ZOO Subnet deployed on Testnet as the example Subnet.
 
 
@@ -30,7 +30,7 @@ For the import to work properly, you need:
 
 ## Import the Subnet
 
-For these use cases, Lux-CLI now supports the `import public` command.
+For these use cases, Lux CLI now supports the `import public` command.
 
 Start the import by issuing
 
@@ -51,7 +51,7 @@ Use the arrow keys to navigate: ↓ ↑ → ←
 ```
 
 As stated earlier, this is from Testnet, so select it.
-As a next step, Lux-CLI asks for the path of the genesis file on disk:
+As a next step, Lux CLI asks for the path of the genesis file on disk:
 
 ```shell
 ✗ Provide the path to the genesis file: /tmp/subnet_evm.genesis.json
@@ -82,7 +82,7 @@ for the VM's version, but rather we'll get the exact version which is actually r
 
 For this to work, a node API URL is requested from the user, which is used for the query.
 This requires that the node's API IP and port are accessible from the machine running
-Lux-CLI, or the node is obviously not reachable,
+Lux CLI, or the node is obviously not reachable,
 and thus the query times out and fails, and the tool exits.
 The node should also be validating the given Subnet for the import to be meaningful,
 otherwise, the import fails with missing information.
@@ -100,7 +100,7 @@ except that there is no prompt for the VM version anymore.
 ### Nodes Aren't Yet Validating this Subnet, the Nodes API URL are Unknown, or Inaccessible (Firewalls)
 
 If you don't have a node's API URL at hand, or it's not reachable
-from the machine running Lux-CLI, or maybe no nodes have even been deployed yet because
+from the machine running Lux CLI, or maybe no nodes have even been deployed yet because
 only the `CreateSubnet` transaction has been issued, for example, you can query the public APIs.
 
 You can't know for sure what Subnet VM versions the validators are running though,
@@ -131,7 +131,7 @@ Use the arrow keys to navigate: ↓ ↑ → ←
     Custom
 ```
 
-Lux-CLI needs to know the VM type, to hit its repository and select
+Lux CLI needs to know the VM type, to hit its repository and select
 what VM versions are available.
 This works automatically for Lux Partners VMs (like Subnet-EVM).
 
@@ -154,7 +154,7 @@ Use the arrow keys to navigate: ↓ ↑ → ←
 ```
 
 There is only so much the tool can help here, the Subnet manager/administrator
-should know what they want to use Lux-CLI for, how,
+should know what they want to use Lux CLI for, how,
 and why they're importing the Subnet.
 
 It's crucial to understand that the correct versions are only known to the user.
@@ -171,7 +171,7 @@ Subnet ZOO imported successfully
 
 The choice finalizes the wizard, which hopefully signals that the import succeeded.
 If something went wrong, the error messages provide cause information.
-This means you can now use Lux-CLI to handle the imported Subnet in the accustomed way.
+This means you can now use Lux CLI to handle the imported Subnet in the accustomed way.
 For example, you could deploy the ZOO Subnet locally.
 
 

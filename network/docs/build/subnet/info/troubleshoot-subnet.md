@@ -26,10 +26,10 @@ Starting network...
 ......Error: failed to query network health: rpc error: code = DeadlineExceeded desc = context deadline exceeded
 ```
 
-Lux-CLI only supports running one local Lux network at a time. If other instances of
-Luxd are running concurrently, your Lux-CLI network fails to start.
+Lux CLI only supports running one local Lux network at a time. If other instances of
+Luxd are running concurrently, your Lux CLI network fails to start.
 
-To test for this error, start by shutting down any Lux nodes started by Lux-CLI.
+To test for this error, start by shutting down any Lux nodes started by Lux CLI.
 
 ```shell
 lux network clean --hard
@@ -41,11 +41,11 @@ Next, look for any lingering Luxd processes with:
 ps aux | grep luxd
 ```
 
-If any processes are running, you need to stop them before you can launch your VM with Lux-CLI.
+If any processes are running, you need to stop them before you can launch your VM with Lux CLI.
 
 :::warning
 
-If you're running a validator node on the same box you're using Lux-CLI, **don't** end any
+If you're running a validator node on the same box you're using Lux CLI, **don't** end any
 of these lingering Luxd processes. This may shut down your validator and could affect
 your validation uptime.
 
@@ -77,13 +77,13 @@ protocol specification shared by both Luxd and the VM. **Both components must be
 the same RPC version for VM deployment to work.**
 
 Your custom VM's RPC version is set by the version of Luxd that you import. By default,
-Lux-CLI creates local Avalalanche networks that run the latest Luxd release.
+Lux CLI creates local Avalalanche networks that run the latest Luxd release.
 
 ### Example
 
 _Here's an example with real numbers from the Luxd compatibility page_:
 
-- If the latest Luxd release is version v1.10.11, then Lux-CLI deploys a network with
+- If the latest Luxd release is version v1.10.11, then Lux CLI deploys a network with
 RPC version 28.
 - For your deploy to be successful, your VM must also have RPC version 28. Because only
 Luxd versions v1.10.9, v1.10.10 and v1.10.11 supports RPC version 28, 
@@ -99,7 +99,7 @@ are incompatible with the protocol version of Luxd.
 If your VM has an RPC version mismatch, you have two options: 
 
 1. Update the version of Luxd you use in your VM. This is the correct long-term approach.
-2. Use Lux-CLI to deploy an older version of Luxd by using the
+2. Use Lux CLI to deploy an older version of Luxd by using the
 `--luxd-version` flag. Both the [`subnet deploy`](/tooling/cli.md#subnet-deploy)
 and [`network start`](/tooling/cli.md#network-start) commands support
 setting the Luxd version explicitly.
@@ -142,7 +142,7 @@ version bumps may include a breaking RPC version bump.
 
 ## Fix for MacBook Air M1/M2: ‘Bad CPU type in executable’ Error
 
-When running `lux subnet deploy` via the Lux-CLI, the terminal may throw an error that
+When running `lux subnet deploy` via the Lux CLI, the terminal may throw an error that
 contains the following: 
 
 ``` zsh
