@@ -325,7 +325,7 @@ lux subnet import file [subnetPath] [flags]
     --branch string   the repo branch to use if downloading a new repo
 -f, --force           overwrite the existing configuration if one exists
 -h, --help            help for import
-    --repo string     the repo to import (ex: luxdefi/plugins-core) or url to download the repo from
+    --repo string     the repo to import (ex: luxfi/plugins-core) or url to download the repo from
     --subnet string   the subnet configuration to import from the provided repo
 ```
 

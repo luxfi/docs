@@ -254,8 +254,8 @@ throughput. Each vote is actually many votes in one.
 ### Loose Ends
 
 Transactions are created by users which call an API on an
-[Luxd](https://github.com/luxdefi/luxd) full node or create them using a library such
-as [LuxJS](https://github.com/luxdefi/luxjs).
+[Luxd](https://github.com/luxfi/luxd) full node or create them using a library such
+as [LuxJS](https://github.com/luxfi/luxjs).
 
 ### Other Observations
 

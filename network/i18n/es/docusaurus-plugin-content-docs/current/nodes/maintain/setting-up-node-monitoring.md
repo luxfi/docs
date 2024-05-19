@@ -11,13 +11,13 @@ sidebar_position: 2
 ## Introducción
 
 Este tutorial demuestra cómo configurar la infraestructura para monitorear una instancia de
-[Luxd](https://github.com/luxdefi/luxd). Utilizaremos:
+[Luxd](https://github.com/luxfi/luxd). Utilizaremos:
 
 - [Prometheus](https://prometheus.io/) para recopilar y almacenar datos
 - [`node_exporter`](https://github.com/prometheus/node_exporter) para obtener información sobre la máquina,
 - La API de métricas de Luxd (/reference/luxd/metrics-api.md) para obtener información sobre el nodo
 - [Grafana](https://grafana.com/) para visualizar los datos en un panel de control.
-- Un conjunto de paneles de control predefinidos de Lux [Lux dashboards](https://github.com/luxdefi/monitoring/tree/main/grafana/dashboards)
+- Un conjunto de paneles de control predefinidos de Lux [Lux dashboards](https://github.com/luxfi/monitoring/tree/main/grafana/dashboards)
 
 Requisitos previos:
 
@@ -40,7 +40,7 @@ El sistema descrito aquí **no debe** abrirse a Internet público. Ni Prometheus
 Para facilitar la instalación del monitoreo del nodo, hemos creado un script que hace la mayor parte del trabajo por ti. Para descargar y ejecutar el script, inicia sesión en la máquina en la que se ejecuta el nodo con un usuario que tenga privilegios de administrador e ingresa el siguiente comando:
 
 ```bash
-wget -nd -m https://raw.githubusercontent.com/luxdefi/monitoring/main/grafana/monitoring-installer.sh ;\
+wget -nd -m https://raw.githubusercontent.com/luxfi/monitoring/main/grafana/monitoring-installer.sh ;\
 chmod 755 monitoring-installer.sh;
 ```
 
@@ -263,7 +263,7 @@ Instalador de monitoreo de Luxd
 
 Descargando...
 Last-modified header missing -- time-stamps turned off.
-2021-11-05 14:57:47 URL:https://raw.githubusercontent.com/luxdefi/monitoring/master/grafana/dashboards/c_chain.json [50282/50282] -> "c_chain.json" [1]
+2021-11-05 14:57:47 URL:https://raw.githubusercontent.com/luxfi/monitoring/master/grafana/dashboards/c_chain.json [50282/50282] -> "c_chain.json" [1]
 FINISHED --2021-11-05 14:57:47--
 Total wall clock time: 0.2s
 Downloaded: 1 files, 49K in 0s (132 MB/s)

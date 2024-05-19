@@ -13,7 +13,7 @@ as a service on a standalone Linux installation, for example to set up a
 (Subnet) validator, use the node as a private RPC server and similar uses. It
 also makes upgrading or reinstalling the nodes easy.
 
-GitHub: [https://github.com/luxdefi/docs/blob/master/scripts/luxd-installer.sh](https://github.com/luxdefi/docs/blob/master/scripts/luxd-installer.sh)
+GitHub: [https://github.com/luxfi/docs/blob/master/scripts/luxd-installer.sh](https://github.com/luxfi/docs/blob/master/scripts/luxd-installer.sh)
 
 How-to: [Run a Lux Node Using the Install Script](/nodes/run/with-installer/installing-luxd.md)
 

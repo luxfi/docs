@@ -31,7 +31,7 @@ to send and receive messages.
 ### Outbound Messages
 
 [The `OutboundMsgBuilder`
-interface](https://github.com/luxdefi/luxd/blob/master/message/outbound_msg_builder.go)
+interface](https://github.com/luxfi/luxd/blob/master/message/outbound_msg_builder.go)
 specifies methods that build messages of type `OutboundMessage`. Nodes
 communicate to other nodes by sending `OutboundMessage` messages.
 
@@ -61,7 +61,7 @@ In the future, Luxd will use protocol buffers to communicate.
 ### Network
 
 [The networking
-interface](https://github.com/luxdefi/luxd/blob/master/network/network.go)
+interface](https://github.com/luxfi/luxd/blob/master/network/network.go)
 is shared across all chains. It implements functions from the `ExternalSender`
 interface. The two functions it implements are `Send` and `Gossip`. `Send` sends
 a message of type `OutboundMessage` to a specific set of nodes (specified by an
@@ -77,7 +77,7 @@ non-validator, will attempt to connect to the primary network.
 ## Router
 
 [The
-`ChainRouter`](https://github.com/luxdefi/luxd/blob/master/snow/networking/router/chain_router.go)
+`ChainRouter`](https://github.com/luxfi/luxd/blob/master/snow/networking/router/chain_router.go)
 routes all incoming messages to its respective blockchain using `ChainID`. It
 does this by pushing all the messages onto the respective Chain handler’s queue.
 The `ChainRouter` references all existing chains on the network such as the
@@ -94,7 +94,7 @@ timeouts will then be adjusted as well.
 ## Handler
 
 The main function of [the
-`Handler`](https://github.com/luxdefi/luxd/blob/master/snow/networking/handler/handler.go)
+`Handler`](https://github.com/luxfi/luxd/blob/master/snow/networking/handler/handler.go)
 is to pass messages from the network to the consensus engine. It receives these
 messages from the `ChainRouter`. It passes messages by pushing them onto a sync
 or Async queue (depends on message type). Messages are then popped from the
@@ -109,7 +109,7 @@ be one of the following.
 ## Sender
 
 The main role of [the
-`sender`](https://github.com/luxdefi/luxd/blob/master/snow/networking/sender/sender.go)
+`sender`](https://github.com/luxfi/luxd/blob/master/snow/networking/sender/sender.go)
 is to build and send outbound messages. It is actually a very thin wrapper
 around the normal networking code. The main difference here is that sender
 registers timeouts and tells the router to expect a response message. The timer
@@ -127,7 +127,7 @@ validators are in agreement with the state of the blockchain. The novel
 consensus algorithm is documented in the [white
 paper](https://assets.website-files.com/5d80307810123f5ffbb34d6e/6009805681b416f34dcae012_Lux%20Consensus%20Whitepaper.pdf).
 There are two main consensus algorithms: Lux and
-[Snowman](https://github.com/luxdefi/luxd/blob/master/snow/consensus/snowman/consensus.go).
+[Snowman](https://github.com/luxfi/luxd/blob/master/snow/consensus/snowman/consensus.go).
 The engine is responsible for adding proposing a new block to consensus,
 repeatedly polling the network for decisions (accept/reject), and communicating
 that decision to the `Sender`.
@@ -135,7 +135,7 @@ that decision to the `Sender`.
 ## Blockchain Creation
 
 [The
-`Manager`](https://github.com/luxdefi/luxd/blob/master/chains/manager.go)
+`Manager`](https://github.com/luxfi/luxd/blob/master/chains/manager.go)
 is what kick-starts everything in regards to blockchain creation, starting with
 the P-Chain. Once the P-Chain finishes bootstrapping, it will kickstart C-Chain
 and X-Chain and any other chains. The `Manager`’s job is not done yet, if a

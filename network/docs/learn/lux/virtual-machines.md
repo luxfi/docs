@@ -65,9 +65,9 @@ staking rewards in the form of a reward token determined by the Subnets.
 
 Lux natively supports the execution of Ethereum smart contracts written in solidity. Ethereum
 developers have the option of deploying their smart contracts on the C-Chain's implementation of the
-Ethereum Virtual Machine ([Coreth](https://github.com/luxdefi/coreth)),
+Ethereum Virtual Machine ([Coreth](https://github.com/luxfi/coreth)),
 or on their own Subnet using the
-[Subnet-EVM](https://github.com/luxdefi/subnet-evm) for advanced use cases that require more customization.
+[Subnet-EVM](https://github.com/luxfi/subnet-evm) for advanced use cases that require more customization.
 
 Both C-Chain and the Subnet-EVM are compatible with Ethereum tooling like Remix, Core, MetaMask,
 thirdweb, and more.
@@ -76,15 +76,15 @@ To learn more about smart contract support, click [here](build/dapp/launch-dapp.
 
 ### Golang
 
-- [Coreth](https://github.com/luxdefi/coreth)
+- [Coreth](https://github.com/luxfi/coreth)
   - An implementation of the EVM that powers the Lux C-Chain that supports Solidity smart
   contracts.
-- [Subnet-EVM](https://github.com/luxdefi/subnet-evm)
+- [Subnet-EVM](https://github.com/luxfi/subnet-evm)
   - An implementation of the EVM that can be deployed to a custom Subnet to support Solidity smart
   contracts
-- [TimestampVM](https://github.com/luxdefi/timestampvm)
+- [TimestampVM](https://github.com/luxfi/timestampvm)
   - A decentralized timestamp server
-- [XSVM](https://github.com/luxdefi/xsvm)
+- [XSVM](https://github.com/luxfi/xsvm)
   - An example of Lux Warp Messaging that implements Cross-Subnet asset transfers
 
 See here for a tutorial on [How to Build a Simple Golang VM](/build/vm/create/golang-vm-simple.md)
@@ -93,7 +93,7 @@ See here for a tutorial on [How to Build a Simple Golang VM](/build/vm/create/go
 
 The following VMs were built using Rust via the [Lux Rust SDK](https://crates.io/crates/types)
 
-- [TimestampVM RS](https://github.com/luxdefi/timestampvm-rs)
+- [TimestampVM RS](https://github.com/luxfi/timestampvm-rs)
   - A Rust implementation of TimestampVM
 
 See here for a tutorial on [How to Build a Simple Rust VM](/build/vm/create/rust-vm.md)

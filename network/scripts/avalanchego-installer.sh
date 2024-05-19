@@ -172,7 +172,7 @@ usage () {
 
 list_versions () {
   echo "Available versions:"
-  wget -q -O - https://api.github.com/repos/luxdefi/luxd/releases \
+  wget -q -O - https://api.github.com/repos/luxfi/luxd/releases \
   | grep tag_name \
   | sed 's/.*: "\(.*\)".*/\1/' \
   | head
@@ -281,9 +281,9 @@ cd /tmp/luxd-install
 version=${version:-latest}
 echo "Looking for $getArch version $version..."
 if [ "$version" = "latest" ]; then
-  fileName="$(curl -s https://api.github.com/repos/luxdefi/luxd/releases/latest | grep "luxd-linux-$getArch.*tar\(.gz\)*\"" | cut -d : -f 2,3 | tr -d \" | cut -d , -f 2)"
+  fileName="$(curl -s https://api.github.com/repos/luxfi/luxd/releases/latest | grep "luxd-linux-$getArch.*tar\(.gz\)*\"" | cut -d : -f 2,3 | tr -d \" | cut -d , -f 2)"
 else
-  fileName="https://github.com/luxdefi/luxd/releases/download/$version/luxd-linux-$getArch-$version.tar.gz"
+  fileName="https://github.com/luxfi/luxd/releases/download/$version/luxd-linux-$getArch-$version.tar.gz"
 fi
 if [[ `wget -S --spider $fileName  2>&1 | grep 'HTTP/1.1 200 OK'` ]]; then
   echo "Node version found."

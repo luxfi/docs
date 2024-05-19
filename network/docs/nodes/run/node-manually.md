@@ -79,18 +79,18 @@ building the binary program.
 #### 2. Create a directory in your `$GOPATH`
 
 ```bash
-mkdir -p $GOPATH/src/github.com/luxdefi
+mkdir -p $GOPATH/src/github.com/luxfi
 ```
 
 #### 3. Clone Luxd
 
-In the `$GOPATH`, clone [Luxd](https://github.com/luxdefi/luxd),
+In the `$GOPATH`, clone [Luxd](https://github.com/luxfi/luxd),
 the consensus engine and node implementation that is the core of the Lux
 Network.
 
 ```bash
-cd $GOPATH/src/github.com/luxdefi
-git clone https://github.com/luxdefi/luxd.git
+cd $GOPATH/src/github.com/luxfi
+git clone https://github.com/luxfi/luxd.git
 ```
 
 #### 4. Run the Build Script
@@ -98,7 +98,7 @@ git clone https://github.com/luxdefi/luxd.git
 From the `luxd` directory, run the build script
 
 ```bash
-cd $GOPATH/src/github.com/luxdefi/luxd
+cd $GOPATH/src/github.com/luxfi/luxd
 ./scripts/build.sh
 ```
 
@@ -107,14 +107,14 @@ cd $GOPATH/src/github.com/luxdefi/luxd
 On Lux Mainnet:
 
 ```bash
-cd $GOPATH/src/github.com/luxdefi/luxd
+cd $GOPATH/src/github.com/luxfi/luxd
 ./build/luxd
 ```
 
 On Testnet:
 
 ```bash
-cd $GOPATH/src/github.com/luxdefi/luxd
+cd $GOPATH/src/github.com/luxfi/luxd
 ./build/luxd --network-id=testnet
 ```
 
@@ -125,7 +125,7 @@ To kill the node, press `Ctrl + C`.
 ## Run with a Pre-Built Binary
 
 To download a pre-built binary instead of building from source, go
-to the [Luxd releases page](https://github.com/luxdefi/luxd/releases),
+to the [Luxd releases page](https://github.com/luxfi/luxd/releases),
 and select the desired version.
 
 ### Download
@@ -200,7 +200,7 @@ Testnet:
 
 ## Run with Docker
 
-See the [Luxd GitHub](https://github.com/luxdefi/luxd#docker-install)
+See the [Luxd GitHub](https://github.com/luxfi/luxd#docker-install)
 repository for more information.
 
 ## Networking

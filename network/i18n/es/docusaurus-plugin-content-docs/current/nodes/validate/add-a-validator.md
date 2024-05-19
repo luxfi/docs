@@ -114,13 +114,13 @@ También podemos agregar un nodo al conjunto de validadores usando [LuxJS](/tool
 Para usar LuxJS, puedes clonar el repositorio:
 
 ```zsh
-git clone https://github.com/luxdefi/luxjs.git
+git clone https://github.com/luxfi/luxjs.git
 ```
 
 :::info
 El método de clonación del repositorio utilizado es HTTPS, pero también se puede usar SSH:
 
-`git clone git@github.com:luxdefi/luxjs.git`
+`git clone git@github.com:luxfi/luxjs.git`
 
 Puedes encontrar más información sobre SSH y cómo usarlo
 [aquí](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/about-ssh).
@@ -129,7 +129,7 @@ Puedes encontrar más información sobre SSH y cómo usarlo
 o agregarlo a un proyecto existente:
 
 ```zsh
-yarn add @luxdefi/luxjs
+yarn add @luxfi/luxjs
 ```
 
 Para este tutorial, usaremos [`ts-node`](https://www.npmjs.com/package/ts-node)
@@ -140,14 +140,14 @@ para ejecutar los scripts de ejemplo directamente desde un directorio LuxJS.
 En esta sección, usaremos Testnet para mostrar cómo agregar un nodo al conjunto de validadores.
 
 Abre tu directorio LuxJS y selecciona la carpeta
-[**`examples/platformvm`**](https://github.com/luxdefi/luxjs/tree/master/examples/platformvm)
+[**`examples/platformvm`**](https://github.com/luxfi/luxjs/tree/master/examples/platformvm)
 para ver el código fuente de los scripts de ejemplo.
 
 Usaremos el script
-[**`buildAddValidatorTx.ts`**](https://github.com/luxdefi/luxjs/blob/master/examples/platformvm/buildAddValidatorTx.ts)
+[**`buildAddValidatorTx.ts`**](https://github.com/luxfi/luxjs/blob/master/examples/platformvm/buildAddValidatorTx.ts)
 para agregar un validador. Para obtener más información sobre la API `buildAddValidatorTx`,
 haz clic
-[aquí](https://github.com/luxdefi/luxjs-docs/blob/main/classes/api_platformvm.platformvmapi.md#buildaddvalidatortx).
+[aquí](https://github.com/luxfi/luxjs-docs/blob/main/classes/api_platformvm.platformvmapi.md#buildaddvalidatortx).
 
 #### Clave privada
 
@@ -157,7 +157,7 @@ Localiza esta línea en el archivo
 const privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`;
 ```
 
-y reemplázala con una clave privada que controles. Puedes usar [este código para generar una nueva clave](https://github.com/luxdefi/luxjs/blob/master/examples/platformvm/createKeypair.ts).
+y reemplázala con una clave privada que controles. Puedes usar [este código para generar una nueva clave](https://github.com/luxfi/luxjs/blob/master/examples/platformvm/createKeypair.ts).
 
 ```js
 const privKey: string = "<TU-CLAVE-PRIVADA-AQUÍ>";
@@ -271,7 +271,7 @@ La respuesta tiene el ID de transacción.
 ¡Éxito! TXID: 2ftDVwmss5eJk8HFsNVi6a3vWK9s3szZFhEeSY2HCS8xDb8Cra
 ```
 
-Podemos verificar el estado de la transacción ejecutando el script de ejemplo: [`getTxStatus.ts`](https://github.com/luxdefi/luxjs/blob/master/examples/platformvm/getTxStatus.ts) siguiendo los pasos a continuación:
+Podemos verificar el estado de la transacción ejecutando el script de ejemplo: [`getTxStatus.ts`](https://github.com/luxfi/luxjs/blob/master/examples/platformvm/getTxStatus.ts) siguiendo los pasos a continuación:
 
 1. Asegúrate de que tu [configuración de red](#configuración-de-red) sea correcta antes de ejecutar el script.
 
@@ -307,7 +307,7 @@ Esto devuelve:
 
 El estado debería ser `Committed`, lo que significa que la transacción fue exitosa.
 
-Podemos ver si el nodo está ahora en el conjunto de validadores pendientes para la red Testnet utilizando el ejemplo: [`getPendingValidators.ts`](https://github.com/luxdefi/luxjs/blob/master/examples/platformvm/getPendingValidators.ts). Simplemente cambia la [configuración de red](#configuración-de-red) para cumplir con los requisitos de Testnet y luego ejecuta el script:
+Podemos ver si el nodo está ahora en el conjunto de validadores pendientes para la red Testnet utilizando el ejemplo: [`getPendingValidators.ts`](https://github.com/luxfi/luxjs/blob/master/examples/platformvm/getPendingValidators.ts). Simplemente cambia la [configuración de red](#configuración-de-red) para cumplir con los requisitos de Testnet y luego ejecuta el script:
 
 ```sh
 ts-node examples/platformvm/getPendingValidators.ts
@@ -352,7 +352,7 @@ let privKey: string = `${PrivateKeyPrefix}${DefaultLocalGenesisPrivateKey}`;
 pKeychain.importKey(privKey);
 ```
 
-y reemplaza `privKey` con las claves privadas que controlas. Para generar un nuevo par de claves, podemos usar el script de ejemplo [`createKeypair.ts`](https://github.com/luxdefi/luxjs/blob/master/examples/platformvm/createKeypair.ts) junto con la [Configuración de la Red Testnet](#configuración-de-red).
+y reemplaza `privKey` con las claves privadas que controlas. Para generar un nuevo par de claves, podemos usar el script de ejemplo [`createKeypair.ts`](https://github.com/luxfi/luxjs/blob/master/examples/platformvm/createKeypair.ts) junto con la [Configuración de la Red Testnet](#configuración-de-red).
 
 ```ts
 let privKey: string =

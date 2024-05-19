@@ -201,7 +201,7 @@ Si un validador está en línea durante el 80% de un período de delegación,
 recibe un % de la recompensa (la tarifa) ganada por el delegador.
 La P-Chain solía distribuir esta tarifa como una salida UTXO separada por período de delegación.
 Después de la
-[Activación de Cortina](https://medium.com/luxdefi/cortina-x-chain-linearization-a1d9305553f6),
+[Activación de Cortina](https://medium.com/luxfi/cortina-x-chain-linearization-a1d9305553f6),
 en lugar de enviar una salida UTXO de tarifa por cada período de delegación exitoso,
 las tarifas ahora se agrupan durante todo el período de validación de un nodo y se distribuyen cuando se desapuesta.
 

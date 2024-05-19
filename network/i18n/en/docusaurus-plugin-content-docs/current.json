@@ -13,7 +13,7 @@
   },
   "sidebar.overview.link.Audits": {
     "message": "Audits",
-    "description": "The label for link Audits in sidebar overview, linking to https://github.com/luxdefi/audits"
+    "description": "The label for link Audits in sidebar overview, linking to https://github.com/luxfi/audits"
   },
   "sidebar.dapps.category.Smart Contract": {
     "message": "Smart Contract",

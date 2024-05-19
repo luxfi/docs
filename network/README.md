@@ -26,14 +26,14 @@ repository. Simply:
   and include any extra details in the description
 - Hit "Sign off and commit changes" to raise a PR with your proposed changes
 
-![](https://github.com/luxdefi/docs/blob/main/static/img/quick-edit-readme.gif)
+![](https://github.com/luxfi/docs/blob/main/static/img/quick-edit-readme.gif)
 
 ### New Content or Extensive Changes
 
 To propose new docs or large edits to our existing pages, follow the steps accordingly:
 
 - **Lux Partners Github Organization Members:** Clone the repo
-  `git clone https://github.com/luxdefi/docs.git`
+  `git clone https://github.com/luxfi/docs.git`
 - **External Contributors:** Fork the repo via GitHub's GUI
 - Checkout to a new branch `git checkout -b <your-name/branch-name>`
 - Make changes on your branch
@@ -41,7 +41,7 @@ To propose new docs or large edits to our existing pages, follow the steps accor
 - **`yarn build` to ensure the build passes**
 - `git commit -m "some commit message"`
 - `git push`
-- Head to [GitHub](https://github.com/luxdefi/docs)
+- Head to [GitHub](https://github.com/luxfi/docs)
   and open a new pull request
 
 ### Structure and Syntax
@@ -111,15 +111,15 @@ _The information I am requesting is related to a specific project, i.e. Luxd, Lu
 
 _The information I am requesting is explanatory in nature and does not currently exist:_
 
-- Please open a new [Issue](https://github.com/luxdefi/docs/issues/new/choose)
+- Please open a new [Issue](https://github.com/luxfi/docs/issues/new/choose)
   in this repository and thoroughly detail your request according to the issue template.
   If urgent, please create a new ticket in the
-  [Dev Docs Improvement Proposals](https://github.com/orgs/luxdefi/projects/15/views/1)
+  [Dev Docs Improvement Proposals](https://github.com/orgs/luxfi/projects/15/views/1)
   dashboard.
 
 _Erroneous or missing information on documentation unrelated to a specific project needs
 editing:_
 
 - If you understand the issue enough to provide a correction, follow the steps
-  [here](https://github.com/luxdefi/docs#quick-fixes).
-- If not, raise an [Issue](https://github.com/luxdefi/docs/issues/new/choose).
+  [here](https://github.com/luxfi/docs#quick-fixes).
+- If not, raise an [Issue](https://github.com/luxfi/docs/issues/new/choose).

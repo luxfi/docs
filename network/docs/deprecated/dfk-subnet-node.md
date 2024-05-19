@@ -28,22 +28,22 @@ Luxd directory (within your `$GOPATH`)._
 Next, you will clone the DFK Subnet-EVM repository:
 
 ```bash
-mkdir -p $GOPATH/src/github.com/luxdefi
-cd $GOPATH/src/github.com/luxdefi
-git clone https://github.com/luxdefi/subnet-evm.git
+mkdir -p $GOPATH/src/github.com/luxfi
+cd $GOPATH/src/github.com/luxfi
+git clone https://github.com/luxfi/subnet-evm.git
 cd subnet-evm
 ```
 
 :::info
 The repository cloning method used is HTTPS, but SSH can be used too:
 
-`git clone git@github.com:luxdefi/subnet-evm.git`
+`git clone git@github.com:luxfi/subnet-evm.git`
 
 You can find more about SSH and how to use it 
 [here](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/about-ssh). 
 :::
 
-Now that you are in the `luxdefi/subnet-evm` repository, you will build the binary and place it
+Now that you are in the `luxfi/subnet-evm` repository, you will build the binary and place it
 directly into the `plugins` directory. To do this, you will pass in the desired
 path to place the plugin binary. You will want to place this binary into the plugins directory of
 Luxd.
@@ -97,7 +97,7 @@ First, make sure to shut down your node in case it is still running. Then, you w
 into the Luxd directory:
 
 ```bash
-cd $GOPATH/src/github.com/luxdefi/luxd
+cd $GOPATH/src/github.com/luxfi/luxd
 ```
 
 If you went through the steps to set up a config file, then you can launch your node by specifying
@@ -121,25 +121,25 @@ Run `go version`. **It should be 1.19.6 or above.** Run `echo $GOPATH`. **It sho
 :::
 
 ```bash
-mkdir -p $GOPATH/src/github.com/luxdefi
-cd $GOPATH/src/github.com/luxdefi
-git clone https://github.com/luxdefi/luxd.git
+mkdir -p $GOPATH/src/github.com/luxfi
+cd $GOPATH/src/github.com/luxfi
+git clone https://github.com/luxfi/luxd.git
 cd luxd
 ./scripts/build.sh
-cd $GOPATH/src/github.com/luxdefi
-git clone https://github.com/luxdefi/subnet-evm.git
+cd $GOPATH/src/github.com/luxfi
+git clone https://github.com/luxfi/subnet-evm.git
 cd subnet-evm
 ./scripts/build.sh ~/.luxd/plugins/mDV3QWRXfwgKUWb9sggkv4vQxAQR4y2CyKrt5pLZ5SzQ7EHBv
-cd $GOPATH/src/github.com/luxdefi/luxd
+cd $GOPATH/src/github.com/luxfi/luxd
 ./build/luxd --track-subnets Vn3aX6hNRstj5VHHm63TCgPNaeGnRSqCYXQqemSqDd2TQH4qJ
 ```
 
 :::info
 The repository cloning method used is HTTPS, but SSH can be used too:
 
-`git clone git@github.com:luxdefi/luxd.git`
+`git clone git@github.com:luxfi/luxd.git`
 
-`git clone git@github.com:luxdefi/subnet-evm.git`
+`git clone git@github.com:luxfi/subnet-evm.git`
 
 You can find more about SSH and how to use it 
 [here](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/about-ssh). 

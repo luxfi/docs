@@ -8,11 +8,11 @@ sidebar_position: 1
 # Setting up Postman
 
 We have made a Postman collection for Lux, that includes all the public
-API calls that are available on an [Luxd instance](https://github.com/luxdefi/luxd/releases/), including environment variables,
+API calls that are available on an [Luxd instance](https://github.com/luxfi/luxd/releases/), including environment variables,
 allowing developers to quickly issue commands to a node and see the response, without having to
 copy and paste long and complicated `curl` commands.
 
-[Link to GitHub](https://github.com/luxdefi/postman-collection/)
+[Link to GitHub](https://github.com/luxfi/postman-collection/)
 
 ## What Is Postman?
 
@@ -59,7 +59,7 @@ select `Import` and switch to `Link` tab.
 There, in the URL input field paste the link below to the collection:
 
 ```text
-https://raw.githubusercontent.com/luxdefi/postman-collection/master/Lux.postman_collection.json
+https://raw.githubusercontent.com/luxfi/postman-collection/master/Lux.postman_collection.json
 ```
 
 Postman will recognize the format of the file content and offer to import the
@@ -75,7 +75,7 @@ select `Import` and switch to `Link` tab. This time, paste the link below
 to the environment JSON:
 
 ```text
-https://raw.githubusercontent.com/luxdefi/postman-collection/master/Example-Lux-Environment.postman_environment.json
+https://raw.githubusercontent.com/luxfi/postman-collection/master/Example-Lux-Environment.postman_environment.json
 ```
 
 Postman will recognize the format of the file:
@@ -113,7 +113,7 @@ We're hoping to continuously keep this collection up-to-date with the [Lux
 APIs](/reference). If you're able to help improve the Lux Postman Collection
 in any way, first create a feature branch by branching off of `master`, next make the
 improvements on your feature branch and lastly create a [pull
-request](https://github.com/luxdefi/docs/pulls) to merge your work
+request](https://github.com/luxfi/docs/pulls) to merge your work
 back in to `master`.
 
 If you have any other questions or suggestions, come [talk to us](https://chat.lux.network/).

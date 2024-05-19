@@ -19,7 +19,7 @@ If you are looking for how to transfer LUX tokens using the web wallet, please c
 
 - You are familiar with [Lux's architecture](/learn/lux/lux-platform.md).
 - You have completed [Run a Lux Node](/nodes/run/node-manually.md).
-- You are familiar with [LuxJS](https://github.com/luxdefi/LuxJS).
+- You are familiar with [LuxJS](https://github.com/luxfi/LuxJS).
 - You have installed
   [ts-node](https://www.npmjs.com/package/ts-node#installation) so that you can
   follow examples in this tutorial.
@@ -29,13 +29,13 @@ If you are looking for how to transfer LUX tokens using the web wallet, please c
 To use LuxJS, you can clone the repo:
 
 ```zsh
-git clone https://github.com/luxdefi/luxjs.git
+git clone https://github.com/luxfi/luxjs.git
 ```
 
 :::info
 The repository cloning method used is HTTPS, but SSH can be used too:
 
-`git clone git@github.com:luxdefi/luxjs.git`
+`git clone git@github.com:luxfi/luxjs.git`
 
 You can find more about SSH and how to use it
 [here](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/about-ssh).
@@ -58,7 +58,7 @@ on Mainnet after making necessary changes.
 ## Transferring LUX Using LuxJS
 
 The easiest way to transfer LUX between chains is to use
-[LuxJS](https://github.com/luxdefi/LuxJS) which is a programmatic
+[LuxJS](https://github.com/luxfi/LuxJS) which is a programmatic
 way to access and move LUX.
 
 LuxJS allows you to create and sign transactions locally which is why it
@@ -69,17 +69,17 @@ node which makes them a target for malicious hackers.
 ### Example Code
 
 Following files can be found under the
-[examples](https://github.com/luxdefi/luxjs/tree/master/examples)
+[examples](https://github.com/luxfi/luxjs/tree/master/examples)
 directory of the LuxJS project.
 
 | Transfer From >> To      | Export                                                                                                                                  | Import                                                                                                                                    |
 | :----------------------- | :-------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| **_X-Chain >> C-Chain_** | [**X-Chain : Export Lux to C-Chain**](https://github.com/luxdefi/luxjs/blob/master/examples/avm/buildExportTx-cchain-lux.ts)   | [**C-Chain : Import Lux from X-Chain**](https://github.com/luxdefi/luxjs/blob/master/examples/evm/buildImportTx-xchain.ts)        |
-| **_X-Chain >> P-Chain_** | [**X-Chain : Export Lux to P-Chain**](https://github.com/luxdefi/luxjs/blob/master/examples/avm/buildExportTx-PChain.ts)        | [**P-Chain : Import Lux from X-Chain**](https://github.com/luxdefi/luxjs/blob/master/examples/platformvm/buildImportTx-XChain.ts) |
-| **_P-Chain >> X-Chain_** | [**P-Chain : Export Lux to X-Chain**](https://github.com/luxdefi/luxjs/blob/master/examples/platformvm/buildExportTx-XChain.ts) | [**X-Chain : Import Lux from P-Chain**](https://github.com/luxdefi/luxjs/blob/master/examples/avm/buildImportTx-PChain.ts)        |
-| **_P-Chain >> C-Chain_** | [**P-Chain : Export Lux to C-Chain**](https://github.com/luxdefi/luxjs/blob/master/examples/platformvm/buildExportTx-CChain.ts) | [**C-Chain : Import Lux from P-Chain**](https://github.com/luxdefi/luxjs/blob/master/examples/evm/buildImportTx-PChain.ts)        |
-| **_C-Chain >> X-Chain_** | [**C-Chain : Export Lux to X-Chain**](https://github.com/luxdefi/luxjs/blob/master/examples/evm/buildExportTx-xchain-lux.ts)   | [**X-Chain : Import Lux from C-Chain**](https://github.com/luxdefi/luxjs/blob/master/examples/avm/buildImportTx-cchain.ts)        |
-| **_C-Chain >> P-Chain_** | [**C-Chain : Export Lux to P-Chain**](https://github.com/luxdefi/luxjs/blob/master/examples/evm/buildExportTx-pchain.ts)        | [**P-Chain : Import Lux from C-Chain**](https://github.com/luxdefi/luxjs/blob/master/examples/platformvm/buildImportTx-CChain.ts) |
+| **_X-Chain >> C-Chain_** | [**X-Chain : Export Lux to C-Chain**](https://github.com/luxfi/luxjs/blob/master/examples/avm/buildExportTx-cchain-lux.ts)   | [**C-Chain : Import Lux from X-Chain**](https://github.com/luxfi/luxjs/blob/master/examples/evm/buildImportTx-xchain.ts)        |
+| **_X-Chain >> P-Chain_** | [**X-Chain : Export Lux to P-Chain**](https://github.com/luxfi/luxjs/blob/master/examples/avm/buildExportTx-PChain.ts)        | [**P-Chain : Import Lux from X-Chain**](https://github.com/luxfi/luxjs/blob/master/examples/platformvm/buildImportTx-XChain.ts) |
+| **_P-Chain >> X-Chain_** | [**P-Chain : Export Lux to X-Chain**](https://github.com/luxfi/luxjs/blob/master/examples/platformvm/buildExportTx-XChain.ts) | [**X-Chain : Import Lux from P-Chain**](https://github.com/luxfi/luxjs/blob/master/examples/avm/buildImportTx-PChain.ts)        |
+| **_P-Chain >> C-Chain_** | [**P-Chain : Export Lux to C-Chain**](https://github.com/luxfi/luxjs/blob/master/examples/platformvm/buildExportTx-CChain.ts) | [**C-Chain : Import Lux from P-Chain**](https://github.com/luxfi/luxjs/blob/master/examples/evm/buildImportTx-PChain.ts)        |
+| **_C-Chain >> X-Chain_** | [**C-Chain : Export Lux to X-Chain**](https://github.com/luxfi/luxjs/blob/master/examples/evm/buildExportTx-xchain-lux.ts)   | [**X-Chain : Import Lux from C-Chain**](https://github.com/luxfi/luxjs/blob/master/examples/avm/buildImportTx-cchain.ts)        |
+| **_C-Chain >> P-Chain_** | [**C-Chain : Export Lux to P-Chain**](https://github.com/luxfi/luxjs/blob/master/examples/evm/buildExportTx-pchain.ts)        | [**P-Chain : Import Lux from C-Chain**](https://github.com/luxfi/luxjs/blob/master/examples/platformvm/buildImportTx-CChain.ts) |
 
 :::tip
 
@@ -99,7 +99,7 @@ transferred.
 ## Testnet Workflow
 
 This tutorial uses [**X-Chain to
-C-Chain**](https://github.com/luxdefi/luxjs/blob/master/examples/avm/buildExportTx-cchain-lux.ts)
+C-Chain**](https://github.com/luxfi/luxjs/blob/master/examples/avm/buildExportTx-cchain-lux.ts)
 transfers as an example. Transferring between other chains are very similar.
 
 ### Transfer from the X-Chain to the C-Chain
@@ -111,10 +111,10 @@ imported to C-Chain.
 #### Export the Lux Token From X-Chain to C-Chain
 
 Select the
-[**`examples/avm`**](https://github.com/luxdefi/luxjs/tree/master/examples/avm)
+[**`examples/avm`**](https://github.com/luxfi/luxjs/tree/master/examples/avm)
 folder to view the LuxJS X-Chain examples. To export LUX from the X-Chain
 to the C-Chain, select
-[`avm/buildExportTx-cchain-lux.ts`](https://github.com/luxdefi/luxjs/blob/master/examples/avm/buildExportTx-cchain-lux.ts).
+[`avm/buildExportTx-cchain-lux.ts`](https://github.com/luxfi/luxjs/blob/master/examples/avm/buildExportTx-cchain-lux.ts).
 
 ##### Private Key
 
@@ -203,7 +203,7 @@ Success! TXID: 2uQvMcPZjmPXAyvz9cdKBphDDSmnxxx3vsUrxqpj3U92hsfQcc
 
 You can now pass this txID `2uQvMcPZjmPXAyvz9cdKBphDDSmnxxx3vsUrxqpj3U92hsfQcc`
 into
-[examples/avm/getTx.ts](https://github.com/luxdefi/luxjs/blob/master/examples/avm/getTx.ts),
+[examples/avm/getTx.ts](https://github.com/luxfi/luxjs/blob/master/examples/avm/getTx.ts),
 plus other similar network settings, then you can run
 
 ```zsh
@@ -239,10 +239,10 @@ which returns:
 #### Import the Lux Token From X-Chain to C-Chain
 
 Select the
-[**`examples/evm`**](https://github.com/luxdefi/luxjs/tree/master/examples/evm)
+[**`examples/evm`**](https://github.com/luxfi/luxjs/tree/master/examples/evm)
 folder to view the LuxJS C-Chain examples. To import LUX to the C-Chain
 from the X-Chain, select
-[`evm/buildImportTx-xchain.ts`](https://github.com/luxdefi/luxjs/blob/master/examples/evm/buildImportTx-xchain.ts)
+[`evm/buildImportTx-xchain.ts`](https://github.com/luxfi/luxjs/blob/master/examples/evm/buildImportTx-xchain.ts)
 
 Copy the [network setting from above](#network-setting) into `evm/buildImportTx-xchain.ts`.
 
@@ -277,10 +277,10 @@ To return the LUX back to the X-Chain, you need to do the transfer in the opposi
 #### Export the Lux Token From C-Chain to X-Chain
 
 Select the
-[**`examples/evm`**](https://github.com/luxdefi/luxjs/tree/master/examples/evm)
+[**`examples/evm`**](https://github.com/luxfi/luxjs/tree/master/examples/evm)
 folder to view the LuxJS C-Chain examples. To export LUX from the X-Chain
 to the C-Chain, select
-[`evm/buildExportTx-xchain-lux.ts`](https://github.com/luxdefi/luxjs/blob/master/examples/evm/buildExportTx-xchain-lux.ts).
+[`evm/buildExportTx-xchain-lux.ts`](https://github.com/luxfi/luxjs/blob/master/examples/evm/buildExportTx-xchain-lux.ts).
 
 Make necessary changes as above for private key and network settings.
 
@@ -307,7 +307,7 @@ Success! TXID: UAez3DTv26qmhKKFDvmQTayaXTPAVahHenDKe6xnUMhJbKuxc
 #### Import the Lux Token From C-Chain to X-Chain
 
 Before we run the [example import
-script](https://github.com/luxdefi/luxjs/blob/master/examples/avm/buildImportTx-cchain.ts),
+script](https://github.com/luxfi/luxjs/blob/master/examples/avm/buildImportTx-cchain.ts),
 we need to make some changes to the code:
 
 1. Change the [Network Setting](#network-setting) to meet Testnet network requirements.

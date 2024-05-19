@@ -37,7 +37,7 @@ The [C-Chain’s API](/reference/luxd/c-chain/api.md) supports Geth's API and su
 deployment and execution of smart contracts written in Solidity.
 
 The C-Chain is an instance of the
-[Coreth](https://github.com/luxdefi/coreth) Virtual Machine.
+[Coreth](https://github.com/luxfi/coreth) Virtual Machine.
 
 ### P-Chain
 

@@ -24,9 +24,9 @@ This tutorial assumes that:
 
 The entirety of this tutorial will require you to work with 3 projects (4 if running locally)
 
-- [gnosis-Subnet](https://github.com/luxdefi/gnosis-subnet)
+- [gnosis-Subnet](https://github.com/luxfi/gnosis-subnet)
 - [safe-tasks](https://github.com/5afe/safe-tasks.git)
-- [smart-contract-quickstart](https://github.com/luxdefi/smart-contract-quickstart)
+- [smart-contract-quickstart](https://github.com/luxfi/smart-contract-quickstart)
 - [netrunner](/tooling/netrunner.md) (Local Workflow)
 
 ## Custom Network Workflow
@@ -607,11 +607,11 @@ Some use cases may apply such as:
 ### Setup Proxy
 
 For this part of the tutorial, we will need to clone the [Lux Smart Contract Quickstart
-repository](https://github.com/luxdefi/smart-contract-quickstart/tree/proxy-contract-implementation)
+repository](https://github.com/luxfi/smart-contract-quickstart/tree/proxy-contract-implementation)
 and switch to the `proxy-contract-implementation` branch the by running the following Commands:
 
 ```zsh
-git clone https://github.com/luxdefi/smart-contract-quickstart
+git clone https://github.com/luxfi/smart-contract-quickstart
 cd smart-contract-quickstart
 git switch proxy-contract-implementation
 yarn
@@ -693,7 +693,7 @@ Example:
 ### Transfer the Proxy Admin Role to a Safe
 
 Next, let's transfer proxy admin privileges to our Gnosis Safe by adding it's address to our
-[`transferProxyOwnership.ts`](https://github.com/luxdefi/smart-contract-quickstart/blob/proxy-contract-implementation/scripts/transferProxyOwnership.ts)
+[`transferProxyOwnership.ts`](https://github.com/luxfi/smart-contract-quickstart/blob/proxy-contract-implementation/scripts/transferProxyOwnership.ts)
 script.
 
 ```ts
@@ -724,9 +724,9 @@ Now that we have transferred ownership to our Gnosis Safe, we can upgrade the pr
 For this step we will deploy a new implementation for the proxy contract to interact with.
 
 Run the following command to deploy
-[`StorageV2`](https://github.com/luxdefi/smart-contract-quickstart/blob/076f191ca74cd1d15304f7fb945aa53e860ab506/contracts/StorageV2.sol),
+[`StorageV2`](https://github.com/luxfi/smart-contract-quickstart/blob/076f191ca74cd1d15304f7fb945aa53e860ab506/contracts/StorageV2.sol),
 an upgraded version of our
-[`Storage`](https://github.com/luxdefi/smart-contract-quickstart/blob/076f191ca74cd1d15304f7fb945aa53e860ab506/contracts/Storage.sol)
+[`Storage`](https://github.com/luxfi/smart-contract-quickstart/blob/076f191ca74cd1d15304f7fb945aa53e860ab506/contracts/Storage.sol)
 contract:
 
 ```zsh
@@ -897,7 +897,7 @@ Let's check the stored value to ensure that we have retained the data from the p
 Great! We've successfully retrieved the previously stored value from the contract!
 
 Now let's call our upgraded contract's new function
-[`increment`](https://github.com/luxdefi/smart-contract-quickstart/blob/964129dfb7cb9271b396927e9ea8b009e321cda1/contracts/StorageV2.sol#L24-L27)
+[`increment`](https://github.com/luxfi/smart-contract-quickstart/blob/964129dfb7cb9271b396927e9ea8b009e321cda1/contracts/StorageV2.sol#L24-L27)
 which adds 1 to the stored value:
 
 ```zsh

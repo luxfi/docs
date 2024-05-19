@@ -41,7 +41,7 @@ Los validadores pueden instalar VMs adicionales en su nodo para validar Subnets 
 
 ### Solidity
 
-Lux soporta nativamente la ejecución de contratos inteligentes de Ethereum escritos en solidity. Los desarrolladores de Ethereum tienen la opción de desplegar sus contratos inteligentes en la implementación de la EVM de la C-Chain ([Coreth](https://github.com/luxdefi/coreth)), o en su propia Subnet utilizando la [Subnet-EVM](https://github.com/luxdefi/subnet-evm) para casos de uso avanzados que requieren más personalización.
+Lux soporta nativamente la ejecución de contratos inteligentes de Ethereum escritos en solidity. Los desarrolladores de Ethereum tienen la opción de desplegar sus contratos inteligentes en la implementación de la EVM de la C-Chain ([Coreth](https://github.com/luxfi/coreth)), o en su propia Subnet utilizando la [Subnet-EVM](https://github.com/luxfi/subnet-evm) para casos de uso avanzados que requieren más personalización.
 
 Tanto la C-Chain como la Subnet-EVM son compatibles con herramientas de Ethereum como Remix, Core, MetaMask, Truffle y más.
 
@@ -49,13 +49,13 @@ Para obtener más información sobre el soporte de contratos inteligentes, haz c
 
 ### Golang
 
-- [Coreth](https://github.com/luxdefi/coreth)
+- [Coreth](https://github.com/luxfi/coreth)
   - Una implementación de la EVM que alimenta la C-Chain de Lux y soporta contratos inteligentes en Solidity.
-- [Subnet-EVM](https://github.com/luxdefi/subnet-evm)
+- [Subnet-EVM](https://github.com/luxfi/subnet-evm)
   - Una implementación de la EVM que puede ser desplegada en una Subnet personalizada para soportar contratos inteligentes en Solidity.
-- [TimestampVM](https://github.com/luxdefi/timestampvm)
+- [TimestampVM](https://github.com/luxfi/timestampvm)
   - Un servidor de tiempo descentralizado.
-- [XSVM](https://github.com/luxdefi/xsvm)
+- [XSVM](https://github.com/luxfi/xsvm)
   - Un ejemplo de Mensajería de Warp de Lux que implementa transferencias de activos entre Subnets.
 
 Consulta aquí un tutorial sobre [Cómo construir una VM Golang simple](/build/vm/create/golang-vm-simple.md)
@@ -64,7 +64,7 @@ Consulta aquí un tutorial sobre [Cómo construir una VM Golang simple](/build/v
 
 Las siguientes VMs fueron construidas utilizando Rust a través del [Lux Rust SDK](https://crates.io/crates/types)
 
-- [TimestampVM RS](https://github.com/luxdefi/timestampvm-rs)
+- [TimestampVM RS](https://github.com/luxfi/timestampvm-rs)
   - Una implementación en Rust de TimestampVM.
 
 Consulta aquí un tutorial sobre [Cómo construir una VM Rust simple](/build/vm/create/rust-vm.md)

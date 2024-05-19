@@ -157,7 +157,7 @@ walk through of Cloud Build setup in this context can be found
 
 I have provided a rudimentary terraform construct to provision a node on which
 to run Lux which can be found
-[here](https://github.com/luxdefi/docs/tree/master/static/scripts/terraform-gcp/projects/my-lux-project).
+[here](https://github.com/luxfi/docs/tree/master/static/scripts/terraform-gcp/projects/my-lux-project).
 Documentation below assumes you are using this repository but if you have
 another terraform skeleton similar steps will apply.
 

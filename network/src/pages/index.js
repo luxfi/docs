@@ -95,7 +95,7 @@ function Home() {
               />
 
               <Card
-                to="https://github.com/luxdefi/vmsdk"
+                to="https://github.com/luxfi/vmsdk"
                 header={{
                   label: translate({ message: "🛠️ Virtual Machine SDK" }),
                 }}

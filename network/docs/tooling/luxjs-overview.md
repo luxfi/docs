@@ -59,18 +59,18 @@ Add LuxJS to your project via `npm` or `yarn`.
 
 For installing via `npm`:
 
-`npm install --save @luxdefi/luxjs`
+`npm install --save @luxfi/luxjs`
 
 For installing via `yarn`:
 
-`yarn add @luxdefi/luxjs`
+`yarn add @luxfi/luxjs`
 
 :::caution
 
 Please note that [this](https://www.npmjs.com/package/lux)
 npm package is deprecated.
 Make sure to always use
-[@luxdefi/luxjs](https://www.npmjs.com/package/@luxdefi/luxjs)
+[@luxfi/luxjs](https://www.npmjs.com/package/@luxfi/luxjs)
 instead.
 
 :::
@@ -81,7 +81,7 @@ You can also pull the repo down directly and build it from scratch.
 
 Clone the LuxJS repository:
 
-`git clone https://github.com/luxdefi/luxjs.git`
+`git clone https://github.com/luxfi/luxjs.git`
 
 Then build it:
 

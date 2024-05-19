@@ -11,13 +11,13 @@ sidebar_position: 2
 ## Introduction
 
 This tutorial demonstrates how to set up infrastructure to monitor an instance of
-[Luxd](https://github.com/luxdefi/luxd). We will use:
+[Luxd](https://github.com/luxfi/luxd). We will use:
 
 - [Prometheus](https://prometheus.io/) to gather and store data
 - [`node_exporter`](https://github.com/prometheus/node_exporter) to get information about the machine,
 - Luxd’s [Metrics API](/reference/luxd/metrics-api.md) to get information about the node
 - [Grafana](https://grafana.com/) to visualize data on a dashboard.
-- A set of pre-made [Lux dashboards](https://github.com/luxdefi/monitoring/tree/main/grafana/dashboards)
+- A set of pre-made [Lux dashboards](https://github.com/luxfi/monitoring/tree/main/grafana/dashboards)
 
 Prerequisites:
 
@@ -51,7 +51,7 @@ machine the node runs on with a user that has administrator privileges and enter
 the following command:
 
 ```bash
-wget -nd -m https://raw.githubusercontent.com/luxdefi/monitoring/main/grafana/monitoring-installer.sh ;\
+wget -nd -m https://raw.githubusercontent.com/luxfi/monitoring/main/grafana/monitoring-installer.sh ;\
 chmod 755 monitoring-installer.sh;
 ```
 
@@ -281,7 +281,7 @@ Luxd monitoring installer
 
 Downloading...
 Last-modified header missing -- time-stamps turned off.
-2021-11-05 14:57:47 URL:https://raw.githubusercontent.com/luxdefi/monitoring/master/grafana/dashboards/c_chain.json [50282/50282] -> "c_chain.json" [1]
+2021-11-05 14:57:47 URL:https://raw.githubusercontent.com/luxfi/monitoring/master/grafana/dashboards/c_chain.json [50282/50282] -> "c_chain.json" [1]
 FINISHED --2021-11-05 14:57:47--
 Total wall clock time: 0.2s
 Downloaded: 1 files, 49K in 0s (132 MB/s)

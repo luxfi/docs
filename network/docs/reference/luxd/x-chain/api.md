@@ -188,7 +188,7 @@ curl -X POST --data '{
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -241,7 +241,7 @@ TODO: Add avm.createAsset
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -335,7 +335,7 @@ curl -X POST --data '{
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -423,7 +423,7 @@ curl -X POST --data '{
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -524,7 +524,7 @@ curl -X POST --data '{
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -606,7 +606,7 @@ TODO: Add avm.exportLUX
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -661,7 +661,7 @@ curl -X POST --data '{
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -733,7 +733,7 @@ curl -X POST --data '{
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -852,7 +852,7 @@ curl -X POST --data '{
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -1395,7 +1395,7 @@ This gives response:
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -1462,7 +1462,7 @@ TODO: Add avm.importLUX
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -1558,7 +1558,7 @@ curl -X POST --data '{
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -1607,7 +1607,7 @@ curl -X POST --data '{
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -1683,7 +1683,7 @@ curl -X POST --data '{
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -1764,7 +1764,7 @@ curl -X POST --data '{
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -1837,7 +1837,7 @@ curl -X POST --data '{
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -1920,7 +1920,7 @@ curl -X POST --data '{
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -1997,7 +1997,7 @@ This call is made to the wallet API endpoint:
 
 :::caution
 
-Endpoint deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Endpoint deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -2053,7 +2053,7 @@ This call is made to the wallet API endpoint:
 
 :::caution
 
-Endpoint deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Endpoint deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -2131,7 +2131,7 @@ This call is made to the wallet API endpoint:
 
 :::caution
 
-Endpoint deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Endpoint deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -2213,7 +2213,7 @@ This call is made to the events API endpoint:
 
 :::caution
 
-Endpoint deprecated as of [**v1.9.12**](https://github.com/luxdefi/luxd/releases/tag/v1.9.12).
+Endpoint deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
 
 :::
 
@@ -2229,8 +2229,8 @@ import (
     "net/http"
     "sync"
 
-    "github.com/luxdefi/luxd/api"
-    "github.com/luxdefi/luxd/pubsub"
+    "github.com/luxfi/luxd/api"
+    "github.com/luxfi/luxd/pubsub"
     "github.com/gorilla/websocket"
 )
 

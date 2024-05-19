@@ -25,7 +25,7 @@ TxID using LuxJS.
 ## Creating a Signed Transaction
 
 The script which we're using can be found in the LuxJS example scripts as
-[example/avm/baseTx-LUX.ts](https://github.com/luxdefi/luxjs/blob/master/examples/avm/baseTx-lux.ts).
+[example/avm/baseTx-LUX.ts](https://github.com/luxfi/luxjs/blob/master/examples/avm/baseTx-lux.ts).
 First, create a
 [BaseTx](/reference/luxd/x-chain/txn-format.md#what-base-tx-contains).
 We're omitting that part for the sake of brevity. Once you have a `BaseTx` then

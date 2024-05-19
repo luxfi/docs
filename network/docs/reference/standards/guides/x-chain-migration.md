@@ -35,9 +35,9 @@ Before Cortina, indexing the X-Chain required polling the
 [/ext/index/X/vtx](/reference/luxd/index-api.md#x-chain-vertices) endpoint to fetch new
 vertices. During the Cortina activation, a “stop vertex” will be produced using
 a [new codec
-version](https://github.com/luxdefi/luxd/blob/c27721a8da1397b218ce9e9ec69839b8a30f9860/snow/engine/lux/vertex/codec.go#L17-L18)
+version](https://github.com/luxfi/luxd/blob/c27721a8da1397b218ce9e9ec69839b8a30f9860/snow/engine/lux/vertex/codec.go#L17-L18)
 that will contain no transactions. This new vertex type will be the [same
-format](https://github.com/luxdefi/luxd/blob/c27721a8da1397b218ce9e9ec69839b8a30f9860/snow/engine/lux/vertex/stateless_vertex.go#L95-L102)
+format](https://github.com/luxfi/luxd/blob/c27721a8da1397b218ce9e9ec69839b8a30f9860/snow/engine/lux/vertex/stateless_vertex.go#L95-L102)
 as previous vertices. To ensure historical data can still be accessed in
 Cortina, the [/ext/index/X/vtx](/reference/luxd/index-api.md#x-chain-vertices) will remain
 accessible even though it will no longer be populated with chain data.
@@ -67,10 +67,10 @@ import (
 	"log"
 	"time"
 
-	"github.com/luxdefi/luxd/indexer"
-	"github.com/luxdefi/luxd/vms/proposervm/block"
-	"github.com/luxdefi/luxd/wallet/chain/x"
-	"github.com/luxdefi/luxd/wallet/subnet/primary"
+	"github.com/luxfi/luxd/indexer"
+	"github.com/luxfi/luxd/vms/proposervm/block"
+	"github.com/luxfi/luxd/wallet/chain/x"
+	"github.com/luxfi/luxd/wallet/subnet/primary"
 )
 
 func main() {

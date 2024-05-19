@@ -10,7 +10,7 @@ pagination_label: Lux Netrunner
 The Lux Netrunner **(ANR)** allows a user to define, create and interact with a network
 of Lux nodes. It can be used for development and testing.
 
-[Link to GitHub](https://github.com/luxdefi/netrunner)
+[Link to GitHub](https://github.com/luxfi/netrunner)
 
 Developing P2P systems is hard, and blockchains are no different. A developer can't just focus on
 the functionality of a node, but needs to consider the dynamics of the network, the interaction of
@@ -26,7 +26,7 @@ The ANR aims at being a tool for developers and system integrators alike, offeri
 run networks of Luxd nodes with support for custom node, Subnet and network configurations,
 allowing to locally test code before deploying to Mainnet or even public testnets like `testnet`.
 
-You can also use the [Lux Netrunner Postman collection](https://github.com/luxdefi/netrunner-postman-collection).
+You can also use the [Lux Netrunner Postman collection](https://github.com/luxfi/netrunner-postman-collection).
 
 **Note that this tool is not for running production nodes, and that because it is being heavily**
 **developed right now, documentation might differ slightly from the actual code.**
@@ -36,7 +36,7 @@ You can also use the [Lux Netrunner Postman collection](https://github.com/luxde
 <!-- markdownlint-disable MD013 -->
 
 ```bash
-curl -sSfL https://raw.githubusercontent.com/luxdefi/netrunner/main/scripts/install.sh | sh
+curl -sSfL https://raw.githubusercontent.com/luxfi/netrunner/main/scripts/install.sh | sh
 ```
 
 <!-- markdownlint-enable MD013 -->
@@ -59,8 +59,8 @@ configuration file.
 
 ```bash
 # replace execPath with the path to Luxd on your machine
-# e.g., ${HOME}/go/src/github.com/luxdefi/luxd/build/luxd
-LUXD_EXEC_PATH="${HOME}/go/src/github.com/luxdefi/luxd/build/luxd"
+# e.g., ${HOME}/go/src/github.com/luxfi/luxd/build/luxd
+LUXD_EXEC_PATH="${HOME}/go/src/github.com/luxfi/luxd/build/luxd"
 ```
 
 Unless otherwise specified, file paths given below are relative to the root of this repository.
@@ -85,7 +85,7 @@ requests through the `netrunner` command or by making API calls. Requests are
 "translated" into gRPC and sent to the server.
 
 Each node can then also be reached via
-[API](https://github.com/luxdefi/netrunner/tree/main/api) endpoints which each node
+[API](https://github.com/luxfi/netrunner/tree/main/api) endpoints which each node
 exposes.
 
 The following diagram is a simplified view of the high level architecture of the tool:
@@ -301,7 +301,7 @@ In this example we are stopping the node named `node1`.
 convention to avoid issues.
 
 ```bash
-# e.g., ${HOME}/go/src/github.com/luxdefi/luxd/build/luxd
+# e.g., ${HOME}/go/src/github.com/luxfi/luxd/build/luxd
 LUXD_EXEC_PATH="luxd"
 ```
 
@@ -326,7 +326,7 @@ netrunner control restart-node node1 \
 In this example we are adding a node named `node99`.
 
 ```bash
-# e.g., ${HOME}/go/src/github.com/luxdefi/luxd/build/luxd
+# e.g., ${HOME}/go/src/github.com/luxfi/luxd/build/luxd
 LUXD_EXEC_PATH="luxd"
 ```
 
@@ -395,7 +395,7 @@ Lux. This means you can run your Ethereum-compatible dApps in custom Subnets, de
 own gas limits and fees, and deploying solidity smart-contracts while taking advantage of
 Lux's validator network, fast finality, consensus mechanism and other features. Essentially,
 think of it as your own Ethereum where you can concentrate on your business case rather than the
-infrastructure. See [Subnet-EVM](https://github.com/luxdefi/subnet-evm) for further information.
+infrastructure. See [Subnet-EVM](https://github.com/luxfi/subnet-evm) for further information.
 
 
 
@@ -404,7 +404,7 @@ infrastructure. See [Subnet-EVM](https://github.com/luxdefi/subnet-evm) for furt
 The Lux Netrunner can also be imported as a library into your programs so that you can
 use it to programmatically start, interact with and stop Lux networks. For an example of using
 the Netrunner in a program, see an
-[example](https://github.com/luxdefi/netrunner/blob/main/examples/local/fivenodenetwork/main.go).
+[example](https://github.com/luxfi/netrunner/blob/main/examples/local/fivenodenetwork/main.go).
 
 Creating a network is as simple as:
 
@@ -413,15 +413,15 @@ network, err := local.NewDefaultNetwork(log, binaryPath)
 ```
 
 where `log` is a logger of type
-[`logging.Logger`](https://github.com/luxdefi/luxd/blob/master/utils/logging/logger.go#L12)
+[`logging.Logger`](https://github.com/luxfi/luxd/blob/master/utils/logging/logger.go#L12)
 and `binaryPath` is the path of the Luxd binary that each node that exists on network startup
 will run.
 
 For example, the below snippet creates a new network using default configurations, and each node in
-the network runs the binaries at `/home/user/go/src/github.com/luxdefi/luxd/build`:
+the network runs the binaries at `/home/user/go/src/github.com/luxfi/luxd/build`:
 
 ```go
-network, err := local.NewDefaultNetwork(log,"/home/user/go/src/github.com/luxdefi/luxd/build")
+network, err := local.NewDefaultNetwork(log,"/home/user/go/src/github.com/luxfi/luxd/build")
 ```
 
 **Once you create a network, you must eventually call `Stop()` on it to make sure all of the nodes**
@@ -491,5 +491,5 @@ To create custom networks, pass a custom config (the second parameter) to the
 when the network starts, the genesis state of the network, and the configs for each node.
 
 Please refer to
-[NetworkConfig](https://github.com/luxdefi/netrunner#network-creation) for more
+[NetworkConfig](https://github.com/luxfi/netrunner#network-creation) for more
 details.

@@ -14,7 +14,7 @@ connected to our Lux platform endpoint of choice. In this example we're
 using the local network `12345` via [Lux Netrunner](/tooling/netrunner.md). The code examples are written in
 typescript. The script is in full, in both typescript and JavaScript, after the
 individual steps. The whole example can be found
-[here](https://github.com/luxdefi/luxjs/blob/master/examples/avm/buildCreateAssetTx.ts).
+[here](https://github.com/luxfi/luxjs/blob/master/examples/avm/buildCreateAssetTx.ts).
 
 ```ts
 import { Lux, BN, Buffer } from "lux";

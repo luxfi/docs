@@ -10,7 +10,7 @@ machines binaries on existing Luxd instances. It enables to add/remove
 nodes to Subnets, upgrade the VM plugin binaries as new versions get released to
 the plugin repository.
 
-GitHub: [https://github.com/luxdefi/apm](https://github.com/luxdefi/apm)
+GitHub: [https://github.com/luxfi/apm](https://github.com/luxfi/apm)
 
 ## `plugins-core`
 
@@ -19,4 +19,4 @@ plugin repository consists of a set of virtual machine and Subnet definitions
 that the `apm` consumes to allow users to quickly and easily download and manage
 VM binaries.
 
-GitHub: [https://github.com/luxdefi/plugins-core](https://github.com/luxdefi/plugins-core)
+GitHub: [https://github.com/luxfi/plugins-core](https://github.com/luxfi/plugins-core)

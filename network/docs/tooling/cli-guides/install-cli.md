@@ -17,7 +17,7 @@ Lux-CLI runs on Linux and Mac. Windows is currently not supported.
 To download a binary for the latest release, run:
 
 ```shell
-curl -sSfL https://raw.githubusercontent.com/luxdefi/cli/main/scripts/install.sh | sh -s
+curl -sSfL https://raw.githubusercontent.com/luxfi/cli/main/scripts/install.sh | sh -s
 ```
 
 The script installs the binary inside the `~/bin` directory. If the directory doesn't exist,
@@ -52,7 +52,7 @@ using the preceding steps.
 
 ## Building from Source
 
-The source code is available in this [GitHub repository](https://github.com/luxdefi/cli).
+The source code is available in this [GitHub repository](https://github.com/luxfi/cli).
 
 After you've cloned the repository, checkout the tag you'd like to run. You can compile the code by
 running `./scripts/build.sh` from the top level directory.

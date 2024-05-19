@@ -11,8 +11,8 @@
           "className": "docs-version-current",
           "path": "/",
           "tagsPath": "/tags",
-          "editUrl": "https://github.com/luxdefi/docs/edit/main/docs",
-          "editUrlLocalized": "https://github.com/luxdefi/docs/edit/main/i18n/en/docusaurus-plugin-content-docs/current",
+          "editUrl": "https://github.com/luxfi/docs/edit/main/docs",
+          "editUrlLocalized": "https://github.com/luxfi/docs/edit/main/i18n/en/docusaurus-plugin-content-docs/current",
           "isLast": true,
           "routePriority": -1,
           "sidebarFilePath": "/Users/z/work/lux/docs/sidebars.json",
@@ -29,7 +29,7 @@
               "permalink": "/build/dapp/advanced/add-lux-programmatically",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/advanced/add-lux-programmatically.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/advanced/add-lux-programmatically.md",
               "tags": [
                 {
                   "label": "Build",
@@ -72,7 +72,7 @@
               "permalink": "/build/dapp/advanced/adjusting-gas-price-during-high-network-activity",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/advanced/adjusting-gas-price-during-high-network-activity.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/advanced/adjusting-gas-price-during-high-network-activity.md",
               "tags": [
                 {
                   "label": "Build",
@@ -115,7 +115,7 @@
               "permalink": "/build/dapp/advanced/integrate-exchange",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/advanced/integrate-exchange.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/advanced/integrate-exchange.md",
               "tags": [
                 {
                   "label": "Build",
@@ -158,7 +158,7 @@
               "permalink": "/build/dapp/advanced/sending-transactions-with-dynamic-fees-using-javascript",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/advanced/sending-transactions-with-dynamic-fees-using-javascript.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/advanced/sending-transactions-with-dynamic-fees-using-javascript.md",
               "tags": [
                 {
                   "label": "Build",
@@ -201,7 +201,7 @@
               "permalink": "/build/dapp/c-chain-evm",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/c-chain-evm.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/c-chain-evm.md",
               "tags": [
                 {
                   "label": "Build",
@@ -242,7 +242,7 @@
               "permalink": "/build/dapp/chain-settings",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/chain-settings.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/chain-settings.md",
               "tags": [
                 {
                   "label": "Build",
@@ -283,7 +283,7 @@
               "permalink": "/build/dapp/explorers",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/explorers.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/explorers.md",
               "tags": [
                 {
                   "label": "Build",
@@ -324,7 +324,7 @@
               "permalink": "/build/dapp/launch-dapp",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/launch-dapp.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/launch-dapp.md",
               "tags": [
                 {
                   "label": "Build",
@@ -361,7 +361,7 @@
               "permalink": "/build/dapp/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/README.md",
               "tags": [
                 {
                   "label": "Build",
@@ -398,7 +398,7 @@
               "permalink": "/build/dapp/smart-contracts/abigen",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/smart-contracts/abigen.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/smart-contracts/abigen.md",
               "tags": [
                 {
                   "label": "Build",
@@ -439,7 +439,7 @@
               "permalink": "/build/dapp/smart-contracts/erc-20",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/smart-contracts/erc-20.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/smart-contracts/erc-20.md",
               "tags": [
                 {
                   "label": "Build",
@@ -480,7 +480,7 @@
               "permalink": "/build/dapp/smart-contracts/get-funds-faucet",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/smart-contracts/get-funds-faucet.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/smart-contracts/get-funds-faucet.md",
               "tags": [
                 {
                   "label": "Build",
@@ -521,7 +521,7 @@
               "permalink": "/build/dapp/smart-contracts/nfts/deploy-collection",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/smart-contracts/nfts/deploy-collection.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/smart-contracts/nfts/deploy-collection.md",
               "tags": [
                 {
                   "label": "Build",
@@ -563,7 +563,7 @@
               "permalink": "/build/dapp/smart-contracts/nfts/preparing-nft-files",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/smart-contracts/nfts/preparing-nft-files.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/smart-contracts/nfts/preparing-nft-files.md",
               "tags": [
                 {
                   "label": "Build",
@@ -605,7 +605,7 @@
               "permalink": "/build/dapp/smart-contracts/remix-deploy",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/smart-contracts/remix-deploy.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/smart-contracts/remix-deploy.md",
               "tags": [
                 {
                   "label": "Build",
@@ -646,7 +646,7 @@
               "permalink": "/build/dapp/smart-contracts/toolchains/foundry",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/smart-contracts/toolchains/foundry.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/smart-contracts/toolchains/foundry.md",
               "tags": [
                 {
                   "label": "Build",
@@ -689,7 +689,7 @@
               "permalink": "/build/dapp/smart-contracts/toolchains/hardhat",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/smart-contracts/toolchains/hardhat.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/smart-contracts/toolchains/hardhat.md",
               "tags": [
                 {
                   "label": "Build",
@@ -732,7 +732,7 @@
               "permalink": "/build/dapp/smart-contracts/toolchains/thirdweb",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/smart-contracts/toolchains/thirdweb.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/smart-contracts/toolchains/thirdweb.md",
               "tags": [
                 {
                   "label": "Build",
@@ -782,7 +782,7 @@
               "permalink": "/build/dapp/smart-contracts/verification/verify-hardhat",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/smart-contracts/verification/verify-hardhat.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/smart-contracts/verification/verify-hardhat.md",
               "tags": [
                 {
                   "label": "Build",
@@ -823,7 +823,7 @@
               "permalink": "/build/dapp/smart-contracts/verification/verify-smart-contracts",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/smart-contracts/verification/verify-smart-contracts.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/smart-contracts/verification/verify-smart-contracts.md",
               "tags": [
                 {
                   "label": "Build",
@@ -866,7 +866,7 @@
               "permalink": "/build/dapp/testnet-workflow",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/dapp/testnet-workflow.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/dapp/testnet-workflow.md",
               "tags": [
                 {
                   "label": "Build",
@@ -907,7 +907,7 @@
               "permalink": "/build/subnet/c-chain-vs-subnet",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/c-chain-vs-subnet.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/c-chain-vs-subnet.md",
               "tags": [
                 {
                   "label": "Build",
@@ -948,7 +948,7 @@
               "permalink": "/build/subnet/deploy/custom-vm-subnet",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/deploy/custom-vm-subnet.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/deploy/custom-vm-subnet.md",
               "tags": [
                 {
                   "label": "Build",
@@ -991,7 +991,7 @@
               "permalink": "/build/subnet/deploy/local-subnet",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/deploy/local-subnet.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/deploy/local-subnet.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1034,7 +1034,7 @@
               "permalink": "/build/subnet/deploy/mainnet-subnet",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/deploy/mainnet-subnet.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/deploy/mainnet-subnet.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1077,7 +1077,7 @@
               "permalink": "/build/subnet/deploy/multisig-auth",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/deploy/multisig-auth.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/deploy/multisig-auth.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1120,7 +1120,7 @@
               "permalink": "/build/subnet/deploy/on-prod-infra",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/deploy/on-prod-infra.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/deploy/on-prod-infra.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1163,7 +1163,7 @@
               "permalink": "/build/subnet/deploy/testnet-subnet",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/deploy/testnet-subnet.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/deploy/testnet-subnet.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1206,7 +1206,7 @@
               "permalink": "/build/subnet/elastic/elastic-parameters",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/elastic/elastic-parameters.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/elastic/elastic-parameters.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1249,7 +1249,7 @@
               "permalink": "/build/subnet/elastic/transform-to-elastic-subnet",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/elastic/transform-to-elastic-subnet.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/elastic/transform-to-elastic-subnet.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1292,7 +1292,7 @@
               "permalink": "/build/subnet/getting-started",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/getting-started.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/getting-started.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1333,7 +1333,7 @@
               "permalink": "/build/subnet/hello-subnet",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/hello-subnet.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/hello-subnet.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1374,7 +1374,7 @@
               "permalink": "/build/subnet/info/troubleshoot-subnet",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/info/troubleshoot-subnet.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/info/troubleshoot-subnet.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1413,7 +1413,7 @@
               "permalink": "/build/subnet/info/wagmi",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/info/wagmi.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/info/wagmi.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1456,7 +1456,7 @@
               "permalink": "/build/subnet/maintain/delete-subnet",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/maintain/delete-subnet.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/maintain/delete-subnet.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1499,7 +1499,7 @@
               "permalink": "/build/subnet/maintain/how-to-transfer-funds",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/maintain/how-to-transfer-funds.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/maintain/how-to-transfer-funds.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1547,7 +1547,7 @@
               "permalink": "/build/subnet/maintain/pause-resume-subnet",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/maintain/pause-resume-subnet.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/maintain/pause-resume-subnet.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1590,7 +1590,7 @@
               "permalink": "/build/subnet/maintain/view-subnets",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/maintain/view-subnets.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/maintain/view-subnets.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1633,7 +1633,7 @@
               "permalink": "/build/subnet/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/README.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1671,7 +1671,7 @@
               "permalink": "/build/subnet/upgrade/considerations-subnet-upgrade",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/upgrade/considerations-subnet-upgrade.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/upgrade/considerations-subnet-upgrade.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1714,7 +1714,7 @@
               "permalink": "/build/subnet/upgrade/customize-a-subnet",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/upgrade/customize-a-subnet.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/upgrade/customize-a-subnet.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1757,7 +1757,7 @@
               "permalink": "/build/subnet/upgrade/upgrade-precompile",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/upgrade/upgrade-precompile.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/upgrade/upgrade-precompile.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1800,7 +1800,7 @@
               "permalink": "/build/subnet/upgrade/upgrade-subnet-vm",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/upgrade/upgrade-subnet-vm.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/upgrade/upgrade-subnet-vm.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1843,7 +1843,7 @@
               "permalink": "/build/subnet/utility/cross-chain-evm-bridge",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/utility/cross-chain-evm-bridge.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/utility/cross-chain-evm-bridge.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1886,7 +1886,7 @@
               "permalink": "/build/subnet/utility/deploy-smart-contract-to-subnet",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/utility/deploy-smart-contract-to-subnet.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/utility/deploy-smart-contract-to-subnet.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1929,7 +1929,7 @@
               "permalink": "/build/subnet/utility/subnet-faucet",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/subnet/utility/subnet-faucet.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/subnet/utility/subnet-faucet.md",
               "tags": [
                 {
                   "label": "Build",
@@ -1972,7 +1972,7 @@
               "permalink": "/build/vm/create/any-lang-vm",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/vm/create/any-lang-vm.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/vm/create/any-lang-vm.md",
               "tags": [
                 {
                   "label": "Build",
@@ -2015,7 +2015,7 @@
               "permalink": "/build/vm/create/golang-vm-complex",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/vm/create/golang-vm-complex.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/vm/create/golang-vm-complex.md",
               "tags": [
                 {
                   "label": "Build",
@@ -2058,7 +2058,7 @@
               "permalink": "/build/vm/create/golang-vm-simple",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/vm/create/golang-vm-simple.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/vm/create/golang-vm-simple.md",
               "tags": [
                 {
                   "label": "Build",
@@ -2101,7 +2101,7 @@
               "permalink": "/build/vm/create/rust-vm",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/vm/create/rust-vm.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/vm/create/rust-vm.md",
               "tags": [
                 {
                   "label": "Build",
@@ -2144,7 +2144,7 @@
               "permalink": "/build/vm/evm/background-and-reqs",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/vm/evm/background-and-reqs.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/vm/evm/background-and-reqs.md",
               "tags": [
                 {
                   "label": "Build",
@@ -2187,7 +2187,7 @@
               "permalink": "/build/vm/evm/defining-precompile",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/vm/evm/defining-precompile.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/vm/evm/defining-precompile.md",
               "tags": [
                 {
                   "label": "Build",
@@ -2230,7 +2230,7 @@
               "permalink": "/build/vm/evm/defining-tests",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/vm/evm/defining-tests.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/vm/evm/defining-tests.md",
               "tags": [
                 {
                   "label": "Build",
@@ -2273,7 +2273,7 @@
               "permalink": "/build/vm/evm/deploying-precompile",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/vm/evm/deploying-precompile.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/vm/evm/deploying-precompile.md",
               "tags": [
                 {
                   "label": "Build",
@@ -2312,7 +2312,7 @@
               "permalink": "/build/vm/evm/executing-tests",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/vm/evm/executing-tests.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/vm/evm/executing-tests.md",
               "tags": [
                 {
                   "label": "Build",
@@ -2355,7 +2355,7 @@
               "permalink": "/build/vm/evm/generate-precompile",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/vm/evm/generate-precompile.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/vm/evm/generate-precompile.md",
               "tags": [
                 {
                   "label": "Build",
@@ -2398,7 +2398,7 @@
               "permalink": "/build/vm/evm/intro",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/vm/evm/intro.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/vm/evm/intro.md",
               "tags": [
                 {
                   "label": "Build",
@@ -2441,7 +2441,7 @@
               "permalink": "/build/vm/intro",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/vm/intro.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/vm/intro.md",
               "tags": [
                 {
                   "label": "Build",
@@ -2482,7 +2482,7 @@
               "permalink": "/build/vm/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/build/vm/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/build/vm/README.md",
               "tags": [
                 {
                   "label": "Build",
@@ -2520,7 +2520,7 @@
               "permalink": "/deprecated/deploy-a-gnosis-safe-on-your-evm",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/deploy-a-gnosis-safe-on-your-evm.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/deploy-a-gnosis-safe-on-your-evm.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2535,7 +2535,7 @@
               "permalink": "/deprecated/dfk-subnet-node",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/dfk-subnet-node.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/dfk-subnet-node.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2550,7 +2550,7 @@
               "permalink": "/deprecated/truffle",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/truffle.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/truffle.md",
               "tags": [
                 {
                   "label": "Build",
@@ -2582,7 +2582,7 @@
               "permalink": "/deprecated/tutorials-contest/2021",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2597,7 +2597,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/DAO/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/DAO/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/DAO/README.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2612,7 +2612,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/App.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2627,7 +2627,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSUploader.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSUploader.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSUploader.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2642,7 +2642,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSViewer.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSViewer.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/distributed-file-manager/frontend/IPFSViewer.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2657,7 +2657,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/distributed-file-manager/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/distributed-file-manager/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/distributed-file-manager/README.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2672,7 +2672,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/Auction.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/Auction.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/Auction.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2687,7 +2687,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/AuctionList.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/AuctionList.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/AuctionList.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2702,7 +2702,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/CreateAuction.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/CreateAuction.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/drizzle-auction-manager/frontend/CreateAuction.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2717,7 +2717,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/drizzle-auction-manager/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/drizzle-auction-manager/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/drizzle-auction-manager/README.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2732,7 +2732,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/evoting-dapp/frontend/ActiveElections.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/evoting-dapp/frontend/ActiveElections.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/evoting-dapp/frontend/ActiveElections.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2747,7 +2747,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/evoting-dapp/frontend/CreateElection.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/evoting-dapp/frontend/CreateElection.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/evoting-dapp/frontend/CreateElection.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2762,7 +2762,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/evoting-dapp/frontend/VoteModal.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/evoting-dapp/frontend/VoteModal.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/evoting-dapp/frontend/VoteModal.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2777,7 +2777,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/evoting-dapp/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/evoting-dapp/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/evoting-dapp/README.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2792,7 +2792,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/hardhat-fork/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/hardhat-fork/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/hardhat-fork/README.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2807,7 +2807,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/how-to-mint-erc721-using-openzeppelin/tutorial",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/how-to-mint-erc721-using-openzeppelin/tutorial.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/how-to-mint-erc721-using-openzeppelin/tutorial.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2822,7 +2822,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/lux-chat-dapp/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/lux-chat-dapp/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/lux-chat-dapp/README.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2837,7 +2837,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/public/index-html.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2852,7 +2852,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/README.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2867,7 +2867,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/App.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/App.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/App.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2882,7 +2882,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/index.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/index.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/index.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2897,7 +2897,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/reportWebVitals.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2912,7 +2912,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/setupTests.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/setupTests.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/NFT-Marketplace-dApp/frontend/src/setupTests.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2927,7 +2927,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/NFT-Marketplace-on-Lux/README.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2942,7 +2942,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/pangolin-token-subgraph/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/pangolin-token-subgraph/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/pangolin-token-subgraph/README.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2957,7 +2957,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/ansible-chainlink-lux-setup/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/ansible-chainlink-lux-setup/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/ansible-chainlink-lux-setup/README.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2972,7 +2972,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/chainlink-external-adaptor/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/chainlink-external-adaptor/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/chainlink-external-adaptor/README.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -2987,7 +2987,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/red-dev-chainlink-tutorial/README.md",
               "tags": [],
               "version": "current",
               "frontMatter": {
@@ -3004,7 +3004,7 @@
               "permalink": "/deprecated/tutorials-contest/2021/red-dev-sig-verify-tutorial/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2021/red-dev-sig-verify-tutorial/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2021/red-dev-sig-verify-tutorial/README.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3019,7 +3019,7 @@
               "permalink": "/deprecated/tutorials-contest/2022",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3034,7 +3034,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/chains.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/chains.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/chains.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3049,7 +3049,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/nativeMinterAddress.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/nativeMinterAddress.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/constants/nativeMinterAddress.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3064,7 +3064,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/LuxBridge.sol.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3079,7 +3079,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Bridge/SubnetBridge.sol.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3094,7 +3094,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/INativeMinter.sol.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3109,7 +3109,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/contracts/Token/LuxToken.sol.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3124,7 +3124,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBalance.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBalance.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBalance.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3139,7 +3139,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBurnOrLock.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBurnOrLock.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterBurnOrLock.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3154,7 +3154,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterDeploy.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterDeploy.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/hardhatConfigAfterDeploy.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3169,7 +3169,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/relayer.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/relayer.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/relayer.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3184,7 +3184,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/balance.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/balance.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/balance.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3199,7 +3199,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/burnOrLock.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/burnOrLock.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/burnOrLock.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3214,7 +3214,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/deploy.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/deploy.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/scripts/deploy.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3229,7 +3229,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initContracts.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initContracts.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initContracts.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3244,7 +3244,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initProviders.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initProviders.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initProviders.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3259,7 +3259,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initSigners.js",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initSigners.js.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/codes/utils/initSigners.js.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3274,7 +3274,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/erc20-as-subnet-gas-token/README.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3289,7 +3289,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/local-subnet-development/hardhat.config.ts",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/local-subnet-development/hardhat.config.ts.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/local-subnet-development/hardhat.config.ts.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3304,7 +3304,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/AllowList",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/AllowList.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/AllowList.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3319,7 +3319,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/NativeMinter",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/NativeMinter.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/local-subnet-development/precompiles/NativeMinter.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3334,7 +3334,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/local-subnet-development/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/local-subnet-development/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/local-subnet-development/README.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3349,7 +3349,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/lux-subnet-customization/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/lux-subnet-customization/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/lux-subnet-customization/README.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3364,7 +3364,7 @@
               "permalink": "/deprecated/tutorials-contest/2022/theGraph-index/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/2022/theGraph-index/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/2022/theGraph-index/README.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3379,7 +3379,7 @@
               "permalink": "/deprecated/tutorials-contest/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/tutorials-contest/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/tutorials-contest/README.md",
               "tags": [],
               "version": "current",
               "frontMatter": {}
@@ -3394,7 +3394,7 @@
               "permalink": "/deprecated/verify-truffle",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/deprecated/verify-truffle.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/deprecated/verify-truffle.md",
               "tags": [
                 {
                   "label": "Build",
@@ -3426,7 +3426,7 @@
               "permalink": "/disclaimer",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/disclaimer.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/disclaimer.md",
               "tags": [],
               "version": "current",
               "frontMatter": {},
@@ -3446,7 +3446,7 @@
               "permalink": "/learn/lux/awm",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/learn/lux/awm.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/learn/lux/awm.md",
               "tags": [
                 {
                   "label": "Lux Warp Messaging",
@@ -3495,7 +3495,7 @@
               "permalink": "/intro",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/learn/lux/intro.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/learn/lux/intro.md",
               "tags": [
                 {
                   "label": "Lux",
@@ -3534,7 +3534,7 @@
               "permalink": "/learn/lux/lux-consensus",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/learn/lux/lux-consensus.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/learn/lux/lux-consensus.md",
               "tags": [
                 {
                   "label": "Lux Consensus",
@@ -3580,7 +3580,7 @@
               "permalink": "/learn/lux/lux-platform",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/learn/lux/lux-platform.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/learn/lux/lux-platform.md",
               "tags": [
                 {
                   "label": "Primary Network",
@@ -3651,7 +3651,7 @@
               "permalink": "/learn/lux/mainnet",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/learn/lux/mainnet.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/learn/lux/mainnet.md",
               "tags": [
                 {
                   "label": "Primary Network",
@@ -3698,7 +3698,7 @@
               "permalink": "/learn/lux/subnets-overview",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/learn/lux/subnets-overview.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/learn/lux/subnets-overview.md",
               "tags": [
                 {
                   "label": "Subnet",
@@ -3740,7 +3740,7 @@
               "permalink": "/learn/lux/testnet",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/learn/lux/testnet.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/learn/lux/testnet.md",
               "tags": [
                 {
                   "label": "Testnet",
@@ -3781,7 +3781,7 @@
               "permalink": "/learn/lux/virtual-machines",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/learn/lux/virtual-machines.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/learn/lux/virtual-machines.md",
               "tags": [
                 {
                   "label": "Virtual Machines",
@@ -3828,7 +3828,7 @@
               "permalink": "/nodes/configure/avalanchego-config-flags",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/configure/avalanchego-config-flags.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/configure/avalanchego-config-flags.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -3866,7 +3866,7 @@
               "permalink": "/nodes/configure/chain-config-flags",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/configure/chain-config-flags.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/configure/chain-config-flags.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -3904,7 +3904,7 @@
               "permalink": "/nodes/configure/luxd-config-flags",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/configure/luxd-config-flags.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/configure/luxd-config-flags.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -3942,7 +3942,7 @@
               "permalink": "/nodes/configure/subnet-configs",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/configure/subnet-configs.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/configure/subnet-configs.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -3980,7 +3980,7 @@
               "permalink": "/nodes/maintain/background-service-config",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/maintain/background-service-config.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/maintain/background-service-config.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4014,7 +4014,7 @@
               "permalink": "/nodes/maintain/node-backup-and-restore",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/maintain/node-backup-and-restore.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/maintain/node-backup-and-restore.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4052,7 +4052,7 @@
               "permalink": "/nodes/maintain/node-bootstrap",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/maintain/node-bootstrap.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/maintain/node-bootstrap.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4090,7 +4090,7 @@
               "permalink": "/nodes/maintain/notify",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/maintain/notify.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/maintain/notify.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4128,7 +4128,7 @@
               "permalink": "/nodes/maintain/run-offline-pruning",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/maintain/run-offline-pruning.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/maintain/run-offline-pruning.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4166,7 +4166,7 @@
               "permalink": "/nodes/maintain/setting-up-node-monitoring",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/maintain/setting-up-node-monitoring.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/maintain/setting-up-node-monitoring.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4204,7 +4204,7 @@
               "permalink": "/nodes/maintain/upgrade-your-luxd-node",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/maintain/upgrade-your-luxd-node.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/maintain/upgrade-your-luxd-node.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4242,7 +4242,7 @@
               "permalink": "/nodes/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/README.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4274,7 +4274,7 @@
               "permalink": "/nodes/run/FAQ",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/run/FAQ.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/run/FAQ.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4312,7 +4312,7 @@
               "permalink": "/nodes/run/node-manually",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/run/node-manually.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/run/node-manually.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4367,7 +4367,7 @@
               "permalink": "/nodes/run/subnet-node",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/run/subnet-node.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/run/subnet-node.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4420,7 +4420,7 @@
               "permalink": "/nodes/run/third-party/alibaba-cloud-node",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/run/third-party/alibaba-cloud-node.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/run/third-party/alibaba-cloud-node.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4458,7 +4458,7 @@
               "permalink": "/nodes/run/third-party/aws-marketplace-one-click",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/run/third-party/aws-marketplace-one-click.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/run/third-party/aws-marketplace-one-click.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4496,7 +4496,7 @@
               "permalink": "/nodes/run/third-party/aws-node",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/run/third-party/aws-node.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/run/third-party/aws-node.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4534,7 +4534,7 @@
               "permalink": "/nodes/run/third-party/google-cloud-node",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/run/third-party/google-cloud-node.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/run/third-party/google-cloud-node.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4572,7 +4572,7 @@
               "permalink": "/nodes/run/third-party/microsoft-azure-node",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/run/third-party/microsoft-azure-node.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/run/third-party/microsoft-azure-node.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4610,7 +4610,7 @@
               "permalink": "/nodes/run/third-party/tencent-cloud-node",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/run/third-party/tencent-cloud-node.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/run/third-party/tencent-cloud-node.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4648,7 +4648,7 @@
               "permalink": "/nodes/run/with-installer/advance-config-maintenance",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/run/with-installer/advance-config-maintenance.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/run/with-installer/advance-config-maintenance.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4685,7 +4685,7 @@
               "permalink": "/nodes/run/with-installer/installing-avalanchego",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/run/with-installer/installing-avalanchego.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/run/with-installer/installing-avalanchego.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4722,7 +4722,7 @@
               "permalink": "/nodes/run/with-installer/installing-luxd",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/run/with-installer/installing-luxd.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/run/with-installer/installing-luxd.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4759,7 +4759,7 @@
               "permalink": "/nodes/run/with-installer/managing-avalanchego",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/run/with-installer/managing-avalanchego.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/run/with-installer/managing-avalanchego.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4796,7 +4796,7 @@
               "permalink": "/nodes/run/with-installer/managing-luxd",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/run/with-installer/managing-luxd.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/run/with-installer/managing-luxd.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4833,7 +4833,7 @@
               "permalink": "/nodes/run/with-installer/preparing-your-environment",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/run/with-installer/preparing-your-environment.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/run/with-installer/preparing-your-environment.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4870,7 +4870,7 @@
               "permalink": "/nodes/system-requirements",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/system-requirements.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/system-requirements.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4906,7 +4906,7 @@
               "permalink": "/nodes/validate/add-a-validator",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/validate/add-a-validator.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/validate/add-a-validator.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4944,7 +4944,7 @@
               "permalink": "/nodes/validate/how-to-stake",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/validate/how-to-stake.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/validate/how-to-stake.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -4982,7 +4982,7 @@
               "permalink": "/nodes/validate/validate-or-delegate",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/validate/validate-or-delegate.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/validate/validate-or-delegate.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -5020,7 +5020,7 @@
               "permalink": "/nodes/validate/what-is-staking",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/nodes/validate/what-is-staking.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/nodes/validate/what-is-staking.md",
               "tags": [
                 {
                   "label": "Nodes",
@@ -5058,7 +5058,7 @@
               "permalink": "/reference/luxd/admin-api",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/luxd/admin-api.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/luxd/admin-api.md",
               "tags": [
                 {
                   "label": "Luxd APIs",
@@ -5094,7 +5094,7 @@
               "permalink": "/reference/luxd/auth-api",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/luxd/auth-api.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/luxd/auth-api.md",
               "tags": [
                 {
                   "label": "Luxd APIs",
@@ -5130,7 +5130,7 @@
               "permalink": "/reference/luxd/c-chain/api",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/luxd/c-chain/api.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/luxd/c-chain/api.md",
               "tags": [
                 {
                   "label": "C-Chain",
@@ -5177,7 +5177,7 @@
               "permalink": "/reference/luxd/c-chain/txn-format",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/luxd/c-chain/txn-format.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/luxd/c-chain/txn-format.md",
               "tags": [
                 {
                   "label": "C-Chain",
@@ -5223,7 +5223,7 @@
               "permalink": "/reference/luxd/health-api",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/luxd/health-api.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/luxd/health-api.md",
               "tags": [
                 {
                   "label": "Luxd APIs",
@@ -5259,7 +5259,7 @@
               "permalink": "/reference/luxd/index-api",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/luxd/index-api.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/luxd/index-api.md",
               "tags": [
                 {
                   "label": "Luxd APIs",
@@ -5295,7 +5295,7 @@
               "permalink": "/reference/luxd/info-api",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/luxd/info-api.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/luxd/info-api.md",
               "tags": [
                 {
                   "label": "Luxd APIs",
@@ -5331,7 +5331,7 @@
               "permalink": "/reference/luxd/ipc-api",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/luxd/ipc-api.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/luxd/ipc-api.md",
               "tags": [
                 {
                   "label": "Luxd APIs",
@@ -5367,7 +5367,7 @@
               "permalink": "/reference/luxd/keystore-api",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/luxd/keystore-api.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/luxd/keystore-api.md",
               "tags": [
                 {
                   "label": "Luxd APIs",
@@ -5403,7 +5403,7 @@
               "permalink": "/reference/luxd/metrics-api",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/luxd/metrics-api.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/luxd/metrics-api.md",
               "tags": [
                 {
                   "label": "Luxd APIs",
@@ -5439,7 +5439,7 @@
               "permalink": "/reference/luxd/p-chain/api",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/luxd/p-chain/api.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/luxd/p-chain/api.md",
               "tags": [
                 {
                   "label": "P-Chain",
@@ -5485,7 +5485,7 @@
               "permalink": "/reference/luxd/p-chain/txn-format",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/luxd/p-chain/txn-format.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/luxd/p-chain/txn-format.md",
               "tags": [
                 {
                   "label": "P-Chain",
@@ -5531,7 +5531,7 @@
               "permalink": "/reference/luxd/x-chain/api",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/luxd/x-chain/api.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/luxd/x-chain/api.md",
               "tags": [
                 {
                   "label": "X-Chain",
@@ -5572,7 +5572,7 @@
               "permalink": "/reference/luxd/x-chain/txn-format",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/luxd/x-chain/txn-format.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/luxd/x-chain/txn-format.md",
               "tags": [
                 {
                   "label": "X-Chain",
@@ -5613,7 +5613,7 @@
               "permalink": "/reference/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/README.md",
               "tags": [
                 {
                   "label": "Luxd APIs",
@@ -5646,7 +5646,7 @@
               "permalink": "/reference/standards/avalanche-network-protocol",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/standards/avalanche-network-protocol.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/standards/avalanche-network-protocol.md",
               "tags": [
                 {
                   "label": "Standards",
@@ -5673,7 +5673,7 @@
               "permalink": "/reference/standards/cryptographic-primitives",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/standards/cryptographic-primitives.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/standards/cryptographic-primitives.md",
               "tags": [
                 {
                   "label": "Standards",
@@ -5709,7 +5709,7 @@
               "permalink": "/reference/standards/guides/banff-changes",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/standards/guides/banff-changes.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/standards/guides/banff-changes.md",
               "tags": [
                 {
                   "label": "Standards",
@@ -5747,7 +5747,7 @@
               "permalink": "/reference/standards/guides/blockchain-flow",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/standards/guides/blockchain-flow.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/standards/guides/blockchain-flow.md",
               "tags": [],
               "version": "current",
               "frontMatter": {},
@@ -5767,7 +5767,7 @@
               "permalink": "/reference/standards/guides/issuing-api-calls",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/standards/guides/issuing-api-calls.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/standards/guides/issuing-api-calls.md",
               "tags": [
                 {
                   "label": "Standards",
@@ -5805,7 +5805,7 @@
               "permalink": "/reference/standards/guides/txn-fees",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/standards/guides/txn-fees.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/standards/guides/txn-fees.md",
               "tags": [
                 {
                   "label": "Standards",
@@ -5843,7 +5843,7 @@
               "permalink": "/reference/standards/guides/x-chain-migration",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/standards/guides/x-chain-migration.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/standards/guides/x-chain-migration.md",
               "tags": [
                 {
                   "label": "Standards",
@@ -5881,7 +5881,7 @@
               "permalink": "/reference/standards/network-protocol",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/standards/network-protocol.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/standards/network-protocol.md",
               "tags": [
                 {
                   "label": "Standards",
@@ -5917,7 +5917,7 @@
               "permalink": "/reference/standards/serialization-primitives",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/standards/serialization-primitives.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/standards/serialization-primitives.md",
               "tags": [
                 {
                   "label": "Standards",
@@ -5953,7 +5953,7 @@
               "permalink": "/reference/subnet-evm/api",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/reference/subnet-evm/api.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/reference/subnet-evm/api.md",
               "tags": [
                 {
                   "label": "Subnet-EVM",
@@ -5989,7 +5989,7 @@
               "permalink": "/tooling/cli",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/cli.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/cli.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6030,7 +6030,7 @@
               "permalink": "/tooling/cli-guides/create-a-validator-aws",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/cli-guides/create-a-validator-aws.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/cli-guides/create-a-validator-aws.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6073,7 +6073,7 @@
               "permalink": "/tooling/cli-guides/create-a-validator-gcp",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/cli-guides/create-a-validator-gcp.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/cli-guides/create-a-validator-gcp.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6116,7 +6116,7 @@
               "permalink": "/tooling/cli-guides/import-subnet",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/cli-guides/import-subnet.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/cli-guides/import-subnet.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6159,7 +6159,7 @@
               "permalink": "/tooling/cli-guides/install-cli",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/cli-guides/install-cli.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/cli-guides/install-cli.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6202,7 +6202,7 @@
               "permalink": "/tooling/cli-guides/node-ssh",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/cli-guides/node-ssh.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/cli-guides/node-ssh.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6245,7 +6245,7 @@
               "permalink": "/tooling/cli-guides/run-with-docker",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/cli-guides/run-with-docker.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/cli-guides/run-with-docker.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6288,7 +6288,7 @@
               "permalink": "/tooling/cli-guides/setup-a-devnet",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/cli-guides/setup-a-devnet.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/cli-guides/setup-a-devnet.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6331,7 +6331,7 @@
               "permalink": "/tooling/cli-guides/stop-node",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/cli-guides/stop-node.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/cli-guides/stop-node.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6374,7 +6374,7 @@
               "permalink": "/tooling/cli-guides/upload-a-custom-vm-to-cloud",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/cli-guides/upload-a-custom-vm-to-cloud.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/cli-guides/upload-a-custom-vm-to-cloud.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6417,7 +6417,7 @@
               "permalink": "/tooling/cli-guides/validate-primary-network",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/cli-guides/validate-primary-network.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/cli-guides/validate-primary-network.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6460,7 +6460,7 @@
               "permalink": "/tooling/cli-guides/validate-subnets",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/cli-guides/validate-subnets.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/cli-guides/validate-subnets.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6503,7 +6503,7 @@
               "permalink": "/tooling/glacier",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/glacier.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/glacier.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6542,7 +6542,7 @@
               "permalink": "/tooling/indexers",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/indexers.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/indexers.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6584,7 +6584,7 @@
               "permalink": "/tooling/lux-plugin-manager",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/lux-plugin-manager.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/lux-plugin-manager.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6610,7 +6610,7 @@
               "permalink": "/tooling/luxd-installer",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/luxd-installer.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/luxd-installer.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6650,7 +6650,7 @@
               "permalink": "/tooling/luxd-postman-collection/data-visualization",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/luxd-postman-collection/data-visualization.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/luxd-postman-collection/data-visualization.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6692,7 +6692,7 @@
               "permalink": "/tooling/luxd-postman-collection/making-api-calls",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/luxd-postman-collection/making-api-calls.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/luxd-postman-collection/making-api-calls.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6734,7 +6734,7 @@
               "permalink": "/tooling/luxd-postman-collection/setup",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/luxd-postman-collection/setup.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/luxd-postman-collection/setup.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6776,7 +6776,7 @@
               "permalink": "/tooling/luxd-postman-collection/variables",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/luxd-postman-collection/variables.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/luxd-postman-collection/variables.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6818,7 +6818,7 @@
               "permalink": "/tooling/luxjs-api",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/luxjs-api.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/luxjs-api.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6861,7 +6861,7 @@
               "permalink": "/tooling/luxjs-guides/create-an-asset-on-the-x-chain",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/luxjs-guides/create-an-asset-on-the-x-chain.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/luxjs-guides/create-an-asset-on-the-x-chain.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6904,7 +6904,7 @@
               "permalink": "/tooling/luxjs-guides/cross-chain-transfers",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/luxjs-guides/cross-chain-transfers.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/luxjs-guides/cross-chain-transfers.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6947,7 +6947,7 @@
               "permalink": "/tooling/luxjs-guides/generate-a-txid-using-luxjs",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/luxjs-guides/generate-a-txid-using-luxjs.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/luxjs-guides/generate-a-txid-using-luxjs.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -6990,7 +6990,7 @@
               "permalink": "/tooling/luxjs-guides/generate-key-pair",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/luxjs-guides/generate-key-pair.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/luxjs-guides/generate-key-pair.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -7033,7 +7033,7 @@
               "permalink": "/tooling/luxjs-guides/manage-x-chain-keys",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/luxjs-guides/manage-x-chain-keys.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/luxjs-guides/manage-x-chain-keys.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -7076,7 +7076,7 @@
               "permalink": "/tooling/luxjs-guides/multisig-utxos-with-luxjs",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/luxjs-guides/multisig-utxos-with-luxjs.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/luxjs-guides/multisig-utxos-with-luxjs.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -7119,7 +7119,7 @@
               "permalink": "/tooling/luxjs-guides/send-an-asset-on-the-x-chain",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/luxjs-guides/send-an-asset-on-the-x-chain.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/luxjs-guides/send-an-asset-on-the-x-chain.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -7162,7 +7162,7 @@
               "permalink": "/tooling/luxjs-overview",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/luxjs-overview.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/luxjs-overview.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -7205,7 +7205,7 @@
               "permalink": "/tooling/metrics",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/metrics.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/metrics.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -7244,7 +7244,7 @@
               "permalink": "/tooling/netrunner",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/netrunner.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/netrunner.md",
               "tags": [
                 {
                   "label": "Build",
@@ -7290,7 +7290,7 @@
               "permalink": "/tooling/ops",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/ops.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/ops.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -7325,7 +7325,7 @@
               "permalink": "/tooling/plugin-manager",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/plugin-manager.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/plugin-manager.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -7360,7 +7360,7 @@
               "permalink": "/tooling/",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/README.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/README.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -7393,7 +7393,7 @@
               "permalink": "/tooling/rpc-providers",
               "draft": false,
               "unlisted": false,
-              "editUrl": "https://github.com/luxdefi/docs/edit/main/docs/tooling/rpc-providers.md",
+              "editUrl": "https://github.com/luxfi/docs/edit/main/docs/tooling/rpc-providers.md",
               "tags": [
                 {
                   "label": "Tooling",
@@ -7494,7 +7494,7 @@
               {
                 "type": "link",
                 "label": "Audits",
-                "href": "https://github.com/luxdefi/audits"
+                "href": "https://github.com/luxfi/audits"
               },
               {
                 "type": "doc",
@@ -8162,7 +8162,7 @@
               {
                 "type": "link",
                 "label": "LuxSDK",
-                "href": "https://github.com/luxdefi/hypersdk#readme"
+                "href": "https://github.com/luxfi/hypersdk#readme"
               }
             ],
             "tooling": [
@@ -8311,7 +8311,7 @@
               {
                 "type": "link",
                 "label": "LuxSDK",
-                "href": "https://github.com/luxdefi/hypersdk#readme"
+                "href": "https://github.com/luxfi/hypersdk#readme"
               },
               {
                 "type": "html",
@@ -8468,7 +8468,7 @@
               {
                 "type": "link",
                 "label": "Release Notes",
-                "href": "https://github.com/luxdefi/luxd/releases"
+                "href": "https://github.com/luxfi/luxd/releases"
               },
               {
                 "type": "html",

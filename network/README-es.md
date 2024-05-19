@@ -42,7 +42,7 @@ repositorio. Simplemente:
 Para proponer nueva documentación o ediciones grandes a nuestras páginas existentes, sigue los pasos correspondientes:
 
 - **Miembros de la Organización de Github de Lux Partners:** Clona el repositorio
-  `git clone https://github.com/luxdefi/docs.git`
+  `git clone https://github.com/luxfi/docs.git`
 - **Contribuidores Externos:** Bifurca el repositorio a través de la interfaz gráfica de GitHub
 - Haz checkout a una nueva rama `git checkout -b <tu-nombre/nombre-de-la-rama>`
 - Realiza los cambios en tu rama
@@ -50,7 +50,7 @@ Para proponer nueva documentación o ediciones grandes a nuestras páginas exist
 - **`yarn build` para asegurarte de que la construcción pase**
 - `git commit -m "mensaje de confirmación"`
 - `git push`
-- Ve a [GitHub](https://github.com/luxdefi/docs)
+- Ve a [GitHub](https://github.com/luxfi/docs)
   y abre una nueva solicitud de extracción
 
 ### Estructura y Sintaxis
@@ -120,14 +120,14 @@ _La información que estoy solicitando está relacionada con un proyecto especí
 
 _La información que estoy solicitando es de naturaleza explicativa y actualmente no existe:_
 
-- Por favor, abre un nuevo [Issue](https://github.com/luxdefi/docs/issues/new/choose)
+- Por favor, abre un nuevo [Issue](https://github.com/luxfi/docs/issues/new/choose)
   en este repositorio y detalla minuciosamente tu solicitud de acuerdo con la plantilla del issue.
   Si es urgente, por favor crea un nuevo ticket en el
-  [Panel de Propuestas de Mejora de la Documentación de Desarrollo](https://github.com/orgs/luxdefi/projects/15/views/1).
+  [Panel de Propuestas de Mejora de la Documentación de Desarrollo](https://github.com/orgs/luxfi/projects/15/views/1).
 
 _Información errónea o faltante en la documentación no relacionada con un proyecto específico necesita
 edición:_
 
 - Si entiendes lo suficiente el problema como para proporcionar una corrección, sigue los pasos
-  [aquí](https://github.com/luxdefi/docs#quick-fixes).
-- Si no, levanta un [Issue](https://github.com/luxdefi/docs/issues/new/choose).
+  [aquí](https://github.com/luxfi/docs#quick-fixes).
+- Si no, levanta un [Issue](https://github.com/luxfi/docs/issues/new/choose).

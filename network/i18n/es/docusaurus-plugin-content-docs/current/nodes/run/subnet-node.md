@@ -26,7 +26,7 @@ los binarios de la Máquina Virtual como complementos a su directorio de datos l
 binarios.
 
 Este tutorial cubre específicamente el rastreo de una Subnet construida con la
-[Subnet-EVM](https://github.com/luxdefi/subnet-evm) de Lux, la Máquina Virtual
+[Subnet-EVM](https://github.com/luxfi/subnet-evm) de Lux, la Máquina Virtual
 por defecto [Virtual Machine](/learn/lux/virtual-machines.md)
 ejecutada por las Subnets en Lux.
 
@@ -64,20 +64,20 @@ cambiar.
 4. Crear un directorio en su `$GOPATH`
 
 ```bash
-mkdir -p $GOPATH/src/github.com/luxdefi
+mkdir -p $GOPATH/src/github.com/luxfi
 ```
 
 <!-- markdownlint-disable MD029 -->
 
 5. Clonar Luxd
 
-En el `$GOPATH`, clonar [Luxd](https://github.com/luxdefi/luxd),
+En el `$GOPATH`, clonar [Luxd](https://github.com/luxfi/luxd),
 el motor de consenso e implementación de nodo que es el núcleo de la
 Red Lux.
 
 ```bash
-cd $GOPATH/src/github.com/luxdefi
-git clone https://github.com/luxdefi/luxd.git
+cd $GOPATH/src/github.com/luxfi
+git clone https://github.com/luxfi/luxd.git
 ```
 
 6. Ejecutar el script de construcción
@@ -85,7 +85,7 @@ git clone https://github.com/luxdefi/luxd.git
 Desde el directorio `luxd`, ejecutar el script de construcción
 
 ```bash
-cd $GOPATH/src/github.com/luxdefi/luxd
+cd $GOPATH/src/github.com/luxfi/luxd
 ./scripts/build.sh
 ```
 
@@ -96,11 +96,11 @@ cd $GOPATH/src/github.com/luxdefi/luxd
 
 _Despues de construir Luxd exitosamente,_
 
-### 1. Clonar [Subnet-EVM](https://github.com/luxdefi/subnet-evm)
+### 1. Clonar [Subnet-EVM](https://github.com/luxfi/subnet-evm)
 
 ```bash
-cd $GOPATH/src/github.com/luxdefi
-git clone https://github.com/luxdefi/subnet-evm.git
+cd $GOPATH/src/github.com/luxfi
+git clone https://github.com/luxfi/subnet-evm.git
 ```
 
 ### 2. Construir el Binario y Guardarlo como un Complemento
@@ -110,7 +110,7 @@ directorio de datos `.luxd`. Nombre el complemento con el `VMID` de la Subnet qu
 El `VMID` de la Subnet ZOO es el valor que comienza con "srEX...".
 
 ```bash
-cd $GOPATH/src/github.com/luxdefi/subnet-evm
+cd $GOPATH/src/github.com/luxfi/subnet-evm
 ./scripts/build.sh ~/.luxd/plugins/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy
 ```
 
@@ -146,7 +146,7 @@ Ejecute Luxd con la bandera `--config-file` para iniciar su nodo y asegurarse de
 incluidas en el archivo de configuración.
 
 ```bash
-cd $GOPATH/src/github.com/luxdefi/luxd
+cd $GOPATH/src/github.com/luxfi/luxd
 ./build/luxd --config-file ~/.luxd/config.json --network-id=testnet
 ```
 

@@ -159,7 +159,7 @@ modifications that made the node fail, you may want to reinstall the node. To do
 that, fetch the latest version of the script from the web with:
 
 ```bash
-wget -nd -m https://raw.githubusercontent.com/luxdefi/docs/master/scripts/luxd-installer.sh
+wget -nd -m https://raw.githubusercontent.com/luxfi/docs/master/scripts/luxd-installer.sh
 ```
 
 After the script has updated, run it again with the `--reinstall` config flag:

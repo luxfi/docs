@@ -83,5 +83,5 @@ participating honestly.
 
 ## Reference Implementation
 
-A Proof-of-Concept VM called [XSVM](https://github.com/luxdefi/xsvm) was created to demonstrate the
+A Proof-of-Concept VM called [XSVM](https://github.com/luxfi/xsvm) was created to demonstrate the
 power of AWM. XSVM enables simple AWM transfers between any two Subnets if run out-of-the-box.

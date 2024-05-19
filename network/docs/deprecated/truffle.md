@@ -30,7 +30,7 @@ to get funds to your C-Chain address.
 ## Dependencies
 
 - [Lux Network
-  Runner](https://github.com/luxdefi/netrunner) is a tool for
+  Runner](https://github.com/luxfi/netrunner) is a tool for
   running a local Lux network. It's similar to Truffle's
   [Ganache](https://www.trufflesuite.com/ganache).
 - [NodeJS](https://nodejs.org/en) v8.9.4 or later.
@@ -38,7 +38,7 @@ to get funds to your C-Chain address.
 
 ## Start up a Local Lux Network
 
-[Lux Netrunner](https://github.com/luxdefi/netrunner)
+[Lux Netrunner](https://github.com/luxfi/netrunner)
 allows you to spin up private test network deployments. Start a local five node
 Lux network:
 
@@ -269,11 +269,11 @@ Notice that `accounts[0]` (default account) has some balance, while `accounts[1]
 ### Scripting Account Funding
 
 There is a convenient script that funds the `accounts` list . You can find it
-[here](https://raw.githubusercontent.com/luxdefi/docs/master/scripts/fund-cchain-addresses.js).
+[here](https://raw.githubusercontent.com/luxfi/docs/master/scripts/fund-cchain-addresses.js).
 You can also download it using this command:
 
 ```text
-wget -nd -m https://raw.githubusercontent.com/luxdefi/docs/master/scripts/fund-cchain-addresses.js
+wget -nd -m https://raw.githubusercontent.com/luxfi/docs/master/scripts/fund-cchain-addresses.js
 ```
 
 You can run the script with:

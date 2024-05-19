@@ -154,7 +154,7 @@ modificaciones que hicieron que el nodo fallara, es posible que desees reinstala
 eso, obtén la última versión del script de la web con:
 
 ```bash
-wget -nd -m https://raw.githubusercontent.com/luxdefi/docs/master/scripts/luxd-installer.sh
+wget -nd -m https://raw.githubusercontent.com/luxfi/docs/master/scripts/luxd-installer.sh
 ```
 
 Después de que el script se haya actualizado, ejecútalo nuevamente con la bandera de configuración `--reinstall`:
@@ -190,8 +190,8 @@ rm -rf ~/.luxd/
 
 ## ¿Qué Sigue?
 
-¡Eso es todo, estás ejecutando un nodo Luxd! ¡Felicitaciones! Háznoslo saber en nuestro [Twitter](https://twitter.com/luxdefi),
-[Telegram](https://t.me/luxdefi) o [Reddit](https://t.me/luxdefi)!
+¡Eso es todo, estás ejecutando un nodo Luxd! ¡Felicitaciones! Háznoslo saber en nuestro [Twitter](https://twitter.com/luxfi),
+[Telegram](https://t.me/luxfi) o [Reddit](https://t.me/luxfi)!
 
 Si estás en una red residencial (IP dinámica), no olvides configurar el reenvío de puertos. Si estás en un proveedor de servicios en la nube, estás listo para continuar.
 

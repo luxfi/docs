@@ -1,6 +1,6 @@
 # 03/02/2023
 
-/subnets/subnet-cli https://github.com/luxdefi/subnet-cli
+/subnets/subnet-cli https://github.com/luxfi/subnet-cli
 /subnets/create-a-testnet-subnet-subnet-cli /subnets/create-a-testnet-subnet
 
 # 02/23/2023
@@ -371,9 +371,9 @@
 /subnets /learn/lux/subnets-overview 301
 
 # 05/24/2023
-/apis/luxd/luxd-release-notes#v1912-view-on-github https://github.com/luxdefi/luxd/releases/tag/v1.9.12 301
-/apis/luxd/luxd-release-notes#v1714-view-on-github https://github.com/luxdefi/luxd/releases/tag/v1.7.14 301
-/apis/luxd/luxd-release-notes https://github.com/luxdefi/luxd/releases 301
+/apis/luxd/luxd-release-notes#v1912-view-on-github https://github.com/luxfi/luxd/releases/tag/v1.9.12 301
+/apis/luxd/luxd-release-notes#v1714-view-on-github https://github.com/luxfi/luxd/releases/tag/v1.7.14 301
+/apis/luxd/luxd-release-notes https://github.com/luxfi/luxd/releases 301
 
 # 06/14/2023
 /dapps/smart-contracts/deploy-a-smart-contract-on-using-remix-and-metamask /dapps/smart-contracts/deploy-a-smart-contract-on-using-remix-and-core 301

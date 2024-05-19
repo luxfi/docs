@@ -90,7 +90,7 @@ eres un desarrollador que busca experimentar y construir en Lux.
 
 ## Descarga el binario precompilado
 
-Si quieres descargar un binario precompilado en lugar de compilarlo tú mismo, ve a nuestra [página de versiones](https://github.com/luxdefi/luxd/releases) y selecciona la versión que deseas (probablemente la más reciente).
+Si quieres descargar un binario precompilado en lugar de compilarlo tú mismo, ve a nuestra [página de versiones](https://github.com/luxfi/luxd/releases) y selecciona la versión que deseas (probablemente la más reciente).
 
 :::info
 
@@ -100,7 +100,7 @@ para recibir notificaciones sobre nuevas versiones.
 
 Además, o si no tienes un ID de nodo, puedes recibir notificaciones de lanzamiento desde github.
 Para hacerlo, puedes ir a nuestro
-[repositorio](https://github.com/luxdefi/luxd) y buscar en la esquina superior derecha
+[repositorio](https://github.com/luxfi/luxd) y buscar en la esquina superior derecha
 la opción **Watch**. Después de hacer clic en ella, selecciona **Custom**,
 y luego **Releases**. Presiona **Apply** y listo.
 
@@ -154,13 +154,13 @@ y luego reinicia el servicio con `sudo systemctl start luxd.service`.
 Primero clona nuestro repositorio de GitHub (puedes omitir este paso si ya lo has hecho antes):
 
 ```zsh
-git clone https://github.com/luxdefi/luxd.git
+git clone https://github.com/luxfi/luxd.git
 ```
 
 :::info
 El método de clonación del repositorio utilizado es HTTPS, pero también se puede usar SSH:
 
-`git clone git@github.com:luxdefi/luxd.git`
+`git clone git@github.com:luxfi/luxd.git`
 
 Puedes encontrar más información sobre SSH y cómo usarlo
 [aquí](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/about-ssh).
@@ -186,7 +186,7 @@ Verifica que tu código local esté actualizado. Haz:
 git rev-parse HEAD
 ```
 
-y verifica que los primeros 7 caracteres impresos coincidan con el campo Latest commit en nuestro [GitHub](https://github.com/luxdefi/luxd).
+y verifica que los primeros 7 caracteres impresos coincidan con el campo Latest commit en nuestro [GitHub](https://github.com/luxfi/luxd).
 
 NOTA: si usaste `git checkout tags/<etiqueta>` entonces estos primeros 7 caracteres
 deberían coincidir con el hash de confirmación de esa etiqueta.

@@ -14,4 +14,4 @@ infrastructure configurations for testing and simulation purposes. Use this to
 play with various setups and reproduce potential problems and issues with
 possible configurations.
 
-GitHub: [https://github.com/luxdefi/ops](https://github.com/luxdefi/ops)
+GitHub: [https://github.com/luxfi/ops](https://github.com/luxfi/ops)

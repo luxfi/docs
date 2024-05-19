@@ -15,7 +15,7 @@ redundancy and balancing.
 
 There is a public API server that allows developers to access the Lux
 network without having to run a node themselves. The public API server is
-actually several [Luxd](https://github.com/luxdefi/luxd) nodes
+actually several [Luxd](https://github.com/luxfi/luxd) nodes
 behind a load balancer to ensure high availability and high request throughput.
 
 ### Using the Public API Nodes

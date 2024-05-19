@@ -118,7 +118,7 @@ export default {
   "onBrokenLinks": "throw",
   "onBrokenMarkdownLinks": "warn",
   "favicon": "img/favicon.png",
-  "organizationName": "luxdefi",
+  "organizationName": "luxfi",
   "projectName": "docs",
   "trailingSlash": false,
   "scripts": [],
@@ -128,7 +128,7 @@ export default {
       {
         "docs": {
           "routeBasePath": "/",
-          "editUrl": "https://github.com/luxdefi/docs/edit/main/",
+          "editUrl": "https://github.com/luxfi/docs/edit/main/",
           "sidebarPath": "./sidebars.json",
           "remarkPlugins": [
             null

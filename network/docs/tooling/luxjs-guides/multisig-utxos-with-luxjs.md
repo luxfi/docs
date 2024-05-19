@@ -107,7 +107,7 @@ Make a new directory `multisig` for keeping all the project codes and move
 there. First, let's install the required dependencies.
 
 ```bash
-npm install --save @luxdefi/luxjs dotenv
+npm install --save @luxfi/luxjs dotenv
 ```
 
 Now create a configuration file named `config.js` for storing all the pieces of

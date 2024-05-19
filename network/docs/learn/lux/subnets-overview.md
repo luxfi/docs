@@ -89,7 +89,7 @@ blockchains._
 
 ## Develop Your Own Subnet
 
-Subnets on Lux are deployed by default with [Subnet-EVM](https://github.com/luxdefi/subnet-evm#subnet-evm),
+Subnets on Lux are deployed by default with [Subnet-EVM](https://github.com/luxfi/subnet-evm#subnet-evm),
 a fork of go-ethereum. It implements the Ethereum Virtual Machine and supports Solidity smart
 contracts as well as most other Ethereum client functionality.
 
