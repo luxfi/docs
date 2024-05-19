@@ -14,6 +14,9 @@ dependencies:
   '@docusaurus/preset-classic':
     specifier: 3.3.2
     version: 3.3.2(@algolia/client-search@4.22.1)(@types/react@18.2.48)(eslint@8.55.0)(react-dom@18.2.0)(react@18.2.0)(search-insights@2.13.0)(typescript@5.3.3)
+  '@docusaurus/theme-common':
+    specifier: ^3.3.2
+    version: 3.3.2(@docusaurus/types@3.3.2)(eslint@8.55.0)(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
   '@docusaurus/theme-search-algolia':
     specifier: 3.3.2
     version: 3.3.2(@algolia/client-search@4.22.1)(@docusaurus/types@3.3.2)(@types/react@18.2.48)(eslint@8.55.0)(react-dom@18.2.0)(react@18.2.0)(search-insights@2.13.0)(typescript@5.3.3)

@@ -10,18 +10,16 @@
     "lux",
     "luxdefi",
     "bridge",
+    "credit",
     "exchange",
     "swap"
   ],
   "scripts": {
     "build": "pnpm build:all",
-    "build:all": "pnpm build:app && pnpm build:explorer && pnpm build:sdk && pnpm build:ui",
-    "build:app": "pnpm --filter @luxbridge/app build",
-    "build:explorer": "pnpm --filter @luxbridge/explorer build",
-    "build:sdk": "pnpm --filter @luxbridge/sdk build",
-    "build:ui": "pnpm --filter @luxdefi/ui build",
-    "start": "pnpm --filter @luxbridge/app start",
-    "dev": "pnpm --filter @luxbridge/app dev"
+    "build:all": "pnpm build:bridge && pnpm build:credit && pnpm build:network",
+    "build:bridge": "pnpm --filter @luxcredit/docs build",
+    "build:credit": "pnpm --filter @luxbridge/docs build",
+    "build:network": "pnpm --filter @luxnetwork/docs build"
   },
   "devDependencies_": {
     "@babel/preset-typescript": "^7.18.6",
