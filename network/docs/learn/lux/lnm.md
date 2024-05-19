@@ -17,7 +17,7 @@ sidebar_label: Lux Network Messaging
 # Lux Network Messaging
 
 Lux Network Messaging (LNM) enables native cross-Subnet communication and allows
-[Virtual Machine (VM)](/learn/lux/subnets-overview.md#virtual-machines) developers to implement arbitrary
+[Virtual Machine (VM)](/learn/lux/virtual-machines.md) developers to implement arbitrary
 communication protocols
 between any two Subnets.
 

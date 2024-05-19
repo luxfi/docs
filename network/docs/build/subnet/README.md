@@ -7,7 +7,7 @@ pagination_label: Subnets Overview
 ---
 
 Lux Subnets are a subset of Lux Primary Network validators agreeing to run the same
-[Virtual Machines (VM)](/learn/lux/subnets-overview.md#virtual-machines). Subnets
+[Virtual Machines (VM)](/learn/lux/virtual-machines.md). Subnets
 enable extra dimensions of reliability, efficiency, and data sovereignty. See [here](/learn/lux/subnets-overview.md)
 for a broad overview.
 
