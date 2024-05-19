@@ -163,7 +163,7 @@ const config = {
       ({
         docs: {
           path: path.resolve(__dirname, 'docs'),
-          routeBasePath: "docs",
+          routeBasePath: "/",
           sidebarPath: path.resolve(__dirname, 'sidebars.json'),
           editUrl: "https://github.com/luxfi/docs/edit/main/",
           remarkPlugins: [math],

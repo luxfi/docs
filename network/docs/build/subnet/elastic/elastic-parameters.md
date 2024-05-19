@@ -9,7 +9,7 @@ sidebar_position: 1
 # Elastic Subnets Parameters
 
 Lux Permissioned Subnets can be turned into Elastic Subnets via the
-[`TransformSubnetTx`](/reference/standards/guides/banff-changes.md#transformsubnettx) transaction.
+`TransformSubnetTx` transaction.
 `TransformSubnetTx` specifies a set of structural parameters for the Elastic Subnet.
 This reference describes these structural parameters and
 illustrates the constraints they must satisfy.
