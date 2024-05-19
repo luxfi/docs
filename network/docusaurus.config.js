@@ -6,11 +6,7 @@ const lightCodeTheme = themes.github;
 const darkCodeTheme = themes.dracula;
 const math = require("remark-math");
 const katex = require("rehype-katex");
-
-const fs = require('fs');
-console.log('Current directory:', process.cwd());
-console.log('Docs path exists:', fs.existsSync('./docs'));
-console.log('Sidebars path exists:', fs.existsSync('./sidebars.js'));
+const path = require('path');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -166,10 +162,10 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          path: "docs",
+          path: path.resolve(__dirname, 'docs'),
           routeBasePath: "docs",
+          sidebarPath: path.resolve(__dirname, 'sidebars.json'),
           editUrl: "https://github.com/luxfi/docs/edit/main/",
-          sidebarPath: "./sidebars.json",
           remarkPlugins: [math],
           rehypePlugins: [katex],
         },
