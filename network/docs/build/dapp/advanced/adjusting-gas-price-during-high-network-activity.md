@@ -50,7 +50,7 @@ transaction is willing to pay.
 With the introduction of dynamic fees, legacy style transactions that only have
 a single `gas price` parameter can lead to both delayed transactions and
 overpaying for transactions. Dynamic fee transactions are the solution! For more
-info, read [this](/reference/standards/guides/txn-fees#dynamic-fee-transactions).
+info, read about [dynamic fee transactions](/reference/standards/guides/txn-fees#dynamic-fee-transactions).
 
 For the dynamic fee algorithm, when a block is produced or verified, we look
 over the past 10s to see how much gas has been consumed within that window (with
@@ -138,7 +138,7 @@ fluctuating.
 
 1. Let's create a sample transaction on Lux Mainnet, in which we will be
    sending 0.1 LUX to a receiver using Core. Four predefined gas settings can
-   be seen, which are Core's inbuilt gas estimation. To set a custom fee select 
+   be seen, which are Core's inbuilt gas estimation. To set a custom fee select
    “Custom” and enter the gas amount to use. By clicking on the **Settings** icon,
    we can review gas fees and the amount which we want to send.
 
@@ -173,7 +173,7 @@ fluctuating.
    fee to 35 Gwei. This would ensure that our transaction would not fail until
    the base fee would exceed this amount. We can set a priority fee to anything
    between 0 and 35 Gwei. The higher the priority fee, the faster the transaction
-   will be. For this example, let's set this to 2 Gwei. Now, save and send the 
+   will be. For this example, let's set this to 2 Gwei. Now, save and send the
    transaction.
 
    <div style={{textAlign: 'center'}}>

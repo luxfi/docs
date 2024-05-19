@@ -152,7 +152,7 @@ Run the script:
 
 ### JavaScript File
 
-As Node.js is already installed per [requirements](/#Requirements),
+As Node.js is already installed per [requirements](#requirements),
 simply run the script:
 
 `node script-name.js`
@@ -170,7 +170,7 @@ To execute the script, we use:
 It ran successfully, providing the following output:
 
 ```zsh
-lavinia@Lavinias-MacBook-Pro luxjs % ts-node examples/avm/getTx.ts
+z@MacBook-Pro luxjs % ts-node examples/avm/getTx.ts
 {
   unsignedTx: {
     networkID: 1,
