@@ -1,11 +1,11 @@
 ---
 tags: [Tooling, Lux-CLI]
-description: Lux-CLI is a command-line tool that gives developers access to everything Lux. This release specializes in helping developers build and test Subnets. 
+description: Lux-CLI is a command-line tool that gives developers access to everything Lux. This release specializes in helping developers build and test Subnets.
 pagination_label: Lux-CLI
 sidebar_postion: 0
 ---
 
-# Lux-CLI 
+# Lux-CLI
 
 Lux-CLI is a command-line tool that gives developers access to
 everything Lux. This release specializes in helping developers
@@ -18,17 +18,17 @@ in with `lux subnet create myNewSubnet`.
 
 ## Primary
 
-The `primary` command suite provides a collection of tools for interacting with the Lux 
+The `primary` command suite provides a collection of tools for interacting with the Lux
 Primary Network.
 
 
 ### Primary AddValidator
 
 The `primary addValidator` command adds a Lux node as a validator in the Lux Primary
-Network with [AddPermissionlessValidatorTx](/reference/standards/guides/banff-changes.md#addpermissionlessvalidatortx).
+Network with AddPermissionlessValidatorTx.
 
 This command requires the node's BLS key and proof of possession key, more information regarding BLS
-can be found [here](/reference/luxd/p-chain/txn-format.md#proof-of-possession). 
+can be found [here](/reference/luxd/p-chain/txn-format.md#proof-of-possession).
 
 To get a node's BLS key and proof of possession key, call info.getNodeID API as shown [here](/reference/luxd/info-api.md#infogetnodeid)
 
@@ -481,7 +481,7 @@ The `subnet vmid` command prints the virtual machine ID (VMID) for the given Sub
 lux subnet vmid [subnetName]
 ```
 
-## Elastic Subnet 
+## Elastic Subnet
 
 ### Transforms permissioned Subnet into Elastic Subnet
 
@@ -698,11 +698,11 @@ lux subnet upgrade export [subnetName] [flags]
 
 ## Node
 
-The `node` command suite provides a collection of tools for creating and maintaining 
+The `node` command suite provides a collection of tools for creating and maintaining
 validators on the Lux Network.
 
 To get started, use the node create command wizard to walk through the
-configuration to make your node a primary validator on Lux public network. You can use the 
+configuration to make your node a primary validator on Lux public network. You can use the
 rest of the commands to maintain your node and make your node a Subnet Validator.
 
 ### Node Create
@@ -713,14 +713,14 @@ rest of the commands to maintain your node and make your node a Subnet Validator
 
 :::
 
-The `node create` command sets up a validator on a cloud server of your choice. 
-The validator will be validating the Lux Primary Network and Subnet 
-of your choice. By default, the command runs an interactive wizard. It 
+The `node create` command sets up a validator on a cloud server of your choice.
+The validator will be validating the Lux Primary Network and Subnet
+of your choice. By default, the command runs an interactive wizard. It
 walks you through all the steps you need to set up a validator.
 Once this command is run, you will have to wait for the validator
 to finish bootstrapping on the primary network before running further
 commands on it, for example validating a Subnet. You can check the bootstrapping
-status by running `lux node status`. 
+status by running `lux node status`.
 
 The created node will be part of group of validators called `<clusterName>`
 and users can call node commands with `<clusterName>` so that the command
@@ -873,7 +873,7 @@ If no command is given, just prints the ssh command line to be used to connect t
 
 :::
 
-The `node status` command gets the bootstrap status of all nodes in a cluster 
+The `node status` command gets the bootstrap status of all nodes in a cluster
 with the Primary Network.
 If no cluster is given, defaults to node list behaviour.
 
@@ -926,7 +926,7 @@ Note that a stopped node may still incur cloud server storage fees.
 
 :::
 
-The `node sync` command enables all nodes in a cluster to be bootstrapped to a Subnet. 
+The `node sync` command enables all nodes in a cluster to be bootstrapped to a Subnet.
 You can check the Subnet bootstrap status by calling lux `node status <clusterName> --subnet <subnetName>`
 
 **Usage:**
@@ -987,7 +987,7 @@ You can check the updated Subnet bootstrap status by calling lux
 
 The `node validate` command suite provides a collection of commands for nodes to join
 the Primary Network and Subnets as validators.
-If any of the commands is run before the nodes are bootstrapped on the Primary Network, the command 
+If any of the commands is run before the nodes are bootstrapped on the Primary Network, the command
 will fail. You can check the bootstrap status by calling `lux node status <clusterName>`.
 
 ### Node Validate Primary
@@ -1031,9 +1031,9 @@ Network.
 
 The `node validate subnet` command enables all nodes in a cluster to be validators of a Subnet.
 If the command is run before the nodes are Primary Network validators, the command will first
-make the nodes Primary Network validators before making them Subnet validators. 
+make the nodes Primary Network validators before making them Subnet validators.
 If The command is run before the nodes are bootstrapped on the Primary Network, the command
-will fail. 
+will fail.
 You can check the bootstrap status by calling `lux node status <clusterName>`.
 If The command is run before the nodes are synced to the Subnet, the command will fail.
 You can check the Subnet sync status by calling `lux node status <clusterName> --subnet <subnetName>`.

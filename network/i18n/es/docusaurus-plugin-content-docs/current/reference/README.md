@@ -37,5 +37,3 @@ pagination_label: Enlaces Rápidos de Referencia de API
 | :------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------ |
 | [**Realizar Llamadas de API**](/reference/standards/guides/issuing-api-calls.md) | Cómo realizar llamadas a las APIs expuestas por los nodos Lux                         |
 | [**Tarifas de Transacción**](/reference/standards/guides/txn-fees.md)            | Cómo se determinan las tarifas de transacción en Lux                                  |
-| [**Migración de X-Chain**](/reference/standards/guides/x-chain-migration.md)     | Resume todos los cambios realizados en la API de la X-Chain para soportar Lux Cortina |
-| [**Cambios en Banff**](/reference/standards/guides/banff-changes.md)             | Resumen de los cambios en la versión Lux Banff                                        |

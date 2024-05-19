@@ -215,7 +215,7 @@ The `AcceptedFrontier` message contains the remote peer's last accepted frontier
 
 ```proto
 message AcceptedFrontier {
-  reserved 4; // Until Cortina upgrade is activated
+  reserved 4;
   bytes chain_id = 1;
   uint32 request_id = 2;
   bytes container_id = 3;
@@ -255,7 +255,7 @@ The `Accepted` message is sent in response to `GetAccepted`.
 
 ```proto
 message Accepted {
-  reserved 4; // Until Cortina upgrade is activated
+  reserved 4;
   bytes chain_id = 1;
   uint32 request_id = 2;
   repeated bytes container_ids = 3;
@@ -292,7 +292,7 @@ The `Ancestors` message is sent in response to `GetAncestors`.
 
 ```proto
 message Ancestors {
-  reserved 4; // Until Cortina upgrade is activated
+  reserved 4;
   bytes chain_id = 1;
   uint32 request_id = 2;
   repeated bytes containers = 3;

@@ -396,7 +396,6 @@
 /apis/luxd/apis/keystore /reference/luxd/keystore-api 301
 /apis/luxd/apis/metrics /reference/luxd/metrics-api 301
 /apis/luxd/apis/subnet-evm /reference/subnet-evm/api 301
-/apis/luxd/x-chain-migration /reference/standards/guides/x-chain-migration 301
 /apis/luxd/cb58-deprecation /reference/standards/network-protocol 301
 /specs/avm-transaction-serialization /reference/luxd/x-chain/txn-format 301
 /specs/coreth-atomic-transaction-serialization /reference/luxd/c-chain/txn-format 301
@@ -404,7 +403,6 @@
 /specs/network-protocol /reference/standards/network-protocol 301
 /specs/serialization-primitives /reference/standards/serialization-primitives 301
 /specs/platform-transaction-serialization /reference/luxd/p-chain/txn-format 301
-/specs/banff-changes /reference/standards/guides/banff-changes 301
 /quickstart/blockchain-flow /reference/standards/guides/blockchain-flow 301
 
 #  07/21/2023 - Docs Revamp - Build/Subnets Tab

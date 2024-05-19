@@ -1,6 +1,6 @@
 ---
 tags: [Nodes]
-description: This section provides documents on how to stake LUX on the Lux Network. 
+description: This section provides documents on how to stake LUX on the Lux Network.
 sidebar_label: How to Stake
 pagination_label: How to Stake LUX
 sidebar_position: 2
@@ -87,7 +87,7 @@ When you add a node to the validator set, you specify:
 The minimum amount that a validator must stake is 2,000 LUX.
 :::
 
-:::warning 
+:::warning
 
 Note that once you issue the transaction to add a node as a
 validator, there is no way to change the parameters. **You can’t remove your
@@ -96,14 +96,14 @@ make sure you’re using the correct values in the API calls below. If you’re 
 sure, ask for help on [Discord](https://chat.lux.network). If you want to add
 more tokens to your own validator, you can delegate the tokens to this node -
 but you cannot increase the base validation amount (so delegating to yourself
-goes against your delegation cap). 
+goes against your delegation cap).
 
 :::
 
 ### Running a Validator
 
 If you’re running a validator, it’s important that your node is well connected
-to ensure that you receive a reward. 
+to ensure that you receive a reward.
 
 When you issue the transaction to add a validator, the staked tokens and
 transaction fee (which is 0) are deducted from the addresses you control. When
@@ -175,7 +175,7 @@ Reward = \left(MaximumSupply - Supply \right) \times \frac{Stake}{Supply} \times
 $$
 where
 $$
-EffectiveConsumptionRate = 
+EffectiveConsumptionRate =
 $$
 $$
 \frac{MinConsumptionRate}{PercentDenominator} \times \left(1- \frac{Staking Period}{Minting Period}\right) + \frac{MaxConsumptionRate}{PercentDenominator} \times \frac{Staking Period}{Minting Period}
@@ -191,7 +191,7 @@ taken into account.
 
 $EffectiveConsumptionRate$ is a linear combination of $MinConsumptionRate$ and
 $MaxConsumptionRate$.
-$MinConsumptionRate$ and $MaxConsumptionRate$ bound $EffectiveConsumptionRate$ because 
+$MinConsumptionRate$ and $MaxConsumptionRate$ bound $EffectiveConsumptionRate$ because
 
 <!-- markdownlint-disable MD013 -->
 <!-- vale off -->
@@ -252,16 +252,16 @@ validator’s delegation fee rate.
 When you issue the transaction to delegate tokens, the staked tokens and
 transaction fee are deducted from the addresses you control. When you are done
 delegating, the staked tokens are returned to your address. If you earned a
-reward, it is sent to the address you specified when you delegated tokens. 
-Rewards are sent to delegators right after the delegation ends with the 
-return of staked tokens, and before the validation period of the node 
+reward, it is sent to the address you specified when you delegated tokens.
+Rewards are sent to delegators right after the delegation ends with the
+return of staked tokens, and before the validation period of the node
 they're delegating to is complete.
 
 ## FAQ
 
 ### Is There a Tool to Check the Health of a Validator?
 
-Yes, just enter your node's ID in the Lux Stats 
+Yes, just enter your node's ID in the Lux Stats
 [Validator Health Dashboard](https://stats.lux.network/dashboard/validator-health-check/?nodeid=NodeID-Jp4dLMTHd6huttS1jZhqNnBN9ZMNmTmWC).
 
 ### How Is It Determined Whether a Validator Receives a Staking Reward?
@@ -285,17 +285,13 @@ receives a staking reward for its second period in the validator set.
 
 ### How Are Delegation Fees Distributed To Validators?
 
-If a validator is online for 80% of a delegation period, 
-they receive a % of the reward (the fee) earned by the delegator. 
-The P-Chain used to distribute this fee as a separate UTXO per delegation period. 
-After the 
-[Cortina Activation](https://medium.com/luxlux/cortina-x-chain-linearization-a1d9305553f6), 
-instead of sending a fee UTXO for each successful delegation period, 
-fees are now batched during a node’s entire validation period and are distributed when it is unstaked.
+If a validator is online for 80% of a delegation period,
+they receive a % of the reward (the fee) earned by the delegator.
+The P-Chain used to distribute this fee as a separate UTXO per delegation period.
 
 ### Error: Couldn't Issue TX: Validator Would Be Over Delegated
 
-This error occurs whenever the delegator can not delegate to the named validator. 
+This error occurs whenever the delegator can not delegate to the named validator.
 This can be caused by the following.
 
 - The delegator `startTime` is before the validator `startTime`

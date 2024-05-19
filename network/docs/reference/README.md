@@ -1,7 +1,7 @@
 ---
 title: 🔗 Reference Quick Links
 tags: [Luxd APIs]
-description: Luxd is the node implementation for the Lux network - a blockchain platform with high throughput and blazing fast transactions. This page is overview of the APIs associated with Luxd. 
+description: Luxd is the node implementation for the Lux network - a blockchain platform with high throughput and blazing fast transactions. This page is overview of the APIs associated with Luxd.
 sidebar_label: 🔗 Quick Links
 pagination_label: API Reference Quick Links
 ---
@@ -37,7 +37,3 @@ pagination_label: API Reference Quick Links
 | :------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [**Issuing API Calls**](/reference/standards/guides/issuing-api-calls.md)      | How to make calls to APIs exposed by Lux nodes |
 | [**Transaction Fees**](/reference/standards/guides/txn-fees.md)      | How transaction fees are determined on Lux |
-| [**X-Chain Migration**](/reference/standards/guides/x-chain-migration.md)      | Summarizes all of the changes made to the X-Chain API to support Lux Cortina |
-| [**Banff Changes**](/reference/standards/guides/banff-changes.md)      | Summary of the changes in Lux Banff Release |
-
-

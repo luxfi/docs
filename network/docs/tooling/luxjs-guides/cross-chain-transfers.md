@@ -335,8 +335,7 @@ The Testnet workflow above can be adapted to Mainnet with the following modifica
 
 ### Start the Local Network
 
-Follow
-[this](/tooling/netrunner.md#start-a-new-network-with-five-nodes)
+Follow [this guide](/docs/tooling/netrunner#start-a-new-lux-network-with-five-nodes)
 to start a 5-node local network. Make sure that you get one of the port number
 by following
 [this](/tooling/netrunner.md#get-api-endpoints-of-all-nodes-in-the-cluster).

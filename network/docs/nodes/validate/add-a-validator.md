@@ -1,6 +1,6 @@
 ---
 tags: [Nodes]
-description: This section provides documents on how to build and maintain a Luxd node, and then validate the Lux network using a Luxd node.
+description: This section provides documents on how to build and maintain a Lux Node, and then validate the Lux Network using a `luxd`.
 sidebar_label: Node ➡️ Validator
 pagination_label: Add a Node to the Validator Set
 sidebar_position: 3
@@ -36,7 +36,7 @@ our [Discord](https://chat.lux.network/) to ask questions.
 You've completed [Run a Lux Node](/nodes/run/node-manually.md) and are familiar with
 [Lux's architecture](/learn/lux/lux-platform.md). In this
 tutorial, we use [LuxJS](/tooling/luxjs-overview.md) and
-[Lux’s Postman collection](/tooling/luxd-postman-collection/setup.md) 
+[Lux’s Postman collection](/tooling/luxd-postman-collection/setup.md)
 to help us make API calls.
 
 In order to ensure your node is well-connected, make sure that your node can
@@ -76,13 +76,13 @@ The response has your node’s ID:
 
 ### Add as a Validator
 
-Connect [Core extension](https://join.core.app/extension) to [Core web](https://core.app), and go the 'Staking' tab. 
+Connect [Core extension](https://join.core.app/extension) to [Core web](https://core.app), and go the 'Staking' tab.
 Here, choose 'Validate' from the menu.
 
-Fill out the staking parameters. They are explained in more detail in [this doc](/nodes/validate/how-to-stake.md). When you’ve 
+Fill out the staking parameters. They are explained in more detail in [this doc](/nodes/validate/how-to-stake.md). When you’ve
 filled in all the staking parameters and double-checked them, click `Submit Validation`. Make sure the staking period is at
 least 2 weeks, the delegation fee rate is at least 2%, and you’re staking at
-least 2,000 LUX on Mainnet (1 LUX on Testnet). A full guide about this can be found 
+least 2,000 LUX on Mainnet (1 LUX on Testnet). A full guide about this can be found
 [here](https://support.lux.network/en/articles/8117267-core-web-how-do-i-validate-in-core-stake).
 
 <iframe src="https://www.youtube.com/embed/1M0LZbuHO5Q?modestbranding=1&rel=0&iv_load_policy=3&color=white" width="800" height="500" title="How to Validate in Core Web" frameborder="0" allowfullscreen></iframe>
