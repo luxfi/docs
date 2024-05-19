@@ -339,7 +339,7 @@
     {
       "type": "link",
       "label": "LuxSDK",
-      "href": "https://github.com/luxfi/hypersdk#readme"
+      "href": "https://github.com/luxfi/sdk#readme"
     }
   ],
 
@@ -387,7 +387,7 @@
     {
       "type": "link",
       "label": "LuxSDK",
-      "href": "https://github.com/luxfi/hypersdk#readme"
+      "href": "https://github.com/luxfi/sdk#readme"
     },
     {
       "type": "html",

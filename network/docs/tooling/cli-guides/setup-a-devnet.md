@@ -362,12 +362,12 @@ You will need to have:
 
 The tutorial will create exactly the same Custom VM as [here](/tooling/cli-guides/upload-a-custom-vm-to-cloud).
 
-Based on the Custom VM tutorial, we will be deploying the [TokenVM](https://github.com/luxfi/hypersdk/tree/main/examples/tokenvm)
+Based on the Custom VM tutorial, we will be deploying the [TokenVM](https://github.com/luxfi/sdk/tree/main/examples/tokenvm)
 example built with the LuxSDK.
 
 The following settings will be used:
 
-- `<repoUrl>` `https://github.com/luxfi/hypersdk/`
+- `<repoUrl>` `https://github.com/luxfi/sdk/`
 - `<branch>` `main`
 - `<buildScript>` `examples/tokenvm/scripts/build.sh`
 

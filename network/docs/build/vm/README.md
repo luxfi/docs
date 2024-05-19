@@ -20,4 +20,4 @@ executed and how blocks are created.
 | [**Create a Complex VM in Golang**](/build/vm/create/golang-vm-complex.md)      | Learn how to build a complex virtual machine on Lux using Golang. |
 | [**Create a Rust VM**](/build/vm/create/rust-vm.md)      | Learn how to develop virtual machines on Lux using Rust. |
 | [**Generate a Stateful Precompile**](/build/vm/evm/intro.md)      | Create a stateful precompiles for Subnet-EVM from scratch. |
-| [**LuxSDK**](https://github.com/luxfi/hypersdk#readme)      | An opinionated framework for building hyper-scalable blockchains on Lux. This is an external link to LuxSDK's GitHub documentation and repository.|
+| [**LuxSDK**](https://github.com/luxfi/sdk#readme)      | An opinionated framework for building hyper-scalable blockchains on Lux. This is an external link to LuxSDK's GitHub documentation and repository.|

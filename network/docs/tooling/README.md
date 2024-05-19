@@ -14,7 +14,7 @@ pagination_label: Tooling Quick Links
 | [**🗄️ Indexers**](/tooling/indexers.md)      | Indexers that support the Lux Network |  |
 | [**Aurora API**](/tooling/aurora.md)      | Lux's performant API that allows web3 developers to more easily access indexed blockchain data | [API](https://aurora-api.lux.network/api#/) |
 | [**Metrics API**](/tooling/metrics.md)      | Power your analytics with metrics such as Subnet usage, staking operations, and more | [API](https://metrics.lux.network/) |
-| [**Hyper SDK**](https://github.com/luxfi/hypersdk#readme)      | Opinionated framework for building hyper-scalable blockchains on Lux | [GitHub](https://github.com/luxfi/hypersdk#readme) |
+| [**Lux SDK**](https://github.com/luxfi/sdk#readme)      | Opinionated framework for building hyper-scalable blockchains on Lux | [GitHub](https://github.com/luxfi/sdk#readme) |
 | [**Luxd Installer Script**](/tooling/luxd-installer.md)      | A shell (bash) script that installs Luxd on any Linux computer | [GitHub](https://github.com/luxfi/docs/blob/master/scripts/luxd-installer.sh#readme) |
 | [**Lux Netrunner**](/tooling/netrunner.md)      | ANR allows a user to define, create and interact with a network of Lux nodes | [GitHub](https://github.com/luxfi/netrunner) |
 | [**Lux Plugin Manager**](/tooling/plugin-manager.md)      | Command-line tool to manage virtual machines binaries on existing Luxd instance | [GitHub](https://github.com/luxfi/apm) |

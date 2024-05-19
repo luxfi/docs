@@ -57,7 +57,7 @@
   },
   "sidebar.build-vm.link.LuxSDK": {
     "message": "LuxSDK",
-    "description": "The label for link LuxSDK in sidebar build-vm, linking to https://github.com/luxfi/hypersdk#readme"
+    "description": "The label for link LuxSDK in sidebar build-vm, linking to https://github.com/luxfi/sdk#readme"
   },
   "sidebar.build-vm.doc.📎 Manage VM Binaries": {
     "message": "📎 Manage VM Binaries",
@@ -69,7 +69,7 @@
   },
   "sidebar.tooling.link.LuxSDK": {
     "message": "LuxSDK",
-    "description": "The label for link LuxSDK in sidebar tooling, linking to https://github.com/luxfi/hypersdk#readme"
+    "description": "The label for link LuxSDK in sidebar tooling, linking to https://github.com/luxfi/sdk#readme"
   },
   "sidebar.reference.category.P-Chain": {
     "message": "P-Chain",
