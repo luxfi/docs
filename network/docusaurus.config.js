@@ -7,6 +7,11 @@ const darkCodeTheme = themes.dracula;
 const math = require("remark-math");
 const katex = require("rehype-katex");
 
+const fs = require('fs');
+console.log('Current directory:', process.cwd());
+console.log('Docs path exists:', fs.existsSync('./docs'));
+console.log('Sidebars path exists:', fs.existsSync('./sidebars.js'));
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   i18n: {
