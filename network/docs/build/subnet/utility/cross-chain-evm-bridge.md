@@ -17,7 +17,7 @@ You must take the full responsibility to ensure your bridge's security.
 
 ## Introduction
 
-In this tutorial, we will be building a bridge between **[ZOO](/build/subnet/info/wagmi.md)** and
+In this tutorial, we will be building a bridge between **[ZOO](/build/subnet/info/zoo.md)** and
 **[Testnet](/learn/lux/testnet.md)**. This bridge will help us to transfer native **WGM** coin
 wrapped into **wWGM** back and forth from the ZOO chain to the Testnet chain. Using this guide, you
 can deploy a bridge between any EVM-based chains for any ERC20 tokens.
@@ -60,10 +60,10 @@ chain.
 
 These are the requirement to follow this tutorial -
 
-- Set up [ZOO](/build/subnet/info/wagmi.md#adding-wagmi-to-core) and
+- Set up [ZOO](/build/subnet/info/zoo.md#adding-zoo-to-core) and
 [Testnet](/build/dapp/testnet-workflow.md#set-up-testnet-network-on-core-optional) on Core
 - Import `wWGM` token (asset) on the ZOO network (Core). Here is the address - `0x3Ee7094DADda15810F191DD6AcF7E4FFa37571e4`
-- `WGM` coins on the ZOO chain. Drip `1 WGM` from the [ZOO Faucet](https://faucet.trywagmi.xyz/).
+- `WGM` coins on the ZOO chain. Drip `1 WGM` from the [ZOO Faucet](https://faucet.tryzoo.xyz/).
 - `LUX` coins on the Testnet chain. Drip `10 LUX` from the [Testnet Faucet](https://faucet.lux.network/)
 - Wrapped `WGM` tokens on the ZOO chain. Send a few `WGM` coins to the `wWGM` token address (see
 second point), to receive the same amount of `wWGM`. Always keep some `WGM` coins, to cover transaction

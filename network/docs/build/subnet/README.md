@@ -49,5 +49,5 @@ for a broad overview.
 | More                                                                        |     |
 | :-------------------------------------------------------------------------- | --- |
 | [**Lux-CLI Subnet Commands**](/tooling/cli.md)              |
-| [**Case Study: ZOO Subnet**](build/subnet/info/wagmi.md)                  |
+| [**Case Study: ZOO Subnet**](build/subnet/info/zoo.md)                  |
 | [**Troubleshooting Deployments**](build/subnet/info/troubleshoot-subnet.md) |

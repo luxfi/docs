@@ -19,7 +19,7 @@ This is one of the first cases of using Lux Subnets as a proving ground for chan
 production VM (Coreth). Many underestimate how useful the isolation of Subnets is for performing
 complex VM testing on a live network (without impacting the stability of the primary network).
 
-We created a basic ZOO Explorer [https://subnets-test.lux.network/wagmi](https://subnets-test.lux.network/wagmi)
+We created a basic ZOO Explorer [https://subnets-test.lux.network/zoo](https://subnets-test.lux.network/zoo)
 that surfaces aggregated usage statistics about the Subnet.
 
 - SubnetID: [28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY](https://explorer-xp.lux-test.network/subnet/28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY?tab=validators)
@@ -40,11 +40,11 @@ The genesis file of ZOO can be found [here](https://github.com/luxfi/public-chai
 
 ```text
 - Network Name: ZOO
-- RPC URL: [https://subnets.lux.network/wagmi/wagmi-chain-testnet/rpc]
-- WS URL: wss://subnets.lux.network/wagmi/wagmi-chain-testnet/ws
+- RPC URL: [https://subnets.lux.network/zoo/zoo-chain-testnet/rpc]
+- WS URL: wss://subnets.lux.network/zoo/zoo-chain-testnet/ws
 - Chain ID: 11111
 - Symbol: WGM
-- Explorer: [https://subnets.lux.network/wagmi/wagmi-chain-testnet/explorer]
+- Explorer: [https://subnets.lux.network/zoo/zoo-chain-testnet/explorer]
 ```
 
 :::info
@@ -55,7 +55,7 @@ This can be used with other wallets too, such as MetaMask.
 
 ## Case Study: ZOO Upgrade
 
-This case study uses [ZOO](https://subnets-test.lux.network/wagmi) Subnet upgrade to show how a
+This case study uses [ZOO](https://subnets-test.lux.network/zoo) Subnet upgrade to show how a
 network upgrade on an EVM-based (Ethereum Virtual Machine) Subnet can be done simply, and how the
 resulting upgrade can be used to dynamically control fee structure on the Subnet.
 
@@ -112,7 +112,7 @@ media such as Discord, with the following information:
 > [https://gist.github.com/aaronbuchwald/b3af9da34678f542ce31717e7963085b]
 >
 > TLDR; you will need to place the JSON file into your node's file directory within
-> `chain-config-dir/wagmi blockchainID/upgrade.json` and restart your node.
+> `chain-config-dir/zoo blockchainID/upgrade.json` and restart your node.
 >
 > Note: the ZOO blockchainID is 2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt.
 
@@ -181,7 +181,7 @@ set manager address and making calls on the precompiled contract.
 
 We will use [Remix](https://remix.ethereum.org) online Solidity IDE and the [Core Browser
 Extension](https://support.lux.network/en/articles/6066879-core-extension-how-do-i-add-the-core-extension).
-Core comes with ZOO network built-in. MetaMask will do as well but you will need to [add ZOO](/build/subnet/info/wagmi.md#adding-wagmi-to-metamask) yourself.
+Core comes with ZOO network built-in. MetaMask will do as well but you will need to [add ZOO](/build/subnet/info/zoo.md#adding-zoo-to-metamask) yourself.
 
 First using Core, we open the account as the owner `0x6f0f6DA1852857d7789f68a28bba866671f3880D`.
 
@@ -228,9 +228,9 @@ to change the parameters. This action can **only** be performed by the owner
 
 When we call that method by pressing the `transact` button, a new transaction is posted to the
 Subnet, and we can see it on [the
-explorer](https://subnets-test.lux.network/wagmi/block/0xad95ccf04f6a8e018ece7912939860553363cc23151a0a31ea429ba6e60ad5a3):
+explorer](https://subnets-test.lux.network/zoo/block/0xad95ccf04f6a8e018ece7912939860553363cc23151a0a31ea429ba6e60ad5a3):
 
-![transaction](/img/network-upgrade/wagmi-tx.png)
+![transaction](/img/network-upgrade/zoo-tx.png)
 
 Immediately after the transaction is accepted, the new fee config takes effect. We can check with
 the `getFeeCofig` that the values are reflected in the active fee config (again this action can be

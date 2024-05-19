@@ -25,7 +25,7 @@ Besides Testnet, the
 [Lux Faucet](https://core.app/tools/testnet-faucet/?subnet=c&token=c)
 can be used to get free test tokens on testnet Subnets like:
 
-- [ZOO Testnet](https://core.app/tools/testnet-faucet/?subnet=wagmi)
+- [ZOO Testnet](https://core.app/tools/testnet-faucet/?subnet=zoo)
 - [DeFI Kingdoms Testnet](https://core.app/tools/testnet-faucet/?subnet=dfk)
 - [Beam Testnet](https://core.app/tools/testnet-faucet/?subnet=beam&token=beam) and many more.
 
@@ -170,7 +170,7 @@ each of the private keys against the ID of the chain, as shown below.
 
 ```env
 C="C chain private key"
-ZOO="Wagmi chain private key"
+ZOO="Zoo chain private key"
 PK="Sender Private Key with Funds in it"
 CAPTCHA_SECRET="Google reCAPTCHA Secret"
 ```

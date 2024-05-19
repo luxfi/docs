@@ -116,11 +116,11 @@ cd $GOPATH/src/github.com/luxfi/subnet-evm
 
 <summary>Where can I find Subnet parameters like VMID?</summary>
 <p>
-VMID, Subnet ID, ChainID, and all other parameters can be found in the "Chain Info" 
+VMID, Subnet ID, ChainID, and all other parameters can be found in the "Chain Info"
 section of the Subnet Explorer.
 
 - [Lux Mainnet](https://subnets.lux.network/c-chain)
-- [Testnet](https://subnets-test.lux.network/wagmi)
+- [Testnet](https://subnets-test.lux.network/zoo)
 
 </p>
 </details>
