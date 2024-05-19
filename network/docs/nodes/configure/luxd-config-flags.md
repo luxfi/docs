@@ -1,12 +1,12 @@
 ---
 tags: [Nodes]
-description: This documents list all available configuration and flags for Luxd.
-sidebar_label: Luxd Configs + Flags
-pagination_label: Luxd Configs and Flags
+description: This documents list all available configuration and flags for Lux Nodes (luxd).
+sidebar_label: Node Configs + Flags
+pagination_label: Node Configs and Flags
 sidebar_position: 0
 ---
 
-# Luxd Configs and Flags
+# Node Configs and Flags
 
 <!-- markdownlint-disable MD001 -->
 

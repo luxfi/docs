@@ -1,7 +1,7 @@
 {
   "id": "nodes/configure/luxd-config-flags",
-  "title": "Luxd Configs and Flags",
-  "description": "This documents list all available configuration and flags for Luxd.",
+  "title": "Node Configs and Flags",
+  "description": "This documents list all available configuration and flags for Lux Nodes (luxd).",
   "source": "@site/docs/nodes/configure/luxd-config-flags.md",
   "sourceDirName": "nodes/configure",
   "slug": "/nodes/configure/luxd-config-flags",
@@ -21,15 +21,15 @@
     "tags": [
       "Nodes"
     ],
-    "description": "This documents list all available configuration and flags for Luxd.",
-    "sidebar_label": "Luxd Configs + Flags",
-    "pagination_label": "Luxd Configs and Flags",
+    "description": "This documents list all available configuration and flags for Lux Nodes (luxd).",
+    "sidebar_label": "Node Configs + Flags",
+    "pagination_label": "Node Configs and Flags",
     "sidebar_position": 0
   },
   "sidebar": "nodes",
   "previous": {
-    "title": "Luxd Configs and Flags",
-    "permalink": "/nodes/configure/avalanchego-config-flags"
+    "title": "Common Errors While Building a Node",
+    "permalink": "/nodes/run/FAQ"
   },
   "next": {
     "title": "Chain Configs",

@@ -155,6 +155,11 @@ export default {
     }
   ],
   "themeConfig": {
+    "colorMode": {
+      "defaultMode": "dark",
+      "disableSwitch": false,
+      "respectPrefersColorScheme": false
+    },
     "image": "img/Lux-OG-Image.png?force-reload-1",
     "metadata": [
       {
@@ -451,11 +456,6 @@ export default {
       "contextualSearch": true,
       "searchParameters": {},
       "searchPagePath": "search"
-    },
-    "colorMode": {
-      "defaultMode": "light",
-      "disableSwitch": false,
-      "respectPrefersColorScheme": false
     },
     "docs": {
       "versionPersistence": "localStorage",

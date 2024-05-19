@@ -19,13 +19,13 @@
     },
     "config": "5e9f5e1a"
   },
-  "/-a86": {
+  "/-ed3": {
     "__comp": "5e95c892",
     "__context": {
       "plugin": "f786a645"
     }
   },
-  "/-15d": {
+  "/-cd1": {
     "__comp": "a7bd4aaa",
     "version": "935f2afb"
   },
@@ -157,7 +157,7 @@
     "__comp": "df203c0f",
     "tag": "f5249aae"
   },
-  "/-09e": {
+  "/-d36": {
     "__comp": "a94703ab"
   },
   "/build/dapp-335": {
@@ -448,10 +448,6 @@
     "__comp": "17896441",
     "content": "12fd64a5"
   },
-  "/nodes/configure/avalanchego-config-flags-cf0": {
-    "__comp": "17896441",
-    "content": "64217976"
-  },
   "/nodes/configure/chain-config-flags-cd7": {
     "__comp": "17896441",
     "content": "773f2174"
@@ -615,10 +611,6 @@
   "/reference/luxd/x-chain/txn-format-1ad": {
     "__comp": "17896441",
     "content": "30e67e48"
-  },
-  "/reference/standards/avalanche-network-protocol-7d6": {
-    "__comp": "17896441",
-    "content": "7e506ae0"
   },
   "/reference/standards/cryptographic-primitives-cd3": {
     "__comp": "17896441",

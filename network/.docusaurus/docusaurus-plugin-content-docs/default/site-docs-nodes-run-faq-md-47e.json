@@ -32,7 +32,7 @@
     "permalink": "/nodes/run/third-party/google-cloud-node"
   },
   "next": {
-    "title": "Luxd Configs and Flags",
-    "permalink": "/nodes/configure/avalanchego-config-flags"
+    "title": "Node Configs and Flags",
+    "permalink": "/nodes/configure/luxd-config-flags"
   }
 }

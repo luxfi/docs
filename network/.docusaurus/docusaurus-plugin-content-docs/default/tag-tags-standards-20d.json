@@ -2,7 +2,7 @@
   "label": "Standards",
   "permalink": "/tags/standards",
   "allTagsPath": "/tags",
-  "count": 8,
+  "count": 7,
   "items": [
     {
       "id": "reference/standards/guides/banff-changes",
@@ -21,12 +21,6 @@
       "title": "Issuing API Calls",
       "description": "This guide explains how to make calls to APIs exposed by Lux nodes.",
       "permalink": "/reference/standards/guides/issuing-api-calls"
-    },
-    {
-      "id": "reference/standards/avalanche-network-protocol",
-      "title": "Lux Network Protocol",
-      "description": "Lux network defines the core communication format between Lux nodes.",
-      "permalink": "/reference/standards/avalanche-network-protocol"
     },
     {
       "id": "reference/standards/network-protocol",

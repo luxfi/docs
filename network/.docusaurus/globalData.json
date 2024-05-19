@@ -369,11 +369,6 @@
               "sidebar": "learn"
             },
             {
-              "id": "nodes/configure/avalanchego-config-flags",
-              "path": "/nodes/configure/avalanchego-config-flags",
-              "sidebar": "nodes"
-            },
-            {
               "id": "nodes/configure/chain-config-flags",
               "path": "/nodes/configure/chain-config-flags",
               "sidebar": "nodes"
@@ -582,10 +577,6 @@
               "id": "reference/README",
               "path": "/reference/",
               "sidebar": "reference"
-            },
-            {
-              "id": "reference/standards/avalanche-network-protocol",
-              "path": "/reference/standards/avalanche-network-protocol"
             },
             {
               "id": "reference/standards/cryptographic-primitives",

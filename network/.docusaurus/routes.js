@@ -19,11 +19,11 @@ export default [
   },
   {
     path: '/',
-    component: ComponentCreator('/', 'a86'),
+    component: ComponentCreator('/', 'ed3'),
     routes: [
       {
         path: '/',
-        component: ComponentCreator('/', '15d'),
+        component: ComponentCreator('/', 'cd1'),
         routes: [
           {
             path: '/tags',
@@ -187,7 +187,7 @@ export default [
           },
           {
             path: '/',
-            component: ComponentCreator('/', '09e'),
+            component: ComponentCreator('/', 'd36'),
             routes: [
               {
                 path: '/build/dapp',
@@ -619,12 +619,6 @@ export default [
                 sidebar: "nodes"
               },
               {
-                path: '/nodes/configure/avalanchego-config-flags',
-                component: ComponentCreator('/nodes/configure/avalanchego-config-flags', 'cf0'),
-                exact: true,
-                sidebar: "nodes"
-              },
-              {
                 path: '/nodes/configure/chain-config-flags',
                 component: ComponentCreator('/nodes/configure/chain-config-flags', 'cd7'),
                 exact: true,
@@ -869,11 +863,6 @@ export default [
                 component: ComponentCreator('/reference/luxd/x-chain/txn-format', '1ad'),
                 exact: true,
                 sidebar: "reference"
-              },
-              {
-                path: '/reference/standards/avalanche-network-protocol',
-                component: ComponentCreator('/reference/standards/avalanche-network-protocol', '7d6'),
-                exact: true
               },
               {
                 path: '/reference/standards/cryptographic-primitives',

@@ -229,14 +229,7 @@
       },
       {
         "type": "link",
-        "label": "Luxd Configs + Flags",
-        "href": "/nodes/configure/avalanchego-config-flags",
-        "docId": "nodes/configure/avalanchego-config-flags",
-        "unlisted": false
-      },
-      {
-        "type": "link",
-        "label": "Luxd Configs + Flags",
+        "label": "Node Configs + Flags",
         "href": "/nodes/configure/luxd-config-flags",
         "docId": "nodes/configure/luxd-config-flags",
         "unlisted": false
@@ -1905,12 +1898,6 @@
       "description": "Virtual Machine is a virtual environment inside blockchain networks that executes smart contracts and transactions according to predetermined rules and protocols.",
       "sidebar": "learn"
     },
-    "nodes/configure/avalanchego-config-flags": {
-      "id": "nodes/configure/avalanchego-config-flags",
-      "title": "Luxd Configs and Flags",
-      "description": "This documents list all available configuration and flags for Luxd.",
-      "sidebar": "nodes"
-    },
     "nodes/configure/chain-config-flags": {
       "id": "nodes/configure/chain-config-flags",
       "title": "Chain Configs",
@@ -1919,8 +1906,8 @@
     },
     "nodes/configure/luxd-config-flags": {
       "id": "nodes/configure/luxd-config-flags",
-      "title": "Luxd Configs and Flags",
-      "description": "This documents list all available configuration and flags for Luxd.",
+      "title": "Node Configs and Flags",
+      "description": "This documents list all available configuration and flags for Lux Nodes (luxd).",
       "sidebar": "nodes"
     },
     "nodes/configure/subnet-configs": {
@@ -2162,11 +2149,6 @@
       "title": "🔗 Reference Quick Links",
       "description": "Luxd is the node implementation for the Lux network - a blockchain platform with high throughput and blazing fast transactions. This page is overview of the APIs associated with Luxd.",
       "sidebar": "reference"
-    },
-    "reference/standards/avalanche-network-protocol": {
-      "id": "reference/standards/avalanche-network-protocol",
-      "title": "Lux Network Protocol",
-      "description": "Lux network defines the core communication format between Lux nodes."
     },
     "reference/standards/cryptographic-primitives": {
       "id": "reference/standards/cryptographic-primitives",

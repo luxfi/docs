@@ -190,6 +190,11 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      colorMode: {
+        defaultMode: 'dark',
+        disableSwitch: false,
+        respectPrefersColorScheme: false,
+      },
       image: "img/Lux-OG-Image.png?force-reload-1",
       metadata: [
         { name: "twitter:card", content: "summary_large_image" },
