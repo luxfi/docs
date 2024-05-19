@@ -161,7 +161,8 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          routeBasePath: "/",
+          path: "docs",
+          routeBasePath: "docs",
           editUrl: "https://github.com/luxfi/docs/edit/main/",
           sidebarPath: "./sidebars.json",
           remarkPlugins: [math],
