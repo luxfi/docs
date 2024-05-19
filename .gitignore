@@ -4,3 +4,4 @@ node_modules
 bridge/build
 credit/build
 network/build
+*/i18n/*/docusaurus-plugin-content-docs/current/build
