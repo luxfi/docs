@@ -85,7 +85,7 @@ To learn more about smart contract support, click [here](build/dapp/launch-dapp.
 - [TimestampVM](https://github.com/luxfi/timestampvm)
   - A decentralized timestamp server
 - [XSVM](https://github.com/luxfi/xsvm)
-  - An example of Lux Warp Messaging that implements Cross-Subnet asset transfers
+  - An example of Lux Network Messaging that implements Cross-Subnet asset transfers
 
 See here for a tutorial on [How to Build a Simple Golang VM](/build/vm/create/golang-vm-simple.md)
 

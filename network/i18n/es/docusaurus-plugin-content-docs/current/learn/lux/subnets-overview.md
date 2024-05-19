@@ -42,7 +42,7 @@ Los operadores de nodos que validan una Subnet con múltiples blockchains no nec
 
 ### Interoperabilidad Nativa
 
-- Lux Warp Messaging permite la comunicación nativa entre Subnets y permite a los desarrolladores de Máquinas Virtuales (VM) implementar protocolos de comunicación arbitrarios entre cualquier par de Subnets.
+- Lux Network Messaging permite la comunicación nativa entre Subnets y permite a los desarrolladores de Máquinas Virtuales (VM) implementar protocolos de comunicación arbitrarios entre cualquier par de Subnets.
 
 ### Acomodar Requisitos Específicos de Aplicación
 

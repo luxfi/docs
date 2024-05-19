@@ -15,7 +15,7 @@
     "learn/lux/lux-consensus",
     "learn/lux/subnets-overview",
     "learn/lux/virtual-machines",
-    "learn/lux/awm",
+    "learn/lux/lnm",
     {
       "type": "html",
       "value": "<hr/>"

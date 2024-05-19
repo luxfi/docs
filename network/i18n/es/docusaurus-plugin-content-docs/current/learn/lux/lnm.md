@@ -1,6 +1,6 @@
 ---
-tags: [Lux Warp Messaging, Comunicación entre Subnets]
-description: AWM permite una comunicación fluida entre diferentes Subnets  en Lux, permitiendo a los desarrolladores establecer protocolos de comunicación personalizados.
+tags: [Lux Network Messaging, Comunicación entre Subnets]
+description: LNM permite una comunicación fluida entre diferentes Subnets  en Lux, permitiendo a los desarrolladores establecer protocolos de comunicación personalizados.
 keywords:
   [
     docs,
@@ -11,18 +11,18 @@ keywords:
     comunicación entre Subnets,
     cross-chain,
   ]
-sidebar_label: Lux Warp Messaging
+sidebar_label: Lux Network Messaging
 ---
 
-# Lux Warp Messaging
+# Lux Network Messaging
 
-Lux Warp Messaging (AWM) permite la comunicación nativa entre Subnets y permite a los desarrolladores de Máquinas Virtuales (VM) implementar protocolos de comunicación arbitrarios entre cualquier par de Subnets .
+Lux Network Messaging (LNM) permite la comunicación nativa entre Subnets y permite a los desarrolladores de Máquinas Virtuales (VM) implementar protocolos de comunicación arbitrarios entre cualquier par de Subnets .
 
 ## Casos de Uso
 
-Los casos de uso para AWM pueden incluir, pero no se limitan a:
+Los casos de uso para LNM pueden incluir, pero no se limitan a:
 
-- Redes de Oráculos: Conectar una Subnet a una red de oráculos es un proceso costoso. AWM facilita que las redes de oráculos transmitan sus datos desde su cadena de origen a otras Subnets .
+- Redes de Oráculos: Conectar una Subnet a una red de oráculos es un proceso costoso. LNM facilita que las redes de oráculos transmitan sus datos desde su cadena de origen a otras Subnets .
 - Transferencias de tokens entre Subnets
 - Shardización de estado entre múltiples Subnets
 
@@ -34,7 +34,7 @@ La comunicación consta de los siguientes cuatro pasos:
 
 ### Firma de Mensajes en la Subnet de Origen
 
-AWM es un protocolo de mensajería de bajo nivel. Cualquier tipo de datos codificados en un arreglo de bytes puede incluirse en el mensaje enviado a otra Subnet . AWM utiliza el esquema de firma BLS, que permite a los destinatarios del mensaje verificar la autenticidad de estos mensajes. Por lo tanto, cada validador en la red Lux tiene un par de claves BLS, que consiste en una clave privada para firmar mensajes y una clave pública que otros pueden usar para verificar la firma.
+LNM es un protocolo de mensajería de bajo nivel. Cualquier tipo de datos codificados en un arreglo de bytes puede incluirse en el mensaje enviado a otra Subnet . LNM utiliza el esquema de firma BLS, que permite a los destinatarios del mensaje verificar la autenticidad de estos mensajes. Por lo tanto, cada validador en la red Lux tiene un par de claves BLS, que consiste en una clave privada para firmar mensajes y una clave pública que otros pueden usar para verificar la firma.
 
 ### Agregación de Firmas en la Subnet de Origen
 
@@ -52,8 +52,8 @@ Cuando una Subnet quiere procesar el mensaje de otra Subnet , buscará tanto las
 
 El peso combinado de los validadores que deben formar parte de la firma múltiple BLS para considerarse válida se puede establecer de acuerdo con los requisitos individuales de cada comunicación de Subnet a Subnet . La Subnet A puede aceptar mensajes de la Subnet B que estén firmados por al menos el 70% de la participación. Los mensajes de la Subnet C solo se aceptan si han sido firmados por validadores que representan el 90% de la participación.
 
-Dado que todas las claves públicas de los validadores y sus pesos de participación se registran en la cadena P de la red primaria, son fácilmente accesibles para cualquier máquina virtual ejecutada por los validadores. Por lo tanto, las Subnets no necesitan comunicarse entre sí sobre cambios en sus respectivos conjuntos de validadores, sino que pueden confiar simplemente en la información más reciente en la Cadena P. Por lo tanto, AWM no introduce ninguna suposición de confianza adicional aparte de que los validadores de la Subnet de origen están participando honestamente.
+Dado que todas las claves públicas de los validadores y sus pesos de participación se registran en la cadena P de la red primaria, son fácilmente accesibles para cualquier máquina virtual ejecutada por los validadores. Por lo tanto, las Subnets no necesitan comunicarse entre sí sobre cambios en sus respectivos conjuntos de validadores, sino que pueden confiar simplemente en la información más reciente en la Cadena P. Por lo tanto, LNM no introduce ninguna suposición de confianza adicional aparte de que los validadores de la Subnet de origen están participando honestamente.
 
 ## Implementación de Referencia
 
-Se creó una VM de prueba de concepto llamada [XSVM](https://github.com/luxfi/xsvm) para demostrar el poder de AWM. XSVM permite transferencias simples de AWM entre cualquier par de Subnets si se ejecuta tal como está.
+Se creó una VM de prueba de concepto llamada [XSVM](https://github.com/luxfi/xsvm) para demostrar el poder de LNM. XSVM permite transferencias simples de LNM entre cualquier par de Subnets si se ejecuta tal como está.

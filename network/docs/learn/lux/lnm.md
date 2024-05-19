@@ -1,6 +1,6 @@
 ---
-tags: [Lux Warp Messaging, Cross-Subnet Communication]
-description: AWM allows seamless communication between different subnetworks on Lux, enabling developers to establish custom communication protocols.
+tags: [Lux Network Messaging, Cross-Subnet Communication]
+description: LNM allows seamless communication between different subnetworks on Lux, enabling developers to establish custom communication protocols.
 keywords:
   [
     docs,
@@ -11,21 +11,21 @@ keywords:
     cross-subnet communication,
     cross-chain,
   ]
-sidebar_label: Lux Warp Messaging
+sidebar_label: Lux Network Messaging
 ---
 
-# Lux Warp Messaging
+# Lux Network Messaging
 
-Lux Warp Messaging (AWM) enables native cross-Subnet communication and allows
+Lux Network Messaging (LNM) enables native cross-Subnet communication and allows
 [Virtual Machine (VM)](/learn/lux/subnets-overview.md#virtual-machines) developers to implement arbitrary
 communication protocols
 between any two Subnets.
 
 ## Use Cases
 
-Use cases for AWM may include but is not limited to:
+Use cases for LNM may include but is not limited to:
 
-- Oracle Networks: Connecting a Subnet to an oracle network is a costly process. AWM makes it easy
+- Oracle Networks: Connecting a Subnet to an oracle network is a costly process. LNM makes it easy
   for oracle networks to broadcast their data from their origin chain to other Subnets.
 - Token transfers between Subnets
 - State Sharding between multiple Subnets
@@ -38,8 +38,8 @@ The communication consists of the following four steps:
 
 ### Signing Messages on the Origin Subnet
 
-AWM is a low-level messaging protocol. Any type of data encoded in an array of bytes can be included
-in the message sent to another Subnet. AWM uses the [BLS signature
+LNM is a low-level messaging protocol. Any type of data encoded in an array of bytes can be included
+in the message sent to another Subnet. LNM uses the [BLS signature
 scheme](https://crypto.stanford.edu/~dabo/pubs/papers/BLSmultisig.html), which allows message
 recipients to verify the authenticity of these messages. Therefore, every validator on the Lux
 network holds a BLS key pair, consisting of a private key for signing messages and a public key that
@@ -77,11 +77,11 @@ Subnet C are only accepted if they have been signed by validators that account f
 Since both the public keys and stake weights of all validators are recorded on the
 primary network's P-chain, they are readily accessible to any virtual machine run by the validators.
 Therefore, the Subnets do not need to communicate with each other about changes in their respective
-sets of validators, but can simply rely on the latest information on the P-Chain. Therefore, AWM
+sets of validators, but can simply rely on the latest information on the P-Chain. Therefore, LNM
 introduces no additional trust assumption other than that the validators of the origin Subnet are
 participating honestly.
 
 ## Reference Implementation
 
 A Proof-of-Concept VM called [XSVM](https://github.com/luxfi/xsvm) was created to demonstrate the
-power of AWM. XSVM enables simple AWM transfers between any two Subnets if run out-of-the-box.
+power of LNM. XSVM enables simple LNM transfers between any two Subnets if run out-of-the-box.

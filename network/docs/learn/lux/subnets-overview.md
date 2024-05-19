@@ -47,7 +47,7 @@ of which can be validated by a single node, or a single machine.
 
 ### Native Interoperability
 
-- Lux Warp Messaging enables native cross-Subnet communication and allows Virtual Machine (VM)
+- Lux Network Messaging enables native cross-Subnet communication and allows Virtual Machine (VM)
   developers to implement arbitrary communication protocols between any two Subnets.
 
 ### Accommodate Application-Specific Requirements
