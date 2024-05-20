@@ -59,8 +59,8 @@ configuration file.
 
 ```bash
 # replace execPath with the path to Luxd on your machine
-# e.g., ${HOME}/go/src/github.com/luxfi/luxd/build/luxd
-LUXD_EXEC_PATH="${HOME}/go/src/github.com/luxfi/luxd/build/luxd"
+# e.g., ${HOME}/go/src/github.com/luxfi/node/build/luxd
+LUXD_EXEC_PATH="${HOME}/go/src/github.com/luxfi/node/build/luxd"
 ```
 
 Unless otherwise specified, file paths given below are relative to the root of this repository.
@@ -301,7 +301,7 @@ In this example we are stopping the node named `node1`.
 convention to avoid issues.
 
 ```bash
-# e.g., ${HOME}/go/src/github.com/luxfi/luxd/build/luxd
+# e.g., ${HOME}/go/src/github.com/luxfi/node/build/luxd
 LUXD_EXEC_PATH="luxd"
 ```
 
@@ -326,7 +326,7 @@ netrunner control restart-node node1 \
 In this example we are adding a node named `node99`.
 
 ```bash
-# e.g., ${HOME}/go/src/github.com/luxfi/luxd/build/luxd
+# e.g., ${HOME}/go/src/github.com/luxfi/node/build/luxd
 LUXD_EXEC_PATH="luxd"
 ```
 
@@ -413,15 +413,15 @@ network, err := local.NewDefaultNetwork(log, binaryPath)
 ```
 
 where `log` is a logger of type
-[`logging.Logger`](https://github.com/luxfi/luxd/blob/master/utils/logging/logger.go#L12)
+[`logging.Logger`](https://github.com/luxfi/node/blob/master/utils/logging/logger.go#L12)
 and `binaryPath` is the path of the Luxd binary that each node that exists on network startup
 will run.
 
 For example, the below snippet creates a new network using default configurations, and each node in
-the network runs the binaries at `/home/user/go/src/github.com/luxfi/luxd/build`:
+the network runs the binaries at `/home/user/go/src/github.com/luxfi/node/build`:
 
 ```go
-network, err := local.NewDefaultNetwork(log,"/home/user/go/src/github.com/luxfi/luxd/build")
+network, err := local.NewDefaultNetwork(log,"/home/user/go/src/github.com/luxfi/node/build")
 ```
 
 **Once you create a network, you must eventually call `Stop()` on it to make sure all of the nodes**

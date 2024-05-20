@@ -142,7 +142,7 @@ Every VM should implement the following interfaces:
 To reach a consensus on linear blockchains, Lux uses the Snowman consensus engine. To be
 compatible with Snowman, a VM must implement the `block.ChainVM` interface.
 
-For more information, see [here](https://github.com/luxfi/luxd/blob/master/snow/engine/snowman/block/vm.go).
+For more information, see [here](https://github.com/luxfi/node/blob/master/snow/engine/snowman/block/vm.go).
 
 ```go title="/snow/engine/snowman/block/vm.go"
 // ChainVM defines the required functionality of a Snowman VM.
@@ -206,7 +206,7 @@ type Parser interface {
 
 `common.VM` is a type that every `VM` must implement.
 
-For more information, you can see the full file [here](https://github.com/luxfi/luxd/blob/master/snow/engine/common/vm.go).
+For more information, you can see the full file [here](https://github.com/luxfi/node/blob/master/snow/engine/common/vm.go).
 
 ```go title="/snow/engine/common/vm.go"
 // VM describes the interface that all consensus VMs must implement
@@ -298,7 +298,7 @@ type VM interface {
 The `snowman.Block` interface It define the functionality a block must implement to be a block in a
 linear Snowman chain.
 
-For more information, you can see the full file [here](https://github.com/luxfi/luxd/blob/master/snow/consensus/snowman/block.go).
+For more information, you can see the full file [here](https://github.com/luxfi/node/blob/master/snow/consensus/snowman/block.go).
 
 ```go title="/snow/consensus/snowman/block.go"
 // Block is a possible decision that dictates the next canonical block.
@@ -339,7 +339,7 @@ type Block interface {
 
 This interface is a superset of every decidable object, such as transactions, blocks, and vertices.
 
-For more information, you can see the full file [here](https://github.com/luxfi/luxd/blob/master/snow/choices/decidable.go).
+For more information, you can see the full file [here](https://github.com/luxfi/node/blob/master/snow/choices/decidable.go).
 
 ```go title="/snow/choices/decidable.go"
 // Decidable represents element that can be decided.

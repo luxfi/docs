@@ -145,7 +145,7 @@ constantly monitor disk usage on the node and increase disk space if needed.
 
 Note that the image below shows 100GB as disk size, which was appropriate at the
 time the screenshot was taken. You should check the current [recommended disk
-space size](https://github.com/luxfi/luxd#installation) before
+space size](https://github.com/luxfi/node#installation) before
 entering the actual value here.
 
 ![Select disk size.](/img/add-storage.png)

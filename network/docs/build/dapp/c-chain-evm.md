@@ -20,6 +20,6 @@ bandwidth and instant finality that
 [Lux's revolutionary consensus](learn/lux/lux-consensus.md) enables.
 
 Coreth is loaded as a plugin into
-[Luxd](https://github.com/luxfi/luxd), the client node
+[Luxd](https://github.com/luxfi/node), the client node
 application used to run Lux network. Any Dapp deployed to Lux C-Chain will be running
 the same as on Ethereum, just faster and cheaper.

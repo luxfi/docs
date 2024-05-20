@@ -11,7 +11,7 @@ sidebar_position: 2
 ## Introducción
 
 Este tutorial demuestra cómo configurar la infraestructura para monitorear una instancia de
-[Luxd](https://github.com/luxfi/luxd). Utilizaremos:
+[Luxd](https://github.com/luxfi/node). Utilizaremos:
 
 - [Prometheus](https://prometheus.io/) para recopilar y almacenar datos
 - [`node_exporter`](https://github.com/prometheus/node_exporter) para obtener información sobre la máquina,

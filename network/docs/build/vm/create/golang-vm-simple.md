@@ -1219,7 +1219,7 @@ For example:
 ```
 
 If no argument is given, the path defaults to a binary named with default VM ID:
-`$GOPATH/src/github.com/luxfi/luxd/build/plugins/tGas3T58KzdjLHhBDMnH2TvrddhqTji5iZAMZ3RXs2NLpSnhH`
+`$GOPATH/src/github.com/luxfi/node/build/plugins/tGas3T58KzdjLHhBDMnH2TvrddhqTji5iZAMZ3RXs2NLpSnhH`
 
 This name `tGas3T58KzdjLHhBDMnH2TvrddhqTji5iZAMZ3RXs2NLpSnhH` is the CB58 encoded 32 byte identifier
 for the VM. For the timestampvm, this is the string "timestamp" zero-extended in a 32 byte array
@@ -1259,7 +1259,7 @@ under this directory. Virtual machine executable names must be either a full vir
 Copy the binary into the plugins directory.
 
 ```bash
-cp -n <path to your binary> $GOPATH/src/github.com/luxfi/luxd/build/plugins/
+cp -n <path to your binary> $GOPATH/src/github.com/luxfi/node/build/plugins/
 ```
 
 #### Node Is Not Running

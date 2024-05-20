@@ -12,7 +12,7 @@ with the following exceptions:
 
 ## Official Project/Product Names
 
-- Luxd for [https://github.com/luxfi/luxd]
+- Luxd for [https://github.com/luxfi/node]
 - Lux CLI for [https://github.com/luxfi/cli]
 - Lux Netrunner for [https://github.com/luxfi/netrunner]
 

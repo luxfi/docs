@@ -66,8 +66,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/luxfi/luxd/utils/constants"
-	"github.com/luxfi/luxd/utils/formatting"
+	"github.com/luxfi/node/utils/constants"
+	"github.com/luxfi/node/utils/formatting"
 	"github.com/luxfi/coreth/accounts/abi/bind"
 	"github.com/luxfi/coreth/core/types"
 	"github.com/luxfi/coreth/ethclient"

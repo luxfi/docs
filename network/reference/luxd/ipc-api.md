@@ -52,7 +52,7 @@ This API uses the `json 2.0` RPC format.
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/node/releases/tag/v1.9.12).
 
 :::
 
@@ -98,7 +98,7 @@ curl -X POST --data '{
 
 :::caution
 
-Deprecated as of [**v1.9.12**](https://github.com/luxfi/luxd/releases/tag/v1.9.12).
+Deprecated as of [**v1.9.12**](https://github.com/luxfi/node/releases/tag/v1.9.12).
 
 :::
 

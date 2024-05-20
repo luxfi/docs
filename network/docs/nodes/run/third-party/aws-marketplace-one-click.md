@@ -1,6 +1,7 @@
 ---
 tags: [Nodes]
-description: This tutorial will guide you through spinning up a Lux node via the one-click validator node through the AWS Marketplace. This includes subscribing to the software, launching it on EC2, connecting to the node over ssh, calling curl commands, adding the node as a validator on the Testnet network using the Lux Web wallet, and confirming the node is a pending validator.
+description: This tutorial will guide you through spinning up a Lux node via the one-click validator node through the AWS Marketplace. This includes subscribing to the software, launching it on EC2, connecting to the node over ssh, calling curl commands, adding the node as a validator on the Testnet network using the Lux Wallet, and confirming the node is a pending validator.
+
 sidebar_label: AWS Marketplace
 pagination_label: Run a Lux Node with Amazon Web Services with one click
 sidebar_position: 1
@@ -11,7 +12,7 @@ sidebar_position: 1
 ## How to Launch a Lux Validator using AWS
 
 <!--
-<iframe src="https://www.youtube.com/embed/4RPmgpbC_Cc"
+<iframe src="https://www.youtube.com/embed/xxxx"
         width="100%"
         height="480px"
         title="How to Launch a Lux Validator using AWS?"
@@ -25,7 +26,7 @@ sidebar_position: 1
 -->
 
 With the intention of enabling developers and entrepreneurs to on-ramp into the
-Lux ecosystem with as little friction as possible, Lux Partners recently
+Lux ecosystem with as little friction as possible, Lux recently
 launched an offering to deploy a Lux Validator node via the AWS
 Marketplace. This tutorial will show the main steps required to get this node
 running and validating on the Lux Testnet.
@@ -33,7 +34,7 @@ running and validating on the Lux Testnet.
 ## Product Overview
 
 The Lux Validator node is available via [the AWS
-Marketplace](https://aws.amazon.com/marketplace/pp/prodview-nd6wgi2bhhslg).
+Marketplace](https://aws.amazon.com/marketplace/pp/prodview-xxxx).
 There you'll find a high level product overview. This includes a product
 description, pricing information, usage instructions, support information and
 customer reviews. After reviewing this information you want to click the "Continue to Subscribe" button.
@@ -51,9 +52,9 @@ these you want to click on the "Continue to Configuration" button.
 This page lets you choose a fulfillment option and software version to launch
 this software. No changes are needed as the default settings are sufficient.
 Leave the `Fulfillment Option` as `64-bit (x86) Amazon Machine Image (AMI)`. The
-software version is the latest build of [the Luxd full
-node](https://github.com/luxfi/luxd/releases), `v1.9.5 (Dec 22,
-2022)`, AKA `Banff.5`. This will always show the latest version. Also, the
+software version is the latest build of [Lux
+Node](https://github.com/luxfi/node/releases), `v1.10.21 (Jan 3,
+2024)`. This will always show the latest version. Also, the
 Region to deploy in can be left as `US East (N.  Virginia)`. On the right you'll
 see the software and infrastructure pricing. Lastly, click the "Continue to
 Launch" button.
@@ -274,122 +275,68 @@ the `nodeID` is `NodeID-Q8Gfaaio9FAqCmZVEXDq9bFvNPvDi7rt5`
 }
 ```
 
-## Add Node as Validator on Testnet via Core web
+## Add Node as Validator on Testnet via Lux Wallet
 
-For adding the new node as a Validator on the Testnet's Primary Network you can
-use the [Core web](https://core.app/)
-[connected](https://support.lux.network/en/articles/6639869-core-web-how-do-i-connect-to-core-web) to
-[Core extension](https://join.core.app/extension).
-If you don't have a Core extension already, check out this
-[guide](https://support.lux.network/en/articles/6100129-core-extension-how-do-i-create-a-new-wallet).
-If you'd like to import an existing wallet to Core extension, follow
-[these steps](https://support.lux.network/en/articles/6078933-core-extension-how-do-i-access-my-existing-account).
+For adding the new node as a Validator on the Lux Testnet's Primary Network you can
+use the [Lux Wallet](https://wallet.lux.network/).
 
-Core web is a free, all-in-one command center that gives users a more intuitive and comprehensive way to view
-assets, and use dApps across the Lux network, its various Subnets, and Ethereum.
-Core web is optimized for use with the Core browser extension and Core mobile (available on both iOS & Android).
-Together, they are key components of the Core product suite that brings dApps,
-NFTs, Lux Bridge, Subnets, L2s, and more, directly to users.
 
-### Switching to Testnet Mode
+![Lux Wallet](/img/one-click-validator-node/web-wallet.png)
 
-By default, Core web and Core extension are connected to Mainnet.
-For the sake of this demo, you want to connect to the Testnet.
+The Lux Wallet is a web-based application with no middleware or any
+kind of server communication. It can be either accessed
+online or compiled and run locally. The Lux Wallet is a multi-faceted
+jewel and offers validation/delegation, cross-chain transfers, reward
+estimation, asset/key management, and more.
 
-#### On Core Extension
+### Switching the Network
 
-From the hamburger menu on the top-left corner, choose Advanced, and then toggle the Testnet Mode on.
+Check which network Lux Wallet is connected to by looking at the top right of
+the screen. By default the Lux Wallet connects to Mainnet.
 
-<img src="/img/one-click-validator-node/testnet-core-ext.gif" width="300px"/>
+#### Connected to Mainnet
 
-You can follow the same steps for switching back to Mainnet.
+For the sake of this demo you want to connect Lux Wallet to the Testnet. At
+the top right of the wallet click "Mainnet" and from the nav menu select Testnet.
 
-#### On Core web
+#### Selecting Testnet
 
-Click on the Settings button top-right corner of the page, then toggle Testnet Mode on.
+The wallet will display "Connecting..." while it is switching from Mainnet to Testnet.
 
-<img src="/img/one-click-validator-node/testnet-core-web.gif"/>
+#### Connected to Testnet
 
-You can follow the same steps for switching back to Mainnet.
+Once the wallet has connected to Testnet a popup will display "Connected to Testnet"
 
-### Adding the Validator
+### The Earn Tab
 
-:::info
+To add a node as a Validator, first select the "Earn" tab in the left hand nav
+menu. Next click the "Add Validator" button.
 
-* Node ID: A unique ID derived from each individual node’s staker certificate.
-Use the `NodeID` which was returned in the `info.getNodeID` response.
-In this example it's `NodeID-Q8Gfaaio9FAqCmZVEXDq9bFvNPvDi7rt5`
+### The `Earn / Validate` Form
 
-* Staking End Date: Your LUX tokens will be locked until this date.
+Let's look at the input values for the `Earn / Validate` form.
 
-* Stake Amount: The amount of LUX to lock for staking. On Mainnet,
-the minimum required amount is 2,000 LUX. On Testnet the minimum required
-amount is 1 AVAAX.
+- Node ID: A unique ID derived from each individual node’s staker certificate.
+  Use the `NodeID` which was returned in the `info.getNodeID` response. In this
+  example it's `NodeID-Q8Gfaaio9FAqCmZVEXDq9bFvNPvDi7rt5`
+- Staking End Date: Your LUX tokens will be locked until this date.
+- Stake Amount: The amount of LUX to lock for staking. On Mainnet the minimum
+  required amount is 2,000 LUX. On Testnet the minimum required amount is 1
+  AVAAX.
+- Delegation Fee: You will claim this % of the rewards from the delegators on your node.
+- Reward Address: A reward address is the destination address of the accumulated staking rewards.
 
-* Delegation Fee: You will claim this % of the rewards from the delegators on
-your node.
+Fill the fields and confirm! Carefully check the details, and click "Submit"!
 
-* Reward Address: A reward address is the destination address of the accumulated
-staking rewards.
+### The `AddValidatorTx` Transaction
 
-:::
-
-To add a node as a Validator, first select the Stake tab on Core web,
-in the left hand nav menu. Next click the Validate button, and select
-Get Started.
-
-<img src="/img/one-click-validator-node/core-web-validate.gif" width="80%"/>
-
-This page will open up.
-
-<img src="/img/one-click-validator-node/core-web-validate-page.png"/>
-
-Choose the desired Staking Amount, then click Next.
-
-<img src="/img/one-click-validator-node/core-web-staking-amount.png"/>
-
-Enter you Node ID, then click Next.
-
-<img src="/img/one-click-validator-node/core-web-node-id.png"/>
-
-Here, you'll need to choose the staking duration. There are predefined
-values, like 1 day, 1 month and so on. You can also choose a custom period
-of time. For this example, 22 days were chosen.
-
-<img src="/img/one-click-validator-node/core-web-staking-duration.png"/>
-
-Choose the address that the network will send rewards to.
-Make sure it's the correct address because once the transaction
-is submitted this cannot be changed later or undone. You can choose the
-wallet's P-Chain address, or a custom P-Chain address.
-After entering the address, click Next.
-
-<img src="/img/one-click-validator-node/core-web-reward-address.png"/>
-
-Other individuals can stake to your validator and receive rewards too, known as "delegating."
-You will claim this percent of the rewards from the delegators on your node. Click Next.
-
-<img src="/img/one-click-validator-node/core-web-delegation-fee.png"/>
-
-After entering all these details, a summary of your validation will show up.
-If everything is correct, you can proceed and click on Submit Validation.
-A new page will open up, prompting you to accept the transaction.
-Here, please approve the transaction.
-
-<img src="/img/one-click-validator-node/core-web-validation-summary.png"/>
-
-After the transaction is approved, you will see a message saying that your
-validation transaction was submitted.
-
-<img src="/img/one-click-validator-node/core-web-accepted-tx.png"/>
-
-If you click on View on explorer, a new browser tab will open with the details of the
-`AddValidatorTx`. It will show details such as the total value of LUX transferred, any
-LUX which were burned, the blockchainID, the blockID, the NodeID of the validator,
-and the total time which has elapsed from the entire Validation period.
-
-<img src="/img/one-click-validator-node/explorer-transaction-details.png"/>
-
+Once the transaction is successfully issued to the Lux Network the list of
+transactions in the right column will update with the new `AddValidatorTx`
+pushed to the top of the list. Click the magnifying glass icon and a new browser
+tab will open with the details of the `AddValidatorTx`. It will show details
+such as the total value of LUX transferred, any LUX which were burned, the
+blockchainID, the blockID, the NodeID of the validator, and the total time which
+has elapsed from the entire Validation period.
 
 ## Confirm That the Node is a Pending Validator on Testnet
 

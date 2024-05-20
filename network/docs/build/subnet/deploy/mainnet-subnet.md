@@ -323,15 +323,15 @@ need to copy your VM's plugin binary into Luxd's plugin directory. This director
 on your Luxd install location.
 
 ```text
-✔ Path to your luxd plugin dir (likely luxd/build/plugins): /home/user/go/src/github.com/luxfi/luxd/build/plugins
+✔ Path to your luxd plugin dir (likely luxd/build/plugins): /home/user/go/src/github.com/luxfi/node/build/plugins
 ```
 
 The tool doesn't know where exactly it's located so it requires the full path. With the path given,
 it's going to copy the VM binary to the provided location:
 
 ```text
-✔ Path to your luxd plugin dir (likely luxd/build/plugins): /home/user/go/src/github.com/luxfi/luxd/build/plugins█
-VM binary written to /home/user/go/src/github.com/luxfi/luxd/build/plugins/tGBrMADESojmu5Et9CpbGCrmVf9fiAJtZM5ZJ3YVDj5JTu2qw
+✔ Path to your luxd plugin dir (likely luxd/build/plugins): /home/user/go/src/github.com/luxfi/node/build/plugins█
+VM binary written to /home/user/go/src/github.com/luxfi/node/build/plugins/tGBrMADESojmu5Et9CpbGCrmVf9fiAJtZM5ZJ3YVDj5JTu2qw
 This is going to edit your existing config file. This edit is nondestructive,
 but it's always good to have a backup.
 Use the arrow keys to navigate: ↓ ↑ → ←

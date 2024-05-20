@@ -105,7 +105,7 @@ you're a developer looking to experiment and build on Lux.
 ## Download Pre-Built Binary
 
 If you want to download a pre-built binary instead of building it yourself, go
-to our [releases page](https://github.com/luxfi/luxd/releases), and
+to our [releases page](https://github.com/luxfi/node/releases), and
 select the release you want (probably the latest one.)
 
 :::info
@@ -116,7 +116,7 @@ to be notified about new releases.
 
 In addition, or if you don't have a node ID, you can get release notifications from github.
 To do so, you can go to our
-[repository](https://github.com/luxfi/luxd) and look on the top-right
+[repository](https://github.com/luxfi/node) and look on the top-right
 corner for the **Watch** option. After you click on it, select **Custom**,
 and then **Releases**. Press **Apply** and it is done.
 
@@ -170,13 +170,13 @@ and then restart the service with `sudo systemctl start luxd.service`.
 First clone our GitHub repo (you can skip this step if you’ve done this before):
 
 ```zsh
-git clone https://github.com/luxfi/luxd.git
+git clone https://github.com/luxfi/node.git
 ```
 
 :::info
 The repository cloning method used is HTTPS, but SSH can be used too:
 
-`git clone git@github.com:luxfi/luxd.git`
+`git clone git@github.com:luxfi/node.git`
 
 You can find more about SSH and how to use it
 [here](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/about-ssh).
@@ -209,7 +209,7 @@ Check that your local code is up to date. Do:
 git rev-parse HEAD
 ```
 
-and check that the first 7 characters printed match the Latest commit field on our [GitHub](https://github.com/luxfi/luxd).
+and check that the first 7 characters printed match the Latest commit field on our [GitHub](https://github.com/luxfi/node).
 
 NOTE: if you used the `git checkout tags/<tag>` then these first 7 characters
 should match commit hash of that tag.

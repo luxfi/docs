@@ -46,9 +46,9 @@ when executing the Luxd binary, as by default, the node will attempt to perform
 NAT traversal to get the node's IP according to its router). Failing to do either of
 these may jeopardize your staking reward.
 
-## Add a Validator with Core extension
+## Add a Validator with Lux Wallet
 
-First, we show you how to add your node as a validator by using [Core web](https://core.app).
+First, we show you how to add your node as a validator by using [Lux Wallet](https://wallet.lux.network).
 
 ### Retrieve the Node ID
 
@@ -76,23 +76,22 @@ The response has your node’s ID:
 
 ### Add as a Validator
 
-Connect [Core extension](https://join.core.app/extension) to [Core web](https://core.app), and go the 'Staking' tab.
-Here, choose 'Validate' from the menu.
+Open [Lux Wallet](https://wallet.lux.network/), and go the `Earn` tab. Choose
+`Add Validator` under the `Validate` section.
 
-Fill out the staking parameters. They are explained in more detail in [this doc](/nodes/validate/how-to-stake.md). When you’ve
-filled in all the staking parameters and double-checked them, click `Submit Validation`. Make sure the staking period is at
-least 2 weeks, the delegation fee rate is at least 2%, and you’re staking at
-least 2,000 LUX on Mainnet (1 LUX on Testnet). A full guide about this can be found
-[here](https://support.lux.network/en/articles/8117267-core-web-how-do-i-validate-in-core-stake).
-
-<iframe src="https://www.youtube.com/embed/1M0LZbuHO5Q?modestbranding=1&rel=0&iv_load_policy=3&color=white" width="800" height="500" title="How to Validate in Core Web" frameborder="0" allowfullscreen></iframe>
+Fill out the staking parameters. They are explained in more detail in [this
+doc](/nodes/validate/how-to-stake.md). When you’ve filled in all the staking
+parameters and double-checked them, click `Confirm`. Make sure the staking
+period is at least 2 weeks, the delegation fee rate is at least 2%, and you’re
+staking at least 2,000 LUX on Mainnet (1 LUX on Testnet).
 
 You should see a success message, and your balance should be updated.
 
-Go back to the `Stake` tab, and you'll see here an overview of your validation,
-with information like the amount staked, staking time, and more.
+Go back to the `Earn` tab, and click `Estimated Rewards`.
 
-![Staking Overview](/img/staking-overview.png)
+Once your validator’s start time has passed, you will see the rewards it may
+earn, as well as its start time, end time, and the percentage of its validation
+period that has passed.
 
 Calling
 [`platform.getPendingValidators`](/reference/luxd/p-chain/api.md#platformgetpendingvalidators)
@@ -105,6 +104,9 @@ You can also call
 to check that your node's id is included in the response.
 
 That’s it!
+
+![Staking Overview](/img/staking-overview.png)
+
 
 ## Add a Validator with LuxJS
 

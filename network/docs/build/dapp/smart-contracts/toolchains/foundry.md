@@ -37,7 +37,7 @@ command-line.
 
 ### Luxd and Lux Netrunner
 
-[Luxd](https://github.com/luxfi/luxd) is a Lux node
+[Luxd](https://github.com/luxfi/node) is a Lux node
 implementation written in Go.
 
 [Lux Netrunner](/tooling/netrunner.md) is a tool to quickly

@@ -88,7 +88,7 @@ To do that, run the command: `export PATH=$PATH:$GOROOT/bin:$GOPATH/bin`
 Download the following prerequisites into your `$GOPATH`:
 
 - Git Clone the repository (Subnet-EVM or Precompile-EVM)
-- Git Clone [Luxd](https://github.com/luxfi/luxd) repository
+- Git Clone [Luxd](https://github.com/luxfi/node) repository
 - Install [Lux Netrunner](/tooling/netrunner.md)
 - Install [solc](https://github.com/ethereum/solc-js#usage-on-the-command-line)
 - Install [Node.js and NPM](https://nodejs.org/en/download)
@@ -128,7 +128,7 @@ Alternatively you can use it as a template repo from [github](https://github.com
 Then run the following commands:
 
 ```shell
-git clone git@github.com:luxfi/luxd.git
+git clone git@github.com:luxfi/node.git
 curl -sSfL https://raw.githubusercontent.com/luxfi/netrunner/main/scripts/install.sh | sh -s
 npm install -g solc
 ```

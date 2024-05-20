@@ -89,7 +89,7 @@
   },
   "sidebar.reference.link.Release Notes": {
     "message": "Release Notes",
-    "description": "The label for link Release Notes in sidebar reference, linking to https://github.com/luxfi/luxd/releases"
+    "description": "The label for link Release Notes in sidebar reference, linking to https://github.com/luxfi/node/releases"
   },
   "sidebar.reference.doc.🔌 RPC Providers": {
     "message": "🔌 Proveedores de RPC",

@@ -541,7 +541,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/luxfi/luxd/version"
+	"github.com/luxfi/node/version"
 	"github.com/luxfi/subnet-evm/plugin/evm"
 	"github.com/luxfi/subnet-evm/plugin/runner"
 

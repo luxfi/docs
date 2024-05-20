@@ -30,7 +30,7 @@ npm install -g yarn
 
 ### Luxd and Lux Netrunner
 
-[Luxd](https://github.com/luxfi/luxd) is a Lux node
+[Luxd](https://github.com/luxfi/node) is a Lux node
 implementation written in Go.
 [Lux Netrunner](/tooling/netrunner.md) is a tool to quickly deploy local test
 networks. Together, you can deploy local test networks and run tests on them.
@@ -294,7 +294,7 @@ git checkout master
 ```
 
 (Note that you can also [download pre-compiled Luxd
-binaries](https://github.com/luxfi/luxd/releases) rather than building
+binaries](https://github.com/luxfi/node/releases) rather than building
 from source.)
 
 Confirm you have Lux Netrunner installed by following the steps
@@ -316,7 +316,7 @@ $ netrunner server \
 
 ```bash
 # replace execPath with the path to Luxd on your machine
-# e.g., ${HOME}/go/src/github.com/luxfi/luxd/build/luxd
+# e.g., ${HOME}/go/src/github.com/luxfi/node/build/luxd
 $ LUXD_EXEC_PATH="luxd"
 ```
 

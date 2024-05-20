@@ -143,7 +143,7 @@ desarrollo, en promedio la base de datos crecerá continuamente, por lo que nece
 monitorear constantemente el uso de disco en el nodo e incrementar el espacio en disco si es necesario.
 
 Ten en cuenta que la imagen a continuación muestra 100GB como tamaño de disco, lo cual era apropiado en ese momento
-en que se tomó la captura de pantalla. Debes verificar el [tamaño actual recomendado de espacio en disco](https://github.com/luxfi/luxd#installation) antes de
+en que se tomó la captura de pantalla. Debes verificar el [tamaño actual recomendado de espacio en disco](https://github.com/luxfi/node#installation) antes de
 ingresar el valor real aquí.
 
 ![Selecciona el tamaño del disco.](/img/add-storage.png)

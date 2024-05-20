@@ -8,7 +8,7 @@ sidebar_position: 1
 # Setting up Postman
 
 We have made a Postman collection for Lux, that includes all the public
-API calls that are available on an [Luxd instance](https://github.com/luxfi/luxd/releases/), including environment variables,
+API calls that are available on an [Luxd instance](https://github.com/luxfi/node/releases/), including environment variables,
 allowing developers to quickly issue commands to a node and see the response, without having to
 copy and paste long and complicated `curl` commands.
 

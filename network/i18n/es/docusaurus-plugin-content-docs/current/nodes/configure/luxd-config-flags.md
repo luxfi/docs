@@ -397,7 +397,7 @@ Estas son las propiedades principales en el archivo JSON:
 - `cChainGenesis`: La información de génesis que se pasará a la C-Chain.
 - `message`: Un mensaje para incluir en el génesis. No es obligatorio.
 
-Para un ejemplo de una representación JSON de los datos de génesis, consulte [genesis_local.json](https://github.com/luxfi/luxd/blob/master/genesis/genesis_local.json).
+Para un ejemplo de una representación JSON de los datos de génesis, consulte [genesis_local.json](https://github.com/luxfi/node/blob/master/genesis/genesis_local.json).
 
 #### `--genesis-file-content` (string)
 

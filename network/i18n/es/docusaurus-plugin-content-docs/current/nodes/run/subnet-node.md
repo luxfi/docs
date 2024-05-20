@@ -71,13 +71,13 @@ mkdir -p $GOPATH/src/github.com/luxfi
 
 5. Clonar Luxd
 
-En el `$GOPATH`, clonar [Luxd](https://github.com/luxfi/luxd),
+En el `$GOPATH`, clonar [Luxd](https://github.com/luxfi/node),
 el motor de consenso e implementación de nodo que es el núcleo de la
 Red Lux.
 
 ```bash
 cd $GOPATH/src/github.com/luxfi
-git clone https://github.com/luxfi/luxd.git
+git clone https://github.com/luxfi/node.git
 ```
 
 6. Ejecutar el script de construcción
@@ -85,7 +85,7 @@ git clone https://github.com/luxfi/luxd.git
 Desde el directorio `luxd`, ejecutar el script de construcción
 
 ```bash
-cd $GOPATH/src/github.com/luxfi/luxd
+cd $GOPATH/src/github.com/luxfi/node
 ./scripts/build.sh
 ```
 
@@ -146,7 +146,7 @@ Ejecute Luxd con la bandera `--config-file` para iniciar su nodo y asegurarse de
 incluidas en el archivo de configuración.
 
 ```bash
-cd $GOPATH/src/github.com/luxfi/luxd
+cd $GOPATH/src/github.com/luxfi/node
 ./build/luxd --config-file ~/.luxd/config.json --network-id=testnet
 ```
 

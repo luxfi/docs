@@ -466,7 +466,7 @@
     {
       "type": "link",
       "label": "Release Notes",
-      "href": "https://github.com/luxfi/luxd/releases"
+      "href": "https://github.com/luxfi/node/releases"
     },
     {
       "type": "html",

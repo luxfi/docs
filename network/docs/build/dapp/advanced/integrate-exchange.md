@@ -29,7 +29,7 @@ website.
 
 If you want to build your node form source or include it in a docker image,
 reference the [Luxd GitHub
-repository](https://github.com/luxfi/luxd). To quickly get up and
+repository](https://github.com/luxfi/node). To quickly get up and
 running, you can use the [node installation script](/nodes/run/with-installer/installing-luxd.md) that automates installing
 and updating Luxd node as a `systemd` service on Linux, using prebuilt
 binaries.

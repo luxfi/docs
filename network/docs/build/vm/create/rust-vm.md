@@ -60,9 +60,9 @@ understanding of the expectations for these methods please see the code examples
 Additional Documentation
 
 - [ChainVM
-  GoDoc](https://pkg.go.dev/github.com/luxfi/luxd/snow/engine/snowman/block#ChainVm)
+  GoDoc](https://pkg.go.dev/github.com/luxfi/node/snow/engine/snowman/block#ChainVm)
 - [Lux Proto Docs](https://buf.build/luxfi/lux/docs/main:vm#vm.VM)
-- [Snowman VMs](https://github.com/luxfi/luxd/tree/master/vms#snowman-vms)
+- [Snowman VMs](https://github.com/luxfi/node/tree/master/vms#snowman-vms)
 
 Now we know the traits (interfaces) our VM must implement and the libraries we can use to build a VM
 using the Rust SDK.
@@ -1251,7 +1251,7 @@ under this directory. Virtual machine executable names must be either a full vir
 Copy the binary into the plugins directory.
 
 ```bash
-cp -n <path to your binary> $GOPATH/src/github.com/luxfi/luxd/build/plugins/
+cp -n <path to your binary> $GOPATH/src/github.com/luxfi/node/build/plugins/
 ```
 
 #### Node Is Not Running

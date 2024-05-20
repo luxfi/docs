@@ -128,7 +128,7 @@ Luxd, Subnet-EVM, Precompile-EVM and LuxSDK.
 
 You can view the full RPC compatibility broken down by release version for each tool here: 
 
-[Luxd](https://github.com/luxfi/luxd/blob/master/version/compatibility.json).
+[Luxd](https://github.com/luxfi/node/blob/master/version/compatibility.json).
 
 [Subnet-EVM](https://github.com/luxfi/subnet-evm/blob/master/compatibility.json).
 

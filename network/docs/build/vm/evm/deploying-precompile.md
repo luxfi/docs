@@ -61,8 +61,8 @@ we have just built. `LUXD_PLUGIN_PATH` points to the plugins path which should h
 Subnet-EVM binary we have just built:
 
 ```bash
-export LUXD_EXEC_PATH="${GOPATH}/src/github.com/luxfi/luxd/build/luxd"
-export LUXD_PLUGIN_PATH="${GOPATH}/src/github.com/luxfi/luxd/build/plugins"
+export LUXD_EXEC_PATH="${GOPATH}/src/github.com/luxfi/node/build/luxd"
+export LUXD_PLUGIN_PATH="${GOPATH}/src/github.com/luxfi/node/build/plugins"
 ```
 
 The following command will "issue requests" to the server we just spun up. We can use

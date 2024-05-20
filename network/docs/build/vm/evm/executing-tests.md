@@ -144,11 +144,11 @@ Meaning that Precompile-EVM binary works the same way as Subnet-EVM binary.
 Precompile-EVM repo has also same scripts and the build process as Subnet-EVM.
 Following steps also apply to Precompile-EVM.
 
-You should have cloned [Luxd](https://github.com/luxfi/luxd) within your `$GOPATH` in
+You should have cloned [Luxd](https://github.com/luxfi/node) within your `$GOPATH` in
 the [Background and Requirements](background-and-reqs.md) section, so you can build Luxd with the following command:
 
 ```bash
-cd $GOPATH/src/github.com/luxfi/luxd
+cd $GOPATH/src/github.com/luxfi/node
 ./scripts/build.sh
 ```
 
@@ -184,13 +184,13 @@ cd $GOPATH/src/github.com/luxfi/subnet-evm
 This will build the Subnet-EVM binary and place it in Luxd's `build/plugins` directory by default
 at the file path:
 
-`$GOPATH/src/github.com/luxfi/luxd/build/plugins/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy`
+`$GOPATH/src/github.com/luxfi/node/build/plugins/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy`
 
 To confirm that the Subnet-EVM binary is compatible with Luxd, you can run the same version command
 and confirm the RPCChainVM version matches:
 
 ```bash
-$GOPATH/src/github.com/luxfi/luxd/build/plugins/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy --version
+$GOPATH/src/github.com/luxfi/node/build/plugins/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy --version
 ```
 
 This should give similar output:
@@ -210,14 +210,14 @@ cd $GOPATH/src/github.com/luxfi/precompile-evm
 This will build the Precompile-EVM binary and place it in Luxd's `build/plugins` directory by
 default at the file path:
 
-`$GOPATH/src/github.com/luxfi/luxd/build/plugins/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy`
+`$GOPATH/src/github.com/luxfi/node/build/plugins/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy`
 
 To confirm that the Precompıle-EVM binary is compatible with Luxd,
 you can run the same version command
 and confirm the RPCChainVM version matches:
 
 ```bash
-$GOPATH/src/github.com/luxfi/luxd/build/plugins/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy --version
+$GOPATH/src/github.com/luxfi/node/build/plugins/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy --version
 ```
 
 This should give similar output:

@@ -97,7 +97,7 @@ First, make sure to shut down your node in case it is still running. Then, you w
 into the Luxd directory:
 
 ```bash
-cd $GOPATH/src/github.com/luxfi/luxd
+cd $GOPATH/src/github.com/luxfi/node
 ```
 
 If you went through the steps to set up a config file, then you can launch your node by specifying
@@ -123,21 +123,21 @@ Run `go version`. **It should be 1.19.6 or above.** Run `echo $GOPATH`. **It sho
 ```bash
 mkdir -p $GOPATH/src/github.com/luxfi
 cd $GOPATH/src/github.com/luxfi
-git clone https://github.com/luxfi/luxd.git
+git clone https://github.com/luxfi/node.git
 cd luxd
 ./scripts/build.sh
 cd $GOPATH/src/github.com/luxfi
 git clone https://github.com/luxfi/subnet-evm.git
 cd subnet-evm
 ./scripts/build.sh ~/.luxd/plugins/mDV3QWRXfwgKUWb9sggkv4vQxAQR4y2CyKrt5pLZ5SzQ7EHBv
-cd $GOPATH/src/github.com/luxfi/luxd
+cd $GOPATH/src/github.com/luxfi/node
 ./build/luxd --track-subnets Vn3aX6hNRstj5VHHm63TCgPNaeGnRSqCYXQqemSqDd2TQH4qJ
 ```
 
 :::info
 The repository cloning method used is HTTPS, but SSH can be used too:
 
-`git clone git@github.com:luxfi/luxd.git`
+`git clone git@github.com:luxfi/node.git`
 
 `git clone git@github.com:luxfi/subnet-evm.git`
 

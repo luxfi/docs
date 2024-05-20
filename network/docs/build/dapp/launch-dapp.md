@@ -90,12 +90,12 @@ For development and experimental purposes,
 [here](/nodes/run/node-manually.md) is a tutorial that shows
 how to download, build, and install Luxd. Simpler solution is to use the
 prebuilt binary, available on
-[GitHub](https://github.com/luxfi/luxd/releases). If you're going to
+[GitHub](https://github.com/luxfi/node/releases). If you're going to
 run a node on a Linux machine, you can use the
 [installer script](/nodes/run/with-installer/installing-luxd.md) to install the node as a
 `systemd` service. Script also handles node upgrading. If you want to run a node
 in a docker container, there are [build
-scripts](https://github.com/luxfi/luxd/tree/master/scripts) in the
+scripts](https://github.com/luxfi/node/tree/master/scripts) in the
 Luxd repo for various Docker configs.
 
 ### Node Configuration
