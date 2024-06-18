@@ -34,7 +34,7 @@ If you are considering working on something substantial that will take a lot of 
 If you are concerned about contributing something closed source and it being picked up by someone else, consider starting with a more restrictive license and offer to flip it to the MIT open source standard if the contribution is accepted by the repository owner. 
 
 ### 6. Avoid Overlapping Commits on the Last Line of The Code - Proof_Of_Contribution.md File
-When requesting weights, contributors often add their entry to the last line of the [Code Contributions](https://github.com/MorpheusAIs/Docs/tree/main/Contributions) table. This can cause conflicts when merging pull requests as multiple requests may modify the same line. 
+When requesting weights, contributors often add their entry to the last line of the [Code Contributions](https://github.com/luxfi/docs/tree/757ada86211c5b40f4f48fc4aa5b0779f15c6daf/network/Contributions) table. This can cause conflicts when merging pull requests as multiple requests may modify the same line. 
 
 Consider placing your commit on a line other than the last one. As code proof moves to a monthly basis, consider adding your code to a line equal to the date of its commitment. Please use the latest snapshot table to add your contribution.
 
