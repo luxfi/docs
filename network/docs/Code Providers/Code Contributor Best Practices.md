@@ -19,7 +19,7 @@ To streamline the process of offering and accepting code contributions, please f
 ### 1. The Key Is To Add Value To Get Merged / Rewarded
 Weights are NOT based on the Labor Theory of Value. It doesn't matter how many hours are worked but rather the value produced by the work. That's why the repository owner has to actually merge in the code (the product of the work) for it to count toward rewards. The repository owner acts as the "customer" in the marketplace. Look at other contributors to the repo and gauge the needs of the repository owner or read the current proposals in the MRC repository to see what future coding work is being proposed: [MRC Repository](https://github.com/MorpheusAIs/MRC)
 
-Please read the [Code Contributor Weights Guide](https://github.com/MorpheusAIs/Docs/blob/main/!KEYDOCS%20README%20FIRST!/Code%20Providers/Code%20Contributor%20Weights%20Guide.md) to understand the implied value per weight which is updated each month.
+Please read the [Code Contributor Weights Guide](https://github.com/luxfi/docs/blob/main/network/FOR%20CONTRIBUTORS/Code%20Contributor%20Weights%20Guide.md) to understand the implied value per weight which is updated each month.
 
 ### 2. Be Reasonable and Competitive 
 If the code contributor is asking too many weights for the contribution, or the quality of the contribution cannot be assessed or is of low quality, it is likely to be rejected by the repository owner.
@@ -34,7 +34,7 @@ If you are considering working on something substantial that will take a lot of 
 If you are concerned about contributing something closed source and it being picked up by someone else, consider starting with a more restrictive license and offer to flip it to the MIT open source standard if the contribution is accepted by the repository owner. 
 
 ### 6. Avoid Overlapping Commits on the Last Line of The Code - Proof_Of_Contribution.md File
-When requesting weights, contributors often add their entry to the last line of the [Code Contributions](https://github.com/MorpheusAIs/Docs/tree/main/Contributions) table. This can cause conflicts when merging pull requests as multiple requests may modify the same line. 
+When requesting weights, contributors often add their entry to the last line of the [Code Contributions](https://github.com/luxfi/docs/tree/757ada86211c5b40f4f48fc4aa5b0779f15c6daf/network/Contributions) table. This can cause conflicts when merging pull requests as multiple requests may modify the same line. 
 
 Consider placing your commit on a line other than the last one. As code proof moves to a monthly basis, consider adding your code to a line equal to the date of its commitment. Please use the latest snapshot table to add your contribution.
 
