@@ -267,6 +267,12 @@ const config = {
             sidebarId: "reference",
             label: "Reference",
           },
+		            {
+            type: "docSidebar",
+            position: "left",
+            sidebarId: "contribute",
+            label: "Contribute [LIVE!]",
+          },
         ],
       },
       footer: {
