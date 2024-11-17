@@ -4,10 +4,11 @@ Got it! Here's the updated form with the correct terms:
 <!-- Provide a brief description of the change being made -->
 
 ## Related LRI
-Every change must fall under an LRI. See [Reference Implementations](https://github.com/roaidev/docs/blob/795fbf5e41a26bfdda5a14ebe9bfa58fd5bd7c24/network/FOR%20CONTRIBUTORS/LUX%20Reference%20Implementations%20(LRI).md) for more details.
+Every change must fall under an LRI. See [Reference Implementations](https://docs.lux.network/contribute/code-providers/LUX%20Reference%20Implementations%20(LRI)) for more details.
 <!-- Select the Morpheus Reference Implementation that this change falls under -->
-- [ ] LRI Number 1. Smart Contracts on Ethereum / Arbitrum 
-- [ ] LRI Number 2. Smart Agents Tools & Examples
+- [ ] LRI Number 0. Lux Quest - Help us flesh out this work-flow, and other aspects of Lux Quest
+- [ ] LRI Number 1. Lux Core
+- [ ] LRI Number 2. Lux Bridge
 - [ ] LRI Number 3. Morpheus Local Install Desktop / Mobile
 - [ ] LRI Number 4. TCM / LUX20 Token Standard for Fair Launches  
 - [ ] LRI Number 5. Protection Fund

@@ -5,7 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ae522ff-debe-4327-8c3f-fc77a931f9ad" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/docs/contribute/code-providers/LUX Requests for Contribution (LRC).md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/contribute/code-providers/Code Contributor Best Practices.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/contribute/code-providers/Code Contributor Best Practices.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/contribute/code-providers/Coder Guide.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/contribute/code-providers/Coder Guide.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/contribute/code-providers/LUX Builders Guide.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/contribute/code-providers/LUX Builders Guide.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/contribute/code-providers/LUX Reference Implementations (LRI).md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/contribute/code-providers/Weight Maintenance Guide.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/contribute/code-providers/Weight Maintenance Guide.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/contribute/contributions/Code - Proof_of_ContributionSnapshot1.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/contribute/contributions/Code - Proof_of_ContributionSnapshot1.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/contribute/contributions/PULL_REQUEST_TEMPLATE.MD" beforeDir="false" afterPath="$PROJECT_DIR$/docs/contribute/contributions/PULL_REQUEST_TEMPLATE.MD" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +80,7 @@
       <workItem from="1731868946163" duration="762000" />
       <workItem from="1731869743706" duration="346000" />
       <workItem from="1731870097356" duration="1878000" />
-      <workItem from="1731874554383" duration="30000" />
+      <workItem from="1731874554383" duration="1798000" />
     </task>
     <servers />
   </component>
