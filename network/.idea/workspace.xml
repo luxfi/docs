@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9ae522ff-debe-4327-8c3f-fc77a931f9ad" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/docs/contribute/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/contribute/Capital Providers, LUX20, TCM/Phased AMM Deployment and Fair Price Discovery.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/contribute/Capital Providers, LUX20, TCM/Protocol Owned Liquidity Generation Events (POLG).md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/contribute/documentation/Protocol Owned Liquidity Generation Events (POLG).md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/contribute/Capital Providers, LUX20, TCM/Subscription Discount Rate.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/contribute/documentation/Subscription Discount Rate.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/contribute/Capital Providers, LUX20, TCM/Techno Capital Machine.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/contribute/documentation/Techno Capital Machine.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/contribute/Capital Providers, LUX20, TCM/The LUX Asset Integration Framework.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/contribute/documentation/The LUX Asset Integration Framework.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/contribute/Contributions/Code - Proof_of_ContributionSnapshot1.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/contribute/contributions/Code - Proof_of_ContributionSnapshot1.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/contribute/Contributions/PULL_REQUEST_TEMPLATE.MD" beforeDir="false" afterPath="$PROJECT_DIR$/docs/contribute/contributions/PULL_REQUEST_TEMPLATE.MD" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sidebars.json" beforeDir="false" afterPath="$PROJECT_DIR$/sidebars.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;koaque&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/luxfi/docs.git&quot;,
+    &quot;accountId&quot;: &quot;5827dc65-0f86-401d-8c7d-59f57c6a645f&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2ozOTPtoY96aZe0YNmQmKbAAnxq" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/Jackary/Projects/docs/network/docs/contribute",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "yarn",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Jackary\Projects\docs\network\docs\contribute" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-WS-243.21565.180" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9ae522ff-debe-4327-8c3f-fc77a931f9ad" name="Changes" comment="" />
+      <created>1731868945111</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1731868945111</updated>
+      <workItem from="1731868946163" duration="762000" />
+      <workItem from="1731869743706" duration="346000" />
+      <workItem from="1731870097356" duration="1236000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
