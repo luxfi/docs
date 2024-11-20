@@ -104,9 +104,9 @@ At the end of each month:
 1. **Snapshot of Weights**: A snapshot is taken of all contributors' weights.
 2. **Calculate Individual Share**: Your share is calculated as:
 
-   \[
+   $$
    \text{Your LUX Reward} = \left( \frac{\text{Your Weights}}{\text{Total Weights for the Month}} \right) \times \text{LUX Tokens Allocated for the Month}
-   \]
+   $$
 
 3. **Distribution**: LUX tokens are distributed based on the above calculation.
 
@@ -118,11 +118,11 @@ At the end of each month:
 - **Total Weights Emitted**: 10,863,066
 - **LUX Tokens Allocated**: 10,863,066,493 LUX
 - **Your Contribution**: 50,000 weights
-- **Your Share**:
+  - **Your Share**:
 
-  \[
+  $$
   \text{Your LUX Reward} = \left( \frac{50,000}{10,863,066} \right) \times 10,863,066,493 = 50,000 \times 1,000 = 50,000,000 LUX
-  \]
+  $$
 
 ---
 
