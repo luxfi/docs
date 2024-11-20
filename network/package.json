@@ -31,8 +31,8 @@
     "react-dom": "18.2.0",
     "react-icons": "4.12.0",
     "react-iframe": "1.8.5",
-    "rehype-katex": "7",
-    "remark-math": "6",
+    "rehype-katex": "^7.0.0",
+    "remark-math": "^6.0.0",
     "url-loader": "4.1.1",
     "yocto-queue": "1.0.0",
     "zwitch": "2.0.0"

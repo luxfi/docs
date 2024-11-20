@@ -4,8 +4,7 @@
 **Title**: Community Contribution Framework for Auditing, Improvements, and Upgrades  
 **Status**: Draft  
 **Type**: Standards Track  
-**Created**: 2024-11-20  
-**Authors:** *Your GitHub username* | *Wallet Address*
+**Created**: 2024-11-20
 
 ## Abstract
 

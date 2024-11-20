@@ -7,6 +7,9 @@
     <list default="true" id="9ae522ff-debe-4327-8c3f-fc77a931f9ad" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/contribute/code-providers/Lux Request for Comment.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/contribute/code-providers/Lux Request for Comment.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/contribute/code-providers/Lux Request for Implementation.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/contribute/code-providers/Lux Request for Implementation.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docusaurus.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/docusaurus.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +81,7 @@
       <workItem from="1731869743706" duration="346000" />
       <workItem from="1731870097356" duration="1878000" />
       <workItem from="1731874554383" duration="3275000" />
-      <workItem from="1732134180382" duration="3543000" />
+      <workItem from="1732134180382" duration="3745000" />
     </task>
     <servers />
   </component>

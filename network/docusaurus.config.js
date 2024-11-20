@@ -166,8 +166,8 @@ const config = {
           routeBasePath: "/",
           sidebarPath: path.resolve(__dirname, 'sidebars.json'),
           editUrl: "https://github.com/luxfi/docs/edit/main/",
-          remarkPlugins: [math],
-          rehypePlugins: [katex],
+          remarkPlugins: [require('remark-math')],
+          rehypePlugins: [require('rehype-katex')],
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -181,11 +181,11 @@ const config = {
 
   stylesheets: [
     {
-      href: "https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css",
-      type: "text/css",
+      href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
+      type: 'text/css',
       integrity:
-        "sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM",
-      crossorigin: "anonymous",
+          'sha384-odtCymbPIe3+gYt9zkVIL2aNQG3JkR5dnw4ygoA84Y9Zguf0f2+ZUx4pq4ornC0E',
+      crossorigin: 'anonymous',
     },
   ],
 

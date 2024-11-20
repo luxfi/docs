@@ -5,8 +5,7 @@
 **Title**: Implementation of Community Contribution Framework  
 **Status**: Draft  
 **Type**: Informational  
-**Created**: 2024-11-20  
-**Authors**: [Your Name] (<your.email@example.com>)
+**Created**: 2024-11-20
 
 ## Introduction
 
