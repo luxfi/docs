@@ -137,7 +137,6 @@ Lux Network employs advanced cryptographic techniques to ensure security in the 
 - **Installation**:
     - Clone the relevant repositories from the Lux GitHub organization:
         - [Lux Network](https://github.com/luxdefi)
-        - [Hanzo AI](https://github.com/hanzoai)
     - Follow the setup instructions in the `README.md` files.
 - **Configuration**:
     - Configure your environment variables as specified.
@@ -231,9 +230,10 @@ Lux Network employs advanced cryptographic techniques to ensure security in the 
 - **Code Reviews**:
     - Participate in peer reviews to maintain high code quality.
 - **Forums and Discussions**:
-    - Engage on the [Lux Community Forum](https://community.lux.network) and Discord.
+    - Engage on the [Discord](https://discord.gg/K746mGXdXr).
+    - The GitHub Discussion tab.
 - **Contributing Guidelines**:
-    - Follow the guidelines in `CONTRIBUTING.md` for submitting issues and pull requests.
+    - Follow the guidelines in [Contribution Guide](https://docs.lux.network/contribute/code-providers/Code%20Contributor%20Guide%20to%20Earning%20Weights%20and%20Their%20Implied%20Value%20for%20Lux) for submitting issues and pull requests.
 - **Mentorship**:
     - Offer guidance to new contributors.
 
@@ -243,11 +243,10 @@ Lux Network employs advanced cryptographic techniques to ensure security in the 
 
 - **Lux Documentation**:
     - [Lux Network Docs](https://docs.lux.network)
-    - [Lux Ecosystem Whitepaper](Link_to_Whitepaper)
-    - [Lux Network Whitepaper](Link_to_Whitepaper)
+    - [Lux Ecosystem Whitepaper](Link_to_Whitepaper) (pending)
+    - [Lux Network Whitepaper](Link_to_Whitepaper) (pending)
 - **GitHub Repositories**:
     - [Lux Network](https://github.com/luxdefi)
-    - [Hanzo AI](https://github.com/hanzoai)
 - **Communication Channels**:
     - **Discord**: [Lux Discord Server](https://discord.gg/your-server)
     - **Community Forum**: [community.lux.network](https://community.lux.network)
