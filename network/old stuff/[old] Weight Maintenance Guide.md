@@ -22,11 +22,11 @@ The GitHub repository maintainer is tasked with monitoring contributions to dete
 
 The publishing of the markdown file serves as the official notice being served to contributors that their weights have moved to at-risk.
 
-|Original Snapshot | LRI Grouping | Scope of Contribution | Maintenance Required| Weights| Handle| Address|
-|--- | ---| --- | ---| ---| ---| ---|
-|Snapshot 1| Protection Fund | Update x translation| Translation ties to March 8th file, needs to be updated for July 15th revisions | 10 | @Community1 | 0x…|
-|Snapshot 1| Smart Contracts| Update x Smart Contract| Smart contract no longer works with LUX 0.0.9 update. Need to make contract functional with latest version | 20 | @Community2 | 0x…|
-|Snapshot 2| Interoperability| Refactor API | API broken - need to update to make functional | 30 | @Community3 | 0x…|
+|Original Snapshot | LRC Grouping     | Scope of Contribution | Maintenance Required| Weights| Handle| Address|
+|--- |------------------| --- | ---| ---| ---| ---|
+|Snapshot 1| Protection Fund  | Update x translation| Translation ties to March 8th file, needs to be updated for July 15th revisions | 10 | @Community1 | 0x…|
+|Snapshot 1| Smart Contracts  | Update x Smart Contract| Smart contract no longer works with LUX 0.0.9 update. Need to make contract functional with latest version | 20 | @Community2 | 0x…|
+|Snapshot 2| Interoperability | Refactor API | API broken - need to update to make functional | 30 | @Community3 | 0x…|
 
 Once added to the list, it begins the grace period which extends for one month following each snapshot. During this time, contributors must either:
 1) Complete the necessary work to satisfy the grace period description, and submit their pull request.

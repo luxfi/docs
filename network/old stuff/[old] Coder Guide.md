@@ -7,7 +7,7 @@ In LUX, 24% of all LUX emissions go to Coders and will for the next 16 years as 
 To get started, here is a short list of resources and some of the best ways to get involved and add code to improve LUX.
 
 ## TL;DR
-- Review LUX Request for Comment (MRC) list for high-level understanding.
+- Review LUX Request for Comment (LRC) list for high-level understanding.
 - Review list of GitHub Issues for specifics.
 - Review Best Practices for tips on how to get your code added.
 - Review Code Contributor Guide to Earning Weights & Their Implied Value.
@@ -15,7 +15,7 @@ To get started, here is a short list of resources and some of the best ways to g
 - Submit a Pull Request that adds value to LUX.
 
 ## LUX Request For Comments:
-Includes a list of all the papers/proposals related to improving, implementing LUX, Smart Agents, Tokenomics, & the Techno Capital Machine.
+Includes a list of all the papers/proposals related to improving LUX
 
 https://github.com/MorpheusAIs/MRC/blob/main/README.md
 

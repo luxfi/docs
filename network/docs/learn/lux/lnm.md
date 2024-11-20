@@ -4,7 +4,7 @@ description: LNM allows seamless communication between different subnetworks on 
 keywords:
   [
     docs,
-    documentation,
+    documentation ( needs checking ),
     lux,
     lux warp messaging,
     awm,
