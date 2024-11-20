@@ -1,7 +1,7 @@
 ---
 tags: [Primary Network, P-Chain, X-Chain, C-Chain, Platform Chain, Contract Chain]
 description: Lux features 3 built-in blockchains which includes Exchange Chain (X-Chain), Platform Chain (P-Chain), and Contract Chain (C-Chain). More info here.
-keywords: [docs, documentation, lux, primary network, c-chain, x-chain, p-chain, platform chain, contract chain]
+keywords: [docs, documentation ( needs checking ), lux, primary network, c-chain, x-chain, p-chain, platform chain, contract chain]
 sidebar_label: The Primary Network
 ---
 

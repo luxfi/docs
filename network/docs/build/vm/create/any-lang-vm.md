@@ -1,6 +1,6 @@
 ---
 tags: [Build, Virtual Machines]
-description: This is a language-agnostic high-level documentation explaining the basics of how to get started at implementing your own virtual machine from scratch.
+description: This is a language-agnostic high-level documentation ( needs checking ) explaining the basics of how to get started at implementing your own virtual machine from scratch.
 sidebar_label: Simple VM in Any Language
 pagination_label: Build a Simple VM From Scratch
 sidebar_position: 0

@@ -189,5 +189,4 @@ The implied price for snapshot 5 is estimated based on the average trading price
 > [!NOTE]
 > **There is an ongoing discussion of exactly how to calculate the average snapshot price for weight valuation. Which price to use (open, close, random sampling, etc), how many data points (weekly, daily, hourly, etc) and other nuances are being discussed in the community.**
 
-See the Luxstats.info website page where you can run these estimates dynamically.  
-https://luxstats.info/code-weights/
+See the Luxstats.info website page where you can run these estimates dynamically.
