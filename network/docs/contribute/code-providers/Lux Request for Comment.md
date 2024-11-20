@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Type**: Standards Track  
 **Created**: 2024-11-20  
-**Authors**: [Your Name] (<your.email@example.com>)
+**Authors:** *Your GitHub username* | *Wallet Address*
 
 ## Abstract
 
