@@ -1,10 +1,4 @@
-# Lux Grant Program Documentation
-
-## How to Apply
-
-Whether you're working on a specific project or still exploring possibilities, you can connect with our team for guidance.
-
----
+# Lux Grant Program
 
 ## Overview
 
@@ -84,8 +78,6 @@ A Project Grant might be a good fit if any of the following apply to your projec
 
 You'll need to fill out the form on the next page as well as a long-form application where you'll go into depth about your goals, motivations, plans, and intended impact. Make sure you have read and understood our scope and criteria, and see below for advice on crafting a great application. After submitting, you'll receive a confirmation email within two business days.
 
-[**Apply Now**](#apply)
-
 #### 2. Evaluate and Refine
 
 If we determine that a project is in scope for the Lux Grant Program, we'll begin a deeper evaluation of the project's technical approach, potential impact, risks, and other factors. Our next steps might include gathering more information, getting input from advisors, and working with you to refine or rescope the project proposal.
@@ -97,6 +89,9 @@ Once the proposal is finalized, we'll make an allocation decision based on our a
 #### 4. Activation
 
 We sign a grant agreement, complete KYC (Know Your Customer), and send funds in fiat or cryptocurrency (e.g., LUX Coin, Bitcoin). You'll have a point of contact at Lux who will check in with you regularly as you progress with your work.
+
+[**Apply Now**](#apply)
+
 
 ---
 
@@ -125,8 +120,7 @@ We are happy to hear from all kinds of contributors who are working within our s
 ### What is NOT Eligible
 
 - **Illegal Activities**: Anything that is not legal within the jurisdiction where the work is taking place.
-- **Non-Aligned Financial Products**: Financial products (trading, investment products, lending, betting, etc.) that do not align with Lux's mission.
-- **Token Launches or Public Funding Rounds**: Projects with a planned token launch or public funding round that conflict with Lux's objectives.
+- **Token Launches or Public Funding Rounds**: Projects with a planned token launch or public funding round during or before this grant period (exceptions apply).
 - **Out-of-Scope Art Projects or Charities**: Art projects or charities that don't fit within our scope.
 
 ---
