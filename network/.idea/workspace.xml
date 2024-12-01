@@ -5,21 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9ae522ff-debe-4327-8c3f-fc77a931f9ad" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/docs/contribute/lux-grants/Lux Grants.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/contribute/contributions/[old] PULL_REQUEST_TEMPLATE.MD" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/old stuff/[old] Code - Proof_of_ContributionSnapshot1.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/old stuff/[old] Code Contributor Best Practices.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/old stuff/[old] Code Contributor Weights Guide.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/old stuff/[old] Coder Guide.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/old stuff/[old] LUX Builders Guide.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/old stuff/[old] LUX Requests for Contribution (LRC).md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/old stuff/[old] Weight Allocation by LRI.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/old stuff/[old] Weight Maintenance Guide.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sidebars.json" beforeDir="false" afterPath="$PROJECT_DIR$/sidebars.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +82,7 @@
       <workItem from="1731874554383" duration="3275000" />
       <workItem from="1732134180382" duration="4123000" />
       <workItem from="1733011885893" duration="465000" />
-      <workItem from="1733012369474" duration="1012000" />
+      <workItem from="1733012369474" duration="1052000" />
     </task>
     <servers />
   </component>
