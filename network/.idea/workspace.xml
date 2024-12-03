@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9ae522ff-debe-4327-8c3f-fc77a931f9ad" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sidebars.json" beforeDir="false" afterPath="$PROJECT_DIR$/sidebars.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/theme/Footer/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/theme/Footer/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +48,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "yarn",
+    "npm.start.executor": "Run",
     "settings.editor.selected.configurable": "terminal",
     "vue.rearranger.settings.migration": "true"
   }
@@ -60,6 +61,23 @@
       <recent name="C:\Users\Jackary\Projects\docs\network\old stuff" />
       <recent name="C:\Users\Jackary\Projects\docs\network\docs\contribute\contributions" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.start" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -82,7 +100,8 @@
       <workItem from="1731874554383" duration="3275000" />
       <workItem from="1732134180382" duration="4123000" />
       <workItem from="1733011885893" duration="465000" />
-      <workItem from="1733012369474" duration="1052000" />
+      <workItem from="1733012369474" duration="1935000" />
+      <workItem from="1733169619832" duration="4411000" />
     </task>
     <servers />
   </component>

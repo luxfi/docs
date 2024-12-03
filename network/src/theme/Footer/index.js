@@ -76,7 +76,7 @@ function Footer() {
               <a href="https://t.me/luxdefi">
                 <BsTelegram className="footer-social"></BsTelegram>
               </a>
-              <a href="https://discord.gg/MxFdWsQY">
+              <a href="https://discord.gg/sxaS7FFHwh">
                 <BsDiscord className="footer-social"></BsDiscord>
               </a>
               <a href="https://github.com/luxfi">
