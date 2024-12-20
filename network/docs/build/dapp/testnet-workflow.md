@@ -55,7 +55,7 @@ using the following specs:
 
 - **Network Name**: Lux C-Chain
 - **New RPC URL**: [https://api.lux-test.network/ext/bc/C/rpc](https://api.lux-test.network/ext/bc/C/rpc)
-- **ChainID**: `43113`
+- **ChainID**: `96368`
 - **Symbol**: LUX
 - **Explorer**: [`https://testnet.snowtrace.io`](https://testnet.snowtrace.io/)
 

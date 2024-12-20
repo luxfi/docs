@@ -15,7 +15,7 @@ integrate with the EVM-Compatible Lux C-Chain. For teams that already
 support ETH, supporting the C-Chain is as straightforward as spinning up an
 Lux node (which has the [same API](https://eth.wiki/json-rpc/API) as
 [`go-ethereum`](https://geth.ethereum.org/docs/rpc/server)) and populating
-Lux’s ChainID (43114) when constructing transactions.
+Lux’s ChainID (96369) when constructing transactions.
 
 Additionally, Lux Partners maintains an implementation of the [Rosetta
 API](https://www.rosetta-api.org/) for the C-Chain called
@@ -121,7 +121,7 @@ can be found in the linked repository.
 
 Lux C-Chain transactions are identical to standard EVM transactions with 2 exceptions:
 
-- They must be signed with Lux’s ChainID (43114).
+- They must be signed with Lux’s ChainID (96369).
 - The detailed dynamic gas fee can be found [here](/reference/standards/guides/txn-fees#c-chain-fees).
 
 For development purposes, Lux supports all the popular tooling for

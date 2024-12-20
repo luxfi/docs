@@ -145,13 +145,13 @@ export default {
     testnet: {
       url: "https://api.lux-test.network/ext/bc/C/rpc",
       gasPrice: 225000000000,
-      chainId: 43113,
+      chainId: 96368,
       accounts: [],
     },
     mainnet: {
       url: "https://api.lux.network/ext/bc/C/rpc",
       gasPrice: 225000000000,
-      chainId: 43114,
+      chainId: 96369,
       accounts: [],
     },
   },

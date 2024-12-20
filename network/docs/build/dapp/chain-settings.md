@@ -11,7 +11,7 @@ pagination_label: Lux C-Chain Settings
 
 - **Network Name**: Lux Mainnet C-Chain
 - **New RPC URL**: [https://api.lux.network/ext/bc/C/rpc](https://api.lux.network/ext/bc/C/rpc)
-- **ChainID**: `43114`
+- **ChainID**: `96369`
 - **Symbol**: `LUX`
 - **Explorer**: [https://snowtrace.io/](https://snowtrace.io/)
 
@@ -19,7 +19,7 @@ pagination_label: Lux C-Chain Settings
 
 - **Network Name**: Lux Testnet C-Chain
 - **New RPC URL**: [https://api.lux-test.network/ext/bc/C/rpc](https://api.lux-test.network/ext/bc/C/rpc)
-- **ChainID**: `43113`
+- **ChainID**: `96368`
 - **Symbol**: `LUX`
 - **Explorer**: [https://testnet.snowtrace.io/](https://testnet.snowtrace.io/)
 

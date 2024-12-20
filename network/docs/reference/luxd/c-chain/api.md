@@ -1,8 +1,8 @@
 ---
 id: api
 tags: [C-Chain, Contract Chain, Luxd APIs]
-description: This page is an overview of the C-Chain API associated with Luxd. 
-sidebar_label: API 
+description: This page is an overview of the C-Chain API associated with Luxd.
+sidebar_label: API
 pagination_label: C-Chain API
 ---
 # Contract Chain API
@@ -11,8 +11,8 @@ pagination_label: C-Chain API
 Ethereum has its own notion of `networkID` and `chainID`. These have no relationship to
 Lux’s view of networkID and chainID and are purely internal to the
 [C-Chain](/learn/lux/lux-platform.md#c-chain). On
-Mainnet, the C-Chain uses `1` and `43114` for these values. On the Testnet, it uses `1` and
-`43113` for these values. `networkID` and `chainID` can also be obtained using the `net_version` and
+Mainnet, the C-Chain uses `1` and `96369` for these values. On the Testnet, it uses `1` and
+`96368` for these values. `networkID` and `chainID` can also be obtained using the `net_version` and
 `eth_chainId` methods.
 :::
 
@@ -88,15 +88,15 @@ for a full description of this API.
 
 :::info
 
-For batched requests on the [public API node](/tooling/rpc-providers.md) , the maximum 
+For batched requests on the [public API node](/tooling/rpc-providers.md) , the maximum
 number of items is 40. We are working on to support a larger batch size.
 
 :::
 
 ### Lux - Ethereum APIs
 
-In addition to the standard Ethereum APIs, Lux offers `eth_getAssetBalance`, `eth_baseFee`, 
-`eth_maxPriorityFeePerGas`, and `eth_getChainConfig`. 
+In addition to the standard Ethereum APIs, Lux offers `eth_getAssetBalance`, `eth_baseFee`,
+`eth_maxPriorityFeePerGas`, and `eth_getChainConfig`.
 
 They use the same endpoint as standard Ethereum APIs:
 
@@ -106,19 +106,19 @@ They use the same endpoint as standard Ethereum APIs:
 
 #### `eth_getAssetBalance`
 
-Retrieves the balance of first class Lux Native Tokens on the C-Chain (excluding LUX, 
+Retrieves the balance of first class Lux Native Tokens on the C-Chain (excluding LUX,
 which must be fetched with `eth_getBalance`).
 
 :::note
 
-The AssetID for LUX differs depending on the network you are on. 
+The AssetID for LUX differs depending on the network you are on.
 
 Mainnet: FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z
 
 Testnet: U8iRqJoiJm8xZHAacmvYyZVwqQx6uDNtQeP3CQ6fcgQk3JqnK
 
 For finding the `assetID` of other assets, please note that
-`lux.getUTXOs` and `lux.getAtomicTx` return the `assetID` in 
+`lux.getUTXOs` and `lux.getAtomicTx` return the `assetID` in
 their output.
 
 :::
@@ -260,7 +260,7 @@ curl -X POST --data '{
   "jsonrpc": "2.0",
   "id": 1,
   "result": {
-    "chainId": 43112,
+    "chainId": 96369,
     "homesteadBlock": 0,
     "daoForkBlock": 0,
     "daoForkSupport": true,
@@ -366,7 +366,7 @@ Not recommended for use on Mainnet. See warning notice in [Keystore API](/refere
 
 Send LUX from the C-Chain to X-Chain or P-Chain. After calling this method, you must call the
 X-Chain's [`avm.import`](/reference/luxd/x-chain/api.md#avmimport) or P-Chain's
-[`platform.import`](/reference/luxd/p-chain/api.md#platformimportlux) with assetID `LUX` 
+[`platform.import`](/reference/luxd/p-chain/api.md#platformimportlux) with assetID `LUX`
 on the X-Chain to complete the transfer.
 
 **Signature:**
@@ -681,7 +681,7 @@ Not recommended for use on Mainnet. See warning notice in [Keystore API](/refere
 
 Finalize the transfer of a non-LUX or LUX from X-Chain or P-Chain to the C-Chain. Before this
 method is called, you must call the X-Chain’s [`avm.export`](/reference/luxd/x-chain/api.md#avmexport)
-or P-Chain’s [`platform.exportLUX`](/reference/luxd/p-chain/api.md#platformexportlux) with 
+or P-Chain’s [`platform.exportLUX`](/reference/luxd/p-chain/api.md#platformexportlux) with
 assetID `LUX` to initiate the transfer.
 
 **Signature:**
@@ -748,8 +748,8 @@ Not recommended for use on Mainnet. See warning notice in [Keystore API](/refere
 **DEPRECATED—instead use** [`lux.import`](/reference/luxd/c-chain/api.md#luximport)
 
 Finalize a transfer of LUX from the X-Chain or P-Chain to the C-Chain. Before this method is
-called, you must call the X-Chain’s [`avm.export`](/reference/luxd/x-chain/api.md#avmexport) 
-or P-Chain’s [`platform.exportLUX`](/reference/luxd/p-chain/api.md#platformexportlux) with 
+called, you must call the X-Chain’s [`avm.export`](/reference/luxd/x-chain/api.md#avmexport)
+or P-Chain’s [`platform.exportLUX`](/reference/luxd/p-chain/api.md#platformexportlux) with
 assetID `LUX` to initiate the transfer.
 
 **Signature:**

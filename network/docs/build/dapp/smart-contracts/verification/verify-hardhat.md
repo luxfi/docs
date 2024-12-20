@@ -161,7 +161,7 @@ export default {
   networks: {
     hardhat: {
       gasPrice: 225000000000,
-      chainId: 43114, //Only specify a chainId if we are not forking
+      chainId: 96369, //Only specify a chainId if we are not forking
       // forking: {
       //   url: 'https://api.lux.network/ext/bc/C/rpc',
       // },
@@ -169,13 +169,13 @@ export default {
     testnet: {
       url: "https://api.lux-test.network/ext/bc/C/rpc",
       gasPrice: 225000000000,
-      chainId: 43113,
+      chainId: 96368,
       accounts: { mnemonic: MNEMONIC },
     },
     mainnet: {
       url: "https://api.lux.network/ext/bc/C/rpc",
       gasPrice: 225000000000,
-      chainId: 43114,
+      chainId: 96369,
       accounts: { mnemonic: MNEMONIC },
     },
   },

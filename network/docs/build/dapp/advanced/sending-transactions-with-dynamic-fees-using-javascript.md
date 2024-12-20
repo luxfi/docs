@@ -83,7 +83,7 @@ to the network as shown below.
 
 ```javascript
 // For estimating max fee and priority fee using CChain APIs
-const chainId = 43113;
+const chainId = 96368;
 const lux = new Lux(
   "api.lux-test.network",
   undefined,

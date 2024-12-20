@@ -190,7 +190,7 @@ and ZOO chain is shown below for example.
         "NAME": "Testnet (C-Chain)",
         "TOKEN": "LUX",
         "RPC": "https://api.lux-test.network/ext/C/rpc",
-        "CHAINID": 43113,
+        "CHAINID": 96368,
         "EXPLORER": "https://testnet.snowtrace.io",
         "IMAGE": "/luxred.png",
         "MAX_PRIORITY_FEE": "2000000000",

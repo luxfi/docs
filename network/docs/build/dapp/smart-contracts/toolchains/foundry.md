@@ -261,7 +261,7 @@ For example, if we were to verify the NFT contract we just
 deployed in the previous section it would look this:
 
 ```zsh
-forge verify-contract --chain-id 43113 --watch --constructor-args $(cast abi-encode "constructor(string,string)" "GameItem" "ITM") 0x8e982a4ef70430f8317b5652bd5c28f147fbf912 NFT
+forge verify-contract --chain-id 96368 --watch --constructor-args $(cast abi-encode "constructor(string,string)" "GameItem" "ITM") 0x8e982a4ef70430f8317b5652bd5c28f147fbf912 NFT
 ```
 
 Upon successful verification, you will see the contract verification status as `successfully verified`:
