@@ -55,7 +55,7 @@ La [API de la C-Chain](/reference/luxd/c-chain/api.md) soporta la API de Geth y 
 implementación y ejecución de contratos inteligentes escritos en Solidity.
 
 La C-Chain es una instancia de la
-[Máquina Virtual Coreth](https://github.com/luxdefi/coreth).
+[Máquina Virtual Coreth](https://github.com/luxfi/coreth).
 
 ### P-Chain
 

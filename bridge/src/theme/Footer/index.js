@@ -79,7 +79,7 @@ function Footer() {
               <a href="https://discord.gg/MxFdWsQY">
                 <BsDiscord className="footer-social"></BsDiscord>
               </a>
-              <a href="https://github.com/luxdefi">
+              <a href="https://github.com/luxfi">
                 <BsGithub className="footer-social"></BsGithub>
               </a>
               <a href="https://twitter.com/luxdefi">
@@ -165,7 +165,7 @@ function Footer() {
                 <a href="https://lux.partners/">
                   <div className="footer-list">Enterprise Solutions</div>
                 </a>
-                <a href="https://github.com/luxdefi/audits">
+                <a href="https://github.com/luxfi/audits">
                   <div className="footer-list">Audits</div>
                 </a>
                 <a href="mailto:legal@lux.partners">

@@ -162,7 +162,7 @@ const config = {
       ({
         docs: {
           routeBasePath: "/",
-          editUrl: "https://github.com/luxdefi/docs/edit/main/",
+          editUrl: "https://github.com/luxfi/docs/edit/main/",
           sidebarPath: "./sidebars.json",
           remarkPlugins: [math],
           rehypePlugins: [katex],

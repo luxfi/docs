@@ -6,10 +6,10 @@ pagination_label: Subnet-EVM API
 ---
 # Subnet-EVM API
 
-[Subnet-EVM](https://github.com/luxdefi/subnet-evm) APIs are identical to
+[Subnet-EVM](https://github.com/luxfi/subnet-evm) APIs are identical to
 [Coreth](/reference/luxd/c-chain/api.md) C-Chain APIs, except Lux Specific APIs 
 starting with `lux`. Subnet-EVM also supports standard Ethereum APIs as well. For more 
-information about Coreth APIs see [GitHub](https://github.com/luxdefi/coreth).
+information about Coreth APIs see [GitHub](https://github.com/luxfi/coreth).
 
 Subnet-EVM has some additional APIs that are not available in Coreth.
 

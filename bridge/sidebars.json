@@ -28,7 +28,7 @@
     {
       "type": "link",
       "label": "Audits",
-      "href": "https://github.com/luxdefi/audits"
+      "href": "https://github.com/luxfi/audits"
     },
     "disclaimer"
   ],
@@ -339,7 +339,7 @@
     {
       "type": "link",
       "label": "LuxSDK",
-      "href": "https://github.com/luxdefi/hypersdk#readme"
+      "href": "https://github.com/luxfi/hypersdk#readme"
     }
   ],
 
@@ -387,7 +387,7 @@
     {
       "type": "link",
       "label": "LuxSDK",
-      "href": "https://github.com/luxdefi/hypersdk#readme"
+      "href": "https://github.com/luxfi/hypersdk#readme"
     },
     {
       "type": "html",
@@ -466,7 +466,7 @@
     {
       "type": "link",
       "label": "Release Notes",
-      "href": "https://github.com/luxdefi/luxd/releases"
+      "href": "https://github.com/luxfi/luxd/releases"
     },
     {
       "type": "html",

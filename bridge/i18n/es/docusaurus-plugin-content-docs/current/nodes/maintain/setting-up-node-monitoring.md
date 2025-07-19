@@ -11,13 +11,13 @@ sidebar_position: 2
 ## Introducción
 
 Este tutorial demuestra cómo configurar la infraestructura para monitorear una instancia de
-[Luxd](https://github.com/luxdefi/luxd). Utilizaremos:
+[Luxd](https://github.com/luxfi/luxd). Utilizaremos:
 
 - [Prometheus](https://prometheus.io/) para recopilar y almacenar datos
 - [`node_exporter`](https://github.com/prometheus/node_exporter) para obtener información sobre la máquina,
 - La API de métricas de Luxd (/reference/luxd/metrics-api.md) para obtener información sobre el nodo
 - [Grafana](https://grafana.com/) para visualizar los datos en un panel de control.
-- Un conjunto de paneles de control predefinidos de Lux [Lux dashboards](https://github.com/luxdefi/monitoring/tree/main/grafana/dashboards)
+- Un conjunto de paneles de control predefinidos de Lux [Lux dashboards](https://github.com/luxfi/monitoring/tree/main/grafana/dashboards)
 
 Requisitos previos:
 

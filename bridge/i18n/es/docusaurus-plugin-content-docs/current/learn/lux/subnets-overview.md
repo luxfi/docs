@@ -74,6 +74,6 @@ _En una red heterogénea de blockchains, algunos validadores no querrán validar
 
 ## Desarrolla tu propia Subnet
 
-Las Subnets en Lux se despliegan por defecto con [Subnet-EVM](https://github.com/luxdefi/subnet-evm#subnet-evm), un fork de go-ethereum. Implementa la Máquina Virtual Ethereum y soporta contratos inteligentes en Solidity, así como la mayoría de las demás funcionalidades de los clientes Ethereum.
+Las Subnets en Lux se despliegan por defecto con [Subnet-EVM](https://github.com/luxfi/subnet-evm#subnet-evm), un fork de go-ethereum. Implementa la Máquina Virtual Ethereum y soporta contratos inteligentes en Solidity, así como la mayoría de las demás funcionalidades de los clientes Ethereum.
 
 Para empezar, echa un vistazo a los tutoriales en nuestra sección de [Subnets](/build/subnet/hello-subnet.md).

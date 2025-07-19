@@ -71,16 +71,16 @@ Los siguientes pasos explican cómo descargar el código fuente de Luxd y constr
 #### 2. Crear un directorio en su `$GOPATH`
 
 ```bash
-mkdir -p $GOPATH/src/github.com/luxdefi
+mkdir -p $GOPATH/src/github.com/luxfi
 ```
 
 #### 3. Clonar Luxd
 
-En el `$GOPATH`, clone [Luxd](https://github.com/luxdefi/luxd), el motor de consenso e implementación de nodo que es el núcleo de la Red Lux.
+En el `$GOPATH`, clone [Luxd](https://github.com/luxfi/luxd), el motor de consenso e implementación de nodo que es el núcleo de la Red Lux.
 
 ```bash
-cd $GOPATH/src/github.com/luxdefi
-git clone https://github.com/luxdefi/luxd.git
+cd $GOPATH/src/github.com/luxfi
+git clone https://github.com/luxfi/luxd.git
 ```
 
 #### 4. Ejecutar el Script de Construcción
@@ -88,7 +88,7 @@ git clone https://github.com/luxdefi/luxd.git
 Desde el directorio `luxd`, ejecute el script de construcción
 
 ```bash
-cd $GOPATH/src/github.com/luxdefi/luxd
+cd $GOPATH/src/github.com/luxfi/luxd
 ./scripts/build.sh
 ```
 
@@ -97,14 +97,14 @@ cd $GOPATH/src/github.com/luxdefi/luxd
 En Lux Mainnet:
 
 ```bash
-cd $GOPATH/src/github.com/luxdefi/luxd
+cd $GOPATH/src/github.com/luxfi/luxd
 ./build/luxd
 ```
 
 En Testnet:
 
 ```bash
-cd $GOPATH/src/github.com/luxdefi/luxd
+cd $GOPATH/src/github.com/luxfi/luxd
 ./build/luxd --network-id=testnet
 ```
 
@@ -114,7 +114,7 @@ Para detener el nodo, presione `Ctrl + C`.
 
 ## Ejecutar con un Binario Pre-Construido
 
-Para descargar un binario pre-construido en lugar de construir desde el origen, vaya a la página de versiones de [Luxd releases](https://github.com/luxdefi/luxd/releases), y seleccione la versión deseada.
+Para descargar un binario pre-construido en lugar de construir desde el origen, vaya a la página de versiones de [Luxd releases](https://github.com/luxfi/luxd/releases), y seleccione la versión deseada.
 
 ### Descargar
 
@@ -188,7 +188,7 @@ Testnet:
 
 ## Ejecutar con Docker
 
-Consulte el repositorio [Luxd GitHub](https://github.com/luxdefi/luxd#docker-install) para obtener más información.
+Consulte el repositorio [Luxd GitHub](https://github.com/luxfi/luxd#docker-install) para obtener más información.
 
 ## Networking
 

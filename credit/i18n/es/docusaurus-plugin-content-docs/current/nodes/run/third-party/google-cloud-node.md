@@ -109,7 +109,7 @@ Dependiendo de cómo planees ejecutar tus operaciones de terraform, es posible q
 
 ### Clonar el repositorio de GitHub
 
-He proporcionado una construcción rudimentaria de terraform para aprovisionar un nodo en el que ejecutar Lux, que se puede encontrar [aquí](https://github.com/luxdefi/docs/tree/master/static/scripts/terraform-gcp/projects/my-lux-project). La documentación a continuación asume que estás utilizando este repositorio, pero si tienes otro esqueleto de terraform, se aplicarán pasos similares.
+He proporcionado una construcción rudimentaria de terraform para aprovisionar un nodo en el que ejecutar Lux, que se puede encontrar [aquí](https://github.com/luxfi/docs/tree/master/static/scripts/terraform-gcp/projects/my-lux-project). La documentación a continuación asume que estás utilizando este repositorio, pero si tienes otro esqueleto de terraform, se aplicarán pasos similares.
 
 ### Configuración de Terraform
 

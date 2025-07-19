@@ -33,4 +33,4 @@ Lux Bridge is committed to enhancing its capabilities and expanding its reach, m
 ## Join the Community
 - [Discord](https://chat.lux.network)
 - [Telegram](https://t.me/luxdefi)
-- [Github](https://github.com/luxdefi)
+- [Github](https://github.com/luxfi)

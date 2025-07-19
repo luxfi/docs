@@ -56,4 +56,4 @@ Dado que todas las claves públicas de los validadores y sus pesos de participac
 
 ## Implementación de Referencia
 
-Se creó una VM de prueba de concepto llamada [XSVM](https://github.com/luxdefi/xsvm) para demostrar el poder de AWM. XSVM permite transferencias simples de AWM entre cualquier par de Subnets si se ejecuta tal como está.
+Se creó una VM de prueba de concepto llamada [XSVM](https://github.com/luxfi/xsvm) para demostrar el poder de AWM. XSVM permite transferencias simples de AWM entre cualquier par de Subnets si se ejecuta tal como está.

@@ -136,7 +136,7 @@ Lux Network employs advanced cryptographic techniques to ensure security in the 
     - Familiarity with blockchain development and smart contract programming.
 - **Installation**:
     - Clone the relevant repositories from the Lux GitHub organization:
-        - [Lux Network](https://github.com/luxdefi)
+        - [Lux Network](https://github.com/luxfi)
     - Follow the setup instructions in the `README.md` files.
 - **Configuration**:
     - Configure your environment variables as specified.
@@ -246,7 +246,7 @@ Lux Network employs advanced cryptographic techniques to ensure security in the 
     - [Lux Ecosystem Whitepaper](Link_to_Whitepaper) (pending)
     - [Lux Network Whitepaper](Link_to_Whitepaper) (pending)
 - **GitHub Repositories**:
-    - [Lux Network](https://github.com/luxdefi)
+    - [Lux Network](https://github.com/luxfi)
 - **Communication Channels**:
     - **Discord**: [Lux Discord Server](https://discord.gg/your-server)
     - **Community Forum**: [community.lux.network](https://community.lux.network)

@@ -12,14 +12,14 @@ with the following exceptions:
 
 ## Official Project/Product Names
 
-- Luxd for [https://github.com/luxdefi/luxd]
-- Lux-CLI for [https://github.com/luxdefi/cli]
-- Lux Netrunner for [https://github.com/luxdefi/netrunner]
+- Luxd for [https://github.com/luxfi/luxd]
+- Lux-CLI for [https://github.com/luxfi/cli]
+- Lux Netrunner for [https://github.com/luxfi/netrunner]
 
 ### Virtual Machines
 
-- Coreth for [https://github.com/luxdefi/coreth]
-- Subnet-EVM for [https://github.com/luxdefi/subnet-evm]
-- TimestampVM for [https://github.com/luxdefi/timestampvm]
-- XSVM for [https://github.com/luxdefi/xsvm]
-- TimestampVM RS for [https://github.com/luxdefi/timestampvm-rs]
+- Coreth for [https://github.com/luxfi/coreth]
+- Subnet-EVM for [https://github.com/luxfi/subnet-evm]
+- TimestampVM for [https://github.com/luxfi/timestampvm]
+- XSVM for [https://github.com/luxfi/xsvm]
+- TimestampVM RS for [https://github.com/luxfi/timestampvm-rs]
