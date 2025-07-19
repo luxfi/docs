@@ -1,9 +1,17 @@
 # Lux Reference Implementation (LRI-001): Community Contribution Framework Implementation
 
+> **⚠️ NOTICE: The LRC/LRI framework has been superseded by the LIP (Lux Improvement Proposal) system**
+> 
+> 📍 **New Repository**: [Official Lux Improvement Proposals](https://github.com/luxdefi/lips)
+> 
+> 💬 **Discussions**: [GitHub Discussions for LIPs](https://github.com/luxdefi/lips/discussions)
+> 
+> 📖 **Contributing**: [How to submit a LIP](https://github.com/luxdefi/lips/blob/main/CONTRIBUTING.md)
+
 **LRI Number**: 001  
-**LRC Reference**: LRC-001  
+**LRC Reference**: LRC-001 → **Now [LIP-1](https://github.com/luxdefi/lips/blob/main/LIPs/lip-1.md)**  
 **Title**: Implementation of Community Contribution Framework  
-**Status**: Draft  
+**Status**: Draft → **Superseded by LIP process**  
 **Type**: Informational  
 **Created**: 2024-11-20
 

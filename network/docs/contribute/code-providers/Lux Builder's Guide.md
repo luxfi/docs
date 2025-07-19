@@ -227,15 +227,24 @@ Lux Network employs advanced cryptographic techniques to ensure security in the 
 
 ## Community Collaboration
 
+- **Lux Improvement Proposals (LIPs)**:
+    - **Submit Standards & Changes**: Propose protocol improvements through the [LIP process](https://github.com/luxdefi/lips)
+    - **Join Discussions**: Participate in [GitHub Discussions](https://github.com/luxdefi/lips/discussions) for proposals
+    - **Learn the Process**: Read the [contribution guide](https://github.com/luxdefi/lips/blob/main/CONTRIBUTING.md)
+    - **Track Progress**: View [current proposals](https://github.com/luxdefi/lips#current-proposals)
 - **Code Reviews**:
     - Participate in peer reviews to maintain high code quality.
+    - For significant changes, consider submitting a LIP first.
 - **Forums and Discussions**:
     - Engage on the [Discord](https://discord.gg/K746mGXdXr).
-    - The GitHub Discussion tab.
+    - The GitHub Discussion tab for code-specific topics.
+    - [LIP Discussions](https://github.com/luxdefi/lips/discussions) for protocol proposals.
 - **Contributing Guidelines**:
     - Follow the guidelines in [Contribution Guide](https://docs.lux.network/contribute/code-providers/Code%20Contributor%20Guide%20to%20Earning%20Weights%20and%20Their%20Implied%20Value%20for%20Lux) for submitting issues and pull requests.
+    - For protocol changes or standards, submit a LIP.
 - **Mentorship**:
     - Offer guidance to new contributors.
+    - Help review and improve LIP proposals.
 
 ---
 

@@ -1,8 +1,16 @@
 # Lux Request for Comment (LRC): Community Contribution Framework for the Lux Ecosystem
 
+> **⚠️ NOTICE: This document has been migrated to the official Lux Improvement Proposals repository**
+> 
+> 📍 **New Location**: [LIP-1 in the official LIPs repository](https://github.com/luxdefi/lips/blob/main/LIPs/lip-1.md)
+> 
+> 💬 **Discussions**: [Join the conversation on GitHub Discussions](https://github.com/luxdefi/lips/discussions)
+> 
+> 📖 **Learn More**: [Understanding LIPs and LRCs](https://github.com/luxdefi/lips#readme)
+
 **LRC Number**: 001  
 **Title**: Community Contribution Framework for Auditing, Improvements, and Upgrades  
-**Status**: Draft  
+**Status**: Draft → **Migrated to [LIP-1](https://github.com/luxdefi/lips/blob/main/LIPs/lip-1.md)**  
 **Type**: Standards Track  
 **Created**: 2024-11-20
 
