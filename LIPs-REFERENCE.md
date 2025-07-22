@@ -2,14 +2,14 @@
 
 The official Lux Improvement Proposals repository has been created at:
 
-🔗 **https://github.com/luxdefi/lips**
+🔗 **https://github.com/luxfi/lips**
 
 ## Quick Links
 
-- 📋 [View All Proposals](https://github.com/luxdefi/lips)
-- 💬 [Join Discussions](https://github.com/luxdefi/lips/discussions)
-- 📖 [How to Contribute](https://github.com/luxdefi/lips/blob/main/CONTRIBUTING.md)
-- 🚀 [Current LIPs](https://github.com/luxdefi/lips#current-proposals)
+- 📋 [View All Proposals](https://github.com/luxfi/lips)
+- 💬 [Join Discussions](https://github.com/luxfi/lips/discussions)
+- 📖 [How to Contribute](https://github.com/luxfi/lips/blob/main/CONTRIBUTING.md)
+- 🚀 [Current LIPs](https://github.com/luxfi/lips#current-proposals)
 
 ## What's in the Repository?
 
