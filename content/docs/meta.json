@@ -1,0 +1,15 @@
+{
+  "title": "Documentation",
+  "pages": [
+    "---Getting Started---",
+    "index",
+    "---Learn---",
+    "learn/...",
+    "---Build---",
+    "build/...",
+    "---Run Nodes---",
+    "nodes/...",
+    "---Reference---",
+    "reference/..."
+  ]
+}
