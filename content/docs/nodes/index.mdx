@@ -1,0 +1,73 @@
+---
+title: Run Nodes
+description: Operate validators, run nodes, and participate in the Lux Network
+---
+
+# Run Nodes
+
+Participate in the Lux Network by running nodes and validators.
+
+## Node Types
+
+<Cards>
+  <Card title="Full Node" href="/docs/nodes/full-node">
+    Run a full node to verify transactions
+  </Card>
+  <Card title="Validator" href="/docs/nodes/validator">
+    Stake LUX and validate the network
+  </Card>
+  <Card title="Archive Node" href="/docs/nodes/archive">
+    Store complete blockchain history
+  </Card>
+</Cards>
+
+## Quick Start
+
+### System Requirements
+
+| Component | Minimum | Recommended |
+|-----------|---------|-------------|
+| CPU | 8 cores | 16+ cores |
+| RAM | 16 GB | 32+ GB |
+| Storage | 1 TB SSD | 2+ TB NVMe |
+| Network | 100 Mbps | 1 Gbps |
+
+### Installation
+
+```bash
+# Download the latest release
+curl -L https://github.com/luxfi/node/releases/latest/download/luxd-linux-amd64.tar.gz | tar xz
+
+# Or use the install script
+curl -sSfL https://raw.githubusercontent.com/luxfi/node/main/scripts/install.sh | sh
+```
+
+### Running a Node
+
+```bash
+# Start with default configuration
+./luxd
+
+# Start with custom configuration
+./luxd --config-file=config.json
+```
+
+## Staking
+
+To become a validator, you need to stake a minimum of 2,000 LUX tokens.
+
+```bash
+# Add validator stake
+lux validator add \
+  --node-id=<your-node-id> \
+  --stake-amount=2000 \
+  --delegation-fee=2
+```
+
+## Monitoring
+
+Access the node metrics and monitoring:
+
+- **Metrics endpoint**: `http://localhost:9650/ext/metrics`
+- **Health check**: `http://localhost:9650/ext/health`
+- **Info API**: `http://localhost:9650/ext/info`

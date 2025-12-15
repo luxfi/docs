@@ -1,0 +1,61 @@
+---
+title: Architecture
+description: Multi-layer architecture of Lux Network
+---
+
+# Lux Network Architecture
+
+Lux Network employs a multi-layer architecture designed for scalability, security, and flexibility.
+
+## Network Layers
+
+### P-Chain (Platform Chain)
+The Platform Chain coordinates validators, tracks active subnets, and enables the creation of new subnets.
+
+- Validator management and staking
+- Subnet creation and configuration
+- Cross-chain messaging coordination
+
+### X-Chain (Exchange Chain)
+The Exchange Chain is a high-throughput chain for asset creation and exchange.
+
+- Native asset creation (NFTs, tokens)
+- Fast asset transfers
+- Low-latency trading operations
+
+### C-Chain (Contract Chain)
+The Contract Chain is an EVM-compatible chain for smart contracts.
+
+- Full Solidity support
+- Ethereum tooling compatibility
+- Sub-second finality
+
+## Subnet Architecture
+
+Subnets are sovereign networks that define their own:
+- Validator requirements
+- Consensus parameters
+- Virtual machine implementations
+
+```
+┌─────────────────────────────────────────┐
+│              Primary Network             │
+│  ┌─────────┬─────────┬─────────┐       │
+│  │ P-Chain │ X-Chain │ C-Chain │       │
+│  └─────────┴─────────┴─────────┘       │
+└─────────────────────────────────────────┘
+        │           │           │
+   ┌────┴───┐  ┌────┴───┐  ┌────┴───┐
+   │Subnet A│  │Subnet B│  │Subnet C│
+   └────────┘  └────────┘  └────────┘
+```
+
+## Virtual Machines
+
+Lux supports multiple virtual machine implementations:
+
+| VM | Description | Use Case |
+|----|-------------|----------|
+| EVM | Ethereum Virtual Machine | Smart contracts |
+| Subnet-EVM | Customizable EVM | Enterprise apps |
+| Custom VMs | Purpose-built VMs | Specialized workloads |
