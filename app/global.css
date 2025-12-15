@@ -1,0 +1,16 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+@import '@luxfi/brand/styles/docs.css';
+
+@theme inline {
+  --default-mono-font-family: var(--font-mono);
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+body {
+  background-color: var(--color-fd-background);
+}
