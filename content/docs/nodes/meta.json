@@ -1,0 +1,4 @@
+{
+  "title": "Run Nodes",
+  "pages": ["index", "full-node", "validator", "archive"]
+}

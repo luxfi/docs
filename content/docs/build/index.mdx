@@ -1,0 +1,66 @@
+---
+title: Build
+description: Start building applications on Lux Network
+---
+
+# Build on Lux
+
+Everything you need to build decentralized applications on Lux Network.
+
+## Quick Start
+
+<Steps>
+  <Step>
+    ### Install the CLI
+    ```bash
+    npm install -g @luxfi/cli
+    ```
+  </Step>
+  <Step>
+    ### Create a Project
+    ```bash
+    lux init my-dapp
+    cd my-dapp
+    ```
+  </Step>
+  <Step>
+    ### Start Development
+    ```bash
+    lux dev
+    ```
+  </Step>
+</Steps>
+
+## Development Guides
+
+<Cards>
+  <Card title="Smart Contracts" href="/docs/build/contracts">
+    Deploy Solidity contracts on Lux C-Chain
+  </Card>
+  <Card title="SDKs" href="/docs/build/sdks">
+    JavaScript, Go, and Rust SDKs
+  </Card>
+  <Card title="Subnets" href="/docs/build/subnets">
+    Create and deploy custom subnets
+  </Card>
+  <Card title="Tutorials" href="/docs/build/tutorials">
+    Step-by-step guides and examples
+  </Card>
+</Cards>
+
+## Supported Languages
+
+| Language | SDK | Status |
+|----------|-----|--------|
+| JavaScript/TypeScript | `@luxfi/sdk` | Stable |
+| Go | `github.com/luxfi/sdk-go` | Stable |
+| Rust | `luxfi-sdk` | Beta |
+| Python | `luxfi-python` | Alpha |
+
+## Testnet Faucet
+
+Get testnet LUX tokens for development:
+
+```bash
+lux faucet request --network testnet --address <your-address>
+```

@@ -1,0 +1,69 @@
+---
+title: Reference
+description: API documentation and CLI reference for Lux Network
+---
+
+# Reference
+
+Complete API and CLI documentation for Lux Network.
+
+## APIs
+
+<Cards>
+  <Card title="JSON-RPC API" href="/docs/reference/json-rpc">
+    Ethereum-compatible JSON-RPC endpoints
+  </Card>
+  <Card title="Platform API" href="/docs/reference/platform">
+    P-Chain platform API reference
+  </Card>
+  <Card title="Info API" href="/docs/reference/info">
+    Node information and status
+  </Card>
+  <Card title="Health API" href="/docs/reference/health">
+    Health check endpoints
+  </Card>
+</Cards>
+
+## CLI Reference
+
+### Global Flags
+
+```bash
+--network          Network to use (mainnet, testnet, local)
+--config           Path to configuration file
+--log-level        Logging level (debug, info, warn, error)
+```
+
+### Common Commands
+
+| Command | Description |
+|---------|-------------|
+| `lux init` | Initialize a new project |
+| `lux dev` | Start local development network |
+| `lux deploy` | Deploy contracts |
+| `lux validator` | Manage validators |
+| `lux subnet` | Manage subnets |
+
+## Network Endpoints
+
+### Mainnet
+
+```
+RPC: https://api.lux.network/ext/bc/C/rpc
+WebSocket: wss://api.lux.network/ext/bc/C/ws
+Chain ID: 7777
+```
+
+### Testnet
+
+```
+RPC: https://testnet-api.lux.network/ext/bc/C/rpc
+WebSocket: wss://testnet-api.lux.network/ext/bc/C/ws
+Chain ID: 7778
+```
+
+## SDK Reference
+
+- [JavaScript SDK](/docs/reference/sdk-js)
+- [Go SDK](/docs/reference/sdk-go)
+- [Rust SDK](/docs/reference/sdk-rust)
