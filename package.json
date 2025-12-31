@@ -15,7 +15,7 @@
     "@hanzo/docs-core": "^16.4.3",
     "@hanzo/docs-base-ui": "^16.4.3",
     "@hanzo/docs-ui": "^16.4.3",
-    "@hanzo/docs-mdx": "^14.2.5",
+    "@hanzo/docs-mdx": "^14.2.6",
     "@hanzo/docs-openapi": "^10.2.3",
     "@hanzo/docs-typescript": "^5.0.1",
     "@hanzo/docs-twoslash": "^3.1.11",
