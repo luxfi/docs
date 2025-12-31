@@ -1,0 +1,117 @@
+---
+title: LUX Tokenomics
+description: LUX token economics, denominations, and supply mechanics
+---
+
+# LUX Token Economics
+
+LUX is the native token of the Lux Network, used for staking, transaction fees, and governance.
+
+## Token Denominations
+
+LUX uses **6 decimal places** on the P-Chain and X-Chain, similar to USDC/USDT. This allows for a maximum supply of approximately 18.4 trillion LUX within uint64 constraints.
+
+| Unit | Symbol | Value in LUX | Value in µLUX |
+|------|--------|--------------|---------------|
+| MicroLux | µLUX | 0.000001 | 1 |
+| MilliLux | mLUX | 0.001 | 1,000 |
+| **Lux** | **LUX** | **1** | **1,000,000** |
+| KiloLux | kLUX | 1,000 | 10^9 |
+| MegaLux | MLUX | 1,000,000 | 10^12 |
+| GigaLux | GLUX | 1,000,000,000 | 10^15 |
+| TeraLux | TLUX | 1,000,000,000,000 | 10^18 |
+
+### Minimum Transferable Unit
+
+The smallest transferable unit on the P-Chain is **1 µLUX (microLUX) = 0.000001 LUX**.
+
+### Why 6 Decimals?
+
+- **Maximum Supply**: With 6 decimals, uint64 can represent up to ~18.4 trillion LUX
+- **Target Supply Cap**: 2 trillion LUX maximum supply
+- **Practical Minimums**: 0.000001 LUX is small enough for all practical use cases
+- **Compatibility**: Matches USDC/USDT decimal precision
+
+## Chain-Specific Denominations
+
+### P-Chain / X-Chain
+- Uses **6 decimals** (µLUX base unit)
+- Native LUX token for staking and transfers
+- Validator rewards paid in LUX
+
+### C-Chain (EVM)
+- Uses **18 decimals** (Wei base unit, standard EVM)
+- 1 LUX = 10^18 Wei on C-Chain
+- Gas fees denominated in Wei
+
+## Supply Mechanics
+
+### Maximum Supply
+- **Supply Cap**: 2,000,000,000,000 LUX (2 trillion)
+- Enforced by the reward calculator
+
+### Initial Distribution
+- Genesis allocations with unlock schedules
+- Validator staking rewards
+- No pre-mine beyond documented allocations
+
+### Reward Calculation
+
+Validators earn rewards based on:
+- Stake duration (longer = higher rate)
+- Stake amount relative to total supply
+- Remaining supply (rewards decrease as supply approaches cap)
+
+```
+MintingRate = MinRate + (MaxRate - MinRate) × (StakeDuration / MaxDuration)
+Reward = RemainingSupply × (StakeAmount / TotalSupply) × MintingRate × (StakeDuration / MaxDuration)
+```
+
+### Reward Config Parameters
+
+| Parameter | Mainnet Value |
+|-----------|---------------|
+| MinConsumptionRate | 10% annually |
+| MaxConsumptionRate | 12% annually |
+| MintingPeriod | 365 days |
+| SupplyCap | 2 TLUX |
+
+## Staking Requirements
+
+### Validators
+- **Minimum Stake**: 2,000 LUX
+- **Maximum Stake**: 3,000,000 LUX
+- **Minimum Duration**: 2 weeks
+- **Maximum Duration**: 1 year
+- **Uptime Requirement**: 80%
+
+### Delegators
+- **Minimum Stake**: 25 LUX
+- **Delegation Fee**: Minimum 2%
+
+## Transaction Fees
+
+| Operation | Fee |
+|-----------|-----|
+| Standard Transaction | 0.001 LUX (1 mLUX) |
+| Create Asset | 0.01 LUX (10 mLUX) |
+
+## Code References
+
+The denomination constants are defined in:
+
+- **Node**: `node/utils/units/lux.go`
+- **Genesis**: `genesis/pkg/genesis/params.go`
+
+```go
+// LUX uses 6 decimals (1 LUX = 10^6 microLUX)
+const (
+    MicroLux  uint64 = 1                    // 0.000001 LUX
+    MilliLux  uint64 = 1000 * MicroLux      // 0.001 LUX
+    Lux       uint64 = 1000 * MilliLux      // 1 LUX
+    KiloLux   uint64 = 1000 * Lux           // 1,000 LUX
+    MegaLux   uint64 = 1000 * KiloLux       // 1,000,000 LUX
+    GigaLux   uint64 = 1000 * MegaLux       // 1 billion LUX
+    TeraLux   uint64 = 1000 * GigaLux       // 1 trillion LUX
+)
+```
