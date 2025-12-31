@@ -1,5 +1,5 @@
-import { docs } from '@/.source';
-import { loader } from 'fumadocs-core/source';
+import { docs } from '@/.docs/server';
+import { loader } from '@hanzo/docs/core/source';
 
 export const source = loader({
   baseUrl: '/docs',

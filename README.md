@@ -2,7 +2,7 @@
 
 Official documentation for Lux Network - Post-quantum secure blockchain infrastructure.
 
-Built with [Fumadocs](https://fumadocs.dev) and the Hanzo Docs framework.
+Built with [@hanzo/docs](https://hanzo.ai/docs) - the documentation framework by Hanzo AI.
 
 ## Getting Started
 

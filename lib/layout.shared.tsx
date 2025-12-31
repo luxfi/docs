@@ -1,4 +1,4 @@
-import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
+import type { BaseLayoutProps } from '@hanzo/docs/ui/layouts/shared';
 import { BookOpenIcon, CodeIcon, ServerIcon, WalletIcon, ShieldIcon, NetworkIcon } from 'lucide-react';
 
 // Lux Network Icon
