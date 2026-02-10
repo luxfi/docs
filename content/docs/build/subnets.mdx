@@ -1,0 +1,221 @@
+---
+title: Subnets
+description: Create and deploy custom subnets on Lux Network
+---
+
+# Subnets
+
+Subnets are sovereign networks within Lux that define their own rules for membership, consensus parameters, and virtual machine implementations. Every subnet is validated by a dynamic set of validators who also validate the Lux Primary Network.
+
+## What Are Subnets?
+
+A subnet is an independent network with its own:
+
+- **Validator set** - Choose which validators participate
+- **Consensus parameters** - Tune finality speed and throughput
+- **Virtual machine** - Run EVM, Subnet-EVM, or a fully custom VM
+- **Gas token** - Use LUX or a custom native token
+- **Access control** - Public or permissioned networks
+
+<Callout>
+  Subnets do not share state or execution with other subnets. They are isolated environments that leverage the Lux Primary Network for validator coordination and security.
+</Callout>
+
+## Create a Subnet
+
+### Using the CLI
+
+<Steps>
+  <Step>
+    ### Install the Lux CLI
+    ```bash
+    npm install -g @luxfi/cli
+    ```
+  </Step>
+  <Step>
+    ### Create the Subnet Configuration
+    ```bash
+    lux subnet create my-subnet
+    ```
+
+    You will be prompted to select:
+    - **VM type**: Subnet-EVM (recommended), Custom
+    - **Chain ID**: A unique identifier for your subnet's chain
+    - **Gas configuration**: Fee structure and limits
+    - **Airdrop**: Optional initial token distribution
+  </Step>
+  <Step>
+    ### Deploy to Local Network
+    ```bash
+    lux subnet deploy my-subnet --local
+    ```
+
+    This starts a local multi-node network with your subnet for testing.
+  </Step>
+  <Step>
+    ### Deploy to Testnet
+    ```bash
+    lux subnet deploy my-subnet --testnet
+    ```
+
+    This creates the subnet on-chain and registers validators on the Lux testnet.
+  </Step>
+  <Step>
+    ### Deploy to Mainnet
+    ```bash
+    lux subnet deploy my-subnet --mainnet
+    ```
+  </Step>
+</Steps>
+
+## Subnet-EVM Configuration
+
+Subnet-EVM is the most common VM for subnets. It is a configurable fork of the Lux C-Chain EVM.
+
+### Genesis Configuration
+
+```json
+{
+  "config": {
+    "chainId": 12345,
+    "feeConfig": {
+      "gasLimit": 15000000,
+      "targetBlockRate": 2,
+      "minBaseFee": 25000000000,
+      "targetGas": 15000000,
+      "baseFeeChangeDenominator": 36,
+      "minBlockGasCost": 0,
+      "maxBlockGasCost": 1000000,
+      "blockGasCostStep": 200000
+    },
+    "allowFeeRecipients": false
+  },
+  "alloc": {
+    "0xYourAddress": {
+      "balance": "0x52B7D2DCC80CD2E4000000"
+    }
+  },
+  "nonce": "0x0",
+  "timestamp": "0x0",
+  "gasLimit": "0xE4E1C0"
+}
+```
+
+### Key Configuration Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `chainId` | Unique chain identifier | Required |
+| `gasLimit` | Maximum gas per block | 15,000,000 |
+| `targetBlockRate` | Target seconds between blocks | 2 |
+| `minBaseFee` | Minimum gas price in Wei | 25 Gwei |
+| `allowFeeRecipients` | Allow validators to collect fees | false |
+
+### Precompiles
+
+Enable optional precompiles in your subnet genesis:
+
+```json
+{
+  "config": {
+    "contractNativeMinterConfig": {
+      "blockTimestamp": 0,
+      "adminAddresses": ["0xAdminAddress"]
+    },
+    "contractDeployerAllowListConfig": {
+      "blockTimestamp": 0,
+      "adminAddresses": ["0xAdminAddress"]
+    },
+    "txAllowListConfig": {
+      "blockTimestamp": 0,
+      "adminAddresses": ["0xAdminAddress"]
+    }
+  }
+}
+```
+
+## Validator Management
+
+### Adding Validators
+
+Each subnet validator must also be a Primary Network validator with at least 2,000 LUX staked.
+
+```bash
+lux subnet addValidator my-subnet \
+  --node-id=NodeID-... \
+  --stake-amount=2000 \
+  --start-time="2025-01-01T00:00:00Z" \
+  --end-time="2026-01-01T00:00:00Z"
+```
+
+### Validator Requirements
+
+| Requirement | Value |
+|-------------|-------|
+| Primary Network stake | Minimum 2,000 LUX |
+| Subnet stake | Defined by subnet creator |
+| Uptime | Subnet-specific (recommended 80%+) |
+| Duration | Must overlap with Primary Network validation period |
+
+## Custom Virtual Machines
+
+For use cases that require non-EVM execution, you can build a custom VM.
+
+A Lux VM implements the `block.ChainVM` interface:
+
+```go
+type ChainVM interface {
+    Initialize(ctx *snow.Context, db database.Database, genesisBytes []byte, ...) error
+    BuildBlock() (Block, error)
+    ParseBlock([]byte) (Block, error)
+    GetBlock(ids.ID) (Block, error)
+    SetPreference(ids.ID) error
+    LastAccepted() (ids.ID, error)
+}
+```
+
+<Callout>
+  Custom VMs are powerful but require careful design. For most applications, Subnet-EVM with custom precompiles provides sufficient flexibility without the complexity of a fully custom VM.
+</Callout>
+
+## Subnet Architecture
+
+```
+┌──────────────────────────────────────────────┐
+│               Primary Network                │
+│  ┌──────────┬──────────┬──────────┐         │
+│  │ P-Chain  │ X-Chain  │ C-Chain  │         │
+│  └──────────┴──────────┴──────────┘         │
+│        Validators: {A, B, C, D, E}           │
+└──────────────────────────────────────────────┘
+           │                    │
+    ┌──────┴──────┐     ┌──────┴──────┐
+    │  Subnet-1   │     │  Subnet-2   │
+    │  EVM-based  │     │  Custom VM  │
+    │  Validators:│     │  Validators:│
+    │  {A, B, C}  │     │  {B, D, E}  │
+    └─────────────┘     └─────────────┘
+```
+
+## Use Cases
+
+<Cards>
+  <Card title="DeFi Chains">
+    High-throughput subnets optimized for decentralized finance with custom gas tokens and fee structures.
+  </Card>
+  <Card title="Gaming Networks">
+    Low-latency subnets with fast block times and permissioned validator sets for predictable performance.
+  </Card>
+  <Card title="Enterprise Chains">
+    Permissioned subnets with transaction allow-lists and KYC-compliant validator sets.
+  </Card>
+  <Card title="AI Compute">
+    Specialized subnets for decentralized AI inference and training coordination.
+  </Card>
+</Cards>
+
+## Further Reading
+
+- [Architecture](/docs/learn/architecture) - How subnets fit into the Lux architecture
+- [Run a Validator](/docs/nodes/validator) - Become a subnet validator
+- [Platform API](/docs/reference/platform) - Programmatic subnet management

@@ -1,0 +1,434 @@
+---
+title: Go SDK
+description: Complete reference for the Lux Network Go SDK
+---
+
+# Go SDK Reference
+
+The Go SDK (`github.com/luxfi/sdk`) provides a typed Go client for interacting with Lux Network. It is well-suited for backend services, CLI tools, validators, and infrastructure software.
+
+## Installation
+
+```bash
+go get github.com/luxfi/sdk@latest
+```
+
+Minimum Go version: 1.22
+
+## Package Structure
+
+```
+github.com/luxfi/sdk/
+  client/          # High-level API client
+    info/          # Info API client
+    platform/      # Platform (P-Chain) API client
+    avm/           # AVM (X-Chain) API client
+    evm/           # EVM (C-Chain) API client
+    health/        # Health API client
+  keychain/        # Key management
+  wallet/          # HD wallet and transaction signing
+  utils/           # Denomination helpers, formatting
+  ids/             # ID types (NodeID, TxID, etc.)
+  constants/       # Network constants
+```
+
+## Client Initialization
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+
+    "github.com/luxfi/sdk/client"
+)
+
+func main() {
+    // Mainnet
+    c := client.New("https://api.lux.network", 443)
+
+    // Testnet
+    // c := client.New("https://api.testnet.lux.network", 443)
+
+    // Local
+    // c := client.New("http://localhost", 9650)
+
+    version, err := c.Info().GetNodeVersion(context.Background())
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println("Connected to:", version)
+}
+```
+
+## Info API Client
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+
+    "github.com/luxfi/sdk/client"
+)
+
+func main() {
+    c := client.New("https://api.lux.network", 443)
+    ctx := context.Background()
+    info := c.Info()
+
+    // Node ID
+    nodeID, _, err := info.GetNodeID(ctx)
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println("Node ID:", nodeID)
+
+    // Network name
+    networkName, err := info.GetNetworkName(ctx)
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println("Network:", networkName)
+
+    // Bootstrap status
+    bootstrapped, err := info.IsBootstrapped(ctx, "C")
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println("C-Chain bootstrapped:", bootstrapped)
+
+    // Peers
+    peers, err := info.Peers(ctx, nil)
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println("Connected peers:", len(peers))
+}
+```
+
+## Platform API Client
+
+### Query Validators
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+
+    "github.com/luxfi/sdk/client"
+)
+
+func main() {
+    c := client.New("https://api.lux.network", 443)
+    ctx := context.Background()
+    platform := c.Platform()
+
+    // Get current validators
+    validators, err := platform.GetCurrentValidators(ctx, nil, nil)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    fmt.Printf("Active validators: %d\n", len(validators))
+    for _, v := range validators {
+        stakeLUX := v.StakeAmount / 1_000_000
+        fmt.Printf("  %s: %d LUX (uptime: %.2f%%)\n",
+            v.NodeID, stakeLUX, v.Uptime*100)
+    }
+}
+```
+
+### Query Balance
+
+```go
+balance, err := platform.GetBalance(ctx, "P-lux1...")
+if err != nil {
+    log.Fatal(err)
+}
+
+fmt.Printf("Balance: %d microLUX (%d LUX)\n",
+    balance.Balance, balance.Balance/1_000_000)
+fmt.Printf("Locked (stakeable): %d LUX\n",
+    balance.LockedStakeable/1_000_000)
+```
+
+### Get Subnets
+
+```go
+subnets, err := platform.GetSubnets(ctx, nil)
+if err != nil {
+    log.Fatal(err)
+}
+
+for _, subnet := range subnets {
+    fmt.Printf("Subnet: %s (control keys: %d, threshold: %d)\n",
+        subnet.ID, len(subnet.ControlKeys), subnet.Threshold)
+}
+```
+
+## EVM (C-Chain) Client
+
+For C-Chain interactions, use the standard Go-Ethereum compatible client from the SDK.
+
+### Connect and Query
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+    "math/big"
+
+    "github.com/luxfi/sdk/ethclient"
+)
+
+func main() {
+    client, err := ethclient.Dial("https://api.lux.network/ext/bc/C/rpc")
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // Chain ID
+    chainID, err := client.ChainID(context.Background())
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println("Chain ID:", chainID)  // 96369
+
+    // Block number
+    blockNum, err := client.BlockNumber(context.Background())
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println("Block number:", blockNum)
+
+    // Balance
+    address := common.HexToAddress("0xYourAddress")
+    balance, err := client.BalanceAt(context.Background(), address, nil)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // Convert from Wei to LUX (18 decimals on C-Chain)
+    luxBalance := new(big.Float).Quo(
+        new(big.Float).SetInt(balance),
+        new(big.Float).SetFloat64(1e18),
+    )
+    fmt.Printf("Balance: %s LUX\n", luxBalance.Text('f', 6))
+}
+```
+
+### Send Transaction
+
+```go
+package main
+
+import (
+    "context"
+    "crypto/ecdsa"
+    "log"
+    "math/big"
+
+    "github.com/luxfi/sdk/ethclient"
+    "github.com/ethereum/go-ethereum/common"
+    "github.com/ethereum/go-ethereum/core/types"
+    "github.com/ethereum/go-ethereum/crypto"
+)
+
+func main() {
+    client, err := ethclient.Dial("https://api.lux.network/ext/bc/C/rpc")
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    privateKey, err := crypto.HexToECDSA("your_private_key_hex")
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    publicKey := privateKey.Public().(*ecdsa.PublicKey)
+    fromAddress := crypto.PubkeyToAddress(*publicKey)
+
+    nonce, err := client.PendingNonceAt(context.Background(), fromAddress)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    toAddress := common.HexToAddress("0xRecipientAddress")
+    value := big.NewInt(1e18) // 1 LUX in Wei
+    gasLimit := uint64(21000)
+    gasPrice, err := client.SuggestGasPrice(context.Background())
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    tx := types.NewTransaction(nonce, toAddress, value, gasLimit, gasPrice, nil)
+
+    chainID := big.NewInt(96369)
+    signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), privateKey)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    err = client.SendTransaction(context.Background(), signedTx)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    log.Printf("TX sent: %s", signedTx.Hash().Hex())
+}
+```
+
+### Read Contract
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+    "math/big"
+    "strings"
+
+    "github.com/luxfi/sdk/ethclient"
+    "github.com/ethereum/go-ethereum"
+    "github.com/ethereum/go-ethereum/accounts/abi"
+    "github.com/ethereum/go-ethereum/common"
+)
+
+func main() {
+    client, err := ethclient.Dial("https://api.lux.network/ext/bc/C/rpc")
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // ERC20 balanceOf
+    erc20ABI, _ := abi.JSON(strings.NewReader(`[{
+        "constant": true,
+        "inputs": [{"name": "account", "type": "address"}],
+        "name": "balanceOf",
+        "outputs": [{"name": "", "type": "uint256"}],
+        "type": "function"
+    }]`))
+
+    contractAddr := common.HexToAddress("0xTokenAddress")
+    queryAddr := common.HexToAddress("0xYourAddress")
+
+    data, err := erc20ABI.Pack("balanceOf", queryAddr)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    result, err := client.CallContract(context.Background(), ethereum.CallMsg{
+        To:   &contractAddr,
+        Data: data,
+    }, nil)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    balance := new(big.Int).SetBytes(result)
+    fmt.Println("Token balance:", balance)
+}
+```
+
+## Health API Client
+
+```go
+health := c.Health()
+
+healthy, err := health.Health(ctx)
+if err != nil {
+    log.Fatal(err)
+}
+
+fmt.Println("Node healthy:", healthy.Healthy)
+for name, check := range healthy.Checks {
+    fmt.Printf("  %s: %v\n", name, check)
+}
+```
+
+## Wallet Package
+
+The wallet package provides HD wallet functionality for building and signing multi-chain transactions.
+
+```go
+package main
+
+import (
+    "context"
+    "log"
+
+    "github.com/luxfi/sdk/wallet"
+)
+
+func main() {
+    // Create wallet from mnemonic
+    w, err := wallet.NewFromMnemonic(
+        "your twelve word mnemonic phrase goes here ...",
+        "https://api.lux.network",
+    )
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // Get addresses for each chain
+    pAddr := w.PChainAddress()
+    xAddr := w.XChainAddress()
+    cAddr := w.CChainAddress()
+
+    log.Printf("P-Chain: %s", pAddr)
+    log.Printf("X-Chain: %s", xAddr)
+    log.Printf("C-Chain: %s", cAddr)
+}
+```
+
+## Denomination Helpers
+
+```go
+import "github.com/luxfi/sdk/utils"
+
+// Convert between denominations
+microLux := uint64(2000000000)  // 2000 LUX in microLUX
+lux := utils.MicroLuxToLux(microLux)
+fmt.Printf("%d microLUX = %f LUX\n", microLux, lux)
+
+// For C-Chain Wei conversions, use standard big.Int math
+weiPerLux := new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)
+```
+
+## Error Handling
+
+The SDK returns standard Go errors. Common patterns:
+
+```go
+result, err := platform.GetCurrentValidators(ctx, nil, nil)
+if err != nil {
+    // Check for specific error types
+    if strings.Contains(err.Error(), "connection refused") {
+        log.Fatal("Cannot connect to node - is luxd running?")
+    }
+    if strings.Contains(err.Error(), "deadline exceeded") {
+        log.Fatal("Request timed out - node may be overloaded")
+    }
+    log.Fatal("Unexpected error:", err)
+}
+```
+
+## Further Reading
+
+- [JavaScript SDK Reference](/docs/reference/sdk-js) - JS/TS SDK for web applications
+- [Platform API](/docs/reference/platform) - Raw P-Chain API methods
+- [JSON-RPC API](/docs/reference/json-rpc) - C-Chain JSON-RPC methods
+- [Smart Contracts](/docs/build/contracts) - Deploy and interact with contracts

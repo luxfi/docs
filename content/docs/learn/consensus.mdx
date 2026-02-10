@@ -1,0 +1,139 @@
+---
+title: Consensus
+description: Lux consensus mechanism - leaderless, metastable, and sub-second finality
+---
+
+# Lux Consensus
+
+Lux Network uses a novel family of leaderless consensus protocols that achieve sub-second finality without a designated block proposer. This approach combines the best properties of classical and Nakamoto consensus while avoiding their limitations.
+
+## The Snow Protocol Family
+
+Lux consensus is built on the **Snow** family of protocols, which achieve agreement through repeated random sub-sampling of the network.
+
+### How It Works
+
+<Steps>
+  <Step>
+    ### Query Phase
+    A node receives a transaction and selects a small random subset of validators (typically k=20) to query.
+  </Step>
+  <Step>
+    ### Response Phase
+    Each queried validator responds with its current preference for the transaction (accept or reject).
+  </Step>
+  <Step>
+    ### Confidence Accumulation
+    If a supermajority (alpha threshold, e.g. 14 out of 20) agree, the node increases its confidence in that outcome. This process repeats with new random samples.
+  </Step>
+  <Step>
+    ### Finalization
+    After sufficient consecutive rounds of supermajority agreement (the beta threshold), the decision is finalized and irreversible.
+  </Step>
+</Steps>
+
+## Protocol Variants
+
+### Snowball
+
+Snowball is the core binary consensus protocol. Each node maintains a confidence counter for each preference and flips its preference when the opposing side accumulates more confidence.
+
+- Maintains running confidence counters
+- Flips preference based on accumulated evidence
+- Probabilistic safety guarantees grow exponentially with rounds
+
+### Snowflake
+
+Snowflake is a simplified variant that tracks only consecutive successes rather than cumulative confidence. It is simpler but slightly less robust than Snowball.
+
+- Uses a consecutive success counter
+- Resets counter on any conflicting supermajority
+- Faster convergence in low-contention scenarios
+
+### Avalanche (DAG-based)
+
+The Avalanche protocol extends Snowball to operate over a directed acyclic graph (DAG) of transactions. This is used on the X-Chain for high-throughput asset transfers.
+
+- Transactions form a DAG with parent-child dependencies
+- Confidence flows transitively through the DAG
+- A parent transaction's acceptance reinforces its children
+- Enables massive parallelism: non-conflicting transactions finalize concurrently
+
+```
+       ┌────┐     ┌────┐
+       │ T1 │     │ T2 │    Independent transactions
+       └──┬─┘     └─┬──┘    finalize in parallel
+          │         │
+       ┌──┴─────────┴──┐
+       │      T3        │    T3 depends on T1 and T2
+       └───────┬────────┘
+               │
+       ┌───────┴────────┐
+       │      T4        │    DAG grows as transactions arrive
+       └────────────────┘
+```
+
+### Snowman (Linear Chain)
+
+Snowman adapts the Snow consensus to linear chains where blocks must be totally ordered. This is used on the P-Chain and C-Chain.
+
+- Builds a single chain of blocks (not a DAG)
+- Each block has exactly one parent
+- Well-suited for smart contract execution where state must be sequential
+- Preserves the leaderless and rapid finality properties of Snow
+
+## Consensus Parameters
+
+| Parameter | Description | Typical Value |
+|-----------|-------------|---------------|
+| **k** (sample size) | Number of validators queried per round | 20 |
+| **alpha** (quorum) | Supermajority threshold | 14 (70%) |
+| **beta** (decision threshold) | Consecutive successes to finalize | 20 |
+| **max rounds** | Maximum query rounds before timeout | 30 |
+
+## Finality
+
+Lux consensus provides **probabilistic finality** that becomes overwhelming within milliseconds.
+
+<Callout>
+  Lux achieves finality in under 1 second for most transactions. The probability of reversal decreases exponentially with each round, reaching negligible levels (less than 10^-9) well before the beta threshold.
+</Callout>
+
+### Finality Comparison
+
+| Consensus | Finality Time | Finality Type | Leader Required |
+|-----------|---------------|---------------|-----------------|
+| **Lux (Snow)** | **< 1 second** | **Probabilistic (overwhelming)** | **No** |
+| Bitcoin (PoW) | ~60 minutes | Probabilistic | Yes (miner) |
+| Ethereum (PoS) | ~15 minutes | Economic | Yes (proposer) |
+| Tendermint (BFT) | ~6 seconds | Absolute | Yes (proposer) |
+
+## Chain-Specific Consensus
+
+Each chain in the Lux Primary Network uses the consensus variant best suited to its workload.
+
+| Chain | Protocol | Reason |
+|-------|----------|--------|
+| **X-Chain** | Avalanche (DAG) | High-throughput parallel asset transfers |
+| **C-Chain** | Snowman (Linear) | Sequential smart contract execution |
+| **P-Chain** | Snowman (Linear) | Ordered validator set changes and staking |
+
+## Properties
+
+### Liveness
+
+The protocol guarantees progress as long as a sufficient fraction of the network is reachable. There is no single leader whose failure can stall the chain.
+
+### Safety
+
+Safety holds as long as the fraction of Byzantine (malicious) nodes remains below the parameterized threshold. With typical parameters, the protocol tolerates up to ~20% Byzantine validators while maintaining safety with overwhelming probability.
+
+### Scalability
+
+Because each node only queries a small fixed-size sample per round (not the entire validator set), the per-node communication overhead is O(k) per round regardless of total network size. This allows Lux to scale to thousands of validators without degrading finality speed.
+
+## Further Reading
+
+- [Architecture](/docs/learn/architecture) - How consensus integrates with the multi-chain design
+- [Tokenomics](/docs/learn/tokenomics) - Staking requirements for validators participating in consensus
+- [Run a Validator](/docs/nodes/validator) - Participate in consensus by running a validator node
