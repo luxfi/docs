@@ -1,0 +1,391 @@
+---
+title: Tutorials
+description: Step-by-step guides for building on Lux Network
+---
+
+# Tutorials
+
+Hands-on guides to get you building on Lux Network. Each tutorial walks through a complete workflow from setup to deployment.
+
+## Deploy Your First Contract
+
+Deploy a simple storage contract to Lux C-Chain testnet using Hardhat.
+
+<Steps>
+  <Step>
+    ### Set Up the Project
+    ```bash
+    mkdir lux-hello && cd lux-hello
+    npm init -y
+    npm install --save-dev hardhat @nomicfoundation/hardhat-toolbox
+    npx hardhat init
+    ```
+    Select "Create a JavaScript project" when prompted.
+  </Step>
+  <Step>
+    ### Write the Contract
+
+    Replace `contracts/Lock.sol` with `contracts/Storage.sol`:
+
+    ```solidity
+    // SPDX-License-Identifier: MIT
+    pragma solidity ^0.8.24;
+
+    contract Storage {
+        uint256 private value;
+
+        event ValueChanged(uint256 newValue);
+
+        function store(uint256 newValue) public {
+            value = newValue;
+            emit ValueChanged(newValue);
+        }
+
+        function retrieve() public view returns (uint256) {
+            return value;
+        }
+    }
+    ```
+  </Step>
+  <Step>
+    ### Configure Lux Testnet
+
+    Update `hardhat.config.js`:
+
+    ```javascript
+    require("@nomicfoundation/hardhat-toolbox");
+
+    module.exports = {
+      solidity: "0.8.24",
+      networks: {
+        luxTestnet: {
+          url: "https://api.testnet.lux.network/ext/bc/C/rpc",
+          chainId: 96368,
+          accounts: [process.env.PRIVATE_KEY],
+        },
+      },
+    };
+    ```
+  </Step>
+  <Step>
+    ### Get Testnet LUX
+
+    Request tokens from the testnet faucet:
+
+    ```bash
+    lux faucet request --network testnet --address <your-c-chain-address>
+    ```
+  </Step>
+  <Step>
+    ### Deploy
+
+    Create `scripts/deploy.js`:
+
+    ```javascript
+    const { ethers } = require("hardhat");
+
+    async function main() {
+      const Storage = await ethers.getContractFactory("Storage");
+      const storage = await Storage.deploy();
+      await storage.waitForDeployment();
+      console.log("Storage deployed to:", await storage.getAddress());
+    }
+
+    main().catch(console.error);
+    ```
+
+    ```bash
+    npx hardhat run scripts/deploy.js --network luxTestnet
+    ```
+  </Step>
+  <Step>
+    ### Interact
+
+    ```bash
+    npx hardhat console --network luxTestnet
+    ```
+
+    ```javascript
+    const Storage = await ethers.getContractFactory("Storage");
+    const storage = Storage.attach("0xYourDeployedAddress");
+
+    await storage.store(42);
+    const value = await storage.retrieve();
+    console.log("Stored value:", value.toString()); // 42
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Create an ERC-20 Token
+
+Deploy a custom ERC-20 token with minting and burning capabilities.
+
+<Steps>
+  <Step>
+    ### Install OpenZeppelin
+    ```bash
+    npm install @openzeppelin/contracts
+    ```
+  </Step>
+  <Step>
+    ### Write the Token Contract
+
+    Create `contracts/LuxToken.sol`:
+
+    ```solidity
+    // SPDX-License-Identifier: MIT
+    pragma solidity ^0.8.24;
+
+    import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+    import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+    import "@openzeppelin/contracts/access/Ownable.sol";
+
+    contract LuxToken is ERC20, ERC20Burnable, Ownable {
+        constructor(
+            string memory name,
+            string memory symbol,
+            uint256 initialSupply
+        ) ERC20(name, symbol) Ownable(msg.sender) {
+            _mint(msg.sender, initialSupply * 10 ** decimals());
+        }
+
+        function mint(address to, uint256 amount) public onlyOwner {
+            _mint(to, amount);
+        }
+    }
+    ```
+  </Step>
+  <Step>
+    ### Write Tests
+
+    Create `test/LuxToken.test.js`:
+
+    ```javascript
+    const { expect } = require("chai");
+    const { ethers } = require("hardhat");
+
+    describe("LuxToken", function () {
+      let token, owner, addr1;
+
+      beforeEach(async function () {
+        [owner, addr1] = await ethers.getSigners();
+        const LuxToken = await ethers.getContractFactory("LuxToken");
+        token = await LuxToken.deploy("LuxToken", "LUXT", 1000000);
+      });
+
+      it("should assign total supply to owner", async function () {
+        const balance = await token.balanceOf(owner.address);
+        expect(await token.totalSupply()).to.equal(balance);
+      });
+
+      it("should allow owner to mint", async function () {
+        await token.mint(addr1.address, 1000);
+        expect(await token.balanceOf(addr1.address)).to.equal(1000);
+      });
+
+      it("should allow token burning", async function () {
+        const amount = ethers.parseEther("100");
+        await token.burn(amount);
+        const supply = await token.totalSupply();
+        expect(supply).to.equal(ethers.parseEther("999900"));
+      });
+    });
+    ```
+
+    ```bash
+    npx hardhat test
+    ```
+  </Step>
+  <Step>
+    ### Deploy
+
+    Create `scripts/deployToken.js`:
+
+    ```javascript
+    const { ethers } = require("hardhat");
+
+    async function main() {
+      const LuxToken = await ethers.getContractFactory("LuxToken");
+      const token = await LuxToken.deploy("MyToken", "MTK", 1000000);
+      await token.waitForDeployment();
+      console.log("Token deployed to:", await token.getAddress());
+    }
+
+    main().catch(console.error);
+    ```
+
+    ```bash
+    npx hardhat run scripts/deployToken.js --network luxTestnet
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Build a Simple DeFi Vault
+
+Create a vault contract that accepts LUX deposits and tracks shares.
+
+<Steps>
+  <Step>
+    ### Write the Vault Contract
+
+    Create `contracts/Vault.sol`:
+
+    ```solidity
+    // SPDX-License-Identifier: MIT
+    pragma solidity ^0.8.24;
+
+    import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+    import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+    contract Vault is ERC20 {
+        IERC20 public immutable token;
+
+        constructor(IERC20 _token) ERC20("Vault Shares", "vSHARE") {
+            token = _token;
+        }
+
+        function deposit(uint256 amount) external {
+            uint256 shares;
+            if (totalSupply() == 0) {
+                shares = amount;
+            } else {
+                shares = (amount * totalSupply()) / token.balanceOf(address(this));
+            }
+            token.transferFrom(msg.sender, address(this), amount);
+            _mint(msg.sender, shares);
+        }
+
+        function withdraw(uint256 shares) external {
+            uint256 amount = (shares * token.balanceOf(address(this))) / totalSupply();
+            _burn(msg.sender, shares);
+            token.transfer(msg.sender, amount);
+        }
+    }
+    ```
+  </Step>
+  <Step>
+    ### Test the Vault
+
+    ```javascript
+    const { expect } = require("chai");
+    const { ethers } = require("hardhat");
+
+    describe("Vault", function () {
+      it("should mint shares on deposit", async function () {
+        const [owner] = await ethers.getSigners();
+
+        const Token = await ethers.getContractFactory("LuxToken");
+        const token = await Token.deploy("Test", "TST", 1000000);
+
+        const Vault = await ethers.getContractFactory("Vault");
+        const vault = await Vault.deploy(await token.getAddress());
+
+        const amount = ethers.parseEther("1000");
+        await token.approve(await vault.getAddress(), amount);
+        await vault.deposit(amount);
+
+        expect(await vault.balanceOf(owner.address)).to.equal(amount);
+      });
+    });
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Create a Custom Subnet
+
+Deploy your own subnet with a custom gas token and fee structure.
+
+<Steps>
+  <Step>
+    ### Install the CLI
+    ```bash
+    npm install -g @luxfi/cli
+    ```
+  </Step>
+  <Step>
+    ### Create the Subnet
+    ```bash
+    lux subnet create game-chain
+    ```
+
+    When prompted, configure:
+    - **VM**: Subnet-EVM
+    - **Chain ID**: 99999 (or any unique ID)
+    - **Gas token symbol**: GAME
+    - **Initial supply**: 1,000,000 GAME
+    - **Airdrop address**: Your wallet address
+  </Step>
+  <Step>
+    ### Deploy Locally
+    ```bash
+    lux subnet deploy game-chain --local
+    ```
+
+    The CLI will output your subnet's RPC URL and chain ID.
+  </Step>
+  <Step>
+    ### Connect with MetaMask
+
+    Add the custom network to MetaMask:
+    - **RPC URL**: Provided by `lux subnet deploy` output
+    - **Chain ID**: 99999
+    - **Symbol**: GAME
+  </Step>
+  <Step>
+    ### Deploy Contracts to Your Subnet
+    Update your Hardhat config with the local subnet RPC and deploy as usual:
+
+    ```bash
+    npx hardhat run scripts/deploy.js --network localSubnet
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Cross-Chain Asset Transfer
+
+Move LUX between the X-Chain, P-Chain, and C-Chain.
+
+<Steps>
+  <Step>
+    ### Export from X-Chain to C-Chain
+    ```bash
+    lux transfer export \
+      --source x-chain \
+      --destination c-chain \
+      --amount 10 \
+      --network testnet
+    ```
+  </Step>
+  <Step>
+    ### Import on C-Chain
+    ```bash
+    lux transfer import \
+      --chain c-chain \
+      --network testnet
+    ```
+  </Step>
+  <Step>
+    ### Verify the Transfer
+    ```bash
+    lux wallet balance --chain c-chain --network testnet
+    ```
+  </Step>
+</Steps>
+
+<Callout>
+  Cross-chain transfers require a small fee on each chain. The transfer is atomic -- it either completes on both chains or neither.
+</Callout>
+
+## Further Reading
+
+- [Smart Contracts](/docs/build/contracts) - Contract development reference
+- [SDKs](/docs/build/sdks) - Interact with contracts programmatically
+- [Subnets](/docs/build/subnets) - Full subnet configuration reference

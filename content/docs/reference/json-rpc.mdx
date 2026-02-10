@@ -1,0 +1,309 @@
+---
+title: JSON-RPC API
+description: Ethereum-compatible JSON-RPC API reference for Lux C-Chain
+---
+
+# JSON-RPC API
+
+Lux C-Chain exposes an Ethereum-compatible JSON-RPC API. Any tool that works with Ethereum (ethers.js, web3.js, Foundry, Hardhat) works with Lux out of the box.
+
+## Endpoints
+
+| Network | HTTP | WebSocket |
+|---------|------|-----------|
+| Mainnet | `https://api.lux.network/ext/bc/C/rpc` | `wss://api.lux.network/ext/bc/C/ws` |
+| Testnet | `https://api.testnet.lux.network/ext/bc/C/rpc` | `wss://api.testnet.lux.network/ext/bc/C/ws` |
+| Local | `http://localhost:9650/ext/bc/C/rpc` | `ws://localhost:9650/ext/bc/C/ws` |
+
+### Chain IDs
+
+| Network | Chain ID |
+|---------|----------|
+| Mainnet | `96369` |
+| Testnet | `96368` |
+
+## Request Format
+
+All requests use HTTP POST with `Content-Type: application/json`.
+
+```bash
+curl -s -X POST \
+  -H "Content-Type: application/json" \
+  --data '{"jsonrpc":"2.0","id":1,"method":"METHOD","params":PARAMS}' \
+  https://api.lux.network/ext/bc/C/rpc
+```
+
+## Core Methods
+
+### eth_blockNumber
+
+Returns the current block number.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "eth_blockNumber",
+  "params": []
+}' -H 'content-type:application/json' https://api.lux.network/ext/bc/C/rpc
+```
+
+Response:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "0x1A4F2B"
+}
+```
+
+### eth_getBalance
+
+Returns the LUX balance of an address in Wei.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `address` | string | The address to query |
+| `block` | string | Block number (hex) or `"latest"`, `"earliest"`, `"pending"` |
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "eth_getBalance",
+  "params": ["0xYourAddress", "latest"]
+}' -H 'content-type:application/json' https://api.lux.network/ext/bc/C/rpc
+```
+
+Response:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "0xDE0B6B3A7640000"
+}
+```
+
+The result is in Wei (18 decimals on C-Chain). `0xDE0B6B3A7640000` = 1 LUX.
+
+### eth_sendRawTransaction
+
+Submits a signed transaction to the network.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `data` | string | Signed transaction data (hex) |
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "eth_sendRawTransaction",
+  "params": ["0xf86c...signed_tx_hex"]
+}' -H 'content-type:application/json' https://api.lux.network/ext/bc/C/rpc
+```
+
+Response:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "0x transaction_hash"
+}
+```
+
+### eth_call
+
+Executes a read-only contract call without creating a transaction.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `object` | object | Transaction call object |
+| `block` | string | Block number or tag |
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "eth_call",
+  "params": [{
+    "to": "0xContractAddress",
+    "data": "0x70a08231000000000000000000000000YourAddress"
+  }, "latest"]
+}' -H 'content-type:application/json' https://api.lux.network/ext/bc/C/rpc
+```
+
+The `data` field is the ABI-encoded function selector and parameters. The example above calls `balanceOf(address)`.
+
+### eth_getLogs
+
+Returns logs matching a filter.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `fromBlock` | string | Start block (hex or tag) |
+| `toBlock` | string | End block (hex or tag) |
+| `address` | string or array | Contract address(es) to filter |
+| `topics` | array | Event topic filters |
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "eth_getLogs",
+  "params": [{
+    "fromBlock": "0x1A0000",
+    "toBlock": "latest",
+    "address": "0xContractAddress",
+    "topics": [
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+    ]
+  }]
+}' -H 'content-type:application/json' https://api.lux.network/ext/bc/C/rpc
+```
+
+The topic `0xddf252ad...` is the `Transfer(address,address,uint256)` event signature.
+
+### eth_getTransactionReceipt
+
+Returns the receipt of a transaction by hash.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "eth_getTransactionReceipt",
+  "params": ["0xTransactionHash"]
+}' -H 'content-type:application/json' https://api.lux.network/ext/bc/C/rpc
+```
+
+### eth_estimateGas
+
+Estimates the gas required for a transaction.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "eth_estimateGas",
+  "params": [{
+    "from": "0xSenderAddress",
+    "to": "0xRecipientAddress",
+    "value": "0xDE0B6B3A7640000"
+  }]
+}' -H 'content-type:application/json' https://api.lux.network/ext/bc/C/rpc
+```
+
+### eth_gasPrice
+
+Returns the current gas price in Wei.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "eth_gasPrice",
+  "params": []
+}' -H 'content-type:application/json' https://api.lux.network/ext/bc/C/rpc
+```
+
+## WebSocket Subscriptions
+
+Subscribe to real-time events over WebSocket.
+
+### New Blocks
+
+```javascript
+const ws = new WebSocket("wss://api.lux.network/ext/bc/C/ws");
+
+ws.onopen = () => {
+  ws.send(JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "eth_subscribe",
+    params: ["newHeads"],
+  }));
+};
+
+ws.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  if (data.params) {
+    console.log("New block:", data.params.result.number);
+  }
+};
+```
+
+### Log Subscriptions
+
+```javascript
+ws.send(JSON.stringify({
+  jsonrpc: "2.0",
+  id: 2,
+  method: "eth_subscribe",
+  params: [
+    "logs",
+    {
+      address: "0xContractAddress",
+      topics: ["0xEventSignature"],
+    },
+  ],
+}));
+```
+
+### Pending Transactions
+
+```javascript
+ws.send(JSON.stringify({
+  jsonrpc: "2.0",
+  id: 3,
+  method: "eth_subscribe",
+  params: ["newPendingTransactions"],
+}));
+```
+
+## Rate Limits
+
+The public RPC endpoints enforce rate limits to ensure fair access.
+
+| Endpoint | Rate Limit |
+|----------|-----------|
+| Public mainnet | 40 requests/second per IP |
+| Public testnet | 40 requests/second per IP |
+| Local node | No limit |
+
+<Callout>
+  For production applications requiring higher throughput, run your own [full node](/docs/nodes/full-node) or use a dedicated RPC provider.
+</Callout>
+
+## Supported Methods
+
+The following standard Ethereum JSON-RPC methods are supported:
+
+| Method | Description |
+|--------|-------------|
+| `eth_blockNumber` | Current block number |
+| `eth_getBalance` | Address balance |
+| `eth_getTransactionCount` | Nonce for address |
+| `eth_sendRawTransaction` | Submit signed transaction |
+| `eth_call` | Read-only contract call |
+| `eth_estimateGas` | Estimate gas cost |
+| `eth_gasPrice` | Current gas price |
+| `eth_getBlockByNumber` | Block by number |
+| `eth_getBlockByHash` | Block by hash |
+| `eth_getTransactionByHash` | Transaction details |
+| `eth_getTransactionReceipt` | Transaction receipt |
+| `eth_getLogs` | Event logs |
+| `eth_getCode` | Contract bytecode |
+| `eth_getStorageAt` | Contract storage |
+| `eth_chainId` | Chain ID |
+| `net_version` | Network version |
+| `web3_clientVersion` | Client version |
+
+## Further Reading
+
+- [Platform API](/docs/reference/platform) - P-Chain staking and subnet APIs
+- [Info API](/docs/reference/info) - Node information endpoints
+- [JavaScript SDK](/docs/reference/sdk-js) - Interact with JSON-RPC from JavaScript

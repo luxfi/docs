@@ -1,0 +1,246 @@
+---
+title: Smart Contracts
+description: Deploy and develop Solidity smart contracts on Lux C-Chain
+---
+
+# Smart Contracts
+
+Lux C-Chain is fully EVM-compatible, meaning you can write, test, and deploy Solidity smart contracts using the same tools you already know from Ethereum development.
+
+## Network Configuration
+
+Add Lux to your development environment:
+
+<Tabs items={["Mainnet", "Testnet"]}>
+  <Tab value="Mainnet">
+    ```
+    Network Name: Lux Mainnet C-Chain
+    RPC URL:      https://api.lux.network/ext/bc/C/rpc
+    Chain ID:     96369
+    Symbol:       LUX
+    Explorer:     https://explorer.lux.network
+    ```
+  </Tab>
+  <Tab value="Testnet">
+    ```
+    Network Name: Lux Testnet C-Chain
+    RPC URL:      https://api.testnet.lux.network/ext/bc/C/rpc
+    Chain ID:     96368
+    Symbol:       LUX
+    Explorer:     https://explorer.testnet.lux.network
+    ```
+  </Tab>
+</Tabs>
+
+## Development with Hardhat
+
+<Steps>
+  <Step>
+    ### Initialize a Hardhat Project
+    ```bash
+    mkdir my-lux-contract && cd my-lux-contract
+    npm init -y
+    npm install --save-dev hardhat @nomicfoundation/hardhat-toolbox
+    npx hardhat init
+    ```
+  </Step>
+  <Step>
+    ### Configure Lux Networks
+
+    Update `hardhat.config.js`:
+
+    ```javascript
+    require("@nomicfoundation/hardhat-toolbox");
+
+    module.exports = {
+      solidity: "0.8.24",
+      networks: {
+        lux: {
+          url: "https://api.lux.network/ext/bc/C/rpc",
+          chainId: 96369,
+          accounts: [process.env.PRIVATE_KEY],
+        },
+        luxTestnet: {
+          url: "https://api.testnet.lux.network/ext/bc/C/rpc",
+          chainId: 96368,
+          accounts: [process.env.PRIVATE_KEY],
+        },
+      },
+    };
+    ```
+  </Step>
+  <Step>
+    ### Write a Contract
+
+    Create `contracts/MyToken.sol`:
+
+    ```solidity
+    // SPDX-License-Identifier: MIT
+    pragma solidity ^0.8.24;
+
+    import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+    contract MyToken is ERC20 {
+        constructor(uint256 initialSupply) ERC20("MyToken", "MTK") {
+            _mint(msg.sender, initialSupply);
+        }
+    }
+    ```
+  </Step>
+  <Step>
+    ### Deploy
+    ```bash
+    npx hardhat run scripts/deploy.js --network luxTestnet
+    ```
+  </Step>
+</Steps>
+
+## Development with Foundry
+
+Foundry provides faster compilation and testing with Forge.
+
+<Steps>
+  <Step>
+    ### Install Foundry
+    ```bash
+    curl -L https://foundry.paradigm.xyz | bash
+    foundryup
+    ```
+  </Step>
+  <Step>
+    ### Create a Project
+    ```bash
+    forge init my-lux-contract
+    cd my-lux-contract
+    ```
+  </Step>
+  <Step>
+    ### Write and Test
+
+    Create `src/Counter.sol`:
+
+    ```solidity
+    // SPDX-License-Identifier: MIT
+    pragma solidity ^0.8.24;
+
+    contract Counter {
+        uint256 public number;
+
+        function setNumber(uint256 newNumber) public {
+            number = newNumber;
+        }
+
+        function increment() public {
+            number++;
+        }
+    }
+    ```
+
+    Create `test/Counter.t.sol`:
+
+    ```solidity
+    // SPDX-License-Identifier: MIT
+    pragma solidity ^0.8.24;
+
+    import "forge-std/Test.sol";
+    import "../src/Counter.sol";
+
+    contract CounterTest is Test {
+        Counter public counter;
+
+        function setUp() public {
+            counter = new Counter();
+            counter.setNumber(0);
+        }
+
+        function test_Increment() public {
+            counter.increment();
+            assertEq(counter.number(), 1);
+        }
+
+        function testFuzz_SetNumber(uint256 x) public {
+            counter.setNumber(x);
+            assertEq(counter.number(), x);
+        }
+    }
+    ```
+
+    Run tests:
+
+    ```bash
+    forge test -vvv
+    ```
+  </Step>
+  <Step>
+    ### Deploy with Forge
+    ```bash
+    forge create --rpc-url https://api.testnet.lux.network/ext/bc/C/rpc \
+      --private-key $PRIVATE_KEY \
+      src/Counter.sol:Counter
+    ```
+  </Step>
+</Steps>
+
+## Contract Verification
+
+Verify your contracts on the Lux Explorer for transparency and user trust:
+
+```bash
+# Hardhat
+npx hardhat verify --network luxTestnet <CONTRACT_ADDRESS> <CONSTRUCTOR_ARGS>
+
+# Foundry
+forge verify-contract <CONTRACT_ADDRESS> src/Counter.sol:Counter \
+  --chain-id 96368 \
+  --verifier-url https://explorer.testnet.lux.network/api
+```
+
+## Available Precompiles
+
+Lux C-Chain includes precompiled contracts for common operations:
+
+| Address | Precompile | Description |
+|---------|-----------|-------------|
+| `0x0100...0001` | NativeMinter | Mint native LUX tokens (admin only) |
+| `0x0100...0002` | ContractDeployer | Restrict who can deploy contracts |
+| `0x0100...0003` | TxAllowList | Restrict who can submit transactions |
+| `0x0100...0004` | FeeManager | Configure dynamic fee parameters |
+| `0x0100...0005` | RewardManager | Configure block reward recipients |
+
+<Callout>
+  Precompile access is governed by admin roles configured at the subnet level. On the Primary Network C-Chain, most precompiles are restricted to governance operations.
+</Callout>
+
+## Gas Optimization Tips
+
+Lux C-Chain uses a dynamic fee model similar to EIP-1559. Optimize gas costs with these practices:
+
+- **Use `calldata` instead of `memory`** for read-only function parameters
+- **Pack storage variables** to minimize storage slots (e.g., multiple `uint128` in one slot)
+- **Use `immutable` and `constant`** for values that do not change after deployment
+- **Batch operations** to amortize base transaction costs
+- **Avoid redundant storage reads** by caching in local variables
+
+```solidity
+// Gas-inefficient
+function bad(uint256[] memory data) public {
+    for (uint i = 0; i < data.length; i++) {
+        total += data[i]; // reads storage `total` each iteration
+    }
+}
+
+// Gas-efficient
+function good(uint256[] calldata data) public {
+    uint256 _total = total; // cache storage read
+    for (uint i = 0; i < data.length; i++) {
+        _total += data[i];
+    }
+    total = _total; // single storage write
+}
+```
+
+## Further Reading
+
+- [Tutorials](/docs/build/tutorials) - Step-by-step contract deployment guides
+- [JSON-RPC API](/docs/reference/json-rpc) - Interact with deployed contracts via RPC
+- [SDKs](/docs/build/sdks) - Call contracts from JavaScript, Go, or Rust

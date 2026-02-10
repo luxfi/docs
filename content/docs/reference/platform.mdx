@@ -1,0 +1,373 @@
+---
+title: Platform API
+description: P-Chain Platform API reference for staking, validators, and subnets
+---
+
+# Platform API
+
+The Platform API provides access to the P-Chain, which manages validators, staking, and subnets. All Platform API methods are accessed at the `/ext/P` endpoint (or equivalently `/ext/bc/P`).
+
+## Endpoint
+
+```
+POST https://api.lux.network/ext/P
+POST http://localhost:9650/ext/P
+```
+
+All requests use the standard JSON-RPC format:
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "platform.methodName",
+  "params": {}
+}' -H 'content-type:application/json' https://api.lux.network/ext/P
+```
+
+## Validator Methods
+
+### platform.getCurrentValidators
+
+Returns the current validator set for a subnet.
+
+**Parameters:**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `subnetID` | string | Subnet ID (omit for Primary Network) |
+| `nodeIDs` | []string | Filter by node IDs (optional) |
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "platform.getCurrentValidators",
+  "params": {}
+}' -H 'content-type:application/json' https://api.lux.network/ext/P
+```
+
+**Response:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "validators": [
+      {
+        "txID": "...",
+        "startTime": "1640000000",
+        "endTime": "1671536000",
+        "stakeAmount": "2000000000",
+        "nodeID": "NodeID-...",
+        "delegationFee": "2.0000",
+        "connected": true,
+        "uptime": "0.9523"
+      }
+    ]
+  },
+  "id": 1
+}
+```
+
+<Callout>
+  The `stakeAmount` is in microLUX (6 decimals). Divide by 1,000,000 to get LUX. For example, `2000000000` = 2,000 LUX.
+</Callout>
+
+### platform.getPendingValidators
+
+Returns validators that have been accepted to join but have not yet started validating.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "platform.getPendingValidators",
+  "params": {}
+}' -H 'content-type:application/json' https://api.lux.network/ext/P
+```
+
+### platform.addValidator
+
+Adds a node as a validator to the Primary Network.
+
+**Parameters:**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `nodeID` | string | The node ID to add |
+| `startTime` | int | Unix timestamp when validation starts |
+| `endTime` | int | Unix timestamp when validation ends |
+| `stakeAmount` | int | Stake amount in microLUX |
+| `rewardAddress` | string | Address to receive staking rewards |
+| `delegationFeeRate` | float | Fee rate for delegators (e.g., 2.0 for 2%) |
+| `from` | []string | Addresses to fund the transaction |
+| `username` | string | Keystore username |
+| `password` | string | Keystore password |
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "platform.addValidator",
+  "params": {
+    "nodeID": "NodeID-...",
+    "startTime": 1700000000,
+    "endTime": 1731536000,
+    "stakeAmount": 2000000000,
+    "rewardAddress": "P-lux1...",
+    "delegationFeeRate": 2.0,
+    "from": ["P-lux1..."],
+    "username": "myuser",
+    "password": "mypassword"
+  }
+}' -H 'content-type:application/json' http://localhost:9650/ext/P
+```
+
+<Callout>
+  The `addValidator` method requires local keystore access. For production, use the CLI or SDK to build and sign the transaction offline, then submit with `platform.issueTx`.
+</Callout>
+
+### platform.addDelegator
+
+Delegate stake to an existing validator.
+
+**Parameters:**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `nodeID` | string | Validator to delegate to |
+| `startTime` | int | Unix timestamp |
+| `endTime` | int | Unix timestamp |
+| `stakeAmount` | int | Delegation amount in microLUX (min 25 LUX = 25000000) |
+| `rewardAddress` | string | Address to receive rewards |
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "platform.addDelegator",
+  "params": {
+    "nodeID": "NodeID-...",
+    "startTime": 1700000000,
+    "endTime": 1731536000,
+    "stakeAmount": 25000000,
+    "rewardAddress": "P-lux1...",
+    "from": ["P-lux1..."],
+    "username": "myuser",
+    "password": "mypassword"
+  }
+}' -H 'content-type:application/json' http://localhost:9650/ext/P
+```
+
+## Balance and UTXO Methods
+
+### platform.getBalance
+
+Returns the balance of an address on the P-Chain.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "platform.getBalance",
+  "params": {
+    "address": "P-lux1..."
+  }
+}' -H 'content-type:application/json' https://api.lux.network/ext/P
+```
+
+**Response:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "balance": "5000000000",
+    "unlocked": "3000000000",
+    "lockedStakeable": "2000000000",
+    "lockedNotStakeable": "0",
+    "utxoIDs": [
+      {"txID": "...", "outputIndex": 0}
+    ]
+  },
+  "id": 1
+}
+```
+
+### platform.getUTXOs
+
+Returns the UTXOs for a set of addresses.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "platform.getUTXOs",
+  "params": {
+    "addresses": ["P-lux1..."],
+    "limit": 100
+  }
+}' -H 'content-type:application/json' https://api.lux.network/ext/P
+```
+
+## Subnet Methods
+
+### platform.createSubnet
+
+Creates a new subnet.
+
+**Parameters:**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `controlKeys` | []string | Addresses that can add validators to the subnet |
+| `threshold` | int | Number of control keys required for a signature |
+| `from` | []string | Funding addresses |
+| `username` | string | Keystore username |
+| `password` | string | Keystore password |
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "platform.createSubnet",
+  "params": {
+    "controlKeys": ["P-lux1...", "P-lux1..."],
+    "threshold": 1,
+    "from": ["P-lux1..."],
+    "username": "myuser",
+    "password": "mypassword"
+  }
+}' -H 'content-type:application/json' http://localhost:9650/ext/P
+```
+
+**Response:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "txID": "...",
+    "changeAddr": "P-lux1..."
+  },
+  "id": 1
+}
+```
+
+The `txID` is also the new subnet's ID.
+
+### platform.getSubnets
+
+Lists all subnets or a specific subnet.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "platform.getSubnets",
+  "params": {}
+}' -H 'content-type:application/json' https://api.lux.network/ext/P
+```
+
+### platform.addSubnetValidator
+
+Adds a validator to a subnet. The validator must already be a Primary Network validator.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "platform.addSubnetValidator",
+  "params": {
+    "nodeID": "NodeID-...",
+    "subnetID": "...",
+    "startTime": 1700000000,
+    "endTime": 1731536000,
+    "weight": 100,
+    "from": ["P-lux1..."],
+    "username": "myuser",
+    "password": "mypassword"
+  }
+}' -H 'content-type:application/json' http://localhost:9650/ext/P
+```
+
+## Chain Methods
+
+### platform.getBlockchains
+
+Lists all blockchains that exist on the network.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "platform.getBlockchains",
+  "params": {}
+}' -H 'content-type:application/json' https://api.lux.network/ext/P
+```
+
+### platform.getStakingAssetID
+
+Returns the asset ID used for staking on a subnet.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "platform.getStakingAssetID",
+  "params": {}
+}' -H 'content-type:application/json' https://api.lux.network/ext/P
+```
+
+## Transaction Methods
+
+### platform.issueTx
+
+Issues a pre-built, signed transaction to the P-Chain.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "platform.issueTx",
+  "params": {
+    "tx": "0x...signed_tx_bytes"
+  }
+}' -H 'content-type:application/json' https://api.lux.network/ext/P
+```
+
+### platform.getTxStatus
+
+Returns the status of a P-Chain transaction.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "platform.getTxStatus",
+  "params": {
+    "txID": "..."
+  }
+}' -H 'content-type:application/json' https://api.lux.network/ext/P
+```
+
+**Response:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "status": "Committed"
+  },
+  "id": 1
+}
+```
+
+Possible statuses: `Processing`, `Committed`, `Aborted`, `Dropped`, `Unknown`.
+
+## Further Reading
+
+- [Run a Validator](/docs/nodes/validator) - Set up and manage a validator
+- [Subnets](/docs/build/subnets) - Create and configure subnets
+- [Tokenomics](/docs/learn/tokenomics) - Staking economics

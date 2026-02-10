@@ -1,0 +1,217 @@
+---
+title: Archive Node
+description: Run a Lux Network archive node for full historical state access
+---
+
+# Running an Archive Node
+
+An archive node stores the complete historical state of the blockchain, not just the current state. This allows you to query account balances, contract storage, and transaction traces at any past block height.
+
+## Archive vs Full Node
+
+| Capability | Full Node | Archive Node |
+|------------|-----------|-------------|
+| Verify current transactions | Yes | Yes |
+| Current state queries | Yes | Yes |
+| Historical state at block N | No (pruned) | Yes |
+| Transaction traces | Limited | Full |
+| Debug and replay transactions | No | Yes |
+| Disk space | ~1 TB | ~4+ TB |
+
+A full node prunes old state to save disk space. An archive node retains every historical state trie, enabling queries like "What was the balance of address X at block 500,000?"
+
+## Use Cases
+
+<Cards>
+  <Card title="Block Explorers">
+    Explorers need historical data to display past balances, internal transactions, and contract state evolution.
+  </Card>
+  <Card title="Analytics Platforms">
+    DeFi analytics, portfolio trackers, and research tools require access to historical state for accurate calculations.
+  </Card>
+  <Card title="Debugging and Auditing">
+    Trace historical transactions step-by-step, replay failed transactions, and audit contract behavior at specific blocks.
+  </Card>
+  <Card title="Indexing Services">
+    Services like subgraphs and custom indexers need to process all historical events and state changes.
+  </Card>
+</Cards>
+
+## System Requirements
+
+Archive nodes have significantly higher storage requirements than full nodes.
+
+| Component | Minimum | Recommended |
+|-----------|---------|-------------|
+| CPU | 16 cores | 32+ cores |
+| RAM | 32 GB | 64+ GB |
+| Storage | 4 TB NVMe | 8+ TB NVMe RAID |
+| Network | 1 Gbps | 10 Gbps |
+
+<Callout>
+  Storage requirements grow continuously. Plan for at least 2 TB/year of growth and use NVMe drives for acceptable query latency on historical state. SATA SSDs will work but result in significantly slower historical queries.
+</Callout>
+
+## Configuration
+
+Enable archive mode by disabling state pruning in the C-Chain configuration.
+
+### C-Chain Config
+
+Create or update `~/.luxd/configs/chains/C/config.json`:
+
+```json
+{
+  "pruning-enabled": false,
+  "state-sync-enabled": false,
+  "eth-apis": [
+    "eth",
+    "eth-filter",
+    "net",
+    "web3",
+    "internal-eth",
+    "internal-blockchain",
+    "internal-transaction",
+    "internal-tx-pool",
+    "internal-account",
+    "debug-tracer"
+  ],
+  "local-txs-enabled": true
+}
+```
+
+### Key Flags
+
+| Flag | Value | Description |
+|------|-------|-------------|
+| `pruning-enabled` | `false` | Retain all historical state (archive mode) |
+| `state-sync-enabled` | `false` | Sync from genesis instead of a recent snapshot |
+| `eth-apis` | See above | Enable debug and trace APIs |
+
+### Node Config
+
+Start `luxd` with indexing enabled:
+
+```bash
+luxd \
+  --network-id=mainnet \
+  --index-enabled=true \
+  --db-dir=/data/luxd/db \
+  --config-file=$HOME/.luxd/config.json
+```
+
+## Syncing from Genesis
+
+Archive nodes must sync from block 0 because they need every historical state transition. This is significantly slower than a full node sync.
+
+| Network | Expected Sync Time |
+|---------|-------------------|
+| Mainnet | 24-72 hours |
+| Testnet | 6-12 hours |
+
+<Callout>
+  State sync (`state-sync-enabled: true`) is incompatible with archive mode because state sync skips historical state. You must sync from genesis.
+</Callout>
+
+### Monitor Sync Progress
+
+```bash
+# Check if C-Chain is bootstrapped
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "info.isBootstrapped",
+  "params": {"chain": "C"}
+}' -H 'content-type:application/json' http://localhost:9650/ext/info
+
+# Check current block number (compare with explorer)
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "eth_blockNumber",
+  "params": []
+}' -H 'content-type:application/json' http://localhost:9650/ext/bc/C/rpc
+```
+
+## Querying Historical State
+
+Once synced, you can query any historical block.
+
+### Historical Balance
+
+```bash
+# Get balance at a specific block
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "eth_getBalance",
+  "params": ["0xYourAddress", "0x7A120"]
+}' -H 'content-type:application/json' http://localhost:9650/ext/bc/C/rpc
+```
+
+The second parameter is the block number in hex. A full node would return an error for old blocks; an archive node returns the actual historical balance.
+
+### Transaction Traces
+
+```bash
+# Trace a transaction
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "debug_traceTransaction",
+  "params": ["0xTransactionHash", {"tracer": "callTracer"}]
+}' -H 'content-type:application/json' http://localhost:9650/ext/bc/C/rpc
+```
+
+### Historical Contract Storage
+
+```bash
+# Read contract storage at a past block
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "eth_getStorageAt",
+  "params": ["0xContractAddress", "0x0", "0x7A120"]
+}' -H 'content-type:application/json' http://localhost:9650/ext/bc/C/rpc
+```
+
+## Storage Management
+
+### Disk Layout
+
+```
+/data/luxd/db/
+  mainnet/
+    C/                  # C-Chain state (largest)
+    P/                  # P-Chain state
+    X/                  # X-Chain state
+```
+
+The C-Chain directory consumes the vast majority of storage on an archive node.
+
+### Monitoring Disk Usage
+
+Set up alerts for disk usage at 80% capacity. When storage is nearly full, the node will fail to process new blocks.
+
+```bash
+# Check disk usage
+df -h /data/luxd/db/
+
+# Check C-Chain state size
+du -sh /data/luxd/db/mainnet/C/
+```
+
+### Storage Expansion
+
+If you need to migrate to a larger disk:
+
+1. Stop `luxd`
+2. Copy the entire `db` directory to the new disk
+3. Update `--db-dir` in your configuration
+4. Restart `luxd`
+
+## Further Reading
+
+- [Full Node Guide](/docs/nodes/full-node) - Base node setup
+- [JSON-RPC API](/docs/reference/json-rpc) - Query endpoints available on archive nodes
+- [Health API](/docs/reference/health) - Monitor archive node health

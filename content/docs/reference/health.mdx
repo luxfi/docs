@@ -1,0 +1,244 @@
+---
+title: Health API
+description: Health check endpoints for monitoring Lux Network nodes
+---
+
+# Health API
+
+The Health API provides liveness and readiness information about the node. Use it for monitoring, load balancer configuration, and automated alerting.
+
+## Endpoints
+
+The Health API is available at two endpoints:
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/ext/health` | GET or POST | Full health check with details |
+| `/ext/health/liveness` | GET | Simple liveness probe (200 = alive) |
+| `/ext/health/readiness` | GET | Readiness probe (200 = ready to serve) |
+
+## Full Health Check
+
+### GET /ext/health
+
+```bash
+curl -s http://localhost:9650/ext/health | jq .
+```
+
+### POST /ext/health
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "health.health"
+}' -H 'content-type:application/json' http://localhost:9650/ext/health
+```
+
+**Response:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "checks": {
+      "C": {
+        "message": {
+          "consensus": {
+            "longestRunningBlock": "0s",
+            "outstandingBlocks": 0
+          },
+          "vm": null
+        },
+        "timestamp": "2025-06-01T12:00:00Z",
+        "duration": 1234
+      },
+      "P": {
+        "message": {
+          "consensus": {
+            "longestRunningBlock": "0s",
+            "outstandingBlocks": 0
+          },
+          "vm": {
+            "percentConnected": 0.98
+          }
+        },
+        "timestamp": "2025-06-01T12:00:00Z",
+        "duration": 567
+      },
+      "X": {
+        "message": {
+          "consensus": {
+            "outstandingVertices": 0,
+            "snowstorm": {
+              "outstandingTransactions": 0
+            }
+          }
+        },
+        "timestamp": "2025-06-01T12:00:00Z",
+        "duration": 890
+      },
+      "bootstrapped": {
+        "message": [],
+        "timestamp": "2025-06-01T12:00:00Z",
+        "duration": 100
+      },
+      "network": {
+        "message": {
+          "connectedPeers": 42,
+          "sendFailRate": 0.0,
+          "timeSinceLastMsgSent": "0.5s",
+          "timeSinceLastMsgReceived": "0.3s"
+        },
+        "timestamp": "2025-06-01T12:00:00Z",
+        "duration": 200
+      },
+      "router": {
+        "message": {
+          "longestRunningRequest": "0s",
+          "outstandingRequests": 0
+        },
+        "timestamp": "2025-06-01T12:00:00Z",
+        "duration": 150
+      }
+    },
+    "healthy": true
+  },
+  "id": 1
+}
+```
+
+### Health Check Components
+
+| Check | What It Verifies |
+|-------|-----------------|
+| `C` | C-Chain consensus health (no stalled blocks) |
+| `P` | P-Chain consensus and validator connectivity |
+| `X` | X-Chain DAG consensus health |
+| `bootstrapped` | All chains have completed initial sync |
+| `network` | Peer connectivity and message flow |
+| `router` | Request processing is not stalled |
+
+## Liveness Probe
+
+The liveness endpoint returns HTTP 200 if the node process is running and responsive. It does **not** check whether the node is fully synced.
+
+```bash
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9650/ext/health/liveness
+# Returns: 200 (alive) or no response (dead)
+```
+
+Use this for Kubernetes liveness probes or process monitors:
+
+```yaml
+# Kubernetes liveness probe
+livenessProbe:
+  httpGet:
+    path: /ext/health/liveness
+    port: 9650
+  initialDelaySeconds: 30
+  periodSeconds: 10
+```
+
+## Readiness Probe
+
+The readiness endpoint returns HTTP 200 only when the node is fully bootstrapped and ready to serve API requests. During initial sync, it returns 503.
+
+```bash
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9650/ext/health/readiness
+# Returns: 200 (ready) or 503 (not ready)
+```
+
+Use this for load balancers and Kubernetes readiness probes:
+
+```yaml
+# Kubernetes readiness probe
+readinessProbe:
+  httpGet:
+    path: /ext/health/readiness
+    port: 9650
+  initialDelaySeconds: 60
+  periodSeconds: 15
+  failureThreshold: 3
+```
+
+<Callout>
+  Do not route traffic to a node that fails the readiness check. A node that is still bootstrapping may return incomplete or outdated data.
+</Callout>
+
+## Interpreting Health Status
+
+### Healthy Node
+
+A healthy node has:
+- `healthy: true` in the full health check
+- All chains show `outstandingBlocks: 0` or very low values
+- `connectedPeers` is above 10
+- `sendFailRate` is at or near 0.0
+- `longestRunningRequest` is under 10 seconds
+
+### Unhealthy Indicators
+
+| Indicator | Possible Cause | Action |
+|-----------|---------------|--------|
+| `healthy: false` | One or more checks failing | Investigate specific failing checks |
+| `connectedPeers: 0` | Network isolation | Check firewall, port 9651 |
+| `outstandingBlocks` high | Consensus stall | Restart node, check resources |
+| `sendFailRate` high | Network congestion | Check bandwidth and latency |
+| `longestRunningRequest` high | Node overloaded | Reduce API load, increase resources |
+| `bootstrapped` not empty | Still syncing | Wait for bootstrap to complete |
+
+## Monitoring Integration
+
+### Prometheus
+
+The health status is also available as a Prometheus metric at `/ext/metrics`:
+
+```
+# HELP lux_health_checks_failing Number of failing health checks
+# TYPE lux_health_checks_failing gauge
+lux_health_checks_failing 0
+```
+
+### Shell Script Monitor
+
+```bash
+#!/bin/bash
+STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9650/ext/health)
+
+if [ "$STATUS" != "200" ]; then
+  echo "ALERT: Node health check failed (HTTP $STATUS)"
+  # Send alert via webhook, email, etc.
+fi
+```
+
+### Alerting Rules
+
+Recommended Prometheus alerting rules:
+
+```yaml
+groups:
+  - name: luxd
+    rules:
+      - alert: NodeUnhealthy
+        expr: lux_health_checks_failing > 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Lux node health check failing"
+
+      - alert: LowPeerCount
+        expr: lux_network_peers < 5
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Lux node has fewer than 5 peers"
+```
+
+## Further Reading
+
+- [Info API](/docs/reference/info) - Node identity and version information
+- [Full Node Guide](/docs/nodes/full-node) - Node setup and monitoring
+- [Validator Guide](/docs/nodes/validator) - Uptime monitoring for validators

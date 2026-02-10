@@ -1,0 +1,141 @@
+---
+title: Post-Quantum Security
+description: Quantum-resistant cryptography in Lux Network - lattice and hash-based signatures
+---
+
+# Post-Quantum Security
+
+Lux Network is designed from the ground up to be resilient against quantum computing attacks. As quantum computers advance, the cryptographic foundations of most blockchains will become vulnerable. Lux addresses this by integrating post-quantum cryptographic primitives at the protocol level.
+
+## The Quantum Threat
+
+Classical public-key cryptography (RSA, ECDSA, Ed25519) relies on the hardness of integer factorization or discrete logarithm problems. A sufficiently powerful quantum computer running Shor's algorithm can break these in polynomial time.
+
+<Callout>
+  Current estimates suggest cryptographically relevant quantum computers could emerge between 2030 and 2040. Blockchain transactions signed today with classical keys could be retroactively compromised once quantum computers exist -- a "harvest now, decrypt later" attack.
+</Callout>
+
+### What Is at Risk
+
+| Component | Classical Scheme | Quantum Vulnerability |
+|-----------|-----------------|----------------------|
+| Transaction signatures | ECDSA / Ed25519 | Broken by Shor's algorithm |
+| Key derivation | ECDH | Broken by Shor's algorithm |
+| Address generation | Hash of public key | Partially resistant (Grover's provides sqrt speedup) |
+| Hash functions (SHA-256) | SHA-2, SHA-3 | Reduced security (Grover's), but still viable at 256-bit |
+
+## NIST Post-Quantum Standards
+
+Lux Network aligns with the NIST Post-Quantum Cryptography standardization process, adopting algorithms from the finalized standard set.
+
+### CRYSTALS-Dilithium (ML-DSA)
+
+Dilithium is a **lattice-based** digital signature scheme selected as the primary NIST standard for post-quantum signatures (FIPS 204).
+
+- **Security basis**: Module Learning With Errors (MLWE) problem
+- **Signature size**: ~2.4 KB (Dilithium2), ~3.3 KB (Dilithium3)
+- **Public key size**: ~1.3 KB (Dilithium2)
+- **Performance**: Fast signing and verification, suitable for blockchain throughput requirements
+- **Use in Lux**: Primary signature scheme for transaction signing and validator authentication
+
+### SPHINCS+ (SLH-DSA)
+
+SPHINCS+ is a **hash-based** signature scheme selected by NIST as a conservative alternative (FIPS 205).
+
+- **Security basis**: Security of the underlying hash function only
+- **Signature size**: ~7.8 KB (SPHINCS+-128f) to ~49 KB (SPHINCS+-256s)
+- **Public key size**: 32-64 bytes
+- **Performance**: Slower signing but very fast verification
+- **Use in Lux**: Available as a fallback signature scheme for maximum conservatism
+
+### Comparison
+
+| Property | CRYSTALS-Dilithium | SPHINCS+ | ECDSA (classical) |
+|----------|-------------------|----------|-------------------|
+| Security assumption | Lattice (MLWE) | Hash function | Elliptic curve DLP |
+| Quantum resistant | Yes | Yes | No |
+| Signature size | ~2.4 KB | ~8-49 KB | 64 bytes |
+| Public key size | ~1.3 KB | 32-64 bytes | 33 bytes |
+| Sign speed | Fast | Slow | Fast |
+| Verify speed | Fast | Fast | Moderate |
+
+## Hybrid Approach
+
+Lux uses a **hybrid classical + post-quantum** strategy during the transition period. This means transactions can carry both a classical signature and a post-quantum signature.
+
+<Steps>
+  <Step>
+    ### Phase 1: Hybrid Mode (Current)
+    Both classical (Ed25519) and post-quantum (Dilithium) signatures are supported. Validators verify both when present. This provides backward compatibility while enabling early PQ adoption.
+  </Step>
+  <Step>
+    ### Phase 2: PQ Preferred
+    Post-quantum signatures become the default for new accounts. Classical signatures remain valid for existing accounts. Wallet software generates PQ keys by default.
+  </Step>
+  <Step>
+    ### Phase 3: PQ Required
+    A governance-approved network upgrade requires all new transactions to use post-quantum signatures. Legacy accounts are given a migration window.
+  </Step>
+</Steps>
+
+### Why Hybrid?
+
+- **Defense in depth**: If the lattice assumption (MLWE) is unexpectedly broken, the classical signature still provides security against classical attackers
+- **Smooth migration**: Existing tooling and wallets can continue operating during transition
+- **No single point of cryptographic failure**: An attacker must break both schemes simultaneously
+
+## Impact on Blockchain Design
+
+### Larger Transactions
+
+Post-quantum signatures are significantly larger than classical ones. Lux addresses this through:
+
+- **Efficient encoding**: Compact binary serialization for PQ signatures
+- **Aggregation research**: Investigating lattice-based signature aggregation to reduce per-block overhead
+- **Adjusted block sizes**: Block size limits account for larger signature payloads
+
+### Key Management
+
+PQ keys require different handling:
+
+```
+Classical key:    32 bytes private + 33 bytes public  = ~65 bytes
+Dilithium key:   2.5 KB private  + 1.3 KB public     = ~3.8 KB
+```
+
+Lux wallets store PQ keys alongside classical keys, with the same HD derivation structure extended to support lattice-based key generation.
+
+### Address Format
+
+Lux uses a PQ-aware address format that encodes the key type:
+
+```
+lux1qpq...    # Post-quantum address (Dilithium)
+lux1qph...    # Post-quantum address (SPHINCS+)
+lux1c...      # Classical address (Ed25519)
+```
+
+## Migration Strategy
+
+For existing users and applications:
+
+<Cards>
+  <Card title="Wallet Users">
+    Generate a new PQ keypair in your wallet and migrate funds from classical addresses. The wallet handles both key types transparently.
+  </Card>
+  <Card title="Smart Contract Developers">
+    C-Chain contracts interact with addresses opaquely. No contract changes are needed -- the signature verification happens at the protocol level before EVM execution.
+  </Card>
+  <Card title="Node Operators">
+    Upgrade to a node version supporting PQ signatures. The node automatically validates both classical and PQ signatures.
+  </Card>
+  <Card title="SDK Users">
+    Updated SDKs handle PQ key generation, signing, and verification. Use the same high-level API with an optional key type parameter.
+  </Card>
+</Cards>
+
+## Further Reading
+
+- [Architecture](/docs/learn/architecture) - How PQ cryptography integrates with each chain
+- [Tokenomics](/docs/learn/tokenomics) - Staking with PQ keys
+- [SDKs](/docs/build/sdks) - SDK support for PQ key types

@@ -1,0 +1,251 @@
+---
+title: Full Node
+description: Run a Lux Network full node to verify transactions and support the network
+---
+
+# Running a Full Node
+
+A full node validates all transactions, maintains the current network state, and serves API requests. Running a full node contributes to network decentralization and gives you trustless access to blockchain data.
+
+## System Requirements
+
+| Component | Minimum | Recommended |
+|-----------|---------|-------------|
+| CPU | 8 cores | 16+ cores |
+| RAM | 16 GB | 32+ GB |
+| Storage | 1 TB SSD | 2+ TB NVMe |
+| Network | 100 Mbps | 1 Gbps |
+| OS | Ubuntu 22.04+ / macOS 13+ | Ubuntu 24.04 LTS |
+
+<Callout>
+  Storage requirements grow over time as the chain accumulates state. NVMe storage is strongly recommended for acceptable sync times and sustained I/O performance.
+</Callout>
+
+## Installation
+
+<Tabs items={["Install Script", "Binary Release", "Docker", "Build from Source"]}>
+  <Tab value="Install Script">
+    The install script downloads the latest release and sets up a systemd service:
+
+    ```bash
+    curl -sSfL https://raw.githubusercontent.com/luxfi/node/main/scripts/install.sh | sh
+    ```
+
+    The binary is installed to `/usr/local/bin/luxd` and the data directory defaults to `~/.luxd/`.
+  </Tab>
+  <Tab value="Binary Release">
+    Download the appropriate binary for your platform from GitHub:
+
+    ```bash
+    # Linux (amd64)
+    curl -L https://github.com/luxfi/node/releases/latest/download/luxd-linux-amd64.tar.gz | tar xz
+
+    # Linux (arm64)
+    curl -L https://github.com/luxfi/node/releases/latest/download/luxd-linux-arm64.tar.gz | tar xz
+
+    # macOS (arm64)
+    curl -L https://github.com/luxfi/node/releases/latest/download/luxd-darwin-arm64.tar.gz | tar xz
+    ```
+
+    Move the binary to your PATH:
+
+    ```bash
+    sudo mv luxd /usr/local/bin/
+    ```
+  </Tab>
+  <Tab value="Docker">
+    ```bash
+    docker run -d \
+      --name luxd \
+      -p 9650:9650 \
+      -p 9651:9651 \
+      -v ~/.luxd:/root/.luxd \
+      ghcr.io/luxfi/node:latest
+    ```
+  </Tab>
+  <Tab value="Build from Source">
+    Requires Go 1.22+:
+
+    ```bash
+    git clone https://github.com/luxfi/node.git
+    cd node
+    ./scripts/build.sh
+    ```
+
+    The binary is output to `./build/luxd`.
+  </Tab>
+</Tabs>
+
+## Configuration
+
+### Configuration File
+
+Create a configuration file at `~/.luxd/config.json`:
+
+```json
+{
+  "http-host": "0.0.0.0",
+  "http-port": 9650,
+  "staking-port": 9651,
+  "public-ip-resolution-service": "opendns",
+  "db-dir": "/data/luxd/db",
+  "log-dir": "/data/luxd/logs",
+  "log-level": "info",
+  "network-id": "mainnet",
+  "api-admin-enabled": false,
+  "api-health-enabled": true,
+  "api-info-enabled": true,
+  "index-enabled": true
+}
+```
+
+### Key Configuration Flags
+
+| Flag | Description | Default |
+|------|-------------|---------|
+| `--network-id` | Network to join (`mainnet`, `testnet`, `local`) | `mainnet` |
+| `--http-host` | HTTP API listen address | `127.0.0.1` |
+| `--http-port` | HTTP API port | `9650` |
+| `--staking-port` | P2P staking port | `9651` |
+| `--db-dir` | Database directory | `~/.luxd/db` |
+| `--log-level` | Logging verbosity (`debug`, `info`, `warn`, `error`) | `info` |
+| `--index-enabled` | Enable transaction indexing | `false` |
+| `--api-admin-enabled` | Enable admin API | `false` |
+
+### Start the Node
+
+```bash
+# With default settings (mainnet)
+luxd
+
+# With config file
+luxd --config-file=$HOME/.luxd/config.json
+
+# With testnet
+luxd --network-id=testnet
+```
+
+## Syncing
+
+When first started, the node must sync with the network. This involves downloading and verifying all blocks from genesis.
+
+### Sync Progress
+
+Monitor sync progress via the Health API:
+
+```bash
+curl -s http://localhost:9650/ext/health | jq .
+```
+
+Or check if bootstrapping is complete:
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "info.isBootstrapped",
+  "params": {
+    "chain": "C"
+  }
+}' -H 'content-type:application/json' http://localhost:9650/ext/info
+```
+
+Response when fully synced:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "isBootstrapped": true
+  },
+  "id": 1
+}
+```
+
+### Expected Sync Times
+
+| Network | Initial Sync | Notes |
+|---------|-------------|-------|
+| Mainnet | 4-12 hours | Depends on disk I/O and network bandwidth |
+| Testnet | 1-4 hours | Smaller state |
+
+## Firewall Configuration
+
+Open these ports for node operation:
+
+| Port | Protocol | Direction | Purpose |
+|------|----------|-----------|---------|
+| 9651 | TCP | Inbound + Outbound | P2P staking and gossip |
+| 9650 | TCP | Outbound (or local only) | HTTP API |
+
+```bash
+# UFW example
+sudo ufw allow 9651/tcp
+```
+
+<Callout>
+  Port 9650 (HTTP API) should **not** be exposed publicly unless you intend to run a public RPC endpoint. Restrict access with a firewall or reverse proxy.
+</Callout>
+
+## Monitoring
+
+### Metrics Endpoint
+
+The node exposes Prometheus metrics at:
+
+```
+http://localhost:9650/ext/metrics
+```
+
+### Key Metrics to Watch
+
+| Metric | Description |
+|--------|-------------|
+| `lux_network_peers` | Number of connected peers |
+| `lux_C_vm_eth_chain_block_count` | C-Chain block height |
+| `lux_db_read_size` | Database read throughput |
+| `lux_network_bandwidth_total` | Network bandwidth usage |
+
+### Grafana Dashboard
+
+A community Grafana dashboard is available for monitoring Lux nodes. Import it by pointing Prometheus at the metrics endpoint and loading the Lux dashboard template.
+
+## Upgrading
+
+<Steps>
+  <Step>
+    ### Check the Current Version
+    ```bash
+    luxd --version
+    ```
+  </Step>
+  <Step>
+    ### Download the New Version
+    ```bash
+    curl -sSfL https://raw.githubusercontent.com/luxfi/node/main/scripts/install.sh | sh
+    ```
+  </Step>
+  <Step>
+    ### Restart the Node
+    ```bash
+    sudo systemctl restart luxd
+    ```
+  </Step>
+  <Step>
+    ### Verify
+    ```bash
+    curl -s -X POST --data '{
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "info.getNodeVersion"
+    }' -H 'content-type:application/json' http://localhost:9650/ext/info
+    ```
+  </Step>
+</Steps>
+
+## Further Reading
+
+- [Validator Guide](/docs/nodes/validator) - Upgrade your full node to a validator
+- [Archive Node](/docs/nodes/archive) - Run a node with full historical state
+- [Health API](/docs/reference/health) - Monitor node health programmatically
+- [Info API](/docs/reference/info) - Query node information

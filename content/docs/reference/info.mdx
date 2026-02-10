@@ -1,0 +1,316 @@
+---
+title: Info API
+description: Node information API reference for Lux Network
+---
+
+# Info API
+
+The Info API provides information about the node's identity, version, network status, and peer connections. All methods are available at the `/ext/info` endpoint.
+
+## Endpoint
+
+```
+POST https://api.lux.network/ext/info
+POST http://localhost:9650/ext/info
+```
+
+## Methods
+
+### info.getNodeID
+
+Returns the unique identifier of the node.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "info.getNodeID"
+}' -H 'content-type:application/json' http://localhost:9650/ext/info
+```
+
+**Response:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "nodeID": "NodeID-5mb46qkSBj81k9g9e4VFjGGSbaaSLFRzD",
+    "nodePOP": {
+      "publicKey": "0x...",
+      "proofOfPossession": "0x..."
+    }
+  },
+  "id": 1
+}
+```
+
+The Node ID is derived from the node's staking certificate and is used to identify the node in the validator set.
+
+### info.getNodeVersion
+
+Returns the software version of the node.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "info.getNodeVersion"
+}' -H 'content-type:application/json' http://localhost:9650/ext/info
+```
+
+**Response:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "version": "luxd/1.12.0",
+    "databaseVersion": "v1.4.5",
+    "rpcProtocolVersion": "28",
+    "gitCommit": "abc1234",
+    "vmVersions": {
+      "avm": "v1.12.0",
+      "evm": "v0.14.0",
+      "platform": "v1.12.0"
+    }
+  },
+  "id": 1
+}
+```
+
+### info.getNodeIP
+
+Returns the IP address that the node advertises to the network.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "info.getNodeIP"
+}' -H 'content-type:application/json' http://localhost:9650/ext/info
+```
+
+**Response:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "ip": "203.0.113.50:9651"
+  },
+  "id": 1
+}
+```
+
+### info.getNetworkID
+
+Returns the numeric network ID.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "info.getNetworkID"
+}' -H 'content-type:application/json' http://localhost:9650/ext/info
+```
+
+**Response:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "networkID": "1"
+  },
+  "id": 1
+}
+```
+
+| Network ID | Network |
+|-----------|---------|
+| `1` | Mainnet |
+| `5` | Testnet |
+| `12345` | Local (default) |
+
+### info.getNetworkName
+
+Returns the human-readable network name.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "info.getNetworkName"
+}' -H 'content-type:application/json' http://localhost:9650/ext/info
+```
+
+**Response:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "networkName": "mainnet"
+  },
+  "id": 1
+}
+```
+
+### info.isBootstrapped
+
+Returns whether a given chain has completed bootstrapping (initial sync).
+
+**Parameters:**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `chain` | string | Chain alias: `"P"`, `"X"`, `"C"`, or a chain ID |
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "info.isBootstrapped",
+  "params": {
+    "chain": "C"
+  }
+}' -H 'content-type:application/json' http://localhost:9650/ext/info
+```
+
+**Response:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "isBootstrapped": true
+  },
+  "id": 1
+}
+```
+
+<Callout>
+  A node is not ready to serve requests for a chain until `isBootstrapped` returns `true`. During bootstrap, API calls to that chain may return incomplete or stale data.
+</Callout>
+
+### info.peers
+
+Returns the list of connected peers with their metadata.
+
+**Parameters:**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `nodeIDs` | []string | Filter by specific node IDs (optional) |
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "info.peers"
+}' -H 'content-type:application/json' http://localhost:9650/ext/info
+```
+
+**Response:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "numPeers": "42",
+    "peers": [
+      {
+        "ip": "203.0.113.10:9651",
+        "publicIP": "203.0.113.10:9651",
+        "nodeID": "NodeID-...",
+        "version": "luxd/1.12.0",
+        "lastSent": "2025-06-01T12:00:00Z",
+        "lastReceived": "2025-06-01T12:00:01Z",
+        "benched": [],
+        "observedUptime": "99",
+        "trackedSubnets": ["..."]
+      }
+    ]
+  },
+  "id": 1
+}
+```
+
+### info.getBlockchainID
+
+Returns the blockchain ID for a given chain alias.
+
+**Parameters:**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `alias` | string | Chain alias (e.g., `"C"`, `"X"`, `"P"`) |
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "info.getBlockchainID",
+  "params": {
+    "alias": "C"
+  }
+}' -H 'content-type:application/json' http://localhost:9650/ext/info
+```
+
+**Response:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "blockchainID": "2q9e4r6Mu3U68nU1fYjgbR6JvwrRx36CohpAX5UQxse55x1Q5"
+  },
+  "id": 1
+}
+```
+
+### info.uptime
+
+Returns the node's uptime information.
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "info.uptime"
+}' -H 'content-type:application/json' http://localhost:9650/ext/info
+```
+
+**Response:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "rewardingStakePercentage": "99.99",
+    "weightedAveragePercentage": "98.52"
+  },
+  "id": 1
+}
+```
+
+## Method Summary
+
+| Method | Description |
+|--------|-------------|
+| `info.getNodeID` | Node's unique identifier |
+| `info.getNodeVersion` | Software version and VM versions |
+| `info.getNodeIP` | Advertised IP address |
+| `info.getNetworkID` | Numeric network ID |
+| `info.getNetworkName` | Human-readable network name |
+| `info.isBootstrapped` | Whether a chain has finished syncing |
+| `info.peers` | Connected peers list |
+| `info.getBlockchainID` | Blockchain ID for a chain alias |
+| `info.uptime` | Node uptime metrics |
+| `info.getTxFee` | Current transaction fee schedule |
+
+## Further Reading
+
+- [Health API](/docs/reference/health) - Node health checks
+- [Full Node Guide](/docs/nodes/full-node) - Node setup and configuration
+- [Validator Guide](/docs/nodes/validator) - Validator management

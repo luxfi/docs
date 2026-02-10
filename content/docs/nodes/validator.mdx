@@ -1,0 +1,247 @@
+---
+title: Validator
+description: Run a Lux Network validator to stake LUX and earn rewards
+---
+
+# Running a Validator
+
+Validators secure the Lux Network by participating in consensus. In return, they earn staking rewards proportional to their stake and uptime. This guide covers setup, staking, delegation, and rewards.
+
+## Requirements
+
+### Staking Requirements
+
+| Parameter | Value |
+|-----------|-------|
+| **Minimum stake** | 2,000 LUX |
+| **Maximum stake** | 3,000,000 LUX |
+| **Minimum delegation** | 25 LUX |
+| **Minimum delegation fee** | 2% |
+| **Minimum staking period** | 2 weeks |
+| **Maximum staking period** | 1 year |
+| **Uptime requirement** | 80% |
+
+### Hardware Requirements
+
+Validators need reliable hardware with high uptime. Use the same requirements as a [full node](/docs/nodes/full-node), with emphasis on:
+
+- **Stable network connection**: 1 Gbps recommended with low latency
+- **UPS or redundant power**: Downtime reduces rewards
+- **NVMe storage**: Consistent I/O performance during consensus
+- **Dedicated machine**: Avoid sharing resources with other workloads
+
+<Callout>
+  A validator that falls below 80% uptime during its staking period receives zero rewards for that period. There is no partial reward -- it is all or nothing.
+</Callout>
+
+## Validator Setup
+
+<Steps>
+  <Step>
+    ### Run a Full Node First
+
+    Your node must be fully bootstrapped before you can register as a validator. Follow the [full node guide](/docs/nodes/full-node) and wait until `info.isBootstrapped` returns `true` for all chains.
+
+    ```bash
+    luxd --network-id=mainnet
+    ```
+  </Step>
+  <Step>
+    ### Get Your Node ID
+
+    ```bash
+    curl -s -X POST --data '{
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "info.getNodeID"
+    }' -H 'content-type:application/json' http://localhost:9650/ext/info
+    ```
+
+    Response:
+
+    ```json
+    {
+      "jsonrpc": "2.0",
+      "result": {
+        "nodeID": "NodeID-..."
+      },
+      "id": 1
+    }
+    ```
+
+    Save this Node ID -- you will need it for the staking transaction.
+  </Step>
+  <Step>
+    ### Fund Your P-Chain Address
+
+    You need at least 2,000 LUX on the P-Chain. If your LUX is on the C-Chain, transfer it:
+
+    ```bash
+    # Export from C-Chain
+    lux transfer export --source c-chain --destination p-chain --amount 2000 --network mainnet
+
+    # Import on P-Chain
+    lux transfer import --chain p-chain --network mainnet
+    ```
+  </Step>
+  <Step>
+    ### Register as a Validator
+
+    ```bash
+    lux validator add \
+      --node-id=NodeID-... \
+      --stake-amount=2000 \
+      --start-time="$(date -u -d '+10 minutes' +%Y-%m-%dT%H:%M:%SZ)" \
+      --end-time="$(date -u -d '+365 days' +%Y-%m-%dT%H:%M:%SZ)" \
+      --delegation-fee=2 \
+      --network=mainnet
+    ```
+
+    | Flag | Description |
+    |------|-------------|
+    | `--node-id` | Your node's ID from step 2 |
+    | `--stake-amount` | Amount of LUX to stake (minimum 2,000) |
+    | `--start-time` | When validation begins (must be in the future) |
+    | `--end-time` | When validation ends (max 1 year from start) |
+    | `--delegation-fee` | Percentage fee charged to delegators (minimum 2%) |
+  </Step>
+  <Step>
+    ### Verify Registration
+
+    ```bash
+    curl -s -X POST --data '{
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "platform.getCurrentValidators",
+      "params": {}
+    }' -H 'content-type:application/json' http://localhost:9650/ext/P
+    ```
+
+    Your Node ID should appear in the response once the start time has passed.
+  </Step>
+</Steps>
+
+## Key Management
+
+Validator keys are critical. The staking key (`staker.key`) and certificate (`staker.crt`) are stored in the node's staking directory.
+
+```
+~/.luxd/staking/
+  staker.key    # Private key for P2P identity
+  staker.crt    # TLS certificate
+```
+
+<Callout>
+  Back up your staking key and certificate securely. If these files are lost, you lose your Node ID and cannot recover your validator identity. Store copies in encrypted offline storage.
+</Callout>
+
+### Key Security Best Practices
+
+- **Never share** `staker.key` with anyone
+- **Encrypt backups** using GPG or age
+- **Use a hardware security module (HSM)** for high-value validators
+- **Rotate keys** when decommissioning hardware
+
+## Delegation
+
+Other LUX holders can delegate their stake to your validator to increase its weight (and your rewards).
+
+### How Delegation Works
+
+1. A delegator selects your validator and locks their LUX
+2. Your validator's total stake increases by the delegated amount
+3. You earn a delegation fee (minimum 2%) from the delegator's rewards
+4. The delegator earns staking rewards minus your fee
+
+### Delegation Limits
+
+The maximum stake a validator can have (own stake + delegations) is the minimum of:
+- 5x the validator's own stake
+- 3,000,000 LUX
+
+For example, a validator with 2,000 LUX can accept up to 8,000 LUX in delegations (for a total of 10,000 LUX).
+
+## Rewards Calculation
+
+Rewards are distributed at the end of each staking period based on:
+
+| Factor | Effect |
+|--------|--------|
+| **Stake amount** | Higher stake = more rewards |
+| **Staking duration** | Longer periods earn a higher rate |
+| **Remaining supply** | Rewards decrease as total supply approaches the 2 TLUX cap |
+| **Uptime** | Must be at least 80% to receive any rewards |
+
+### Reward Formula
+
+```
+MintingRate = MinRate + (MaxRate - MinRate) * (Duration / MaxDuration)
+Reward = RemainingSupply * (Stake / TotalStaked) * MintingRate * (Duration / Year)
+```
+
+| Parameter | Mainnet Value |
+|-----------|---------------|
+| MinConsumptionRate | 10% annually |
+| MaxConsumptionRate | 12% annually |
+| MintingPeriod | 365 days |
+| SupplyCap | 2,000,000,000,000 LUX |
+
+### Example
+
+For a validator staking 10,000 LUX for 1 year with the network at 50% of supply cap:
+
+```
+MintingRate = 0.10 + (0.12 - 0.10) * (365/365) = 0.12 (12%)
+Reward = RemainingSupply * (10000 / TotalStaked) * 0.12 * 1
+```
+
+## Uptime and Slashing
+
+### Uptime Tracking
+
+Lux tracks validator uptime through peer observations. Other validators report whether they can reach your node.
+
+- Uptime is calculated as: `time_connected / total_staking_period`
+- The uptime threshold for receiving rewards is **80%**
+
+### Slashing
+
+Lux does **not** implement traditional slashing (stake destruction) for downtime. Instead:
+
+- Validators below 80% uptime receive **zero rewards** for that period
+- The staked LUX is returned in full at the end of the staking period
+- There is no risk of losing your staked principal
+
+This design encourages uptime without the catastrophic risk of stake loss from transient issues.
+
+## Monitoring Your Validator
+
+### Check Uptime
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "platform.getCurrentValidators",
+  "params": {
+    "nodeIDs": ["NodeID-..."]
+  }
+}' -H 'content-type:application/json' http://localhost:9650/ext/P
+```
+
+The response includes `uptime` as a decimal (e.g., `0.95` = 95%).
+
+### Alerts to Configure
+
+| Alert | Trigger | Severity |
+|-------|---------|----------|
+| Node offline | No peers for > 5 min | Critical |
+| Low uptime | Below 85% | Warning |
+| Disk space | Below 20% free | Warning |
+| Version outdated | New release available | Info |
+
+## Further Reading
+
+- [Full Node Guide](/docs/nodes/full-node) - Node installation and configuration
+- [Tokenomics](/docs/learn/tokenomics) - Detailed reward economics
+- [Platform API](/docs/reference/platform) - Manage validators programmatically

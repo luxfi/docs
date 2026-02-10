@@ -1,0 +1,256 @@
+---
+title: SDKs
+description: Official Lux Network SDKs for JavaScript, Go, Rust, and Python
+---
+
+# SDKs
+
+Lux provides official SDKs for interacting with the network across multiple languages. Each SDK supports wallet creation, transaction building, chain queries, and contract interaction.
+
+## Overview
+
+| SDK | Package | Status | Install |
+|-----|---------|--------|---------|
+| JavaScript/TypeScript | `@luxfi/sdk` | Stable | `npm install @luxfi/sdk` |
+| Go | `github.com/luxfi/sdk` | Stable | `go get github.com/luxfi/sdk` |
+| Rust | `luxfi-sdk` | Beta | `cargo add luxfi-sdk` |
+| Python | `luxfi` | Alpha | `pip install luxfi` |
+
+## JavaScript / TypeScript
+
+The primary SDK for web and Node.js applications.
+
+### Installation
+
+```bash
+npm install @luxfi/sdk
+```
+
+### Create a Wallet
+
+```typescript
+import { Lux, BinTools, Buffer } from "@luxfi/sdk";
+
+const lux = new Lux("api.lux.network", 443, "https");
+const xchain = lux.XChain();
+const keychain = xchain.keyChain();
+
+// Generate a new keypair
+const keypair = keychain.makeKey();
+console.log("Address:", keypair.getAddressString());
+```
+
+### Send a Transaction (C-Chain)
+
+```typescript
+import { ethers } from "ethers";
+
+const provider = new ethers.JsonRpcProvider(
+  "https://api.lux.network/ext/bc/C/rpc"
+);
+const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+
+const tx = await wallet.sendTransaction({
+  to: "0xRecipientAddress",
+  value: ethers.parseEther("1.0"),
+});
+
+console.log("TX Hash:", tx.hash);
+await tx.wait();
+console.log("Confirmed");
+```
+
+### Query Balances
+
+```typescript
+import { Lux } from "@luxfi/sdk";
+
+const lux = new Lux("api.lux.network", 443, "https");
+const xchain = lux.XChain();
+
+const balance = await xchain.getBalance("X-lux1...", "LUX");
+console.log("Balance:", balance.balance, "LUX");
+```
+
+## Go
+
+The Go SDK is well-suited for backend services, CLI tools, and infrastructure.
+
+### Installation
+
+```bash
+go get github.com/luxfi/sdk@latest
+```
+
+### Create a Client
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+
+    "github.com/luxfi/sdk/client"
+)
+
+func main() {
+    c := client.New("https://api.lux.network", 443)
+
+    // Get network info
+    info, err := c.Info().GetNodeVersion(context.Background())
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println("Node version:", info)
+}
+```
+
+### Query Validators
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+
+    "github.com/luxfi/sdk/client"
+)
+
+func main() {
+    c := client.New("https://api.lux.network", 443)
+
+    validators, err := c.Platform().GetCurrentValidators(
+        context.Background(),
+        nil,  // subnetID (nil = Primary Network)
+        nil,  // nodeIDs filter
+    )
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    fmt.Printf("Active validators: %d\n", len(validators))
+    for _, v := range validators {
+        fmt.Printf("  NodeID: %s  Stake: %d LUX\n", v.NodeID, v.StakeAmount/1_000_000)
+    }
+}
+```
+
+### Send a Transaction
+
+```go
+package main
+
+import (
+    "context"
+    "log"
+    "math/big"
+
+    "github.com/luxfi/sdk/ethclient"
+)
+
+func main() {
+    client, err := ethclient.Dial("https://api.lux.network/ext/bc/C/rpc")
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    chainID, err := client.ChainID(context.Background())
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // chainID should be 96369 for mainnet
+    log.Printf("Connected to chain: %s", chainID.String())
+}
+```
+
+## Rust
+
+The Rust SDK targets performance-critical applications and systems programming.
+
+### Installation
+
+```toml
+# Cargo.toml
+[dependencies]
+luxfi-sdk = "0.1"
+tokio = { version = "1", features = ["full"] }
+```
+
+### Basic Usage
+
+```rust
+use luxfi_sdk::client::Client;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = Client::new("https://api.lux.network")?;
+
+    let node_id = client.info().get_node_id().await?;
+    println!("Node ID: {}", node_id);
+
+    let peers = client.info().peers().await?;
+    println!("Connected peers: {}", peers.len());
+
+    Ok(())
+}
+```
+
+## Python
+
+The Python SDK is useful for scripting, data analysis, and rapid prototyping.
+
+### Installation
+
+```bash
+pip install luxfi
+```
+
+### Basic Usage
+
+```python
+from luxfi import Lux
+
+lux = Lux(host="api.lux.network", port=443, protocol="https")
+
+# Get network info
+info = lux.info.get_node_version()
+print(f"Node version: {info}")
+
+# Query C-Chain balance
+from web3 import Web3
+
+w3 = Web3(Web3.HTTPProvider("https://api.lux.network/ext/bc/C/rpc"))
+balance = w3.eth.get_balance("0xYourAddress")
+print(f"Balance: {Web3.from_wei(balance, 'ether')} LUX")
+```
+
+## Common Operations
+
+All SDKs support these core operations:
+
+<Cards>
+  <Card title="Wallet Management">
+    Create HD wallets, derive keys, import/export keystores across P-Chain, X-Chain, and C-Chain.
+  </Card>
+  <Card title="Transaction Building">
+    Construct, sign, and broadcast transactions for asset transfers, staking, and contract calls.
+  </Card>
+  <Card title="Chain Queries">
+    Read balances, transaction history, UTXOs, validator sets, and contract state.
+  </Card>
+  <Card title="Contract Interaction">
+    Deploy contracts, call view functions, and send state-changing transactions on C-Chain.
+  </Card>
+</Cards>
+
+## Further Reading
+
+- [JavaScript SDK Reference](/docs/reference/sdk-js) - Complete JS/TS API reference
+- [Go SDK Reference](/docs/reference/sdk-go) - Complete Go API reference
+- [Smart Contracts](/docs/build/contracts) - Deploy contracts using these SDKs
+- [Tutorials](/docs/build/tutorials) - End-to-end examples with SDK code
