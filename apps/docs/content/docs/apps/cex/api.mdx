@@ -1,0 +1,26 @@
+---
+title: API Reference
+description: CEX REST and FIX APIs
+icon: FileCode
+---
+
+## REST Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/v1/orders` | Submit order |
+| DELETE | `/v1/orders/:id` | Cancel order |
+| GET | `/v1/orders` | List orders |
+| GET | `/v1/trades` | Trade history |
+| GET | `/v1/markets` | Available markets |
+| GET | `/v1/orderbook/:symbol` | Order book |
+| GET | `/v1/account/balances` | Account balances |
+
+## FIX Messages
+
+| Message | Tag | Description |
+|---------|-----|-------------|
+| NewOrderSingle | D | Submit new order |
+| OrderCancelRequest | F | Cancel order |
+| ExecutionReport | 8 | Order status/fill |
+| MarketDataRequest | V | Subscribe to market data |

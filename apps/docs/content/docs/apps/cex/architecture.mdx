@@ -1,0 +1,27 @@
+---
+title: Architecture
+description: ATS system architecture
+icon: GitBranch
+---
+
+## Components
+
+| Component | Description |
+|-----------|-------------|
+| **Gateway** | Multi-protocol API (REST, FIX, WebSocket, ZAP) |
+| **Matching Engine** | Price-time priority CLOB |
+| **Risk Engine** | Pre-trade risk checks |
+| **Compliance** | Sanctions, PEP, jurisdiction gating |
+| **Surveillance** | Post-trade market abuse detection |
+| **Reporting** | FINRA OATS, ATS-N, CAT, MiFID II |
+| **Circuit Breakers** | Automated market halts |
+
+## Order Flow
+
+1. Client submits order via Gateway
+2. Pre-trade compliance checks (sanctions, jurisdiction, offering type)
+3. Pre-trade risk checks (position limits, concentration, rate limits)
+4. Order enters matching engine
+5. Matched trades go to settlement
+6. Post-trade surveillance analyzes execution
+7. Regulatory reports generated automatically

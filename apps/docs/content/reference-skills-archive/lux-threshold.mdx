@@ -1,0 +1,241 @@
+---
+title: "Lux Threshold - Universal Multi-Chain Threshold Signatures"
+description: "Documentation for Lux Threshold - Universal Multi-Chain Threshold Signatures"
+---
+
+## Overview
+
+Lux Threshold is a **production-ready threshold signature library** supporting 20+ blockchains with post-quantum security. Written in Go, forked from `taurusgroup/multi-party-sig`. It provides the cryptographic core for `luxfi/mpc` and other signing services.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Module | `github.com/luxfi/threshold` |
+| Go | 1.26.1 |
+| Binary | `threshold-cli` |
+| Default Branch | `main` |
+| License | Apache 2.0 |
+| Origin | Fork of `taurusgroup/multi-party-sig` |
+
+## Hard requirements
+
+1. ALWAYS use `github.com/luxfi/*` packages -- NEVER `go-ethereum` or `ava-labs`
+2. NEVER use JSON for FROST/LSS configs -- crypto types lack JSON marshalers, use CBOR
+3. Use constant-time arithmetic via `cronokirby/saferith` -- no timing side-channels
+
+## Protocols
+
+| Protocol | Algorithm | Rounds | Signing | Features |
+|----------|-----------|--------|---------|----------|
+| **CMP** | ECDSA | 4 sign, 7 presign | ~15ms | Identifiable aborts |
+| **FROST** | Schnorr/EdDSA | 2 | ~8ms | BIP-340 Taproot compatible |
+| **LSS** | ECDSA | Variable | ~35ms reshare | Dynamic resharing, fault tolerance |
+| **Doerner** | 2-of-2 ECDSA | 2-party | ~5ms | Constant-time optimized |
+| **BLS** | BLS12-381 | Aggregate | - | Aggregate signatures |
+| **Ringtail** | Lattice | Variable | - | Post-quantum (128/192/256-bit) |
+| **TFHE** | FHE | - | - | Threshold FHE operations |
+| **Quasar** | Consensus | - | - | Consensus-specific signatures |
+
+## Architecture
+
+```
+threshold/
+├── cmd/threshold-cli/     # CLI tool
+├── internal/              # Private implementation
+│   ├── bip32/            # BIP-32 key derivation
+│   ├── elgamal/          # ElGamal encryption
+│   ├── mta/              # Multiplicative-to-Additive conversion
+│   ├── ot/               # Oblivious transfer (Extended OT)
+│   ├── params/           # Security parameters
+│   ├── round/            # Round-based protocol framework
+│   ├── test/             # Test infrastructure
+│   └── types/            # Internal type definitions
+├── pkg/                   # Public API
+│   ├── ecdsa/            # ECDSA signature types
+│   ├── hash/             # BLAKE3-based hashing
+│   ├── math/             # Cryptographic arithmetic (curve, polynomial, sample)
+│   ├── paillier/         # Paillier homomorphic encryption
+│   ├── party/            # Party identification
+│   ├── pedersen/         # Pedersen commitments
+│   ├── pool/             # Thread pool for parallelization
+│   ├── protocol/         # Protocol handler framework
+│   ├── taproot/          # BIP-340/341 Taproot support
+│   └── zk/               # 17 zero-knowledge proof systems
+├── protocols/             # Protocol implementations
+│   ├── adapters/         # Chain-specific adapters
+│   ├── bls/              # BLS aggregate signatures
+│   ├── cmp/              # CMP ECDSA (CGGMP21)
+│   ├── doerner/          # 2-of-2 optimized ECDSA
+│   ├── example/          # Example protocol usage
+│   ├── frost/            # FROST Schnorr/EdDSA
+│   ├── lss/              # LSS dynamic resharing
+│   ├── quasar/           # Quasar consensus signatures
+│   ├── ringtail/         # Post-quantum lattice-based
+│   └── tfhe/             # Threshold FHE
+└── docs/                  # Documentation
+```
+
+## One-file quickstart
+
+### Installation
+
+```bash
+go get github.com/luxfi/threshold@v1.5.5
+```
+
+### Basic usage
+
+```go
+import (
+    "github.com/luxfi/threshold/protocols/cmp"
+    "github.com/luxfi/threshold/protocols/adapters"
+)
+
+// Generate threshold keys
+configs := cmp.Keygen(curve.Secp256k1{}, selfID, parties, threshold, pool)
+
+// Create chain adapter
+factory := &adapters.AdapterFactory{}
+adapter := factory.NewAdapter("ethereum", adapters.SignatureECDSA)
+
+// Sign transaction
+digest, _ := adapter.Digest(transaction)
+signature := cmp.Sign(config, signers, digest, pool)
+encoded, _ := adapter.Encode(signature)
+```
+
+### Dynamic resharing (LSS)
+
+```go
+// Add new parties without reconstructing keys
+newConfigs := lss.Reshare(oldConfigs, newParties, newThreshold, pool)
+
+// Emergency rollback
+manager := lss.NewRollbackManager(maxGenerations)
+restoredConfig, _ := manager.Rollback(targetGeneration)
+```
+
+### Post-quantum signatures (Ringtail)
+
+```go
+pqAdapter := adapters.NewRingtailAdapter(256, numParties) // 256-bit PQ security
+preprocessing := pqAdapter.GeneratePreprocessing(parties, threshold, 100)
+pqSignature := pqAdapter.Sign(message, shares, preprocessing)
+```
+
+## Key Dependencies
+
+```
+github.com/luxfi/crypto@v1.17.28       -- ECDSA, EdDSA, BLS curves
+github.com/luxfi/fhe@v1.7.6            -- FHE primitives for TFHE protocol
+github.com/luxfi/lattice/v7@v7.0.0     -- Lattice ops for Ringtail (PQ)
+github.com/luxfi/ringtail@v0.2.0       -- Post-quantum threshold signatures
+github.com/luxfi/log@v1.4.1            -- Structured logging
+github.com/cronokirby/saferith@v0.33.0 -- Constant-time big integer arithmetic
+github.com/zeebo/blake3@v0.2.4         -- BLAKE3 hashing
+github.com/fxamacker/cbor/v2@v2.9.0    -- CBOR binary serialization
+github.com/cloudflare/circl@v1.6.3     -- BLS12-381 curve operations
+```
+
+## Security Parameters
+
+Defined in `internal/params/params.go`:
+
+| Parameter | Value | Purpose |
+|-----------|-------|---------|
+| SecParam | 256 | Security parameter (bits) |
+| OTParam | 128 | Oblivious transfer security |
+| StatParam | 80 | Statistical security |
+| ZKModIterations | 128 | Paillier-Blum validation (increased from 12) |
+| BitsBlumPrime | 1024 | Blum prime bit length |
+| BitsPaillier | 2048 | Paillier modulus bit length |
+
+## Blockchain Support
+
+### Tier 1 -- Full Native Support
+
+| Chain | Signature | Status |
+|-------|-----------|--------|
+| XRPL | ECDSA/EdDSA | Production |
+| Ethereum | ECDSA | Production |
+| Bitcoin | ECDSA/Schnorr | Production |
+| Solana | EdDSA | Production |
+| TON | EdDSA | Production |
+| Cardano | EdDSA/ECDSA/Schnorr | Production |
+
+### Tier 2 -- Ready for Integration
+
+Cosmos, Polkadot, Lux, BSC, NEAR, Aptos, Sui, Tezos, Algorand, Stellar, Hedera, Flow, Kadena, Mina
+
+## Performance
+
+| Operation | 3-of-5 | 5-of-9 | 7-of-11 | 10-of-15 |
+|-----------|--------|--------|---------|----------|
+| Key Generation | 12ms | 28ms | 45ms | 82ms |
+| Signing | 8ms | 15ms | 24ms | 40ms |
+| Resharing | 20ms | 35ms | 52ms | 75ms |
+| Verification | 2ms | 2ms | 2ms | 2ms |
+
+## Naming Conventions (vs Upstream)
+
+This fork uses different field naming from `taurusgroup/multi-party-sig`:
+
+- `Delta` (public) instead of `_Delta` (private)
+- `_KDelta` instead of `_K_Delta`
+
+When merging upstream, adapt their code to Lux conventions.
+
+## Testing
+
+```bash
+# All tests
+go test ./... -timeout 120s
+
+# Protocol-specific
+go test ./protocols/cmp/... -timeout 120s
+go test ./protocols/frost/... -timeout 120s
+go test ./protocols/lss/... -timeout 120s
+go test ./internal/ot/... -timeout 120s
+
+# With race detection
+go test -race ./... -timeout 180s
+
+# Benchmarks
+go test -bench=. ./...
+```
+
+### Test Coverage
+
+| Package | Coverage |
+|---------|----------|
+| protocols/lss | 100% |
+| protocols/cmp | 75% |
+| protocols/frost | 100% |
+| protocols/doerner | 100% |
+| protocols/adapters | 100% |
+
+## Adding a New Chain Adapter
+
+1. Add chain constant in `protocols/adapters/` or `protocols/lss/adapters/evm.go`
+2. Add config in `GetChainConfig()`
+3. Update `protocols/lss/factory.go` with chain info
+4. Add to `SupportedChains()` list
+5. Update tests in `full_coverage_test.go`
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| FROST config corruption | JSON marshal of crypto types | Use CBOR via `MarshalFROSTConfig()` |
+| LSS config corruption | Same as FROST | Use CBOR via `MarshalLSSConfig()` |
+| Timing attack risk | Non-constant-time math | Use `saferith` for all big int ops |
+| Flaky test | `TestHandler_WaitForResultTimeout` | Known flaky, unrelated to core |
+| Import errors | Using go-ethereum types | Switch to `luxfi/crypto` types |
+
+## Related Skills
+
+- `lux/lux-mpc.md` -- MPC wallet service that uses this library
+- `lux/lux-hsm.md` -- HSM-backed key share storage
+- `lux/lux-crypto.md` -- Underlying cryptographic primitives
+- `lux/lux-lattice.md` -- Lattice crypto used by Ringtail protocol

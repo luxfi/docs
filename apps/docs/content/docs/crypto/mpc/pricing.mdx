@@ -1,0 +1,37 @@
+---
+title: Pricing
+description: Lux MPC infrastructure pricing
+icon: CreditCard
+---
+
+MPC-as-a-Service for teams that need threshold signing without managing nodes.
+
+## Plans
+
+| Feature | Developer | Pro | Enterprise |
+|---------|-----------|-----|------------|
+| **Monthly** | $0 | $99 | Custom |
+| Signing operations | 1K/mo | 50K/mo | Unlimited |
+| Key shares stored | 10 | 100 | Unlimited |
+| Protocols | CGGMP21, FROST | All | All |
+| HSM attestation | — | Yes | Yes |
+| Dedicated nodes | — | — | Yes |
+| SLA | — | 99.9% | 99.99% |
+| Support | Community | Email | Dedicated |
+
+## Self-Hosted
+
+Run your own MPC nodes. Open-source under Apache 2.0.
+
+```bash
+go install github.com/luxfi/mpc/cmd/mpcd@latest
+```
+
+No license fees for self-hosted deployments.
+
+## Overage
+
+| Resource | Rate |
+|----------|------|
+| Signing operations | $0.002/op |
+| Key share storage | $1/share/mo |

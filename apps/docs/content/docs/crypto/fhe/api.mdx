@@ -1,0 +1,15 @@
+---
+title: FHE API Reference
+description: fhed daemon API
+icon: FileCode
+---
+
+## Daemon Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/v1/encrypt` | Encrypt plaintext |
+| POST | `/v1/decrypt` | Decrypt ciphertext (authorized) |
+| POST | `/v1/reencrypt` | Re-encrypt for new key |
+| GET | `/v1/publickey` | Get network public key |
+| GET | `/v1/health` | Health check |

@@ -1,0 +1,21 @@
+---
+title: Matching Engine
+description: Central Limit Order Book
+icon: List
+---
+
+## Price-Time Priority
+
+Orders matched by:
+1. Best price (highest bid / lowest ask)
+2. Time priority (FIFO at each price level)
+
+## Order Types
+
+| Type | Description |
+|------|-------------|
+| Limit | Execute at specified price or better |
+| Market | Immediate execution at best price |
+| Stop | Triggered limit/market at stop price |
+| Pegged | Tracks reference price with offset |
+| Iceberg | Hidden quantity with display size |

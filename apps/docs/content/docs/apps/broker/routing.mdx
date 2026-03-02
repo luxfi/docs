@@ -1,0 +1,21 @@
+---
+title: Smart Order Routing
+description: Fee-aware net-price optimization
+icon: Route
+---
+
+## Algorithm
+
+1. Query all connected venues for quotes
+2. Calculate net price (price + fees + spread)
+3. Route to venue with best net execution
+4. Split large orders across venues (VWAP)
+
+## Execution Strategies
+
+| Strategy | Description |
+|----------|-------------|
+| **Best Price** | Route to single best venue |
+| **VWAP** | Split across venues weighted by volume |
+| **TWAP** | Time-weighted execution over period |
+| **Iceberg** | Hide large order size |

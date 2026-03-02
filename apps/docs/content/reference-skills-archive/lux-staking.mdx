@@ -1,0 +1,148 @@
+---
+title: "Lux Staking"
+description: "Documentation for Lux Staking"
+---
+
+## Overview
+
+`github.com/luxfi/staking` is a focused Go package that handles TLS certificate parsing, public key extraction, and signature verification for the Lux blockchain staking layer. It provides a minimal, performance-oriented alternative to Go's `crypto/x509` package, parsing only the fields needed for node identity validation: the public key and raw certificate bytes. Validators on the Lux network use TLS certificates as their identity, and this package is the foundation for verifying those identities.
+
+## When to use
+
+- Parsing staking TLS certificates from Lux validator nodes
+- Verifying signatures from validators (RSA-PKCS1v15 or ECDSA with SHA-256)
+- Loading TLS key pairs from PEM files or byte slices for node startup
+- Validating RSA public key well-formedness (modulus size, exponent)
+- Working with node identity at the certificate level without full x509 overhead
+
+## Hard requirements
+
+- Go 1.26.1+
+- Module path: `github.com/luxfi/staking`
+- All dependencies use `github.com/luxfi/*` packages exclusively -- never `go-ethereum` or `ava-labs`
+- Go package versions stay at v1.x.x (no v2+ bumps)
+- RSA keys must be 2048-bit or 4096-bit with public exponent 65537
+- ECDSA keys must use P-256 curve
+- Certificates must not exceed 2 KiB (`MaxCertificateLen = 2 * constants.KiB`)
+
+## Quick reference
+
+### Build and test
+
+```bash
+cd ~/work/lux/staking
+go build ./...
+go test -v ./...
+go test -race ./...
+```
+
+### Package API
+
+```go
+import "github.com/luxfi/staking"
+
+// Parse a raw ASN.1 certificate (extracts public key only)
+cert, err := staking.ParseCertificate(rawBytes)
+
+// Load TLS certificate from PEM files
+tlsCert, err := staking.LoadTLSCertFromFiles(keyPath, certPath)
+
+// Load TLS certificate from PEM byte slices
+tlsCert, err := staking.LoadTLSCertFromBytes(keyBytes, certBytes)
+
+// Verify a signature against a certificate
+err := staking.CheckSignature(cert, message, signature)
+
+// Validate RSA public key constraints
+err := staking.ValidateRSAPublicKeyIsWellFormed(rsaPubKey)
+```
+
+## Core Concepts
+
+### Certificate type
+
+The `Certificate` type is an alias for `ids.Certificate` from `github.com/luxfi/ids`. It holds:
+- `Raw []byte` -- the original ASN.1 DER-encoded certificate
+- `PublicKey crypto.PublicKey` -- the extracted RSA or ECDSA public key
+
+This is intentionally minimal. Unlike `x509.Certificate`, it does not parse validity periods, extensions, subject names, or issuer chains. Lux staking certificates are self-signed and identified solely by their public key.
+
+### Supported algorithms
+
+| Algorithm | Key Size | Use Case |
+|-----------|----------|----------|
+| RSA-PKCS1v15 + SHA-256 | 2048 or 4096 bit | Signature verification |
+| ECDSA + SHA-256 | P-256 | Signature verification |
+
+### RSA key validation rules
+
+The `ValidateRSAPublicKeyIsWellFormed` function enforces:
+1. Modulus must be positive
+2. Modulus bit length must be exactly 2048 or 4096
+3. Modulus must be odd (not even)
+4. Public exponent must be exactly 65537
+
+### ASN.1 parsing
+
+The package defines OIDs for the two supported public key algorithms:
+- RSA: `1.2.840.113549.1.1.1` (`oidPublicKeyRSA`)
+- ECDSA: `1.2.840.10045.2.1` (`oidPublicKeyECDSA`)
+
+Parsing uses `golang.org/x/crypto/cryptobyte` for efficient ASN.1 traversal without full x509 overhead.
+
+### File structure
+
+```
+staking/
+  asn1.go         # OID definitions, SHA-256 init check
+  certificate.go  # Certificate type alias (ids.Certificate)
+  parse.go        # ParseCertificate, parsePublicKey, ValidateRSAPublicKeyIsWellFormed
+  tls.go          # LoadTLSCertFromBytes, LoadTLSCertFromFiles
+  verify.go       # CheckSignature (RSA + ECDSA verification)
+  go.mod          # Module definition
+```
+
+### Dependencies
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `github.com/luxfi/constants` | v1.4.2 | MaxCertificateLen size constant |
+| `github.com/luxfi/ids` | v1.2.9 | Certificate type definition |
+| `golang.org/x/crypto` | v0.47.0 | ASN.1 cryptobyte parsing |
+
+### Error types
+
+All errors are package-level variables with the `staking:` prefix:
+
+| Error | Cause |
+|-------|-------|
+| `ErrCertificateTooLarge` | Certificate exceeds 2 KiB |
+| `ErrMalformedCertificate` | Invalid ASN.1 SEQUENCE at top level |
+| `ErrMalformedTBSCertificate` | Invalid TBS certificate structure |
+| `ErrMalformedSPKI` | Invalid Subject Public Key Info |
+| `ErrInvalidRSAPublicKey` | Nil RSA public key |
+| `ErrUnsupportedRSAModulusBitLen` | RSA modulus not 2048 or 4096 bits |
+| `ErrRSAModulusIsEven` | RSA modulus is even (invalid) |
+| `ErrUnsupportedRSAPublicExponent` | RSA exponent is not 65537 |
+| `ErrFailedUnmarshallingEllipticCurvePoint` | Invalid ECDSA P-256 point |
+| `ErrUnknownPublicKeyAlgorithm` | Neither RSA nor ECDSA |
+| `ErrUnsupportedAlgorithm` | CheckSignature: unknown key type |
+| `ErrECDSAVerificationFailure` | ECDSA signature did not verify |
+
+## Troubleshooting
+
+- **"certificate length is greater than 2048"**: The raw DER certificate exceeds 2 KiB. Lux staking certificates should be minimal self-signed certs. Check if extra extensions or long subject names are inflating the size.
+- **"unsupported RSA modulus bitlen"**: Only 2048-bit and 4096-bit RSA keys are accepted. Generate a new key pair with the correct size.
+- **"unknown public key algorithm"**: The certificate uses an algorithm other than RSA or ECDSA P-256. Lux only supports these two for staking identity.
+- **"ECDSA verification failure"**: The message or signature bytes do not match. Ensure the message is the exact bytes that were signed, not a hex-encoded or base64-encoded representation.
+- **LoadTLSCertFromFiles argument order**: The function takes `(keyPath, certPath)`, not `(certPath, keyPath)`. This matches the convention where the private key comes first.
+
+## Related Skills
+
+- `lux-genesis` -- Genesis configuration that establishes initial validators and their certificates
+- `lux-kms` -- Key management for generating and storing staking key pairs
+- `lux-node` -- The node implementation that uses staking certificates for P2P identity
+
+---
+
+Last Updated: 2026-03-13

@@ -1,0 +1,561 @@
+---
+title: Executing Proposals
+description: How to execute passed governance proposals
+---
+
+# Executing Proposals
+
+After a proposal passes voting, it doesn't take effect immediately. This guide covers the execution process, timelock mechanics, and how to execute proposals.
+
+## Execution Overview
+
+The execution flow ensures security while maintaining decentralization:
+
+```
+┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+│  Voting  │───>│  Passed  │───>│ Timelock │───>│ Execute  │
+│  Closed  │    │  (Queue) │    │  (Wait)  │    │ (Apply)  │
+└──────────┘    └──────────┘    └──────────┘    └──────────┘
+                     │               │
+                     v               v
+               Queue to         Timer runs
+               Timelock         (1-14 days)
+```
+
+### Why Timelock?
+
+The timelock delay serves critical functions:
+
+| Purpose | Description |
+|---------|-------------|
+| **Security** | Time to detect malicious proposals |
+| **Exit Window** | Users can exit if they disagree |
+| **Review** | Final check before execution |
+| **Coordination** | Time for affected parties to prepare |
+
+## Proposal States
+
+A proposal moves through these states:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Proposal State Machine                    │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌────────┐  vote   ┌────────┐  queue  ┌────────┐          │
+│  │ Active │ ──────> │ Passed │ ──────> │ Queued │          │
+│  └────────┘         └────────┘         └────────┘          │
+│      │                   │                  │               │
+│      │ fails             │ expires          │ timelock      │
+│      v                   v                  v  expires      │
+│  ┌────────┐         ┌────────┐         ┌────────┐          │
+│  │Defeated│         │Expired │         │  Ready │          │
+│  └────────┘         └────────┘         └────────┘          │
+│                                             │               │
+│                                execute      │    expires    │
+│                                   │         v       │       │
+│                              ┌────────┐ ┌────────┐ │       │
+│                              │Executed│ │ Stale  │<┘       │
+│                              └────────┘ └────────┘         │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### State Definitions
+
+| State | Description | Next Actions |
+|-------|-------------|--------------|
+| **Active** | Voting in progress | Wait for voting end |
+| **Passed** | Voting succeeded, not yet queued | Queue to timelock |
+| **Defeated** | Voting failed (quorum or threshold) | None (terminal) |
+| **Queued** | In timelock, waiting | Wait for timelock end |
+| **Ready** | Timelock complete, can execute | Execute proposal |
+| **Executed** | Actions applied on-chain | None (terminal) |
+| **Expired** | Passed but never queued in time | None (terminal) |
+| **Stale** | Ready but not executed in time | None (terminal) |
+
+## Timelock Mechanics
+
+### Timelock Durations
+
+Different proposal types have different timelock periods:
+
+| Proposal Type | Timelock | Rationale |
+|---------------|----------|-----------|
+| **Standard** | 3 days | Normal governance actions |
+| **Treasury (\<$10K)** | 1 day | Low-risk payments |
+| **Treasury (>$10K)** | 7 days | High-value transactions |
+| **Constitutional** | 14 days | Protocol-changing decisions |
+| **Emergency** | 0 days | Critical security fixes |
+
+<Callout type="warning">
+Emergency proposals bypass timelock but require higher approval thresholds (typically 75%+).
+</Callout>
+
+### Timelock Timeline
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Proposal #42: Fund Developer Grants                         │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Timeline:                                                   │
+│                                                              │
+│  Jan 1        Jan 8        Jan 11       Jan 14       Jan 21│
+│    │            │            │            │            │    │
+│    ▼            ▼            ▼            ▼            ▼    │
+│ ┌──────┐    ┌──────┐    ┌──────┐    ┌──────┐    ┌──────┐  │
+│ │Create│    │Voting│    │ Pass │    │Queue │    │Ready │  │
+│ │      │    │ Ends │    │      │    │      │    │      │  │
+│ └──────┘    └──────┘    └──────┘    └──────┘    └──────┘  │
+│                                                              │
+│ [  Draft  ][ Review ][ Voting ][  Timelock  ][ Execute ]   │
+│    7 days    3 days   7 days      7 days      grace        │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Grace Period
+
+After timelock expires, there's a grace period to execute:
+
+```
+Timelock End ────────> Grace Period ────────> Expiration
+                         (7 days)
+
+                    Execute anytime here
+```
+
+If not executed within the grace period, the proposal becomes **Stale** and cannot be executed. A new proposal must be submitted.
+
+## When Proposals Can Be Executed
+
+A proposal can be executed when ALL conditions are met:
+
+```yaml
+Execution Requirements:
+  - status: "Queued"
+  - timelock_end: < current_time
+  - grace_period_end: > current_time
+  - not_already_executed: true
+```
+
+### Checking Execution Status
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Proposal #42: Fund Developer Grants                         │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Status: READY TO EXECUTE                                    │
+│                                                              │
+│  ✓ Voting passed (72% For)                                  │
+│  ✓ Queued to timelock (Jan 14, 2026)                        │
+│  ✓ Timelock complete (Jan 21, 2026)                         │
+│  ○ Execution window: 7 days remaining                       │
+│                                                              │
+│  Grace Period Ends: Jan 28, 2026 14:00 UTC                  │
+│                                                              │
+│                              [Execute Proposal]              │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## Who Can Execute
+
+**Anyone** can execute a proposal once it's ready. This is by design:
+
+| Aspect | Description |
+|--------|-------------|
+| **Permissionless** | No special role required |
+| **Incentive** | Anyone can ensure DAO decisions happen |
+| **Decentralization** | No single point of failure |
+| **Gas Cost** | Executor pays gas (can be reimbursed) |
+
+### Typical Executors
+
+1. **Proposal Author** - Most motivated to see it through
+2. **DAO Operators** - May run automated execution
+3. **Committee Members** - Relevant to their domain
+4. **Community Members** - Anyone who wants to help
+5. **Bots** - Automated execution services
+
+## Execution Process
+
+### Step 1: Find Executable Proposals
+
+Navigate to **Governance > Proposals** and filter by "Ready":
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Proposals                                                   │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Filter: [Ready to Execute ▼]                               │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐ │
+│  │ #42 Fund Developer Grants Q1          [READY]          │ │
+│  │ Grace period: 6 days 12 hours remaining                │ │
+│  │ Actions: Transfer 50,000 USDC                          │ │
+│  │                                        [Execute]       │ │
+│  └────────────────────────────────────────────────────────┘ │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐ │
+│  │ #39 Update Staking Parameters         [READY]          │ │
+│  │ Grace period: 2 days 3 hours remaining                 │ │
+│  │ Actions: Call setMinStake(1000)                        │ │
+│  │                                        [Execute]       │ │
+│  └────────────────────────────────────────────────────────┘ │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Step 2: Review Proposal Actions
+
+Before executing, review what will happen:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Proposal #42: Execution Preview                             │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Actions to be executed:                                     │
+│                                                              │
+│  1. Transfer                                                 │
+│     ├─ From: Treasury (0xDAO1...2345)                       │
+│     ├─ To: Grants Multisig (0x5678...abcd)                  │
+│     ├─ Amount: 50,000 USDC                                  │
+│     └─ Token: 0xA0b8...3E7c (USDC)                          │
+│                                                              │
+│  Simulation Result: ✓ Success                                │
+│                                                              │
+│  Gas Estimate: ~250,000 gas (~$5.00)                        │
+│                                                              │
+│                       [Cancel]  [Execute Proposal]           │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Step 3: Execute
+
+1. Click **Execute Proposal**
+2. Review transaction in wallet
+3. Confirm and sign
+4. Wait for confirmation
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Confirm Execution                                           │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  You are executing Proposal #42                              │
+│                                                              │
+│  ⚠ This action is irreversible.                             │
+│    The following will happen:                                │
+│    - 50,000 USDC transferred from Treasury                  │
+│    - Grants Multisig receives funds                         │
+│                                                              │
+│  Gas: ~250,000 (~$5.00)                                     │
+│                                                              │
+│                              [Cancel]  [Confirm & Execute]  │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Step 4: Verify Execution
+
+After execution, verify the results:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Proposal #42: Fund Developer Grants Q1                      │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Status: EXECUTED ✓                                          │
+│                                                              │
+│  Execution Details:                                          │
+│  ├─ Executed by: 0xExecutor...1234                          │
+│  ├─ Timestamp: Jan 22, 2026 14:32:15 UTC                    │
+│  ├─ Transaction: 0xabc123...def456                          │
+│  └─ Block: 18,234,567                                       │
+│                                                              │
+│  Results:                                                    │
+│  ✓ Action 1: Transfer 50,000 USDC - SUCCESS                 │
+│                                                              │
+│                              [View Transaction]              │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## Failed Executions
+
+Executions can fail for several reasons:
+
+### Common Failure Causes
+
+| Cause | Description | Solution |
+|-------|-------------|----------|
+| **Insufficient Funds** | Treasury lacks required tokens | Wait for funds or modify |
+| **Contract Reverted** | Target contract rejected call | Check parameters |
+| **Gas Limit** | Transaction ran out of gas | Retry with higher gas |
+| **State Changed** | On-chain state no longer valid | May need new proposal |
+| **Already Executed** | Duplicate execution attempt | No action needed |
+
+### Handling Failed Execution
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Execution Failed                                            │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Proposal #42 execution failed.                              │
+│                                                              │
+│  Error: Insufficient balance                                 │
+│  Details: Treasury has 45,000 USDC, proposal requires       │
+│           50,000 USDC.                                       │
+│                                                              │
+│  Transaction: 0xfailed...123 (reverted)                     │
+│                                                              │
+│  Options:                                                    │
+│  - Wait for treasury to receive more funds                  │
+│  - Submit new proposal with adjusted amount                 │
+│                                                              │
+│  Grace period remaining: 5 days                             │
+│                                                              │
+│                              [Retry Execution]              │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Retry vs. New Proposal
+
+**Retry Execution** (same proposal):
+- Failure was due to temporary issue (gas, timing)
+- State can be corrected before grace period ends
+- No need for new vote
+
+**New Proposal** (start over):
+- Original proposal has fundamental issue
+- Parameters need to change
+- Grace period will expire
+
+## Execution Batching
+
+### Single Proposal, Multiple Actions
+
+A proposal can contain multiple actions executed atomically:
+
+```yaml
+Proposal #45:
+  actions:
+    - type: transfer
+      to: 0xRecipient1
+      amount: 10000
+      token: USDC
+    - type: transfer
+      to: 0xRecipient2
+      amount: 5000
+      token: USDC
+    - type: contract_call
+      target: 0xStaking
+      function: setRewardRate
+      args: [100]
+
+Execution: All-or-nothing
+  - If any action fails, all revert
+  - Either all succeed or none succeed
+```
+
+### Multiple Proposals
+
+Multiple ready proposals can be executed in sequence:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Batch Execute                                               │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Select proposals to execute:                                │
+│                                                              │
+│  [x] #42 Fund Developer Grants        50,000 USDC transfer  │
+│  [x] #39 Update Staking Parameters    Parameter change      │
+│  [ ] #38 Add Committee Member         Role assignment       │
+│                                                              │
+│  Total Gas Estimate: ~500,000 (~$10.00)                     │
+│                                                              │
+│                              [Execute Selected (2)]         │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## Automated Execution
+
+### Execution Bots
+
+DAOs often run automated execution:
+
+```yaml
+Execution Bot Config:
+  check_interval: 1 hour
+  gas_price_limit: 50 gwei
+  proposals:
+    - monitor: all
+    - execute_when: ready
+    - retry_on_failure: true
+    - max_retries: 3
+```
+
+### Keeper Networks
+
+Third-party keeper networks can execute proposals:
+
+| Network | Description |
+|---------|-------------|
+| **Gelato** | Automated smart contract execution |
+| **Chainlink Keepers** | Decentralized automation |
+| **OpenZeppelin Defender** | Secure operations platform |
+
+## Cancellation
+
+### When Proposals Can Be Cancelled
+
+| State | Can Cancel? | Who Can Cancel? |
+|-------|-------------|-----------------|
+| Active | Yes | Proposer only |
+| Passed | Yes | Guardian/Admin |
+| Queued | Yes | Guardian/Admin |
+| Ready | Yes | Guardian/Admin |
+| Executed | No | - |
+| Defeated | No | - |
+
+### Guardian Role
+
+Guardians can cancel queued proposals in emergencies:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Emergency Cancellation (Guardian Only)                      │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ⚠ This is an emergency action.                             │
+│                                                              │
+│  Cancelling Proposal #42 will:                               │
+│  - Remove from timelock queue                               │
+│  - Prevent execution permanently                            │
+│  - Require new proposal to achieve same goal                │
+│                                                              │
+│  Reason (required):                                          │
+│  ┌─────────────────────────────────────────────────────────┐ │
+│  │ Security vulnerability discovered in recipient          │ │
+│  │ contract. Funds would be at risk.                        │ │
+│  └─────────────────────────────────────────────────────────┘ │
+│                                                              │
+│                              [Cancel Proposal]              │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## Execution Monitoring
+
+### Dashboard View
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Execution Dashboard                                         │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Pending Execution (3):                                      │
+│                                                              │
+│  ┌──────────┬─────────────────┬──────────────┬───────────┐ │
+│  │ Proposal │ Actions          │ Grace Left   │ Status    │ │
+│  ├──────────┼─────────────────┼──────────────┼───────────┤ │
+│  │ #42      │ 1 transfer       │ 6d 12h       │ Ready     │ │
+│  │ #39      │ 1 param change   │ 2d 3h        │ Ready     │ │
+│  │ #38      │ 1 role change    │ 12h          │ Urgent ⚠  │ │
+│  └──────────┴─────────────────┴──────────────┴───────────┘ │
+│                                                              │
+│  Recent Executions:                                          │
+│                                                              │
+│  #37  Executed     Jan 20, 2026   0x...1234   ✓ Success    │
+│  #36  Executed     Jan 18, 2026   0x...5678   ✓ Success    │
+│  #35  Failed       Jan 15, 2026   0x...abcd   ✗ Reverted   │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Notifications
+
+Set up alerts for execution events:
+
+```yaml
+Notification Settings:
+  - event: proposal_ready
+    channels: [email, discord]
+  - event: grace_period_warning
+    threshold: 24 hours
+    channels: [email, discord, telegram]
+  - event: execution_success
+    channels: [discord]
+  - event: execution_failure
+    channels: [email, discord, telegram]
+```
+
+## Troubleshooting
+
+### "Proposal Not Ready"
+
+**Causes:**
+- Timelock not yet complete
+- Proposal not queued
+- Already executed
+
+**Solution:**
+- Check proposal status and timeline
+- Wait for timelock to complete
+- Queue if in "Passed" state
+
+### "Execution Reverted"
+
+**Causes:**
+- Target contract reverted
+- Insufficient funds
+- Invalid parameters
+
+**Solution:**
+- Check error message
+- Verify treasury balance
+- Review proposal actions
+- Contact technical support if needed
+
+### "Grace Period Expired"
+
+**Causes:**
+- Proposal wasn't executed in time
+
+**Solution:**
+- Submit new proposal
+- Consider automated execution for future
+
+### "Unauthorized"
+
+**Causes:**
+- Trying to cancel without guardian role
+- Trying to execute cancelled proposal
+
+**Solution:**
+- Verify proposal state
+- Check your permissions
+
+## Next Steps
+
+<Cards>
+  <Card title="Voting" href="/docs/guide/voting" icon="check-square">
+    Cast votes on proposals
+  </Card>
+  <Card title="Delegation" href="/docs/guide/voting/delegation" icon="users">
+    Delegate your voting power
+  </Card>
+  <Card title="Creating Proposals" href="/docs/guide/resolutions" icon="file-plus">
+    Submit your own proposals
+  </Card>
+</Cards>

@@ -1,0 +1,186 @@
+---
+title: "Lux Exchange API - GraphQL Proxy and Token Data Service"
+description: "Documentation for Lux Exchange API - GraphQL Proxy and Token Data Service"
+---
+
+## Overview
+
+Lux Exchange API (`github.com/luxfi/exchange-api`) is a **TypeScript Express server** that serves as a GraphQL proxy for the Lux DEX frontend. It intercepts Uniswap-compatible GraphQL queries, handles LUX/ZOO chain queries natively using Blockscout and subgraph data sources, and proxies all other chain queries to the upstream Uniswap API. Works alongside `exchange-proxy` (Go CORS proxy for raw Uniswap endpoints) and `exchange-sdk` (TypeScript order matching engine library).
+
+## When to use
+
+- Adding new token metadata to the Lux DEX token list
+- Modifying how LUX/ZOO chain data is fetched or presented
+- Adjusting cache TTLs for price/volume data
+- Adding new GraphQL operation handlers for native chains
+- Debugging token price display issues in the exchange frontend
+
+## Hard requirements
+
+1. ALWAYS use `github.com/luxfi/*` package paths -- NEVER `go-ethereum` or `ava-labs`
+2. Native chain handling is determined by `NATIVE_CHAINS` set: `LUX` and `ZOO`
+3. Stablecoins (USDT, USDC, LUSD, DAI, BUSD) are force-priced to $1.00
+4. Prices and volumes exceeding 1e12 are capped to 0 (subgraph overflow artifacts)
+5. Unhandled native chain operations fall through to Uniswap proxy
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/exchange-api` |
+| Language | TypeScript (ES2022, strict mode) |
+| Runtime | Node.js 22 |
+| Framework | Express 4.21 |
+| Default Port | 4000 |
+| Build | `npm install && npm run build` |
+| Dev | `npm run dev` (tsx watch) |
+| Docker | Multi-stage alpine, `node dist/index.js` |
+
+## Core Concepts
+
+### Three-Service Architecture
+
+| Service | Repo | Language | Port | Purpose |
+|---------|------|----------|------|---------|
+| **exchange-api** | `github.com/luxfi/exchange-api` | TypeScript | 4000 | GraphQL proxy, native chain data |
+| **exchange-proxy** | `github.com/luxfi/exchange-proxy` | Go | 8088 | CORS proxy for raw Uniswap APIs |
+| **exchange-sdk** | `github.com/luxfi/exchange-sdk` | TypeScript | - | Order matching engine library |
+
+### Request Flow
+
+```
+DEX Frontend
+    |
+    v
+exchange-api :4000
+    POST /v1/graphql
+    |
+    +-- chain=LUX or ZOO? --> Native handler (Blockscout + Subgraph V2/V3)
+    |
+    +-- other chain? -------> Proxy to Uniswap API (with caching)
+```
+
+### Native GraphQL Operations
+
+| Operation | Handler | Data Source |
+|-----------|---------|-------------|
+| `TopTokens` / `TopTokens100` / `TopTokensSparkline` | `handleTopTokens` | V2+V3 subgraph merged, Blockscout fallback |
+| `Token` / `TokenPrice` / `SimpleToken` | `handleToken` | Subgraph + Blockscout + known token list |
+| `TopV2Pairs` | `handleTopV2Pairs` | V2 subgraph |
+| `TopV3Pools` | `handleTopV3Pools` | V3 subgraph |
+| `V2Transactions` / `V3Transactions` | `handleTransactions` | V2 subgraph swaps |
+| `HistoricalProtocolVolume` / `DailyProtocolTvl` | stub | Returns empty arrays |
+| `IsV3SubgraphStale` | stub | Returns `false` |
+
+### Data Sources
+
+| Source | Default URL | Purpose |
+|--------|------------|---------|
+| Blockscout | `https://api-explore.lux.network` | ERC-20 token list, on-chain stats |
+| V2 Subgraph | `https://subgraph.lux.network/subgraphs/name/luxfi/uniswap-v2` | V2 AMM pairs, tokens, swaps |
+| V3 Subgraph | `https://subgraph.lux.network/subgraphs/name/luxfi/uniswap-v3` | V3 pools, tokens, swaps |
+| Uniswap API | `https://interface.gateway.uniswap.org/v1/graphql` | Non-native chain proxy target |
+
+### Cache TTLs
+
+| Tier | Duration | What |
+|------|----------|------|
+| SHORT | 30s | Prices, volumes, stats |
+| MEDIUM | 5min | Token lists, pool lists |
+| LONG | 1hr | Token metadata, logos |
+| PROXY | 60s | Proxied Uniswap responses |
+
+### Environment Variables
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `PORT` | `4000` | Listen port |
+| `BLOCKSCOUT_API` | `https://api-explore.lux.network` | Blockscout API base |
+| `SUBGRAPH_URL` | `https://subgraph.lux.network/.../uniswap-v2` | V2 subgraph |
+| `SUBGRAPH_V3_URL` | `https://subgraph.lux.network/.../uniswap-v3` | V3 subgraph |
+| `UNISWAP_API` | `https://interface.gateway.uniswap.org/v1/graphql` | Upstream Uniswap |
+
+### Known Tokens (lux-tokens.ts)
+
+20 LUX mainnet tokens with verified on-chain addresses:
+
+| Symbol | Address | Decimals |
+|--------|---------|----------|
+| LUX | Native (0x0...0) | 18 |
+| WLUX | `0x4888...8b3E` | 18 |
+| USDC | `0xF85C...95A6` | 6 |
+| LETH | `0x60E0...d9ba` | 18 |
+| LBTC | `0x1E48...4f4e` | 8 |
+| LSOL | `0x26B4...e9e7F` | 18 |
+
+Plus LUSD, LZOO, LAVAX, LBLAST, LBNB, LBOME, LBONK, LCELO, LDOGS, LPOL, LTON, CYRUS, MELANIA, TRUMP, Z.
+
+### Exchange Proxy (Go, :8088)
+
+CORS reverse proxy that forwards requests to Uniswap upstream APIs with `Origin: https://app.uniswap.org` header injection:
+
+| Route Prefix | Upstream |
+|-------------|----------|
+| `/uniswap/` | `https://api.uniswap.org` |
+| `/liquidity/` | `https://liquidity.backend-prod.api.uniswap.org` |
+| `/gateway/` | `https://interface.gateway.uniswap.org` |
+| `/conversion/` | `https://entry-gateway.backend-prod.api.uniswap.org` |
+
+In-memory SHA256-keyed cache with tiered TTLs (5s quotes, 30s pools, 5min tokens, 10s GraphQL).
+
+### Exchange SDK (TypeScript, npm)
+
+Order matching engine library (`@hanzo/matching-engine@1.0.1`):
+
+- **Book**: AVL tree + Fibonacci heap order book with bid/ask heaps
+- **Order**: Limit/market orders with side (ASK/BID) and status tracking
+- **Trade**: Fill execution with matched/rejected/new orders
+- **Candle**: OHLCV candlestick aggregation (1min, 1hr, 1day, 1week)
+- **Servers**: HTTP REST + Socket.IO WebSocket transports
+
+## File Structure
+
+```
+exchange-api/
+  src/
+    index.ts          -- Express server, routes, CORS
+    graphql.ts        -- GraphQL handler, operation dispatch, Uniswap proxy
+    blockscout.ts     -- Blockscout + subgraph V2/V3 data fetchers
+    cache.ts          -- In-memory TTL cache with periodic cleanup
+    lux-tokens.ts     -- 20 known LUX mainnet tokens with metadata
+  Dockerfile          -- Multi-stage Node 22 alpine
+  package.json        -- @luxfi/exchange-api@0.1.0
+  tsconfig.json       -- ES2022, strict, commonjs
+
+exchange-proxy/
+  main.go             -- HTTP server with graceful shutdown
+  proxy/proxy.go      -- CORS proxy, in-memory cache, upstream routing
+  go.mod              -- github.com/luxfi/exchange-proxy, Go 1.23
+
+exchange-sdk/
+  src/
+    Book.ts           -- Order book (AVL + Fibonacci heap)
+    Order.ts          -- Order model (limit/market, bid/ask)
+    Trade.ts          -- Trade execution model
+    Candle.ts         -- OHLCV candlestick builder
+    server.ts         -- Demo server with random order generation
+    servers/          -- HTTP and Socket.IO transports
+    clients/          -- Client implementations
+  package.json        -- @hanzo/matching-engine@1.0.1
+```
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Token price shows $0 | Subgraph has no `derivedETH` | Add token to `LUX_TOKENS` with fallback data |
+| Insane price display | Subgraph decimal overflow | Already capped at 1e12, check raw subgraph |
+| CORS errors from frontend | Missing exchange-proxy | Deploy exchange-proxy alongside exchange-api |
+| Uniswap proxy 502 | Upstream rate limit | Increase cache TTL or add API key |
+| V3 data missing | V3 subgraph not synced | Falls back to V2 data automatically |
+
+## Related Skills
+
+- `lux/lux-exchange.md` -- DEX frontend and omnichain routing
+- `lux/lux-dex.md` -- CLOB engine (high-performance order matching)
+- `lux/lux-evm.md` -- EVM with DEX precompiles

@@ -1,0 +1,39 @@
+---
+title: Lux CEX (ATS)
+description: Institutional Alternative Trading System with full regulatory compliance
+icon: Building
+---
+
+The Lux CEX (`github.com/luxfi/cex`) is an institutional-grade Alternative Trading System (ATS) with a CLOB matching engine, multi-protocol gateway, and comprehensive compliance infrastructure.
+
+## Regulatory Coverage
+
+| Framework | Coverage |
+|-----------|----------|
+| **FINRA** | Rule 5310 (Best Execution), OATS reporting |
+| **SEC** | ATS-N filing, CAT reporting |
+| **MiFID II** | Best execution, transaction reporting |
+| **Sanctions** | OFAC, UN, EU sanctions screening |
+| **AML/KYC** | 30+ jurisdictions, PEP/EDD screening |
+
+## Architecture
+
+```
+Clients → Gateway (REST/FIX/WS/ZAP) → Pre-Trade Compliance
+              ↓                              ↓
+         Matching Engine (CLOB)      Sanctions/PEP Check
+              ↓                              ↓
+         Settlement                  Post-Trade Surveillance
+              ↓                              ↓
+         Custody                     Regulatory Reporting
+```
+
+## Protocols
+
+| Protocol | Port | Use Case |
+|----------|------|----------|
+| REST/HTTP | 8080 | Web clients, APIs |
+| FIX 4.4 | 8443 | Institutional trading |
+| WebSocket | 8080 | Real-time streaming |
+| JSON-RPC | 8080 | Programmatic access |
+| ZAP | 8000 | Lux native protocol |

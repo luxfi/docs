@@ -1,0 +1,164 @@
+---
+title: "Lux FHEVM - Fully Homomorphic Encryption Virtual Machine"
+description: "Documentation for Lux FHEVM - Fully Homomorphic Encryption Virtual Machine"
+---
+
+## Overview
+
+FHEVM is a **full-stack framework for confidential smart contracts** on EVM-compatible blockchains. It integrates Fully Homomorphic Encryption (FHE) so that encrypted data can be processed directly onchain -- transactions, state, and computations remain encrypted end-to-end. Fork of Zama's fhevm.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/fhevm` |
+| Branch | `main` |
+| License | BSD-3-Clause-Clear |
+| Upstream | `zama-ai/fhevm` |
+| Languages | Rust (coprocessor), Solidity (contracts), TypeScript (SDK/tests) |
+| Rust toolchain | 1.87.0 |
+| FHE library | `tfhe` crate v1.1.2 |
+
+## Architecture
+
+FHEVM separates symbolic on-chain execution from actual FHE computation:
+
+```
+On-chain (EVM)                    Off-chain (Coprocessor)
+┌──────────────────┐              ┌──────────────────────┐
+│ Host Contracts    │  ─events──> │ fhevm-listener       │
+│ Gateway Contracts │             │ fhevm-engine          │
+│ Solidity Library  │  <─results─ │ transaction-sender    │
+└──────────────────┘              │ scheduler             │
+                                  │ zkproof-worker        │
+                                  │ gw-listener           │
+                                  │ sns-executor           │
+                                  └──────────────────────┘
+                                          │
+                                  ┌───────┴────────┐
+                                  │ KMS Connector   │
+                                  │ (key management)│
+                                  └────────────────┘
+```
+
+## Project Structure
+
+```
+fhevm/
+├── library-solidity/     — Solidity library for writing FHE contracts
+│   ├── lib/              — FHEVM Solidity types and operations
+│   ├── examples/         — Example confidential contracts
+│   ├── test/             — Hardhat tests
+│   └── codegen/          — Code generation for FHE ops
+├── gateway-contracts/    — On-chain gateway (EVM <-> coprocessor)
+├── host-contracts/       — Host chain orchestration contracts
+├── coprocessor/          — Rust coprocessor engine
+│   ├── fhevm-engine/     — Rust workspace (Cargo)
+│   │   ├── coprocessor/      — Core FHE computation engine
+│   │   ├── fhevm-engine-common/ — Shared types
+│   │   ├── fhevm-listener/   — Blockchain event listener
+│   │   ├── gw-listener/      — Gateway event listener
+│   │   ├── fhevm-keys/       — Key management
+│   │   ├── scheduler/        — Task scheduling
+│   │   ├── transaction-sender/ — Result submission
+│   │   ├── zkproof-worker/   — ZK proof generation
+│   │   ├── sns-executor/     — SNS event executor
+│   │   ├── test-harness/     — Integration test framework
+│   │   └── db-migration/     — PostgreSQL migrations
+│   └── proto/            — gRPC protobuf definitions
+├── kms-connector/        — KMS integration for encryption keys
+├── sdk/
+│   └── rust-sdk/         — Rust SDK for FHEVM interaction
+├── charts/               — Helm charts for deployment
+├── deployments/          — Network deployment configs
+├── test-suite/           — End-to-end integration tests
+├── golden-container-images/ — Base Docker images (Node.js, Rust)
+├── docs/                 — Documentation
+└── fhevm-whitepaper.pdf  — Technical whitepaper
+```
+
+## Supported FHE Operations
+
+All operations work on encrypted integers up to 256 bits:
+
+| Category | Operations |
+|----------|-----------|
+| Arithmetic | `+`, `-`, `*`, `/` |
+| Comparison | `<`, `>`, `==`, ` &lt;=`, ` &gt;=`, `!=` |
+| Bitwise | AND, OR, XOR, NOT, shifts |
+| Control | Ternary if (`cmux`) |
+| Boolean | `&&`, `\|\|`, `!` |
+
+## Solidity Usage
+
+```solidity
+// Write confidential smart contracts in standard Solidity
+import "fhevm/lib/TFHE.sol";
+
+contract ConfidentialToken {
+    mapping(address => euint64) private balances;
+
+    function transfer(address to, einput encAmount, bytes calldata inputProof) public {
+        euint64 amount = TFHE.asEuint64(encAmount, inputProof);
+        TFHE.allowThis(amount);
+        balances[msg.sender] = TFHE.sub(balances[msg.sender], amount);
+        balances[to] = TFHE.add(balances[to], amount);
+    }
+}
+```
+
+## Rust Coprocessor
+
+The coprocessor is a Rust workspace using `tfhe` v1.1.2:
+
+```bash
+cd coprocessor/fhevm-engine
+cargo build --release
+
+# Key dependencies
+# tfhe = 1.1.2 (boolean, shortint, integer, zk-pok)
+# sqlx = 0.8.6 (PostgreSQL)
+# alloy = 1.0.17 (Ethereum interaction)
+# tokio = 1.45.0 (async runtime)
+# tonic = 0.12.3 (gRPC)
+```
+
+## Use Cases
+
+- **Confidential transfers**: Hidden balances and amounts (no mixers needed)
+- **Blind auctions**: Sealed bids, verifiable results
+- **On-chain gaming**: Hidden moves, cards, items
+- **Confidential voting**: Private votes, prevents bribery
+- **Encrypted DIDs**: On-chain identity without ZK
+- **Tokenization**: Private RWA swaps
+
+## Deployment
+
+```bash
+# Helm chart deployment
+helm install fhevm charts/fhevm
+
+# Docker compose (test suite)
+cd test-suite
+docker compose up
+
+# Solidity development
+cd library-solidity
+npm install
+npx hardhat test
+```
+
+## Key Design Properties
+
+- **End-to-end encryption**: Transaction data encrypted, never visible to anyone
+- **Composability**: Encrypted state co-exists with public state
+- **Quantum-resistant**: Underlying TFHE scheme is lattice-based
+- **MPC key management**: Decryption via threshold KMS (secure even if some parties compromised)
+- **Symbolic execution**: FHE ops run symbolically on-chain, actual computation offloaded to coprocessor
+
+## Related Skills
+
+- `lux/lux-fhe.md` — Lower-level Go FHE library (TFHE/CKKS)
+- `lux/lux-evm.md` — EVM that integrates FHE support
+- `lux/lux-crypto.md` — Cryptographic primitives
+- `lux/lux-gpu.md` — GPU acceleration for FHE operations

@@ -1,0 +1,42 @@
+---
+title: Lux Exchange
+description: Decentralized exchange frontend with V2, V3, and precompile support
+icon: BarChart
+---
+
+The Lux Exchange (`github.com/luxfi/exchange`) is a modern DEX interface built with Next.js and React supporting multiple AMM protocols.
+
+## Features
+
+| Feature | Description |
+|---------|-------------|
+| **V2 Swaps** | Classic constant-product AMM |
+| **V3 Swaps** | Concentrated liquidity positions |
+| **Precompile Swaps** | Native EVM precompile routing for zero-gas swaps |
+| **Cross-Chain** | Route across Lux subnets and Ethereum |
+| **Position Management** | Track and manage LP positions |
+
+## Architecture
+
+```
+apps/web/           Next.js 15 frontend
+packages/exchange/  Core DEX logic, hooks, stores
+packages/ui/        Tamagui component library
+packages/config/    Chain and contract configuration
+packages/api/       React Query data layer
+```
+
+## Supported Chains
+
+| Chain | Chain ID | Protocols |
+|-------|----------|-----------|
+| Lux C-Chain | 96369 | V2, V3, Precompile |
+| Zoo | 200200 | V2, V3 |
+| Hanzo | 36963 | V2, V3 |
+| SPC | 36911 | V2, V3 |
+| Pars | 494949 | V2, V3 |
+
+## Links
+
+- [exchange.lux.network](https://exchange.lux.network)
+- [markets.lux.network](https://markets.lux.network)

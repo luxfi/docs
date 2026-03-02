@@ -1,0 +1,30 @@
+---
+title: Deployment
+description: Deploy the exchange
+icon: Server
+---
+
+## Docker
+
+```bash
+docker build -t exchange .
+docker run -p 3000:3000 exchange
+```
+
+## Kubernetes
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exchange
+  namespace: lux-exchange
+spec:
+  template:
+    spec:
+      containers:
+        - name: exchange
+          image: ghcr.io/luxfi/exchange:latest
+          ports:
+            - containerPort: 3000
+```

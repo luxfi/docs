@@ -1,0 +1,21 @@
+---
+title: Performance
+description: Benchmarks and optimization
+icon: Timer
+---
+
+## Benchmarks
+
+```
+BenchmarkOrderInsert     434,782,608 ops/sec    2.30 ns/op
+BenchmarkOrderMatch       13,157,894 ops/sec   76.0 ns/op
+BenchmarkPositionUpdate   1,572,327 ops/sec    636 ns/op
+```
+
+## GPU Acceleration
+
+The matching engine uses GPU acceleration via the `accel` package for:
+- Batch order matching
+- Price level aggregation
+- Risk calculations
+- TWAP computation

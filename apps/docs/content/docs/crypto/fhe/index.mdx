@@ -1,0 +1,34 @@
+---
+title: Fully Homomorphic Encryption
+description: Compute on encrypted data without decryption
+icon: ShieldCheck
+---
+
+Lux FHE (`github.com/luxfi/fhe`) enables computation on encrypted data. Smart contracts process encrypted integers and booleans without revealing underlying values.
+
+## Architecture
+
+```
+User → Encrypt(data) → FHE Ciphertext → Smart Contract → Compute on Ciphertext → Encrypted Result → Decrypt
+                                              ↓
+                                    FHE Coprocessor (GPU)
+```
+
+## Supported Operations
+
+| Type | Operations |
+|------|-----------|
+| **Boolean** | AND, OR, NOT, XOR, NAND, NOR |
+| **Integer** | Add, Sub, Mul, Div, Min, Max, Comparison |
+| **TFHE** | Fully homomorphic with bootstrapping |
+| **CKKS** | Approximate arithmetic on encrypted vectors |
+
+## Components
+
+| Component | Description |
+|-----------|-------------|
+| `fhe` | Core Go library with TFHE/CKKS |
+| `fhe-coprocessor` | GPU-accelerated FHE computation workers |
+| `fhed` | FHE daemon for key management and decryption |
+| `fhe-contracts` | Solidity library for encrypted types |
+| `v1-sdk` / `v2-sdk` | JavaScript SDKs for client-side encryption |

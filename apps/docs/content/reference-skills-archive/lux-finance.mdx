@@ -1,0 +1,165 @@
+---
+title: "Lux Finance - DeFi Web Interface"
+description: "Documentation for Lux Finance - DeFi Web Interface"
+---
+
+## Overview
+
+Lux Finance is the **DeFi web interface** for the Lux ecosystem. It is a Svelte 4 + Vite single-page application providing a frontend for DeFi protocol interactions including swaps, liquidity, staking, governance, and cross-chain bridging via Connext. Deployed at `lux.finance` with a beta environment at `beta.lux.finance`.
+
+## When to use
+
+- Building or extending the Lux DeFi frontend
+- Integrating new DeFi protocols or contract interactions
+- Working with Svelte components for Web3 wallet connection flows
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/finance` |
+| Package | `lux-v2-ui` v1.0.0 |
+| Language | TypeScript, Svelte |
+| Package manager | pnpm (uses yarn in README, pnpm-lock present) |
+| Framework | Svelte 4, Vite 4 |
+| UI | Tailwind CSS 3, Storybook |
+| Tests | Playwright (e2e) |
+| Default branch | main |
+| License | ISC |
+
+## Source structure (`src/`)
+
+| Directory | Purpose |
+|-----------|---------|
+| `App.svelte` | Root Svelte component |
+| `main.ts` | Application entry point |
+| `abi/` | Contract ABIs (fetched via `yarn abi` script) |
+| `external-abi/` | Third-party contract ABIs |
+| `components/` | Svelte UI components |
+| `views/` | Page-level view components |
+| `stores/` | Svelte stores (state management) |
+| `helpers/` | Utility functions |
+| `middleware/` | Request/response middleware |
+| `styles/` | Global styles |
+| `locales/` | i18n translation files (svelte-i18n) |
+| `stories/` | Storybook stories |
+
+## Web3 integration
+
+### Wallet connection (`@web3-onboard`)
+
+| Provider | Package |
+|----------|---------|
+| Injected (MetaMask, etc.) | `@web3-onboard/injected-wallets` |
+| WalletConnect | `@web3-onboard/walletconnect` |
+| Coinbase | `@web3-onboard/coinbase` |
+| Ledger | `@web3-onboard/ledger` |
+| Trezor | `@web3-onboard/trezor` |
+| Keystone | `@web3-onboard/keystone` |
+| Taho | `@web3-onboard/taho` |
+| WalletLink | `@web3-onboard/walletlink` |
+
+### Contract interaction
+
+- **ethers.js 5.7** for contract calls and transaction signing
+- **ABIs** fetched from mainnet via `scripts/mainnetAbi.sh`
+- **GraphQL** via `graphql-request` for subgraph queries
+
+### Cross-chain
+
+- **Connext SDK** (`@connext/sdk-core` v2.1.3-alpha.1) for cross-chain transfers
+
+### Governance
+
+- **Snapshot.js** (`@snapshot-labs/snapshot.js`) for off-chain governance voting
+
+## One-file quickstart
+
+```bash
+git clone https://github.com/luxfi/finance.git
+cd finance
+cp .env.demo .env
+pnpm install
+
+# Start dev server (fetches ABIs, formats, lints, then serves)
+pnpm dev
+
+# Or skip ABI fetch
+pnpm dev:noabi
+
+# App runs at http://localhost:5005
+```
+
+## Environment variables
+
+Required in `.env` (copy from `.env.demo`):
+
+- RPC endpoints
+- Subgraph URLs
+- Contract addresses
+- API keys
+
+## Development
+
+```bash
+# Install dependencies
+pnpm install
+
+# Dev server (port 5005)
+pnpm dev
+
+# Dev without ABI fetch
+pnpm dev:noabi
+
+# Production build
+pnpm build
+
+# Format + lint
+pnpm format
+
+# Run e2e tests
+pnpm test
+
+# Run tests with UI
+pnpm test:ui
+```
+
+## Deployment
+
+| Environment | Branch | URL |
+|-------------|--------|-----|
+| Production | `main` | `lux.finance` |
+| Beta | `beta` | `beta.lux.finance` |
+
+- CI/CD via Vercel
+- IPFS build variant: `pnpm build:gha`
+
+### Branch workflow
+
+1. Branch off `beta` for new work
+2. PR into `beta` for review
+3. `beta` merged into `main` for production deployment
+
+## Key dependencies
+
+```
+svelte@4                   -- UI framework
+vite@4                     -- Build tool
+tailwindcss@3              -- Utility CSS
+ethers@5.7                 -- EVM interaction
+@web3-onboard/core         -- Wallet connection
+@connext/sdk-core          -- Cross-chain bridging
+@snapshot-labs/snapshot.js  -- Governance
+chart.js@4                 -- Data visualization
+svelte-routing             -- Client-side routing
+svelte-i18n                -- Internationalization
+immer                      -- Immutable state
+graphql + graphql-request  -- Subgraph queries
+```
+
+## Related Skills
+
+- `lux/lux-dex.md` -- DEX contracts and AMM logic
+- `lux/lux-wwallet.md` -- Web wallet for connecting to finance UI
+- `lux/lux-bridge.md` -- Cross-chain bridge (MPC-based, separate from Connext)
+- `lux/lux-governance.md` -- On-chain governance

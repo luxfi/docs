@@ -1,0 +1,244 @@
+---
+title: "Lux KMS"
+description: "Documentation for Lux KMS"
+---
+
+## Overview
+
+`github.com/luxfi/kms` is an open-source, enterprise-grade Key Management Service providing centralized secret management, cryptographic key operations, PKI (Private Certificate Authority), SSH certificate signing, and HSM integration. The platform consists of a Node.js/Fastify backend, a React/TypeScript frontend, a Go-based Kubernetes operator, and Helm charts for deployment. It is the secret management backbone for the Lux ecosystem, deployed at `kms.hanzo.ai` (Hanzo's hosted instance) and self-hostable via Docker or Kubernetes.
+
+## When to use
+
+- Managing application secrets (API keys, database credentials, tokens) across environments
+- Encrypting and decrypting data with AES-128/256-GCM or RSA-2048/4096
+- Signing and verifying data with RSA-PSS, RSA-PKCS1v15, or ECDSA
+- Generating and rotating cryptographic keys (symmetric and asymmetric)
+- Issuing and managing X.509 certificates via internal PKI
+- Issuing signed SSH certificates for infrastructure access
+- Syncing secrets to external platforms (GitHub Actions, Vercel, AWS, Terraform, Ansible)
+- Deploying a Kubernetes operator to inject secrets into workloads
+- Scanning codebases for leaked secrets (140+ secret types)
+
+## Hard requirements
+
+- Node.js 20+ for backend and frontend development
+- Go 1.26+ for the Kubernetes operator (`k8-operator/`)
+- PostgreSQL for primary storage, Redis for caching
+- Docker and Docker Compose for local development and production deployment
+- Root encryption key must be configured via `ENCRYPTION_KEY` environment variable or HSM
+- All secrets encrypted at rest with AES-GCM; TLS 1.3 for transit
+- RBAC enforced on all key and secret operations
+- Audit logging enabled for all cryptographic operations
+
+## Quick reference
+
+### Local development
+
+```bash
+cd ~/work/lux/kms
+
+# Full stack via Docker Compose
+cp .env.example .env
+docker compose -f docker-compose.dev.yml up
+
+# Backend only
+cd backend && npm install && npm run dev
+
+# Frontend only
+cd frontend && npm install && npm run dev
+
+# Run tests
+npm test
+npm run test:e2e
+```
+
+### Production deployment
+
+```bash
+# Docker standalone
+docker build -f Dockerfile.standalone-kms -t lux-kms .
+docker compose -f docker-compose.prod.yml up -d
+
+# Kubernetes via Helm
+helm install lux-kms ./helm-charts/kms-standalone-postgres
+
+# Kubernetes operator
+cd k8-operator && make deploy
+```
+
+### Secret scanning
+
+```bash
+# Scan git history for leaked secrets
+kms scan --verbose
+
+# Install pre-commit hook
+kms scan install --pre-commit-hook
+```
+
+### Database migrations
+
+```bash
+cd backend
+npm run migration:create -- create_new_table
+npm run migration:up
+npm run migration:down
+```
+
+## Core Concepts
+
+### Architecture
+
+```
+Frontend (React 18 / Vite / TypeScript)
+  |
+Backend API (Node.js / Fastify / TypeScript)
+  |
+  +-- KMS Service Layer (key generation, crypto ops, access control, audit)
+  |
+  +-- PostgreSQL (primary storage) + Redis (cache)
+  |
+  +-- HSM Provider (PKCS#11: AWS CloudHSM, Thales Luna, SoftHSM)
+```
+
+### Key hierarchy
+
+1. **Root Key** -- Protected by HSM or `ENCRYPTION_KEY` env var
+2. **Organization KEK** -- Key Encryption Key per organization
+3. **Project KEK** -- Project-specific encryption key
+4. **Data Keys** -- Actual encryption/signing keys for application use
+
+### Supported algorithms
+
+| Category | Algorithms |
+|----------|-----------|
+| Symmetric encryption | AES-128-GCM, AES-256-GCM |
+| Asymmetric encryption | RSA-2048, RSA-4096, ECC-P256, ECC-P384 |
+| Signing | RSA-PSS (SHA-256/384/512), RSA-PKCS1v15, ECDSA |
+| Key derivation | PBKDF2, Argon2 |
+| FHE (planned) | TFHE-Binary, TFHE-Integer |
+
+### API endpoints
+
+| Method | Path | Purpose |
+|--------|------|---------|
+| POST | `/api/v1/kms/keys` | Create new key |
+| GET | `/api/v1/kms/keys` | List keys |
+| GET | `/api/v1/kms/keys/{keyId}` | Get key metadata |
+| PATCH | `/api/v1/kms/keys/{keyId}` | Update key |
+| DELETE | `/api/v1/kms/keys/{keyId}` | Delete key |
+| POST | `/api/v1/kms/keys/{keyId}/encrypt` | Encrypt data |
+| POST | `/api/v1/kms/keys/{keyId}/decrypt` | Decrypt data |
+| POST | `/api/v1/kms/keys/{keyId}/sign` | Sign data |
+| POST | `/api/v1/kms/keys/{keyId}/verify` | Verify signature |
+| POST | `/api/v1/kms/keys/{keyId}/generate-data-key` | Generate data encryption key |
+| POST | `/api/v1/kmip` | KMIP 2.0+ protocol endpoint |
+
+### Directory structure
+
+```
+kms/
+  backend/
+    src/
+      services/
+        kms/                  # Core KMS service
+          kms-service.ts      # Main key operation logic (40K lines)
+          kms-types.ts        # Type definitions
+          kms-fns.ts          # Utility functions
+          kms-key-dal.ts      # Database access layer for keys
+          kms-root-config-dal.ts  # Root key configuration
+          internal-kms-dal.ts # Internal KMS operations
+        auth/                 # Authentication service
+        certificate/          # X.509 certificate management
+        certificate-authority/  # Private CA
+        identity/             # Machine identity management
+        identity-aws-auth/    # AWS IAM auth
+        identity-gcp-auth/    # GCP auth
+        identity-azure-auth/  # Azure auth
+        identity-kubernetes-auth/  # K8s auth
+        cmek/                 # Customer-managed encryption keys
+        ...                   # 70+ service directories
+  frontend/                   # React 18 / Vite / Tailwind / Radix UI / i18next (12 languages)
+  k8-operator/                # Go-based Kubernetes operator
+    go.mod                    # github.com/luxfi/kms/k8-operator (Go 1.26)
+    main.go                   # Operator entrypoint
+    controllers/              # Reconciliation controllers
+    api/                      # CRD API types
+    internal/                 # Internal operator logic
+  helm-charts/
+    kms-standalone-postgres/  # Full KMS + PostgreSQL chart
+    kms-gateway/              # Gateway-only chart
+    secrets-operator/         # Secrets operator chart
+  docs/                       # Mintlify documentation (MDX)
+  docker-swarm/               # Swarm deployment configs
+  examples/                   # Integration examples
+  sink/                       # Event sink for audit log streaming
+```
+
+### Kubernetes operator
+
+The K8s operator (`k8-operator/`) is a Go application using controller-runtime. Key dependencies:
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `github.com/luxfi/kms-go` | v0.5.98 | KMS Go SDK |
+| `sigs.k8s.io/controller-runtime` | v0.14.4 | K8s controller framework |
+| `k8s.io/api` | v0.26.1 | K8s API types |
+| `k8s.io/client-go` | v0.26.1 | K8s client |
+
+It reconciles `KMSSecret` CRDs to sync secrets from the KMS platform into Kubernetes Secrets, with automatic reloading of deployments when secrets change.
+
+### Authentication methods
+
+- Universal Auth (API key + secret)
+- Kubernetes Service Account Auth
+- AWS IAM Auth
+- GCP IAM Auth
+- Azure AD Auth
+- OIDC Auth
+- JWT Auth
+- LDAP Auth
+- Alibaba Cloud Auth
+
+### Environment variables (core)
+
+| Variable | Required | Purpose |
+|----------|----------|---------|
+| `ENCRYPTION_KEY` | Yes | 16-byte hex key for platform encryption |
+| `AUTH_SECRET` | Yes | JWT signing secret |
+| `DB_CONNECTION_URI` | Yes | PostgreSQL connection string |
+| `REDIS_URL` | Yes | Redis connection string |
+| `SITE_URL` | Yes | Base URL for the KMS frontend |
+| `SMTP_HOST` | No | Mail server for notifications |
+| `HSM_ENABLED` | No | Enable PKCS#11 HSM backend |
+| `HSM_LIBRARY_PATH` | No | Path to PKCS#11 shared library |
+| `HSM_SLOT` | No | HSM slot number |
+| `HSM_PIN` | No | HSM PIN/password |
+
+### Monitoring
+
+| Endpoint | Purpose |
+|----------|---------|
+| `/health` | Health check |
+| `/readiness` | Readiness probe |
+| `/metrics` | Prometheus metrics |
+
+## Troubleshooting
+
+- **HSM connection failed**: Verify `HSM_LIBRARY_PATH` points to the correct PKCS#11 `.so` file, check slot number with `softhsm2-util --show-slots`, and confirm PIN is correct.
+- **Key generation failed**: Check that the root encryption key is configured (`ENCRYPTION_KEY` env var) and that PostgreSQL is reachable.
+- **"KMSSecret not syncing"**: Ensure the K8s operator is running, the `KMSSecret` CRD references valid project/environment paths, and the operator's Universal Auth credentials are active.
+- **Frontend won't start**: Run `npm install` in the `frontend/` directory. Requires Node.js 20+. Check that `SITE_URL` is set correctly.
+- **Database migration errors**: Run `npm run migration:up` from the `backend/` directory. For fresh installs, ensure the PostgreSQL database exists and `DB_CONNECTION_URI` is correct.
+- **Port conflicts**: Default ports are 8080 (backend API) and 3000 (frontend dev). Check with `lsof -i :8080`.
+- **Docker build fails**: Use `Dockerfile.standalone-kms` for production. Ensure `--platform linux/amd64` for K8s deployments.
+
+## Related Skills
+
+- `lux-genesis` -- Genesis configurations that reference KMS for secure key storage
+- `lux-staking` -- Staking certificates whose private keys should be stored in KMS
+- `lux-node` -- Node deployments that pull secrets from KMS via the K8s operator
+
+---
+
+Last Updated: 2026-03-13

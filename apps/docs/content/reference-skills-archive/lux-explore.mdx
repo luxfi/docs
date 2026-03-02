@@ -1,0 +1,134 @@
+---
+title: "Lux Explore - Blockchain Explorer Frontend"
+description: "Documentation for Lux Explore - Blockchain Explorer Frontend"
+---
+
+## Overview
+
+Lux Explore is the **Next.js frontend** for the Lux Network block explorer, a fork of [Blockscout Frontend](https://github.com/blockscout/frontend). It provides the web UI for browsing transactions, contracts, tokens, and network activity at `explore.lux.network`.
+
+## Quick Reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/explore` |
+| Package | `@luxfi/explore` v1.0.0 |
+| Default branch | `main` |
+| Framework | Next.js 16 (Pages Router) |
+| UI library | Chakra UI v3 |
+| Package manager | pnpm 10.11.0 |
+| Node |  &gt;= 22.14.0 |
+| Upstream | `blockscout/frontend` |
+| License | GPL v3.0 |
+
+## Architecture
+
+```
+explore/
+├── pages/              # Next.js pages (file-based routing)
+├── ui/                 # UI components by feature
+│   ├── address/        # Address page components
+│   ├── block/          # Block page components
+│   ├── tx/             # Transaction page components
+│   ├── token/          # Token page components
+│   ├── shared/         # Shared components
+│   └── snippets/       # Header, footer, navigation
+├── lib/                # Core business logic
+│   ├── api/            # API client & services
+│   ├── hooks/          # React hooks
+│   └── web3/           # Web3 integration (wagmi, viem)
+├── toolkit/            # UI toolkit (Chakra-based)
+│   ├── components/     # Reusable components
+│   └── theme/          # Theme configuration
+├── configs/            # Configuration files
+│   ├── app/            # Feature flags
+│   └── envs/           # Environment presets
+├── deploy/             # Deployment tools & scripts
+├── Dockerfile.lux      # Lux-branded production build
+├── compose.yml         # Dev environment
+└── compose.prod.yml    # Production environment
+```
+
+## Commands
+
+```bash
+# Development
+pnpm install
+pnpm dev                # Start dev server (tools/scripts/dev.sh)
+pnpm dev:preset         # Start with preset configuration
+pnpm build              # Production build (next build)
+pnpm start              # Start production server
+
+# Testing
+pnpm test:vitest        # Unit tests (Vitest)
+pnpm test:pw            # E2E tests (Playwright 1.57)
+pnpm test:pw:local      # Playwright locally
+
+# Linting
+pnpm lint:eslint        # ESLint
+pnpm lint:tsc           # TypeScript check
+
+# Docker
+docker compose up                       # Dev
+docker compose -f compose.prod.yml up   # Production
+pnpm build:docker                       # Build Docker image
+```
+
+## Chain Configuration
+
+| Chain | Chain ID | Explorer URL |
+|-------|----------|-------------|
+| Lux Mainnet (C-Chain) | 96369 | explore.lux.network |
+| Lux Testnet | 96368 | testnet.explore.lux.network |
+| Zoo Mainnet | 200200 | zoo.explore.lux.network |
+| Zoo Testnet | 200201 | zoo-testnet.explore.lux.network |
+
+## Key Environment Variables
+
+```bash
+NEXT_PUBLIC_NETWORK_NAME=Lux Network
+NEXT_PUBLIC_NETWORK_ID=96369
+NEXT_PUBLIC_NETWORK_RPC_URL=https://api.lux.network/ext/bc/C/rpc
+NEXT_PUBLIC_API_HOST=https://explore.lux.network
+NEXT_PUBLIC_APP_HOST=https://explore.lux.network
+NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER=oidc
+NEXT_PUBLIC_OIDC_SERVER_URL=https://hanzo.id
+NEXT_PUBLIC_OIDC_CLIENT_ID=lux-explore-client-id
+```
+
+## Key Dependencies
+
+```
+next@16.1.6             # Framework
+@chakra-ui/react@3.33   # UI components
+@tanstack/react-query@5 # State management
+wagmi@2.19, viem@2.41   # Web3 client
+luxnet@3.16.0           # Lux JS SDK
+react@19, react-dom@19  # React
+playwright@1.57         # E2E testing
+vitest@4.0              # Unit testing
+typescript@5.9          # Language
+```
+
+## Lux Branding Customizations
+
+Key areas where Lux branding diverges from upstream Blockscout:
+- `ui/snippets/networkLogo/` -- Lux logo component
+- `toolkit/theme/foundations/` -- Lux color palette
+- `public/logos/` -- Lux brand assets
+- `Dockerfile.lux` -- Lux-specific Docker build
+- `configs/app/` -- Feature flags and chain config
+
+## CI/CD
+
+- `.github/workflows/build-lux.yml` -- Lux-specific build
+- `.github/workflows/deploy-main.yml` -- Deploy on push to main
+- `.github/workflows/publish-image.yml` -- Publish Docker image
+- `.github/workflows/e2e-tests.yml` -- Playwright E2E
+- `.github/workflows/checks.yml` -- Lint + typecheck
+
+## Related Skills
+
+- `lux/lux-explorer.md` -- Blockscout backend (Elixir)
+- `lux/lux-node.md` -- RPC node the explorer queries
+- `lux/lux-indexer.md` -- Data indexing layer

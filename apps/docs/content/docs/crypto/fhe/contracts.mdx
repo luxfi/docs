@@ -1,0 +1,32 @@
+---
+title: FHE Smart Contracts
+description: Solidity library for encrypted computation
+icon: FileCode
+---
+
+The FHE contracts library provides encrypted types for Solidity smart contracts.
+
+## Installation
+
+```bash
+forge install luxfi/fhe-contracts
+```
+
+## Usage
+
+```solidity
+import "fhe-contracts/TFHE.sol";
+
+contract PrivateVoting {
+    mapping(uint256 => euint32) private voteCounts;
+
+    function vote(uint256 proposalId, bytes calldata encryptedVote) external {
+        euint32 v = TFHE.asEuint32(encryptedVote);
+        voteCounts[proposalId] = TFHE.add(voteCounts[proposalId], v);
+    }
+
+    function getResult(uint256 proposalId) external view returns (uint32) {
+        return TFHE.decrypt(voteCounts[proposalId]);
+    }
+}
+```

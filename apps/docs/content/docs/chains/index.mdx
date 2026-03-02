@@ -1,0 +1,41 @@
+---
+title: Chains & Virtual Machines
+description: Lux Network chain types and VM implementations
+index: true
+icon: Layers
+---
+
+Lux Network supports multiple chain types through its virtual machine architecture. Each VM is purpose-built for specific workloads.
+
+## Primary Chains
+
+| Chain | VM | Chain ID | Purpose |
+|-------|-----|----------|---------|
+| **C-Chain** | EVM | 96369 | Smart contracts, DeFi |
+| **P-Chain** | PlatformVM | — | Validators, staking, subnets |
+| **X-Chain** | ExchangeVM | — | UTXO asset transfers |
+
+## Subnet Chains
+
+| Chain | VM | Chain ID (Mainnet) | Purpose |
+|-------|-----|-------------------|---------|
+| Zoo | SubnetEVM | 200200 | Zoo ecosystem |
+| Hanzo | SubnetEVM | 36963 | Hanzo AI services |
+| SPC | SubnetEVM | 36911 | SPC ecosystem |
+| Pars | SubnetEVM | 494949 | Pars ecosystem |
+
+## Specialized VMs
+
+| VM | Chain | Purpose |
+|----|-------|---------|
+| DEX VM | D-Chain | On-chain order book, perpetuals |
+| Threshold VM | T-Chain | FHE operations, threshold decrypt |
+| Quantum VM | Q-Chain | Post-quantum cryptography |
+| AI VM | A-Chain | AI model inference |
+| Bridge VM | B-Chain | Cross-chain bridge operations |
+| Identity VM | I-Chain | DID, verifiable credentials |
+| Oracle VM | O-Chain | Oracle data feeds |
+| Key VM | K-Chain | Key management |
+| Relay VM | R-Chain | Cross-chain messaging |
+| ZK VM | Z-Chain | Zero-knowledge proofs |
+| Graph VM | G-Chain | Graph data structures |

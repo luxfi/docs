@@ -1,0 +1,21 @@
+---
+title: Token Swaps
+description: Swap tokens using V2, V3, or precompile routing
+icon: ArrowLeftRight
+---
+
+## V2 Swaps
+
+Classic constant-product AMM (`x * y = k`). Best for small trades with low slippage.
+
+## V3 Swaps
+
+Concentrated liquidity with custom price ranges. Higher capital efficiency for LPs.
+
+## Precompile Swaps
+
+Native EVM precompile at `0x0300000000000000000000000000000000000001` for zero-gas token swaps on Lux chains.
+
+## Smart Router
+
+The exchange automatically routes through the best pool (V2, V3, or precompile) based on price impact and gas costs.

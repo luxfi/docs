@@ -1,0 +1,35 @@
+---
+title: Lux DEX (LX)
+description: Ultra-high performance on-chain CLOB with GPU acceleration
+icon: Zap
+---
+
+LX (`github.com/luxfi/dex`) is an ultra-high performance decentralized exchange with a full on-chain Central Limit Order Book (CLOB).
+
+## Performance
+
+| Metric | Value |
+|--------|-------|
+| **Orders/sec (CPU)** | 13M+ |
+| **Orders/sec (GPU)** | 434M+ |
+| **Order Match Latency** | 75.9ns |
+| **Position Update** | 636ns |
+| **Finality** | 2ms |
+| **Test Coverage** | 100% |
+
+## Architecture
+
+```
+API Gateway → Order Router → Matching Engine → Settlement → Chain
+                                    ↓
+                              GPU Accelerator
+                            (CUDA/Metal/MLX)
+```
+
+## Engines
+
+| Engine | Performance | Use Case |
+|--------|-------------|----------|
+| Pure Go | 1M ops/s | Development, testing |
+| C++ | 500K ops/s | Production (no GPU) |
+| GPU/MLX | 434M ops/s | High-frequency production |
