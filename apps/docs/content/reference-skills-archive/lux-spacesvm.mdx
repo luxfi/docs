@@ -1,0 +1,218 @@
+---
+title: "Lux SpacesVM - Authenticated Hierarchical Storage VM"
+description: "Documentation for Lux SpacesVM - Authenticated Hierarchical Storage VM"
+---
+
+## Overview
+
+SpacesVM is a **Lux-native virtual machine** for authenticated, hierarchical key-value storage with EIP-712 wallet compatibility, state expiry, and fee-based metering. Not an EVM -- written from scratch for storage-optimized operations on Lux subnets.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Module | `github.com/luxdefi/spacesvm` |
+| Go | 1.26 |
+| Branch | `master` |
+| VM ID | `sqja3uK17MJxfC7AN8nGadBw9JK5BcrsNwNynsqP5Gih8M5Bm` |
+| Token | `SPC` |
+| Latest version | v0.0.15 |
+| CLI | `spaces-cli` |
+| Demo | tryspaces.xyz |
+
+## Luxd Compatibility
+
+```
+[v0.0.15] Luxd@v1.9.6-v1.9.7
+[v0.0.14] Luxd@v1.9.4
+[v0.0.13] Luxd@v1.9.4
+[v0.0.12] Luxd@v1.9.3
+[v0.0.11] Luxd@v1.9.2
+[v0.0.10] Luxd@v1.9.2
+[v0.0.9]  Luxd@v1.9.0-1.9.1
+[v0.0.8]  Luxd@v1.8.0-v1.8.6
+```
+
+## Key Concepts
+
+### Spaces
+A "space" is an owned namespace. Only the owner (authenticated via EIP-712 signature) can modify keys within their space. Spaces have expiry timers that depend on how much storage they consume.
+
+### Transaction Types
+
+| Type | Fields | Purpose |
+|------|--------|---------|
+| `ClaimTx` | `{space}` | Reserve a space (associates address) |
+| `SetTx` | `{space, key, value}` | Set key-value pair in a space |
+| `DeleteTx` | `{space, key}` | Remove a key from a space |
+| `LifelineTx` | `{space, units}` | Extend space lifetime with SPC |
+| `MoveTx` | `{space, to}` | Transfer space ownership |
+| `TransferTx` | `{to, units}` | Send SPC to another address |
+
+### State Expiry
+Spaces automatically expire based on storage usage. More storage = faster expiry. Use `LifelineTx` to extend. Expired spaces are deleted entirely.
+
+### Space Rewards
+50% of transaction fees go to a random space owner (excluding the transaction creator).
+
+## Architecture
+
+```
+spacesvm/
+├── chain/          — Core chain logic
+│   ├── block.go        — Block construction and validation
+│   ├── builder.go      — Block builder
+│   ├── claim_tx.go     — ClaimTx implementation
+│   ├── set_tx.go       — SetTx implementation
+│   ├── delete_tx.go    — DeleteTx implementation
+│   ├── lifeline_tx.go  — LifelineTx implementation
+│   ├── move_tx.go      — MoveTx implementation
+│   ├── transfer_tx.go  — TransferTx implementation
+│   ├── storage.go      — State storage layer
+│   ├── genesis.go      — Genesis configuration
+│   ├── codec.go        — Transaction serialization
+│   └── crypto.go       — EIP-712 signature verification
+├── vm/             — VM implementation (Lux VM interface)
+├── client/         — Go SDK client
+├── cmd/            — CLI tools
+│   └── spaces-cli/     — CLI for interacting with SpacesVM
+├── mempool/        — Transaction mempool
+├── parser/         — Transaction parsing
+├── tree/           — Merkle tree for state
+├── tdata/          — EIP-712 typed data
+├── tests/          — E2E tests
+├── networks/       — Network genesis configs
+├── scripts/        — Build and run scripts
+├── utils/          — Utilities
+└── version/        — Version management
+```
+
+## Key Dependencies
+
+```
+github.com/luxdefi/node@v1.9.8           — Lux node (VM interface)
+github.com/luxdefi/lux-netrunner@v1.3.5  — Network testing
+github.com/ethereum/go-ethereum@v1.10.26 — EIP-712 signing
+github.com/gorilla/rpc@v1.2.0            — JSON-RPC server
+github.com/spf13/cobra@v1.6.1            — CLI framework
+```
+
+## CLI Usage
+
+```bash
+# Install
+git clone https://github.com/luxfi/spacesvm.git
+cd spacesvm
+go install -v ./cmd/spaces-cli
+
+# Claim a space
+spaces-cli claim myspace
+
+# Set a key-value pair
+spaces-cli set myspace mykey "myvalue"
+
+# Resolve a value
+spaces-cli resolve myspace/mykey
+
+# Upload a file
+spaces-cli set-file myspace ~/photo.jpg
+
+# Download a file
+spaces-cli resolve-file myspace/<hash> output.jpg
+
+# Transfer SPC
+spaces-cli transfer 0x1234... 1000
+
+# Check balance
+spaces-cli info myspace
+```
+
+## JSON-RPC API
+
+All endpoints at `/ext/bc/<chainID>/public`:
+
+```bash
+# Ping
+curl -X POST <endpoint>/public -d '{"jsonrpc":"2.0","method":"spacesvm.ping","params":{},"id":1}'
+
+# Check if space is claimed
+curl -X POST <endpoint>/public -d '{"jsonrpc":"2.0","method":"spacesvm.claimed","params":{"space":"myspace"},"id":1}'
+
+# Get suggested fee (returns EIP-712 typed data for signing)
+curl -X POST <endpoint>/public -d '{"jsonrpc":"2.0","method":"spacesvm.suggestedFee","params":{"input":{"type":"claim","space":"myspace"}},"id":1}'
+
+# Issue signed transaction
+curl -X POST <endpoint>/public -d '{"jsonrpc":"2.0","method":"spacesvm.issueTx","params":{"typedData":<typed_data>,"signature":"0x..."},"id":1}'
+
+# Resolve a path
+curl -X POST <endpoint>/public -d '{"jsonrpc":"2.0","method":"spacesvm.resolve","params":{"path":"myspace/mykey"},"id":1}'
+
+# Get balance
+curl -X POST <endpoint>/public -d '{"jsonrpc":"2.0","method":"spacesvm.balance","params":{"address":"0x..."},"id":1}'
+
+# Recent activity
+curl -X POST <endpoint>/public -d '{"jsonrpc":"2.0","method":"spacesvm.recentActivity","params":{},"id":1}'
+```
+
+## Transaction Workflow
+
+```
+1. spacesvm.claimed {"space":"myspace"}              → check availability
+2. spacesvm.suggestedFee {"input":{...}}              → get EIP-712 typed data + cost
+3. Sign EIP-712 typed data with Web3 wallet           → signature
+4. spacesvm.issueTx {"typedData":..., "signature":..} → get txId
+5. spacesvm.hasTx {"txId":...}                        → poll until accepted
+```
+
+## Go SDK Client
+
+```go
+import "github.com/luxfi/spacesvm/client"
+
+c := client.New("<endpoint>/public")
+
+// Check space
+claimed, _ := c.Claimed("myspace")
+
+// Resolve value
+exists, value, meta, _ := c.Resolve("myspace/mykey")
+
+// Get balance
+bal, _ := c.Balance(addr)
+
+// Issue transaction
+fee, cost, _ := c.SuggestedFee(input)
+txID, _ := c.IssueTx(typedData, signature)
+ok, _ := c.PollTx(ctx, txID)
+```
+
+## Build & Run
+
+```bash
+# Build VM binary and CLI
+./scripts/build.sh
+
+# Run local network
+./scripts/run.sh 1.9.7
+
+# Run E2E tests
+E2E=true ./scripts/run.sh 1.9.7
+
+# Deploy as Luxd plugin
+mv build/sqja3uK17MJxfC7AN8nGadBw9JK5BcrsNwNynsqP5Gih8M5Bm \
+   ~/node/build/plugins/
+```
+
+## EIP-712 Compatibility
+
+SpacesVM uses EIP-712 typed data signing. Any Web3 wallet that supports `eth_signTypedData_v4` can interact with SpacesVM. This does NOT make SpacesVM an EVM -- it is a completely separate VM that happens to use EIP-712 for authentication.
+
+## Reserved Spaces
+
+Spaces of length 66 (format: `0x` + hex-encoded address) are reserved for the corresponding address holder. Only the address owner can claim these spaces.
+
+## Related Skills
+
+- `lux/lux-node.md` — Core node that hosts SpacesVM
+- `lux/lux-plugins.md` — Plugin registry (includes SpacesVM definition)
+- `lux/lux-evm.md` — EVM chain (different from SpacesVM)

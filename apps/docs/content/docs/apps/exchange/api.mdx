@@ -1,0 +1,27 @@
+---
+title: API Reference
+description: Exchange SDK and hooks
+icon: FileCode
+---
+
+## React Hooks
+
+```typescript
+import { useSwap } from '@luxfi/exchange';
+
+const { quote, execute } = useSwap({
+  tokenIn: '0x...',
+  tokenOut: '0x...',
+  amountIn: '1000000',
+});
+```
+
+## Core Functions
+
+| Function | Description |
+|----------|-------------|
+| `getQuote()` | Get swap quote with routing |
+| `executeSwap()` | Execute a swap transaction |
+| `addLiquidity()` | Add liquidity to a pool |
+| `removeLiquidity()` | Remove liquidity |
+| `getPositions()` | List active positions |

@@ -1,0 +1,38 @@
+---
+title: Operations
+description: Available GPU-accelerated operations
+icon: Settings
+---
+
+## Crypto Operations
+
+```go
+import "github.com/luxfi/accel/ops/crypto"
+
+// Batch verify 10000 signatures
+results := crypto.BatchVerify(signatures, messages, pubkeys)
+
+// Parallel Merkle tree construction
+root := crypto.MerkleRoot(leaves)
+```
+
+## ZK Operations
+
+```go
+import "github.com/luxfi/accel/ops/zk"
+
+// Number Theoretic Transform
+result := zk.NTT(coefficients)
+
+// Multi-Scalar Multiplication
+point := zk.MSM(scalars, points)
+```
+
+## DEX Operations
+
+```go
+import "github.com/luxfi/accel/ops/dex"
+
+// Batch AMM price computation
+prices := dex.BatchAMMPrices(pools, amounts)
+```

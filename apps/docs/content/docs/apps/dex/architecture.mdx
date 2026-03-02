@@ -1,0 +1,21 @@
+---
+title: Architecture
+description: DEX engine architecture and components
+icon: GitBranch
+---
+
+## Matching Engine
+
+Price-time priority CLOB with:
+- Limit orders, market orders, stop orders
+- IOC (Immediate or Cancel), FOK (Fill or Kill), GTC (Good Till Cancel)
+- Post-only, reduce-only modes
+- Cross-margin and isolated margin
+
+## Settlement
+
+On-chain settlement via the DEX VM (D-Chain) with atomic execution.
+
+## Market Data
+
+Real-time order book snapshots, trade history, and OHLCV candles via WebSocket.

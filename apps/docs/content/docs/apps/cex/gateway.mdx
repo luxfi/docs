@@ -1,0 +1,29 @@
+---
+title: Gateway
+description: Multi-protocol trading gateway
+icon: Server
+---
+
+## FIX 4.4
+
+```
+# Connect via FIX
+Host: fix.lux.exchange
+Port: 8443
+SenderCompID: YOUR_FIRM
+TargetCompID: LUXCEX
+```
+
+## REST API
+
+```bash
+curl -X POST https://api.lux.exchange/v1/orders \
+  -H 'Authorization: Bearer $TOKEN' \
+  -d '{"symbol":"LUX-USD","side":"buy","type":"limit","price":"10.00","qty":"100"}'
+```
+
+## WebSocket
+
+```javascript
+const ws = new WebSocket('wss://api.lux.exchange/v1/ws');
+```

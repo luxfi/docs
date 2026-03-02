@@ -1,0 +1,34 @@
+---
+title: TFHE Protocol
+description: Boolean and integer operations on encrypted data
+icon: Binary
+---
+
+TFHE (Torus Fully Homomorphic Encryption) enables arbitrary computation on encrypted data through Boolean gate bootstrapping.
+
+## Encrypted Types
+
+| Type | Description | Size |
+|------|-------------|------|
+| `ebool` | Encrypted boolean | 1 bit |
+| `euint8` | Encrypted uint8 | 8 bits |
+| `euint16` | Encrypted uint16 | 16 bits |
+| `euint32` | Encrypted uint32 | 32 bits |
+| `euint64` | Encrypted uint64 | 64 bits |
+| `eaddress` | Encrypted address | 160 bits |
+
+## Operations
+
+```solidity
+// Solidity with FHE
+TFHE.add(a, b)      // Homomorphic addition
+TFHE.mul(a, b)      // Homomorphic multiplication
+TFHE.cmux(cond, a, b) // Conditional select
+TFHE.decrypt(ct)     // Decrypt (requires authorization)
+```
+
+## Security
+
+- 128-bit security parameter
+- Bootstrapping refreshes noise
+- Key switching for efficient operations

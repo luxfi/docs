@@ -1,0 +1,28 @@
+---
+title: Configuration
+description: Chain and contract configuration
+icon: Settings
+---
+
+## Chain Config
+
+Chain configuration lives in `packages/config/`:
+
+```typescript
+export const luxChain = {
+  id: 96369,
+  name: 'Lux C-Chain',
+  rpcUrls: { default: { http: ['https://api.lux.network/mainnet/ext/bc/C/rpc'] } },
+};
+```
+
+## Contract Addresses
+
+See `packages/config/src/addresses/` for deployed contract addresses per chain.
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `NEXT_PUBLIC_CHAIN_ID` | Default chain ID |
+| `NEXT_PUBLIC_RPC_URL` | Default RPC endpoint |

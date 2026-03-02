@@ -1,0 +1,168 @@
+---
+title: "Lux Liquid - DeFi Lending and Yield Protocol"
+description: "Documentation for Lux Liquid - DeFi Lending and Yield Protocol"
+---
+
+## Overview
+
+Lux Liquid is a **DeFi lending protocol** built on the Alchemist V3 architecture. It allows users to deposit yield-bearing collateral, borrow self-repaying synthetic assets, and earn yield through automated strategy allocation. The codebase is a Foundry-based Solidity project with Echidna and Medusa fuzz testing, Slither static analysis, and Docusaurus documentation.
+
+## When to use
+
+- Deploying or modifying DeFi lending/borrowing contracts on Lux, Ethereum, or EVM-compatible chains
+- Integrating yield strategies (eETH, wstETH, sfrxETH, Morpho, Peapods, Tokemak)
+- Building on the Alchemist V3 protocol or Transmuter
+- Running fuzz testing with Echidna or Medusa on Solidity contracts
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/liquid` |
+| Language | Solidity 0.8.28 |
+| Build system | Foundry (forge) |
+| EVM version | Cancun |
+| Optimizer | via-ir, 800 runs |
+| License | MIT |
+| Default branch | main |
+| Node version | See `.nvmrc` |
+
+## Project structure
+
+```
+liquid/
+  src/
+    AlchemistV3.sol          # Core lending engine (51KB)
+    AlchemistAllocator.sol   # Strategy allocation
+    AlchemistCurator.sol     # Strategy curation and risk
+    AlchemistETHVault.sol    # ETH vault wrapper
+    AlchemistTokenVault.sol  # ERC20 vault wrapper
+    AlchemistGate.sol        # Access control gate
+    AlchemistStrategyClassifier.sol  # Strategy risk classification
+    AlchemistV3Position.sol  # NFT position tracking
+    MYTStrategy.sol          # Managed Yield Token strategy
+    PerpetualGauge.sol       # Perpetual reward gauge
+    Transmuter.sol           # Synthetic-to-underlying conversion
+    adapters/                # Token adapter implementations
+    base/                    # Base contracts
+    external/                # External protocol interfaces
+    governance/              # Governance contracts
+    interfaces/              # All contract interfaces (20+ files)
+    libraries/               # Shared libraries
+    mocks/                   # Test mocks
+    strategies/              # Yield strategy implementations
+      EETH.sol               # EtherFi eETH
+      WstethMainnet.sol      # Lido wstETH
+      SfrxETH.sol            # Frax sfrxETH
+      MorphoYearnOGWETH.sol  # Morpho + Yearn WETH
+      PeapodsETH.sol         # Peapods ETH
+      TokeAutoEth.sol        # Tokemak autoETH
+    test/                    # Forge test suite
+    utils/                   # Utility contracts
+  script/
+    DeployLux.s.sol          # Lux Network deployment script
+    Counter.s.sol            # Example script
+    util/                    # Script utilities
+  docs/                      # Docusaurus documentation site
+  lib/                       # Git submodule dependencies
+  echidna.yaml               # Echidna fuzz testing config
+  medusa.json                # Medusa fuzz testing config
+  slither.config.json        # Slither static analysis config
+  foundry.toml               # Foundry configuration
+  remappings.txt             # Solidity import remappings
+```
+
+## Dependencies (git submodules)
+
+| Submodule | Purpose |
+|-----------|---------|
+| `forge-std` | Foundry test framework |
+| `openzeppelin-contracts` | ERC20, access control, upgrades |
+| `openzeppelin-contracts-upgradeable` | Upgradeable contract patterns |
+| `solmate` | Gas-optimized ERC20/ERC721 |
+| `chainlink-brownie-contracts` | Chainlink price feeds |
+| `permit2` | Uniswap Permit2 approvals |
+| `halmos-cheatcodes` | a16z symbolic testing |
+| `vault-v2` | Morpho vault integration |
+
+## One-file quickstart
+
+```bash
+git clone https://github.com/luxfi/liquid.git
+cd liquid
+forge install
+forge build
+forge test
+```
+
+## Network endpoints (from foundry.toml)
+
+| Network | RPC |
+|---------|-----|
+| Lux Mainnet | `https://api.lux.network/ext/bc/C/rpc` |
+| Lux Testnet | `https://api.testnet.lux.network/ext/bc/C/rpc` |
+| Zoo Mainnet | `https://api.zoo.network/ext/bc/Zoo/rpc` |
+| Hanzo Mainnet | `https://api.hanzo.network/ext/bc/Hanzo/rpc` |
+| Ethereum Mainnet | via `MAINNET_API_KEY` env |
+| Ethereum Sepolia | via `SEPOLIA_API_KEY` env |
+
+## Key contracts
+
+| Contract | Purpose |
+|----------|---------|
+| `AlchemistV3` | Core protocol: deposits, borrows, liquidations, yield distribution |
+| `Transmuter` | Converts synthetic tokens to underlying at 1:1 |
+| `AlchemistV3Position` | ERC721 NFT representing user positions |
+| `AlchemistCurator` | Strategy whitelist and risk management |
+| `AlchemistAllocator` | Automated capital allocation across strategies |
+| `PerpetualGauge` | Continuous reward distribution |
+| `MYTStrategy` | Managed Yield Token strategy base |
+
+## Security tooling
+
+| Tool | Config file | Purpose |
+|------|-------------|---------|
+| Echidna | `echidna.yaml` | Property-based fuzz testing (50K iterations, 4 workers) |
+| Medusa | `medusa.json` | Alternative fuzzer |
+| Slither | `slither.config.json` | Static analysis |
+| Halmos | via `halmos-cheatcodes` | Symbolic execution |
+| Pre-commit | `.pre-commit-config.yaml` | Format + doc generation |
+
+## Development
+
+```bash
+# Build
+forge build
+
+# Test
+forge test
+
+# Test with intense fuzzing
+FOUNDRY_PROFILE=intense forge test
+
+# Coverage
+forge coverage
+
+# Deploy to Lux
+forge script script/DeployLux.s.sol --broadcast --rpc-url lux_mainnet --verify
+
+# Generate docs
+forge doc
+```
+
+## Environment variables
+
+| Variable | Purpose |
+|----------|---------|
+| `MAINNET_API_KEY` | Ethereum mainnet RPC URL |
+| `SEPOLIA_API_KEY` | Ethereum Sepolia RPC URL |
+| `ETHERSCAN_API_KEY` | Etherscan contract verification |
+| `LUX_EXPLORER_API_KEY` | Lux explorer contract verification |
+| `ZOO_EXPLORER_API_KEY` | Zoo explorer contract verification |
+| `HANZO_EXPLORER_API_KEY` | Hanzo explorer contract verification |
+
+## Related Skills
+
+- `lux/lux-evm.md` -- EVM execution layer where contracts run
+- `lux/lux-dex.md` -- DEX integration for swaps
+- `lux/lux-governance.md` -- On-chain governance

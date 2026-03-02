@@ -1,0 +1,24 @@
+---
+title: Surveillance
+description: Post-trade market abuse detection
+icon: Eye
+---
+
+## Detection Patterns
+
+| Pattern | Description | Action |
+|---------|-------------|--------|
+| **Wash Trading** | Self-dealing detection | Alert + block |
+| **Structuring** | Transaction splitting to avoid thresholds | Alert + report |
+| **Velocity** | Unusual trading frequency | Rate limit + alert |
+| **Price Spikes** | Anomalous price movements | Circuit breaker |
+| **Spoofing** | Order placement/cancellation patterns | Alert + block |
+| **Layering** | Multi-level order manipulation | Alert + block |
+
+## Circuit Breakers
+
+Automated market halts triggered by:
+- Price movement exceeding threshold (configurable per market)
+- Volume spike detection
+- System error rate threshold
+- Manual operator override

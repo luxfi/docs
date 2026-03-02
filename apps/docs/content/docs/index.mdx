@@ -1,54 +1,40 @@
 ---
-title: Welcome to Lux Docs
-description: Documentation for Lux Network - Post-quantum secure blockchain infrastructure
+title: Lux Network Documentation
+description: Comprehensive documentation for Lux Network — post-quantum secure, multi-consensus blockchain infrastructure
+index: true
 ---
 
-# Welcome to Lux Network
+Welcome to the Lux Network documentation. Browse by section or use the sidebar to navigate.
 
-Lux Network is a post-quantum secure, multi-consensus blockchain platform designed for the future of decentralized applications.
+## Sections
 
-## Key Features
+| Section | Description |
+|---------|-------------|
+| [Core](/docs/core) | Architecture, consensus, nodes, and reference APIs |
+| [Chains & VMs](/docs/chains) | 15+ virtual machines — EVM, DEX, Threshold, Quantum, AI, ZK |
+| [Cryptography](/docs/crypto) | HSM, KMS, MPC, FHE/TFHE, lattice-based crypto |
+| [Developer Tools](/docs/tools) | CLI, SDKs (Go/TypeScript/Python), Netrunner |
+| [Applications](/docs/apps) | Wallet, Bridge, Explorer, Indexer, Lux Cloud |
+| [Cloud](/docs/cloud) | Smart contract deployment, subnet tutorials |
+| [Governance](/docs/governance) | DAO, committees, and 348 Lux Proposals |
 
-- **Post-Quantum Security**: Built with post-quantum cryptographic primitives
-- **Multi-Consensus**: Support for multiple consensus mechanisms
-- **High Performance**: Scalable architecture for enterprise applications
-- **EVM Compatible**: Full Ethereum compatibility for easy migration
-
-## Quick Links
-
-<Cards>
-  <Card title="Learn" href="/docs/learn">
-    Understand Lux Network architecture and concepts
-  </Card>
-  <Card title="Build" href="/docs/build">
-    Start building applications on Lux
-  </Card>
-  <Card title="Run a Node" href="/docs/nodes">
-    Operate a node or become a validator
-  </Card>
-  <Card title="API Reference" href="/docs/reference">
-    Complete API and CLI documentation
-  </Card>
-</Cards>
-
-## Getting Started
+## Quick Start
 
 ```bash
 # Install the Lux CLI
-npm install -g @lux/cli
+curl -sSL https://cli.lux.network/install | sh
 
-# Initialize a new project
-lux init my-project
+# Start a local network
+lux network start
 
-# Start development
-cd my-project && lux dev
+# Deploy a subnet
+lux subnet create mychain --evm
+lux subnet deploy mychain --local
 ```
 
-## Community
+## Resources
 
-Join our community to get help and stay updated:
-
-- [GitHub](https://github.com/luxfi) - Source code and issues
-- [Discord](https://discord.gg/lux) - Real-time chat
-- [Twitter](https://twitter.com/luxnetwork) - Announcements
-- [Forum](https://forum.lux.network) - Discussions
+- [Lux Proposals (LPs)](https://lps.lux.network) — Standards and governance
+- [Explorer](https://explore.lux.network) — Blockchain explorer
+- [GitHub](https://github.com/luxfi) — Source code
+- [Bridge](https://bridge.lux.network) — Cross-chain transfers

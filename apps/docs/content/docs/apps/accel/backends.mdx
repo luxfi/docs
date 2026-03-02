@@ -1,0 +1,27 @@
+---
+title: Backends
+description: GPU backend configuration
+icon: Cpu
+---
+
+## Build Tags
+
+```bash
+# Pure Go (no GPU)
+go build ./...
+
+# GPU acceleration
+go build -tags accel ./...
+
+# Specific backend
+go build -tags "accel,cuda" ./...
+go build -tags "accel,metal" ./...
+```
+
+## CUDA Setup
+
+Requires CUDA Toolkit 12.x and compatible NVIDIA GPU.
+
+## Metal Setup
+
+Requires macOS 14+ with Apple Silicon (M1/M2/M3/M4).

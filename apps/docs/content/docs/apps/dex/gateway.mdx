@@ -1,0 +1,22 @@
+---
+title: Gateway
+description: API gateway for DEX operations
+icon: Server
+---
+
+The LX Gateway provides a unified API for:
+- Quote and swap operations
+- Pool management
+- Order submission and cancellation
+- Position queries
+
+## Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/v1/quote` | Get swap quote |
+| POST | `/v1/swap` | Execute swap |
+| POST | `/v1/order` | Submit limit order |
+| DELETE | `/v1/order/:id` | Cancel order |
+| GET | `/v1/orderbook/:pair` | Order book snapshot |
+| GET | `/v1/positions` | List positions |

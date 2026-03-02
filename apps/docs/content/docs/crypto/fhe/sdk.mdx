@@ -1,0 +1,31 @@
+---
+title: FHE SDK
+description: JavaScript SDK for client-side encryption
+icon: Code
+---
+
+## Installation
+
+```bash
+npm install @luxfi/fhe-sdk
+```
+
+## Encrypt Data
+
+```typescript
+import { createInstance } from '@luxfi/fhe-sdk';
+
+const fhe = await createInstance({ networkUrl: 'https://api.lux.network/mainnet' });
+
+// Encrypt a value
+const encrypted = fhe.encrypt32(42);
+
+// Submit to contract
+const tx = await contract.processEncrypted(encrypted);
+```
+
+## Decrypt Results
+
+```typescript
+const result = await fhe.decrypt(contract.address, ciphertext);
+```

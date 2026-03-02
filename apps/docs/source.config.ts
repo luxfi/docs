@@ -7,22 +7,4 @@ export const docs = defineDocs({
   meta: {},
 });
 
-export default defineConfig({
-  mdxOptions: async () => {
-    const { rehypeCodeDefaultOptions } = await import(
-      '@hanzo/docs/core/mdx-plugins/rehype-code'
-    );
-
-    return {
-      rehypeCodeOptions: {
-        langs: ['ts', 'js', 'html', 'tsx', 'mdx', 'go', 'rust', 'bash', 'json', 'yaml', 'toml'],
-        inline: 'tailing-curly-colon',
-        themes: {
-          light: 'github-light',
-          dark: 'github-dark',
-        },
-        transformers: [...(rehypeCodeDefaultOptions.transformers ?? [])],
-      },
-    };
-  },
-});
+export default defineConfig({});

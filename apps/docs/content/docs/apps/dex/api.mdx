@@ -1,0 +1,29 @@
+---
+title: API Reference
+description: DEX REST and WebSocket APIs
+icon: FileCode
+---
+
+## REST API
+
+Base URL: `https://dex.lux.network/v1`
+
+## WebSocket
+
+```javascript
+const ws = new WebSocket('wss://dex.lux.network/v1/ws');
+ws.send(JSON.stringify({
+  op: 'subscribe',
+  channel: 'orderbook',
+  market: 'LUX-USDC'
+}));
+```
+
+## Market Data
+
+| Channel | Description |
+|---------|-------------|
+| `orderbook` | Real-time order book updates |
+| `trades` | Trade executions |
+| `candles` | OHLCV candle data |
+| `ticker` | 24h price and volume |

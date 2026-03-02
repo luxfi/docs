@@ -1,0 +1,27 @@
+---
+title: Lux Accel
+description: GPU acceleration library for blockchain and ML workloads
+icon: Zap
+---
+
+Lux Accel (`github.com/luxfi/accel`) provides GPU-accelerated operations for crypto, ZK, FHE, DEX, and ML workloads.
+
+## Backends
+
+| Backend | Platform | Use Case |
+|---------|----------|----------|
+| **CUDA** | NVIDIA GPUs | Production servers |
+| **Metal** | Apple Silicon | Development, edge |
+| **WebGPU** | Browser | Client-side acceleration |
+| **Pure Go** | Any | Fallback (no GPU) |
+
+## Operations
+
+| Category | Operations |
+|----------|-----------|
+| **Crypto** | Batch signature verification, Merkle trees |
+| **ZK** | NTT, MSM, polynomial arithmetic |
+| **FHE** | TFHE bootstrap, CKKS operations |
+| **DEX** | AMM swaps, TWAP, order matching |
+| **PQ** | Kyber, Dilithium, lattice operations |
+| **Consensus** | Batch BLS verification |

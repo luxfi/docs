@@ -1,0 +1,39 @@
+---
+title: FHE Coprocessor
+description: GPU-accelerated FHE computation workers
+icon: Cpu
+---
+
+The FHE coprocessor (`github.com/luxfi/fhe-coprocessor`) offloads intensive FHE operations to GPU workers.
+
+## Architecture
+
+```
+EVM → FHE Precompile → Coprocessor Queue → GPU Worker → Result Cache → EVM
+```
+
+## Deployment
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fhe-coprocessor
+spec:
+  template:
+    spec:
+      containers:
+        - name: coprocessor
+          image: ghcr.io/luxfi/fhe-coprocessor:latest
+          resources:
+            limits:
+              nvidia.com/gpu: 1
+```
+
+## Performance
+
+| Operation | CPU | GPU | Speedup |
+|-----------|-----|-----|---------|
+| Bootstrap | 50ms | 5ms | 10x |
+| Add | 1ms | 0.1ms | 10x |
+| Mul | 10ms | 1ms | 10x |

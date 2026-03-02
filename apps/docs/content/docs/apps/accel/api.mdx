@@ -1,0 +1,26 @@
+---
+title: API Reference
+description: Accel Go API
+icon: FileCode
+---
+
+## Core Interface
+
+```go
+type Accelerator interface {
+    Backend() string
+    Available() bool
+    BatchVerify(sigs, msgs, pubs [][]byte) []bool
+    NTT(coeffs []uint64) []uint64
+    MSM(scalars, points [][]byte) []byte
+}
+```
+
+## Usage
+
+```go
+import "github.com/luxfi/accel"
+
+acc := accel.Default() // auto-detect best backend
+fmt.Println(acc.Backend()) // "cuda", "metal", or "go"
+```
