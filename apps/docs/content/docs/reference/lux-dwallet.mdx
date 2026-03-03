@@ -1,0 +1,163 @@
+---
+title: "Lux Desktop Wallet - Electron Desktop Application"
+description: "Documentation for Lux Desktop Wallet - Electron Desktop Application"
+---
+
+## Overview
+
+Lux Desktop Wallet (`lux-desktop`) is an **Electron-based desktop wallet** for Web3 users. Fork of Rabby Desktop, it wraps the xwallet browser extension into a native desktop application with a built-in Chromium-based dapp browser, IPFS support, and multi-chain DeFi capabilities. Supports Windows, macOS (x64/arm64), and Linux.
+
+## When to use
+
+- Building or packaging the Lux desktop wallet application
+- Adding desktop-specific features (dapp browser, IPFS, system tray)
+- Working with Electron + embedded browser extension architecture
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/dwallet` |
+| Package | `lux-desktop` v0.35.3 |
+| Language | TypeScript |
+| Package manager | npm (has both package-lock.json and pnpm-lock.yaml) |
+| Runtime | Electron 22 |
+| Framework | React 18, React Router 6 |
+| UI | Ant Design 4, Tailwind CSS, styled-components, WindiCSS |
+| Build | Webpack 5 (erb boilerplate), electron-builder |
+| Tests | Jest 28, Mocha (spec), Chai |
+| Default branch | main |
+| License | MIT |
+
+## Architecture
+
+```
+Electron Main Process (src/main/)
+  |
+  |-- Browser Window (src/renderer/)
+  |     |-- React 18 UI
+  |     |-- Dapp browser tabs
+  |     |-- IPFS content resolution
+  |
+  |-- Preload Scripts (src/preloads/)
+  |
+  |-- Extension Shell (src/extension-shell/)
+  |     |-- Embedded xwallet (RabbyX) extension
+  |
+  |-- Extension Wallet (src/extension-wallet/)
+  |     |-- Wallet logic bridge
+  |
+  |-- Isomorphic (src/isomorphic/)
+        |-- Shared code between main/renderer
+```
+
+### Source structure (`src/`)
+
+| Directory | Purpose |
+|-----------|---------|
+| `main/` | Electron main process (window management, IPC, system integration) |
+| `renderer/` | React 18 renderer (UI, dapp browser, wallet views) |
+| `preloads/` | Electron preload scripts (contextBridge API) |
+| `extension-shell/` | Chrome extension host (manages embedded xwallet) |
+| `extension-wallet/` | Bridge between desktop UI and extension wallet |
+| `isomorphic/` | Shared code (chain data, types, constants) |
+| `__tests__/` | Test suites |
+
+## Platform builds
+
+| Platform | Command | Output |
+|----------|---------|--------|
+| macOS x64 | `npm run package:darwin:x64` | `release/build-darwin-x64*/` |
+| macOS arm64 | `npm run package:darwin:arm64` | `release/build-darwin-arm64*/` |
+| Windows x64 | `npm run package:win32:x64` | `release/build-win32-x64*/` |
+| Windows ia32 | `npm run package:win32:ia32` | `release/build-win32-ia32*/` |
+| Linux | `npm run package` | AppImage |
+
+### Installer artifacts
+
+- macOS: DMG (`lux-wallet-desktop-installer-\{arch\}-\{version\}.dmg`)
+- Windows: NSIS (`lux-wallet-desktop-installer-\{arch\}-\{version\}.exe`)
+- Linux: AppImage
+
+## One-file quickstart
+
+```bash
+git clone --depth 1 --branch main https://github.com/luxfi/dwallet.git
+cd dwallet
+npm install    # runs native module compilation + RabbyX extension install
+
+# Start development
+npm start
+
+# Package for current platform
+npm run package
+```
+
+## Key dependencies
+
+```
+electron@22                -- Desktop runtime
+electron-builder           -- Packaging and distribution
+electron-updater           -- Auto-update support
+electron-store             -- Persistent storage
+react@18, react-dom@18     -- UI framework
+react-router-dom@6         -- Routing
+antd@4                     -- Component library
+styled-components@5        -- CSS-in-JS
+ethers@5.7                 -- EVM interaction
+jotai                      -- State management
+rxjs                       -- Reactive streams
+recharts                   -- Charts
+@sentry/electron           -- Error tracking
+@rabby-wallet/electron-chrome-extensions -- Extension hosting
+@rabby-wallet/rabby-api    -- Wallet API client
+@rabby-wallet/rabby-swap   -- Swap aggregation
+@rabby-wallet/gnosis-sdk   -- Gnosis Safe support
+```
+
+## Development
+
+```bash
+# Install deps (compiles native modules for Electron)
+npm install
+
+# Start dev mode (hot reload)
+npm start
+
+# Build main + renderer
+npm run build
+
+# Run unit tests
+npm test
+
+# Run main process tests
+npm run test:main
+
+# Lint
+npm run lint
+
+# Lint and fix
+npm run lint-fix
+```
+
+## Code signing
+
+- **macOS**: Apple notarization via `.erb/scripts/notarize.js`, requires `RABBY_APPLE_IDENTITY_NAME`
+- **Windows**: Code signing via PFX/P12 certificates, requires `RABBY_DESKTOP_CODE_SIGINING_PASS`
+- **App ID**: `com.debank.RabbyDesktop` (upstream Rabby, not yet rebranded)
+
+## Embedded extension
+
+The desktop wallet embeds the xwallet browser extension (RabbyX) as a Chromium extension:
+
+```bash
+# Auto-installed during npm postinstall
+npm run install:rabbyX
+
+# Extension loaded from: assets/chrome_exts/rabbyx/
+```
+
+## Related Skills
+
+- `lux/lux-xwallet.md` -- Browser extension wallet (embedded in desktop as RabbyX)
+- `lux/lux-wallet.md` -- Multi-platform HD wallet (OneKey fork)

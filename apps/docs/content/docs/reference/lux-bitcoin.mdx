@@ -1,0 +1,275 @@
+---
+title: "Lux Bitcoin"
+description: "Bitcoin Integration Static Site"
+---
+
+## Overview
+
+Lux Bitcoin is a **static marketing site** for Lux Network's Bitcoin mining and energy operations (branded "LUX Energy"). Built with Next.js 15, Tailwind CSS, and MDX content, it uses the `@hanzo/ui` block system to compose scrollable "screenful" sections. The site covers energy-efficient Bitcoin mining, ESG commitments, and global expansion across North America, Europe, Asia-Pacific, and South America. Deployed as a static export with domain `luxbitco.in`.
+
+## Quick Reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/bitcoin` |
+| Package | `@luxfi/bitcoin` v0.0.7 |
+| Default branch | `main` |
+| Framework | Next.js 15.1.6 (App Router) |
+| React | 18.3.1 |
+| Package manager | pnpm 10.12.4 |
+| Output | Static export (`output: 'export'`) |
+| Domain | `https://luxbitco.in` |
+| Private | No (public repo) |
+
+## Tech Stack
+
+| Layer | Technology | Version |
+|-------|------------|---------|
+| Framework | Next.js (App Router) | 15.1.6 |
+| UI Components | `@luxfi/ui` | 5.5.2 |
+| UI Primitives | `@hanzo/ui` | 5.3.22 |
+| Auth | `@hanzo/auth` | 2.5.5 |
+| Commerce | `@hanzo/commerce` | 7.3.8 |
+| Data Models | `@luxfi/data` | 1.1.1 |
+| 3D Rendering | `@splinetool/react-spline` | 4.0.0 |
+| Icons | `lucide-react` | 0.470.0 |
+| MDX | `@next/mdx` 14.1.0, `@mdx-js/loader` 3.x, `@mdx-js/react` 3.x |
+| SVG | `@svgr/webpack` 8.x |
+| Dark Mode | `next-themes` 0.2.x |
+| State | `mobx-react` 9.x, `mobx-react-lite` 4.x |
+| CSS | Tailwind CSS 3.4.17, `postcss-import` |
+| TypeScript | 5.7.3 |
+
+## Project Structure
+
+```
+bitcoin/
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx          # Root layout (dark theme, black bg)
+│   │   ├── page.tsx            # Landing page ("LUX Bitcoin - Coming soon")
+│   │   ├── not-found.tsx       # Custom 404 page
+│   │   └── globals.css         # Tailwind base imports
+│   ├── content/
+│   │   ├── index.ts            # Barrel export of all 4 content blocks
+│   │   ├── powering.tsx        # "Powering the Future" hero section
+│   │   ├── about-lux-energy.tsx  # About section wrapper (renders MDX)
+│   │   ├── about-lux-energy.mdx  # About LUX Energy content
+│   │   ├── commitment-to-esg.tsx # ESG section wrapper (renders MDX)
+│   │   ├── commitment-to-esg.mdx # ESG content
+│   │   ├── global-expansion.tsx  # Global expansion wrapper (renders MDX)
+│   │   ├── global-expansion.mdx  # Expansion content (4 regions)
+│   │   └── typography-clx.ts    # Typography class overrides for MDX
+│   ├── metadata.ts             # SEO metadata for luxbitco.in
+│   ├── site-def.ts             # Site definition (currentAs, nav, footer)
+│   └── mdx-components.tsx      # MDX component overrides (MDXLink)
+├── public/
+│   └── assets/
+│       └── lux-site-icons/     # Favicons (16x16, 32x32, 192x192, 512x512)
+├── next.config.js              # Static export, transpilePackages
+├── tailwind.config.ts          # Lux UI preset
+├── postcss.config.js           # PostCSS with imports
+├── svgr.next.config.js         # SVG-as-React-component config
+├── tsconfig.json
+└── package.json
+```
+
+## Content Architecture
+
+Content is structured as an array of `@hanzo/ui` Block types, exported from `src/content/index.ts`:
+
+```typescript
+
+export default [
+  poweringTheFuture,
+  aboutLuxEnergy,
+  globalExpansion,
+  commitmentToESG
+] satisfies Block[]
+```
+
+Each section follows a pattern:
+1. **TSX wrapper** defines the `ScreenfulBlock` layout (column specifiers, centering)
+2. **MDX file** contains the actual marketing copy
+3. MDX is rendered inside `<ApplyTypography>` from `@hanzo/ui/primitives`
+
+### Content Sections
+
+#### 1. Powering the Future (`powering.tsx`)
+
+Hero section using `EnhHeadingBlock`:
+- Heading: "Powering the Future of Bitcoin Mining" (level 2)
+- Byline: "At LUX Energy, we're revolutionizing the Bitcoin mining industry..." (level 4)
+- Layout: Centered, `vert-center mobile-vert-center`
+
+No MDX file -- content is inline in the TSX block definition.
+
+#### 2. About LUX Energy (`about-lux-energy.mdx`)
+
+MDX content covering:
+- **About LUX Energy** -- Mission statement: sustainable, cost-effective energy solutions for mining
+- **Green Energy Sources** -- Solar, wind, hydroelectric portfolio
+- **Cost-Effective Power Agreements** -- Long-term strategic partnerships
+- **Global Expansion** -- Brief mention of worldwide mining expansion
+
+Rendered via `ElementBlock` wrapping `<ApplyTypography><MDX_About_Lux /></ApplyTypography>`.
+
+#### 3. Commitment to ESG (`commitment-to-esg.mdx`)
+
+MDX content covering:
+- **Environmental Sustainability** -- Renewable energy, eco-friendly practices
+- **Social Responsibility** -- Employee well-being, community engagement
+- **Governance** -- Ethical framework, transparency, compliance
+
+#### 4. Global Expansion (`global-expansion.mdx`)
+
+MDX content covering 4 regions:
+- **North America** -- USA and Canada, renewable energy resources
+- **Europe** -- Iceland, Norway, Sweden, clean energy infrastructure
+- **Asia-Pacific** -- Exploring renewable energy opportunities
+- **South America** -- Brazil, Chile, hydroelectric and solar power
+
+## Key Source Files
+
+### `src/app/layout.tsx`
+
+Root layout with dark theme:
+
+```tsx
+<html lang='en' className='dark'>
+  <body className='bg-black text-white flex flex-col min-h-full'>
+    <main className='flex flex-col grow'>
+      {children}
+    </main>
+  </body>
+</html>
+```
+
+No `@luxfi/ui` imports -- the layout is intentionally minimal. Viewport theme color adapts to user preference.
+
+### `src/app/page.tsx`
+
+Current landing page is a centered placeholder:
+- Heading: "LUX Bitcoin"
+- Subtitle: "Coming soon"
+- CTA: "Learn More" linking to `lux.network`
+
+The content blocks defined in `src/content/` are prepared but not yet wired into the page.
+
+### `src/app/not-found.tsx`
+
+Custom 404 page with:
+- Large "404" heading (96px font)
+- "Oops, page not found" message
+- "Go to Homepage" button
+
+### `src/metadata.ts`
+
+SEO metadata:
+- `metadataBase`: `https://luxbitco.in`
+- Title: "Lux Bitcoin" (template: `%s | Lux Bitcoin`)
+- Description: Long description about green energy Bitcoin mining, BTC holdings, technology investment
+- Application name: `Lux Bitcoin`
+- Author: `Lux Partners Limited`
+- Keywords: Lux Network, Blockchain Bridge, Multi-Chain, EVM, Solana, Bitcoin, Cross-Chain
+- Favicons at `/assets/lux-site-icons/`
+- OpenGraph and Twitter cards present but commented out
+
+### `src/site-def.ts`
+
+```typescript
+
+export default {
+  currentAs: 'https://luxbitco.in',
+  nav: { common: mainNav },
+  footer: footer.standard
+} satisfies SiteDef
+```
+
+### `src/mdx-components.tsx`
+
+Overrides anchor tags in MDX with `MDXLink` from `@hanzo/ui/primitives` for consistent link styling.
+
+## Next.js Configuration
+
+`next.config.js`:
+- `output: 'export'` -- static site, no server
+- `images: \{ unoptimized: true \}` -- required for static export
+- `typescript.ignoreBuildErrors: true`
+- `eslint.ignoreDuringBuilds: true`
+- `transpilePackages`: `@hanzo/ui`, `@hanzo/auth`, `@hanzo/commerce`, `@luxfi/ui`, `@luxfi/data`, `@luxfi/menu-icons`
+
+## Tailwind Configuration
+
+Uses the `@luxfi/ui` Tailwind preset:
+
+```typescript
+
+export default {
+  presets: [preset],
+  content: {
+    files: [
+      'src/**/*.tsx',
+      './node_modules/@luxfi/ui/**/*.{ts,tsx}',
+      './node_modules/@hanzo/**/*.{ts,tsx}'
+    ]
+  },
+  theme: {
+    extend: {
+      colors: {
+        white: "#ffffff",
+        black: "#000000",
+        gray: "#e5e7eb",
+      }
+    }
+  }
+}
+```
+
+## Commands
+
+```bash
+# Install dependencies
+pnpm install
+
+# Development server
+pnpm dev
+
+# Production build (static export to out/)
+pnpm build
+
+# Start production server (pre-export testing)
+pnpm prod
+
+# Type check
+pnpm tc
+
+# Clean .next build cache
+pnpm cn
+
+# Full clean (remove .next and node_modules)
+pnpm clean
+```
+
+## Shared Lux Ecosystem Pattern
+
+This site follows the standard `@luxfi/*` site pattern identical to `@luxfi/id`, `@luxfi/bridge`, etc.:
+
+1. `@luxfi/<name>` package with `pnpm@10.12.4`
+2. Next.js 15.1.6 App Router with static export
+3. `@luxfi/ui` 5.5.2 + `@hanzo/ui` 5.3.22
+4. `@hanzo/auth` 2.5.5 + `@hanzo/commerce` 7.3.8
+5. `@splinetool/react-spline` for 3D elements
+6. Dark theme default (`className='dark'`)
+7. Site def with `mainNav` + `footer.standard` from `@luxfi/ui/site-def`
+8. MDX content wrapped in `ApplyTypography` + `ScreenfulBlock`
+
+## Deployment
+
+Static export deployed via standard hosting (no Docker). The `vercel.json` or equivalent config is not present in this repo -- deployment configuration is managed externally. The domain `luxbitco.in` is the canonical URL.
+
+## Related Skills
+
+- `lux/lux-bridge.md` -- Cross-chain bridge for Bitcoin transfers to Lux
+- `lux/lux-ui.md` -- Shared UI component libraries (`@luxfi/ui`, `@hanzo/ui`)
+- `lux/lux-id.md` -- Identity portal (same site pattern)

@@ -1,0 +1,192 @@
+---
+title: "Lux Genesis"
+description: "Documentation for Lux Genesis"
+---
+
+## Overview
+
+`github.com/luxfi/genesis` is a Go module that provides canonical genesis configurations for all Lux blockchain networks. It contains embedded genesis JSON for mainnet, testnet, devnet, and local/custom networks, along with CLI tools for generating, extracting, and validating genesis state. The package supports the primary C-Chain (EVM), P-Chain (Platform), X-Chain (Exchange), and subnet chains (Zoo, SPC, Hanzo, Pars).
+
+## When to use
+
+- Bootstrapping a new Lux node with correct genesis state
+- Generating custom genesis configurations for local or private networks
+- Extracting or migrating genesis data between network environments
+- Validating node keys against expected genesis allocations
+- Looking up chain IDs, network IDs, or treasury addresses for any Lux network
+- Building tooling that needs to programmatically load genesis JSON by network ID
+
+## Hard requirements
+
+- Go 1.26.1+
+- Module path: `github.com/luxfi/genesis`
+- All dependencies use `github.com/luxfi/*` packages exclusively -- never `go-ethereum` or `ava-labs`
+- Go package versions stay at v1.x.x (no v2+ bumps)
+- Never expose or commit private keys, mnemonics, or EWOQ keys
+- Treasury address `0x9011E888251AB053B7bD1cdB598Db4f9DEd94714` is canonical across all networks
+
+## Quick reference
+
+### Build and test
+
+```bash
+cd ~/work/lux/genesis
+make build        # Produces bin/genesis
+make test         # go test -v -race ./...
+make test-coverage
+make lint         # golangci-lint
+make tidy         # go mod tidy
+```
+
+### CLI usage
+
+```bash
+# Generate local genesis from keys
+genesis -network local -output primary.json
+
+# Generate mainnet genesis preserving original C-Chain
+genesis -network mainnet -cchain mainnet/cchain.json -output primary.json
+
+# Generate from BIP39 mnemonic with 5 validators
+LUX_MNEMONIC="your mnemonic" genesis -validators 5 -output primary.json
+
+# Load from existing genesis directory
+genesis -genesis-dir ./mainnet -output primary.json
+```
+
+### CLI flags
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `-network` | `local` | Network: mainnet, testnet, local, custom |
+| `-network-id` | 0 | Explicit network ID (overrides -network) |
+| `-keys-dir` | `~/.lux/keys` | Directory containing node keys |
+| `-genesis-dir` | - | Directory containing genesis component files |
+| `-output` | stdout | Output file path |
+| `-allocation` | 1000000000 | Allocation per validator in nLUX |
+| `-validators` | 5 | Number of validators for mnemonic-based genesis |
+| `-cchain` | - | Path to existing C-Chain genesis to preserve |
+| `-format` | `pretty` | Output format: json, pretty |
+
+### Environment variables
+
+| Variable | Purpose |
+|----------|---------|
+| `LUX_KEYS_DIR` | Directory containing node keys |
+| `LUX_MNEMONIC` | BIP39 mnemonic for key derivation |
+| `LUX_PRIVATE_KEY` | Single private key (hex) |
+| `LUX_GENESIS_DIR` | Directory containing genesis component files |
+| `LUX_NETWORK_ID` | Network ID |
+| `LUX_PCHAIN_ALLOCS` | JSON string of P-Chain allocations |
+| `LUX_PCHAIN_ALLOCS_FILE` | Path to P-Chain allocations JSON file |
+
+## Core Concepts
+
+### Network IDs and Chain IDs
+
+| Network | Network ID | C-Chain ID | Purpose |
+|---------|------------|------------|---------|
+| Mainnet | 1 | 96369 | Production network |
+| Testnet | 2 | 96368 | Public test network |
+| Devnet | 3 | 96370 | Fast iteration dev network |
+| Local/Custom | 1337 | 1337 | Local development |
+
+### Subnet chains
+
+| Chain | Mainnet ID | Testnet ID | Devnet ID | Treasury |
+|-------|-----------|-----------|-----------|----------|
+| Zoo | 200200 | 200201 | 200202 | 2T ZOO |
+| SPC | 36911 | 36910 | 36912 | 1B SPC |
+| Hanzo | 36963 | 36962 | 36964 | 1B AI |
+| Pars | 494949 | 494950 | 494951 | 2T PARS |
+
+### Directory structure
+
+```
+genesis/
+  cmd/
+    genesis/             # Main genesis generator CLI
+    checkkeys/           # Validate node keys against genesis
+    extract-genesis/     # Extract genesis from running node
+    find-validators/     # Find validators in genesis state
+    regenerate-genesis/  # Regenerate genesis from components
+  pkg/genesis/           # Core library
+    allocations.go       # Token allocation logic
+    blockchain.go        # Blockchain genesis types
+    chain_mapping.go     # Chain ID mapping
+    config.go            # Genesis config builder
+    keys.go              # Key derivation and loading
+    network.go           # Network parameter resolution
+    params.go            # Network parameters
+    types.go             # Core types
+    validator_keys.go    # Validator key management
+  configs/               # Embedded genesis JSON (22 network configs)
+    mainnet/             # C-Chain, P-Chain, network, bootstrappers
+    testnet/             # C-Chain, genesis
+    devnet/              # C-Chain
+    local/               # C-Chain, genesis
+    zoo-mainnet/         # Zoo subnet genesis
+    spc-mainnet/         # SPC subnet genesis
+    hanzo-mainnet/       # Hanzo subnet genesis
+    pars-mainnet/        # Pars subnet genesis
+    ...                  # testnet/devnet variants for each subnet
+  builder/               # Genesis builder with tests
+  chains/                # Subnet chain definitions (ai, spc, zoo)
+  mainnet/               # Production genesis exports
+  testnet/               # Test network genesis exports
+  keys/mainnet/          # Mainnet key material
+```
+
+### Key dependencies
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `github.com/luxfi/constants` | v1.4.4 | Network ID constants |
+| `github.com/luxfi/ids` | v1.2.9 | Node/chain identifiers |
+| `github.com/luxfi/crypto` | v1.17.40 | Cryptographic primitives |
+| `github.com/luxfi/vm` | v1.0.33 | Virtual machine types |
+| `github.com/luxfi/utxo` | v0.2.4 | UTXO model types |
+| `github.com/luxfi/go-bip32` | v1.0.2 | HD key derivation |
+| `github.com/luxfi/go-bip39` | v1.1.2 | Mnemonic generation |
+| `github.com/luxfi/tls` | v1.0.3 | TLS certificate handling |
+
+### Dynamic P-Chain allocations
+
+The `configs` package supports runtime P-Chain allocation overrides without modifying embedded genesis. Three methods, checked in order:
+
+1. `LUX_PCHAIN_ALLOCS` environment variable (JSON string)
+2. `LUX_PCHAIN_ALLOCS_FILE` environment variable (path to JSON file)
+3. `~/.lux/genesis/\{network\}/pchain.json` file system override
+
+C-Chain genesis remains embedded and immutable.
+
+### Programmatic usage
+
+```go
+
+// Load genesis for mainnet
+genesisBytes, err := configs.GetGenesis(configs.MainnetID)
+
+// Load with custom P-Chain allocations
+allocs := []genesis.AllocationJSON{...}
+genesisBytes, err := configs.GetGenesisWithAllocations(configs.MainnetID, allocs)
+```
+
+## Troubleshooting
+
+- **"failed to build config"**: Ensure one of `LUX_KEYS_DIR`, `LUX_MNEMONIC`, or `LUX_PRIVATE_KEY` is set, or that `~/.lux/keys/` exists with valid key files.
+- **Wrong chain ID after genesis**: Check whether `-network-id` was passed explicitly. If not, the network name resolves to the P-Chain network ID (1, 2, 3, 1337), not the C-Chain ID (96369, etc.).
+- **Hanzo testnet chain ID mismatch**: Hanzo testnet was deployed with chain ID 36964 (devnet ID) due to a deployment error. The intended ID is 36962. Code and configs reflect the actual deployed value.
+- **C-Chain genesis not matching**: Use `-cchain` flag to preserve the original C-Chain genesis from an existing file rather than generating a new one.
+- **Module not found**: Run `go mod tidy` and ensure Go 1.26.1+ is installed.
+
+## Related Skills
+
+- `lux-staking` -- TLS certificate parsing and signature verification for node identity
+- `lux-kms` -- Secret management for node keys and validator credentials
+- `lux-node` -- The node implementation that consumes these genesis configs
+- `lux-cli` -- CLI tool that uses genesis configs for network management
+
+---
+
+Last Updated: 2026-03-13

@@ -1,0 +1,390 @@
+---
+title: "Lux Bridge"
+description: "MPC Cross-Chain Bridge"
+---
+
+## Overview
+
+Lux Bridge is a decentralized cross-chain bridge using Multi-Party Computation (MPC) for secure asset transfers. It supports EVM chains (Ethereum, Base, BSC, Polygon, Arbitrum, Optimism, Avalanche, Lux, Zoo, and 10+ more) plus non-EVM chains (Bitcoin, Solana, TON, XRP). The bridge uses a burn-and-mint model on wrapped token chains and a lock-and-release vault model on native asset chains, with EIP-712 typed data signatures from an MPC oracle network providing cryptographic authorization for all claims.
+
+### Why
+
+Cross-chain asset movement requires trustless signing. Traditional multisigs are brittle (n-of-m key exposure). Lux Bridge replaces this with threshold signatures: no single node ever holds a complete private key. The MPC network generates, stores, and signs with key shares using TSS protocols (LSS for secp256k1/ECDSA, FROST for Ed25519/EdDSA), coordinated via NATS messaging and Consul service discovery.
+
+### Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| UI | Next.js 14, React 18, Tailwind CSS, wagmi/viem, RainbowKit |
+| Server | Express 4, TypeScript, Prisma 6, Winston logging |
+| MPC Nodes | Go (`lux-mpc`/`mpcd`), BadgerDB, NATS, Consul |
+| Contracts | Solidity 0.8.20, OpenZeppelin 5, Hardhat, EIP-712 |
+| Database | PostgreSQL (`ghcr.io/hanzoai/sql`) |
+| Infra | NATS 2.10, Consul 1.16+, Vault/KMS, Docker |
+| Auth | Lux ID (Casdoor) OIDC |
+| K8s | StatefulSet (MPC), Deployment (server/UI), NetworkPolicy |
+
+### Key Dependencies
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `@luxfi/core` | 10.0.6 | Core types (Network, Asset, SwapStatus, Contract) |
+| `@luxfi/threshold` | 1.0.0 | T-Chain ThresholdVM SDK (keygen, sign, reshare) |
+| `@luxfi/ui` | 5.5.1 | Shared UI components |
+| `@luxfi/utila` | 3.0.0 | Protobuf/ConnectRPC client, viem utils |
+| `@noble/ed25519` | 2.3.0 | Ed25519 crypto primitives |
+| `@openzeppelin/contracts` | 5.0.2 | ERC20, AccessControl, EIP-712, Pausable |
+| `ethers` | 6.13.4 | Ethereum interaction (server) |
+| `nats` | 2.29.3 | MPC node communication |
+| `consul` | 2.0.1 | Service discovery and KV store |
+| `@prisma/client` | 6.3.1 | Database ORM |
+
+## When to use
+
+- Bridging assets between Lux/Zoo and external EVM chains (Ethereum, Base, BSC, etc.)
+- Bridging to/from non-EVM chains (Bitcoin, Solana, TON, XRP)
+- Operating or deploying the MPC signer network for bridge authorization
+- Deploying or managing bridge smart contracts on new chains
+- Building white-label bridge UIs (Lux, Zoo, Pars, Hanzo)
+- Integrating T-Chain ThresholdVM SDK for custom MPC workflows
+
+## Hard requirements
+
+- Node.js v20+
+- pnpm v9.15.0+ (package manager)
+- Go 1.22+ (for MPC node binary `lux-mpc`/`mpcd`)
+- Docker (infrastructure services: NATS, Consul, PostgreSQL, KMS, Lux ID)
+- PostgreSQL 15+ (bridge state database)
+- NATS 2.10+ with JetStream enabled (MPC message bus)
+- Consul 1.16+ (service discovery and key share storage)
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/bridge` |
+| Package manager | pnpm@9.15.0 |
+| Workspaces | `app/*`, `pkg/*`, `contracts` |
+| Solidity | 0.8.20 (Hardhat 2.22, optimizer 100 runs, viaIR) |
+| License | MIT |
+| Bridge UI | `bridge.lux.network` |
+| Bridge API | `bridge-api.lux.network` |
+| MPC API | `api.mpc.lux.network` |
+| White-labels | `bridge.pars.network`, `bridge.hanzo.ai`, `bridge.zoo.ngo` |
+| K8s namespace | `lux-bridge` |
+| Images | `ghcr.io/luxfi/lux-mpc`, `ghcr.io/luxfi/bridge-server`, `ghcr.io/luxfi/bridge-ui` |
+
+## One-file quickstart
+
+```bash
+# Clone and install
+git clone https://github.com/luxfi/bridge.git && cd bridge
+pnpm install
+
+# Start infrastructure (Lux ID, KMS, NATS, Consul, PostgreSQL)
+make up
+
+# Install MPC tools (Go binary)
+make install-mpc
+
+# Start 3-node MPC network (2-of-3 threshold)
+make start-mpc-nodes
+
+# In separate terminals:
+cd app/server && pnpm dev    # Bridge API on :5000
+cd app/bridge && pnpm dev    # Bridge UI on :3000
+
+# Verify
+curl http://localhost:5000/health
+# lux-mpc-cli status --url http://localhost:6000
+```
+
+## Core Concepts
+
+### Architecture
+
+```
+                                 +------------------+
+                                 |   Bridge UI      |
+                                 |  (Next.js :3000) |
+                                 +--------+---------+
+                                          |
+                                          v
+                                 +--------+---------+
+                                 |  Bridge Server    |
+                                 | (Express :5000)   |
+                                 +---+------+---+----+
+                                     |      |   |
+                    +----------------+      |   +----------------+
+                    |                       |                    |
+                    v                       v                    v
+           +-------+-------+    +----------+--------+   +-------+------+
+           |   PostgreSQL  |    |     NATS 2.10      |   |    Consul    |
+           | (bridge state)|    | (MPC msg bus)      |   | (discovery)  |
+           +---------------+    +----------+--------+   +--------------+
+                                           |
+                          +----------------+----------------+
+                          |                |                |
+                    +-----+-----+   +------+----+   +------+----+
+                    | MPC Node 0|   | MPC Node 1|   | MPC Node 2|
+                    | :6000     |   | :6001     |   | :6002     |
+                    | (Go/mpcd) |   | (Go/mpcd) |   | (Go/mpcd) |
+                    +-----+-----+   +------+----+   +------+----+
+                          |                |                |
+                    +-----+-----+   +------+----+   +------+----+
+                    | BadgerDB  |   | BadgerDB  |   | BadgerDB  |
+                    | (shares)  |   | (shares)  |   | (shares)  |
+                    +-----------+   +-----------+   +-----------+
+                          |
+                          v
+                 +--------+--------+
+                 | Blockchain RPCs |
+                 | (EVM, BTC, SOL) |
+                 +-----------------+
+```
+
+### MPC Signing Flow
+
+1. **User initiates swap** via Bridge UI. Server creates a Swap record (status: `created`).
+2. **Deposit detection**: User deposits tokens. For EVM: direct RPC `eth_getBalance`/ERC20 balance check. For BTC: Blockstream API. For SOL: `getBalance` RPC. For TON: `getAddressBalance`.
+3. **MPC wallet creation**: Server calls `POST /keygen` on the MPC API (`mpc-node-0:9800`). The MPC cluster runs distributed key generation (TSS keygen) and returns `wallet_id`, `ecdsa_pub_key`, `eddsa_pub_key`, plus derived addresses (`eth_address`, `btc_address`, `sol_address`).
+4. **Signature request**: When payout is needed, bridge server publishes a signing request to NATS topic `mpc.signing_request.<sessionId>`. The request includes the transaction hash, network IDs, token address, and an initiator signature (Ed25519, verified by `event_initiator_pubkey`).
+5. **Threshold signing**: Each MPC node receives the request, validates the initiator signature, generates a partial signature share using its key share, and broadcasts it on NATS topic `bridge.mpc.sign.share`. When `threshold` (default: 2) shares are collected, they are combined into a full ECDSA/EdDSA signature.
+6. **Signature result**: The combined signature is published to `mpc.mpc_signing_result.<txId>`. Bridge server reconstructs the 65-byte Ethereum signature (`r || s || v`) and returns it to the caller.
+7. **On-chain claim**: The signature is submitted to the destination chain's Bridge contract via `bridgeMint()` or `bridgeWithdraw()`, which verifies the EIP-712 typed data signature against the registered ORACLE_ROLE address.
+
+### MPC Protocols (via @luxfi/threshold)
+
+| Protocol | Curve | Use Case |
+|----------|-------|----------|
+| `lss` | secp256k1 | Ethereum, EVM chains, Bitcoin |
+| `cggmp21` | secp256k1 | Alternative ECDSA protocol |
+| `frost` | Ed25519 | Solana, TON, Cardano |
+| `bls` | BLS12-381 | Beacon chain, aggregated sigs |
+| `ringtail` | various | Post-quantum (experimental) |
+
+Auto-selection: specify `chain` in keygen request and T-Chain picks the right protocol. Example: `chain: 'ethereum'` selects `lss`, `chain: 'solana'` selects `frost`.
+
+### Contract Architecture
+
+All contracts target Solidity 0.8.20 with OpenZeppelin 5.
+
+**Bridge.sol** (main contract, deployed per chain):
+- Inherits: `AccessControl`, `Pausable`, `ReentrancyGuard`, `EIP712`
+- Roles: `ADMIN_ROLE`, `ORACLE_ROLE` (MPC signer address), `PAUSER_ROLE`
+- `bridgeBurn()` -- Burns wrapped tokens on source chain, emits `BridgeBurned` with destination data
+- `bridgeMint()` -- Mints wrapped tokens on destination chain, requires EIP-712 oracle signature
+- `bridgeWithdraw()` -- Withdraws from vault on destination chain, requires EIP-712 oracle signature
+- Replay protection: ClaimId-based (immune to ECDSA malleability), not signature-based
+- Fee: configurable `feeRate` (basis points, default 100 = 1%, max 1000 = 10%)
+
+**ERC20B.sol** (bridgeable token):
+- Inherits: `ERC20`, `AccessControl`, `Pausable`
+- `BRIDGE_ROLE` can mint/burn via `bridgeMint()`/`bridgeBurn()`
+- Deployed per wrapped asset per chain (e.g., `LETH` on Lux, `ZETH` on Zoo)
+
+**LuxVault.sol / ZooVault.sol** (asset vaults):
+- Holds native assets and ERC20s on origin chains
+- Uses ERC4626 (`LERC4626`) for ERC20 yield-bearing vaults
+- Uses `ETHVault` for native ETH (1:1 share model)
+- Owned by Bridge contract
+
+**XChainVault.sol** (cross-subnet vault):
+- For Lux Warp Messenger (cross-subnet) bridging
+- Supports ERC20, ERC721, ERC1155
+- Uses `IWarpMessenger` precompile at `0x0200000000000000000000000000000000000000`
+- `vaultERC20()`, `vaultERC721()`, `vaultERC1155()` with Warp message proof
+
+### Chain IDs
+
+| Chain | ID | RPC |
+|-------|----|-----|
+| Lux Mainnet | 96369 | `api.lux.network/ext/bc/C/rpc` |
+| Lux Testnet | 96368 | `api.lux-test.network/ext/bc/C/rpc` |
+| Zoo Mainnet | 200200 | `api.zoo.network/ext/bc/Z/rpc` or `api.lux.network/ext/bc/zoo/rpc` |
+| Zoo Testnet | 200201 | `api.zoo-test.network/ext/bc/Z/rpc` |
+| Ethereum | 1 | `eth.llamarpc.com` |
+| Base | 8453 | `mainnet.base.org` |
+| BSC | 56 | `bsc-dataseed.binance.org` |
+| Polygon | 137 | `polygon-rpc.com` |
+| Arbitrum | 42161 | `arb1.arbitrum.io/rpc` |
+| Optimism | 10 | `mainnet.optimism.io` |
+| Avalanche | 43114 | `api.avax.network/ext/bc/C/rpc` |
+| Linea | 59144 | `lineascan.build` |
+| Sepolia | 11155111 | `rpc.sepolia.org` |
+| Holesky | 17000 | `ethereum-holesky-rpc.publicnode.com` |
+
+### Supported Wrapped Tokens
+
+**On Lux chain** (L-prefix, 29 tokens):
+LETH, LBTC, LSOL, LTON, LBNB, LPOL, LAVAX, LUSD, LADA, LFTM, LCELO, LXDAI, LBLAST, LMRB, LZOO, LAI16Z, LBONK, LWIF, LBOME, LPOPCAT, LFWOG, LGIGA, LMEW, LPONKE, LPNUT, LDOGS, LNOT, LMOODENG, LREDO
+
+**On Zoo chain** (Z-prefix, 34 tokens):
+ZETH, ZBTC, ZSOL, ZTON, ZBNB, ZPOL, ZAVAX, ZUSD, ZADA, ZFTM, ZCELO, ZXDAI, ZBLAST, ZMRB, ZLUX, ZAI16Z, ZBONK, ZWIF, ZBOME, ZPOPCAT, ZFWOG, ZGIGA, ZMEW, ZPONKE, ZPUNT, ZDOGS, ZNOT, ZMOODENG, ZREDO, plus memecoins: TRUMP, MELANIA, CYRUS, SLOG, Z
+
+### API Endpoints
+
+Server base: `http://localhost:5000` (dev) / `https://bridge-api.lux.network` (prod)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/health` | Health check with MPC network status |
+| GET | `/api/swaps` | List swaps (query: `isDeleted`, `version`, `teleport`, `page`, `pageSize`) |
+| GET | `/api/swaps/:swapId` | Get swap by ID |
+| POST | `/api/swaps` | Create swap (body: `amount`, `source_network`, `destination_network`, `destination_asset`, `destination_address`, `use_deposit_address`, `use_teleporter`, `app_name`) |
+| POST | `/api/swaps/transfer/:swapId` | Report user transfer (body: `txHash`, `amount`, `from`, `to`) |
+| POST | `/api/swaps/payout/:swapId` | Report payout (body: `txHash`, `amount`, `from`, `to`, `hashedTxId`) |
+| POST | `/api/swaps/mpcsign/:swapId` | Request MPC signature for swap |
+| POST | `/api/swaps/getsig` | Get signature from MPC oracle network (body: `txId`, `fromNetworkId`, `toNetworkId`, `toTokenAddress`, `msgSignature`, `receiverAddressHash`) |
+| PUT | `/api/swaps/expire/:swapId` | Expire a swap (72h no-deposit timeout) |
+| GET | `/api/swaps/payout/:swapId` | Trigger payout via MPC wallet |
+| GET | `/api/swaps/deposit-check/:swapId` | Manual deposit verification |
+| GET | `/api/networks` | List supported networks |
+| GET | `/api/tokens` | List supported tokens |
+| GET | `/api/settings` | Bridge configuration |
+| GET | `/api/quote` | Get bridge quote (fees, slippage, completion time) |
+| GET | `/api/rate` | Exchange rates |
+| GET | `/api/limits` | Bridge limits per asset |
+| GET | `/api/explorer` | Explorer data |
+| GET | `/api/exchanges` | Exchange integrations |
+
+### Swap Status Lifecycle
+
+```
+Created --> UserTransferPending --> UserDepositPending --> BridgeTransferPending --> Completed
+                |                                              |
+                +--> UserTransferDelayed                       +--> Failed
+                |                                              |
+                +--> Expired (72h)                             +--> Cancelled
+                |
+                +--> TeleportProcessPending --> UserPayoutPending --> PayoutSuccess
+```
+
+### Monorepo Structure
+
+```
+github.com/luxfi/bridge/
+  app/
+    bridge/          Next.js 14 bridge UI (wagmi, RainbowKit, Solana wallets, TON Connect)
+    bridge3/         Remix v2 bridge UI (next-gen, @luxfi/core, MobX)
+    explorer/        Next.js transaction explorer
+    server/          Express API server (Prisma, MPC integration)
+      src/
+        server.ts          Entrypoint (port 5000)
+        routes/            API route handlers
+        domain/            Business logic
+          mpc-bridge.ts    NATS-based MPC signing integration
+          mpc-modern.ts    Modern MPC wrapper (replaces Rust impl)
+          mpc-wallet.ts    MPC wallet creation (keygen) and deposit checks
+          mpc-signer.ts    Ed25519 request signing (initiator key)
+          swaps.ts         Swap lifecycle management
+          teleport-processor.ts   Background processor for Lux Teleporter swaps
+        services/
+          mpc-service.ts   MPC network client (NATS, Consul, key shares)
+      prisma/
+        schema.prisma      DB schema (Network, Currency, Swap, Transaction, Quote, DepositAction)
+  pkg/
+    core/            @luxfi/core v10.0.6 -- types (Network, Asset, SwapStatus, Contract)
+    threshold/       @luxfi/threshold v1.0.0 -- T-Chain ThresholdVM SDK
+    settings/        @luxbridge/settings -- shared bridge config
+    ui/              Shared UI components
+    utila/           @luxfi/utila v3.0.0 -- Protobuf/ConnectRPC, viem utils
+  contracts/
+    contracts/
+      Bridge.sol     Main bridge contract (EIP-712, AccessControl, burn/mint/withdraw)
+      ERC20B.sol     Bridgeable ERC20 (BRIDGE_ROLE mint/burn)
+      LuxVault.sol   ERC4626 vault manager for Lux chain
+      ZooVault.sol   ERC4626 vault manager for Zoo chain
+      ETHVault.sol   Native ETH vault (1:1 shares)
+      LERC4626.sol   ERC4626 wrapper
+      XChainVault.sol  Cross-subnet vault (Warp Messenger, ERC20/721/1155)
+      lux/           29 wrapped token contracts (LETH, LBTC, LSOL, ...)
+      zoo/           34 wrapped token contracts (ZETH, ZBTC, ZSOL, ...)
+      DAI.sol, USDC.sol, USDT.sol, WETH.sol  -- test stablecoins
+    hardhat.config.ts  18 network configs (mainnet + testnet)
+  config/
+    config.yaml      MPC config (threshold, NATS, Consul, BadgerDB)
+    config.kms.yaml  KMS integration config
+    peers.json       MPC node identity UUIDs
+    casdoor/         Lux ID (Casdoor) config
+    mpc/             Per-node MPC configs
+  k8s/
+    mpc-deployment.yaml   Full K8s manifest (StatefulSet, Deployments, Services, Ingress)
+    mpc-security.yaml     NetworkPolicy (MPC node isolation) + MPC API Ingress
+  compose.yml              Local dev (all services)
+  compose.local.yml        Infrastructure only
+  compose.mainnet.yml      Production (TLS, resource limits, monitoring, backups)
+  compose.testnet.yml      Testnet (debug logging, faucet, test endpoints)
+  scripts/
+    init.sql               PostgreSQL schema (swaps table)
+    start-mpc-network.sh   Start 3 local MPC nodes
+    stop-mpc-network.sh    Stop MPC nodes
+    install-mpc-tools.sh   Install Go MPC binary
+    init-mpc.sh            Initialize MPC keys and identities
+    launch-mpc-bridge.sh   Full bridge launch script
+    migrate-mpc-keys.sh    Key migration between deployments
+    trigger-keygen.js      Programmatic keygen trigger
+  test/
+    test-mpc-complete.sh   Full MPC integration test
+    test-mpc-e2e.js        End-to-end MPC test
+    test-bridge-integration.sh  Bridge flow integration test
+    test-full-integration.sh    Complete system test
+```
+
+### Production K8s Deployment
+
+Namespace: `lux-bridge`
+
+| Component | Kind | Replicas | Image |
+|-----------|------|----------|-------|
+| MPC nodes | StatefulSet | 5 (3-of-5 threshold) | `ghcr.io/luxfi/mpc:latest` |
+| Bridge server | Deployment | 2 | `ghcr.io/luxfi/bridge-server:latest` |
+| Bridge UI | Deployment | 2 | `ghcr.io/luxfi/bridge-ui:latest` |
+| PostgreSQL | StatefulSet | 1 | `ghcr.io/hanzoai/sql:latest` |
+| KV (Valkey) | Deployment | 1 | `hanzoai/kv:latest` |
+
+Production MPC: 5 nodes, 3-of-5 threshold (vs. dev: 3 nodes, 2-of-3).
+
+Secrets managed via KMS (`kms.hanzo.ai`):
+- `mpc-identity-keys`: `MPC_NODE\{0..4\}_PRIVATE_KEY`, `MPC_INITIATOR_KEY`
+- `bridge-secrets`: `BRIDGE_DATABASE_URL`, `BRIDGE_DB_PASSWORD`, `MPC_DB_PASSWORD`, `mpc-api-token`, `mpc-wallet-id`, `fee-collector-address`
+
+Network policies isolate MPC nodes: only `bridge-server` pods can reach MPC HTTP API (8080/8081). MPC nodes communicate with each other on ZAP p2p port 9651.
+
+### Compose Variants
+
+| File | Environment | MPC Nodes | Threshold | Extra Services |
+|------|------------|-----------|-----------|----------------|
+| `compose.yml` | Local dev | 3 | 2-of-3 | Lux ID, KMS, NATS, Consul |
+| `compose.local.yml` | Infrastructure only | 0 (run locally) | - | Lux ID, KMS, NATS, Consul |
+| `compose.testnet.yml` | Testnet | 3 | 2-of-3 | Prometheus, Grafana, Explorer |
+| `compose.mainnet.yml` | Production | 3 | 2-of-3 | Prometheus, Grafana, Backup, TLS |
+
+## Troubleshooting
+
+**MPC nodes not starting**: Ensure NATS is running on port 4223 and Consul on 8501. Run `make up` first, then `make start-mpc-nodes`. Check `logs/node0.log`.
+
+**Keygen timeout**: Default timeout is 120s. Ensure all threshold nodes are healthy: `lux-mpc-cli status --url http://localhost:6000`. Check that `event_initiator_pubkey` in config.yaml matches the key used by the bridge server.
+
+**Signature verification fails on-chain**: Verify the MPC signer address has `ORACLE_ROLE` on the Bridge contract. Check that the EIP-712 domain name/version match between contract constructor and signing code.
+
+**Deposit not detected**: The teleport processor polls every 15s for `TeleportProcessPending` swaps. Check RPC URL availability for the source network. Manual trigger: `GET /api/swaps/deposit-check/:swapId`.
+
+**Database connection**: Server expects `POSTGRES_URL` env var. Local dev: `postgresql://bridge:bridge@localhost:5433/bridge`. Run `pnpm exec prisma db push` to sync schema.
+
+**pnpm install fails**: Ensure `keccak` override is set to `3.0.4` in root `package.json`. Peer dependency warnings for `@hanzo/auth`, `@hanzo/commerce`, `firebase` are expected and ignored.
+
+**Contract deployment**: Copy `.env` from `contracts/example.env`, set `PRIVATE_KEY` and RPC URLs. Run `npx hardhat run scripts/deploy.ts --network <network>`.
+
+## Related Skills
+
+- `lux/lux-mpc.md` -- MPC node binary, TSS protocols, key management
+- `lux/lux-threshold.md` -- T-Chain ThresholdVM SDK details
+- `lux/lux-warp.md` -- Warp Messenger for cross-subnet bridging
+- `lux/lux-teleport.md` -- Lux Teleporter for subnet-to-subnet transfers
+- `lux/lux-evm.md` -- C-Chain where bridge contracts execute
+- `lux/lux-wallet.md` -- Wallet integration for bridge users
+- `lux/lux-node.md` -- Validator nodes that bridge connects to
+- `lux/lux-kms.md` -- Key management service for MPC secrets
+
+Last Updated: 2026-03-13

@@ -1,0 +1,212 @@
+---
+title: "Lux GPU - Unified GPU Acceleration for Go"
+description: "Documentation for Lux GPU - Unified GPU Acceleration for Go"
+---
+
+## Overview
+
+Lux GPU provides **Go bindings for GPU-accelerated operations** with switchable backends: Metal (Apple Silicon), CUDA (NVIDIA), Dawn (WebGPU), ONNX (Windows), and CPU (SIMD fallback). Single package covers tensor ops, cryptographic acceleration, FHE operations, and ML inference.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Module | `github.com/luxfi/lux/gpu` |
+| Go | 1.22 |
+| Package | `gpu` |
+| Version | 0.1.0 |
+| CGO | Required for GPU backends; CPU fallback without CGO |
+| C++ lib | `liblux_accel` (from `luxcpp/lux-accel/`) |
+
+## Backends
+
+| Backend | Constant | Platform | Requirement |
+|---------|----------|----------|-------------|
+| Auto | `gpu.Auto` | any | Auto-detects best |
+| Metal | `gpu.Metal` | macOS (Apple Silicon) | CGO + Metal SDK |
+| CUDA | `gpu.CUDA` | Linux/Windows | CGO + NVIDIA driver |
+| Dawn | `gpu.Dawn` | cross-platform | CGO + Dawn/wgpu |
+| ONNX | `gpu.ONNX` | Windows | ONNX Runtime |
+| CPU | `gpu.CPU` | all | Always available |
+
+### Backend Selection Priority
+
+1. Environment variable: `LUX_GPU_BACKEND=metal|cuda|dawn|cpu`
+2. Explicit: `gpu.WithBackend(gpu.Metal)`
+3. Auto-detect: Metal > CUDA > Dawn > CPU
+
+## API
+
+### Session Management
+
+```go
+
+// Auto-detect best backend
+sess, err := gpu.DefaultSession()
+
+// Explicit backend
+sess, err := gpu.NewSession(gpu.WithBackend(gpu.Metal))
+
+// Multi-GPU
+sess, err := gpu.NewSession(gpu.WithDevice(1))
+
+// Runtime switching
+err = sess.SetBackend(gpu.CUDA)
+
+// Sync and cleanup
+sess.Sync()
+sess.Close()
+```
+
+### Tensor Operations (`sess.Tensor()`)
+
+```go
+t := sess.Tensor()
+
+// Creation
+zeros, _ := t.Zeros([]int{1024, 1024}, gpu.Float32)
+ones, _ := t.Ones([]int{256}, gpu.Float16)
+full, _ := t.Full([]int{3, 3}, 3.14, gpu.Float64)
+data, _ := t.FromSlice([]float32{1, 2, 3, 4}, []int{2, 2}, gpu.Float32)
+
+// Arithmetic
+sum, _ := t.Add(a, b)
+prod, _ := t.MatMul(a, b)
+
+// Reductions
+total, _ := t.Sum(tensor, 0)    // along axis 0
+avg, _ := t.Mean(tensor)         // all axes
+```
+
+### Crypto Operations (`sess.Crypto()`)
+
+```go
+c := sess.Crypto()
+
+// BLS12-381
+ok, _ := c.BLSVerify(sig, msg, pubkey)
+results, _ := c.BLSVerifyBatch(sigs, msgs, pubkeys)
+agg, _ := c.BLSAggregate(sigs)
+
+// Poseidon hash
+hashes, _ := c.PoseidonHash(inputs)
+
+// Multi-scalar multiplication
+result, _ := c.MSM(scalars, points)
+
+// KZG commitments
+commit, _ := c.KZGCommit(poly)
+proof, _ := c.KZGProve(poly, point)
+ok, _ := c.KZGVerify(commitment, proof, point, value)
+```
+
+### FHE Operations (`sess.FHE()`)
+
+```go
+f := sess.FHE()
+
+// NTT (Number Theoretic Transform)
+result, _ := f.NTTForward(poly, modulus)
+result, _ := f.NTTBatch(polys, modulus)
+
+// TFHE boolean gates
+keys, _ := f.TFHEKeyGen(gpu.TFHEParams{N: 1024, K: 1, SecurityBits: 128})
+ct, _ := f.TFHEEncrypt(keys, true)
+result, _ := f.TFHEAnd(keys, ct1, ct2)
+
+// CKKS approximate arithmetic
+ct, _ := f.CKKSEncrypt(keys, []float64{1.0, 2.0, 3.0})
+sum, _ := f.CKKSAdd(ct1, ct2)
+```
+
+### ML Operations (`sess.ML()`)
+
+```go
+m := sess.ML()
+
+// Matrix ops
+result, _ := m.GEMM(a, b, 1.0, 0.0, false, false)
+attn, _ := m.ScaledDotProductAttention(q, k, v, mask)
+
+// Activations
+out, _ := m.GELU(tensor)
+out, _ := m.Softmax(tensor, -1)
+out, _ := m.LayerNorm(tensor, gamma, beta)
+
+// Quantization
+qt, scale, zp, _ := m.Quantize(tensor, 8)
+```
+
+### ZK Operations (package-level)
+
+```go
+// Poseidon2 batch hash
+hashes, _ := gpu.Poseidon2Hash(left, right)
+
+// Merkle tree
+root, _ := gpu.MerkleRoot(leaves)
+tree, _ := gpu.MerkleTree(leaves)
+
+// Commitments
+commits, _ := gpu.BatchCommitment(values, blindings, salts)
+nullifiers, _ := gpu.BatchNullifier(keys, commitments, indices)
+
+// GPU info
+total, free := gpu.GetMemoryInfo()
+available := gpu.ZKGPUAvailable()
+```
+
+## Data Types
+
+```go
+gpu.Float32   // 4 bytes
+gpu.Float64   // 8 bytes
+gpu.Float16   // 2 bytes
+gpu.BFloat16  // 2 bytes
+gpu.Int32     // 4 bytes
+gpu.Int64     // 8 bytes
+gpu.Uint32    // 4 bytes
+gpu.Uint64    // 8 bytes
+gpu.Bool      // 1 byte
+```
+
+## File Structure
+
+```
+gpu/
+├── types.go          — Backend, Device, Array, Stream types
+├── ops.go            — Tensor/Crypto/FHE/ML op interfaces + Dtype
+├── session.go        — Session management, backend switching
+├── gpu_cgo.go        — CGO implementation (Metal/CUDA/Dawn)
+├── gpu_cpu.go        — CPU fallback (no CGO)
+├── gpu_onnx.go       — ONNX Runtime backend
+├── zk.go             — ZK ops stub (no CGO)
+├── zk_cgo.go         — ZK ops with GPU acceleration
+├── demo.go           — Usage demonstration (build-ignored)
+├── gpu_all_test.go   — Core tests
+├── gpu_onnx_test.go  — ONNX backend tests
+└── cmake/            — CMake build for liblux_accel
+```
+
+## Build
+
+```bash
+# With GPU (CGO required)
+CGO_ENABLED=1 go build ./...
+
+# CPU only (no CGO)
+CGO_ENABLED=0 go build ./...
+
+# Run tests
+go test -v ./...
+
+# Build C++ library
+cmake -B build -DLUX_BACKEND_METAL=ON
+cmake --build build
+```
+
+## Related Skills
+
+- `lux/lux-fhe.md` — FHE operations (higher-level, uses gpu for acceleration)
+- `lux/lux-crypto.md` — Cryptographic primitives
+- `lux/lux-accel.md` — C++ acceleration library (liblux_accel)

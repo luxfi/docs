@@ -1,0 +1,260 @@
+---
+title: "Lux Deploy"
+description: "Blockchain Network Deployment System"
+---
+
+## Overview
+
+Lux Deploy (`github.com/luxfi/deploy`) is the production deployment system for Lux blockchain networks. It provides two layers: (1) a comprehensive Makefile-based orchestration system for local and dev network lifecycle management (5-node validator bootstrap, multi-chain deployment, RLP block import, snapshots), and (2) a Go tool (`deploy-subnets`) that programmatically creates subnets and blockchains on remote Lux nodes via P-chain wallet transactions. Supports mainnet and testnet configurations for five chains: C-Chain, Zoo, Hanzo, SPC, and Pars.
+
+## Repository
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/deploy` |
+| Local | `~/work/lux/deploy/` |
+| Go Module | `github.com/luxfi/deploy-subnets` (Go 1.26.1) |
+| Dependencies | `github.com/luxfi/sdk`, `github.com/luxfi/crypto`, `github.com/luxfi/ids` |
+| License | See LICENSE |
+
+## Project Structure
+
+```
+~/work/lux/deploy/
+  Makefile               # Full deployment orchestration (698 lines)
+  DESIGN.md              # Architecture design document
+  README.md              # Usage documentation
+
+  cmd/
+    deploy-subnets/
+      main.go            # Go tool for P-chain subnet/blockchain creation
+      go.mod             # Module: github.com/luxfi/deploy-subnets
+      go.sum
+      deploy-subnets     # Compiled binary
+
+  config/
+    networks/
+      mainnet.json       # Mainnet network configuration
+      testnet.json       # Testnet network configuration
+    node/
+      default.json       # Default node configuration
+
+  lib/                   # Shell library functions
+    common.sh            # Shared utilities (paths, logging, error handling)
+    chains.sh            # Chain-specific operations
+    network.sh           # Network management
+    import.sh            # RLP block import operations
+    snapshot.sh          # Snapshot create/restore
+
+  scripts/               # High-level deployment scripts
+    deploy.sh            # Full deployment orchestration
+    health.sh            # Health check scripts
+    monitor.sh           # Progress monitoring
+```
+
+## Makefile Orchestration System
+
+### Architecture Layers
+
+1. **Configuration Layer** -- Environment variables, network/chain configs
+2. **Plugin Layer** -- EVM plugin installation and VMID mapping
+3. **Network Layer** -- 5-node validator bootstrap, port management, health monitoring
+4. **Chain Layer** -- Subnet/L2 deployment, genesis configuration
+5. **Data Layer** -- RLP block import, progress monitoring, state verification
+6. **Persistence Layer** -- Snapshot creation, restoration, archival
+
+### Network Configuration
+
+| Setting | Mainnet | Testnet |
+|---------|---------|---------|
+| Network ID | 1 | 2 |
+| HTTP Port | 9630 | 9640 |
+| Staking Port | 9631 | 9641 |
+| gRPC Port | 8369 | 8368 |
+
+### Chain Configuration
+
+| Chain | Mainnet ID | Testnet ID | Notes |
+|-------|-----------|-----------|-------|
+| C-Chain | 96369 | 96368 | Primary EVM chain |
+| Zoo | 200200 | 200201 | Zoo ecosystem chain |
+| Hanzo | 36963 | 36962 | Hanzo AI chain |
+| SPC | 36911 | -- | Mainnet only |
+| Pars | 494949 | -- | Via deploy-subnets tool |
+
+### EVM Plugin
+
+- VMID: `srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy`
+- Installed to `~/.lux/plugins/`
+- Built from `~/work/lux/evm/` if not present
+
+### Genesis Verification Hashes
+
+| Chain | Network | Hash |
+|-------|---------|------|
+| C-Chain | Mainnet | `0x3f4fa2a0b0ce089f52bf0ae9199c75ffdd76ecafc987794050cb0d286f1ec61e` |
+| C-Chain | Testnet | `0x1c5fe37764b8bc146dc88bc1c2e0259cd8369b07a06439bcfa1782b5d4fb0995` |
+| Zoo | Mainnet | `0x7c548af47de27560779ccc67dda32a540944accc71dac3343da3b9cd18f14933` |
+| Zoo | Testnet | `0x0652fb2fde1460544a5893e5eba5095ff566861cbc87fcb1c73be2b81d6d1979` |
+| SPC | Mainnet | `0x4dc9fd5cf4ee64609f140ba0aa50f320cadf0ae8b59a29415979bc05b17cfac8` |
+
+### Key Make Targets
+
+```bash
+# Full lifecycle
+make deploy                    # Full: plugins + network + chains + import
+make deploy-quick              # Quick: plugins + network + chains (no import)
+make dev                       # Dev setup: testnet + chains, no import
+
+# Network management
+make start-mainnet             # Start 5-node mainnet (ports 9630-9638)
+make start-testnet             # Start 5-node testnet (ports 9640-9648)
+make stop                      # Stop all networks
+make restart                   # Stop + start current network
+make wait-healthy              # Wait for network health
+
+# Chain deployment
+make deploy-chains             # Deploy all chains (Zoo, Hanzo, SPC)
+make deploy-zoo                # Deploy Zoo chain
+make deploy-hanzo              # Deploy Hanzo chain
+make deploy-spc                # Deploy SPC chain (mainnet only)
+
+# Block import
+make import-all                # Import all RLP data (background)
+make import-cchain             # Import C-Chain blocks
+make import-zoo                # Import Zoo blocks
+make import-spc                # Import SPC blocks (mainnet only)
+make import-status             # Show import progress for all chains
+
+# Snapshots
+make snapshot                  # Create point-in-time snapshot
+make restore SNAPSHOT=name     # Restore from snapshot
+make list-snapshots            # List available snapshots
+
+# Health and monitoring
+make status                    # Show network and chain status
+make health                    # Run health checks
+make verify                    # Verify chain genesis hashes
+make logs                      # Tail network logs
+make logs-import               # Show import progress in logs
+
+# Cleanup
+make clean                     # Clean runtime data (preserve snapshots)
+make clean-all                 # Clean everything including snapshots
+make clean-chains              # Remove chain configurations
+
+# Prerequisites
+make check-prerequisites       # Verify jq, curl, tar, lux CLI
+make install-plugins           # Install/update EVM plugin
+make build-evm                 # Build EVM plugin from source
+```
+
+### Directory Layout (Runtime)
+
+```
+~/.lux/
+  plugins/               # EVM plugin binary
+  runs/
+    mainnet/             # Mainnet node data
+    testnet/             # Testnet node data
+  chains/                # Chain configurations
+
+~/work/lux/
+  state/
+    rlp/                 # RLP block files for import
+    snapshots/           # Network snapshots
+    chains/              # Chain genesis files
+  genesis/configs/       # Genesis configurations
+  cli/bin/lux            # Lux CLI binary
+  evm/build/evm          # Built EVM plugin
+```
+
+## deploy-subnets Go Tool
+
+Programmatically deploys subnets and blockchains to remote Lux nodes via P-chain transactions.
+
+### Usage
+
+```bash
+LUX_MNEMONIC="word1 word2 ..." ./deploy-subnets \
+  --endpoint http://24.199.78.71:9650 \
+  --chains zoo-mainnet,hanzo-mainnet,spc-mainnet \
+  --state-dir ~/work/lux/state \
+  --dry-run  # Optional: preview without executing
+```
+
+### Supported Chain Configurations
+
+| Key | Chain Name | Genesis Path |
+|-----|-----------|-------------|
+| `zoo-mainnet` | zoo | `chains/zoo-mainnet/genesis.json` |
+| `zoo-testnet` | zootest | `chains/zoo-testnet/genesis.json` |
+| `zoo-devnet` | zoodev | `chains/zoo-devnet/genesis.json` |
+| `hanzo-mainnet` | hanzo | `chains/hanzo-mainnet/genesis.json` |
+| `hanzo-testnet` | hanzotest | `chains/hanzo-testnet/genesis.json` |
+| `hanzo-devnet` | hanzodev | `chains/hanzo-devnet/genesis.json` |
+| `spc-mainnet` | spc | `chains/spc-mainnet/genesis.json` |
+| `spc-testnet` | spctest | `chains/spc-testnet/genesis.json` |
+| `spc-devnet` | spcdev | `chains/spc-devnet/genesis.json` |
+| `pars-mainnet` | pars | `chains/pars-mainnet/genesis.json` |
+| `pars-testnet` | parstest | `chains/pars-testnet/genesis.json` |
+| `pars-devnet` | parsdev | `chains/pars-devnet/genesis.json` |
+
+### How It Works
+
+1. Derives secp256k1 keys from BIP39 mnemonic (indices 1-4, skip 0 which is staked)
+2. Key derivation path: `m/44'/60'/0'/0/\{index\}`
+3. Creates P-chain wallet via `github.com/luxfi/sdk/wallet/primary`
+4. For each chain:
+   - Reads genesis JSON from state directory
+   - Issues `CreateNetworkTx` (creates subnet with owner key)
+   - Issues `CreateChainTx` (creates blockchain on subnet with EVM VMID)
+5. Reports subnet IDs, blockchain IDs, and RPC endpoints
+
+### Go Dependencies
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `github.com/luxfi/sdk` | v1.16.46 | P-chain wallet and transaction building |
+| `github.com/luxfi/crypto` | v1.17.40 | secp256k1 key operations |
+| `github.com/luxfi/ids` | v1.2.9 | ID types (SubnetID, BlockchainID, VMID) |
+| `github.com/luxfi/go-bip32` | v1.0.2 | HD key derivation |
+| `github.com/luxfi/go-bip39` | v1.1.2 | Mnemonic validation and seed generation |
+| `github.com/luxfi/utxo` | v0.2.4 | UTXO management (secp256k1fx keychain) |
+| `github.com/luxfi/node` | v1.22.81 | Node types (indirect) |
+| `github.com/luxfi/consensus` | v1.22.62 | Consensus types (indirect) |
+| `github.com/luxfi/geth` | v1.16.73 | Ethereum types (indirect) |
+
+### Subnet EVM VMID
+
+`ag3GReYPNuSR17rUP8acMdZipQBikdXNRKDyFszAysmy3vDXE` (used for all subnet chains)
+
+## Shell Library (lib/)
+
+| Script | Purpose |
+|--------|---------|
+| `common.sh` | Paths, logging (colors, timestamps), error handling, `set -euo pipefail` |
+| `chains.sh` | Chain CRUD, genesis validation, admin API calls |
+| `network.sh` | Network start/stop, health polling, port detection |
+| `import.sh` | RLP import initiation, progress tracking |
+| `snapshot.sh` | Atomic snapshot (stop network, tar, restart) |
+
+## Key Design Decisions
+
+1. **Idempotent operations**: Every Makefile target can run multiple times safely
+2. **Parallel imports**: Block imports run in background with monitoring
+3. **Atomic snapshots**: Network stopped during snapshot for consistency
+4. **Health-first**: Operations verify prerequisites before execution
+5. **No EWOQ keys**: Mnemonic-based key derivation only
+6. **Network separation**: Mainnet and testnet use different ports, never conflict
+7. **CLI-based**: Uses `lux` CLI for network management, never `pkill luxd`
+
+## Related Repos
+
+| Repo | Purpose |
+|------|---------|
+| `github.com/luxfi/node` | Node software being deployed |
+| `github.com/luxfi/evm` | EVM plugin built and installed |
+| `github.com/luxfi/cli` | CLI tool for network management |
+| `github.com/luxfi/genesis` | Genesis configuration files |
+| `github.com/luxfi/sdk` | SDK for P-chain wallet transactions |

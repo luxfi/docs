@@ -1,0 +1,338 @@
+---
+title: "Lux Indexer"
+description: "Multi-Chain Blockchain Data Indexing"
+---
+
+## Overview
+
+Lux Indexer is a **Go-based blockchain data indexing system** that covers all Lux native chains (DAG and linear), EVM chains across the Lux subnet ecosystem, and a universal multi-chain indexer supporting 100+ blockchains across EVM, Solana, Bitcoin, Cosmos, Move, and other runtimes. It works alongside Blockscout (which handles C-Chain EVM indexing) to provide complete data access for the Lux multi-chain architecture.
+
+**Repository**: `github.com/luxfi/indexer`
+**License**: MIT
+
+## Technology Stack
+
+| Component | Version | Notes |
+|-----------|---------|-------|
+| Go | 1.26.1 | Module: `github.com/luxfi/indexer` |
+| PostgreSQL | 14+ | Partitioned tables by chain_id |
+| SQLite | v2.0.3 | Via `mattn/go-sqlite3` (embedded/local mode) |
+| Ginkgo | v2.28.1 | BDD test framework |
+| Gomega | v1.39.1 | Test matchers |
+| `github.com/luxfi/database` | v1.17.43 | Lux database abstraction |
+| `github.com/luxfi/crypto` | v1.17.39 | Lux cryptographic primitives |
+| `github.com/luxfi/ids` | v1.2.9 | Lux ID types |
+| `gorilla/mux` | v1.8.1 | HTTP routing |
+| `gorilla/websocket` | v1.5.4 | WebSocket for live DAG streaming |
+| Docker | Alpine 3.19 | Runtime image (`golang:1.26-alpine` builder) |
+
+## Architecture
+
+### Three Binaries
+
+The indexer ships three CLI binaries:
+
+| Binary | Source | Purpose |
+|--------|--------|---------|
+| `indexer` | `cmd/indexer/` | Single-chain indexer (native DAG, linear, or EVM) |
+| `evmchains` | `cmd/evmchains/` | Multi-EVM indexer (all 5 Lux subnets in one process) |
+| `multichain` | `cmd/multichain/` | Universal indexer (100+ chains, all runtimes) |
+
+### Chain Types
+
+#### DAG-based Chains (Vertex/Parent model)
+Uses `github.com/luxfi/indexer/dag` -- multiple parents per vertex for fast consensus convergence.
+
+| Chain | Port | Database | RPC Method | Description |
+|-------|------|----------|-----------|-------------|
+| X-Chain | 4200 | explorer_xchain | `xvm` | Asset exchange, UTXOs |
+| A-Chain | 4500 | explorer_achain | `avm` | AI compute, attestations |
+| B-Chain | 4600 | explorer_bchain | `bvm` | Cross-chain bridge |
+| Q-Chain | 4300 | explorer_qchain | `qvm` | Quantum finality proofs |
+| T-Chain | 4700 | explorer_tchain | `tvm` | MPC threshold signatures |
+| Z-Chain | 4400 | explorer_zchain | `zvm` | ZK transactions, privacy |
+| K-Chain | 4900 | explorer_kchain | `kvm` | Post-quantum key management |
+
+#### Linear Chains (Block/Parent model)
+Uses `github.com/luxfi/indexer/chain` -- single parent per block for strict ordering.
+
+| Chain | Port | Database | RPC Method | Description |
+|-------|------|----------|-----------|-------------|
+| P-Chain | 4100 | explorer_pchain | `pvm` | Platform, validators, staking |
+
+#### EVM Chains
+Uses `github.com/luxfi/indexer/evm` -- full EVM block/transaction indexing with Blockscout-compatible API.
+
+| Chain | Port | Database | Description |
+|-------|------|----------|-------------|
+| C-Chain (Go) | 4000 | explorer_cchain | Smart contracts (lightweight Go alternative to Blockscout) |
+
+### EVM Multi-Chain Process (`evmchains`)
+
+A single-process server that indexes all 5 Lux mainnet EVM subnet chains concurrently, sharing one PostgreSQL database with table prefixes. Configured via `configs/evmchains.yaml`.
+
+| Slug | Name | Chain ID | Port |
+|------|------|----------|------|
+| `cchain` | Lux C-Chain | 96369 | 4000 |
+| `zoo` | Zoo | 200200 | 5000 |
+| `hanzo` | Hanzo | 36963 | 5100 |
+| `spc` | SPC | 36911 | 5200 |
+| `pars` | Pars | 494949 | 5300 |
+
+Management API on port 9000 (`/health`, `/chains`).
+
+### Universal Multi-Chain Indexer (`multichain`)
+
+The `multichain` package and `cmd/multichain` binary provide a universal indexer covering 100+ chains. Configured via `config/chains.yaml` (1450-line YAML). Supported runtime types:
+
+| Runtime Type | Examples |
+|-------------|----------|
+| `evm` | Ethereum, Arbitrum, Base, Optimism, BSC, Polygon, zkSync, Linea, Scroll, 30+ more |
+| `solana` | Solana mainnet/devnet |
+| `bitcoin` | Bitcoin mainnet/testnet (ordinals, runes, BRC-20, stamps, atomicals, RGB) |
+| `cosmos` | Cosmos Hub, Osmosis, Injective, dYdX, Celestia, Sei, Neutron, 10+ more |
+| `move` | Aptos, Sui |
+| `starknet` | StarkNet |
+| `near` | NEAR |
+| `tron` | TRON |
+| `ton` | TON |
+| `substrate` | Polkadot, Kusama |
+| `flow` | Flow |
+| `tezos` | Tezos |
+| `algorand` | Algorand |
+| `cardano` | Cardano |
+| `icp` | Internet Computer |
+| `stacks` | Stacks |
+| `hedera` | Hedera |
+| `multiversx` | MultiversX |
+| `filecoin` | Filecoin |
+| `hyperliquid` | Hyperliquid |
+| `lux_ai` | Lux A-Chain |
+| `lux_bridge` | Lux B-Chain |
+| `lux_threshold` | Lux T-Chain |
+| `lux_zk` | Lux Z-Chain |
+| `lux_graph` | Lux G-Chain |
+| `lux_identity` | Lux I-Chain |
+| `lux_key` | Lux K-Chain |
+| `lux_dex` | Lux D-Chain |
+
+DeFi protocol indexing per chain (Uniswap, Aave, Compound, GMX, Curve, PancakeSwap, Jupiter, Raydium, etc.).
+
+HTTP endpoints: `/stats`, `/health`, `/chains`, `/chain/\{id\}`, `/metrics` (Prometheus).
+
+## Core Concepts
+
+### Storage Layer
+
+The `storage/` package provides a unified storage interface:
+
+- `storage.Store` interface -- abstract storage backend
+- `storage.NewUnified()` -- creates KV-backed storage from `storage/kv/`
+- `storage/query/` -- query builders for indexed data
+- Default data dir: `~/.lux/indexer/<chain>/`
+
+### Database Schema (PostgreSQL)
+
+4 migration files in `migrations/`. Tables are **partitioned by chain_id** for multi-chain isolation:
+
+**Core tables** (each partitioned for chain IDs 96369, 96368, 200200, 200201, 36963):
+- `chains` -- chain registry (chain_id, name, symbol, rpc_url)
+- `blocks` -- block headers with Lux-specific fields (ext_data_hash, ext_data_gas_used, block_gas_cost)
+- `transactions` -- full tx data (EIP-1559, EIP-4844 blob fields)
+- `internal_transactions` -- traces (call, create, selfdestruct, reward)
+- `logs` -- event logs with 4 indexed topics
+- `addresses` -- address balances and stats
+- `tokens` -- ERC-20/721/1155 token metadata
+- `token_transfers` -- transfer events (batch support for ERC-1155)
+- `address_token_balances` / `address_current_token_balances` -- historical and current balances
+- `address_coin_balances` -- native coin balance history
+- `smart_contracts` -- verified contract sources with ABI
+- `block_rewards` -- validator/uncle/emission rewards
+- `indexer_status` -- per-chain indexer progress tracking
+- `transaction_actions` / `logs_actions` -- 4-byte selector and topic0 signature database
+
+PostgreSQL extensions: `pg_trgm` (fuzzy search), `btree_gist`, `pg_stat_statements`.
+
+### DAG Schema (Native Chains)
+
+For non-EVM DAG chains, separate table structures:
+
+```sql
+{chain}_vertices (id, type, parent_ids JSONB, timestamp, status, data JSONB)
+{chain}_edges (source, target, type)
+```
+
+For linear native chains:
+
+```sql
+{chain}_blocks (id, parent_id, height, timestamp, status, data JSONB)
+```
+
+### API Compatibility
+
+All indexers expose **Blockscout-compatible `/api/v2/` endpoints**:
+
+**DAG chains**: `/api/v2/stats`, `/api/v2/vertices`, `/api/v2/vertices/:id`, `/api/v2/edges`, `WS /api/v2/dag/subscribe`
+
+**Linear chains**: `/api/v2/stats`, `/api/v2/blocks`, `/api/v2/blocks/:id`, `/api/v2/blocks/height/:height`, `WS /api/v2/blocks/subscribe`
+
+**EVM chains**: Full Blockscout API v2 compatibility (blocks, transactions, addresses, tokens, stats, search).
+
+### EVM Module (`evm/`)
+
+Rich EVM indexing with subpackages:
+
+| Package | Purpose |
+|---------|---------|
+| `evm/api/` | Blockscout-compatible REST API server |
+| `evm/account/` | Account balance tracking |
+| `evm/contracts/` | Contract verification and ABI decoding |
+| `evm/defi/` | DeFi protocol indexing |
+| `evm/search/` | Full-text search |
+| `evm/stats/` | Chain statistics |
+| `evm/charts/` | Chart data generation |
+| `evm/blob.go` | EIP-4844 blob transaction support |
+| `evm/erc4337.go` | Account abstraction (ERC-4337) UserOp indexing |
+| `evm/mev.go` | MEV transaction detection |
+| `evm/uncle.go` | Uncle/ommer block handling |
+| `evm/pending.go` | Pending transaction tracking |
+| `evm/multichain.go` | Multi-chain EVM coordination |
+| `evm/enhanced.go` | Enhanced transaction decoding |
+
+### DEX Module (`dex/`)
+
+DEX adapter for Uniswap-style protocol indexing on Lux subnets.
+
+### Testing
+
+- **Unit tests**: `go test -v ./...` (Ginkgo/Gomega BDD style)
+- **E2E tests**: `e2e/` directory with tests for C-Chain, X-Chain, P-Chain, client, node, funding
+- **Integration tests**: `go test -v -tags=integration ./test/...`
+- **Coverage**: `go test -coverprofile=coverage.out ./...`
+
+## Related Repositories
+
+### Uniswap Subgraphs (The Graph Protocol)
+
+Three subgraph repos for DEX data on Lux C-Chain, deployed to The Graph:
+
+| Repo | Package | Graph CLI | Graph TS | Network |
+|------|---------|-----------|----------|---------|
+| `github.com/luxfi/uni-v2-subgraph` | `@luxfi/uniswap-v2-subgraph` v1.0.0 | ^0.64.1 | ^0.32.0 | `lux` |
+| `github.com/luxfi/uni-v3-subgraph` | `@luxfi/uniswap-v3-subgraph` v1.0.0 | ^0.64.1 | ^0.32.0 | `lux` |
+| `github.com/luxfi/uni-v4-subgraph` | `lux-v4-subgraph` v1.0.0 | ^0.64.1 | ^0.32.0 | `lux` |
+
+**V2 contracts**: Factory at `0xeac0a50112b5ee20cc18e42ba4d37777012afd0d` (startBlock 0)
+**V3 contracts**: Factory at `0x80bBc7C4C7a59C899D1B37BC14539A22D5830a84` (startBlock 1)
+**V4 contracts**: PoolManager at `0x0000000000000000000000000000000000009010`, PositionManager at `0x0000000000000000000000000000000000009011` (startBlock 1)
+
+Subgraph infrastructure:
+- Graph Node: `graph.lux.network` / `graph-admin.lux.network`
+- IPFS: `ipfs.lux.network`
+- K8s services: `graph-node.lux-mainnet.svc`, `graph-ipfs.lux-mainnet.svc`
+- Deploy targets: `lux`, `lux-testnet`, `lux-devnet`, `zoo`, `zoo-testnet`
+
+V3 `networks.json` includes Lux alongside Ethereum, Arbitrum, Base, BSC, Polygon, and 10+ other networks.
+
+### Blockchain Data Exports (`github.com/luxfi/exports`)
+
+Pre-exported JSONL blockchain data for bootstrapping:
+
+| Dataset | Blocks | Size | Format |
+|---------|--------|------|--------|
+| LUX Mainnet (96369) | 0 -- 1,082,780 | 4.2 GB | 44 JSONL chunks |
+| Zoo Mainnet (200200) | 0 -- 799 | 3.5 MB | Single JSONL file |
+
+Each line contains: block number, hash, parentHash, stateRoot, timestamp, gasLimit, gasUsed, baseFee, headerRLP, bodyRLP, receiptsRLP, and stateChanges (genesis only).
+
+Genesis treasury: `0x9011E888251AB053B7bD1cdB598Db4f9DEd94714` with 2,000,000,000,000 LUX.
+
+Alternative import: direct BadgerDB copy from `~/.luxd-mainnet/chainData/` (34M keys, 7.1 GB state).
+
+## Development
+
+### Build
+
+```bash
+# Build single-chain indexer
+make build              # -> bin/indexer
+
+# Build Docker image
+make docker             # -> luxfi/indexer:latest
+
+# Run locally
+make dev-xchain         # X-Chain DAG indexer on port 4200
+make dev-pchain         # P-Chain linear indexer on port 4100
+make dev-zchain         # Z-Chain DAG indexer on port 4400
+```
+
+### Run
+
+```bash
+# Single native chain
+./bin/indexer -chain xchain -rpc http://localhost:9630/ext/bc/X -port 4200
+
+# All Lux EVM subnets (single process)
+./bin/evmchains -config configs/evmchains.yaml
+
+# Universal multi-chain
+./bin/multichain -config config/chains.yaml -port 5000 -max-chains 100
+
+# List available chains
+./bin/indexer -list
+```
+
+### Docker
+
+```bash
+# Dockerfile builds both binaries (cross-compile, CGO_ENABLED=0)
+docker build --build-arg VERSION=$(git describe --tags) -t luxfi/indexer .
+
+# Ports exposed: 4000-4900, 5000-5300, 9000
+# Entrypoint: indexer
+```
+
+### Environment Variables
+
+| Variable | Purpose | Default |
+|----------|---------|---------|
+| `RPC_ENDPOINT` | Chain RPC URL | chain-specific |
+| `DATABASE_URL` | PostgreSQL connection | -- |
+| `HTTP_PORT` | API server port | chain-specific |
+| `POLL_INTERVAL` | Stats poll interval | `30s` |
+| `DATA_DIR` | Local storage directory | `~/.lux/indexer/<chain>` |
+| `LOG_LEVEL` | Logging verbosity | `info` |
+
+### Subgraph Development
+
+```bash
+# V2/V3/V4 subgraphs
+cd ~/work/lux/uni-v{2,3,4}-subgraph
+pnpm install            # or npm install
+npm run codegen         # Generate AssemblyScript types
+npm run build           # Compile subgraph
+npm run deploy-lux      # Deploy to Lux Graph Node
+```
+
+## File Structure
+
+```
+indexer/
+  cmd/
+    indexer/             # Single-chain CLI (DAG/linear/EVM)
+    evmchains/           # Multi-EVM subnet CLI
+    multichain/          # Universal 100+ chain CLI
+  dag/                   # DAG vertex/edge indexer library
+  chain/                 # Linear block indexer library
+  evm/                   # EVM indexer (api/, account/, contracts/, defi/, search/, stats/)
+  dex/                   # DEX protocol adapter
+  multichain/            # Universal multi-chain manager
+  storage/               # Unified storage (kv/, query/)
+  achain/ bchain/ kchain/ pchain/ qchain/ tchain/ xchain/ zchain/  # Per-chain adapters
+  config/chains.yaml     # Universal chain config (1450 lines, 100+ chains)
+  configs/evmchains.yaml # Lux EVM subnet config (5 chains)
+  migrations/            # PostgreSQL schema (4 files)
+  e2e/                   # End-to-end tests (cchain, xchain, pchain, node, client)
+  Makefile               # Build, test, dev, Docker targets
+  go.mod                 # github.com/luxfi/indexer, Go 1.26.1
+```

@@ -1,0 +1,541 @@
+---
+title: "Lux Quasar -- Post-Quantum Consensus Engine"
+description: "Lux Quasar -- Post-Quantum Consensus Engine"
+---
+
+## Overview
+
+Lux Quasar is the consensus engine for the Lux network. It is a unified, leaderless, post-quantum protocol achieving sub-second 2-round finality with dual-certificate security (BLS12-381 aggregate signatures + Ringtail lattice-based threshold signatures). Quasar runs every chain in the Lux primary network -- Q, C, X, P -- and any dynamically registered subnet.
+
+**This is NOT Snow, Snowball, or Avalanche BFT.** Quasar is an original consensus protocol built from first principles around Photonic Selection.
+
+There are two code locations:
+- **Library** (`github.com/luxfi/consensus`): The standalone consensus engine with protocol implementations, multi-language SDKs, and the Quasar protocol stack.
+- **Node integration** (`github.com/luxfi/node/consensus`): The node-level wiring that binds Quasar to P-Chain finality events, the ZAP agentic bridge, and Ringtail coordinator lifecycle.
+
+## Quick Reference
+
+| Item | Value |
+|------|-------|
+| Library module | `github.com/luxfi/consensus` |
+| Node module | `github.com/luxfi/node` (subpackage `consensus/`) |
+| Go version | 1.26.1 |
+| Finality | 2-round, sub-second |
+| Test coverage | 96%+ |
+| Quantum security | 2^160 ops (lattice SVP) |
+| BFT threshold | 69% (alpha  &gt;= 0.68) |
+
+## Consensus Engines Comparison
+
+| Engine | Type | Location | Purpose | Status |
+|--------|------|----------|---------|--------|
+| **Quasar** | Hybrid PQ | `protocol/quasar/` + `node/consensus/quasar/` | Primary consensus for all chains. Dual BLS+Ringtail signatures run in parallel. 2-round finality. | Production |
+| **Nova** | Linear chain | `protocol/nova/` | Linear blockchain consensus mode. Wraps the Ray driver with Wave voting. Used for C-Chain and P-Chain style linear progression. | Production |
+| **Wave** | Threshold voting | `protocol/wave/` | Core voting mechanism. Samples K peers, collects votes, checks alpha threshold, builds beta confidence. Supports FPC (Fast Probabilistic Consensus) for dynamic thresholds. | Production |
+| **Ray** | Linear driver | `protocol/ray/` | Low-level engine that drives Wave voting for linearly-ordered items. Source/Sink pattern. Nova wraps this. | Production |
+| **Prism** | DAG validation | `protocol/prism/` | Peer sampling (Cut interface) and DAG proposal/vote management. Provides the random peer selection primitive used by Wave and Nova. | Production |
+| **Photon** | Committee selection | `protocol/photon/` | K-of-N committee selection via Emitter pattern. Luminance tracking weights selection probability by validator performance (10-1000 lux range). | Production |
+| **ZAP** | Agentic consensus | `node/consensus/zap/` | Zero-copy Agent Protocol. Bridges W3C DID-based validator identity with Quasar threshold signatures. Query/Response/Vote model for AI agent consensus. | Production |
+| **Chain engine** | Block engine | `engine/chain/` | Block-level consensus engine implementing the Engine interface. Handles bootstrapping, syncing, block verification, and vote recording for linear chains. | Production |
+| **DAG engine** | Vertex engine | `engine/dag/` | DAG-level consensus engine. Handles vertex processing, bootstrapping, and parallel consensus for X-Chain style workloads. | Production |
+| **PQ engine** | Post-quantum | `engine/pq/` | Post-quantum engine variant. Chain engine with `QuantumResistant=true` config enabling Ringtail certificates on every block. | Production |
+
+## Quasar Algorithm -- Detailed Steps
+
+Quasar achieves hybrid quantum finality through parallel execution of classical and post-quantum signature paths. The full algorithm:
+
+### Phase 0: Photonic Selection (Committee Formation)
+
+1. **Emitter** selects K validators from the active set using luminance-weighted random sampling via Prism's `Cut.Sample(K)`.
+2. **Luminance** tracks each node's brightness (10-1000 lux). Successful votes increase brightness by 10% (cap 1000 lux). Failed votes dim by 10% (floor 10 lux). Higher lux = higher selection probability.
+3. Fisher-Yates shuffle with `crypto/rand` ensures cryptographic uniformity in peer selection.
+
+### Phase 1: Wave Voting (Classical Confidence Building)
+
+1. A block/vertex is proposed. Wave performs repeated sampling rounds:
+   - Sample K peers via Prism Cut
+   - Request votes from selected peers (transmitted as Chits on the wire)
+   - Count yes/no votes
+2. **Threshold check**: If yes votes  &gt;= alpha*K (default alpha=0.69, enforced  &gt;= 0.68), register preference. If no votes  &gt;= alpha*K, register rejection.
+3. **Confidence accumulation**: Each consecutive same-preference round increments a counter. When counter  &gt;= beta (default 14 for mainnet), item is **decided**.
+4. **FPC mode** (optional): Instead of fixed alpha, threshold theta is selected per-phase using a PRF over `[theta_min=0.5, theta_max=0.8]`, making the protocol more resistant to adaptive adversaries.
+5. Classical finality typically completes in 600-700ms.
+
+### Phase 2: Dual Certificate Generation (Quantum Finality)
+
+Both paths execute **in parallel** immediately after classical decision:
+
+**BLS Path (fast, classical):**
+1. Each validator signs the finality message (blockID + height + timestamp, 48 bytes) with their BLS12-381 key share.
+2. Signature shares are aggregated into a single 96-byte aggregate signature.
+3. Verification: reconstruct aggregate public key from signer bitset, verify aggregate signature.
+4. Requires 2/3+ validator weight.
+
+**Ringtail Path (quantum-safe, 2-round):**
+1. **Round 1**: Each participating validator generates commitments (D matrix + MACs) using their Ringtail key share. Broadcast `Round1Data` to all other signers.
+2. **Round 2**: Each validator computes partial signatures using collected Round 1 data. Broadcast `Round2Data`.
+3. **Finalize**: Any validator aggregates Round 2 data into a threshold signature. Verify against the group public key.
+4. Requires t-of-n threshold (typically 2/3+1).
+5. Ringtail adds approximately 200-300ms for quantum finality.
+
+**Block is final ONLY when both certificates are valid:**
+```go
+type CertBundle struct {
+    BLSAgg []byte  // 96B BLS aggregate signature
+    PQCert []byte  // ~KB Ringtail threshold signature
+}
+
+isFinal := verifyBLS(blsAgg, quorum) && verifyPQ(pqCert, quorum)
+```
+
+### Quantum Bundle Architecture (Async PQ Anchoring)
+
+For high-throughput scenarios, Quasar uses an async two-layer architecture:
+
+```
+BLS Layer:     [B1]--[B2]--[B3]--[B4]--[B5]--[B6]--[B7]--[B8]--[B9]--...
+                |     500ms finality per block     |
+                |_____________________________________|
+                                 |
+Quantum Layer:              [QB1: Merkle(B1-B6)]--------[QB2: Merkle(B7-B12)]
+                                 |  3-second interval, async Ringtail signing
+```
+
+- BLS blocks continue at 500ms pace (unblocked).
+- Every 3 seconds (`QuantumCheckpointInterval`), a `QuantumBundle` is created containing a Merkle root of ~6 BLS block hashes.
+- The bundle is signed asynchronously with Ringtail threshold (0.6s online signing, 2.5s total including offline prep).
+- Bundles are chained via `PreviousHash` for integrity.
+
+### Epoch-Based Key Rotation
+
+- **Epoch duration**: 10 minutes minimum (`MinEpochDuration`), 1 hour maximum (`MaxEpochDuration`).
+- Ringtail keys rotate when the validator set changes, rate-limited to at most 1 rotation per 10 minutes.
+- Historical epochs are retained (default 6) for cross-epoch signature verification.
+- BLS and Ringtail validator sets are kept synchronized.
+- `EpochManager` handles key generation, rotation, and pruning.
+
+### Grouped Threshold Signing (10,000+ Validators)
+
+For large validator sets, `GroupedEpochManager` splits validators into groups (default size 3):
+
+1. Validators are assigned to groups via deterministic Fisher-Yates shuffle using epoch seed (VRF-based).
+2. Each group generates its own Ringtail keys (2-of-3 threshold within group).
+3. Groups sign in parallel -- constant signing time regardless of total validator count.
+4. 2/3 of groups must produce valid signatures for consensus (`GroupQuorum`).
+5. Signing time: ~243ms per group (n=3), independent of total validator count.
+
+## Finality Guarantees
+
+| Security Model | Guarantee |
+|----------------|-----------|
+| **Pre-quantum** | Attacker must corrupt  &gt;= 1/3 stake to fork. Alpha threshold 69% ensures BFT safety. |
+| **Q-day (BLS broken)** | Attacker can forge BLS but NOT Ringtail lattice signatures. Block fails quantum check. Consensus halts rather than accepting unsafe fork. |
+| **Post-quantum** | Security rests on lattice SVP hardness (2^160 operations). Ringtail threshold signatures remain secure. |
+| **Attack window** |  &lt;= PQ round time ( &lt;=50ms on mainnet). |
+
+Both BLS and Ringtail proofs are **REQUIRED** for Q-Chain validators. No fallback mode. The `Verify` method enforces strict dual-proof validation.
+
+## Validator Selection and Identity
+
+### Photonic Selection
+
+Validators are selected via Photon's luminance-weighted sampling:
+
+| Luminance Level | Lux Value | Analogy | Selection Weight |
+|-----------------|-----------|---------|------------------|
+| Minimum | 10 lux | Twilight | 0.1x base |
+| Default/base | 100 lux | Office lighting | 1.0x base |
+| Maximum | 1000 lux | Bright daylight | 10.0x base |
+
+Performance-based weighting: successful consensus participation increases brightness, failed/absent rounds decrease it.
+
+### Key Hierarchy
+
+| Layer | Key Type | Purpose | Storage |
+|-------|----------|---------|---------|
+| Node-ID | ed25519 | P2P transport authentication | `$HOME/.lux/node.key` |
+| Validator-BLS | BLS12-381 | Fast finality votes (classical) | `$HOME/.lux/bls.key` |
+| Validator-PQ | Ringtail (Ring-LWE) | Post-quantum threshold shares | `$HOME/.lux/rt.key` |
+| Wallet (EVM) | secp256k1 or Lamport-XMSS | User transaction signatures | In wallet |
+| Wallet (X-Chain) | secp256k1 or Dilithium | UTXO locking | In wallet |
+
+The same `rt.key` registered on Q-Chain is reused by all chains -- no extra onboarding.
+
+### W3C DID Identity (ZAP Bridge)
+
+ZAP provides decentralized identity for validators via W3C DIDs:
+
+| DID Method | Format | Purpose |
+|------------|--------|---------|
+| `did:lux` | `did:lux:z<base58btc(nodeID)>` | Blockchain-anchored identity from NodeID |
+| `did:key` | `did:key:z<base58btc(multicodec+pubkey)>` | Self-certifying identity from ML-DSA-65 public key |
+| `did:web` | `did:web:domain:path` | DNS-based identity |
+
+DIDs generate full W3C DID Documents with verification methods, authentication, and ZAP agent service endpoints.
+
+## Post-Quantum Cryptography
+
+### Ringtail Threshold Signatures
+
+- **Basis**: Ring-LWE (Ring Learning With Errors)
+- **Protocol**: Native 2-round threshold signing
+- **Library**: `github.com/luxfi/ringtail` v0.2.0
+- **Round 1**: Generate D matrix + MACs, broadcast commitments
+- **Round 2**: Compute partial signatures using collected Round 1 data
+- **Finalize**: Aggregate partial signatures into threshold signature
+- **Verification**: `ringtailThreshold.Verify(groupKey, message, signature)`
+- **NTT acceleration**: GPU-accelerated Number Theoretic Transform (optional, via `ntt_c.go`)
+
+### Verkle Witness Optimization
+
+Quasar includes a Verkle witness system for hyper-efficient state verification:
+
+- Uses `github.com/luxfi/crypto/ipa/banderwagon` for Verkle tree commitments
+- IPA (Inner Product Argument) opening proofs for O(log n) verification
+- When PQ finality is assumed, skip heavy BLS re-verification -- just verify Verkle commitment
+- Compressed witnesses under 200 bytes for network transmission
+- Batch verification for parallel witness checking
+
+### Supported PQ Signature Types
+
+| Type | Algorithm | Usage |
+|------|-----------|-------|
+| `PQSignatureTypeMLDSA65` | NIST FIPS 204 ML-DSA-65 | Per-validator signatures (1952-byte public key) |
+| `PQSignatureTypeRingtail` | Ring-LWE threshold | Quasar consensus threshold signatures |
+| `PQSignatureTypeHybrid` | Classical + PQ combined | Full Quasar hybrid proofs |
+
+## Configuration Parameters
+
+### Consensus Parameters (`config.Parameters`)
+
+| Parameter | Mainnet | Testnet | Local | X-Chain | Single Validator |
+|-----------|---------|---------|-------|---------|-----------------|
+| K (sample size) | 21 | 11 | 5 | 5 | 1 |
+| Alpha (threshold) | 0.69 | 0.69 | 0.69 | 0.69 | 1.0 |
+| Beta (confidence) | 14 | 8 | 4 | 4 | 1 |
+| AlphaPreference | 15 | 8 | 4 | 4 | 1 |
+| AlphaConfidence | 15 | 8 | 4 | 4 | 1 |
+| BetaVirtuous | 15 | 8 | 4 | 4 | 1 |
+| BetaRogue | 20 | 20 | 20 | 20 | 1 |
+| BlockTime | 200ms | 100ms | 10ms | 1ms | 100ms |
+| RoundTO | 400ms | 225ms | 45ms | 5ms | 200ms |
+
+Alpha enforced  &gt;= 0.68 (69% BFT threshold). Validation rejects lower values.
+
+### Quasar-Specific Config
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `QThreshold` | 3 | Minimum signers for Quasar certificate |
+| `QuasarTimeout` | 30s | Timeout for Quasar finalization |
+| `MinEpochDuration` | 10 min | Minimum time between Ringtail key rotations |
+| `MaxEpochDuration` | 1 hour | Maximum time before forced key rotation |
+| `QuantumCheckpointInterval` | 3s | Interval for async quantum bundle creation |
+| `DefaultGroupSize` | 3 | Validators per Ringtail group |
+| `DefaultGroupThreshold` | 2 | Threshold within each group (2-of-3) |
+| `DefaultGroupQuorum` | 2/3 | Fraction of groups required |
+| `DefaultHistoryLimit` | 6 | Old epochs retained for verification |
+
+## Chain Integration
+
+| Chain | Integration | Rule |
+|-------|-------------|------|
+| Q-Chain | Q-blocks as internal txs | All chains read Q-blocks for PQ finality |
+| C-Chain | Every block has CertBundle | Invalid without both BLS + Ringtail certificates |
+| X-Chain | Vertex metadata references Q-block | Epoch sealed by quantum certificate |
+| P-Chain | Validator set changes trigger epoch rotation | BLS and Ringtail keys synchronized |
+| M-Chain | MPC rounds reference Q-block height | Custody requires PQ proof |
+| Any subnet | Auto-registered via `RegisterChain()` | Dynamically enters the event horizon |
+
+## Sub-Protocol Architecture
+
+```
+consensus/
+  protocol/
+    photon/         Emitter + Luminance (committee selection)
+    wave/           Threshold voting engine + FPC
+      fpc/          Fast Probabilistic Consensus (dynamic thresholds)
+    prism/          Peer sampling (Cut interface) + DAG proposal
+    ray/            Linear consensus driver (Source/Sink pattern)
+    nova/           Linear chain consensus (wraps Ray)
+    flare/          Certificate generation for DAG
+    horizon/        Frontier management
+    focus/          Confidence tracking
+    nebula/         State sync protocol
+    field/          Nebula field operations
+    quasar/         Post-quantum finality engine
+      quasar.go     Signer (BLS+Ringtail dual threshold)
+      core.go       Quasar core (multi-chain block aggregator)
+      engine.go     Engine interface implementation
+      epoch.go      Epoch-based Ringtail key management
+      quantum_block.go  Async quantum bundle production
+      grouped_threshold.go  Grouped signing for 10K+ validators
+      bls.go        DAG event horizon with BLS commitments
+      witness.go    Verkle witness for hyper-efficient verification
+      types.go      Block, BlockCert, Engine interface
+      config.go     QThreshold, QuasarTimeout
+      metrics.go    Prometheus metrics
+  engine/
+    chain/          Linear blockchain engine
+    dag/            DAG consensus engine
+    pq/             Post-quantum engine variant
+  core/
+    dag/            DAG data structures (flare, horizon)
+    choices/        Decision types
+  types/            Block, Vote, Certificate, Config
+  config/           Parameters, presets (Mainnet, Testnet, Local, XChain)
+  pkg/wire/         Wire protocol (candidate, credentials, sequencer)
+
+node/consensus/
+  acceptor.go       Acceptor callback interface
+  engine/chain/     Vote message types (wire: Chits)
+  quasar/           Node-level Quasar integration
+    quasar.go       Binds P-Chain + Q-Chain into hybrid finality
+    types.go        Signature interfaces, RingtailCoordinator
+  zap/              ZAP agentic consensus bridge
+    bridge.go       Query/Response/Vote consensus
+    types.go        QueryState, FinalityProof, StakeRegistry
+    did.go          W3C DID implementation (did:lux, did:key, did:web)
+```
+
+## Key Dependencies (from go.mod)
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `github.com/luxfi/crypto` | v1.17.40 | BLS12-381, threshold signatures, IPA/banderwagon |
+| `github.com/luxfi/ringtail` | v0.2.0 | Ring-LWE post-quantum threshold signatures |
+| `github.com/luxfi/database` | v1.17.42 | State storage |
+| `github.com/luxfi/ids` | v1.2.9 | Block/node/chain identifiers |
+| `github.com/luxfi/p2p` | v1.18.9 | Peer-to-peer networking |
+| `github.com/luxfi/warp` | v1.18.5 | Cross-chain messaging |
+| `github.com/luxfi/lattice/v7` | v7.0.0 | Post-quantum lattice cryptography |
+| `github.com/luxfi/zap` | v0.2.0 | Zero-copy agent protocol |
+| `github.com/luxfi/validators` | v1.0.0 | Validator set management |
+| `github.com/luxfi/runtime` | v1.0.0 | Chain runtime context |
+| `github.com/luxfi/accel` | v1.0.1 | Hardware acceleration |
+| `github.com/luxfi/math` | v1.2.3 | Math utilities |
+| `github.com/luxfi/metric` | v1.5.0 | Prometheus metrics |
+| `github.com/luxfi/log` | v1.4.1 | Structured logging |
+| `github.com/luxfi/version` | v1.0.1 | Version management |
+| `github.com/luxfi/sampler` | v1.0.0 | Random sampling |
+| `github.com/luxfi/vm` | v1.0.27 | Virtual machine interface |
+| `github.com/luxfi/geth` | v1.16.73 | EVM compatibility layer |
+| `github.com/luxfi/zapdb/v4` | v4.9.1 | ZAP database |
+| `github.com/cloudflare/circl` | v1.6.3 | Post-quantum crypto primitives |
+| `github.com/supranational/blst` | v0.3.16 | BLS signature performance |
+
+## Performance Benchmarks (Apple M1 Max)
+
+### Consensus Operations
+
+| Component | Operation | Latency | Memory | Allocations |
+|-----------|-----------|---------|--------|-------------|
+| Wave | Vote Round | 3.38us | 2.3KB | 8 allocs |
+| Photon Emitter | K-of-N Selection | 3.03us | 3.0KB | 2 allocs |
+| Luminance | Brightness Update | 72ns | 0B | 0 allocs |
+| Quasar | Phase I (propose) | 0.33ns | 0B | 0 allocs |
+| Quasar | Phase II (commit) | 40.7ns | 0B | 0 allocs |
+| AI Consensus | Model Inference | 1.5us | - | - |
+| AI Consensus | Consensus Vote | 529ns | - | - |
+| Full Consensus | End-to-end | 200-300ms | - | - |
+
+### Ringtail Signing Performance
+
+| Group Size | Signing Time | Notes |
+|------------|-------------|-------|
+| n=3 | 243ms | Default group size |
+| n=10 | 1.1s | Medium groups |
+| n=21 | 3.4s | Full mainnet committee |
+| n=100 | 53s | Too slow -- use grouped signing |
+
+### Network Finality
+
+| Network | Validators | Finality | Block Time |
+|---------|-----------|----------|------------|
+| Mainnet | 21 | 9.63s | 200ms |
+| Testnet | 11 | 6.3s | 100ms |
+| Local | 5 | 3.69s | 10ms |
+| X-Chain | 5 | 5ms | 1ms |
+
+## Multi-Language SDKs
+
+| Language | Performance | Build |
+|----------|-------------|-------|
+| Go | Primary | `go get github.com/luxfi/consensus` |
+| C | 9M+ blocks/sec | `cd consensus/c && make && sudo make install` |
+| Rust FFI | High | `lux-consensus = "1.22.0"` in Cargo.toml |
+| Python (Cython) | 6.7M blocks/sec | `pip install lux-consensus` |
+
+100% test parity across all 4 implementations. 15 comprehensive test categories.
+
+## ZAP Agentic Consensus
+
+ZAP (Zero-copy Agent Protocol) provides consensus for AI agent operations:
+
+### Protocol Flow
+
+1. **SubmitQuery**: Agent submits a query with content and DID identity.
+2. **SubmitResponse**: Other agents provide responses with DIDs.
+3. **Vote**: Validators vote for responses (one vote per validator, enforced by DID).
+4. **Consensus check**: When total votes  &gt;= `MinVotes` and a response has ` &gt;= ConsensusThreshold` fraction, the query is finalized.
+5. **Finality proof**: Signed with Quasar hybrid signatures (BLS + Ringtail).
+
+### ZAP Bridge Config
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `ConsensusThreshold` | 0.5 | Fraction of votes needed |
+| `MinResponses` | 1 | Minimum responses before checking |
+| `MinVotes` | 3 | Minimum votes before checking |
+| `EnablePQCrypto` | true | Enable ML-DSA-65 post-quantum signatures |
+
+### Stake Registry
+
+ZAP includes a `StakeRegistry` interface for stake-weighted voting:
+- `GetStake(did)` / `SetStake(did, amount)` / `TotalStake()`
+- `HasSufficientStake(did, minimum)` / `StakeWeight(did)` (fraction of total)
+
+## Security Model
+
+### Adversary Model
+
+| Scenario | Security | Mechanism |
+|----------|----------|-----------|
+| Classical adversary (< 1/3 stake) | Safe | BFT alpha=0.69 threshold prevents fork |
+| Classical adversary ( &gt;= 1/3 stake) | Unsafe | Same as any BFT system |
+| Quantum adversary (BLS breakable) | Safe | Ringtail lattice certificates prevent acceptance |
+| Quantum adversary (both breakable) | Unsafe | Requires both lattice + BLS to be broken simultaneously |
+| Adaptive adversary | Safe | FPC dynamic thresholds prevent threshold manipulation |
+
+### QZMQ Transport Security
+
+All consensus messages use QZMQ (Quantum-Secure ZeroMQ):
+- **Dilithium signatures** (post-quantum message authentication)
+- **Kyber encryption** (quantum-resistant key encapsulation)
+- Forward secrecy via ephemeral keys
+- Replay protection via session IDs
+
+## Account-Level PQ Options
+
+### EVM (C-Chain)
+- Lamport-XMSS multisig contracts
+- Gas: ~300K for `VERIFY_LAMPORT`
+- EIP-4337 Account Abstraction wrapper available
+
+### X-Chain
+- `LatticeOutput` type with PQ public key
+- Spend verifies single Ringtail signature (~1.8KB)
+- CLI: `lux-wallet generate --pq`
+
+## Usage Examples
+
+### Library: Single-Import API
+
+```go
+
+// Create chain with default config
+chain := consensus.NewChain(consensus.DefaultConfig())
+if err := chain.Start(ctx); err != nil {
+    return err
+}
+defer chain.Stop()
+
+// Add a block
+block := consensus.NewBlock(id, parentID, 1, payload)
+if err := chain.Add(ctx, block); err != nil {
+    return err
+}
+```
+
+### Library: Quasar Engine
+
+```go
+
+cfg := quasar.Config{QThreshold: 3, QuasarTimeout: 30}
+engine, err := quasar.NewEngine(cfg)
+if err != nil {
+    return err
+}
+engine.Start(ctx)
+
+// Submit blocks
+engine.Submit(block)
+
+// Listen for finalized blocks
+for block := range engine.Finalized() {
+    log.Printf("Finalized: height=%d cert=%v", block.Height, block.Cert.Verify(validators))
+}
+```
+
+### Node: Quasar with Hybrid Finality
+
+```go
+
+q, err := quasar.NewQuasar(logger, threshold, quorumNum, quorumDen)
+q.ConnectPChain(pChainProvider)
+q.ConnectQuantumFallback(quantumSigner)
+q.InitializeRingtail(validatorNodeIDs)
+q.Start(ctx)
+
+// Listen for hybrid finality events
+for finality := range q.Subscribe() {
+    log.Printf("Hybrid finality: block=%s BLS=%dms RT=%dms",
+        finality.BlockID, finality.BLSLatency.Milliseconds(), finality.RingtailLatency.Milliseconds())
+}
+```
+
+### Node: ZAP Bridge
+
+```go
+
+bridge := zap.NewBridge(logger, zap.DefaultBridgeConfig())
+bridge.Initialize(ringtailCoordinator)
+bridge.RegisterValidator(nodeID, zap.DIDFromNodeID(nodeID))
+bridge.SubmitQuery(ctx, queryID, content, submitterNodeID)
+bridge.SubmitResponse(ctx, queryID, responseID, responseContent, responderNodeID)
+bridge.Vote(ctx, queryID, responseID, voterNodeID)
+
+result, _ := bridge.GetResult(queryID)
+```
+
+## Testing
+
+```bash
+# All tests
+go test ./...
+
+# With coverage
+go test -cover ./...
+
+# Benchmarks
+go test -bench=. ./...
+
+# Quasar-specific tests
+go test ./protocol/quasar/...
+
+# ZAP bridge tests
+go test ./consensus/zap/...
+```
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Slow finality | Low peer count | Ensure sufficient connected peers for K sampling |
+| Consensus stall | Network partition | Check P2P connectivity, verify alpha threshold reachable |
+| Certificate validation fail | Key mismatch | Verify BLS and Ringtail keys registered for current epoch |
+| Phase II timeout | Ringtail computation slow | Check hardware; consider grouped signing for large sets |
+| Epoch rotation rejected | Rate limited | Wait for MinEpochDuration (10 min) between rotations |
+| Grouped signing failure | Insufficient group quorum | Ensure 2/3 of groups have threshold signers available |
+| DID validation error | Malformed DID | Verify format: `did:method:id` with method in \{lux,key,web\} |
+| Alpha validation error | Threshold too low | Alpha must be  &gt;= 0.68 (69% BFT threshold) |
+
+## Related Skills
+
+- `lux/lux-node.md` -- Node that imports and runs Quasar
+- `lux/lux-p2p.md` -- Networking layer for vote/chit propagation
+- `lux/lux-crypto.md` -- BLS12-381, threshold signatures, IPA/banderwagon
+- `lux/lux-ringtail.md` -- Ring-LWE post-quantum threshold signatures
+- `lux/lux-lattice.md` -- Lattice cryptography (v7)
+- `lux/lux-sdk.md` -- SDK for querying consensus state
+- `lux/lux-warp.md` -- Cross-chain messaging

@@ -1,0 +1,120 @@
+---
+title: "Lux FX - Cryptocurrency Pricing API Gateway"
+description: "Documentation for Lux FX - Cryptocurrency Pricing API Gateway"
+---
+
+## Overview
+
+Lux FX is a **cryptocurrency pricing API gateway** that proxies CoinGecko with an in-memory cache. It is a single-file Go service with no external dependencies beyond the standard library. Deployed to K8s as `markets` in the `lux-gateway` namespace, serving `fx.lux.network`.
+
+## When to use
+
+- Querying cryptocurrency prices from Lux ecosystem services
+- Replacing direct CoinGecko API calls with a cached, self-hosted gateway
+- Deploying a lightweight pricing microservice on K8s
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/fx` |
+| Go module | `github.com/luxfi/pricing` |
+| Language | Go 1.26 |
+| Dependencies | None (standard library only) |
+| Default port | 8080 |
+| Cache TTL | 1 hour |
+| License | MIT |
+| Default branch | main |
+| Container image | `ghcr.io/luxfi/pricing:latest` |
+
+## Project structure
+
+```
+fx/
+  .github/          # CI/CD workflows
+  k8s/              # Kubernetes manifests
+    deployment.yaml  # 2 replicas, lux-gateway namespace
+    ingress.yaml     # fx.lux.network
+    secret.yaml      # CoinGecko API key
+    service.yaml     # ClusterIP on port 8080
+  main.go            # Entire application (single file)
+  go.mod             # Module definition
+  Dockerfile         # Multi-stage alpine build
+  compose.yml        # Local development
+```
+
+## API endpoints
+
+| Endpoint | Description |
+|----------|-------------|
+| `GET /health` | Health check (JSON status + time) |
+| `GET /price/\{token_id\}?currency=usd` | Single token price with market data |
+| `GET /prices?ids=bitcoin,ethereum&currency=usd` | Multiple token prices in one request |
+| `GET /simple/price?ids=bitcoin&vs_currencies=usd,eur` | CoinGecko-compatible simple format |
+
+## One-file quickstart
+
+```bash
+git clone https://github.com/luxfi/fx.git
+cd fx
+export COINGECKO_API_KEY=your-api-key
+go run main.go
+```
+
+## Architecture
+
+```
+Client --> FX API (port 8080) --> In-Memory Cache (1h TTL) --> CoinGecko API
+```
+
+### Key types
+
+- `PriceCache` -- Thread-safe in-memory cache with RWMutex, auto-fetches on miss
+- `CachedPrice` -- Price, currency, 24h change, market cap, volume, timestamp
+- `PriceResponse` -- API response with `cached` boolean indicator
+- `MultiPriceResponse` -- Batch response wrapping multiple PriceResponse entries
+
+### Behavior
+
+- Cache hit returns stale data if CoinGecko is unreachable (graceful degradation)
+- Batch fetches reduce CoinGecko API calls for multi-token requests
+- CORS enabled for all origins (`*`)
+- `Cache-Control: public, max-age=3600` on all price responses
+
+## Environment variables
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `COINGECKO_API_KEY` | Yes | - | CoinGecko API key (demo or pro) |
+| `PORT` | No | `8080` | Server listen port |
+
+## Development
+
+```bash
+# Build
+go build -o pricing .
+
+# Run with Docker
+docker compose up -d
+
+# Deploy to K8s
+kubectl apply -f k8s/
+```
+
+## K8s deployment details
+
+| Field | Value |
+|-------|-------|
+| Namespace | `lux-gateway` |
+| Deployment name | `markets` |
+| Replicas | 2 |
+| CPU request/limit | 100m / 500m |
+| Memory request/limit | 64Mi / 256Mi |
+| Liveness probe | `GET /health` every 10s |
+| Readiness probe | `GET /health` every 5s |
+| Secret | `markets-secrets` (key: `coingecko-api-key`) |
+
+## Related Skills
+
+- `lux/lux-market.md` -- Market data and trading
+- `lux/lux-node.md` -- Lux node infrastructure

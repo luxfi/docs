@@ -1,0 +1,634 @@
+---
+title: "Lux Standard - Smart Contract Standards"
+description: "Documentation for Lux Standard - Smart Contract Standards"
+---
+
+## Overview
+
+Lux Standard (`github.com/luxfi/standard`) is the official Solidity smart contract library for the Lux Network ecosystem. It provides production-ready contracts across 40+ modules covering token standards (LRC20/721/1155), DeFi protocols (AMM, perps, lending, liquid staking), cross-chain bridges, post-quantum cryptography precompiles, FHE (Fully Homomorphic Encryption) confidential contracts, DAO governance, Safe multisig wallets, NFT marketplaces, account abstraction, prediction markets, privacy primitives, and yield strategies. Published as `@luxfi/contracts` on npm.
+
+### Why
+
+Lux Standard is the canonical contract library for building on Lux C-Chain and subnet chains (Zoo, Hanzo/AI, SPC, Pars). It provides Lux-native naming (LRC20 instead of ERC20), native bridge token support (LRC20B), post-quantum signer modules for Safe wallets, FHE-encrypted token balances and governance via T-Chain, and unified deployment scripts for all Lux ecosystem chains. Every DeFi primitive needed to build on Lux is here in one audited monorepo.
+
+### Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Language | Solidity 0.8.28 (primary), 0.8.24/0.8.20/0.7.6 (legacy compat) |
+| Build (primary) | Foundry (forge 0.8.31, via-IR, Cancun EVM) |
+| Build (secondary) | Hardhat 2.23+ with ethers v6, TypeChain |
+| Testing | Foundry (forge test), Hardhat (mocha/chai) |
+| Security | Slither, Echidna, Medusa, Semgrep, CodeQL, Aderyn |
+| Dependencies | OpenZeppelin 5.4.0, Safe Contracts 1.4.1, solmate, PRBMath |
+| Package | `@luxfi/contracts` v1.6.0 on npm |
+| License | BSD-3-Clause |
+
+### Key Dependencies
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `@openzeppelin/contracts` | ^5.4.0 | Base token/access/governance implementations |
+| `@openzeppelin/contracts-upgradeable` | ^5.4.0 | Upgradeable proxy patterns |
+| `@safe-global/safe-contracts` | ^1.4.1 | Gnosis Safe multisig base |
+| `forge-std` | latest | Foundry test framework |
+| `solmate` | latest | Gas-optimized utilities |
+| `@prb/math` | latest | Fixed-point arithmetic |
+| `@chainlink/contracts` | latest | Oracle price feeds |
+
+## When to use
+
+- Building any token (fungible, NFT, multi-token) on Lux C-Chain or subnet chains
+- Deploying DeFi protocols (AMM, lending, perpetuals, liquid staking) on Lux
+- Implementing cross-chain bridges using Lux Warp messaging
+- Creating DAO governance with on-chain voting and timelocks
+- Building Safe multisig wallets with post-quantum signer support
+- Implementing FHE-encrypted balances, votes, or private computations on T-Chain
+- Deploying NFT marketplaces with bonding curve pricing (LSSVM)
+- Using ERC-4337 account abstraction on Lux
+- Building prediction markets, insurance, or streaming payment contracts
+
+## Hard requirements
+
+- Foundry installed (`curl -L https://foundry.paradigm.xyz | bash && foundryup`)
+- Node.js 18+ for Hardhat/TypeChain workflows
+- Use `@luxfi/contracts` import paths, never `@openzeppelin` directly for token bases (use LRC20 not ERC20)
+- All tokens must use Lux naming: LRC20, LRC721, LRC1155 (not ERC20, ERC721, ERC1155)
+- Solidity ^0.8.24 minimum for new contracts (0.8.28 recommended)
+- Cancun EVM target (`evmVersion = "cancun"` in foundry.toml)
+- via-IR compilation enabled for optimizer
+- Optimizer runs: 200
+- Remapping: `@luxfi/contracts/=contracts/` in foundry.toml
+- FHE contracts require T-Chain (ThresholdVM) -- will not work on plain C-Chain
+- Post-quantum precompiles (ML-DSA, FROST, etc.) require Lux-specific EVM precompile addresses
+- Never use EWOQ keys
+- Private keys via `.env` file (never committed), loaded via `dotenv`
+
+## Quick reference
+
+```bash
+# Clone and setup
+git clone https://github.com/luxfi/standard.git && cd standard
+forge install && pnpm install
+
+# Build
+forge build                          # Foundry (recommended)
+pnpm build:hardhat                   # Hardhat
+
+# Test
+forge test                           # All tests
+forge test -vvv                      # Verbose
+forge test --gas-report              # Gas report
+forge coverage                       # Coverage
+pnpm test:hardhat                    # Hardhat tests
+
+# Format / Lint
+forge fmt                            # Format
+forge fmt --check                    # Lint
+
+# Deploy
+anvil --chain-id 96369 &             # Start local node
+forge script script/DeployFullStack.s.sol --rpc-url localhost --broadcast
+
+# Deploy to Lux Mainnet
+forge script script/DeployFullStack.s.sol --rpc-url lux --broadcast --verify
+
+# Generate TypeChain types
+pnpm typechain
+
+# Generate ABIs
+cd contracts && pnpm build:abi
+
+# Docs
+forge doc --serve
+```
+
+### Network Configuration
+
+| Network | Chain ID | RPC |
+|---------|----------|-----|
+| Lux Mainnet | 96369 | `https://api.lux.network/rpc` |
+| Lux Testnet | 96368 | `https://api.lux-test.network/rpc` |
+| Zoo Mainnet | 200200 | `https://api.zoo.network/rpc` |
+| Zoo Testnet | 200201 | `https://api.zoo-test.network/rpc` |
+| AI Mainnet | 36963 | `https://api.ai.network/rpc` |
+| AI Testnet | 36964 | `https://api.ai-test.network/rpc` |
+| Lux Local | 31337 | `http://127.0.0.1:8545` |
+
+### Explorers
+
+| Network | URL |
+|---------|-----|
+| Lux | `https://explore.lux.network` |
+| Lux Testnet | `https://explore.lux-test.network` |
+| Zoo | `https://explore.zoo.network` |
+
+### npm Package
+
+```bash
+# Install published contracts
+npm install @luxfi/contracts@1.6.0
+
+# Foundry installation
+forge install luxfi/standard
+# Add to remappings.txt:
+# @luxfi/contracts/=lib/standard/contracts/
+```
+
+## One-file quickstart
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+
+/// @title MyToken - A simple LRC20 token on Lux
+contract MyToken is LRC20 {
+    constructor() LRC20("My Token", "MTK") {
+        _mint(msg.sender, 1_000_000 * 10 ** 18);
+    }
+}
+```
+
+Deploy with Foundry:
+
+```bash
+# Start local node
+anvil --chain-id 96369 &
+
+# Deploy
+forge create src/MyToken.sol:MyToken --rpc-url http://127.0.0.1:8545 --private-key $PRIVATE_KEY
+```
+
+## Core Concepts
+
+### Token Standards (LRC)
+
+Lux uses LRC (Lux Request for Comment) naming for its token standards. These are ERC-compatible but carry Lux-specific extensions.
+
+**LRC20 - Fungible Tokens**
+
+| Contract | Import | Description |
+|----------|--------|-------------|
+| `LRC20` | `@luxfi/contracts/tokens/LRC20.sol` | Base fungible token |
+| `LRC20Basic` | `@luxfi/contracts/tokens/LRC20/LRC20Basic.sol` | Minimal implementation |
+| `LRC20Capped` | `@luxfi/contracts/tokens/LRC20/LRC20Capped.sol` | Maximum supply cap |
+| `LRC20Burnable` | `@luxfi/contracts/tokens/LRC20/extensions/LRC20Burnable.sol` | Burn functionality |
+| `LRC20Mintable` | `@luxfi/contracts/tokens/LRC20/extensions/LRC20Mintable.sol` | Mint functionality |
+| `LRC20Permit` | `@luxfi/contracts/tokens/LRC20/extensions/LRC20Permit.sol` | Gasless approvals (EIP-2612) |
+| `LRC20FlashMint` | `@luxfi/contracts/tokens/LRC20/extensions/LRC20FlashMint.sol` | Flash minting |
+| `LRC20Wrapper` | `@luxfi/contracts/tokens/LRC20/LRC20Wrapper.sol` | Token wrapping |
+| `SafeLRC20` | `@luxfi/contracts/tokens/LRC20/SafeLRC20.sol` | Safe transfer helpers |
+| `LRC20B` | `@luxfi/contracts/tokens/LRC20B.sol` | Bridgeable (mint/burn by bridge) |
+
+**LRC721 - Non-Fungible Tokens**
+
+| Contract | Import | Description |
+|----------|--------|-------------|
+| `LRC721` | `@luxfi/contracts/tokens/LRC721/LRC721.sol` | Base NFT |
+| `LRC721B` | `@luxfi/contracts/tokens/LRC721B.sol` | Bridgeable NFT |
+
+**LRC1155 - Multi-Tokens**
+
+| Contract | Import | Description |
+|----------|--------|-------------|
+| `LRC1155` | `@luxfi/contracts/tokens/LRC1155/LRC1155.sol` | Multi-token standard |
+| `LRC1155B` | `@luxfi/contracts/tokens/LRC1155B.sol` | Bridgeable multi-token |
+
+**LRC4626 - Tokenized Vaults**
+
+| Contract | Import | Description |
+|----------|--------|-------------|
+| `LRC4626` | `@luxfi/contracts/tokens/LRC4626/LRC4626.sol` | ERC-4626 vault standard |
+
+**Platform Tokens**
+
+| Contract | Import | Description |
+|----------|--------|-------------|
+| `LUX` | `@luxfi/contracts/tokens/LUX.sol` | Native platform token |
+| `WLUX` | `@luxfi/contracts/tokens/WLUX.sol` | Wrapped LUX |
+| `LUSD` | `@luxfi/contracts/tokens/LUSD.sol` | Lux Dollar stablecoin |
+| `AI` | `@luxfi/contracts/tokens/AI.sol` | AI compute mining token |
+
+### FHE Contracts (Fully Homomorphic Encryption)
+
+FHE contracts run on the Lux T-Chain (Threshold Chain) powered by ThresholdVM. They enable encrypted computation where balances, votes, and values remain confidential on-chain.
+
+**Architecture**: C-Chain Contract -> FHE precompile (`0x0700...0080`) -> T-Chain validators -> threshold decryption callback
+
+**Encrypted Types** (defined in `contracts/fhe/FHE.sol`):
+- `ebool`, `euint8`, `euint16`, `euint32`, `euint64`, `euint128`, `euint256`, `eaddress`, `einput`
+
+**Precompile Addresses**:
+- `0x0700...0080` - FHE operations (arithmetic, comparison)
+- `0x0700...0081` - ACL (allow/deny ciphertext access)
+- `0x0700...0082` - Input verifier (verify encrypted inputs)
+- `0x0700...0083` - Gateway (decryption requests to T-Chain)
+
+**FHE Directory Structure** (`contracts/fhe/`):
+
+| Path | Purpose |
+|------|---------|
+| `FHE.sol` | Main FHE library with all operations |
+| `FHETypes.sol` | Encrypted type definitions and precompile addresses |
+| `FHENetwork.sol` | T-Chain network interface |
+| `FHECommon.sol` | Common utilities |
+| `IFHE.sol` | Interfaces and structs |
+| `access/Permissioned.sol` | EIP-712 signature-based access control for FHE |
+| `access/PermissionedV2.sol` | V2 access control |
+| `config/FHEVMConfig.sol` | FHE VM configuration |
+| `config/TFHEConfig.sol` | Threshold FHE configuration |
+| `threshold/TFHE.sol` | Threshold decryption via T-Chain (async decrypt with callback) |
+| `threshold/TFHEApp.sol` | Base contract for apps using threshold decryption |
+| `utils/EncryptedErrors.sol` | Encrypted error codes |
+| `utils/TFHEErrors.sol` | TFHE error types |
+| `utils/debug/Console.sol` | Debug console for FHE |
+| `utils/debug/MockFheOps.sol` | Mock FHE operations for testing |
+
+**FHE Tokens** (`contracts/fhe/token/`):
+
+| Contract | Description |
+|----------|-------------|
+| `ConfidentialLRC20` | Encrypted ERC20 with confidential balances |
+| `ConfidentialLRC20Wrapped` | Wrap plaintext LRC20 into confidential |
+| `ConfidentialWLUX` | Confidential Wrapped LUX |
+| `ConfidentialLRC20Mintable` | Mintable confidential token |
+| `ConfidentialLRC20WithErrors` | Confidential token with encrypted error codes |
+| `ConfidentialLRC721` | Confidential NFT |
+| `ConfidentialLRC721Mintable` | Mintable confidential NFT |
+
+**FHE Governance** (`contracts/fhe/governance/`):
+
+| Contract | Description |
+|----------|-------------|
+| `ConfidentialGovernor` | Governor with encrypted vote tallies |
+| `ConfidentialLRC20Votes` | Voting power from confidential tokens |
+| `ConfidentialStrategy` | Confidential voting strategy |
+| `BlendedConfidentialStrategy` | Mixed public/private voting |
+| `CompoundTimelock` | Compound-style timelock for FHE governance |
+
+**FHE Finance** (`contracts/fhe/finance/`):
+
+| Contract | Description |
+|----------|-------------|
+| `ConfidentialVestingWallet` | Linear vesting with encrypted amounts |
+| `ConfidentialVestingWalletCliff` | Cliff vesting with encrypted amounts |
+
+```solidity
+// Example: Confidential LRC20 token
+
+contract PrivateToken is ConfidentialLRC20 {
+    constructor() ConfidentialLRC20("Private Token", "PRIV") {
+        // Balances are encrypted on-chain
+    }
+}
+```
+
+### Governance
+
+**Core Governance** (`contracts/governance/`):
+
+| Contract | Description |
+|----------|-------------|
+| `DAO` | Complete DAO implementation |
+| `Governor` | OpenZeppelin-based Governor |
+| `Governance` | Base governance logic |
+| `MultiDAOGovernor` | Multi-DAO governance coordinator |
+| `Timelock` | Timelock controller |
+| `vLUX` | Vote-escrowed LUX (ve-tokenomics) |
+| `DLUX` | Delegate LUX token |
+| `DLUXMinter` | DLUX minting controller |
+| `GaugeController` | Gauge weight voting (Curve-style) |
+| `Karma` | Reputation scoring |
+| `KarmaController` | Karma management |
+| `VotingLUX` | LUX voting power |
+| `VotingPower` | Generic voting power |
+| `Council` | Council governance |
+| `Committee` | Committee structure |
+| `Charter` | DAO charter |
+| `Secretariat` | DAO secretariat |
+| `Vote` | Vote contract |
+| `VotesToken` | Votes-enabled token |
+
+**Voting Strategies**: `VoteTrackerLRC20`, `VotingWeightLRC20`, `VotingWeightVLUX`
+
+**Veto System**: `Sanction`, `Veto` (hierarchical freeze protection)
+
+**DAO Framework** (`contracts/dao/`): Full LIP-7001 compliant DAO with Safe integration, Hats Protocol roles, freeze guards, freeze voting, sub-DAO hierarchy (FractalModule), account abstraction paymaster, KYC verification, public sale, autonomous admin, and countersign modules.
+
+```solidity
+
+// Create and vote on proposals
+dao.propose(targets, values, calldatas, "Upgrade treasury");
+dao.castVote(proposalId, 1); // 1 = For
+```
+
+### Bridge and Cross-Chain
+
+**Core Bridge** (`contracts/bridge/`):
+
+| Contract | Description |
+|----------|-------------|
+| `Bridge` | Core bridge with Warp verification |
+| `BridgeVault` | Bridge liquidity vault |
+| `ETHVault` | Native ETH bridge vault |
+| `XChainVault` | Cross-chain vault |
+| `Teleport` | Token teleportation interface |
+| `LRC20B` | Bridgeable token base |
+
+**Collateral Tokens**: BTC, ETH, DAI, USDC, USDT bridges
+
+**Yield-Bearing Bridge Tokens** (`contracts/bridge/yield/`): 20+ DeFi strategies (Aave V3, Compound V3, Lido, EigenLayer, Morpho, Pendle, Curve, Convex, Ethena, Euler V2, MakerDAO, Maple, Spark, Frax, Yearn V3, Babylon, RocketPool, plus L2/Solana/TON strategies)
+
+```solidity
+
+// Teleport tokens cross-chain
+teleport.send(destChainId, recipient, token, amount);
+```
+
+### Liquid Protocol
+
+Master yield vault and liquid staking with xLUX shares:
+
+| Contract | Description |
+|----------|-------------|
+| `LiquidLUX` | Master yield vault -- receives ALL protocol fees |
+| `LiquidToken` | Base ERC20 with flash loan support (ERC-3156) |
+| `LiquidVault` | Cross-chain teleport vault |
+| `LiquidETH` | Bridged ETH with yield |
+| `LiquidYield` | Yield-bearing wrapper |
+| `Teleporter` | Liquid teleport |
+
+**L-Tokens** (bridged assets): LETH, LBTC, LUSD, LSOL, LTON, LBNB, LPOL, LAVAX, LADA, LZOO, LPARS, and 30+ more
+
+```solidity
+
+LiquidLUX vault = LiquidLUX(LIQUID_LUX_ADDRESS);
+// Deposit WLUX, receive xLUX shares
+uint256 shares = vault.deposit(amount, msg.sender);
+// Withdraw - burns xLUX, returns WLUX
+uint256 assets = vault.withdraw(shares, msg.sender, msg.sender);
+```
+
+### Post-Quantum Cryptography
+
+EVM precompile interfaces for quantum-resistant signatures (`contracts/precompile/interfaces/`):
+
+| Precompile | Interface | Description |
+|------------|-----------|-------------|
+| FROST | `IFROST.sol` | Schnorr threshold signatures |
+| ML-DSA | `IMLDSA.sol` | FIPS 204 (Dilithium) signatures |
+| ML-KEM | `IMLKEM.sol` | Key encapsulation mechanism |
+| SLH-DSA | `ISLHDSA.sol` | FIPS 205 (SPHINCS+) signatures |
+| Ringtail | `IRingtailThreshold.sol` | Lattice-based threshold |
+| CGGMP21 | `ICGGMP21.sol` | ECDSA threshold (MPC) |
+| BLS | `IBLS.sol` | BLS aggregate signatures |
+| Warp | `IWarp.sol` | Cross-chain Warp messaging |
+| Quasar | `IQuasar.sol` | Quantum consensus |
+| FHE | `IFHE.sol` | FHE operations precompile |
+| LSS | `ILSS.sol` | Lattice secret sharing |
+| Hash | `IHash.sol` | Hash function precompile |
+| ZK | `IZK.sol` | Zero-knowledge proof verification |
+| Secp256r1 | `ISecp256r1.sol` | P-256 curve verification |
+| Oracle | `IOracle.sol` | On-chain oracle precompile |
+| PQCrypto | `IPQCrypto.sol` | Post-quantum crypto umbrella |
+| DEX | `IDEX.sol` | DEX precompile with pool manager |
+
+```solidity
+
+// Verify post-quantum ML-DSA signature
+bool valid = IMLDSA.verify(publicKey, message, signature);
+```
+
+### Safe (Multi-Signature Wallets)
+
+Post-quantum-ready multisig wallets (`contracts/safe/`):
+
+| Contract | Description |
+|----------|-------------|
+| `Safe` | Core multi-sig wallet |
+| `SafeFactory` | Safe deployment factory |
+| `SafeFROSTSigner` | FROST threshold signer module |
+| `SafeFROSTCoSigner` | FROST co-signing module |
+| `SafeMLDSASigner` | ML-DSA (Dilithium) signer |
+| `SafeRingtailSigner` | Ringtail lattice signer |
+| `SafeLSSSigner` | LSS-MPC signer |
+| `SafeCGGMP21Signer` | CGGMP21 ECDSA threshold |
+| `SafeThresholdLamportModule` | Lamport one-time signer |
+| `QuantumSafe` | Full quantum-resistant safe |
+| `FROST` | FROST protocol implementation |
+| `FROSTAccount` | FROST-based account |
+| `SafeModule` | Base module |
+
+### AMM (Automated Market Maker)
+
+| Contract | Description |
+|----------|-------------|
+| `AMMV2Factory` | V2 pair factory |
+| `AMMV2Pair` | V2 constant-product pair |
+| `AMMV2Router` | V2 swap router |
+| `AMMV3Factory` | V3 concentrated liquidity factory |
+| `AMMV3Pool` | V3 concentrated liquidity pool |
+| `StableSwap` | Curve-style stable swap |
+| `StableSwapFactory` | Stable swap factory |
+| `PriceAggregator` | Multi-source price aggregation |
+
+### Perps (Perpetual Trading)
+
+Leveraged perpetual futures up to 50x (`contracts/perps/`):
+
+| Contract | Description |
+|----------|-------------|
+| `Vault` | Central liquidity pool |
+| `Router` | Position management |
+| `PositionRouter` | Keeper-executed orders |
+| `PositionManager` | Position lifecycle |
+| `OrderBook` | Limit order book |
+| `LLPManager` | Lux Liquidity Provider token |
+| `ShortsTracker` | Short interest tracking |
+| `VaultPriceFeed` | Price feed aggregation |
+| `FastPriceFeed` | Low-latency oracle |
+| `ReferralStorage` | Referral program |
+
+### Markets (Lending)
+
+Morpho-style isolated lending markets (`contracts/markets/`):
+
+| Contract | Description |
+|----------|-------------|
+| `Markets` | Core lending/borrowing |
+| `Allocator` | Capital allocation |
+| `Router` | Lending router |
+| `AdaptiveCurveRateModel` | Interest rate model |
+| `PythOracle` | Pyth price oracle |
+| `ChainlinkOracle` | Chainlink price oracle |
+
+### LSSVM (NFT AMM)
+
+NFT automated market maker with bonding curves (`contracts/lssvm/`):
+
+| Contract | Description |
+|----------|-------------|
+| `LSSVMPairFactory` | Pair factory |
+| `LSSVMPair` | NFT/token pair |
+| `LSSVMRouter` | Swap router |
+| `LinearCurve` | Linear bonding curve |
+| `ExponentialCurve` | Exponential bonding curve |
+
+### Account Abstraction (ERC-4337)
+
+| Contract | Description |
+|----------|-------------|
+| `Account` | ERC-4337 smart account |
+| `EOA` | Externally owned account wrapper |
+| `EOAFactory` | Account factory |
+| `EOAPaymaster` | Gas sponsorship paymaster |
+
+### Additional Modules
+
+**AI and Compute** (`contracts/ai/`): `AIToken`, `AIMining`, `ComputeMarket`
+
+**Identity / DID** (`contracts/did/`): `Registry`, `IdentityNFT`
+
+**Staking** (`contracts/staking/`): `sLUX` (staked LUX)
+
+**Treasury** (`contracts/treasury/`): `Bond`, `LiquidBond`, `ValidatorVault`, `FeeGov`, `CollateralRegistry`, `ProtocolLiquidity`, `Vault`, `Router`, `Collect`, `Recall`
+
+**NFT** (`contracts/nft/`): `GenesisNFTs`, `Market`
+
+**Omnichain** (`contracts/omnichain/`): `OmnichainLP`, `OmnichainLPFactory`, `OmnichainLPRouter`, `Bridge`
+
+**Oracle** (`contracts/oracle/`): `Oracle`, `OracleHub`, `DEXSource`, `TWAPSource`, `Finder`, `IdentifierWhitelist`, `Store`
+
+**Privacy** (`contracts/privacy/`): `BulletproofVerifier`, `Poseidon2Commitments`, `PrivateBridge`, `PrivateTeleport`, `ShieldedTreasury`, `ZNote`, `ZNotePQ`
+
+**Prediction Markets** (`contracts/prediction/`): `Oracle`, `Resolver`, `Claims`, `Hub`, `Bridge`, `Relay`
+
+**DTF** (`contracts/dtf/`): `ReserveDTF` (diversified token fund)
+
+**Insurance** (`contracts/insurance/`): `Cover`
+
+**Streaming** (`contracts/streaming/`): `Streams`
+
+**Options** (`contracts/options/`): `Options`
+
+**Yield Strategies** (`contracts/yield/`): 20+ strategies (Aave V3, Compound V3, Lido, EigenLayer, Morpho, Pendle, Curve, Convex, and more)
+
+### Project Structure
+
+```
+standard/
+  contracts/              # All Solidity source (796 files)
+    package.json          # @luxfi/contracts v1.6.0 (npm package)
+    tokens/               # LRC20, LRC721, LRC1155, LRC4626, platform tokens
+    fhe/                  # FHE confidential contracts (T-Chain)
+    governance/           # DAO, Governor, vLUX, GaugeController
+    dao/                  # Full LIP-7001 DAO framework
+    bridge/               # Cross-chain bridges, Teleport, yield strategies
+    liquid/               # LiquidLUX vault, L-tokens, teleport
+    safe/                 # Multi-sig with post-quantum signers
+    precompile/           # PQ crypto precompile interfaces
+    amm/                  # V2/V3 AMM, StableSwap
+    perps/                # Perpetual futures
+    markets/              # Morpho-style lending
+    lssvm/                # NFT AMM with bonding curves
+    account/              # ERC-4337 account abstraction
+    ai/                   # AI token, mining, compute market
+    did/                  # DID registry
+    staking/              # sLUX
+    treasury/             # Bonds, vaults, fee distribution
+    nft/                  # Genesis NFTs, marketplace
+    omnichain/            # Cross-chain LP
+    oracle/               # Oracle hub, TWAP, DEX sources
+    privacy/              # Bulletproofs, ZNote, Poseidon2
+    prediction/           # Prediction markets
+    yield/                # 20+ yield strategies
+  test/                   # Foundry tests (27 test files)
+    foundry/              # forge test suites
+    treasury/             # Treasury-specific tests
+  script/                 # Deployment scripts (Foundry)
+  scripts/                # Utility scripts (TypeScript)
+  lib/                    # Foundry dependencies (forge install)
+  deployments/            # Deployment artifacts and addresses
+  foundry.toml            # Foundry config (solc 0.8.31, via-IR, Cancun)
+  hardhat.config.ts       # Hardhat config (multi-compiler, multi-network)
+  remappings.txt          # Foundry import remappings
+  package.json            # Root dev dependencies (private)
+  Makefile                # Build/test/deploy shortcuts
+```
+
+### Deployed Contracts (Lux Mainnet, Chain ID 96369)
+
+As of 2026-03-04, 20 core contracts deployed and verified:
+
+| Contract | Address |
+|----------|---------|
+| WLUX | `0x3C18bB6B17eb3F0879d4653e0120a531aF4d86E3` |
+| LETH | `0x5a88986958ea76Dd043f834542724F081cA1443B` |
+| LBTC | `0x8a3fad1c7FB94461621351aa6A983B6f814F039c` |
+| LUSDC | `0x57f9E717dc080a6A76fB6F77BecA8C9C1D266B96` |
+| sLUX | `0xc606302cd0722DD42c460B09930477d09993F913` |
+| AMMV2Factory | `0xb06B31521Afc434F87Fe4852c98FC15A26c92aE8` |
+| AMMV2Router | `0x6A1a32BF731d504122EA318cE7Bd8D92b2284C0d` |
+| Timelock | `0xe0C921834384a993963414d6EAA79101C60A59Df` |
+| vLUX | `0x55833074AD22E2aAE81ad377A600340eC0bc7cbd` |
+| GaugeController | `0xF207Cf7f1cC372374e54d174B2E184a10417b0F6` |
+| Karma | `0xc3d1efb6Eaedd048dDfE7066F1c719C7B6Ca43ad` |
+| DLUX | `0xAAbD65c4Fe3d3f9d54A7C3C7B95B9eD359CC52A8` |
+| DIDRegistry | `0xe494b658d1C08a56b8783a36A78E777AD282fCC3` |
+| FeeGov | `0xE7738632E5c84bE3e5421CC691d9fEF5DFb0cCB6` |
+| ValidatorVault | `0x2BaeF607871FB40515Fb42A299a1E0b03F0C681f` |
+| LinearCurve | `0x360149cC47A3996522376E4131b4A6eB2A1Ca3D3` |
+
+Multi-network deployments across Zoo (200200), Hanzo (36963), SPC (36911), and Pars (494949) chains.
+
+## Troubleshooting
+
+**Build fails with "stack too deep"**
+Enable `via_ir = true` in foundry.toml (already default). This enables the Yul IR pipeline which handles deep stacks.
+
+**Import resolution fails in Foundry**
+Check `remappings.txt` and `foundry.toml` remappings match. Key mapping: `@luxfi/contracts/=contracts/`. Run `forge remappings` to debug.
+
+**FHE contracts fail to deploy**
+FHE contracts require T-Chain (ThresholdVM) with FHE precompiles at `0x0700...0080-0083`. They will revert on standard C-Chain or Hardhat local network. Use `MockFheOps.sol` for local testing.
+
+**Hardhat compilation errors with multiple Solidity versions**
+The hardhat.config.ts includes compilers for 0.8.28, 0.8.24, 0.8.20, and 0.7.6. If a contract specifies a pragma not matching any compiler, add the version to the `compilers` array.
+
+**Gas estimation fails on Lux**
+Lux C-Chain uses Cancun EVM. Set `evmVersion = "cancun"` in both foundry.toml and hardhat.config.ts.
+
+**Seaport contracts fail to compile with default profile**
+Seaport requires solc 0.8.24 without via-IR. Build with: `FOUNDRY_PROFILE=seaport forge build`
+
+**TypeChain types not generating**
+Run `pnpm typechain` from root. Requires `@typechain/ethers-v6` and `@typechain/hardhat` packages.
+
+**Post-quantum precompile calls revert**
+PQ precompiles (ML-DSA, FROST, etc.) are Lux-specific EVM extensions. They do not exist on Ethereum, Hardhat, or Anvil. Test against a real Lux node or devnet.
+
+**forge test fails on certain test files**
+The `foundry.toml` sets `script = "contracts/script"` and `test = "test"`. If tests reference contracts in unusual paths, check that remappings cover the import.
+
+**npm publish fails**
+The npm package is at `contracts/package.json` (name: `@luxfi/contracts`). Publish from the contracts directory: `npm publish ./contracts --access public`
+
+## Related Skills
+
+- `lux-fhe` - Lux FHE Go library and T-Chain cryptographic foundation
+- `lux-fhevm` - FHE VM integration for encrypted EVM execution
+- `lux-crypto` - Post-quantum cryptography primitives
+- `lux-safe` - Safe multisig wallet deployment and management
+- `lux-bridge` - Cross-chain bridge operations
+- `lux-governance` - Governance and DAO patterns
+- `lux-tokens` - Token deployment and management
+- `lux-liquid` - Liquid staking protocol
+- `lux-deploy` - Deployment tooling and scripts
+- `lux-precompile` - EVM precompile development
+- `lux-oracle` - Oracle integration
+- `lux-dao` - Full DAO framework
+
+---
+
+Last Updated: 2026-03-13
