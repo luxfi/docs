@@ -67,7 +67,7 @@ export default function HomePage() {
             Get Started
           </Link>
           <Link
-            href="/docs/api-reference"
+            href="/api-reference"
             className="rounded-lg border border-white/[0.08] px-6 py-3 text-sm font-medium hover:bg-white/[0.05] transition-colors"
           >
             API Reference
@@ -175,7 +175,7 @@ export default function HomePage() {
             {chains.map((c) => (
               <Link
                 key={c.name}
-                href="/docs/chains"
+                href="/chains"
                 className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-3 text-center hover:border-white/20 hover:bg-white/[0.05] transition-all"
               >
                 <div className="font-mono text-xs font-medium text-[#fafafa]">{c.name}</div>
@@ -191,14 +191,14 @@ export default function HomePage() {
           <p className="text-[#737373] text-sm mb-6">DAO governance and Lux Proposals.</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Link
-              href="/docs/dao"
+              href="/dao"
               className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6 hover:border-white/20 hover:bg-white/[0.05] transition-all"
             >
               <div className="font-semibold text-[#fafafa] mb-1">DAO</div>
               <div className="text-xs text-[#525252]">Token-based governance, committees, treasury management</div>
             </Link>
             <Link
-              href="/docs/vote"
+              href="/vote"
               className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6 hover:border-white/20 hover:bg-white/[0.05] transition-all"
             >
               <div className="font-semibold text-[#fafafa] mb-1">Vote</div>
