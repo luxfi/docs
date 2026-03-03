@@ -169,11 +169,11 @@ Evaluated every **30s**:
 | Alert | Expression | For | Severity |
 |-------|-----------|-----|----------|
 | `LuxNodeDown` | `up\{job="luxd"\} == 0` | 5m | critical |
-| `CChainNotSyncing` | `rate(avalanche_C_last_accepted_height[5m]) == 0` | 10m | warning |
+| `CChainNotSyncing` | `rate(lux_C_last_accepted_height[5m]) == 0` | 10m | warning |
 | `CChainHighRejectionRate` | rejection > 10% of accepted | 5m | warning |
-| `PChainNotSyncing` | `rate(avalanche_P_last_accepted_height[5m]) == 0` | 10m | warning |
-| `XChainNotSyncing` | `rate(avalanche_X_last_accepted_height[5m]) == 0` | 10m | warning |
-| `LowPeerCount` | `avalanche_network_peers < 5` | 10m | warning |
+| `PChainNotSyncing` | `rate(lux_P_last_accepted_height[5m]) == 0` | 10m | warning |
+| `XChainNotSyncing` | `rate(lux_X_last_accepted_height[5m]) == 0` | 10m | warning |
+| `LowPeerCount` | `lux_network_peers < 5` | 10m | warning |
 | `HighCPUUsage` | `process_cpu_seconds_total > 80%` | 10m | warning |
 | `HighMemoryUsage` | `MemAvailable < 10%` | 10m | critical |
 | `PostgresDown` | `up\{job="postgres"\} == 0` | 5m | critical |
@@ -215,7 +215,7 @@ Evaluated every **30s**:
 | Job | Path Pattern | Pipeline |
 |-----|-------------|----------|
 | `docker` | `/var/lib/docker/containers/*/*log` | JSON parse, container name extraction |
-| `luxd` | `/avalanche-logs/network_current/node*/logs/*.log` | Multiline, regex for timestamp/level/logger |
+| `luxd` | `/lux-logs/network_current/node*/logs/*.log` | Multiline, regex for timestamp/level/logger |
 | `syslog` | `/var/log/syslog` | Regex for hostname/program/pid |
 | `blockscout` | Docker container logs | JSON parse, stream filtering |
 

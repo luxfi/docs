@@ -50,9 +50,9 @@ Snowflake is a simplified variant that tracks only consecutive successes rather 
 - Resets counter on any conflicting supermajority
 - Faster convergence in low-contention scenarios
 
-### Avalanche (DAG-based)
+### Lux (DAG-based)
 
-The Avalanche protocol extends Snowball to operate over a directed acyclic graph (DAG) of transactions. This is used on the X-Chain for high-throughput asset transfers.
+The Lux protocol extends Snowball to operate over a directed acyclic graph (DAG) of transactions. This is used on the X-Chain for high-throughput asset transfers.
 
 - Transactions form a DAG with parent-child dependencies
 - Confidence flows transitively through the DAG
@@ -114,7 +114,7 @@ Each chain in the Lux Primary Network uses the consensus variant best suited to 
 
 | Chain | Protocol | Reason |
 |-------|----------|--------|
-| **X-Chain** | Avalanche (DAG) | High-throughput parallel asset transfers |
+| **X-Chain** | Lux (DAG) | High-throughput parallel asset transfers |
 | **C-Chain** | Snowman (Linear) | Sequential smart contract execution |
 | **P-Chain** | Snowman (Linear) | Ordered validator set changes and staking |
 

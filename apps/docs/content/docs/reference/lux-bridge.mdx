@@ -5,7 +5,7 @@ description: "MPC Cross-Chain Bridge"
 
 ## Overview
 
-Lux Bridge is a decentralized cross-chain bridge using Multi-Party Computation (MPC) for secure asset transfers. It supports EVM chains (Ethereum, Base, BSC, Polygon, Arbitrum, Optimism, Avalanche, Lux, Zoo, and 10+ more) plus non-EVM chains (Bitcoin, Solana, TON, XRP). The bridge uses a burn-and-mint model on wrapped token chains and a lock-and-release vault model on native asset chains, with EIP-712 typed data signatures from an MPC oracle network providing cryptographic authorization for all claims.
+Lux Bridge is a decentralized cross-chain bridge using Multi-Party Computation (MPC) for secure asset transfers. It supports EVM chains (Ethereum, Base, BSC, Polygon, Arbitrum, Optimism, Lux, Lux, Zoo, and 10+ more) plus non-EVM chains (Bitcoin, Solana, TON, XRP). The bridge uses a burn-and-mint model on wrapped token chains and a lock-and-release vault model on native asset chains, with EIP-712 typed data signatures from an MPC oracle network providing cryptographic authorization for all claims.
 
 ### Why
 
@@ -209,7 +209,7 @@ All contracts target Solidity 0.8.20 with OpenZeppelin 5.
 | Polygon | 137 | `polygon-rpc.com` |
 | Arbitrum | 42161 | `arb1.arbitrum.io/rpc` |
 | Optimism | 10 | `mainnet.optimism.io` |
-| Avalanche | 43114 | `api.avax.network/ext/bc/C/rpc` |
+| Lux | 43114 | `api.lux.network/ext/bc/C/rpc` |
 | Linea | 59144 | `lineascan.build` |
 | Sepolia | 11155111 | `rpc.sepolia.org` |
 | Holesky | 17000 | `ethereum-holesky-rpc.publicnode.com` |
@@ -217,10 +217,10 @@ All contracts target Solidity 0.8.20 with OpenZeppelin 5.
 ### Supported Wrapped Tokens
 
 **On Lux chain** (L-prefix, 29 tokens):
-LETH, LBTC, LSOL, LTON, LBNB, LPOL, LAVAX, LUSD, LADA, LFTM, LCELO, LXDAI, LBLAST, LMRB, LZOO, LAI16Z, LBONK, LWIF, LBOME, LPOPCAT, LFWOG, LGIGA, LMEW, LPONKE, LPNUT, LDOGS, LNOT, LMOODENG, LREDO
+LETH, LBTC, LSOL, LTON, LBNB, LPOL, LLUX, LUSD, LADA, LFTM, LCELO, LXDAI, LBLAST, LMRB, LZOO, LAI16Z, LBONK, LWIF, LBOME, LPOPCAT, LFWOG, LGIGA, LMEW, LPONKE, LPNUT, LDOGS, LNOT, LMOODENG, LREDO
 
 **On Zoo chain** (Z-prefix, 34 tokens):
-ZETH, ZBTC, ZSOL, ZTON, ZBNB, ZPOL, ZAVAX, ZUSD, ZADA, ZFTM, ZCELO, ZXDAI, ZBLAST, ZMRB, ZLUX, ZAI16Z, ZBONK, ZWIF, ZBOME, ZPOPCAT, ZFWOG, ZGIGA, ZMEW, ZPONKE, ZPUNT, ZDOGS, ZNOT, ZMOODENG, ZREDO, plus memecoins: TRUMP, MELANIA, CYRUS, SLOG, Z
+ZETH, ZBTC, ZSOL, ZTON, ZBNB, ZPOL, ZLUX, ZUSD, ZADA, ZFTM, ZCELO, ZXDAI, ZBLAST, ZMRB, ZLUX, ZAI16Z, ZBONK, ZWIF, ZBOME, ZPOPCAT, ZFWOG, ZGIGA, ZMEW, ZPONKE, ZPUNT, ZDOGS, ZNOT, ZMOODENG, ZREDO, plus memecoins: TRUMP, MELANIA, CYRUS, SLOG, Z
 
 ### API Endpoints
 
