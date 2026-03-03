@@ -1,29 +1,113 @@
 import Link from 'next/link';
 
-const ecosystem = [
-  { name: 'Exchange', desc: 'DEX frontend with V2, V3, and precompile swaps', href: '/docs/exchange', tag: 'Trading' },
-  { name: 'DEX (LX)', desc: '434M ops/sec on-chain CLOB matching engine', href: '/docs/dex', tag: 'Trading' },
-  { name: 'CEX (ATS)', desc: 'Institutional exchange with FINRA & MiFID II compliance', href: '/docs/cex', tag: 'Trading' },
-  { name: 'Broker', desc: '16-venue smart order routing across crypto, equities, and FX', href: '/docs/broker', tag: 'Trading' },
-  { name: 'HSM', desc: 'AWS, GCP, Azure, Zymbit, and ML-DSA signing', href: '/docs/hsm', tag: 'Crypto' },
-  { name: 'KMS', desc: 'Secrets, PKI, HSM, and Kubernetes operator', href: '/docs/kms', tag: 'Crypto' },
-  { name: 'MPC', desc: 'CGGMP21, FROST, BLS, and Ringtail threshold signing', href: '/docs/mpc', tag: 'Crypto' },
-  { name: 'FHE', desc: 'TFHE and CKKS homomorphic encryption with GPU coprocessor', href: '/docs/fhe', tag: 'Crypto' },
-  { name: 'Wallet', desc: 'HD wallet with multi-chain, Ledger, and multi-sig support', href: '/docs/wallet', tag: 'Apps' },
-  { name: 'Bridge', desc: 'MPC-secured cross-chain asset transfers', href: '/docs/bridge', tag: 'Apps' },
-  { name: 'Explorer', desc: 'Blockscout blockchain explorer for all Lux chains', href: '/docs/explorer', tag: 'Apps' },
-  { name: 'Bootnode', desc: 'Lux Cloud — RPC, WebSocket, Token, and NFT APIs', href: '/docs/bootnode', tag: 'Cloud' },
-];
+/* ------------------------------------------------------------------ */
+/*  Data                                                               */
+/* ------------------------------------------------------------------ */
 
-const devTools = [
-  { name: 'CLI', desc: 'Network, subnet, and wallet commands', href: '/docs/cli' },
-  { name: 'SDK', desc: 'Go, TypeScript, and Python SDKs', href: '/docs/sdk' },
-  { name: 'Netrunner', desc: 'Network simulation and benchmarks', href: '/docs/netrunner' },
-  { name: 'Accel', desc: 'GPU acceleration — CUDA, Metal, WebGPU', href: '/docs/accel' },
+interface Product {
+  name: string;
+  desc: string;
+  href: string;
+}
+
+interface Section {
+  title: string;
+  subtitle: string;
+  items: Product[];
+}
+
+const sections: Section[] = [
+  {
+    title: 'Trading',
+    subtitle: 'Exchange infrastructure for crypto, equities, and FX.',
+    items: [
+      { name: 'Exchange',     desc: 'DEX frontend with V2, V3, and precompile swaps',              href: '/exchange' },
+      { name: 'DEX (LX)',     desc: '434M ops/sec on-chain CLOB matching engine',                  href: '/dex' },
+      { name: 'CEX (ATS)',    desc: 'Institutional exchange with FINRA & MiFID II compliance',     href: '/cex' },
+      { name: 'Broker',       desc: '16-venue smart order routing across crypto, equities, and FX', href: '/broker' },
+      { name: 'Compliance',   desc: 'KYC/AML, sanctions screening, and regulatory reporting',      href: '/compliance' },
+      { name: 'Exchange SDK', desc: 'TypeScript matching engine with AVL-tree order book',          href: '/exchange-sdk' },
+    ],
+  },
+  {
+    title: 'DeFi',
+    subtitle: 'Smart contracts, liquid staking, and yield protocols.',
+    items: [
+      { name: 'Standard',  desc: 'Production Solidity contracts — DeFi, governance, identity, privacy', href: '/standard' },
+      { name: 'Liquid',     desc: 'Yield-bearing bridge tokens and the xLUX master vault',              href: '/liquid' },
+      { name: 'Staking',    desc: 'Validator staking, delegation, and liquid staking',                   href: '/staking' },
+    ],
+  },
+  {
+    title: 'Cryptography',
+    subtitle: 'Post-quantum primitives, threshold signing, and homomorphic encryption.',
+    items: [
+      { name: 'Crypto',    desc: 'Post-quantum signatures, BLS, and key encapsulation',              href: '/crypto' },
+      { name: 'HSM',       desc: 'AWS, GCP, Azure, Zymbit, and ML-DSA signing',                      href: '/hsm' },
+      { name: 'KMS',       desc: 'Secrets, PKI, HSM, and Kubernetes operator',                        href: '/kms' },
+      { name: 'MPC',       desc: 'CGGMP21, FROST, BLS, and Ringtail threshold signing',              href: '/mpc' },
+      { name: 'FHE',       desc: 'TFHE and CKKS homomorphic encryption with GPU coprocessor',        href: '/fhe' },
+      { name: 'Lattice',   desc: 'Lattice-based cryptography library for post-quantum security',     href: '/lattice' },
+      { name: 'Threshold', desc: 'Unified interfaces and registry for threshold signature schemes',  href: '/threshold' },
+      { name: 'Ringtail',  desc: 'Post-quantum threshold signatures from Module-LWE',                href: '/ringtail' },
+    ],
+  },
+  {
+    title: 'Cross-Chain',
+    subtitle: 'Native messaging, token teleportation, and MPC bridges.',
+    items: [
+      { name: 'Warp',     desc: 'Native cross-chain messaging via BLS aggregate signatures', href: '/warp' },
+      { name: 'Teleport', desc: 'Cross-chain token transfers using burn-mint with MPC oracles', href: '/teleport' },
+      { name: 'Bridge',   desc: 'MPC-secured cross-chain asset transfers',                    href: '/bridge' },
+    ],
+  },
+  {
+    title: 'Infrastructure',
+    subtitle: 'Kubernetes operators, wallets, explorers, and data services.',
+    items: [
+      { name: 'Operator',    desc: 'Kubernetes operator for Lux blockchain infrastructure',              href: '/operator' },
+      { name: 'Wallet',      desc: 'HD wallet with multi-chain, Ledger, and multi-sig support',          href: '/wallet' },
+      { name: 'Safe',        desc: 'Multi-signature wallet for the Lux Network',                         href: '/safe' },
+      { name: 'Explorer',    desc: 'Blockscout blockchain explorer for all Lux chains',                  href: '/explorer' },
+      { name: 'Indexer',     desc: 'High-performance Go blockchain indexer',                              href: '/indexer' },
+      { name: 'Bootnode',    desc: 'Lux Cloud — RPC, WebSocket, Token, and NFT APIs',                    href: '/bootnode' },
+      { name: 'Oracle',      desc: 'Optimistic oracle for assertions, disputes, and truth verification', href: '/oracle' },
+      { name: 'Precompile',  desc: '39+ native EVM precompiles for post-quantum crypto, DeFi, and ZK',  href: '/precompile' },
+    ],
+  },
+  {
+    title: 'Developer Tools',
+    subtitle: 'CLIs, SDKs, databases, and GPU acceleration.',
+    items: [
+      { name: 'CLI',       desc: 'Network, subnet, and wallet commands',                  href: '/cli' },
+      { name: 'SDK',       desc: 'Go, TypeScript, and Python SDKs',                        href: '/sdk' },
+      { name: 'Netrunner', desc: 'Network simulation and benchmarks',                      href: '/netrunner' },
+      { name: 'Accel',     desc: 'GPU acceleration — CUDA, Metal, WebGPU',                 href: '/accel' },
+      { name: 'ZAP',       desc: 'Zero-copy Application Protocol for high-perf messaging', href: '/zap' },
+      { name: 'ZapDB',     desc: 'High-performance embedded key-value database',           href: '/zapdb' },
+      { name: 'GPU',       desc: 'Go bindings for cross-platform GPU acceleration',        href: '/gpu' },
+    ],
+  },
+  {
+    title: 'Identity & Auth',
+    subtitle: 'Authentication, authorization, and hardware wallet support.',
+    items: [
+      { name: 'IAM',    desc: 'Identity and access management with OAuth2, OIDC, SAML, and RBAC', href: '/iam' },
+      { name: 'Ledger', desc: 'Lux app for Ledger hardware wallets with P/X/C chain signing',      href: '/ledger' },
+    ],
+  },
+  {
+    title: 'More',
+    subtitle: 'Advertising, testnet utilities, and emerging protocols.',
+    items: [
+      { name: 'ADX',    desc: 'Decentralized CTV ad exchange with TEE auctions and ZK privacy', href: '/adx' },
+      { name: 'Faucet', desc: 'Get test LUX tokens for development on Lux testnets',            href: '/faucet' },
+    ],
+  },
 ];
 
 const chains = [
-  { name: 'C-Chain', spec: 'EVM · 96369' },
+  { name: 'C-Chain', spec: 'EVM \u00b7 96369' },
   { name: 'P-Chain', spec: 'Platform' },
   { name: 'X-Chain', spec: 'Exchange' },
   { name: 'D-Chain', spec: 'DEX VM' },
@@ -32,6 +116,45 @@ const chains = [
   { name: 'A-Chain', spec: 'AI VM' },
   { name: 'Z-Chain', spec: 'ZK VM' },
 ];
+
+/* ------------------------------------------------------------------ */
+/*  Components                                                         */
+/* ------------------------------------------------------------------ */
+
+function ProductCard({ item }: { item: Product }) {
+  return (
+    <Link
+      href={item.href}
+      className="group flex flex-col justify-between rounded-xl border border-white/[0.08] bg-white/[0.02] p-4 min-h-[120px] hover:border-white/20 hover:bg-white/[0.05] transition-all"
+    >
+      <div>
+        <div className="text-sm font-semibold text-[#fafafa] mb-1">{item.name}</div>
+        <div className="text-xs text-[#525252] group-hover:text-[#737373] transition-colors leading-relaxed">
+          {item.desc}
+        </div>
+      </div>
+      <span className="text-[11px] text-[#525252] group-hover:text-[#737373] mt-3">Docs →</span>
+    </Link>
+  );
+}
+
+function ProductSection({ section }: { section: Section }) {
+  return (
+    <section>
+      <h2 className="text-2xl font-bold mb-1">{section.title}</h2>
+      <p className="text-[#737373] text-sm mb-6">{section.subtitle}</p>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        {section.items.map((item) => (
+          <ProductCard key={item.name} item={item} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Page                                                               */
+/* ------------------------------------------------------------------ */
 
 export default function HomePage() {
   return (
@@ -45,7 +168,7 @@ export default function HomePage() {
           }}
         />
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.02] px-4 py-1.5 text-sm text-[#737373] mb-6">
-          16 Chains · 26 Products · Post-Quantum
+          16 Chains &middot; 39 Products &middot; Post-Quantum
         </div>
         <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05] mb-6">
           Lux Network
@@ -81,53 +204,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div className="mx-auto w-full max-w-[1400px] px-6 md:px-12 space-y-24">
-        {/* Ecosystem */}
-        <section>
-          <h2 className="text-3xl font-bold mb-2">Ecosystem</h2>
-          <p className="text-[#737373] text-sm mb-8">Trading, cryptography, applications, and cloud infrastructure.</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-            {ecosystem.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="group flex flex-col justify-between rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5 min-h-[160px] hover:border-white/20 hover:bg-white/[0.05] transition-all"
-              >
-                <div>
-                  <div className="text-sm font-semibold text-[#fafafa] mb-1">{item.name}</div>
-                  <div className="text-xs text-[#525252] group-hover:text-[#737373] transition-colors leading-relaxed">
-                    {item.desc}
-                  </div>
-                </div>
-                <div className="flex items-center justify-between mt-4">
-                  <span className="text-[10px] uppercase tracking-wider text-[#333] font-medium">{item.tag}</span>
-                  <span className="text-xs text-[#525252] group-hover:text-[#737373]">View docs →</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        {/* Developer Tools */}
-        <section>
-          <h2 className="text-3xl font-bold mb-2">Developer Tools</h2>
-          <p className="text-[#737373] text-sm mb-8">CLIs, SDKs, and performance tools.</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {devTools.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="group flex flex-col justify-between rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5 min-h-[140px] hover:border-white/20 hover:bg-white/[0.05] transition-all"
-              >
-                <div>
-                  <div className="text-sm font-semibold text-[#fafafa] mb-1">{item.name}</div>
-                  <div className="text-xs text-[#525252] group-hover:text-[#737373] transition-colors">{item.desc}</div>
-                </div>
-                <span className="text-xs text-[#525252] group-hover:text-[#737373] mt-4">View docs →</span>
-              </Link>
-            ))}
-          </div>
-        </section>
+      <div className="mx-auto w-full max-w-[1400px] px-6 md:px-12 space-y-20">
+        {/* Product sections */}
+        {sections.map((section) => (
+          <ProductSection key={section.title} section={section} />
+        ))}
 
         {/* CLI Feature */}
         <section>

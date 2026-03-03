@@ -4,19 +4,101 @@ description: "On-chain order book with sub-millisecond matching and perpetual co
 icon: BarChart
 ---
 
-On-chain order book with sub-millisecond matching and perpetual contracts.
+The DEX VM (D-Chain) is a purpose-built virtual machine for decentralized exchange operations. It provides a Central Limit Order Book (CLOB), Automated Market Maker (AMM) liquidity pools, perpetual futures contracts, and cross-chain atomic swaps via Warp messaging. The VM uses a pure functional architecture where all state transitions happen deterministically within block processing.
+
+## Architecture
+
+- **CLOB Trading**: Full order book with limit and market orders, sub-millisecond matching
+- **AMM Liquidity Pools**: Configurable fee tiers, concentrated liquidity
+- **Perpetual Futures**: Margin accounts, funding rates, liquidation engine, auto-deleveraging (ADL)
+- **MEV Protection**: Commit-reveal scheme prevents front-running
+- **Cross-Chain Swaps**: Atomic swaps via Lux Warp messaging
+- **1ms Block Times**: Ultra-low latency for HFT workloads
 
 ## Configuration
 
-Refer to the [node documentation](/nodes) for running a node with this VM enabled.
+```json
+{
+  "defaultSwapFeeBps": 30,
+  "protocolFeeBps": 5,
+  "maxSlippageBps": 100,
+  "minLiquidity": 1000,
+  "maxPoolsPerPair": 10,
+  "maxOrdersPerAccount": 1000,
+  "maxOrderSize": 1000000000000000000,
+  "minOrderSize": 1000,
+  "orderExpirationTime": "24h",
+  "warpEnabled": true,
+  "teleportEnabled": true,
+  "blockInterval": "1ms",
+  "maxBlockSize": 2097152,
+  "maxTxsPerBlock": 10000
+}
+```
+
+### Key Parameters
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `defaultSwapFeeBps` | 30 (0.3%) | Default swap fee in basis points |
+| `protocolFeeBps` | 5 (0.05%) | Protocol fee in basis points |
+| `maxSlippageBps` | 100 (1%) | Maximum allowed slippage |
+| `maxOrdersPerAccount` | 1,000 | Maximum open orders per account |
+| `orderExpirationTime` | 24h | Default order expiration |
+| `blockInterval` | 1ms | Block production interval |
+| `maxTxsPerBlock` | 10,000 | Maximum transactions per block |
 
 ## RPC API
 
-Standard JSON-RPC methods are available at:
+The D-Chain API uses the `dex` namespace. Endpoint:
 
 ```
-https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+https://api.lux.network/{network}/ext/bc/{blockchain-id}/rpc
 ```
+
+### Health and Status
+
+- **dex.ping** -- Health check
+- **dex.status** -- Returns bootstrap status and version
+
+### Order Book
+
+- **dex.getOrderbook** -- Get order book for a trading pair (with configurable depth)
+- **dex.placeOrder** -- Place a limit or market order
+- **dex.cancelOrder** -- Cancel an open order
+- **dex.getOrder** -- Get order details by ID
+- **dex.getStats** -- Get trading statistics for a symbol
+
+### Liquidity Pools
+
+- **dex.getPools** -- List all liquidity pools
+- **dex.getPool** -- Get pool details by token pair
+- **dex.getQuote** -- Get a swap quote with price impact
+- **dex.swap** -- Execute a swap against a liquidity pool
+- **dex.addLiquidity** -- Add liquidity to a pool
+- **dex.removeLiquidity** -- Remove liquidity from a pool
+
+### Perpetual Futures
+
+- **dex.getMarkets** -- List all perpetual markets
+- **dex.getMarket** -- Get market details (mark price, index price, open interest)
+- **dex.getPosition** -- Get a trader's position in a market
+- **dex.getPositions** -- Get all positions for a trader
+- **dex.getAccount** -- Get margin account details
+- **dex.getFundingRate** -- Get current funding rate for a market
+- **dex.getInsuranceFund** -- Get insurance fund balance
+
+### MEV Protection
+
+- **dex.getCommitment** -- Get a commit-reveal commitment by hash
+- **dex.getCommitments** -- Get all commitments for a sender
+- **dex.getMEVStats** -- Get MEV protection statistics
+
+### Auto-Deleveraging
+
+- **dex.getADLStatus** -- Get ADL candidate count for a market
+- **dex.getADLStats** -- Get auto-deleveraging statistics
+- **dex.getADLEvents** -- Get recent ADL events
 
 ## Related LPs
 

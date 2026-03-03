@@ -4,19 +4,105 @@ description: "The C-Chain is an EVM-compatible chain for smart contracts and DeF
 icon: Cpu
 ---
 
-The C-Chain is an EVM-compatible chain for smart contracts and DeFi. Chain ID: 96369.
+The C-Chain (Contract Chain) is the primary smart contract platform on Lux Network. It runs a full Ethereum Virtual Machine, providing compatibility with Solidity contracts, standard EVM tooling (Hardhat, Foundry, ethers.js), and the standard JSON-RPC API.
+
+## Chain IDs
+
+| Network | Chain ID | Currency | RPC Endpoint |
+|---------|----------|----------|-------------|
+| Mainnet | 96369 | LUX | `https://api.lux.network/mainnet/ext/bc/C/rpc` |
+| Testnet | 96368 | LUX | `https://api.lux.network/testnet/ext/bc/C/rpc` |
+| Devnet | 96370 | LUX | `https://api.lux.network/devnet/ext/bc/C/rpc` |
+
+## Token Denomination
+
+The C-Chain uses standard EVM 18-decimal Wei denomination, matching Ethereum conventions. The P-Chain and X-Chain use 6-decimal microLUX denomination.
+
+| Unit | Value |
+|------|-------|
+| Wei | 1 (base) |
+| Gwei | 10^9 Wei |
+| LUX | 10^18 Wei |
 
 ## Configuration
 
-Refer to the [node documentation](/nodes) for running a node with this VM enabled.
+The C-Chain is configured via the EVM genesis embedded in the network genesis. Key parameters include EVM fork activation timestamps. For established chains, fork overrides can be applied via an `upgrade.json` file placed in the chain data directory:
+
+```json
+{
+  "networkUpgradeOverrides": {
+    "durangoTimestamp": 0,
+    "etnaTimestamp": 0,
+    "fortunaTimestamp": 0,
+    "graniteTimestamp": 0
+  }
+}
+```
+
+The C-Chain supports the Cancun blob schedule:
+
+```json
+{
+  "blobSchedule": {
+    "cancun": {
+      "max": 6,
+      "target": 3,
+      "baseFeeUpdateFraction": 3338477
+    }
+  }
+}
+```
 
 ## RPC API
 
-Standard JSON-RPC methods are available at:
+The C-Chain exposes the standard Ethereum JSON-RPC API. All methods are available at the `/ext/bc/C/rpc` endpoint.
 
+### Common Methods
+
+```bash
+# Get chain ID
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' \
+  https://api.lux.network/mainnet/ext/bc/C/rpc
+
+# Get latest block number
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
+  https://api.lux.network/mainnet/ext/bc/C/rpc
+
+# Get balance
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0x...","latest"],"id":1}' \
+  https://api.lux.network/mainnet/ext/bc/C/rpc
 ```
-https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+
+### WebSocket
+
+WebSocket connections are available at `/ext/bc/C/ws` for real-time event subscriptions.
+
+## Connecting with MetaMask
+
+Add Lux Mainnet to MetaMask with these settings:
+
+- **Network Name**: Lux Mainnet
+- **RPC URL**: `https://api.lux.network/mainnet/ext/bc/C/rpc`
+- **Chain ID**: 96369
+- **Currency Symbol**: LUX
+- **Explorer**: `https://explore.lux.network`
+
+## Deploying Contracts
+
+Use any standard EVM tooling. Example with Foundry:
+
+```bash
+forge create --rpc-url https://api.lux.network/mainnet/ext/bc/C/rpc \
+  --private-key $PRIVATE_KEY \
+  src/MyContract.sol:MyContract
 ```
+
+## Block Explorer
+
+The C-Chain block explorer is available at [explore.lux.network](https://explore.lux.network).
 
 ## Related LPs
 

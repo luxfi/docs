@@ -1,21 +1,99 @@
 ---
 title: "Identity VM (I-Chain)"
-description: "Decentralized identity (DID), verifiable credentials, on-chain identity."
+description: "Decentralized identity (DID), verifiable credentials, and zero-knowledge proofs for identity."
 icon: UserCheck
 ---
 
-Decentralized identity (DID), verifiable credentials, on-chain identity.
+The Identity VM (I-Chain) implements W3C-compatible Decentralized Identifiers (DIDs) and verifiable credentials on the Lux network. It supports identity creation, credential issuance and revocation, issuer registration, and zero-knowledge proofs for selective disclosure.
+
+## Architecture
+
+- **DID Management**: Create and resolve `did:lux:...` identifiers
+- **Verifiable Credentials**: Issue, verify, and revoke credentials with TTL
+- **Issuer Registry**: Register and manage trusted credential issuers
+- **Zero-Knowledge Proofs**: Selective disclosure without revealing full credentials
+- **Service Endpoints**: Attach service endpoints to identities (e.g., key agreement, messaging)
 
 ## Configuration
 
-Refer to the [node documentation](/nodes) for running a node with this VM enabled.
+```json
+{
+  "credentialTTL": 31536000,
+  "maxClaims": 100,
+  "trustedIssuers": [],
+  "allowSelfIssue": false,
+  "requireZKProofs": false
+}
+```
+
+### Key Parameters
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `credentialTTL` | 31,536,000 (1 year) | Default credential time-to-live in seconds |
+| `maxClaims` | 100 | Maximum claims per credential |
+| `allowSelfIssue` | false | Allow self-issued credentials |
+| `requireZKProofs` | false | Require ZK proofs for credential verification |
 
 ## RPC API
 
-Standard JSON-RPC methods are available at:
+The I-Chain API uses the `identity` namespace. Endpoint:
 
 ```
-https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+https://api.lux.network/{network}/ext/bc/{blockchain-id}/rpc
+```
+
+### Identity Operations
+
+- **identity.createIdentity** -- Create a new decentralized identity (returns DID)
+- **identity.getIdentity** -- Get identity by ID
+- **identity.resolveIdentity** -- Resolve identity by DID string (`did:lux:...`)
+
+### Credential Operations
+
+- **identity.issueCredential** -- Issue a verifiable credential to a subject
+- **identity.getCredential** -- Get credential by ID
+- **identity.verifyCredential** -- Verify a credential's validity and issuer
+- **identity.revokeCredential** -- Revoke a credential (issuer only)
+
+### Proof Operations
+
+- **identity.createProof** -- Create a zero-knowledge proof for selective disclosure
+
+### Issuer Operations
+
+- **identity.registerIssuer** -- Register as a trusted credential issuer
+- **identity.getIssuer** -- Get issuer details
+- **identity.listIssuers** -- List registered issuers
+
+### Health
+
+- **identity.health** -- Health check
+
+## Credential States
+
+| State | Description |
+|-------|-------------|
+| `active` | Valid and not expired |
+| `revoked` | Revoked by issuer |
+| `expired` | Past TTL |
+| `pending` | Awaiting confirmation |
+
+## Example: Create an Identity
+
+```bash
+curl -X POST --data '{
+  "jsonrpc": "2.0",
+  "method": "identity.createIdentity",
+  "params": {
+    "publicKey": "base64-encoded-key",
+    "metadata": {
+      "name": "Alice"
+    }
+  },
+  "id": 1
+}' -H "Content-Type: application/json" \
+  https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
 ```
 
 ## Related LPs

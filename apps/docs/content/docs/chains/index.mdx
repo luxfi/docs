@@ -5,37 +5,67 @@ index: true
 icon: Layers
 ---
 
-Lux Network supports multiple chain types through its virtual machine architecture. Each VM is purpose-built for specific workloads.
+Lux Network supports multiple chain types through its virtual machine architecture. Each VM is purpose-built for specific workloads and runs as a subnet on the Lux primary network.
 
 ## Primary Chains
 
-| Chain | VM | Chain ID | Purpose |
-|-------|-----|----------|---------|
-| **C-Chain** | EVM | 96369 | Smart contracts, DeFi |
-| **P-Chain** | PlatformVM | — | Validators, staking, subnets |
-| **X-Chain** | ExchangeVM | — | UTXO asset transfers |
+Every Lux node validates these three chains. They form the backbone of the network.
 
-## Subnet Chains
+| Chain | VM | Chain ID | Consensus | Purpose |
+|-------|-----|----------|-----------|---------|
+| **C-Chain** | EVM | 96369 | Chain (linear) | Smart contracts, DeFi, EVM compatibility |
+| **P-Chain** | PlatformVM | -- | Chain (linear) | Validators, staking, subnet management |
+| **X-Chain** | ExchangeVM | -- | DAG | UTXO-based asset creation and transfers |
 
-| Chain | VM | Chain ID (Mainnet) | Purpose |
-|-------|-----|-------------------|---------|
-| Zoo | SubnetEVM | 200200 | Zoo ecosystem |
-| Hanzo | SubnetEVM | 36963 | Hanzo AI services |
-| SPC | SubnetEVM | 36911 | SPC ecosystem |
-| Pars | SubnetEVM | 494949 | Pars ecosystem |
+## Subnet EVM Chains
+
+Custom EVM chains deployed as subnets with configurable gas, fees, and precompiles.
+
+| Chain | Chain ID (Mainnet) | Chain ID (Testnet) | Chain ID (Devnet) | Purpose |
+|-------|-------------------|-------------------|-------------------|---------|
+| Zoo | 200200 | 200201 | 200202 | Zoo ecosystem |
+| Hanzo | 36963 | 36964 | 36964 | Hanzo AI services |
+| SPC | 36911 | 36910 | 36912 | SPC ecosystem |
+| Pars | 494949 | 7071 | 494951 | Pars ecosystem |
 
 ## Specialized VMs
 
-| VM | Chain | Purpose |
-|----|-------|---------|
-| DEX VM | D-Chain | On-chain order book, perpetuals |
-| Threshold VM | T-Chain | FHE operations, threshold decrypt |
-| Quantum VM | Q-Chain | Post-quantum cryptography |
-| AI VM | A-Chain | AI model inference |
-| Bridge VM | B-Chain | Cross-chain bridge operations |
-| Identity VM | I-Chain | DID, verifiable credentials |
-| Oracle VM | O-Chain | Oracle data feeds |
-| Key VM | K-Chain | Key management |
-| Relay VM | R-Chain | Cross-chain messaging |
-| ZK VM | Z-Chain | Zero-knowledge proofs |
-| Graph VM | G-Chain | Graph data structures |
+These VMs run as subnets and provide domain-specific functionality beyond general-purpose smart contracts.
+
+| VM | Chain | Consensus | Purpose |
+|----|-------|-----------|---------|
+| [DEX VM](/chains/dexvm) | D-Chain | Chain | On-chain CLOB, AMM liquidity pools, perpetuals |
+| [Threshold VM](/chains/thresholdvm) | T-Chain | Chain | MPC-as-a-service, threshold signing, key management |
+| [Quantum VM](/chains/quantumvm) | Q-Chain | DAG (Quasar) | Post-quantum signatures, Ringtail keys |
+| [AI VM](/chains/aivm) | A-Chain | Chain | AI compute tasks, TEE attestation, reward distribution |
+| [Bridge VM](/chains/bridgevm) | B-Chain | Chain | Cross-chain bridge with MPC signer set |
+| [ZK VM](/chains/zkvm) | Z-Chain | Chain | Zero-knowledge proofs, shielded UTXO transfers |
+| [Identity VM](/chains/identityvm) | I-Chain | Chain | Decentralized identifiers (DIDs), verifiable credentials |
+| [Oracle VM](/chains/oraclevm) | O-Chain | Chain | Decentralized data feeds, observation aggregation |
+| [Key VM](/chains/keyvm) | K-Chain | Chain | ML-KEM/ML-DSA key management, threshold sharing |
+| [Relay VM](/chains/relayvm) | R-Chain | Chain | Cross-chain message passing, Lux Warp protocol |
+| [Graph VM](/chains/graphvm) | G-Chain | Chain | GraphQL data layer, cross-chain queries |
+
+## API Endpoints
+
+All chain RPCs are accessible through the Lux gateway:
+
+```
+https://api.lux.network/{network}/ext/bc/{chain}/rpc
+```
+
+Where `network` is `mainnet`, `testnet`, or `devnet`, and `chain` is the chain alias (e.g., `C`, `P`, `X`) or the blockchain ID.
+
+## Node Configuration
+
+To track a subnet chain, pass the **subnet ID** (not blockchain ID) to your node:
+
+```bash
+luxd --track-chains=<subnet-id-1>,<subnet-id-2>
+```
+
+To track all chains on a testnet or devnet node:
+
+```bash
+luxd --network-id=testnet --track-all-chains
+```

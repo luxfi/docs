@@ -1,21 +1,83 @@
 ---
 title: "Oracle VM (O-Chain)"
-description: "Decentralized oracle data feeds with on-chain aggregation."
+description: "Decentralized oracle data feeds with on-chain aggregation and ZK proofs."
 icon: Radio
 ---
 
-Decentralized oracle data feeds with on-chain aggregation.
+The Oracle VM (O-Chain) provides decentralized oracle services for external data feeds on the Lux network. Operators fetch data from external sources, submit signed observations, and the chain aggregates them into canonical values using configurable methods (median, TWAP, weighted). Optional ZK aggregation proofs ensure correctness without trusting individual operators.
+
+## Architecture
+
+- **Observation Pipeline**: Operators observe, commit, and aggregate external data
+- **Aggregation Methods**: Median, time-weighted average price (TWAP), weighted average
+- **Deviation Bounds**: Configurable maximum deviation threshold between observations
+- **ZK Aggregation**: Optional zero-knowledge proofs for aggregation correctness
+- **Quorum Certificates**: Threshold attestation for compatibility with non-ZK chains
+- **Per-Block Feeds**: Configurable maximum feeds processed per block
 
 ## Configuration
 
-Refer to the [node documentation](/nodes) for running a node with this VM enabled.
+```json
+{
+  "maxFeedsPerBlock": 100,
+  "observationWindow": "1m",
+  "minObservers": 3,
+  "aggregationMethod": "median",
+  "deviationThreshold": 500,
+  "enableZkAggregation": false,
+  "zkProofSystem": "groth16",
+  "requireQuorumCert": true,
+  "quorumThreshold": 3
+}
+```
+
+### Key Parameters
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `maxFeedsPerBlock` | 100 | Maximum feed updates per block |
+| `observationWindow` | 1m | Time window for collecting observations |
+| `minObservers` | 3 | Minimum observers for a valid aggregation |
+| `aggregationMethod` | median | Aggregation method (median, twap, weighted) |
+| `deviationThreshold` | 500 (5%) | Maximum deviation in basis points |
+| `enableZkAggregation` | false | Use ZK proofs for aggregation |
+| `requireQuorumCert` | true | Require quorum certificate for feeds |
 
 ## RPC API
 
-Standard JSON-RPC methods are available at:
+The O-Chain API uses the `oracle` namespace. Endpoint:
 
 ```
-https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+https://api.lux.network/{network}/ext/bc/{blockchain-id}/rpc
+```
+
+### Feed Operations
+
+- **oracle.registerFeed** -- Register a new data feed (name, sources, update interval)
+- **oracle.getFeed** -- Get feed configuration and metadata
+
+### Data Operations
+
+- **oracle.getValue** -- Get the latest aggregated value for a feed
+- **oracle.submitObservation** -- Submit an observation for a feed
+- **oracle.getAttestation** -- Get the attestation (quorum cert or ZK proof) for a value
+
+### Health
+
+- **oracle.health** -- Health check
+
+## Example: Get a Feed Value
+
+```bash
+curl -X POST --data '{
+  "jsonrpc": "2.0",
+  "method": "oracle.getValue",
+  "params": {
+    "feedId": "LUX/USD"
+  },
+  "id": 1
+}' -H "Content-Type: application/json" \
+  https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
 ```
 
 ## Related LPs

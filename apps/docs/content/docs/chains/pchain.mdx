@@ -4,18 +4,114 @@ description: "The P-Chain manages validators, staking, and subnet creation."
 icon: Server
 ---
 
-The P-Chain manages validators, staking, and subnet creation.
+The P-Chain (Platform Chain) is the metadata chain of the Lux network. It coordinates validators, manages staking, handles subnet creation, and tracks all blockchains deployed across the network. The P-Chain runs PlatformVM and uses linear chain consensus.
+
+## Purpose
+
+- **Validator Management**: Adding and removing validators from the primary network and subnets
+- **Staking**: Delegating LUX to validators and distributing staking rewards
+- **Subnet Creation**: Creating new subnets and deploying blockchains on them
+- **L1 Validator Management**: Managing L1-style validator sets via Warp messaging
+
+## RPC Endpoint
+
+```
+https://api.lux.network/{network}/ext/bc/P
+```
+
+The P-Chain API uses the `platform` namespace with Lux-style JSON-RPC (not Ethereum JSON-RPC).
 
 ## Configuration
 
-Refer to the [node documentation](/nodes) for running a node with this VM enabled.
+PlatformVM is configured via JSON. Default values:
 
-## RPC API
-
-Standard JSON-RPC methods are available at:
-
+```json
+{
+  "block-cache-size": 67108864,
+  "tx-cache-size": 134217728,
+  "checksums-enabled": false,
+  "mempool-prune-frequency": "30m",
+  "tx-fee": 1000,
+  "create-asset-tx-fee": 1000,
+  "create-network-tx-fee": 1000000,
+  "create-chain-tx-fee": 1000000,
+  "add-network-validator-fee": 0,
+  "add-network-delegator-fee": 0
+}
 ```
-https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+
+### Fee Schedule
+
+| Operation | Fee (microLUX) |
+|-----------|---------------|
+| Base transaction | 1,000 (1 milliLUX) |
+| Create asset | 1,000 (1 milliLUX) |
+| Create subnet | 1,000,000 (1 LUX) |
+| Create blockchain | 1,000,000 (1 LUX) |
+| Add subnet validator | 0 |
+| Add subnet delegator | 0 |
+
+## RPC Methods
+
+### Validator Operations
+
+- **platform.getCurrentValidators** -- Returns current validators for a subnet
+- **platform.getL1Validator** -- Returns a specific L1 validator
+- **platform.sampleValidators** -- Samples validators from a subnet
+- **platform.getMinStake** -- Returns minimum stake amounts
+- **platform.getTotalStake** -- Returns total staked amount for a subnet
+- **platform.getStake** -- Returns staked amount for given addresses
+- **platform.getAllValidatorsAt** -- Returns all validators at a specific P-chain height
+- **platform.getValidatorsAt** -- Returns validators at a specific timestamp
+
+### Blockchain and Subnet Operations
+
+- **platform.getBlockchains** -- Lists all blockchains
+- **platform.getBlockchainStatus** -- Returns bootstrap status of a blockchain
+- **platform.getNets** -- Lists subnets
+- **platform.getNet** -- Returns subnet details
+- **platform.validates** -- Lists blockchains validated by a subnet
+- **platform.validatedBy** -- Returns subnet that validates a blockchain
+
+### Block and Transaction Operations
+
+- **platform.getBlock** -- Returns a block by ID
+- **platform.getBlockByHeight** -- Returns a block by height
+- **platform.getHeight** -- Returns current chain height
+- **platform.getProposedHeight** -- Returns proposed height
+- **platform.getTx** -- Returns a transaction by ID
+- **platform.getTxStatus** -- Returns transaction status
+- **platform.issueTx** -- Issues a signed transaction
+
+### Balance and UTXO Operations
+
+- **platform.getBalance** -- Returns LUX balance for an address
+- **platform.getUTXOs** -- Returns UTXOs for given addresses (max 1024)
+- **platform.getRewardUTXOs** -- Returns reward UTXOs for a transaction
+- **platform.getCurrentSupply** -- Returns current LUX supply
+- **platform.getStakingAssetID** -- Returns the staking asset ID
+
+### Fee Operations
+
+- **platform.getFeeConfig** -- Returns the current fee configuration
+- **platform.getFeeState** -- Returns the current fee state
+- **platform.getValidatorFeeConfig** -- Returns validator fee configuration
+- **platform.getValidatorFeeState** -- Returns validator fee state
+
+### Timestamps
+
+- **platform.getTimestamp** -- Returns the P-chain timestamp
+
+## Example: Get Current Validators
+
+```bash
+curl -X POST --data '{
+  "jsonrpc": "2.0",
+  "method": "platform.getCurrentValidators",
+  "params": {},
+  "id": 1
+}' -H "Content-Type: application/json" \
+  https://api.lux.network/mainnet/ext/bc/P
 ```
 
 ## Related LPs

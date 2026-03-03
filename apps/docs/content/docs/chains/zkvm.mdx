@@ -1,21 +1,113 @@
 ---
 title: "ZK VM (Z-Chain)"
-description: "Zero-knowledge proof generation and verification for privacy."
+description: "Zero-knowledge proof generation and verification for privacy-preserving UTXO transactions."
 icon: EyeOff
 ---
 
-Zero-knowledge proof generation and verification for privacy.
+The ZK VM (Z-Chain) is a privacy-focused virtual machine that implements zero-knowledge proofs for confidential transactions. It uses a UTXO model with nullifiers to prevent double-spending while keeping transaction details private. The Z-Chain supports multiple proof systems (Groth16, PLONK), shielded addresses, and optional FHE for encrypted computation.
+
+## Architecture
+
+- **Shielded UTXO Model**: Privacy-preserving UTXO transactions with nullifier tracking
+- **ZK Proof Verification**: Groth16 and PLONK proof systems
+- **Private Addresses**: Stealth address generation for receiver privacy
+- **Nullifier Database**: Prevents double-spending without revealing which UTXO was spent
+- **State Tree**: Merkle tree of commitments for membership proofs
+- **FHE Support**: Optional BFV/CKKS encrypted computation (128/192/256-bit security)
+- **Mempool**: Transaction pool with proof pre-verification
 
 ## Configuration
 
-Refer to the [node documentation](/nodes) for running a node with this VM enabled.
+```json
+{
+  "enableConfidentialTransfers": true,
+  "enablePrivateAddresses": true,
+  "proofSystem": "groth16",
+  "circuitType": "transfer",
+  "verifyingKeyPath": "/path/to/vk",
+  "trustedSetupPath": "/path/to/setup",
+  "enableFHE": false,
+  "fheScheme": "BFV",
+  "securityLevel": 128,
+  "maxUtxosPerBlock": 1000,
+  "proofVerificationTimeout": "10s",
+  "proofCacheSize": 10000
+}
+```
 
-## RPC API
+### Key Parameters
 
-Standard JSON-RPC methods are available at:
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `proofSystem` | groth16 | ZK proof system (groth16 or plonk) |
+| `enableConfidentialTransfers` | true | Enable shielded transactions |
+| `enablePrivateAddresses` | true | Enable stealth address generation |
+| `enableFHE` | false | Enable FHE encrypted computation |
+| `securityLevel` | 128 | FHE security level (128, 192, 256) |
+| `maxUtxosPerBlock` | 1,000 | Maximum UTXOs processed per block |
+| `proofVerificationTimeout` | 10s | Timeout for proof verification |
+| `proofCacheSize` | 10,000 | Cache for verified proofs |
+
+## REST API
+
+The Z-Chain exposes three handler groups. Base endpoint:
 
 ```
-https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+https://api.lux.network/{network}/ext/bc/{blockchain-id}
+```
+
+### Transaction Endpoints (`/rpc`)
+
+- **POST /sendTransaction** -- Submit a shielded transaction with ZK proof
+- **GET /getTransaction** -- Get transaction by ID (returns status: pending/confirmed)
+- **POST /createShieldedTransaction** -- Create a shielded transaction (shield public funds)
+
+### Block Endpoints (`/rpc`)
+
+- **GET /getBlock** -- Get block by ID
+- **GET /getLatestBlock** -- Get the most recent block
+
+### UTXO Endpoints (`/rpc`)
+
+- **GET /getUTXO** -- Get a UTXO commitment
+- **GET /getUTXOCount** -- Get total UTXO count
+
+### Status Endpoints (`/rpc`)
+
+- **GET /getStatus** -- Get chain status
+
+### Privacy Endpoints (`/privacy`)
+
+- **POST /generateAddress** -- Generate a new stealth address
+- **GET /getAddress** -- Get address details
+- **POST /decryptNote** -- Decrypt a received note using viewing key
+- **GET /isNullifierSpent** -- Check if a nullifier has been spent
+
+### Proof Endpoints (`/proof`)
+
+- **POST /generateTransferProof** -- Generate a ZK proof for a transfer
+- **POST /generateShieldProof** -- Generate a ZK proof for shielding funds
+- **POST /verifyProof** -- Verify a ZK proof
+- **GET /getProofStats** -- Get proof generation/verification statistics
+
+## Example: Send a Shielded Transaction
+
+```bash
+curl -X POST \
+  https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc/sendTransaction \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nullifiers": ["0x..."],
+    "commitments": ["0x..."],
+    "proof": "0x...",
+    "encryptedData": "0x..."
+  }'
+```
+
+## Example: Check Nullifier
+
+```bash
+curl "https://api.lux.network/mainnet/ext/bc/{blockchain-id}/privacy/isNullifierSpent?nullifier=0x..."
 ```
 
 ## Related LPs

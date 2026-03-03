@@ -4,19 +4,102 @@ description: "Custom EVM chains with configurable gas, fees, and precompiles. Us
 icon: Code
 ---
 
-Custom EVM chains with configurable gas, fees, and precompiles. Used by Zoo, Hanzo, SPC, Pars.
+Subnet EVM allows deploying custom EVM-compatible blockchains as Lux subnets. Each subnet chain has its own gas configuration, fee structure, precompiles, and genesis state while sharing the security of the Lux validator set.
 
-## Configuration
+## Deployed Subnet Chains
 
-Refer to the [node documentation](/nodes) for running a node with this VM enabled.
+| Chain | Chain ID (Mainnet) | Chain ID (Testnet) | Chain ID (Devnet) | Explorer |
+|-------|-------------------|-------------------|-------------------|---------|
+| Zoo | 200200 | 200201 | 200202 | [explore-zoo.lux.network](https://explore-zoo.lux.network) |
+| Hanzo | 36963 | 36964 | 36964 | [explore-hanzo.lux.network](https://explore-hanzo.lux.network) |
+| SPC | 36911 | 36910 | 36912 | [explore-spc.lux.network](https://explore-spc.lux.network) |
+| Pars | 494949 | 7071 | 494951 | [explore-pars.lux.network](https://explore-pars.lux.network) |
 
-## RPC API
+## RPC Endpoints
 
-Standard JSON-RPC methods are available at:
+Subnet chain RPCs are accessible via the gateway using their blockchain ID:
 
 ```
 https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
 ```
+
+Named shortcuts are available for deployed chains:
+
+```
+https://api.lux.network/mainnet/ext/bc/zoo/rpc
+https://api.lux.network/mainnet/ext/bc/hanzo/rpc
+https://api.lux.network/mainnet/ext/bc/spc/rpc
+https://api.lux.network/mainnet/ext/bc/pars/rpc
+```
+
+## Genesis Configuration
+
+A subnet EVM genesis defines the initial state, fee parameters, and precompile configuration. Key fields:
+
+```json
+{
+  "config": {
+    "chainId": 200200,
+    "feeConfig": {
+      "gasLimit": 15000000,
+      "targetBlockRate": 2,
+      "minBaseFee": 25000000000,
+      "targetGas": 15000000,
+      "baseFeeChangeDenominator": 36,
+      "minBlockGasCost": 0,
+      "maxBlockGasCost": 1000000,
+      "blockGasCostStep": 200000
+    },
+    "allowFeeRecipients": false
+  },
+  "alloc": {
+    "0x...": {
+      "balance": "0x..."
+    }
+  },
+  "timestamp": "0x0",
+  "gasLimit": "0xe4e1c0"
+}
+```
+
+### Fee Configuration Parameters
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `gasLimit` | 15,000,000 | Maximum gas per block |
+| `targetBlockRate` | 2 | Target seconds between blocks |
+| `minBaseFee` | 25 Gwei | Minimum base fee |
+| `targetGas` | 15,000,000 | Target gas consumption per block |
+| `baseFeeChangeDenominator` | 36 | Controls base fee adjustment speed |
+| `minBlockGasCost` | 0 | Minimum gas cost charged to the block producer |
+| `maxBlockGasCost` | 1,000,000 | Maximum gas cost charged to the block producer |
+
+## Deploying a New Subnet EVM Chain
+
+1. Create the genesis JSON with your desired chain ID, allocations, and fee config.
+
+2. Deploy via the Lux wallet SDK:
+
+```bash
+export LUX_PRIVATE_KEY=0x...
+go run ./wallet/network/primary/examples/deploy-chains/ \
+  --network=mainnet \
+  --skip-validators
+```
+
+3. Ensure all validators track the new subnet:
+
+```bash
+luxd --track-chains=<subnet-id>
+```
+
+## Standard Contract Deployments
+
+All subnet chains include a standard set of 20 deployed contracts: WLUX, bridged tokens, AMM (router, factory, pairs), governance, identity (DIDRegistry), treasury, LSSVM, and DeFi utilities. Contract addresses are identical across all subnet chains (deployed from nonce 0).
+
+## RPC API
+
+Subnet EVM chains expose the full Ethereum JSON-RPC API, identical to the C-Chain. All `eth_*`, `net_*`, `web3_*`, and `debug_*` methods are supported.
 
 ## Related LPs
 

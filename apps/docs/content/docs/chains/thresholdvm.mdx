@@ -1,22 +1,127 @@
 ---
 title: "Threshold VM (T-Chain)"
-description: "FHE operations, threshold decryption, and secure multi-party computation on-chain."
+description: "MPC-as-a-service: threshold signing, key generation, and secure multi-party computation."
 icon: ShieldCheck
 ---
 
-FHE operations, threshold decryption, and secure multi-party computation on-chain.
+The Threshold VM (T-Chain) provides Multi-Party Computation (MPC) as a service for all Lux chains. It manages threshold key generation, distributed signing, and key lifecycle operations using the LSS (Lux Secret Sharing) protocol. Any authorized chain can request cryptographic operations from the T-Chain via Warp messaging.
+
+## Architecture
+
+- **Threshold Signing**: t-of-n threshold signatures where t+1 parties are needed to sign
+- **Key Generation (DKG)**: Distributed key generation across MPC parties
+- **Key Resharing**: Rotate parties without changing the public key
+- **Key Refresh**: Refresh key shares without changing parties or public key
+- **Multi-Protocol**: Supports multiple threshold protocols via a protocol registry
+- **Quota Management**: Per-chain daily signing limits
 
 ## Configuration
 
-Refer to the [node documentation](/nodes) for running a node with this VM enabled.
+```json
+{
+  "threshold": 2,
+  "totalParties": 5,
+  "sessionTimeout": "30s",
+  "maxActiveSessions": 100,
+  "maxSessionsPerChain": 10,
+  "keyRotationPeriod": "720h",
+  "maxKeyAge": "8760h",
+  "dailySigningQuota": {},
+  "authorizedChains": {}
+}
+```
+
+### Chain Permissions
+
+Each authorized chain has configurable permissions:
+
+```json
+{
+  "chainId": "...",
+  "chainName": "B-Chain",
+  "canSign": true,
+  "canKeygen": true,
+  "canReshare": false,
+  "allowedKeyTypes": ["secp256k1", "ed25519"],
+  "maxSigningSize": 32,
+  "requirePreHash": true,
+  "dailySigningLimit": 10000
+}
+```
+
+### Key Types
+
+| Key Type | Use Case |
+|----------|----------|
+| secp256k1 | Ethereum-compatible signatures, bridge signing |
+| ed25519 | General-purpose signatures |
 
 ## RPC API
 
-Standard JSON-RPC methods are available at:
+The T-Chain uses JSON-RPC with the `threshold` namespace. Endpoint:
 
 ```
-https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+https://api.lux.network/{network}/ext/bc/{blockchain-id}/rpc
 ```
+
+### Key Generation
+
+- **threshold_keygen** -- Initiate distributed key generation
+- **threshold_getKeygenStatus** -- Check status of a keygen session
+
+### Signing
+
+- **threshold_sign** -- Request a threshold signature
+- **threshold_getSignature** -- Retrieve a completed signature
+- **threshold_batchSign** -- Sign multiple messages in one session
+
+### Key Management
+
+- **threshold_reshare** -- Reshare key to new set of parties
+- **threshold_refresh** -- Refresh key shares (same parties)
+- **threshold_listKeys** -- List all managed keys
+- **threshold_getKey** -- Get key metadata by ID
+- **threshold_getPublicKey** -- Get the public key for a managed key
+- **threshold_getAddress** -- Get the Ethereum address for a secp256k1 key
+
+### Protocol Information
+
+- **threshold_getProtocols** -- List supported threshold protocols
+- **threshold_getProtocolInfo** -- Get details about a specific protocol
+
+### Session Management
+
+- **threshold_getSessions** -- List active signing sessions
+- **threshold_cancelSession** -- Cancel a signing session
+
+### Network Information
+
+- **threshold_getInfo** -- Get T-Chain node info (party ID, threshold, readiness)
+- **threshold_getStats** -- Get signing statistics
+- **threshold_getParties** -- List all MPC parties
+- **threshold_getQuota** -- Get remaining signing quota for a chain
+
+### Authorization
+
+- **threshold_getAuthorizedChains** -- List chains authorized to use MPC services
+- **threshold_getChainPermissions** -- Get permissions for a specific chain
+
+### Health
+
+- **threshold_health** -- Health check
+
+## FHE Precompiles
+
+The T-Chain also provides FHE (Fully Homomorphic Encryption) precompiles for confidential computing on EVM-compatible chains:
+
+| Precompile | Address |
+|------------|---------|
+| Fheos | `0x0200000000000000000000000000000000000080` |
+| ACL | `0x0200000000000000000000000000000000000081` |
+| InputVerifier | `0x0200000000000000000000000000000000000082` |
+| Gateway | `0x0200000000000000000000000000000000000083` |
+
+FHE operations use `github.com/luxfi/lattice` for lattice-based cryptography. GPU acceleration is available via CGO; CPU fallbacks are used when CGO is disabled.
 
 ## Related LPs
 

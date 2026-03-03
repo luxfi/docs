@@ -1,21 +1,87 @@
 ---
 title: "Key VM (K-Chain)"
-description: "Cryptographic key lifecycle: generation, rotation, and secure storage."
+description: "Distributed key management with ML-KEM post-quantum cryptography and threshold sharing."
 icon: KeyRound
 ---
 
-Cryptographic key lifecycle: generation, rotation, and secure storage.
+The Key VM (K-Chain) provides distributed cryptographic key management using post-quantum algorithms. It supports ML-KEM (Kyber) for key encapsulation, ML-DSA (Dilithium) for digital signatures, BLS for aggregate signatures, and threshold secret sharing for distributed key storage across validators. All key material is securely zeroed from memory after use.
+
+## Architecture
+
+- **Post-Quantum Keys**: ML-KEM-768 (NIST Level 3) and ML-DSA-65 key generation
+- **BLS Signatures**: BLS aggregate signatures for validator coordination
+- **Threshold Sharing**: Distribute key shares across validators with configurable t-of-n
+- **Encryption**: AES-256-GCM with HKDF-SHA256 key derivation
+- **Secure Erasure**: Key material overwritten with zeros after use
+- **Parallel Operations**: Up to 100 concurrent cryptographic operations
 
 ## Configuration
 
-Refer to the [node documentation](/nodes) for running a node with this VM enabled.
+The K-Chain is configured via the `config` package. Key parameters:
+
+| Parameter | Description |
+|-----------|-------------|
+| `txFee` | Base transaction fee |
+| `createAssetTxFee` | Fee for creating a new key asset |
+| `maxParallelOps` | Maximum concurrent crypto operations (default: 100) |
+| `mlkemEnabled` | Enable ML-KEM key encapsulation |
+| `mldsaEnabled` | Enable ML-DSA digital signatures |
+| `blsEnabled` | Enable BLS aggregate signatures |
+| `thresholdEnabled` | Enable threshold secret sharing |
+
+## Supported Algorithms
+
+| Algorithm | Type | Security Level |
+|-----------|------|---------------|
+| ML-KEM-768 | Key Encapsulation | NIST Level 3 |
+| ML-DSA-65 | Digital Signature | NIST Level 3 |
+| BLS | Aggregate Signature | 128-bit |
+| AES-256-GCM | Symmetric Encryption | 256-bit |
+| HKDF-SHA256 | Key Derivation | -- |
 
 ## RPC API
 
-Standard JSON-RPC methods are available at:
+The K-Chain API uses the `kvm` namespace. Endpoint:
 
 ```
-https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+https://api.lux.network/{network}/ext/bc/{blockchain-id}/rpc
+```
+
+### Key Management
+
+- **kvm.createKey** -- Generate a new key (specify algorithm: mlkem, mldsa, bls)
+- **kvm.listKeys** -- List all managed keys
+- **kvm.getKeyByID** -- Get key metadata by ID
+- **kvm.getKeyByName** -- Get key metadata by name
+- **kvm.deleteKey** -- Delete a key (securely zeros material)
+
+### Cryptographic Operations
+
+- **kvm.encrypt** -- Encrypt data using a managed key (AES-256-GCM)
+
+### Algorithm Information
+
+- **kvm.listAlgorithms** -- List supported algorithms and their parameters
+
+### Health
+
+- **kvm.health** -- Health check (returns key count, algorithm support status)
+
+## Example: Create a Post-Quantum Key
+
+```bash
+curl -X POST --data '{
+  "jsonrpc": "2.0",
+  "method": "kvm.createKey",
+  "params": {
+    "name": "my-pq-key",
+    "algorithm": "mlkem",
+    "threshold": 3,
+    "totalShares": 5
+  },
+  "id": 1
+}' -H "Content-Type: application/json" \
+  https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
 ```
 
 ## Related LPs

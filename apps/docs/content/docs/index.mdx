@@ -5,56 +5,117 @@ description: Post-quantum secure, multi-consensus blockchain infrastructure
 
 ## Core
 
-| | |
-|---|---|
-| [Architecture](/architecture) | Network design and multi-consensus |
-| [Consensus](/consensus) | Quasar post-quantum consensus engine |
-| [Post-Quantum](/post-quantum) | ML-DSA, Kyber, lattice crypto |
-| [Nodes](/nodes) | Run validators, full nodes, archive nodes |
-| [Chains & VMs](/chains) | 16 virtual machines — EVM, DEX, AI, ZK |
+| Name | Description |
+|------|-------------|
+| [Architecture](/architecture) | Multi-layer network design |
+| [Consensus](/consensus) | Leaderless, sub-second finality |
+| [Post-Quantum](/post-quantum) | Lattice and hash-based signatures |
+| [Tokenomics](/tokenomics) | LUX supply, denominations, economics |
+| [Nodes](/nodes) | Validators, full nodes, archive nodes |
+| [Staking](/staking) | Delegation and liquid staking |
+
+## Chains
+
+| Name | Description |
+|------|-------------|
+| [Chains & VMs](/chains) | 16 virtual machines |
+
+## DeFi
+
+| Name | Description |
+|------|-------------|
+| [Liquid](/liquid) | Yield-bearing bridge tokens, xLUX vault |
+| [Standard](/standard) | Solidity contracts and 39 precompiles |
 
 ## Trading
 
-| | |
-|---|---|
-| [Exchange](/exchange) | DEX frontend — V2, V3, precompile swaps |
-| [DEX (LX)](/dex) | 434M ops/sec on-chain CLOB engine |
-| [CEX (ATS)](/cex) | Institutional exchange — FINRA, MiFID II |
+| Name | Description |
+|------|-------------|
+| [Exchange](/exchange) | DEX frontend with V2, V3 support |
+| [DEX](/dex) | 434M ops/sec on-chain CLOB engine |
+| [CEX](/cex) | Institutional ATS, FINRA/MiFID II |
 | [Broker](/broker) | 16-venue smart order routing |
+| [Compliance](/compliance) | KYC/AML and transaction monitoring |
+| [Exchange SDK](/exchange-sdk) | TypeScript matching engine |
+
+## Cross-Chain
+
+| Name | Description |
+|------|-------------|
+| [Warp](/warp) | BLS aggregate signature messaging |
+| [Teleport](/teleport) | Burn-mint transfers with MPC oracles |
+| [Bridge](/bridge) | MPC-secured cross-chain transfers |
 
 ## Cryptography
 
-| | |
-|---|---|
-| [HSM](/hsm) | AWS, GCP, Azure, Zymbit, ML-DSA signing |
+| Name | Description |
+|------|-------------|
+| [Crypto](/crypto) | Post-quantum primitives, BLS, KEM |
+| [Precompiles](/precompile) | 39+ native EVM precompiles |
+| [Threshold](/threshold) | Threshold signature schemes |
+| [Ringtail](/ringtail) | Post-quantum threshold from Module-LWE |
+| [HSM](/hsm) | Hardware security module integration |
 | [KMS](/kms) | Secrets, PKI, K8s operator |
-| [MPC](/mpc) | CGGMP21, FROST, BLS, Ringtail threshold |
-| [FHE](/fhe) | TFHE, CKKS, coprocessor |
-| [Lattice](/lattice) | Post-quantum lattice crypto |
+| [MPC](/mpc) | CGGMP21, FROST, BLS threshold signing |
+| [FHE](/fhe) | TFHE, CKKS encrypted computation |
+| [Lattice](/lattice) | Post-quantum lattice crypto library |
+
+## Smart Contracts
+
+| Name | Description |
+|------|-------------|
+| [Standard](/standard) | DeFi, governance, identity, privacy |
 
 ## Developer Tools
 
-| | |
-|---|---|
+| Name | Description |
+|------|-------------|
 | [CLI](/cli) | Network, subnet, wallet commands |
 | [SDK](/sdk) | Go, TypeScript, Python |
 | [Netrunner](/netrunner) | Network simulation and benchmarks |
 | [Accel](/accel) | GPU acceleration (CUDA, Metal) |
+| [ZAP](/zap) | Zero-copy high-performance messaging |
+| [ZapDB](/zapdb) | Embedded key-value database |
+| [GPU](/gpu) | Cross-platform GPU Go bindings |
+
+## Data & Identity
+
+| Name | Description |
+|------|-------------|
+| [Oracle](/oracle) | Assertions, disputes, on-chain truth |
+| [IAM](/iam) | OAuth2, OIDC, SAML, RBAC |
+| [ADX](/adx) | Decentralized ad exchange with TEE/ZK |
+| [Ledger](/ledger) | Ledger hardware wallet app |
+| [Faucet](/faucet) | Testnet LUX tokens |
 
 ## Infrastructure
 
-| | |
-|---|---|
-| [Wallet](/wallet) | HD wallet, Ledger, multi-chain |
-| [Bridge](/bridge) | MPC-secured cross-chain transfers |
+| Name | Description |
+|------|-------------|
+| [Operator](/operator) | Kubernetes operator for Lux infra |
+| [Wallet](/wallet) | HD wallet, multi-chain support |
+| [Safe](/safe) | Multi-signature wallet |
 | [Explorer](/explorer) | Blockscout blockchain explorer |
 | [Indexer](/indexer) | Multi-chain data indexer |
-| [Bootnode](/bootnode) | Lux Cloud — RPC, WebSocket, NFT APIs |
+| [Bootnode](/bootnode) | Lux Cloud RPC and API platform |
+| [Cloud](/cloud) | Build apps on Lux Network |
 
 ## Governance
 
-| | |
-|---|---|
-| [DAO](/dao) | Decentralized governance |
+| Name | Description |
+|------|-------------|
+| [DAO](/dao) | Decentralized governance framework |
 | [Vote](/vote) | Proposals, delegation, treasury |
-| [LPs](https://lps.lux.network) | 348 Lux Proposals |
+| [LPs](https://lps.lux.network) | Lux Improvement Proposals |
+
+## API Reference
+
+| Name | Description |
+|------|-------------|
+| [API Reference](/api-reference) | JSON-RPC, Platform, SDK docs |
+
+## Deep Dives
+
+| Name | Description |
+|------|-------------|
+| [Reference](/reference) | 74 skill pages for deep dives |

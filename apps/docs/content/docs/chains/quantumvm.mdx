@@ -1,22 +1,114 @@
 ---
 title: "Quantum VM (Q-Chain)"
-description: "Post-quantum cryptographic operations: ML-DSA, Kyber, lattice proofs."
+description: "Post-quantum cryptographic operations: Ringtail signatures, Quasar consensus, parallel verification."
 icon: Atom
 ---
 
-Post-quantum cryptographic operations: ML-DSA, Kyber, lattice proofs.
+The Quantum VM (Q-Chain) is a post-quantum resistant blockchain virtual machine. It provides quantum-safe signatures using Ringtail keys, parallel transaction processing, and bridges classical BLS consensus with post-quantum Ringtail threshold signatures via the Quasar consensus protocol. The Q-Chain uses DAG-based consensus for high-throughput parallel processing.
+
+## Architecture
+
+- **Ringtail Keys**: Post-quantum key pairs (default 1024 bytes) with version tracking
+- **Quantum Signatures**: SHA-512 based hashing with quantum noise and time-windowed validation
+- **Parallel Processing**: Configurable batch sizes with worker pool architecture
+- **Quasar Bridge**: Hybrid consensus connecting P-Chain BLS with Q-Chain Ringtail threshold signatures
+- **Quantum Stamps**: Time-based stamps on blocks for replay attack prevention
 
 ## Configuration
 
-Refer to the [node documentation](/nodes) for running a node with this VM enabled.
+```json
+{
+  "txFee": 1000,
+  "createAssetTxFee": 10000,
+  "quantumVerificationFee": 500,
+  "maxParallelTxs": 100,
+  "quantumAlgorithmVersion": 1,
+  "ringtailKeySize": 1024,
+  "quantumStampEnabled": true,
+  "quantumStampWindow": "30s",
+  "parallelBatchSize": 10,
+  "quantumSigCacheSize": 10000,
+  "ringtailEnabled": true,
+  "minQuantumConfirmations": 1
+}
+```
+
+### Key Parameters
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `txFee` | 1,000 | Base transaction fee (nanoLUX) |
+| `quantumVerificationFee` | 500 | Fee for quantum signature verification |
+| `maxParallelTxs` | 100 | Maximum parallel transaction processing |
+| `ringtailKeySize` | 1,024 | Ringtail key size in bytes |
+| `quantumStampWindow` | 30s | Validity window for quantum stamps |
+| `parallelBatchSize` | 10 | Batch size for parallel processing |
+| `quantumSigCacheSize` | 10,000 | Cache size for verified quantum signatures |
 
 ## RPC API
 
-Standard JSON-RPC methods are available at:
+The Q-Chain API uses the `qvm` namespace. Endpoint:
 
 ```
-https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+https://api.lux.network/{network}/ext/bc/{blockchain-id}/rpc
 ```
+
+### Block Operations
+
+- **qvm.getBlock** -- Retrieve a block by ID (includes quantum signature status)
+
+### Quantum Key Operations
+
+- **qvm.generateRingtailKey** -- Generate a new Ringtail key pair (returns public key, version, size)
+- **qvm.signWithQuantum** -- Sign a message with a quantum-resistant signature
+- **qvm.verifyQuantumSignature** -- Verify a quantum signature
+
+### Transaction Operations
+
+- **qvm.getPendingTransactions** -- Get pending transactions in the mempool
+
+### Status
+
+- **qvm.getHealth** -- Get VM health status
+- **qvm.getConfig** -- Get current configuration
+
+## Example: Generate a Ringtail Key
+
+```bash
+curl -X POST --data '{
+  "jsonrpc": "2.0",
+  "method": "qvm.generateRingtailKey",
+  "params": {},
+  "id": 1
+}' -H "Content-Type: application/json" \
+  https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+```
+
+Response:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "publicKey": "a5f72c3d...",
+    "version": 1,
+    "keySize": 1024
+  }
+}
+```
+
+## Hybrid Post-Quantum Security
+
+The Q-Chain supports hybrid post-quantum cryptography combining classical algorithms with NIST-standardized primitives:
+
+| Purpose | Classical | Post-Quantum |
+|---------|-----------|--------------|
+| Identity Signing | Ed25519 | ML-DSA-65 (NIST Level 3) |
+| Key Exchange | X25519 | ML-KEM-768 (NIST Level 3) |
+| Session Encryption | AES-256-GCM | -- |
+
+Ephemeral keys are generated per session and destroyed after handshake for forward secrecy. The system falls back gracefully to classical-only if the peer does not support PQ.
 
 ## Related LPs
 
