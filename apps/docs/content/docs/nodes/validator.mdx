@@ -23,7 +23,7 @@ Validators secure the Lux Network by participating in consensus. In return, they
 
 ### Hardware Requirements
 
-Validators need reliable hardware with high uptime. Use the same requirements as a [full node](/docs/nodes/full-node), with emphasis on:
+Validators need reliable hardware with high uptime. Use the same requirements as a [full node](/nodes/full-node), with emphasis on:
 
 - **Stable network connection**: 1 Gbps recommended with low latency
 - **UPS or redundant power**: Downtime reduces rewards
@@ -40,7 +40,7 @@ Validators need reliable hardware with high uptime. Use the same requirements as
   <Step>
     ### Run a Full Node First
 
-    Your node must be fully bootstrapped before you can register as a validator. Follow the [full node guide](/docs/nodes/full-node) and wait until `info.isBootstrapped` returns `true` for all chains.
+    Your node must be fully bootstrapped before you can register as a validator. Follow the [full node guide](/nodes/full-node) and wait until `info.isBootstrapped` returns `true` for all chains.
 
     ```bash
     luxd --network-id=mainnet
@@ -242,6 +242,6 @@ The response includes `uptime` as a decimal (e.g., `0.95` = 95%).
 
 ## Further Reading
 
-- [Full Node Guide](/docs/nodes/full-node) - Node installation and configuration
-- [Tokenomics](/docs/learn/tokenomics) - Detailed reward economics
-- [Platform API](/docs/reference/platform) - Manage validators programmatically
+- [Full Node Guide](/nodes/full-node) - Node installation and configuration
+- [Tokenomics](/learn/tokenomics) - Detailed reward economics
+- [Platform API](/reference/platform) - Manage validators programmatically
