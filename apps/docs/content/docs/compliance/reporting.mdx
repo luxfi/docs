@@ -1,0 +1,70 @@
+---
+title: Regulatory Reporting
+description: FINRA OATS, CAT, ATS-N, MiFID II transaction reports, and SAR filing
+icon: FileText
+---
+
+The compliance stack generates regulatory reports required by US, EU, and UK financial authorities.
+
+## US Reporting
+
+| Report | Authority | Frequency | Description |
+|--------|-----------|-----------|-------------|
+| **OATS** | FINRA | Real-time | Order Audit Trail System -- every order event |
+| **CAT** | SEC/FINRA | T+1 | Consolidated Audit Trail -- all order lifecycle events |
+| **ATS-N** | SEC | Quarterly | Form ATS-N -- ATS operations and conflicts disclosure |
+| **CTR** | FinCEN | Per event | Currency Transaction Report for transactions over $10,000 |
+| **SAR** | FinCEN | Per event | Suspicious Activity Report within 30 days of detection |
+
+## EU/UK Reporting
+
+| Report | Authority | Frequency | Description |
+|--------|-----------|-----------|-------------|
+| **MiFID II Transaction** | ESMA/NCA | T+1 | Transaction reports for all executed orders |
+| **FCA Reports** | FCA | Periodic | UK regulatory returns under 5AMLD |
+
+## CTR Filing
+
+Currency Transaction Reports are triggered automatically when a single transaction or aggregate daily transactions exceed $10,000:
+
+```
+Transaction ──► Amount Check ──► Over $10,000?
+                                     │
+                              ┌──────┴──────┐
+                              ▼             ▼
+                           File CTR       No action
+                           (FinCEN)
+```
+
+The `pkg/payments` package detects CTR threshold crossings for both single transactions and daily aggregates.
+
+## SAR Filing
+
+Suspicious Activity Reports are filed when the surveillance system escalates an alert:
+
+- Filing deadline: 30 calendar days from detection
+- No notification to the subject (tipping off is prohibited)
+- Retention: 5 years from filing date
+
+## Travel Rule (FATF Rec 16)
+
+For transfers exceeding $3,000, originator and beneficiary information must accompany the transaction:
+
+| Field | Required |
+|-------|----------|
+| Originator name | Yes |
+| Originator account | Yes |
+| Originator address or national ID | Yes |
+| Beneficiary name | Yes |
+| Beneficiary account | Yes |
+
+## Entity Types
+
+The `pkg/entity` package defines compliance requirements per regulated entity type:
+
+| Entity | Registration | Net Capital |
+|--------|-------------|-------------|
+| **ATS** | SEC Reg ATS, Form ATS-N | $250,000 |
+| **Broker-Dealer** | SEC/FINRA/SIPC, Rule 15c3-1 | $250,000 |
+| **Transfer Agent** | SEC Rule 17Ad, Form TA-1/TA-2 | -- |
+| **MSB** | FinCEN registration, state MTLs | Varies by state |

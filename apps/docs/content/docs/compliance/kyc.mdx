@@ -1,0 +1,64 @@
+---
+title: KYC Verification
+description: Three-tier KYC with multi-provider identity verification and ongoing monitoring
+icon: UserCheck
+---
+
+The KYC service (`pkg/kyc`) orchestrates identity verification through multiple providers with a tiered verification model.
+
+## KYC Tiers
+
+| Tier | Requirements | Limits | Use Cases |
+|------|-------------|--------|-----------|
+| **L1 - Basic** | Name, email, phone | $1,000/day | Retail trading |
+| **L2 - Standard** | Government ID, selfie, address proof | $25,000/day | Standard accounts |
+| **L3 - Enhanced** | Source of funds, employment, financial profile | Unlimited | Institutional, high-value |
+
+## IDV Providers
+
+The `pkg/idv` package supports three identity verification providers through a unified `Provider` interface:
+
+| Provider | API Version | Capabilities |
+|----------|-------------|-------------|
+| **Jumio** | v4 | Document scan, liveness, AML |
+| **Onfido** | v3.6 | Applicant checks, SDK token |
+| **Plaid** | Identity Verification | Session-based verification |
+
+All providers implement `InitiateVerification()`, `CheckStatus()`, and `ParseWebhook()`.
+
+## Application Lifecycle
+
+```
+draft ──► pending ──► pending_kyc ──► approved
+                          │                │
+                          ▼                ▼
+                       rejected         ongoing monitoring
+```
+
+KYC status tracks separately: `not_started` then `pending` then `verified` or `failed`.
+
+## Webhook Handling
+
+Each provider sends verification results via webhooks. The `pkg/webhook` package provides:
+
+- **HMAC-SHA256 signature validation** per provider
+- **Idempotency tracking** to deduplicate events
+- **Retry with configurable max attempts**
+- **Dead letter queue** for failed deliveries
+
+```
+Provider Webhook ──► Signature Validation ──► Idempotency Check
+                                                    │
+                                              KYC Status Update
+```
+
+## Application Data Model
+
+L3 applications collect comprehensive information:
+
+- Identity (name, DOB, nationality, tax ID)
+- Address (residential, with proof of address)
+- Employment and financial profile
+- Disclosures (PEP status, legal history)
+- Account preferences (trading objectives, risk tolerance)
+- Documents (government ID, proof of address, source of funds)

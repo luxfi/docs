@@ -1,0 +1,130 @@
+---
+title: NFT AMM (LSSVM)
+description: sudoswap-style NFT automated market maker with bonding curves
+icon: Image
+---
+
+The LSSVM module (`contracts/lssvm/`) implements a sudoswap-style NFT AMM. Instead of traditional NFT listings, sellers deposit NFTs into bonding curve pools where pricing adjusts automatically with each trade.
+
+## Contracts
+
+| Contract | Import | Purpose |
+|----------|--------|---------|
+| **LSSVMPairFactory** | `@luxfi/contracts/lssvm/LSSVMPairFactory.sol` | Deploys new pair pools |
+| **LSSVMPair** | `@luxfi/contracts/lssvm/LSSVMPair.sol` | NFT/token trading pair |
+| **LSSVMRouter** | `@luxfi/contracts/lssvm/LSSVMRouter.sol` | Multi-pool swap routing |
+| **LinearCurve** | `@luxfi/contracts/lssvm/LinearCurve.sol` | Linear bonding curve |
+| **ExponentialCurve** | `@luxfi/contracts/lssvm/ExponentialCurve.sol` | Exponential bonding curve |
+
+## Pool Types
+
+| Type | Description |
+|------|-------------|
+| **Token pool** | Sells tokens, buys NFTs (bid-side liquidity) |
+| **NFT pool** | Sells NFTs, buys tokens (ask-side liquidity) |
+| **Trade pool** | Both buys and sells (spread-based market making) |
+
+## Bonding Curves
+
+### Linear Curve
+
+Price changes by a fixed `delta` with each trade:
+
+```
+Buy:  price = spotPrice + delta
+Sell: price = spotPrice - delta
+```
+
+### Exponential Curve
+
+Price changes by a percentage `delta` with each trade:
+
+```
+Buy:  price = spotPrice * (1 + delta)
+Sell: price = spotPrice / (1 + delta)
+```
+
+## Creating a Pool
+
+```solidity
+import "@luxfi/contracts/lssvm/LSSVMPairFactory.sol";
+
+LSSVMPairFactory factory = LSSVMPairFactory(FACTORY_ADDRESS);
+
+// Create a trade pool with linear curve
+LSSVMPair pair = factory.createPairETH(
+    nftCollection,          // ERC721 address
+    linearCurve,            // bonding curve contract
+    LSSVMPair.PoolType.TRADE,
+    1e17,                   // delta: 0.1 ETH per trade
+    0,                      // fee: 0%
+    1e18,                   // spotPrice: 1 ETH
+    nftIds                  // initial NFT IDs to deposit
+);
+```
+
+## Trading
+
+### Buying NFTs
+
+```solidity
+import "@luxfi/contracts/lssvm/LSSVMRouter.sol";
+
+LSSVMRouter router = LSSVMRouter(ROUTER_ADDRESS);
+
+// Buy specific NFTs from a pool
+LSSVMRouter.PairSwapSpecific[] memory swaps = new LSSVMRouter.PairSwapSpecific[](1);
+swaps[0] = LSSVMRouter.PairSwapSpecific(pair, nftIds);
+
+uint256 totalCost = router.swapETHForSpecificNFTs{value: maxCost}(
+    swaps,
+    payable(msg.sender),  // NFT recipient
+    msg.sender,           // refund address
+    block.timestamp       // deadline
+);
+```
+
+### Selling NFTs
+
+```solidity
+// Sell NFTs into a pool for ETH
+LSSVMRouter.PairSwapSpecific[] memory swaps = new LSSVMRouter.PairSwapSpecific[](1);
+swaps[0] = LSSVMRouter.PairSwapSpecific(pair, nftIds);
+
+uint256 totalReceived = router.swapNFTsForToken(
+    swaps,
+    minOutput,
+    payable(msg.sender),  // token recipient
+    block.timestamp       // deadline
+);
+```
+
+## Custom Curves
+
+Implement the `ICurve` interface to create custom pricing logic:
+
+```solidity
+import "@luxfi/contracts/lssvm/ICurve.sol";
+
+contract SigmoidCurve is ICurve {
+    function getBuyInfo(
+        uint128 spotPrice,
+        uint128 delta,
+        uint256 numItems,
+        uint256 feeMultiplier,
+        uint256 protocolFeeMultiplier
+    ) external pure returns (
+        CurveErrorCodes.Error error,
+        uint128 newSpotPrice,
+        uint128 newDelta,
+        uint256 inputValue,
+        uint256 protocolFee
+    ) {
+        // Custom pricing logic
+    }
+}
+```
+
+## Fee Structure
+
+Pool creators set a spread fee (in basis points) that applies to each trade. The protocol also takes a small fee on each swap, directed to the DAO treasury via the `FeeSplitter`.

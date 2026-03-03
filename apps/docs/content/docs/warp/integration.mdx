@@ -1,0 +1,94 @@
+---
+title: VM Integration
+description: Integrate Warp cross-chain messaging into a subnet VM
+icon: Plug
+---
+
+## Overview
+
+To add Warp messaging to a subnet VM, you need to handle message creation on the source side and message verification on the destination side.
+
+## Source Chain: Sending Messages
+
+### 1. Create an Unsigned Message
+
+```go
+import "github.com/luxfi/warp"
+
+msg, err := warp.NewUnsignedMessage(
+    networkID,     // uint32
+    sourceChainID, // ids.ID
+    payload,       // []byte (encoded payload)
+)
+```
+
+### 2. Request Signatures
+
+Use a `Signer` to have the local validator sign the message, or a signature aggregator to collect signatures from multiple validators.
+
+```go
+import "github.com/luxfi/warp/signer"
+
+// Local signer (for this validator)
+localSigner := signer.NewLocalSigner(blsSecretKey)
+sig, err := localSigner.Sign(msg)
+```
+
+### 3. Aggregate Signatures
+
+The signature aggregator collects individual BLS signatures and produces a single `BitSetSignature`.
+
+```go
+import aggregator "github.com/luxfi/warp/signature-aggregator"
+
+agg := aggregator.New(validatorState, sourceChainID)
+signature, err := agg.AggregateSignatures(ctx, msg, quorumNum, quorumDen)
+```
+
+## Destination Chain: Receiving Messages
+
+### 1. Parse and Verify
+
+```go
+msg, err := warp.ParseMessage(rawBytes)
+if err != nil {
+    return err
+}
+
+err = warp.VerifyMessage(msg, networkID, validatorState, 67, 100)
+if err != nil {
+    return err // Insufficient quorum or invalid signature
+}
+```
+
+### 2. Extract Payload
+
+```go
+import "github.com/luxfi/warp/payload"
+
+addressedCall, err := payload.ParseAddressedCall(msg.UnsignedMessage.Payload)
+// Use addressedCall.SourceAddress and addressedCall.Payload
+```
+
+## EVM Precompile
+
+For EVM-based subnets, Warp is accessible via a precompile at a fixed address. Smart contracts can send and receive Warp messages without custom VM modifications.
+
+The precompile handles:
+
+- **Sending**: Emitting Warp messages from Solidity
+- **Receiving**: Verifying Warp signatures and extracting payloads in Solidity
+- **Validator queries**: Looking up the source chain validator set
+
+## Backend
+
+The backend stores outgoing messages and serves them to signature aggregators. Two implementations are provided:
+
+| Backend | Use Case |
+|---------|----------|
+| `MemoryBackend` | Testing and lightweight nodes |
+| `ChainBackend` | Production nodes with persistent storage |
+
+## Relayer
+
+The relayer automatically watches for Warp messages on a source chain and delivers them to a destination chain. It handles signature aggregation and transaction submission.

@@ -1,0 +1,62 @@
+---
+title: ZAP Protocol
+description: Zero-copy Application Protocol for high-performance messaging
+index: true
+icon: Zap
+---
+
+ZAP (**Z**ero-copy **A**pplication **P**rotocol) is a high-performance binary protocol for inter-process messaging on the Lux network. It provides 17x faster serialization and 11x less memory than MCP JSON-RPC while maintaining compatibility with existing MCP tools.
+
+```go
+import "github.com/luxfi/zap"
+```
+
+## Performance
+
+| Metric | MCP JSON-RPC | ZAP | Improvement |
+|--------|--------------|-----|-------------|
+| Serialization | 5,579 ns/op | 322 ns/op | 17x faster |
+| Memory/call | 2,826 bytes | 256 bytes | 11x less |
+| Allocations | 58/op | 2/op | 29x fewer |
+| Parse time | ~1,000 ns | 2.9 ns | 345x faster |
+
+## Wire Format
+
+Every ZAP message has a 16-byte header followed by a variable-length data segment:
+
+```
+Header (16 bytes)
+  Magic:       "ZAP\x00" (4 bytes)
+  Version:     1 (2 bytes)
+  Flags:       compression, etc. (2 bytes)
+  Root Offset: offset to root object (4 bytes)
+  Size:        total message size (4 bytes)
+Data Segment (variable)
+  Structs, lists, text, bytes...
+```
+
+## Supported Types
+
+| Type | Size | Description |
+|------|------|-------------|
+| Bool | 1 | Boolean (0 or 1) |
+| Int8/Uint8 | 1 | 8-bit integer |
+| Int16/Uint16 | 2 | 16-bit integer |
+| Int32/Uint32 | 4 | 32-bit integer |
+| Int64/Uint64 | 8 | 64-bit integer |
+| Float32/Float64 | 4/8 | IEEE 754 floating point |
+| Text | 8 | String (offset + length) |
+| Bytes | 8 | Byte slice (offset + length) |
+| List | 8 | Array (offset + length) |
+| Struct | 4 | Nested object (offset) |
+| Address | 20 | EVM address |
+| Hash | 32 | EVM hash |
+| Signature | 65 | EVM signature |
+
+## Use Cases
+
+- **AI Agent Orchestration**: 20-tool orchestrator runs at 150K ops/sec vs 10K with JSON-RPC
+- **VM-to-VM Communication**: Cross-VM message routing on the Lux network
+- **GPU Cluster / FHE Kernels**: Zero-copy ciphertext transfer between compute nodes
+- **Consensus**: 5-node consensus reaching agreement in ~450 microseconds
+- **MCP Bridge**: Auto-discover and accelerate existing MCP servers with ZAP transport

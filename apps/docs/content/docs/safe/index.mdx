@@ -1,0 +1,48 @@
+---
+title: Lux Safe
+description: Multi-signature wallet for the Lux Network
+index: true
+icon: Shield
+---
+
+Lux Safe (`@luxfi/safe`) is a multi-signature wallet application for the Lux Network blockchain ecosystem. It enables teams and organizations to manage funds with configurable m-of-n signing thresholds, ensuring no single key holder can unilaterally move assets.
+
+## Multi-Signature Model
+
+A Safe requires a configurable number of owner approvals (threshold) before a transaction can be executed. For example, a 3-of-5 Safe requires 3 out of 5 owners to sign each transaction.
+
+| Parameter | Description |
+|-----------|-------------|
+| Owners | List of addresses that can propose and approve transactions |
+| Threshold | Minimum number of approvals required to execute |
+| Nonce | Sequential counter preventing replay attacks |
+
+## Supported Chains
+
+Lux Safe works across all EVM-compatible chains in the Lux ecosystem:
+
+| Chain | Chain ID | Network |
+|-------|----------|---------|
+| C-Chain | 96369 | Mainnet |
+| Zoo | 200200 | Mainnet |
+| Hanzo | 36963 | Mainnet |
+| SPC | 36911 | Mainnet |
+| Pars | 494949 | Mainnet |
+
+Testnet and devnet chain IDs are also supported.
+
+## Technology
+
+- **Framework**: Next.js 15, React 18
+- **Package**: `@luxfi/safe`
+- **UI**: `@luxfi/ui`, Tailwind CSS
+- **Auth**: `@hanzo/auth` (Hanzo IAM integration)
+- **Deployment**: Static export via GitHub Pages
+
+## Development
+
+```bash
+pnpm install
+pnpm dev     # start development server
+pnpm build   # production build (static export)
+```

@@ -1,0 +1,78 @@
+---
+title: ADX API
+description: REST API for auction management, bid submission, and campaign operations
+icon: Server
+---
+
+ADX nodes expose HTTP (port 8000) and RPC (port 9000) APIs.
+
+## Node Operations
+
+```
+GET /health          # Returns 200 when node is healthy
+GET /info            # Node ID, version, peers, uptime
+GET /metrics         # Prometheus-format metrics
+```
+
+## Auction Operations
+
+### Create Auction
+
+```
+POST /auction/create
+
+{"slot_id":"slot-1","reserve":1000,"duration_ms":100,"format":"video"}
+```
+
+### Submit Bid
+
+```
+POST /auction/bid
+
+{"auction_id":"auc-abc123","bid":1500,"advertiser":"adv-1","creative_id":"cr-xyz"}
+```
+
+### Auction Status
+
+```
+GET /auction/{auction_id}/status
+
+{"auction_id":"auc-abc123","status":"settled","winner":"adv-1",
+ "settlement_price":1200,"proof":"0xabcdef...","attestation":"0x123..."}
+```
+
+## Budget Management
+
+### Fund Budget
+
+```
+POST /budget/fund
+
+{"advertiser":"adv-1","amount":1000000}
+```
+
+### Check Balance
+
+```
+GET /budget/{advertiser}
+
+{"advertiser":"adv-1","balance":985000,"spent_today":15000,"daily_cap":50000}
+```
+
+## Campaign Management
+
+### Create Campaign
+
+```
+POST /campaign/create
+
+{"advertiser":"adv-1","name":"Q1 CTV","budget":500000,
+ "daily_cap":25000,"frequency_cap":3,
+ "targeting":{"geo":["US","CA"],"device":["ctv","mobile"]}}
+```
+
+### List Campaigns
+
+```
+GET /campaign/list?advertiser=adv-1
+```

@@ -1,0 +1,48 @@
+---
+title: Lux Operator
+description: Kubernetes operator for managing Lux blockchain infrastructure
+index: true
+icon: Container
+---
+
+The Lux Operator (`github.com/luxfi/operator`) is a Kubernetes operator that manages Lux blockchain infrastructure declaratively. Built in Rust using the `kube-rs` framework, it reconciles custom resources every 60 seconds to maintain desired state.
+
+## Custom Resource Definitions
+
+The operator provides 6 CRDs under the `lux.network/v1alpha1` API group:
+
+| CRD | Shortname | Purpose |
+|-----|-----------|---------|
+| LuxNetwork | `luxnet` | Validator cluster (StatefulSet, Services, PDB) |
+| LuxChain | `luxchain` | Subnet chain deployment and tracking |
+| LuxIndexer | `luxidx` | Blockchain data indexer per chain |
+| LuxExplorer | `luxexp` | Block explorer frontend |
+| LuxGateway | `luxgw` | API gateway with rate limiting and routing |
+| LuxMPC | `luxmpc` | MPC signing cluster (CGGMP21 + FROST) |
+
+## Architecture
+
+The operator runs as a single-replica Deployment with leader election. It watches all 6 CRDs and reconciles them into native Kubernetes resources: StatefulSets, Services, ConfigMaps, PodDisruptionBudgets, and Ingress/IngressRoute objects.
+
+## Key Features
+
+- **Upgrade Strategy**: RollingCanary with health checks between pod restarts, or OnDelete for manual control
+- **Startup Gating**: Waits for peer connectivity before starting luxd to prevent bootstrap race conditions
+- **Health Policy**: Monitors P-chain height skew, inbound peer connections, and liveness endpoints
+- **Seed Restore**: Fast bootstrap from VolumeSnapshot, PVC clone, or S3 object store
+- **Snapshot Scheduling**: Automated periodic snapshots for disaster recovery
+- **Chain Tracking**: Automatic `--track-chains` configuration from ChainRef entries
+
+## Image
+
+```
+ghcr.io/luxfi/operator:v0.3.9
+```
+
+Cross-compiled with musl for `linux/amd64`. Build locally with:
+
+```bash
+RUSTC=~/.rustup/toolchains/nightly/bin/rustc \
+CC_x86_64_unknown_linux_musl=x86_64-linux-musl-gcc \
+cargo build --release --target x86_64-unknown-linux-musl
+```

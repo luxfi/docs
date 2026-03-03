@@ -1,0 +1,55 @@
+---
+title: Lux Teleport
+description: Cross-chain token transfer protocol using burn-mint with MPC oracles
+icon: Zap
+---
+
+Lux Teleport (`github.com/luxfi/teleport`) enables cross-chain token transfers between Lux subnets and external chains. Tokens are burned on the source chain and minted on the destination chain, with MPC oracle nodes providing signature verification.
+
+## How It Works
+
+```
+Source Chain                 MPC Oracles              Destination Chain
+┌────────────┐              ┌─────────┐              ┌────────────┐
+│ bridgeBurn │──BridgeBurned│ Watch   │──EIP-712 sig │ bridgeMint │
+│ (lock/burn)│   event     │ + sign  │             │ (mint)     │
+└────────────┘              └─────────┘              └────────────┘
+```
+
+1. User calls `bridgeBurn()` on the source chain Bridge contract, specifying token, amount, destination chain, and recipient
+2. The contract emits a `BridgeBurned` event with all transfer parameters committed on-chain
+3. MPC oracle nodes detect the event and derive claim data from on-chain logs (never from request parameters)
+4. Oracles produce an EIP-712 typed data signature over the claim
+5. User submits the signature to `bridgeMint()` on the destination chain
+6. The destination contract verifies the oracle signature and mints tokens to the recipient
+
+## Security Architecture
+
+| Protection | Mechanism |
+|-----------|-----------|
+| Signature format | EIP-712 typed data (prevents malleability) |
+| Replay prevention | ClaimId-based tracking via `keccak256(abi.encode(...))` |
+| Token safety | Admin-managed whitelist of allowed tokens |
+| Access control | Separate ADMIN, ORACLE, and PAUSER roles |
+| Emergency | Pausable on both burn and mint paths |
+| Reentrancy | ReentrancyGuard on all external functions |
+| Fee caps | Maximum 10% fee rate enforced on-chain |
+
+## Package Structure
+
+```
+teleport/
+├── contracts/        # Bridge.sol, ERC20B.sol, IBridgeToken.sol
+├── api/              # Bridge API service (TypeScript)
+├── mpc/              # MPC signing service (TypeScript)
+├── app/              # Frontend UI
+└── multi-party-ecdsa/  # MPC library
+```
+
+## Supported Assets
+
+Only admin-whitelisted tokens can be bridged. Each bridgeable token implements `ERC20B` with a `BRIDGE_ROLE` that restricts minting and burning to the Bridge contract.
+
+## Trust Model
+
+The current implementation (v1.1.0) uses 2-of-3 MPC threshold signatures. The trust assumption is that a majority of MPC oracle nodes are honest. Future versions will move to trustless light client verification with ZK proofs.

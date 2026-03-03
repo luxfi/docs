@@ -1,0 +1,137 @@
+---
+title: Identity (DID)
+description: W3C-compliant Decentralized Identity Registry, Soulbound NFTs, and on-chain reputation
+icon: Fingerprint
+---
+
+The Identity module (`contracts/identity/`) implements W3C-compliant Decentralized Identifiers (DIDs), soulbound identity NFTs, and on-chain reputation linked to the Karma governance system.
+
+## DID Registry
+
+The `DIDRegistry` stores DID documents on-chain following the W3C DID Core specification. Each DID is identified by its Ethereum address and can have multiple delegates, attributes, and service endpoints.
+
+```solidity
+import "@luxfi/contracts/identity/DIDRegistry.sol";
+
+DIDRegistry registry = DIDRegistry(REGISTRY_ADDRESS);
+
+// Register a DID attribute (e.g., service endpoint)
+registry.setAttribute(
+    identity,
+    "did/svc/MessagingService",
+    "https://messaging.example.com",
+    86400  // validity in seconds
+);
+
+// Add a delegate (e.g., signing key)
+registry.addDelegate(
+    identity,
+    "sigAuth",
+    delegateAddress,
+    86400
+);
+
+// Revoke a delegate
+registry.revokeDelegate(identity, "sigAuth", delegateAddress);
+```
+
+### DID Format
+
+Lux DIDs follow the format:
+
+```
+did:lux:0x1234...abcd
+```
+
+The DID document is constructed from on-chain events (attribute changes, delegate additions) and resolved by the `DIDResolver`.
+
+## DID Resolver
+
+Resolves a DID to its full DID document by reading the event log from the registry.
+
+```solidity
+import "@luxfi/contracts/identity/DIDResolver.sol";
+
+DIDResolver resolver = DIDResolver(RESOLVER_ADDRESS);
+
+// Check if identity is valid
+bool valid = resolver.isValidDID(identity);
+
+// Get delegate validity
+bool isDelegate = registry.validDelegate(
+    identity, "sigAuth", delegateAddress
+);
+```
+
+## Premium DID Registry
+
+Extended DID features including human-readable names, verified status, and Karma integration.
+
+```solidity
+import "@luxfi/contracts/identity/PremiumDIDRegistry.sol";
+
+PremiumDIDRegistry premium = PremiumDIDRegistry(PREMIUM_ADDRESS);
+
+// Register a human-readable DID name
+premium.registerName(identity, "alice.lux");
+
+// Verify identity (requires attestation)
+premium.verifyIdentity(identity, proof);
+```
+
+### Verified DID Benefits
+
+Verified DID holders receive special treatment in the governance system:
+
+| Benefit | Description |
+|---------|-------------|
+| Karma floor | Minimum 50 K (never fully decays) |
+| Governance access | Required for proposal creation |
+| Premium features | Human-readable DID names |
+
+## Soulbound Identity
+
+Identity tokens are soulbound (non-transferable) by default. They represent a verified on-chain identity tied to a specific address.
+
+Key properties:
+- **Non-transferable**: Cannot be sent to another address
+- **Revocable**: The issuer or the holder can revoke
+- **Composable**: Other contracts can query identity status
+- **Karma-linked**: Verified DIDs get a Karma floor of 50 K
+
+## Integration with Governance
+
+The identity system integrates directly with the Karma reputation system:
+
+```solidity
+// KarmaMinter checks DID verification status
+function rewardKarma(address recipient, bytes32 eventType, uint256 amount, bytes32 reason)
+    external onlyRole(HOOK_ROLE);
+
+// DID_VERIFICATION event: 100 K base, 1-year cooldown
+// HUMANITY_PROOF event: 200 K base, 1-year cooldown
+```
+
+Verified DID holders enjoy a permanent Karma floor of 50 K, ensuring they always retain baseline voting power even after extended inactivity.
+
+## Events
+
+The registry emits events for all state changes, enabling off-chain indexing:
+
+```solidity
+event DIDAttributeChanged(
+    address indexed identity,
+    bytes32 name,
+    bytes value,
+    uint256 validTo,
+    uint256 previousChange
+);
+
+event DIDDelegateChanged(
+    address indexed identity,
+    bytes32 delegateType,
+    address delegate,
+    uint256 validTo,
+    uint256 previousChange
+);
+```

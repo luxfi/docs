@@ -1,0 +1,71 @@
+---
+title: Kernels
+description: Available GPU kernels for crypto, ZK, and ML operations
+icon: Layers
+---
+
+## Array Creation
+
+| Function | Description |
+|----------|-------------|
+| `Zeros(shape, dtype)` | Zero-filled array |
+| `Ones(shape, dtype)` | One-filled array |
+| `Full(shape, dtype, value)` | Constant-filled array |
+| `Random(shape, dtype)` | Random values in [0, 1) |
+| `Arange(start, stop, step)` | Sequential values |
+| `FromSlice(data, shape, dtype)` | Create from Go slice |
+
+## Arithmetic Operations
+
+Element-wise operations that dispatch to the active GPU backend.
+
+| Function | Description |
+|----------|-------------|
+| `Add(a, b)` | Element-wise addition |
+| `Sub(a, b)` | Element-wise subtraction |
+| `Mul(a, b)` | Element-wise multiplication |
+| `Div(a, b)` | Element-wise division |
+| `Maximum(a, b)` | Element-wise maximum |
+
+## Matrix Operations
+
+| Function | Description |
+|----------|-------------|
+| `MatMul(a, b)` | Matrix multiplication |
+| `Transpose(a)` | 2D matrix transpose |
+
+## Unary Operations
+
+| Function | Description |
+|----------|-------------|
+| `Neg(a)` | Negate |
+| `Abs(a)` | Absolute value |
+| `Sqrt(a)` | Square root |
+| `Exp(a)` | Exponential |
+| `Log(a)` | Natural logarithm |
+
+## Activation Functions
+
+Used in ML inference workloads.
+
+| Function | Description |
+|----------|-------------|
+| `Tanh(a)` | Hyperbolic tangent |
+| `Sigmoid(a)` | Sigmoid activation |
+| `ReLU(a)` | Rectified linear unit |
+| `GELU(a)` | Gaussian error linear unit |
+
+## Reductions
+
+| Function | Description |
+|----------|-------------|
+| `Sum(a, axes...)` | Sum elements along axes |
+| `Mean(a, axes...)` | Mean along axes |
+
+## Utilities
+
+| Function | Description |
+|----------|-------------|
+| `Copy(a)` | Deep copy array |
+| `Eval(arrays...)` | Force lazy evaluation |
+| `Synchronize()` | Wait for all GPU operations |

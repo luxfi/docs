@@ -1,0 +1,96 @@
+---
+title: Lending (Markets)
+description: Morpho-style isolated lending markets with permissionless pool creation
+icon: Landmark
+---
+
+The Markets module (`contracts/markets/`) implements Morpho-style isolated lending markets. Each market is a standalone pair of one collateral token and one loan token, with independent risk parameters.
+
+## Architecture
+
+Unlike monolithic lending pools (Aave, Compound), each market is isolated. A bad collateral asset only affects that specific market, not the entire protocol.
+
+| Contract | Import | Purpose |
+|----------|--------|---------|
+| **Markets** | `@luxfi/contracts/markets/Markets.sol` | Core lending engine |
+| **Allocator** | `@luxfi/contracts/markets/Allocator.sol` | Capital allocation |
+| **Router** | `@luxfi/contracts/markets/Router.sol` | User-facing router |
+
+## Market Parameters
+
+Each market is defined by:
+
+| Parameter | Description |
+|-----------|-------------|
+| `loanToken` | Token being borrowed |
+| `collateralToken` | Token used as collateral |
+| `oracle` | Price oracle for the pair |
+| `irm` | Interest rate model |
+| `lltv` | Liquidation loan-to-value ratio |
+
+## Usage
+
+```solidity
+import "@luxfi/contracts/markets/Markets.sol";
+
+Markets markets = Markets(MARKETS_ADDRESS);
+
+// Supply collateral
+markets.supplyCollateral(marketId, amount, onBehalf, data);
+
+// Borrow against collateral
+markets.borrow(marketId, amount, onBehalf, receiver);
+
+// Repay loan
+markets.repay(marketId, amount, onBehalf, data);
+
+// Withdraw collateral
+markets.withdrawCollateral(marketId, amount, onBehalf, receiver);
+```
+
+## Liquidation
+
+When a position's LTV exceeds the market's `lltv`, anyone can liquidate:
+
+```solidity
+// Liquidate an unhealthy position
+markets.liquidate(
+    marketId,
+    borrower,
+    seizedAssets,  // collateral to seize
+    repaidShares,  // debt shares to repay
+    data
+);
+```
+
+The liquidation incentive is determined by the market's LLTV -- higher LLTV markets offer larger liquidation bonuses to compensate for the tighter margin.
+
+## Interest Rate Model
+
+Interest rates adjust dynamically based on utilization:
+
+| Utilization | Rate Behavior |
+|-------------|---------------|
+| Below target | Rate decreases slowly |
+| At target | Rate is stable |
+| Above target | Rate increases rapidly |
+
+The target utilization is typically 90%, ensuring sufficient liquidity for withdrawals while maximizing capital efficiency.
+
+## Oracle Integration
+
+Markets use the unified Lux Oracle (`contracts/oracle/Oracle.sol`) which aggregates prices from Chainlink, Pyth, TWAP, and the DEX precompile. Each market specifies its oracle at creation time.
+
+```solidity
+import "@luxfi/contracts/oracle/IOracle.sol";
+
+// Oracle returns price with 18 decimal precision
+(uint256 price, uint256 timestamp) = oracle.getPrice(collateralToken);
+```
+
+## Key Properties
+
+- **Permissionless**: Anyone can create a market with any token pair
+- **Isolated risk**: Each market has independent solvency
+- **Gas efficient**: Single contract manages all markets (no factory pattern)
+- **Flash loans**: Built-in flash loan support for arbitrage and liquidation

@@ -1,0 +1,59 @@
+---
+title: Trade Surveillance
+description: Real-time detection of wash trading, spoofing, layering, and structuring
+icon: Eye
+---
+
+The monitoring service (`pkg/aml.MonitoringService`) runs a rules engine for real-time transaction monitoring and market surveillance.
+
+## Detection Rules
+
+| Pattern | Description | Rule Type |
+|---------|-------------|-----------|
+| **Wash Trading** | Self-dealing or coordinated trades to inflate volume | Velocity + geographic |
+| **Spoofing** | Placing orders with intent to cancel before execution | Velocity |
+| **Layering** | Multiple orders at different prices to create false depth | Velocity + daily aggregate |
+| **Structuring** | Breaking transactions to avoid CTR threshold ($10,000) | Structuring |
+| **Front-Running** | Trading ahead of known pending orders | Velocity |
+
+## Rule Types
+
+The engine supports five rule categories:
+
+| Rule Type | Trigger |
+|-----------|---------|
+| `single_amount` | Single transaction exceeds threshold |
+| `daily_aggregate` | Cumulative daily amount exceeds threshold |
+| `velocity` | Transaction count within time window exceeds limit |
+| `geographic` | Transactions from high-risk jurisdictions |
+| `structuring` | Multiple transactions just below reporting threshold |
+
+## Alert Lifecycle
+
+```
+Transaction ──► Rules Engine ──► Alert Generated
+                                       │
+                            ┌──────────┼──────────┐
+                            ▼          ▼          ▼
+                          open    investigating  escalated
+                            │          │          │
+                            ▼          ▼          ▼
+                         closed      closed     filed (SAR)
+```
+
+## SAR Generation
+
+When an alert is escalated and confirmed, the system generates a Suspicious Activity Report:
+
+- **Filing entity**: MSB, broker-dealer, or ATS registration
+- **Subject information**: From KYC application data
+- **Narrative**: Auto-generated from alert details and transaction history
+- **Supporting documentation**: Transaction logs, screening results
+
+## Structuring Detection
+
+Structuring detection identifies attempts to break transactions into amounts below the $10,000 Currency Transaction Report threshold:
+
+- Multiple transactions between $8,000 and $9,999 within 24 hours
+- Transactions from the same originator across multiple accounts
+- Rapid sequential deposits just below threshold

@@ -1,0 +1,64 @@
+---
+title: Oracle Data Feeds
+description: Optimistic assertions, dispute resolution, and custom data feeds
+icon: Activity
+---
+
+The Lux Oracle uses an **optimistic assertion** model. Data providers assert truths and back them with bonded collateral. If no one disputes during the liveness window, the assertion settles as true.
+
+## Assertion Lifecycle
+
+| Phase | Action | Who |
+|-------|--------|-----|
+| Assert | `assertTruth(claim, bond)` | Data provider |
+| Challenge | `disputeAssertion(assertionId)` | Anyone (bonds collateral) |
+| Settle | `settleAssertion(assertionId)` | Anyone (after liveness expires) |
+| Callback | `assertionResolvedCallback()` | Oracle notifies consumer |
+
+## Assertion Types
+
+### Price Feeds
+
+Assert a price at a given timestamp. The identifier and ancillary data define what is being priced.
+
+```solidity
+bytes memory claim = abi.encode("ETH/USD", 3200e18, block.timestamp);
+bytes32 id = oracle.assertTruthWithDefaults(claim, msg.sender);
+```
+
+### Custom Data
+
+Any binary claim can be asserted. The oracle does not interpret the claim -- it only manages the dispute lifecycle.
+
+```solidity
+bytes memory claim = abi.encode("match-result", teamA, teamB, scoreA, scoreB);
+bytes32 id = oracle.assertTruth(
+    claim, msg.sender, callbackAddr, address(0),
+    7200, currency, bondAmount, identifier, domainId
+);
+```
+
+## Dispute Resolution
+
+When an assertion is disputed, resolution follows one of two paths:
+
+1. **DVM (default)** -- the decentralized verification mechanism resolves the dispute via token-holder vote
+2. **Escalation Manager** -- a custom contract implements `IEscalationManager` to provide domain-specific arbitration
+
+## Bonds and Fees
+
+| Parameter | Description |
+|-----------|-------------|
+| `bond` | ERC-20 collateral locked by asserter |
+| `finalFee` | Fee paid to the oracle system on disputes |
+| `burnedBondPercentage` | Portion of loser's bond that is burned |
+
+The minimum bond is queried via `getMinimumBond(currency)`. Bonds are returned to the truthful party after settlement.
+
+## Registry Contracts
+
+| Contract | Purpose |
+|----------|---------|
+| `Finder` | Service locator -- maps interface names to deployed addresses |
+| `Store` | Manages final fees per currency |
+| `IdentifierWhitelist` | Controls which query identifiers are supported |

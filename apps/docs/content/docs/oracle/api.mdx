@@ -1,0 +1,74 @@
+---
+title: Oracle API
+description: Solidity interfaces for asserting, disputing, and consuming oracle data
+icon: FileCode
+---
+
+## IOracle Interface
+
+The core interface at `@luxfi/oracle/prediction/IOracle.sol`.
+
+```solidity
+// Assert a claim with defaults
+function assertTruthWithDefaults(bytes memory claim, address asserter)
+    external returns (bytes32 assertionId);
+
+// Assert with full configuration
+function assertTruth(bytes memory claim, address asserter,
+    address callbackRecipient, address escalationManager,
+    uint64 liveness, IERC20 currency, uint256 bond,
+    bytes32 identifier, bytes32 domainId)
+    external returns (bytes32 assertionId);
+
+// Dispute and settle
+function disputeAssertion(bytes32 assertionId, address disputer) external;
+function settleAssertion(bytes32 assertionId) external;
+function settleAndGetAssertionResult(bytes32 id) external returns (bool);
+
+// Read functions
+function getAssertion(bytes32 id) external view returns (Assertion memory);
+function getAssertionResult(bytes32 id) external view returns (bool);
+function getMinimumBond(address currency) external view returns (uint256);
+```
+
+## Consumer Example
+
+```solidity
+import "@luxfi/oracle/prediction/IOracle.sol";
+
+contract PriceConsumer is IOracleCallbacks {
+    IOracle public oracle;
+    mapping(bytes32 => bool) public results;
+
+    constructor(address _oracle) { oracle = IOracle(_oracle); }
+
+    function requestPrice(bytes memory claim, uint256 bond) external {
+        IERC20 currency = IERC20(oracle.defaultIdentifier());
+        oracle.assertTruth(claim, msg.sender, address(this), address(0),
+            3600, currency, bond, oracle.defaultIdentifier(), bytes32(0));
+    }
+
+    function assertionResolvedCallback(bytes32 id, bool truth) external override {
+        require(msg.sender == address(oracle));
+        results[id] = truth;
+    }
+
+    function assertionDisputedCallback(bytes32) external override {}
+}
+```
+
+## Events
+
+```solidity
+event AssertionMade(bytes32 indexed assertionId, bytes32 domainId,
+    bytes claim, address indexed asserter, address callbackRecipient,
+    address escalationManager, address caller, uint64 expirationTime,
+    IERC20 currency, uint256 bond, bytes32 indexed identifier);
+
+event AssertionDisputed(bytes32 indexed assertionId,
+    address indexed caller, address indexed disputer);
+
+event AssertionSettled(bytes32 indexed assertionId,
+    address indexed bondRecipient, bool disputed,
+    bool settlementResolution, address settleCaller);
+```

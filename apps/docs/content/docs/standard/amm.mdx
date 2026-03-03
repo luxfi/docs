@@ -1,0 +1,108 @@
+---
+title: AMM
+description: Automated Market Makers - V2 constant-product, V3 concentrated liquidity, and StableSwap
+icon: ArrowLeftRight
+---
+
+The AMM module provides three pool types for different trading scenarios. All AMM contracts are in `contracts/amm/`.
+
+## V2 (Constant Product)
+
+Classic `x * y = k` AMM based on Uniswap V2. Best for long-tail token pairs.
+
+| Contract | Import |
+|----------|--------|
+| **AMMV2Factory** | `@luxfi/contracts/amm/AMMV2Factory.sol` |
+| **AMMV2Pair** | `@luxfi/contracts/amm/AMMV2Pair.sol` |
+| **AMMV2Router** | `@luxfi/contracts/amm/AMMV2Router.sol` |
+
+```solidity
+import "@luxfi/contracts/amm/AMMV2Router.sol";
+
+AMMV2Router router = AMMV2Router(ROUTER_ADDRESS);
+
+// Add liquidity
+router.addLiquidity(
+    tokenA, tokenB,
+    amountADesired, amountBDesired,
+    amountAMin, amountBMin,
+    to, deadline
+);
+
+// Swap exact tokens for tokens
+router.swapExactTokensForTokens(
+    amountIn, amountOutMin,
+    path, to, deadline
+);
+```
+
+## V3 (Concentrated Liquidity)
+
+Uniswap V3-style concentrated liquidity. LPs provide liquidity within specific price ranges for higher capital efficiency.
+
+| Contract | Import |
+|----------|--------|
+| **AMMV3Factory** | `@luxfi/contracts/amm/AMMV3Factory.sol` |
+| **AMMV3Pool** | `@luxfi/contracts/amm/AMMV3Pool.sol` |
+
+Fee tiers: 0.01% (1 tick), 0.05% (10 ticks), 0.3% (60 ticks), 1% (200 ticks).
+
+```solidity
+import "@luxfi/contracts/amm/AMMV3Factory.sol";
+
+AMMV3Factory factory = AMMV3Factory(FACTORY_ADDRESS);
+
+// Create pool with 0.3% fee
+address pool = factory.createPool(tokenA, tokenB, 3000);
+```
+
+## StableSwap (Curve-Style)
+
+Optimized for pegged assets (stablecoins, wrapped tokens) using the StableSwap invariant. Supports 2-4 token pools with minimal slippage between like-kind assets.
+
+| Contract | Import |
+|----------|--------|
+| **StableSwap** | `@luxfi/contracts/amm/StableSwap.sol` |
+| **StableSwapFactory** | `@luxfi/contracts/amm/StableSwapFactory.sol` |
+
+The amplification coefficient `A` controls pool behavior -- higher values produce tighter peg, lower values behave more like constant-product.
+
+```solidity
+import "@luxfi/contracts/amm/StableSwap.sol";
+
+StableSwap pool = StableSwap(POOL_ADDRESS);
+
+// Swap token index 0 for token index 1
+uint256 dy = pool.exchange(0, 1, dx, minDy);
+
+// Add liquidity (balanced or imbalanced)
+uint256 lpTokens = pool.addLiquidity(amounts, minMintAmount);
+
+// Remove liquidity in a single token
+uint256 received = pool.removeLiquidityOneCoin(lpAmount, tokenIndex, minAmount);
+```
+
+### StableSwap Invariant
+
+```
+A * n^n * sum(x_i) + D = A * D * n^n + D^(n+1) / (n^n * prod(x_i))
+```
+
+Pool `D` is computed iteratively using Newton's method with guaranteed convergence in under 255 iterations.
+
+### Dynamic A Parameter
+
+The amplification coefficient can be ramped over time (minimum 24-hour ramp period) to adjust pool characteristics without redeployment:
+
+```solidity
+// Ramp A from current value to 500 over 48 hours
+pool.rampA(500, block.timestamp + 48 hours);
+```
+
+## Fee Structure
+
+| Pool Type | Swap Fee | Admin Fee |
+|-----------|----------|-----------|
+| V2 Pair | 0.3% | Protocol-defined |
+| V3 Pool | 0.01% - 1% | Per fee tier |
+| StableSwap | 0.04% | 50% of swap fee |

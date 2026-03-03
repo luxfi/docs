@@ -1,0 +1,44 @@
+---
+title: Testnet Faucet
+description: Get test LUX tokens for development on Lux testnets
+icon: Droplets
+---
+
+The Lux Faucet dispenses test tokens on Lux testnets for development and testing. It supports multiple EVM chains and ERC-20 tokens with per-address and per-IP rate limiting.
+
+## Supported Networks
+
+| Network | Token | Drip Amount | Chain ID |
+|---------|-------|-------------|----------|
+| **Testnet (C-Chain)** | LUX | 2 LUX | 43113 |
+| **Subnet Testnets** | Various | 2 tokens | Per-chain |
+
+## Rate Limits
+
+| Scope | Limit | Window |
+|-------|-------|--------|
+| **Per Address** | 1 request | 24 hours |
+| **Per IP** | 1 request per chain | 24 hours |
+| **Global** | 40 requests | 1 minute |
+
+Rate limits apply independently per chain and per token. A single address can request tokens from multiple chains within the same window.
+
+## Architecture
+
+| Component | Technology | Port |
+|-----------|-----------|------|
+| **Backend** | Express + TypeScript | 8000 |
+| **Frontend** | React / Next.js | 3000 |
+| **Contracts** | Solidity + Foundry | -- |
+
+The backend manages funded wallets per chain, signs and sends transactions, and enforces rate limits. CAPTCHA verification (reCAPTCHA v2/v3) prevents abuse.
+
+## Features
+
+| Feature | Description |
+|---------|-------------|
+| **Multi-Chain** | Supports C-Chain and subnet EVM chains |
+| **ERC-20 Tokens** | Drips USDC, WLUX, and other test tokens |
+| **Rate Limiting** | Per-address, per-IP, and global limits |
+| **CAPTCHA** | reCAPTCHA verification to prevent bots |
+| **Balance Monitoring** | Auto-recalibrates drip amounts based on faucet balance |

@@ -1,0 +1,59 @@
+---
+title: ZapDB
+description: High-performance embedded key-value database for Lux
+index: true
+icon: Database
+---
+
+ZapDB (`github.com/luxfi/zapdb/v4`) is an embeddable, persistent key-value database written in pure Go. It is the default storage engine for Lux blockchain nodes and is used by the MPC system for encrypted key share storage.
+
+## Design
+
+ZapDB is based on the WiscKey paper, which separates keys from values in an LSM tree architecture. Keys are stored in the LSM tree (served from RAM), while values are stored in a separate value log (served from SSD). This reduces write amplification and keeps the LSM tree small.
+
+## Features
+
+| Feature | Description |
+|---------|-------------|
+| ACID transactions | Serializable snapshot isolation with MVCC |
+| Concurrent access | Multiple readers and writers simultaneously |
+| TTL support | Automatic key expiration |
+| Key-only iteration | Iterate keys without loading values |
+| Prefix scanning | Efficient range queries by key prefix |
+| Compression | Snappy and ZSTD compression for values |
+| Encryption | Optional encryption at rest |
+| Backup/Restore | Online backup and incremental restore |
+
+## Quick Start
+
+```go
+import "github.com/luxfi/zapdb/v4"
+
+// Open a database
+db, err := badger.Open(badger.DefaultOptions("/tmp/zapdb"))
+if err != nil {
+    log.Fatal(err)
+}
+defer db.Close()
+
+// Write a key-value pair
+err = db.Update(func(txn *badger.Txn) error {
+    return txn.Set([]byte("hello"), []byte("world"))
+})
+
+// Read a key
+err = db.View(func(txn *badger.Txn) error {
+    item, err := txn.Get([]byte("hello"))
+    if err != nil {
+        return err
+    }
+    return item.Value(func(val []byte) error {
+        fmt.Println(string(val)) // "world"
+        return nil
+    })
+})
+```
+
+## Use in Lux
+
+ZapDB is the default `dbType` in the Lux Operator LuxNetwork CRD. Set `spec.dbType: zapdb` (the default) to use it as the node database backend.

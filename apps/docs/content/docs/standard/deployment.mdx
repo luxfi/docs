@@ -1,0 +1,101 @@
+---
+title: Deployment
+description: Deployed contract addresses per chain and deployment scripts
+icon: Rocket
+---
+
+The full DeFi stack is deployed via `script/DeployFullStack.s.sol` in 12 phases. Additional governance contracts are deployed via `script/DeployGovernanceSuite.s.sol`.
+
+## Deployment Scripts
+
+```bash
+# Local deployment (start anvil first)
+anvil --chain-id 96369 --mnemonic "$LUX_MNEMONIC" --balance 10000000000
+forge script script/DeployFullStack.s.sol --rpc-url http://127.0.0.1:8545 --broadcast -vvv
+
+# Mainnet deployment
+forge script script/DeployFullStack.s.sol --rpc-url lux --broadcast --verify
+
+# Testnet deployment
+forge script script/DeployFullStack.s.sol --rpc-url lux_testnet --broadcast --verify
+```
+
+## Deployment Phases
+
+| Phase | Contracts | Description |
+|-------|-----------|-------------|
+| 1 | WLUX, LUSD, LETH, LBTC | Core tokens |
+| 2 | StakedLUX | LUX staking |
+| 3 | LiquidLUX | Master yield vault (xLUX) |
+| 4 | AMMV2Factory, AMMV2Router | AMM DEX |
+| 5 | 5 LP pools | Core trading pairs |
+| 6 | FeeSplitter, ValidatorVault | Fee distribution |
+| 7 | DIDRegistry | Identity/DID |
+| 8 | Governor, Timelock, vLUX, GaugeController, Karma, DLUX | Governance |
+| 9 | FeeSplitter wiring | Treasury integration |
+| 10 | LinearCurve, ExponentialCurve, LSSVMFactory, LSSVMRouter | NFT AMM |
+| 11 | Markets | Morpho-style lending |
+| 12 | Perps | Perpetual futures |
+
+## C-Chain Mainnet (96369)
+
+| Contract | Address |
+|----------|---------|
+| **WLUX** | `0x52c84043cd9c865236f11d9fc9f56aa003c1f922` |
+| **AI** | `0xa4cd3b0eb6e5ab5d8ce4065bccd70040adab1f00` |
+
+RPC: `https://api.lux.network/ext/bc/C/rpc`
+
+## C-Chain Testnet (96368)
+
+| Contract | Address |
+|----------|---------|
+| **WLUX** | `0xc65ea8882020af7cda7854d590c6fcd34bf364ec` |
+| **LUSD** | `0x413e4a820635702ec199bc5b62dcbca1749851bf` |
+| **LETH** | `0x9378b62fc172d2a4f715d7ecf49de0362f1bb702` |
+| **LBTC** | `0x7fc4f8a926e47fa3587c0d7658c00e7489e67916` |
+| **LiquidLUX** | `0x00947bbdc619974b0eddaf103b981f3273a3e8da` |
+
+RPC: `https://api.lux-test.network/ext/bc/C/rpc`
+
+## C-Chain Devnet (96370)
+
+| Contract | Address |
+|----------|---------|
+| **WLUX** | `0xc65ea8882020Af7CDa7854d590C6Fcd34BF364ec` |
+| **DLUX** | `0x316520ca05eaC5d2418F562a116091F1b22Bf6e0` |
+| **Timelock** | `0x80f3bd0Bdf7861487dDDA61bc651243ecB8B5072` |
+| **vLUX** | `0x91954cf6866d557C5CA1D2f384D204bcE9DFfd5a` |
+| **DAO Treasury** | `0xC764A58Ee3C5bAE3008C034E566352424be933F3` |
+| **Markets** | `0x6fc44509a32E513bE1aa00d27bb298e63830C6A8` |
+| **Perps** | `0xb2ee1CE7b84853b83AA08702aD0aD4D79711882D` |
+| **LSSVM Factory** | `0x0570b2c59976E87D37d3a9915750BFf131d295D6` |
+| **GaugeController** | `0x26328AC03d07BD9A7Caaafbde39F9b56B5449240` |
+| **Karma** | `0x97c265001EB088E1dE2F77A13a62B708014c9e68` |
+| **Governor** | `0x6fc44509a32E513bE1aa00d27bb298e63830C6A8` |
+| **Options** | `0xac604Fd2F423Ea738de9C0d6Eb03eBA6F90b63FB` |
+| **Streams** | `0xd9e69a0A38BF48898456170CB3B4451cBaF5F597` |
+| **Cover** | `0x92d057F8B4132Ca8Aa237fbd4C41F9c57079582E` |
+
+RPC: `https://api.lux-dev.network/ext/bc/C/rpc`
+
+## AMM Production Addresses (Shared via CREATE2)
+
+These addresses are identical across LUX mainnet, testnet, and Zoo:
+
+| Contract | Address |
+|----------|---------|
+| **V2 Factory** | `0xD173926A10A0C4eCd3A51B1422270b65Df0551c1` |
+| **V2 Router** | `0xAe2cf1E403aAFE6C05A5b8Ef63EB19ba591d8511` |
+| **V3 Factory** | `0x80bBc7C4C7a59C899D1B37BC14539A22D5830a84` |
+| **V3 Swap Router** | `0x939bC0Bca6F9B9c52E6e3AD8A3C590b5d9B9D10E` |
+| **Multicall** | `0xd25F88CBdAe3c2CCA3Bb75FC4E723b44C0Ea362F` |
+| **NFT Position Manager** | `0x7a4C48B9dae0b7c396569b34042fcA604150Ee28` |
+
+## Network Configuration
+
+| Network | Network ID | C-Chain ID | RPC |
+|---------|------------|-----------|-----|
+| Mainnet | 1 | 96369 | `https://api.lux.network/ext/bc/C/rpc` |
+| Testnet | 2 | 96368 | `https://api.lux-test.network/ext/bc/C/rpc` |
+| Devnet | 3 | 96370 | `https://api.lux-dev.network/ext/bc/C/rpc` |

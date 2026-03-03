@@ -1,0 +1,151 @@
+---
+title: Custom Resource Definitions
+description: YAML specifications for all 6 Lux Operator CRDs
+icon: FileCode
+---
+
+All CRDs use API group `lux.network/v1alpha1` and are namespace-scoped.
+
+## LuxNetwork
+
+Deploys a validator cluster as a StatefulSet with staking keys, genesis, and consensus configuration.
+
+```yaml
+apiVersion: lux.network/v1alpha1
+kind: LuxNetwork
+metadata:
+  name: mainnet
+  namespace: lux-mainnet
+spec:
+  networkId: 1
+  validators: 5
+  image:
+    repository: ghcr.io/luxfi/node
+    tag: v1.23.23
+  storage:
+    size: 200Gi
+    storageClass: do-block-storage
+  dbType: zapdb
+  consensus:
+    sampleSize: 5
+    quorumSize: 4
+    sybilProtectionEnabled: true
+  upgradeStrategy:
+    strategyType: RollingCanary
+    maxUnavailable: 1
+    healthCheckBetweenRestarts: true
+    stabilizationSeconds: 60
+  healthPolicy:
+    maxHeightSkew: 10
+    gracePeriodSeconds: 300
+  startupGate:
+    enabled: true
+    minPeers: 2
+    timeoutSeconds: 300
+    onTimeout: StartAnyway
+```
+
+## LuxChain
+
+Declares a subnet chain with VM configuration and validator assignments.
+
+```yaml
+apiVersion: lux.network/v1alpha1
+kind: LuxChain
+metadata:
+  name: zoo
+  namespace: lux-mainnet
+spec:
+  networkRef: mainnet
+  alias: zoo
+  vm:
+    vmType: evm
+    genesis:
+      chainId: 200200
+    chainConfig:
+      feeConfig:
+        gasLimit: 15000000
+  validators:
+    - nodeId: NodeID-abc123
+      weight: 100
+```
+
+## LuxIndexer
+
+Deploys a blockchain data indexer with PostgreSQL storage and Blockscout v2 API.
+
+```yaml
+apiVersion: lux.network/v1alpha1
+kind: LuxIndexer
+metadata:
+  name: cchain-indexer
+  namespace: lux-mainnet
+spec:
+  networkRef: mainnet
+  chainAlias: C
+  chainId: 96369
+  port: 4000
+  database:
+    host: indexer-postgres
+    name: indexer
+  defiIndexing: true
+  traceEnabled: true
+```
+
+## LuxExplorer
+
+Deploys a block explorer frontend connected to one or more indexers.
+
+```yaml
+apiVersion: lux.network/v1alpha1
+kind: LuxExplorer
+metadata:
+  name: explorer
+  namespace: lux-mainnet
+spec:
+  networkRef: mainnet
+  replicas: 2
+  indexerRefs:
+    - indexerName: cchain-indexer
+      displayName: C-Chain
+      default: true
+    - indexerName: zoo-indexer
+      displayName: Zoo
+  ingress:
+    host: explore.lux.network
+```
+
+## LuxGateway
+
+Deploys a KrakenD-based API gateway with auto-discovered routes and rate limiting.
+
+```yaml
+apiVersion: lux.network/v1alpha1
+kind: LuxGateway
+metadata:
+  name: api-gateway
+  namespace: lux-mainnet
+spec:
+  networkRef: mainnet
+  host: api.lux.network
+  replicas: 2
+  autoRoutes: true
+  rateLimit:
+    maxRate: 5000
+    clientMaxRate: 100
+```
+
+## LuxMPC
+
+Deploys an MPC signing cluster with threshold t-of-n key management.
+
+```yaml
+apiVersion: lux.network/v1alpha1
+kind: LuxMPC
+metadata:
+  name: mpc-cluster
+  namespace: lux-mainnet
+spec:
+  nodes: 3
+  threshold: 2
+```

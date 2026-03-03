@@ -1,0 +1,90 @@
+---
+title: Messages and Payloads
+description: Warp message format, payload types, and BLS signing
+icon: FileText
+---
+
+## Message Format
+
+Every Warp message consists of an `UnsignedMessage` wrapped with a `Signature`.
+
+### UnsignedMessage
+
+The unsigned message identifies the source network and chain, and carries an arbitrary payload.
+
+```go
+type UnsignedMessage struct {
+    NetworkID     uint32 // Lux network ID (1=mainnet, 2=testnet)
+    SourceChainID ids.ID // 32-byte chain identifier
+    Payload       []byte // Encoded payload (up to 256 KiB total)
+}
+```
+
+### Message (Signed)
+
+A signed message pairs the unsigned content with a BLS aggregate signature.
+
+```go
+type Message struct {
+    UnsignedMessage *UnsignedMessage
+    Signature       Signature // BitSetSignature
+}
+```
+
+### BitSetSignature
+
+The signature uses a compact bitmap to indicate which validators signed, plus a single aggregated BLS signature.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| Signers | `[]byte` | Bitmap of validator indices that signed |
+| Signature | `[96]byte` | Aggregated BLS12-381 signature |
+
+## Payload Types
+
+Payloads are encoded inside the `UnsignedMessage.Payload` field.
+
+### AddressedCall
+
+Cross-VM contract-to-contract calls. Contains a source address and arbitrary call data.
+
+### Hash
+
+A simple 32-byte hash payload. Used when only a content commitment is needed.
+
+### L1ValidatorRegistration
+
+Reports whether a validator is currently registered on the source L1. Used for cross-chain validator set synchronization.
+
+### RegisterL1Validator
+
+Requests adding a validator to a subnet. Carries the full validator parameters including BLS public key and weight.
+
+### L1ValidatorWeight
+
+Updates the weight of an existing validator. Used when stake changes on the source chain.
+
+### SubnetToL1Conversion
+
+Signals that a subnet has been converted to an L1. Contains the conversion data needed by destination chains.
+
+## Verification
+
+Messages are verified by calling `VerifyMessage` with the expected network ID and a `ValidatorState` that can look up the source chain's validator set.
+
+```go
+err := warp.VerifyMessage(
+    msg,
+    networkID,
+    validatorState,
+    quorumNum,  // e.g. 67
+    quorumDen,  // e.g. 100
+)
+```
+
+The verification checks that:
+
+1. The message format is valid
+2. The network ID matches
+3. The aggregate signature is correct for the indicated signers
+4. The total signed weight meets the quorum threshold

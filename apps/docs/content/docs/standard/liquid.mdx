@@ -1,0 +1,106 @@
+---
+title: Liquid Protocol
+description: Yield-bearing bridge tokens (LETH, LBTC, LUSD) and the xLUX master yield vault
+icon: Droplets
+---
+
+The Liquid Protocol (`contracts/liquid/`) provides yield-bearing bridge tokens and the LiquidLUX (xLUX) master yield vault that receives all protocol fees across the Lux ecosystem.
+
+## LiquidLUX (xLUX)
+
+The master yield vault. Deposit WLUX, receive xLUX shares. All protocol fees (DEX, bridge, lending, perps, NFT) flow into this vault, increasing the value of xLUX over time.
+
+```solidity
+import "@luxfi/contracts/liquid/LiquidLUX.sol";
+
+LiquidLUX vault = LiquidLUX(VAULT_ADDRESS);
+
+// Deposit WLUX, receive xLUX shares
+wlux.approve(address(vault), amount);
+uint256 shares = vault.deposit(amount, msg.sender);
+
+// Withdraw -- burns xLUX, returns WLUX
+uint256 assets = vault.withdraw(shares, msg.sender, msg.sender);
+```
+
+### Fee Sources
+
+| Source | Fee Type | Performance Fee |
+|--------|----------|-----------------|
+| DEX trading | `FEE_DEX` | 10% to treasury |
+| Bridge transfers | `FEE_BRIDGE` | 10% to treasury |
+| Lending interest | `FEE_LENDING` | 10% to treasury |
+| Perps trading | `FEE_PERPS` | 10% to treasury |
+| NFT marketplace | `FEE_NFT` | 10% to treasury |
+| Validator rewards | `FEE_VALIDATOR` | 0% (exempt) |
+
+Fees are pushed by the `FeeSplitter` contract. 90% goes to the vault (increasing xLUX value), 10% to the DAO treasury. Validator rewards are exempt from the performance fee.
+
+### Governance Integration
+
+xLUX holders automatically have voting power through `VotingLUX`:
+
+```
+vLUX = xLUX + DLUX
+```
+
+xLUX uses `ERC20Votes` for checkpoint-based voting power, preventing flash loan governance attacks.
+
+## Bridge Tokens
+
+Yield-bearing wrapped tokens bridged from external chains. All use `LRC20B` as the base contract with MPC-controlled minting.
+
+| Token | Import | Source Asset |
+|-------|--------|--------------|
+| **LETH** | `@luxfi/contracts/liquid/tokens/LETH.sol` | Ethereum ETH |
+| **LBTC** | `@luxfi/contracts/liquid/tokens/LBTC.sol` | Bitcoin BTC |
+| **LUSD** | `@luxfi/contracts/liquid/tokens/LUSD.sol` | USD stablecoins |
+| **LUSDC** | `@luxfi/contracts/liquid/tokens/LUSDC.sol` | USDC |
+| **LUSDT** | `@luxfi/contracts/liquid/tokens/LUSDT.sol` | USDT |
+| **LSOL** | `@luxfi/contracts/liquid/tokens/LSOL.sol` | Solana SOL |
+| **LBNB** | `@luxfi/contracts/liquid/tokens/LBNB.sol` | BNB |
+| **LAVAX** | `@luxfi/contracts/liquid/tokens/LAVAX.sol` | Avalanche AVAX |
+
+### Token Naming Convention
+
+- `L*` prefix: Bridge tokens on Lux (LETH, LBTC, LUSD)
+- `Z*` prefix: Bridge tokens on Zoo (ZETH, ZBTC, ZUSD)
+- `x*` prefix: Liquid staked tokens (xLUX)
+
+## LiquidToken Base
+
+All liquid tokens extend `LiquidToken`, which adds ERC-3156 flash loan support:
+
+```solidity
+import "@luxfi/contracts/liquid/LiquidToken.sol";
+
+// Flash loan any liquid token
+function executeFlashLoan(
+    IERC3156FlashLender lender,
+    address token,
+    uint256 amount
+) external {
+    lender.flashLoan(this, token, amount, "");
+}
+
+// Implement the callback
+function onFlashLoan(
+    address initiator,
+    address token,
+    uint256 amount,
+    uint256 fee,
+    bytes calldata data
+) external returns (bytes32) {
+    // Use the borrowed tokens
+    // Repay amount + fee
+    return keccak256("ERC3156FlashBorrower.onFlashLoan");
+}
+```
+
+## Yield Strategies
+
+**Yield Stacking**: Deposit LUX into LiquidLUX, then use xLUX as perps collateral for leveraged fee exposure.
+
+**Delta-Neutral**: 50% into LLP (perps LP), 50% short ETH via perps. Net: ETH-neutral, pure fee yield.
+
+**Governance + Yield**: Stake LUX into LiquidLUX, use xLUX voting power via vLUX to direct gauge weights, earn fees plus influence protocol emissions.

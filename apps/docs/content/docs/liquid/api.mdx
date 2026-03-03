@@ -1,0 +1,90 @@
+---
+title: Contract Interfaces
+description: Solidity interfaces for the Liquid Protocol contracts
+icon: FileCode
+---
+
+## LiquidToken (LETH, LBTC, LUSD)
+
+Base contract for all yield-bearing bridge tokens. Extends `LRC20` with `AccessControl`, `ReentrancyGuard`, and `IERC3156FlashLender`.
+
+```solidity
+// Minting (whitelisted only)
+function mint(address recipient, uint256 amount) external;
+function burn(uint256 amount) external;
+function burnFrom(address account, uint256 amount) external;
+
+// Whitelist management (ADMIN_ROLE)
+function setWhitelist(address minter, bool state) external;
+function removeWhitelist(address minter) external;
+function setPaused(address minter, bool state) external;
+
+// Flash loans (ERC-3156)
+function maxFlashLoan(address token) external view returns (uint256);
+function flashFee(address token, uint256 amount) external view returns (uint256);
+function flashLoan(
+    IERC3156FlashBorrower receiver,
+    address token,
+    uint256 amount,
+    bytes calldata data
+) external returns (bool);
+
+// Configuration (ADMIN_ROLE)
+function setFlashFee(uint256 newFee) external;
+function setMaxFlashLoan(uint256 amount) external;
+function setFeeRecipient(address recipient) external;
+```
+
+## LiquidLUX (xLUX)
+
+Master yield vault. Extends `ERC20`, `ERC20Permit`, `ERC20Votes`, `ReentrancyGuard`, `AccessControl`, `Pausable`.
+
+```solidity
+// User actions
+function deposit(uint256 amount) external returns (uint256 shares);
+function withdraw(uint256 shares) external returns (uint256 amount);
+
+// Fee reception (authorized distributors only)
+function receiveFees(uint256 amount, bytes32 feeType) external;
+function depositValidatorRewards(uint256 amount) external;
+
+// Views
+function totalAssets() external view returns (uint256);
+function convertToShares(uint256 assets) external view returns (uint256);
+function convertToAssets(uint256 shares) external view returns (uint256);
+function exchangeRate() external view returns (uint256);
+function reconcile() external view returns (
+    uint256 expectedBalance, uint256 actualBalance, int256 discrepancy
+);
+function getFeeBreakdown() external view returns (
+    uint256 dex, uint256 bridge, uint256 lending, uint256 perps,
+    uint256 liquid, uint256 nft, uint256 validator, uint256 other
+);
+
+// Governance (GOVERNANCE_ROLE / Timelock)
+function setTreasury(address treasury) external;
+function setPerfFeeBps(uint256 bps) external;
+function applySlashing(uint256 amount) external;
+```
+
+## IYieldAdapter
+
+Interface for strategy adapters that connect yield sources to the protocol.
+
+```solidity
+interface IYieldAdapter {
+    function deposit(uint256 amount) external returns (uint256 shares);
+    function withdraw(uint256 shares) external returns (uint256 amount);
+    function totalAssets() external view returns (uint256);
+    function isShariahCompliant() external view returns (bool);
+}
+```
+
+## Deployed Addresses
+
+| Contract | C-Chain Mainnet | C-Chain Testnet |
+|----------|----------------|-----------------|
+| LETH | `0x60E0a8167FC13dE89348978860466C9ceC24B9ba` | `0x9378b62fc172d2a4f715d7ecf49de0362f1bb702` |
+| LBTC | `0x1E48D32a4F5e9f08DB9aE4959163300FaF8A6C8e` | `0x7fc4f8a926e47fa3587c0d7658c00e7489e67916` |
+| LUSD | -- | `0x413e4a820635702ec199bc5b62dcbca1749851bf` |
+| xLUX | -- | `0x00947bbdc619974b0eddaf103b981f3273a3e8da` |

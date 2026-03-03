@@ -1,0 +1,115 @@
+---
+title: Perpetuals
+description: GMX-style leveraged perpetual futures with LLP liquidity pool
+icon: TrendingUp
+---
+
+The Perps module (`contracts/perps/`) implements leveraged perpetual futures trading. Traders can open long or short positions with up to 50x leverage, while liquidity providers earn 70% of trading fees through the LLP token.
+
+## Core Contracts
+
+| Contract | Import | Purpose |
+|----------|--------|---------|
+| **Vault** | `@luxfi/contracts/perps/core/Vault.sol` | Central liquidity pool and position management |
+| **Router** | `@luxfi/contracts/perps/core/Router.sol` | User-facing position operations |
+| **PositionRouter** | `@luxfi/contracts/perps/core/PositionRouter.sol` | Keeper-executed position changes |
+| **LlpManager** | `@luxfi/contracts/perps/core/LlpManager.sol` | LLP token minting and burning |
+| **LLP** | `@luxfi/contracts/perps/gmx/LLP.sol` | Multi-asset LP token |
+| **LPUSD** | `@luxfi/contracts/perps/tokens/LPUSD.sol` | Internal accounting stablecoin |
+
+## Token Naming
+
+| Token | Description |
+|-------|-------------|
+| **LPX** | Lux Perps governance/utility token |
+| **LLP** | Lux Liquidity Provider (vault share token) |
+| **LPUSD** | Lux Perps USD (internal accounting) |
+| **xLPX** | Escrowed LPX (vesting rewards) |
+
+## Opening Positions
+
+```solidity
+import "@luxfi/contracts/perps/core/Router.sol";
+
+Router router = Router(ROUTER_ADDRESS);
+
+// Open leveraged long position
+router.increasePosition(
+    collateralToken,  // e.g., WETH
+    indexToken,       // asset to go long on
+    collateralAmount, // collateral deposited
+    sizeDelta,        // position size in USD
+    true              // isLong
+);
+
+// Open short position
+router.increasePosition(
+    LUSD,             // stablecoin collateral for shorts
+    indexToken,       // asset to short
+    collateralAmount,
+    sizeDelta,
+    false             // isShort
+);
+```
+
+## Providing Liquidity
+
+LPs deposit whitelisted tokens and receive LLP. They earn 70% of trading fees and act as counterparty to all traders.
+
+```solidity
+import "@luxfi/contracts/perps/core/LlpManager.sol";
+
+LlpManager manager = LlpManager(MANAGER_ADDRESS);
+
+// Deposit WETH, receive LLP tokens
+token.approve(address(manager), amount);
+uint256 llpAmount = manager.addLiquidity(WETH, amount, minUsdg, minLlp);
+
+// Withdraw -- burn LLP, receive token
+uint256 received = manager.removeLiquidity(WETH, llpAmount, minOut, recipient);
+```
+
+## Fee Structure
+
+| Fee Type | Amount |
+|----------|--------|
+| Swap | 0.3% (stables: 0.04%) |
+| Margin | 0.1% of position size |
+| Funding | Variable, 8-hour intervals |
+| Liquidation | $100 USD equivalent |
+
+## Liquidation
+
+Positions are liquidated when losses consume the collateral minus the liquidation fee. The liquidation price depends on entry price, leverage, and accumulated fees.
+
+## Staking Rewards
+
+```solidity
+import "@luxfi/contracts/perps/staking/RewardRouterV2.sol";
+
+RewardRouterV2 rewardRouter = RewardRouterV2(REWARD_ROUTER);
+
+// Stake LPX to earn WETH + xLPX
+rewardRouter.stakeLpx(amount);
+
+// Claim all rewards
+rewardRouter.handleRewards(
+    true,  // shouldClaimLpx
+    true,  // shouldStakeLpx
+    true,  // shouldClaimXLpx
+    true,  // shouldStakeXLpx
+    true,  // shouldStakeMultiplierPoints
+    true,  // shouldClaimWeth
+    false  // shouldConvertWethToEth
+);
+```
+
+## Oracle
+
+The Vault uses `VaultPriceFeed` which aggregates Chainlink, Pyth, and `FastPriceFeed` for low-latency updates. Spread pricing protects against MEV.
+
+```solidity
+// Get price for perps (with spread)
+uint256 longPrice = oracle.getPriceForPerps(WETH, true);   // maximize for longs
+uint256 shortPrice = oracle.getPriceForPerps(WETH, false); // minimize for shorts
+```

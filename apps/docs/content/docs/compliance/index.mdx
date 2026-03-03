@@ -1,0 +1,48 @@
+---
+title: Compliance Framework
+description: KYC/AML, sanctions screening, and regulatory reporting for Lux financial services
+icon: ShieldCheck
+---
+
+The Lux compliance stack (`github.com/luxfi/compliance`) provides identity verification, sanctions screening, transaction monitoring, and regulatory reporting. It is used by the CEX (ATS) and Broker services.
+
+## Regulatory Coverage
+
+| Framework | Scope |
+|-----------|-------|
+| **FinCEN BSA** | CIP, CTR ($10k threshold), SAR filing |
+| **SEC** | ATS-N filing, CAT reporting, Reg D accredited investor |
+| **FINRA** | Rule 5310 best execution, OATS reporting |
+| **MiFID II** | Best execution, transaction reporting (EU) |
+| **FCA 5AMLD** | CDD/EDD, HM Treasury sanctions (UK) |
+| **IOMFSA** | AML/CFT Code 2019, source of wealth/funds (Isle of Man) |
+
+## Architecture
+
+```
+User ──► IDV Provider (Jumio/Onfido/Plaid)
+              │
+         Webhook ──► KYC Service ──► Application Store
+                          │
+                     AML Screening ──► OFAC/UN/EU/PEP
+                          │
+                     Monitoring ──► Alerts ──► SAR Filing
+```
+
+## Packages
+
+| Package | Purpose |
+|---------|---------|
+| `pkg/idv` | Identity verification providers (Jumio, Onfido, Plaid) |
+| `pkg/kyc` | KYC orchestration, application lifecycle |
+| `pkg/aml` | Sanctions screening, transaction monitoring |
+| `pkg/regulatory` | Multi-jurisdiction rules (US, UK, IoM) |
+| `pkg/payments` | Travel Rule, CTR detection, stablecoin compliance |
+| `pkg/entity` | Regulated entity types (ATS, BD, TA, MSB) |
+| `pkg/webhook` | Unified webhook handler with idempotency |
+
+## Tech Stack
+
+- **Language**: Go (standard library only, zero external dependencies)
+- **Thread Safety**: All services use `sync.RWMutex`
+- **Test Coverage**: 168 tests across 7 packages, all pass with `-race`

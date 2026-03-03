@@ -1,0 +1,66 @@
+---
+title: Liquid Tokens
+description: LETH, LBTC, and LUSD -- yield-bearing bridge tokens with flash loan support
+icon: Coins
+---
+
+Each liquid token wraps an external asset (ETH, BTC, or stablecoins) as an LRC20B bridge token with ERC-3156 flash loan capabilities. Minting and burning are restricted to whitelisted addresses.
+
+## Token Details
+
+| Token | Name | Underlying | Contract |
+|-------|------|-----------|----------|
+| **LETH** | Liquid ETH | ETH | `LuxETH` extends `LRC20B` |
+| **LBTC** | Liquid BTC | BTC | `LuxBTC` extends `LRC20B` |
+| **LUSD** | Liquid USD | USDC/USDT | `LuxUSD` extends `LRC20B` |
+
+All 32+ liquid tokens live in `contracts/liquid/tokens/` and share the same base contract.
+
+## Minting and Redeeming
+
+Only whitelisted addresses (vaults, bridges) can mint or burn liquid tokens.
+
+```solidity
+// Whitelisted minter (vault or bridge)
+liquidToken.mint(recipient, amount);
+
+// Any holder can burn their own tokens
+liquidToken.burn(amount);
+
+// Burn from another account (requires approval)
+liquidToken.burnFrom(account, amount);
+```
+
+Whitelisting is managed by the `ADMIN_ROLE`. The `SENTINEL_ROLE` can pause individual minters or remove them from the whitelist immediately.
+
+## Flash Loans (ERC-3156)
+
+Every liquid token is an ERC-3156 flash lender. Borrowers receive minted tokens within a single transaction and must repay the principal plus a fee.
+
+```solidity
+// Query max flash loan
+uint256 max = liquidToken.maxFlashLoan(address(liquidToken));
+
+// Query fee for 1000 tokens
+uint256 fee = liquidToken.flashFee(address(liquidToken), 1000e18);
+
+// Execute flash loan
+liquidToken.flashLoan(borrower, address(liquidToken), amount, data);
+```
+
+| Parameter | Range |
+|-----------|-------|
+| Flash fee | 1 - 10,000 basis points (minimum 1 bp enforced) |
+| Max flash loan | Configurable by admin |
+| Fee recipient | Configurable address |
+
+## Yield Accrual
+
+Liquid tokens do not rebase. Yield accrues to the protocol via flash loan fees and bridge fees, which flow into the xLUX vault through the FeeSplitter. Holders benefit indirectly when they also hold xLUX.
+
+## Access Control
+
+| Role | Permissions |
+|------|-------------|
+| `ADMIN_ROLE` | Whitelist minters, set flash fee, set fee recipient |
+| `SENTINEL_ROLE` | Pause minters, remove from whitelist (emergency) |

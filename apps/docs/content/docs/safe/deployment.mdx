@@ -1,0 +1,57 @@
+---
+title: Deploying a Safe
+description: Create and configure a multi-signature Safe wallet
+icon: Rocket
+---
+
+## Create a New Safe
+
+1. Navigate to the Lux Safe application
+2. Connect your wallet (MetaMask, WalletConnect, or any injected provider)
+3. Select the target chain (C-Chain, Zoo, Hanzo, SPC, or Pars)
+4. Add owner addresses and set the signing threshold
+5. Confirm the creation transaction
+
+## Owner Management
+
+After creation, owners can propose changes to the Safe configuration:
+
+- **Add Owner**: Propose adding a new signer address
+- **Remove Owner**: Propose removing an existing signer (threshold must remain achievable)
+- **Change Threshold**: Increase or decrease the number of required signatures
+
+All configuration changes require the current threshold of approvals.
+
+## Transaction Flow
+
+```
+Propose --> Approve (threshold reached) --> Execute
+```
+
+1. Any owner proposes a transaction (ETH transfer, token transfer, or contract call)
+2. Other owners review and approve the transaction
+3. Once the threshold is met, any owner can execute the transaction on-chain
+4. The Safe nonce increments, preventing replay
+
+## Network Configuration
+
+To use Lux Safe on a specific chain, ensure your wallet is configured with the correct RPC endpoint:
+
+| Chain | RPC URL |
+|-------|---------|
+| C-Chain | `https://api.lux.network/mainnet/ext/bc/C/rpc` |
+| Zoo | `https://api.lux.network/mainnet/ext/bc/zoo/rpc` |
+| Hanzo | `https://api.lux.network/mainnet/ext/bc/hanzo/rpc` |
+| SPC | `https://api.lux.network/mainnet/ext/bc/spc/rpc` |
+| Pars | `https://api.lux.network/mainnet/ext/bc/pars/rpc` |
+
+## Static Deployment
+
+Lux Safe is deployed as a static site. Build and deploy with:
+
+```bash
+pnpm build
+# Output in out/ directory, deploy to any static host
+```
+
+The GitHub Actions workflow deploys automatically to GitHub Pages on push to main.

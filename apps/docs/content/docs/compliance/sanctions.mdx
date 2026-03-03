@@ -1,0 +1,67 @@
+---
+title: Sanctions Screening
+description: OFAC, UN, EU sanctions lists, PEP detection, and enhanced due diligence
+icon: ShieldAlert
+---
+
+The AML screening service (`pkg/aml`) checks individuals and entities against global sanctions lists and politically exposed persons databases.
+
+## Sanctions Lists
+
+| List | Source | Coverage |
+|------|--------|----------|
+| **OFAC SDN** | US Treasury | Specially Designated Nationals |
+| **EU Consolidated** | European Union | EU sanctions targets |
+| **UK HMT** | HM Treasury | UK financial sanctions |
+| **UN Security Council** | United Nations | Global sanctions |
+| **PEP Database** | Multi-source | Politically exposed persons |
+| **Adverse Media** | Multi-source | Negative news screening |
+
+## Matching
+
+The screening service uses three matching strategies:
+
+| Match Type | Method | Threshold |
+|------------|--------|-----------|
+| **Exact** | String equality | 100% |
+| **Fuzzy** | Levenshtein distance | Configurable similarity |
+| **Partial** | Substring and token matching | Name component overlap |
+
+## Risk Scoring
+
+Each screening result receives a risk level:
+
+| Risk Level | Action Required |
+|------------|----------------|
+| **Low** | Auto-approve, periodic rescreening |
+| **Medium** | Manual review within 24 hours |
+| **High** | Escalate to compliance officer |
+| **Critical** | Block immediately, file SAR |
+
+## PEP Detection
+
+Politically exposed persons (current and former government officials, their family members, and close associates) trigger enhanced due diligence requirements:
+
+- Source of wealth verification
+- Source of funds documentation
+- Senior management approval for onboarding
+- Enhanced ongoing monitoring (quarterly review)
+
+## EDD Process
+
+Enhanced Due Diligence is required for:
+
+- PEP matches
+- High-risk jurisdictions
+- Complex ownership structures
+- Unusual transaction patterns
+
+```
+Screening Hit ──► Risk Assessment ──► EDD Required?
+                                          │
+                      ┌───────────────────┤
+                      ▼                   ▼
+                  Standard CDD       Enhanced CDD
+                  (periodic)         (source of funds,
+                                      senior approval)
+```

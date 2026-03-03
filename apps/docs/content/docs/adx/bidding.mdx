@@ -1,0 +1,49 @@
+---
+title: Bidding & Auctions
+description: OpenRTB integration, second-price auctions, and bid optimization
+icon: Gavel
+---
+
+Lux ADX implements decentralized auctions with OpenRTB compatibility and TEE-sealed bidding.
+
+## Auction Types
+
+| Type | Mechanism | Use Case |
+|------|-----------|----------|
+| Second-price sealed | Winner pays second-highest bid | Standard display/CTV |
+| First-price | Winner pays own bid | Programmatic guaranteed |
+| Private | ZK-verified, bids never revealed | Privacy-sensitive |
+
+## OpenRTB Integration
+
+ADX supports OpenRTB 2.5 and 3.0 formats. Bid requests include impression specs, device info, and floor prices. Responses carry VAST 4.x ad markup for CTV.
+
+```json
+{
+  "id": "req-abc123",
+  "imp": [{"id": "1", "video": {"mimes": ["video/mp4"], "w": 1920, "h": 1080}, "bidfloor": 10.00}],
+  "device": {"devicetype": 3}
+}
+```
+
+## TEE Auction Flow
+
+1. Bids encrypted with HPKE before submission
+2. TEE enclave (SGX/SEV/Nitro) decrypts and evaluates
+3. Second-price auction executed inside hardware enclave
+4. Winner commitment and audit transcript generated
+5. Result signed with TEE attestation
+
+No party can see bid values before settlement.
+
+## Budget Management
+
+Budgets tracked in the settlement layer with real-time spend monitoring. Daily and per-impression caps enforced at the node level.
+
+## Frequency Capping
+
+Verkle trees provide O(1) proofs for frequency cap verification across millions of users. Each impression is recorded as a leaf, and proofs are verified before accepting bids for the same user-campaign pair.
+
+## VAST 4.x Support
+
+VAST 4.0/4.1/4.2 ad tags for CTV: linear video (pre/mid/post-roll), companion ads, verification scripts (OM SDK), and interactive end cards.

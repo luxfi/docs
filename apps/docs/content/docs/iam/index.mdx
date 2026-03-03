@@ -1,0 +1,66 @@
+---
+title: Lux IAM
+description: Identity and access management with OAuth2, OIDC, SAML, and RBAC
+index: true
+icon: Shield
+---
+
+Lux IAM (`github.com/luxfi/iam`) is the unified authentication and authorization provider for the Lux ecosystem, hosted at **hanzo.id**. It supports OAuth 2.0, OpenID Connect, SAML 2.0, and CAS protocols.
+
+## Architecture
+
+```
+┌──────────────────────────────────────────────┐
+│              Lux IAM (hanzo.id)              │
+│  ┌──────────┬───────────┬──────────────────┐ │
+│  │ Go (Beego)│  React UI │  OAuth2/OIDC    │ │
+│  └─────┬────┴─────┬─────┴───────┬─────────┘ │
+│        │          │             │            │
+│  ┌─────▼──┐  ┌────▼───┐  ┌─────▼──────┐     │
+│  │Postgres│  │ Redis  │  │ User Store │     │
+│  └────────┘  └────────┘  └────────────┘     │
+└──────────────────────────────────────────────┘
+        ↑              ↑              ↑
+   hanzo.app     cloud.hanzo.ai    commerce
+```
+
+## Auth Methods
+
+| Method | Protocol | Use Case |
+|--------|----------|----------|
+| OAuth 2.0 | Authorization Code + PKCE | Web and mobile apps |
+| OIDC | OpenID Connect 1.0 | SSO and identity federation |
+| SAML | SAML 2.0 | Enterprise SSO |
+| CAS | CAS 3.0 | Legacy system integration |
+| API Keys | Bearer token | Machine-to-machine |
+
+## Authentication Flow
+
+1. User visits a Lux application (e.g. hanzo.app)
+2. Redirected to hanzo.id for OAuth login
+3. User authenticates (password, social, SAML)
+4. Redirected back with authorization code
+5. Application exchanges code for access token
+6. Token validated via IAM on each request
+
+## SDKs
+
+```go
+// Go
+import "github.com/iam/iam-go-sdk/iamsdk"
+
+iamsdk.InitConfig("https://hanzo.id", clientID, clientSecret,
+    certName, orgName, appName)
+```
+
+```javascript
+// JavaScript
+import { SDK } from 'iam-js-sdk'
+
+const sdk = new SDK({
+  serverUrl: 'https://hanzo.id',
+  clientId: 'your-client-id',
+  appName: 'your-app',
+  organizationName: 'your-org',
+})
+```

@@ -1,0 +1,176 @@
+---
+title: API Reference
+description: Key interfaces and function signatures for the Lux Standard Library
+icon: FileCode
+---
+
+This page lists the primary Solidity interfaces for integrating with the Lux Standard Library. All imports use the `@luxfi/contracts/` prefix.
+
+## Tokens
+
+### LRC20
+
+Standard ERC20 with Lux naming conventions.
+
+```solidity
+import "@luxfi/contracts/tokens/LRC20.sol";
+
+// Core ERC20 functions
+function totalSupply() external view returns (uint256);
+function balanceOf(address account) external view returns (uint256);
+function transfer(address to, uint256 amount) external returns (bool);
+function approve(address spender, uint256 amount) external returns (bool);
+function transferFrom(address from, address to, uint256 amount) external returns (bool);
+```
+
+### LRC20B (Bridgeable)
+
+```solidity
+import "@luxfi/contracts/bridge/LRC20B.sol";
+
+function mint(address to, uint256 amount) external onlyAdmin;
+function burn(address from, uint256 amount) external onlyAdmin;
+```
+
+## Oracle
+
+### IOracle
+
+Unified price oracle consumed by all DeFi protocols.
+
+```solidity
+import "@luxfi/contracts/oracle/IOracle.sol";
+
+// Get single asset price
+function getPrice(address asset) external view returns (uint256 price, uint256 timestamp);
+
+// Get price optimized for perps (with spread)
+function getPriceForPerps(address asset, bool maximize) external view returns (uint256);
+
+// Batch price query
+function getPrices(address[] calldata assets) external view returns (uint256[] memory prices, uint256[] memory timestamps);
+
+// Health check
+function health() external view returns (bool healthy, uint256 sourceCount);
+```
+
+## Liquid Protocol
+
+### LiquidLUX (ERC4626)
+
+```solidity
+import "@luxfi/contracts/liquid/LiquidLUX.sol";
+
+// Deposit WLUX, receive xLUX shares
+function deposit(uint256 assets, address receiver) external returns (uint256 shares);
+
+// Withdraw WLUX by burning xLUX
+function withdraw(uint256 assets, address receiver, address owner) external returns (uint256 shares);
+
+// Redeem xLUX for WLUX
+function redeem(uint256 shares, address receiver, address owner) external returns (uint256 assets);
+
+// Fee intake
+function receiveFees(uint256 amount, bytes32 feeType) external;
+function depositValidatorRewards() external payable;
+```
+
+## Governance
+
+### Karma
+
+```solidity
+import "@luxfi/contracts/governance/Karma.sol";
+
+function balanceOf(address account) external view returns (uint256);
+function isActive(address account) external view returns (bool);
+function getDecayRate(address account) external view returns (uint256);
+function getActivityStatus(address account) external view returns (
+    uint256 karma, bool verified, bool activeThisMonth,
+    bool activeLastMonth, uint256 currentDecayRate, bool hasKarmaFloor
+);
+```
+
+### GaugeController
+
+```solidity
+import "@luxfi/contracts/governance/GaugeController.sol";
+
+function voteForGaugeWeights(address gauge, uint256 weight) external;
+function gaugeRelativeWeight(address gauge, uint256 time) external view returns (uint256);
+```
+
+## Markets (Lending)
+
+```solidity
+import "@luxfi/contracts/markets/Markets.sol";
+
+function supplyCollateral(bytes32 id, uint256 amount, address onBehalf, bytes calldata data) external;
+function borrow(bytes32 id, uint256 amount, address onBehalf, address receiver) external;
+function repay(bytes32 id, uint256 amount, address onBehalf, bytes calldata data) external;
+function withdrawCollateral(bytes32 id, uint256 amount, address onBehalf, address receiver) external;
+function liquidate(bytes32 id, address borrower, uint256 seized, uint256 repaidShares, bytes calldata data) external;
+```
+
+## Options
+
+```solidity
+import "@luxfi/contracts/options/Options.sol";
+
+function createSeries(address underlying, address quote, uint256 strike, uint256 expiry, OptionType optionType, SettlementType settlement) external returns (bytes32);
+function write(bytes32 seriesId, uint256 amount) external returns (uint256 positionId);
+function exercise(bytes32 seriesId, uint256 amount) external returns (uint256 payout);
+function settle(bytes32 seriesId) external returns (uint256 collateralReturned);
+function getCollateralRequired(bytes32 seriesId, uint256 amount) external view returns (uint256);
+function getExercisePayout(bytes32 seriesId, uint256 amount) external view returns (uint256);
+```
+
+## LSSVM (NFT AMM)
+
+```solidity
+import "@luxfi/contracts/lssvm/LSSVMPairFactory.sol";
+
+function createPairETH(address nft, ICurve curve, LSSVMPair.PoolType poolType, uint128 delta, uint96 fee, uint128 spotPrice, uint256[] calldata ids) external payable returns (LSSVMPair);
+```
+
+## Precompile Interfaces
+
+```solidity
+// Post-quantum signatures
+import "@luxfi/contracts/precompile/interfaces/IMLDSA.sol";
+function verify(bytes calldata pubKey, bytes calldata msg, bytes calldata sig) external view returns (bool);
+
+// Threshold signatures
+import "@luxfi/contracts/precompile/interfaces/IFROST.sol";
+function verify(uint8 threshold, uint8 total, bytes calldata pubKey, bytes32 msgHash, bytes calldata sig) external view returns (bool);
+
+// ZK proofs
+import "@luxfi/contracts/precompile/interfaces/IZK.sol";
+function verifyProof(bytes calldata proof, bytes calldata publicInputs) external view returns (bool);
+
+// Cross-chain messaging
+import "@luxfi/contracts/precompile/interfaces/IWarp.sol";
+function sendWarpMessage(bytes calldata payload) external returns (bytes32 messageID);
+function getVerifiedWarpMessage(uint32 index) external view returns (WarpMessage memory);
+```
+
+## FHE (Confidential Computing)
+
+```solidity
+import "@luxfi/contracts/fhe/FHE.sol";
+
+// Encrypted arithmetic
+function add(euint64 a, euint64 b) internal returns (euint64);
+function sub(euint64 a, euint64 b) internal returns (euint64);
+function mul(euint64 a, euint64 b) internal returns (euint64);
+
+// Encrypted comparison
+function lt(euint64 a, euint64 b) internal returns (ebool);
+function gt(euint64 a, euint64 b) internal returns (ebool);
+
+// Access control
+function allow(euint64 ctHash, address account) internal;
+
+// Random number generation
+function randomEuint64() internal returns (euint64);
+```

@@ -1,0 +1,70 @@
+---
+title: Reconciliation API
+description: Operator state machine, health checks, and upgrade lifecycle
+icon: RefreshCw
+---
+
+## State Machine
+
+Every Lux CRD follows the same lifecycle phases:
+
+```
+Pending --> Creating --> Bootstrapping --> Running <--> Degraded
+```
+
+| Phase | Description |
+|-------|-------------|
+| Pending | CR accepted, waiting for dependencies |
+| Creating | Kubernetes resources being provisioned (StatefulSet, Services, ConfigMaps) |
+| Bootstrapping | Pods running, waiting for chain sync and peer connectivity |
+| Running | All validators healthy, chains synced, APIs responding |
+| Degraded | One or more health checks failing, operator attempting recovery |
+
+Transitions are evaluated every 60 seconds during reconciliation.
+
+## Health Checks
+
+The operator performs two levels of health checking on each validator pod:
+
+**Liveness** -- HTTP GET to `/ext/health/liveness` expecting status 200.
+
+**Readiness** -- JSON-RPC call to `health.health` checking `result.healthy` is true.
+
+Health policy is configurable per LuxNetwork:
+
+| Field | Default | Description |
+|-------|---------|-------------|
+| `maxHeightSkew` | 10 | Maximum allowed P-chain height difference between nodes |
+| `gracePeriodSeconds` | 300 | Seconds after pod start before enforcing checks |
+| `checkIntervalSeconds` | 60 | Seconds between health check cycles |
+| `requireInboundValidators` | false | Require inbound peer connections |
+
+## Upgrade Strategy
+
+### OnDelete (default)
+
+The StatefulSet uses `OnDelete` update strategy. The operator does not restart pods automatically. Delete pods manually to pick up image changes.
+
+### RollingCanary
+
+Automated rolling upgrade with safety gates:
+
+1. Operator detects image tag change on the StatefulSet
+2. Deletes pods highest-index-first (e.g., luxd-4 before luxd-0)
+3. Waits for pod Ready + liveness check
+4. Waits `stabilizationSeconds` (default 60s)
+5. Runs readiness health check before proceeding to next pod
+6. On failure after 5 retries, aborts upgrade and sets phase to Degraded
+
+PodDisruptionBudget `maxUnavailable` matches the upgrade strategy setting.
+
+## Startup Gate
+
+Before starting luxd, an init container checks TCP reachability of peer pods:
+
+| Field | Default | Description |
+|-------|---------|-------------|
+| `minPeers` | 2 | Peers that must be TCP-reachable |
+| `timeoutSeconds` | 300 | Maximum wait time |
+| `checkIntervalSeconds` | 5 | Seconds between attempts |
+| `onTimeout` | StartAnyway | Action on timeout: Fail or StartAnyway |

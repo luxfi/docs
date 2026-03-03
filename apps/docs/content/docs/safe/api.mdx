@@ -1,0 +1,74 @@
+---
+title: Transaction API
+description: Building, signing, and executing Safe transactions
+icon: FileCode
+---
+
+## Transaction Types
+
+| Type | Description |
+|------|-------------|
+| ETH Transfer | Send native LUX to an address |
+| ERC-20 Transfer | Send tokens to an address |
+| Contract Interaction | Call any contract function with encoded calldata |
+| Batch | Execute multiple operations in a single transaction |
+
+## Transaction Structure
+
+Each Safe transaction contains:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `to` | address | Destination address |
+| `value` | uint256 | Amount of native token (wei) |
+| `data` | bytes | Encoded function call data |
+| `operation` | uint8 | 0 = Call, 1 = DelegateCall |
+| `nonce` | uint256 | Safe transaction nonce |
+
+## Signing
+
+Transactions are signed off-chain using EIP-712 typed data. Each owner signs the transaction hash, and signatures are collected until the threshold is met.
+
+```
+Transaction Hash = keccak256(
+  0x19, 0x01,
+  domainSeparator,
+  safeTxHash
+)
+```
+
+The domain separator is unique to each Safe contract instance and chain.
+
+## Execution
+
+Once enough signatures are collected, the transaction is executed by calling `execTransaction` on the Safe contract:
+
+```
+execTransaction(
+  to, value, data, operation,
+  safeTxGas, baseGas, gasPrice, gasToken, refundReceiver,
+  signatures
+)
+```
+
+Signatures are concatenated in ascending order of signer address.
+
+## Querying Safe State
+
+| Query | Description |
+|-------|-------------|
+| `getOwners()` | List all current owner addresses |
+| `getThreshold()` | Current signing threshold |
+| `nonce()` | Next expected transaction nonce |
+| `isOwner(address)` | Check if an address is an owner |
+| `getTransactionHash(...)` | Compute hash for a proposed transaction |
+
+## Events
+
+| Event | Description |
+|-------|-------------|
+| `ExecutionSuccess` | Transaction executed successfully |
+| `ExecutionFailure` | Transaction execution reverted |
+| `AddedOwner` | New owner added to the Safe |
+| `RemovedOwner` | Owner removed from the Safe |
+| `ChangedThreshold` | Signing threshold updated |

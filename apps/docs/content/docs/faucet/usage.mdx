@@ -1,0 +1,67 @@
+---
+title: Usage
+description: Get test tokens via the web UI or REST API
+icon: MousePointer
+---
+
+## Web UI
+
+1. Navigate to the faucet web application.
+2. Select the target chain (C-Chain, or a subnet testnet).
+3. Optionally select an ERC-20 token instead of the native token.
+4. Paste your wallet address.
+5. Complete the CAPTCHA verification.
+6. Click **Request Tokens** and wait for the transaction hash.
+
+The UI shows the faucet balance and your remaining rate limit window.
+
+## API Request
+
+Send tokens programmatically via the REST API:
+
+```bash
+curl -X POST https://faucet.lux.network/api/sendToken \
+  -H "Content-Type: application/json" \
+  -d '{
+    "address": "0xYourAddress",
+    "chain": "C",
+    "captcha": "captcha-response-token"
+  }'
+```
+
+### Request ERC-20 Tokens
+
+Include the `erc20` field to request a specific token:
+
+```bash
+curl -X POST https://faucet.lux.network/api/sendToken \
+  -H "Content-Type: application/json" \
+  -d '{
+    "address": "0xYourAddress",
+    "chain": "C",
+    "erc20": "USDCC",
+    "captcha": "captcha-response-token"
+  }'
+```
+
+## Check Faucet Balance
+
+```bash
+# Native token balance
+curl "https://faucet.lux.network/api/getBalance?chain=C"
+
+# ERC-20 token balance
+curl "https://faucet.lux.network/api/getBalance?chain=C&erc20=USDCC"
+```
+
+## Get Faucet Address
+
+```bash
+curl "https://faucet.lux.network/api/faucetAddress?chain=C"
+```
+
+Use this to check the faucet wallet balance on-chain or to send funds back to the faucet.
+
+## Rate Limit Behavior
+
+When rate-limited, the API returns HTTP 429 with a message indicating the remaining cooldown. The default window is 1440 minutes (24 hours) per address per chain.

@@ -1,0 +1,95 @@
+---
+title: API Reference
+description: APDU commands and Go client API for Ledger integration
+icon: FileCode
+---
+
+## APDU Protocol
+
+The Ledger app uses CLA `0x80` with the following instruction set:
+
+| INS | Code | Description |
+|-----|------|-------------|
+| `GET_VERSION` | `0x00` | Get app version info |
+| `WALLET_ID` | `0x01` | Get wallet identifier |
+| `GET_ADDR` | `0x02` | Derive address from path |
+| `GET_EXTENDED_PUBLIC_KEY` | `0x03` | Get extended public key |
+| `SIGN_HASH` | `0x04` | Sign a 32-byte hash |
+| `SIGN` | `0x05` | Sign a full transaction |
+| `SIGN_MSG` | `0x06` | Sign an arbitrary message |
+
+## Transport
+
+Messages are sent as 64-byte HID packets. Multi-packet messages use sequence numbers with `TAG_APDU (0x05)` framing. The Go client handles packet chunking automatically via `WrapCommandAPDU` and `UnwrapResponseAPDU`.
+
+## Go API
+
+### Connection
+
+```go
+// Connect and verify app version
+func FindLedgerLuxApp() (*LedgerLux, error)
+func NewLedger() (*LedgerLux, error)
+
+// Close connection
+func (l *LedgerLux) Close() error
+func (l *LedgerLux) Disconnect() error
+```
+
+### Query
+
+```go
+// App version (AppMode, Major, Minor, Patch)
+func (l *LedgerLux) GetVersion() (*VersionInfo, error)
+
+// Derive address from BIP-44 path
+func (l *LedgerLux) GetPubKey(path string, show bool, hrp string, chainid string) (*ResponseAddr, error)
+
+// keychain.Ledger interface
+func (l *LedgerLux) Address(hrp string, index uint32) (ids.ShortID, error)
+func (l *LedgerLux) GetAddresses(indices []uint32) ([]ids.ShortID, error)
+```
+
+### Signing
+
+```go
+// Sign hash with single key (keychain.Ledger interface)
+func (l *LedgerLux) SignHash(hash []byte, index uint32) ([]byte, error)
+func (l *LedgerLux) Sign(message []byte, index uint32) ([]byte, error)
+
+// Sign hash with multiple keys (keychain.Ledger interface)
+func (l *LedgerLux) SignTransaction(hash []byte, indices []uint32) ([][]byte, error)
+
+// Full control: custom paths, change paths
+func (l *LedgerLux) SignFull(pathPrefix string, signingPaths []string, message []byte, changePaths []string) (*ResponseSign, error)
+func (l *LedgerLux) SignHashFull(pathPrefix string, signingPaths []string, hash []byte) (*ResponseSign, error)
+```
+
+### Verification
+
+```go
+// Verify ECDSA signature (64-byte R||S format)
+func VerifySignature(pubkey, hash, signature []byte) bool
+```
+
+## Response Types
+
+```go
+type VersionInfo struct {
+    AppMode uint8
+    Major   uint8
+    Minor   uint8
+    Patch   uint8
+}
+
+type ResponseAddr struct {
+    PublicKey []byte  // compressed public key
+    Hash      []byte  // 20-byte address hash
+    Address   string  // bech32 encoded
+}
+
+type ResponseSign struct {
+    Hash      []byte
+    Signature map[string][]byte // path -> signature
+}
+```

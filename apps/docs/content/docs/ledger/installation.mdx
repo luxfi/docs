@@ -1,0 +1,58 @@
+---
+title: Installation
+description: Install the Lux app on Ledger hardware wallets
+icon: Download
+---
+
+## Prerequisites
+
+- Ledger Nano S, Nano S Plus, or Nano X
+- Ledger Live installed on your computer
+- USB cable for connecting the device
+
+## Install the Lux App
+
+1. Open **Ledger Live** and navigate to the **Manager** tab.
+2. Connect and unlock your Ledger device.
+3. Allow the manager on your device when prompted.
+4. Search for **Lux** in the app catalog.
+5. Click **Install** and wait for the download to complete.
+6. The Lux app icon appears on your device when ready.
+
+## Go Client Library
+
+Install the Go client for programmatic interaction:
+
+```bash
+go get github.com/luxfi/ledger
+```
+
+The library requires a physical Ledger device with the Lux app open. It communicates over USB HID using the APDU transport protocol.
+
+## Verify Installation
+
+Open the Lux app on your Ledger, then run:
+
+```go
+app, err := ledger.FindLedgerLuxApp()
+if err != nil {
+    log.Fatal("Is the Lux app open?", err)
+}
+defer app.Close()
+
+version, err := app.GetVersion()
+if err != nil {
+    log.Fatal(err)
+}
+fmt.Printf("App version: %s\n", version)
+```
+
+The library validates the app version on connection and returns a `VersionRequiredError` if the installed app is too old.
+
+## Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| `CLA not supported` | Open the Lux app on your Ledger before connecting |
+| Device not found | Check USB connection, try a different port |
+| Version error | Update the Lux app via Ledger Live |

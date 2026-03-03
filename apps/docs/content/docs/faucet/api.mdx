@@ -1,0 +1,100 @@
+---
+title: API Reference
+description: Faucet REST API endpoints and rate limit configuration
+icon: FileCode
+---
+
+## Endpoints
+
+All endpoints are prefixed with `/api`.
+
+### POST /api/sendToken
+
+Send test tokens to an address.
+
+**Request Body:**
+
+```json
+{
+  "address": "0x...",
+  "chain": "C",
+  "erc20": "USDCC",
+  "captcha": "recaptcha-response"
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `address` | string | Yes | Recipient wallet address |
+| `chain` | string | Yes | Chain ID (e.g., `C`, `WAGMI`) |
+| `erc20` | string | No | ERC-20 token ID (omit for native token) |
+| `captcha` | string | Yes | reCAPTCHA response token |
+
+**Response (200):**
+
+```json
+{
+  "message": "Transaction successful",
+  "txHash": "0xabc..."
+}
+```
+
+**Response (400/429):**
+
+```json
+{
+  "message": "Rate limit exceeded. Try again in 1440 minutes."
+}
+```
+
+### GET /api/getChainConfigs
+
+Returns all supported chains and tokens with their configuration.
+
+**Response:**
+
+```json
+{
+  "configs": [
+    {
+      "ID": "C",
+      "NAME": "Testnet (C-Chain)",
+      "TOKEN": "LUX",
+      "DRIP_AMOUNT": 2,
+      "CHAINID": 43113
+    }
+  ]
+}
+```
+
+### GET /api/faucetAddress
+
+Returns the faucet wallet address for a chain.
+
+**Query:** `?chain=C`
+
+**Response:**
+
+```json
+{
+  "address": "0x..."
+}
+```
+
+### GET /api/getBalance
+
+Returns the faucet balance for a chain or token.
+
+**Query:** `?chain=C` or `?chain=C&erc20=USDCC`
+
+**Response:**
+
+```json
+{
+  "balance": "1000000000000000000"
+}
+```
+
+### GET /health
+
+Health check endpoint. Returns `200` with body `Server healthy`.

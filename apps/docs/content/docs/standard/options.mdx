@@ -1,0 +1,120 @@
+---
+title: Options
+description: European-style options protocol with ERC-1155 fungible positions
+icon: CircleDollarSign
+---
+
+The Options module (`contracts/options/Options.sol`) implements European-style options with ERC-1155 fungible position tokens. Writers deposit collateral to create option series, and holders can exercise at expiry.
+
+## Option Types
+
+| Type | Payoff at Expiry |
+|------|-----------------|
+| **Call** | max(0, spot - strike) |
+| **Put** | max(0, strike - spot) |
+
+## Settlement Types
+
+| Type | Description |
+|------|-------------|
+| **Cash** | Difference paid in quote token |
+| **Physical** | Actual asset delivery at strike price |
+
+## Creating an Option Series
+
+Each series is defined by underlying asset, strike price, expiry, and type. All options with the same parameters are fungible via ERC-1155.
+
+```solidity
+import "@luxfi/contracts/options/Options.sol";
+
+Options options = Options(OPTIONS_ADDRESS);
+
+// Create a WETH call option series
+bytes32 seriesId = options.createSeries(
+    WETH,                           // underlying
+    LUSD,                           // quote token
+    3000e18,                        // strike: $3,000
+    block.timestamp + 30 days,      // expiry
+    Options.OptionType.CALL,
+    Options.SettlementType.CASH
+);
+```
+
+## Writing Options
+
+Writers deposit collateral and receive writer position tokens (ERC-1155). The collateral is locked until expiry.
+
+```solidity
+// Write 10 call options (requires collateral deposit)
+uint256 positionId = options.write(seriesId, 10e18);
+
+// Check collateral requirement
+uint256 required = options.getCollateralRequired(seriesId, 10e18);
+```
+
+### Collateral Requirements
+
+| Option Type | Collateral |
+|-------------|------------|
+| Call | Underlying token (e.g., WETH) |
+| Put | Quote token (e.g., LUSD at strike price) |
+
+## Exercising Options
+
+Holders exercise at or after expiry. Only in-the-money options produce a payout.
+
+```solidity
+// Exercise 5 call options at expiry
+uint256 payout = options.exercise(seriesId, 5e18);
+
+// Preview payout before exercising
+uint256 expectedPayout = options.getExercisePayout(seriesId, 5e18);
+```
+
+### Payout Calculation
+
+For a cash-settled call with strike $3,000 and spot $3,500:
+
+```
+payout = (spot - strike) * amount = ($3,500 - $3,000) * 5 = $2,500
+```
+
+## Settling (Writer Collateral Return)
+
+After expiry, writers reclaim unused collateral. If options expired out-of-the-money, writers receive their full collateral back.
+
+```solidity
+// Settle writer position, reclaim remaining collateral
+uint256 collateralReturned = options.settle(seriesId);
+```
+
+## ERC-1155 Position Tokens
+
+Position IDs are deterministic:
+
+```solidity
+// Holder and writer positions have separate token IDs
+uint256 holderPositionId = uint256(keccak256(abi.encodePacked(seriesId, false)));
+uint256 writerPositionId = uint256(keccak256(abi.encodePacked(seriesId, true)));
+```
+
+Because positions are ERC-1155, they are:
+- **Fungible** within the same series and side (writer/holder)
+- **Transferable** on any NFT marketplace
+- **Composable** with other DeFi protocols
+
+## Oracle Integration
+
+Options use the unified Lux Oracle for settlement price determination. At expiry, the oracle's spot price determines whether options are in-the-money.
+
+```solidity
+// Oracle provides the settlement price
+(uint256 price, ) = oracle.getPrice(underlying);
+```
+
+## Key Properties
+
+- **European-style**: Exercise only at expiry, not before
+- **Fully collateralized**: No margin calls or liquidation risk for holders
+- **Permissionless series creation**: Anyone can create new option series
+- **Gas efficient**: Single contract manages all series via ERC-1155

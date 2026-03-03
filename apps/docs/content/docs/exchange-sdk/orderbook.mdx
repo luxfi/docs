@@ -1,0 +1,85 @@
+---
+title: Order Book
+description: AVL-tree order book with Fibonacci heap price-time priority
+icon: BookOpen
+---
+
+## Data Structure
+
+The order book uses two layers of data structures for efficient matching:
+
+| Structure | Purpose |
+|-----------|---------|
+| **Fibonacci Heap** | Priority queue for bids (max-heap) and asks (min-heap) |
+| **AVL Tree** | Sorted price levels for O(log n) order book rendering |
+| **Map** | Active order tracking for O(1) cancellation |
+
+Bids are sorted highest-price-first. Asks are sorted lowest-price-first. Ties at the same price are broken by insertion order (FIFO).
+
+## Order Types
+
+| Type | Behavior |
+|------|----------|
+| **Limit** | Rests in the book at the specified price until matched or cancelled |
+| **Market** | Fills immediately against the best opposing order. Rejected if no liquidity |
+
+## Order Lifecycle
+
+| Status | Description |
+|--------|-------------|
+| `unfilled` | Resting in the book (default) |
+| `filled` | Fully matched |
+| `partially-filled` | Partially matched, remainder re-queued |
+| `remainder` | New order created from a partial fill |
+| `cancelled` | Removed from the book |
+
+## Matching Algorithm
+
+The `settle()` method runs the matching loop:
+
+1. Pop the best bid and best ask from their heaps.
+2. If both are limits and the spread is positive, stop (no overlap).
+3. If one is a market order, or the spread is zero/negative, execute a trade.
+4. Fill quantity is the minimum of the two order quantities.
+5. Fill price is the price of the older (earlier `seqId`) order.
+6. If quantities differ, the remainder is re-queued as a new order.
+7. Repeat until no more overlapping orders exist.
+
+## Spread and Pricing
+
+```typescript
+book.spread       // ask - bid (live, skips cancelled orders)
+book.displaySpread // cached after last settle
+book.meanPrice    // (ask + bid) / 2, cached after last settle
+book.lastPrice    // fill price of most recent trade
+```
+
+## Continuous Execution
+
+Run the matching engine in a loop using `requestAnimationFrame`:
+
+```typescript
+const ctx = book.start((book, trades) => {
+  // Called each frame with new trades
+  console.log(`${trades.length} new trades`)
+})
+
+// Stop later
+ctx.stop()
+```
+
+## Candlestick Generation
+
+Convert trades into OHLCV candles:
+
+```typescript
+import { Candle, CandleInterval } from '@hanzo/matching-engine/Candle'
+
+const candles = new CandleAVL(CandleInterval.ONE_HOUR)
+candles.tradesToCandles(trades)
+
+const slice = candles.timeSlice(startTime, endTime, 100)
+const ohlcv = slice.map(c => c.export())
+```
+
+Intervals: `1 minute`, `1 hour`, `1 day`, `1 week`.
