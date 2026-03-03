@@ -73,7 +73,7 @@ Lux Node (`luxd`) is the core validator node for the Lux Network -- a multi-chai
 
 ## Hard requirements
 
-1. **ALWAYS** use `github.com/luxfi/*` packages -- **NEVER** `go-ethereum` or `ava-labs`
+1. **ALWAYS** use `github.com/luxfi/*` packages -- **NEVER** `go-ethereum` or `luxfi`
 2. **NEVER** use EWOQ keys -- generate fresh keys for every deployment
 3. **NEVER** `pkill luxd` -- use `lux cli` or send SIGINT/SIGTERM for graceful shutdown
 4. **NEVER** bump Go packages above v1.x.x (except `luxfi/lattice/v7` and `luxfi/zapdb/v4` which are already >v1)
@@ -286,7 +286,7 @@ The Lux Network supports 14 built-in chain types across 3 tiers.
 | Chain | Letter | VM | Consensus | Purpose |
 |-------|--------|----|-----------|---------|
 | **P-Chain** | P | platformvm | Linear (Snowman) | Validator management, staking, subnet/L1 creation |
-| **X-Chain** | X | exchangevm | DAG (Avalanche) | UTXO-based asset creation and transfers |
+| **X-Chain** | X | exchangevm | DAG (Lux) | UTXO-based asset creation and transfers |
 | **C-Chain** | C | EVM plugin | Linear (Snowman) | EVM-compatible smart contracts (ChainID 96369) |
 
 #### Extended Chains (allvms build tag)
@@ -318,7 +318,7 @@ Lux Node implements a multi-consensus architecture:
 
 1. **Linear (Snowman)**: For linear chains (P-Chain, C-Chain, Q-Chain, etc.). Blocks form a single chain. Uses `ChainVM` interface. Wrapped by **ProposerVM (Linear++)** for congestion control via soft leader election.
 
-2. **DAG (Avalanche/Lux)**: For directed acyclic graph chains (X-Chain). Vertices can have multiple parents. Uses `DAGVertex` interface. Enables higher throughput via parallel transaction processing.
+2. **DAG (Lux/Lux)**: For directed acyclic graph chains (X-Chain). Vertices can have multiple parents. Uses `DAGVertex` interface. Enables higher throughput via parallel transaction processing.
 
 3. **Quasar**: The hybrid quantum-safe finality engine. Runs on top of linear consensus. Produces **hybrid finality proofs** requiring both:
    - **BLS Path**: Aggregate BLS signatures from 2/3+ validator weight (96-byte proof, fast)

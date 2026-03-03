@@ -1,7 +1,6 @@
 import type { BaseLayoutProps } from '@hanzo/docs/ui/layouts/shared';
-import { BookOpenIcon, CodeIcon, ServerIcon, WalletIcon, ShieldIcon, NetworkIcon, SearchIcon, DatabaseIcon } from 'lucide-react';
+import { NetworkIcon, ServerIcon, WalletIcon } from 'lucide-react';
 
-// Lux Network Icon
 function LuxIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -60,50 +59,3 @@ export const baseOptions = (): BaseLayoutProps => ({
   ],
   githubUrl: 'https://github.com/luxfi',
 });
-
-// Project categories for the docs portal
-export const projectCategories = [
-  {
-    title: 'Core Infrastructure',
-    description: 'Node, consensus, and network fundamentals',
-    icon: ServerIcon,
-    projects: [
-      { name: 'Node', href: '/docs/node', description: 'Run a Lux node' },
-      { name: 'Consensus', href: '/docs/consensus', description: 'Multi-consensus engine' },
-      { name: 'EVM', href: '/docs/evm', description: 'EVM compatibility layer' },
-      { name: 'Explorer', href: '/docs/explorer', description: 'Blockchain explorer' },
-      { name: 'Indexer', href: '/docs/indexer', description: 'Multi-chain indexer' },
-    ],
-  },
-  {
-    title: 'Developer Tools',
-    description: 'SDKs, CLIs, and development resources',
-    icon: CodeIcon,
-    projects: [
-      { name: 'SDK', href: '/docs/sdk', description: 'Go SDK for Lux' },
-      { name: 'CLI', href: '/docs/cli', description: 'Command line interface' },
-      { name: 'Netrunner', href: '/docs/netrunner', description: 'Network testing tool' },
-    ],
-  },
-  {
-    title: 'Cryptography & Security',
-    description: 'Post-quantum cryptography, HSM, and threshold signing',
-    icon: ShieldIcon,
-    projects: [
-      { name: 'HSM', href: '/docs/hsm', description: 'Hardware security module integration' },
-      { name: 'Crypto', href: '/docs/crypto', description: 'Cryptographic primitives' },
-      { name: 'Threshold', href: '/docs/threshold', description: 'Threshold signatures' },
-      { name: 'MPC', href: '/docs/mpc', description: 'Multi-party computation' },
-    ],
-  },
-  {
-    title: 'Applications',
-    description: 'Wallets, bridges, and DeFi',
-    icon: WalletIcon,
-    projects: [
-      { name: 'Wallet', href: '/docs/wallet', description: 'Lux Wallet' },
-      { name: 'Bridge', href: '/docs/bridge', description: 'Cross-chain bridge' },
-      { name: 'DEX', href: '/docs/dex', description: 'Decentralized exchange' },
-    ],
-  },
-];

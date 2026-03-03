@@ -1,40 +1,60 @@
 ---
 title: Lux Network Documentation
-description: Comprehensive documentation for Lux Network — post-quantum secure, multi-consensus blockchain infrastructure
-index: true
+description: Post-quantum secure, multi-consensus blockchain infrastructure
 ---
 
-Welcome to the Lux Network documentation. Browse by section or use the sidebar to navigate.
+## Core
 
-## Sections
+| | |
+|---|---|
+| [Architecture](/docs/architecture) | Network design and multi-consensus |
+| [Consensus](/docs/consensus) | Quasar post-quantum consensus engine |
+| [Post-Quantum](/docs/post-quantum) | ML-DSA, Kyber, lattice crypto |
+| [Nodes](/docs/nodes) | Run validators, full nodes, archive nodes |
+| [Chains & VMs](/docs/chains) | 16 virtual machines — EVM, DEX, AI, ZK |
 
-| Section | Description |
-|---------|-------------|
-| [Core](/docs/core) | Architecture, consensus, nodes, and reference APIs |
-| [Chains & VMs](/docs/chains) | 15+ virtual machines — EVM, DEX, Threshold, Quantum, AI, ZK |
-| [Cryptography](/docs/crypto) | HSM, KMS, MPC, FHE/TFHE, lattice-based crypto |
-| [Developer Tools](/docs/tools) | CLI, SDKs (Go/TypeScript/Python), Netrunner |
-| [Applications](/docs/apps) | Wallet, Bridge, Explorer, Indexer, Lux Cloud |
-| [Cloud](/docs/cloud) | Smart contract deployment, subnet tutorials |
-| [Governance](/docs/governance) | DAO, committees, and 348 Lux Proposals |
+## Trading
 
-## Quick Start
+| | |
+|---|---|
+| [Exchange](/docs/exchange) | DEX frontend — V2, V3, precompile swaps |
+| [DEX (LX)](/docs/dex) | 434M ops/sec on-chain CLOB engine |
+| [CEX (ATS)](/docs/cex) | Institutional exchange — FINRA, MiFID II |
+| [Broker](/docs/broker) | 16-venue smart order routing |
 
-```bash
-# Install the Lux CLI
-curl -sSL https://cli.lux.network/install | sh
+## Cryptography
 
-# Start a local network
-lux network start
+| | |
+|---|---|
+| [HSM](/docs/hsm) | AWS, GCP, Azure, Zymbit, ML-DSA signing |
+| [KMS](/docs/kms) | Secrets, PKI, K8s operator |
+| [MPC](/docs/mpc) | CGGMP21, FROST, BLS, Ringtail threshold |
+| [FHE](/docs/fhe) | TFHE, CKKS, coprocessor |
+| [Lattice](/docs/lattice) | Post-quantum lattice crypto |
 
-# Deploy a subnet
-lux subnet create mychain --evm
-lux subnet deploy mychain --local
-```
+## Developer Tools
 
-## Resources
+| | |
+|---|---|
+| [CLI](/docs/cli) | Network, subnet, wallet commands |
+| [SDK](/docs/sdk) | Go, TypeScript, Python |
+| [Netrunner](/docs/netrunner) | Network simulation and benchmarks |
+| [Accel](/docs/accel) | GPU acceleration (CUDA, Metal) |
 
-- [Lux Proposals (LPs)](https://lps.lux.network) — Standards and governance
-- [Explorer](https://explore.lux.network) — Blockchain explorer
-- [GitHub](https://github.com/luxfi) — Source code
-- [Bridge](https://bridge.lux.network) — Cross-chain transfers
+## Infrastructure
+
+| | |
+|---|---|
+| [Wallet](/docs/wallet) | HD wallet, Ledger, multi-chain |
+| [Bridge](/docs/bridge) | MPC-secured cross-chain transfers |
+| [Explorer](/docs/explorer) | Blockscout blockchain explorer |
+| [Indexer](/docs/indexer) | Multi-chain data indexer |
+| [Bootnode](/docs/bootnode) | Lux Cloud — RPC, WebSocket, NFT APIs |
+
+## Governance
+
+| | |
+|---|---|
+| [DAO](/docs/dao) | Decentralized governance |
+| [Vote](/docs/vote) | Proposals, delegation, treasury |
+| [LPs](https://lps.lux.network) | 348 Lux Proposals |

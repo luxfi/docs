@@ -17,7 +17,7 @@ Lux Exchange API (`github.com/luxfi/exchange-api`) is a **TypeScript Express ser
 
 ## Hard requirements
 
-1. ALWAYS use `github.com/luxfi/*` package paths -- NEVER `go-ethereum` or `ava-labs`
+1. ALWAYS use `github.com/luxfi/*` package paths -- NEVER `go-ethereum` or `luxfi`
 2. Native chain handling is determined by `NATIVE_CHAINS` set: `LUX` and `ZOO`
 3. Stablecoins (USDT, USDC, LUSD, DAI, BUSD) are force-priced to $1.00
 4. Prices and volumes exceeding 1e12 are capped to 0 (subgraph overflow artifacts)
@@ -113,7 +113,7 @@ exchange-api :4000
 | LBTC | `0x1E48...4f4e` | 8 |
 | LSOL | `0x26B4...e9e7F` | 18 |
 
-Plus LUSD, LZOO, LAVAX, LBLAST, LBNB, LBOME, LBONK, LCELO, LDOGS, LPOL, LTON, CYRUS, MELANIA, TRUMP, Z.
+Plus LUSD, LZOO, LLUX, LBLAST, LBNB, LBOME, LBONK, LCELO, LDOGS, LPOL, LTON, CYRUS, MELANIA, TRUMP, Z.
 
 ### Exchange Proxy (Go, :8088)
 

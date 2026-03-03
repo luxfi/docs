@@ -17,7 +17,7 @@ Lux HSM (`github.com/luxfi/hsm`) is a **unified Go library** for hardware securi
 
 ## Hard requirements
 
-1. ALWAYS use `github.com/luxfi/*` packages -- NEVER `go-ethereum` or `ava-labs`
+1. ALWAYS use `github.com/luxfi/*` packages -- NEVER `go-ethereum` or `luxfi`
 2. NEVER store key shares in plaintext -- always use `KeyShareVault` with AES-256-GCM
 3. NEVER hardcode passwords -- use PasswordProvider interface (cloud KMS or env/file)
 4. Cloud SDK calls use raw HTTP with SigV4/OAuth -- NO AWS/GCP/Azure SDK imports
