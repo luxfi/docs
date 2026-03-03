@@ -1,0 +1,105 @@
+---
+title: Lux Standard Library
+description: Production Solidity contracts for the Lux Network - DeFi, governance, identity, privacy, and 39 precompiles
+icon: Library
+---
+
+The Lux Standard Library (`@luxfi/contracts`) is the canonical Solidity contracts package for the Lux Network ecosystem. It provides production-ready contracts for DeFi protocols, governance, identity, cross-chain bridges, post-quantum cryptography, and FHE confidential computing.
+
+## Installation
+
+```bash
+npm install @luxfi/contracts
+```
+
+For Foundry projects:
+
+```bash
+forge install luxfi/standard
+```
+
+Add to `remappings.txt`:
+
+```
+@luxfi/contracts/=lib/standard/contracts/
+```
+
+## Contract Categories
+
+| Category | Directory | Description |
+|----------|-----------|-------------|
+| **AMM** | `amm/` | V2 constant-product, V3 concentrated liquidity, StableSwap |
+| **Lending** | `markets/` | Morpho-style isolated lending markets |
+| **Perpetuals** | `perps/` | GMX-style leveraged perpetual futures |
+| **Liquid** | `liquid/` | Yield-bearing bridge tokens (LETH, LBTC, LUSD), xLUX vault |
+| **Governance** | `governance/` | Governor, Timelock, vLUX, Karma, DLUX, GaugeController |
+| **Identity** | `identity/` | W3C DID Registry, Soulbound NFTs, Reputation |
+| **NFT AMM** | `lssvm/` | sudoswap-style bonding curve NFT trading |
+| **Options** | `options/` | European options with ERC-1155 positions |
+| **Streaming** | `streaming/` | Sablier-style linear and cliff token vesting |
+| **Insurance** | `insurance/` | Protocol coverage with underwriter staking |
+| **Privacy** | `privacy/` | Z-Chain UTXO notes with Poseidon2 and STARK proofs |
+| **FHE** | `fhe/` | Fully Homomorphic Encryption for confidential contracts |
+| **Precompiles** | `precompile/` | 39 EVM precompiles (PQ crypto, DeFi, ZK, attestation) |
+| **Bridge** | `bridge/` | Cross-chain Warp messaging and LRC20B tokens |
+| **Tokens** | `tokens/` | LRC20, WLUX, AI, and token extensions |
+
+## Quick Start
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+import "@luxfi/contracts/tokens/LRC20.sol";
+
+contract MyToken is LRC20 {
+    constructor() LRC20("My Token", "MTK") {
+        _mint(msg.sender, 1_000_000e18);
+    }
+}
+```
+
+## Architecture
+
+The library is organized by protocol domain. Each module is self-contained with its own interfaces, and cross-module imports use the `@luxfi/contracts/` prefix. All contracts compile with Solidity 0.8.31, EVM target Cancun, and 200 optimizer runs.
+
+```
+contracts/
+  amm/           # V2, V3, StableSwap factories and routers
+  markets/       # Isolated lending (Morpho-style)
+  perps/         # Perpetual futures vault, router, LLP
+  liquid/        # LiquidLUX (xLUX), bridge tokens (LETH, LBTC...)
+  governance/    # Governor, vLUX, Karma, DLUX, GaugeController
+  identity/      # DIDRegistry, DIDResolver, PremiumDID
+  lssvm/         # NFT AMM with linear and exponential curves
+  options/       # European options (ERC-1155)
+  streaming/     # Token streaming and vesting
+  insurance/     # Protocol insurance pools
+  privacy/       # ZNote, ZNotePQ, PrivateTeleport
+  fhe/           # FHE.sol, ConfidentialERC20, Gateway
+  precompile/    # Interfaces for 39 EVM precompiles
+  bridge/        # Warp-based cross-chain transfers
+  tokens/        # LRC20, WLUX, AI, LUX
+  oracle/        # Multi-source price aggregation
+  treasury/      # FeeSplitter, ValidatorVault, FeeGov
+```
+
+## Build and Test
+
+```bash
+# Build all contracts
+forge build
+
+# Run full test suite (761 tests)
+forge test
+
+# Gas reporting
+forge test --gas-report
+
+# Coverage
+forge coverage
+```
+
+## Links
+
+- [npm](https://www.npmjs.com/package/@luxfi/contracts) -- [GitHub](https://github.com/luxfi/standard) -- [Lux Network](https://lux.network)

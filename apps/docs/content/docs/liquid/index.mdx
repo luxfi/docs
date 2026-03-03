@@ -1,0 +1,40 @@
+---
+title: Liquid Protocol
+description: Yield-bearing bridge tokens and the xLUX master vault
+icon: Droplets
+---
+
+Liquid Protocol provides yield-bearing wrapped assets on Lux Network. Users hold bridge tokens (LETH, LBTC, LUSD) that accrue value from bridge fees, or stake LUX into the xLUX vault to earn protocol-wide revenue.
+
+## Token Overview
+
+| Token | Underlying | Yield Source | Contract |
+|-------|-----------|--------------|----------|
+| **LETH** | ETH | Bridge fees, lending | `LiquidToken` (ERC-3156) |
+| **LBTC** | BTC | Bridge fees | `LiquidToken` (ERC-3156) |
+| **LUSD** | USDC/USDT | Bridge fees, stablecoin pools | `LiquidToken` (ERC-3156) |
+| **xLUX** | LUX | All protocol fees + validator rewards | `LiquidLUX` (ERC-4626) |
+
+## Architecture
+
+```
+Bridge Tokens (LETH, LBTC, LUSD)          xLUX Vault
+┌──────────────────────────┐    ┌──────────────────────────┐
+│ Whitelisted mint/burn    │    │ DEX, Bridge, Lending,    │
+│ ERC-3156 flash loans     │    │ Perps, NFT fees          │
+│ Sentinel emergency pause │    │ Validator rewards (0%)   │
+│ Fee → feeRecipient       │    │ 10% perf fee → treasury  │
+└──────────────────────────┘    └──────────────────────────┘
+```
+
+## Yield Model
+
+- **Bridge tokens** earn from flash loan fees and protocol integrations. Minting and burning are restricted to whitelisted addresses (vaults, bridges).
+- **xLUX** collects fees from every protocol in the Lux DeFi stack. A 10% performance fee goes to the treasury; validator rewards are exempt from performance fees.
+
+## Key Properties
+
+- All liquid tokens use role-based access: `ADMIN_ROLE` and `SENTINEL_ROLE`.
+- Flash loans follow ERC-3156 with a configurable fee (minimum 1 basis point).
+- xLUX uses ERC20Votes for checkpointed, flash-loan-resistant governance power.
+- Slashing reserve absorbs validator losses before socializing to holders.

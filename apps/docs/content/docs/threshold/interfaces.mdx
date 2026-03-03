@@ -1,0 +1,117 @@
+---
+title: Go Interfaces
+description: Detailed threshold cryptography interface definitions
+icon: FileCode
+---
+
+## Scheme
+
+The top-level factory interface. Every threshold implementation must satisfy `Scheme`.
+
+```go
+type Scheme interface {
+    ID() SchemeID
+    Name() string
+    KeyShareSize() int
+    SignatureShareSize() int
+    SignatureSize() int
+    PublicKeySize() int
+    NewDKG(config DKGConfig) (DKG, error)
+    NewTrustedDealer(config DealerConfig) (TrustedDealer, error)
+    NewSigner(share KeyShare) (Signer, error)
+    NewAggregator(groupKey PublicKey) (Aggregator, error)
+    NewVerifier(groupKey PublicKey) (Verifier, error)
+    ParseKeyShare(data []byte) (KeyShare, error)
+    ParsePublicKey(data []byte) (PublicKey, error)
+    ParseSignatureShare(data []byte) (SignatureShare, error)
+    ParseSignature(data []byte) (Signature, error)
+}
+```
+
+## DKG (Distributed Key Generation)
+
+Multi-round protocol where parties collaboratively generate key shares without any single party knowing the full secret.
+
+```go
+type DKG interface {
+    Round1(ctx context.Context) (DKGMessage, error)
+    Round2(ctx context.Context, round1Messages map[int]DKGMessage) (DKGMessage, error)
+    Round3(ctx context.Context, round2Messages map[int]DKGMessage) (KeyShare, error)
+    NumRounds() int
+    GroupKey() PublicKey
+}
+```
+
+## KeyShare
+
+A party's portion of the threshold secret key.
+
+```go
+type KeyShare interface {
+    Index() int
+    GroupKey() PublicKey
+    PublicShare() []byte
+    Threshold() int
+    TotalParties() int
+    Bytes() []byte
+    SchemeID() SchemeID
+}
+```
+
+## Signer
+
+Creates signature shares. For multi-round schemes, `NonceGen` must be called before `SignShare`.
+
+```go
+type Signer interface {
+    Index() int
+    PublicShare() []byte
+    NonceGen(ctx context.Context) (NonceCommitment, NonceState, error)
+    SignShare(ctx context.Context, message []byte, signers []int, nonce NonceState) (SignatureShare, error)
+    KeyShare() KeyShare
+}
+```
+
+## Aggregator
+
+Combines `t+1` signature shares into a single valid signature.
+
+```go
+type Aggregator interface {
+    Aggregate(ctx context.Context, message []byte, shares []SignatureShare, commitments []NonceCommitment) (Signature, error)
+    VerifyShare(message []byte, share SignatureShare, publicShare []byte) error
+    GroupKey() PublicKey
+}
+```
+
+## Verifier
+
+Checks a final threshold signature against the group public key.
+
+```go
+type Verifier interface {
+    Verify(message []byte, signature Signature) bool
+    VerifyBytes(message, signature []byte) bool
+    GroupKey() PublicKey
+}
+```
+
+## Configuration
+
+```go
+type DKGConfig struct {
+    Threshold    int       // Minimum signers required (t)
+    TotalParties int       // Total parties (n)
+    PartyIndex   int       // This party's index
+    PartyID      []byte    // Optional identifier
+    Rand         io.Reader // Defaults to crypto/rand
+}
+
+type DealerConfig struct {
+    Threshold    int
+    TotalParties int
+    Rand         io.Reader
+}
+```
+
+Both configs validate that `1 <= Threshold < TotalParties` and `TotalParties >= 2`.

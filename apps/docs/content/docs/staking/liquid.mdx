@@ -1,0 +1,58 @@
+---
+title: Liquid Staking
+description: Stake LUX via xLUX with no lock period and full DeFi composability
+icon: Waves
+---
+
+Liquid staking through the xLUX vault lets you earn staking rewards and protocol fees without locking your LUX. You receive xLUX shares that are freely transferable and usable across DeFi.
+
+## How It Works
+
+1. Deposit LUX into the LiquidLUX vault.
+2. Receive xLUX shares proportional to the current exchange rate.
+3. The vault accumulates protocol fees and validator rewards, increasing the LUX-per-xLUX ratio.
+4. Withdraw at any time by burning xLUX to receive your LUX plus earned yield.
+
+## Comparison with P-Chain Staking
+
+| Feature | P-Chain Staking | Liquid Staking (xLUX) |
+|---------|----------------|----------------------|
+| Lock period | 2 weeks - 1 year | None |
+| Minimum | 25 LUX (delegation) | No minimum |
+| Yield source | Validator rewards | All protocol fees + validator rewards |
+| Composability | None (locked) | Full DeFi (collateral, LP, trading) |
+| Governance | None | vLUX voting power |
+| Slashing risk | Direct | Socialized with reserve buffer |
+
+## DeFi Composability
+
+xLUX can be used as collateral, provided as liquidity, or traded on any Lux DEX:
+
+- **Perps collateral**: Use xLUX as margin for leveraged positions.
+- **AMM liquidity**: Provide xLUX/LUSD or xLUX/WLUX liquidity and earn swap fees on top of vault yield.
+- **Governance**: xLUX counts toward vLUX voting power in the DAO.
+
+## Yield Stacking Strategy
+
+```
+Deposit LUX → xLUX (vault yield)
+     │
+     ├── Use as Perps collateral (leveraged exposure)
+     ├── Provide AMM liquidity (swap fees)
+     └── Vote in governance (vLUX)
+```
+
+## Contract
+
+Deposit and withdraw through the `LiquidLUX` contract. See the [Liquid Protocol API](/liquid/api) for the full interface.
+
+```solidity
+// Deposit
+uint256 shares = liquidLux.deposit(1000e18);
+
+// Check value
+uint256 luxValue = liquidLux.convertToAssets(shares);
+
+// Withdraw
+uint256 luxReceived = liquidLux.withdraw(shares);
+```

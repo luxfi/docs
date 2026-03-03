@@ -1,0 +1,48 @@
+---
+title: Lux GPU
+description: Go bindings for cross-platform GPU acceleration
+icon: Cpu
+---
+
+Go bindings for `luxcpp/gpu`, providing GPU-accelerated array operations for crypto, ZK, and ML workloads. Used by `github.com/luxfi/accel` for high-level blockchain acceleration.
+
+## Backend Support
+
+| Backend | Platform | Dependencies | Priority |
+|---------|----------|--------------|----------|
+| **CUDA** | Linux/Windows | CUDA Toolkit | 1 (highest) |
+| **Metal** | macOS arm64 | Metal.framework | 2 |
+| **WebGPU** | All | Dawn | 3 |
+| **CPU** | All | None | 4 (fallback) |
+
+Backend is auto-detected at runtime in priority order. Override with `LUX_GPU_BACKEND` env var (`cuda`, `metal`, `webgpu`, `cpu`).
+
+## Build Modes
+
+| Mode | Command | GPU Support |
+|------|---------|-------------|
+| **CPU only** | `CGO_ENABLED=0 go build ./...` | No (pure Go fallback) |
+| **GPU enabled** | `CGO_ENABLED=1 go build ./...` | Yes (requires luxcpp/gpu) |
+
+## Data Types
+
+| Type | Description |
+|------|-------------|
+| `Float32` | 32-bit float (default) |
+| `Float16` | 16-bit float |
+| `BFloat16` | Brain float 16 |
+| `Int32` / `Int64` | Signed integers |
+| `Uint32` / `Uint64` | Unsigned integers |
+| `Bool` | Boolean |
+
+## Quick Start
+
+```go
+import "github.com/luxfi/gpu"
+
+a := gpu.Ones([]int{1024, 1024}, gpu.Float32)
+b := gpu.Random([]int{1024, 1024}, gpu.Float32)
+c := gpu.MatMul(a, b)
+gpu.Synchronize()
+fmt.Println(gpu.Info())
+```

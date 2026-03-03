@@ -1,0 +1,61 @@
+---
+title: Authentication
+description: API keys, OAuth2, OIDC, SSO, and SAML authentication methods
+icon: LogIn
+---
+
+Lux IAM supports multiple authentication protocols. All services authenticate through the central provider at **hanzo.id**.
+
+## OAuth 2.0 / OIDC
+
+The primary method for web and mobile applications using Authorization Code + PKCE.
+
+| Endpoint | Purpose |
+|----------|---------|
+| `/login/oauth/authorize` | Authorization |
+| `/api/login/oauth/access_token` | Token exchange |
+| `/.well-known/openid-configuration` | OIDC discovery |
+| `/api/userinfo` | User info |
+| `/api/logout` | Session logout |
+
+### Token Format
+
+Access tokens are JWTs with the `owner` claim identifying the organization:
+
+```json
+{
+  "sub": "user-id",
+  "iss": "https://hanzo.id",
+  "aud": "your-client-id",
+  "owner": "org-name",
+  "exp": 1700000000
+}
+```
+
+## SAML 2.0
+
+For enterprise SSO with Okta, Azure AD, or Google Workspace.
+
+| Parameter | Value |
+|-----------|-------|
+| Entity ID | `https://hanzo.id/api/saml/metadata` |
+| ACS URL | `https://hanzo.id/api/saml/acs` |
+| SLO URL | `https://hanzo.id/api/saml/slo` |
+
+## API Keys
+
+For machine-to-machine authentication:
+
+```bash
+curl -H "Authorization: Bearer lux_key_abc123..." \
+  https://api.lux.network/v1/resource
+```
+
+## Social Login
+
+| Provider | Protocol |
+|----------|----------|
+| Google | OIDC |
+| GitHub | OAuth 2.0 |
+| Apple | OIDC |
+| Microsoft | OIDC |

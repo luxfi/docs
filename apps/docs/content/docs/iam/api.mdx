@@ -1,0 +1,72 @@
+---
+title: IAM API
+description: REST API endpoints for user management, authentication, and authorization
+icon: Server
+---
+
+All endpoints are served from `https://hanzo.id/api/`. Authentication required via Bearer token or session cookie.
+
+## Authentication
+
+### OAuth Token Exchange
+
+```
+POST /api/login/oauth/access_token
+
+grant_type=authorization_code&code={code}&redirect_uri={uri}
+&client_id={id}&client_secret={secret}
+```
+
+### Refresh Token
+
+```
+POST /api/login/oauth/refresh_token
+
+grant_type=refresh_token&refresh_token={token}&client_id={id}
+```
+
+### OIDC Discovery
+
+```
+GET /.well-known/openid-configuration
+```
+
+## User Management
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/get-account` | GET | Current user (requires auth) |
+| `/api/get-user?id={org}/{name}` | GET | Get user by ID |
+| `/api/update-user` | POST | Update user profile |
+| `/api/get-users?owner={org}` | GET | List users in org |
+
+## Organization Management
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/get-organizations` | GET | List organizations |
+| `/api/get-organization?id={name}` | GET | Get organization |
+
+## Application Management
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/get-applications?owner={org}` | GET | List applications |
+| `/api/get-application?id={org}/{app}` | GET | Get application |
+
+## Roles and Permissions
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/get-roles?owner={org}` | GET | List roles |
+| `/api/get-permissions?owner={org}` | GET | List permissions |
+
+Assign roles by updating the user object:
+
+```json
+{
+  "owner": "org",
+  "name": "username",
+  "roles": [{"owner": "org", "name": "admin"}]
+}
+```

@@ -1,0 +1,108 @@
+---
+title: API Reference
+description: TypeScript API for order book, orders, trades, and candles
+icon: FileCode
+---
+
+## Book
+
+```typescript
+class Book {
+  id: string              // UUID
+  name: string            // e.g. "BTC-USD"
+  askSize: number         // number of ask orders
+  bidSize: number         // number of bid orders
+  spread: Decimal         // current ask - bid
+  displaySpread: Decimal  // cached after settle
+  meanPrice: Decimal      // (ask + bid) / 2
+  lastPrice: Decimal      // last trade fill price
+  orderBook: OrderBook    // { asks: [price, qty][], bids: [price, qty][] }
+
+  addOrder(order: Order): boolean
+  cancelOrder(order: Order): boolean
+  nearestAsk(): Order | undefined
+  nearestBid(): Order | undefined
+  settle(): Trade[]
+  start(fn: (book: Book, trades: Trade[]) => void): ExecutionContext
+}
+```
+
+## Order
+
+```typescript
+class Order {
+  id: string               // UUID (auto-generated)
+  seqId: number            // monotonic sequence number
+  externalId: string       // caller-provided ID
+  side: OrderSide          // 'ask' | 'bid'
+  type: OrderType          // 'limit' | 'market'
+  status: OrderStatus      // lifecycle state
+  price: Decimal           // order price (0 for market orders)
+  quantity: Decimal         // order size
+  fillQuantity: Decimal    // amount filled
+  createdAt: number        // unix timestamp
+
+  constructor(
+    externalId: string,
+    side: OrderSide,
+    type: OrderType,
+    quantity: number | string | Decimal,
+    price: number | string | Decimal
+  )
+
+  clone(): Order
+}
+```
+
+## Trade
+
+```typescript
+class Trade {
+  id: string                // UUID
+  fillPrice: Decimal        // execution price
+  fillQuantity: Decimal     // execution quantity
+  newOrders: Order[]        // remainder orders from partial fills
+  matchedOrders: Order[]    // the bid/ask pair that matched
+  rejectedOrders: Order[]   // orders that could not be re-queued
+  executedAt: number        // unix timestamp
+}
+```
+
+## Candle
+
+```typescript
+class Candle {
+  openTime: number
+  closeTime: number
+  interval: CandleInterval
+  open: Decimal
+  high: Decimal
+  low: Decimal
+  close: Decimal
+  volume: Decimal            // price * quantity sum
+  quoteAssetVolume: Decimal  // quantity sum
+  trades: number             // trade count
+
+  addTrade(trade: Trade): Candle
+  export(): any[]  // [openTime, closeTime, O, H, L, C, vol, quoteVol, trades]
+}
+
+enum CandleInterval {
+  ONE_MINUTE = '1 minute',
+  ONE_HOUR   = '1 hour',
+  ONE_DAY    = '1 day',
+  ONE_WEEK   = '1 week',
+}
+```
+
+## Servers
+
+```typescript
+// Create Express HTTP server for order management
+import { createHttp } from '@hanzo/matching-engine'
+
+// Create Socket.IO server for real-time streaming
+import { createSocketIO } from '@hanzo/matching-engine'
+```
+
+Both servers wrap a `Book` instance and expose order submission, cancellation, and order book queries over their respective protocols.

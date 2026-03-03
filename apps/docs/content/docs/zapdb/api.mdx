@@ -1,0 +1,108 @@
+---
+title: Go API
+description: Core database operations for ZapDB
+icon: FileCode
+---
+
+## Opening a Database
+
+```go
+opts := badger.DefaultOptions("/path/to/data")
+db, err := badger.Open(opts)
+if err != nil {
+    log.Fatal(err)
+}
+defer db.Close()
+```
+
+## Transactions
+
+All reads and writes happen inside transactions. ZapDB supports both read-only and read-write transactions.
+
+### Read-Write Transaction
+
+```go
+err := db.Update(func(txn *badger.Txn) error {
+    err := txn.Set([]byte("key"), []byte("value"))
+    return err
+})
+```
+
+### Read-Only Transaction
+
+```go
+err := db.View(func(txn *badger.Txn) error {
+    item, err := txn.Get([]byte("key"))
+    if err != nil {
+        return err
+    }
+    return item.Value(func(val []byte) error {
+        // use val
+        return nil
+    })
+})
+```
+
+### Manual Transactions
+
+```go
+txn := db.NewTransaction(true) // true = read-write
+defer txn.Discard()
+
+txn.Set([]byte("key"), []byte("value"))
+txn.Delete([]byte("old-key"))
+
+err := txn.Commit()
+```
+
+## Key Operations
+
+| Method | Description |
+|--------|-------------|
+| `txn.Set(key, val)` | Set a key-value pair |
+| `txn.Get(key)` | Get an item by key (returns `ErrKeyNotFound` if missing) |
+| `txn.Delete(key)` | Delete a key |
+| `txn.SetEntry(e)` | Set with TTL or metadata via `badger.NewEntry(key, val).WithTTL(dur)` |
+
+## Iteration
+
+```go
+err := db.View(func(txn *badger.Txn) error {
+    opts := badger.DefaultIteratorOptions
+    opts.Prefix = []byte("user:")
+    it := txn.NewIterator(opts)
+    defer it.Close()
+
+    for it.Rewind(); it.Valid(); it.Next() {
+        item := it.Item()
+        // process item
+    }
+    return nil
+})
+```
+
+Set `opts.PrefetchValues = false` for key-only iteration (faster when values are not needed).
+
+## Batch Writes
+
+```go
+wb := db.NewWriteBatch()
+defer wb.Cancel()
+
+for i := 0; i < 1000; i++ {
+    wb.Set(key(i), value(i))
+}
+err := wb.Flush()
+```
+
+## Database Management
+
+| Method | Description |
+|--------|-------------|
+| `db.Sync()` | Force fsync to disk |
+| `db.Flatten(workers)` | Compact the LSM tree |
+| `db.DropAll()` | Delete all keys |
+| `db.DropPrefix(prefix...)` | Delete all keys with given prefixes |
+| `db.Backup(w, since)` | Stream backup to an `io.Writer` |
+| `db.Load(r, maxPending)` | Restore from backup stream |
+| `db.Subscribe(ctx, cb, matches)` | Watch for key changes |

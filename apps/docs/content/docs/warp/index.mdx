@@ -1,0 +1,65 @@
+---
+title: Lux Warp
+description: Native cross-chain messaging protocol using BLS aggregate signatures
+icon: Radio
+---
+
+Lux Warp (`github.com/luxfi/warp`) is the cross-chain messaging protocol for Lux Network. It enables subnets to send verified messages to each other without relying on external bridges or oracles.
+
+## How It Works
+
+Warp uses BLS multi-signatures from source chain validators to authenticate cross-chain messages.
+
+1. A VM on the source chain emits a Warp message containing a payload
+2. Validators on the source chain sign the message with their BLS keys
+3. Signatures are aggregated into a single `BitSetSignature` (a signer bitmap plus a 96-byte BLS aggregate signature)
+4. The destination chain verifies the aggregate signature against the source chain's validator set
+5. If the signed weight meets the quorum threshold (typically 67%), the message is accepted
+
+```
+Source Chain                          Destination Chain
+┌────────────┐                       ┌────────────┐
+│ VM emits   │   BLS aggregate sig   │ VM receives│
+│ unsigned   │─────────────────────▶ │ and verifies│
+│ message    │  (bitmap + 96 bytes)  │ message     │
+└────────────┘                       └────────────┘
+      │                                     │
+      ▼                                     ▼
+  Validators                          ValidatorState
+  sign with                           checks quorum
+  BLS keys                            weight
+```
+
+## Key Properties
+
+| Property | Value |
+|----------|-------|
+| Signature scheme | BLS12-381 aggregate signatures |
+| Quorum default | 67% of stake weight |
+| Max message size | 256 KiB |
+| Signature size | 96 bytes + signer bitmap |
+| Trust model | Source chain validator set |
+
+## Architecture
+
+```
+github.com/luxfi/warp
+├── message.go          # UnsignedMessage, Message
+├── payload/            # AddressedCall, Hash, L1ValidatorRegistration
+├── backend/            # Message storage and retrieval
+├── signer/             # LocalSigner, RemoteSigner
+├── signature-aggregator/  # Signature collection and aggregation
+├── precompile/         # EVM precompile for in-contract verification
+└── relayer/            # Automatic message relay
+```
+
+## Dependencies
+
+```go
+require (
+    github.com/luxfi/crypto v1.17.25  // BLS cryptography
+    github.com/luxfi/geth v1.16.53    // EVM types
+    github.com/luxfi/ids v1.2.4       // ID types
+    github.com/luxfi/p2p v1.4.6       // P2P networking
+)
+```

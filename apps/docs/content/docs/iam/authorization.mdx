@@ -1,0 +1,52 @@
+---
+title: Authorization
+description: Role-based access control, permissions, and policy enforcement
+icon: ShieldCheck
+---
+
+Lux IAM provides RBAC with fine-grained permissions and policy enforcement across all ecosystem services.
+
+## RBAC Model
+
+```
+Organization ──► User ──► Role ──► Permission (resource:action)
+```
+
+### Built-in Roles
+
+| Role | Permissions |
+|------|-------------|
+| `admin` | Full access to all resources |
+| `editor` | Read/write on assigned resources |
+| `viewer` | Read-only access |
+| `developer` | API access and key management |
+
+### Permission Format
+
+Permissions follow `resource:action` pattern: `users:read`, `keys:create`, `billing:write`.
+
+## Policy Enforcement
+
+Every API request is evaluated:
+
+```
+Request ──► Gateway ──► JWT ──► org from "owner" ──► Check Permissions ──► Allow/Deny
+```
+
+| Rule Type | Description |
+|-----------|-------------|
+| Allow | Explicitly grants access |
+| Deny | Takes precedence over Allow |
+| Condition | Time-based, IP-based, or resource-scoped |
+
+## Multi-Tenancy
+
+All database queries scoped to organization. Cross-org access requires explicit federation. Audit logs are per-organization.
+
+## Billing Integration
+
+IAM tracks credit balances for metered services:
+
+```
+Commerce (add credits) ──► IAM (source of truth) ──► Cloud (debit on usage)
+```

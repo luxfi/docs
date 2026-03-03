@@ -1,0 +1,90 @@
+---
+title: Compliance API
+description: Go interfaces for identity verification, screening, and monitoring
+icon: FileCode
+---
+
+The compliance module (`github.com/luxfi/compliance`) exposes Go interfaces. All services are thread-safe with `sync.RWMutex`.
+
+## IDV Provider Interface
+
+```go
+type Provider interface {
+    Name() string
+    InitiateVerification(ctx context.Context, req VerificationRequest) (VerificationResponse, error)
+    CheckStatus(ctx context.Context, verificationID string) (VerificationStatus, error)
+    ParseWebhook(r *http.Request) (WebhookEvent, error)
+}
+
+// Get a provider by name
+provider, err := idv.GetProvider("jumio", config)
+```
+
+Supported providers: `jumio`, `onfido`, `plaid`.
+
+## KYC Service
+
+```go
+type Service struct {
+    // Multi-provider KYC lifecycle
+}
+
+func (s *Service) InitiateKYC(app *Application, provider string) (string, error)
+func (s *Service) HandleWebhook(provider string, r *http.Request) error
+func (s *Service) GetApplication(id string) (*Application, error)
+func (s *Service) ListApplications(status string) ([]*Application, error)
+func (s *Service) GetStats() Stats
+```
+
+## AML Screening Service
+
+```go
+type ScreeningService struct {
+    // Screens against OFAC, EU, UK, PEP, adverse media
+}
+
+func (s *ScreeningService) Screen(ctx context.Context, req ScreeningRequest) (*ScreeningResult, error)
+func (s *ScreeningService) BatchScreen(ctx context.Context, reqs []ScreeningRequest) ([]*ScreeningResult, error)
+```
+
+`ScreeningResult` contains match type (exact, fuzzy, partial), risk level (low, medium, high, critical), and matched list details.
+
+## Transaction Monitoring
+
+```go
+type MonitoringService struct {
+    // Real-time transaction monitoring rules engine
+}
+
+func (m *MonitoringService) Monitor(ctx context.Context, tx Transaction) (*Alert, error)
+func (m *MonitoringService) GetAlert(id string) (*Alert, error)
+func (m *MonitoringService) UpdateAlert(id string, status AlertStatus) error
+func (m *MonitoringService) GenerateSAR(alertID string) (*SAR, error)
+```
+
+Alert statuses: `open`, `investigating`, `escalated`, `closed`, `filed`.
+
+## Payment Compliance
+
+```go
+type ComplianceEngine struct {
+    // Validates payments against jurisdiction rules
+}
+
+func (e *ComplianceEngine) ValidatePayin(ctx context.Context, payment Payment) error
+func (e *ComplianceEngine) ValidatePayout(ctx context.Context, payment Payment) error
+func (e *ComplianceEngine) CheckTravelRule(ctx context.Context, transfer Transfer) (*TravelRuleResult, error)
+```
+
+## Stablecoin Compliance
+
+```go
+type StablecoinEngine struct {
+    // Token allowlists, address risk, mint/burn compliance
+}
+
+func (e *StablecoinEngine) ValidateToken(token string) error
+func (e *StablecoinEngine) CheckAddressRisk(ctx context.Context, address string) (RiskLevel, error)
+func (e *StablecoinEngine) ValidateMint(ctx context.Context, req MintRequest) error
+func (e *StablecoinEngine) ValidateBurn(ctx context.Context, req BurnRequest) error
+```

@@ -1,0 +1,119 @@
+---
+title: Contract Interfaces
+description: Solidity interfaces for Bridge.sol, ERC20B.sol, and IBridgeToken
+icon: Code
+---
+
+## Bridge.sol
+
+The main bridge contract uses EIP-712 typed data signing with role-based access control.
+
+### EIP-712 Domain
+
+| Field | Value |
+|-------|-------|
+| Name | `TeleportBridge` |
+| Version | `1` |
+
+### Roles
+
+| Role | Permissions |
+|------|------------|
+| `ADMIN_ROLE` | Token whitelist, oracle management, fee config, emergency withdraw |
+| `ORACLE_ROLE` | Granted to MPC signer addresses |
+| `PAUSER_ROLE` | Pause and unpause bridge operations |
+
+### Functions
+
+```solidity
+// Burn tokens with committed destination data
+function bridgeBurn(
+    address token,
+    uint256 amount,
+    uint256 toChainId,
+    address recipient,
+    bool vault
+) external returns (bytes32 burnId);
+
+// Mint tokens with EIP-712 oracle signature
+function bridgeMint(
+    ClaimData calldata claim,
+    bytes calldata signature
+) external returns (bytes32 claimId);
+
+// Admin: manage token whitelist
+function setAllowedToken(address token, bool allowed) external;
+
+// Admin: manage oracle addresses
+function setOracle(address oracle, bool active) external;
+
+// Admin: configure fee rate (max 10%)
+function setFeeRate(uint256 rate) external;
+```
+
+## ERC20B.sol
+
+Bridgeable ERC-20 token with restricted mint and burn.
+
+```solidity
+// Only BRIDGE_ROLE can call
+function bridgeMint(address to, uint256 amount) external;
+function bridgeBurn(address from, uint256 amount) external;
+```
+
+### Roles
+
+| Role | Permissions |
+|------|------------|
+| `DEFAULT_ADMIN_ROLE` | Grant and revoke roles |
+| `BRIDGE_ROLE` | Mint and burn tokens |
+| `PAUSER_ROLE` | Pause all token transfers |
+
+## IBridgeToken Interface
+
+```solidity
+interface IBridgeToken {
+    function bridgeMint(address to, uint256 amount) external;
+    function bridgeBurn(address from, uint256 amount) external;
+}
+```
+
+## ClaimData Struct
+
+```solidity
+struct ClaimData {
+    bytes32 burnId;
+    address token;
+    uint256 amount;
+    uint256 fromChainId;
+    uint256 toChainId;
+    address recipient;
+    bool vault;
+    uint256 nonce;
+    uint256 deadline;
+}
+```
+
+## API Service Types
+
+```typescript
+interface SignatureRequest {
+  burnTxHash: string;   // 0x-prefixed 32-byte hex
+  fromChainId: number;
+  logIndex: number;
+}
+
+interface SignatureResponse {
+  claimId: string;
+  burnTxHash: string;
+  logIndex: number;
+  token: string;
+  amount: string;
+  toChainId: number;
+  recipient: string;
+  vault: boolean;
+  nonce: number;
+  deadline: number;
+  signature: string;
+}
+```

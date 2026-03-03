@@ -1,0 +1,55 @@
+---
+title: Exchange SDK
+description: TypeScript matching engine with AVL-tree order book
+icon: ArrowLeftRight
+---
+
+`@hanzo/matching-engine` is a TypeScript SDK for building exchange applications. It provides a spec-compliant order matching engine with an AVL-tree order book, OHLCV candlestick generation, and WebSocket streaming.
+
+## Features
+
+| Feature | Description |
+|---------|-------------|
+| **Order Book** | AVL-tree price levels with Fibonacci heap priority queues |
+| **Order Types** | Limit and market orders with partial fill support |
+| **Matching** | Price-time priority matching with automatic settlement |
+| **Candlesticks** | OHLCV candle generation (1m, 1h, 1d, 1w intervals) |
+| **WebSocket** | Real-time order book and trade streaming via Socket.IO |
+| **HTTP Server** | Express-based REST API for order management |
+
+## Installation
+
+```bash
+npm install @hanzo/matching-engine
+```
+
+## Quick Start
+
+```typescript
+import { Book, Order } from '@hanzo/matching-engine'
+import { OrderSide, OrderType } from '@hanzo/matching-engine/Order'
+
+const book = new Book('BTC-USD')
+
+// Add a limit bid
+book.addOrder(new Order('ext-1', OrderSide.BID, OrderType.LIMIT, 1.5, '50000'))
+
+// Add a limit ask
+book.addOrder(new Order('ext-2', OrderSide.ASK, OrderType.LIMIT, 1.0, '49900'))
+
+// Settle overlapping orders
+const trades = book.settle()
+console.log(`Executed ${trades.length} trades`)
+console.log(`Spread: ${book.spread}`)
+```
+
+## Exports
+
+```typescript
+export { Book }              // Order book with matching engine
+export { Order }             // Order model
+export { Trade }             // Trade execution result
+export { Candle }            // OHLCV candlestick
+export { createHttp }        // Express HTTP server
+export { createSocketIO }    // WebSocket server
+```

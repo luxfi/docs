@@ -1,0 +1,114 @@
+---
+title: Threshold API Reference
+description: RegisterScheme, GetScheme, SchemeAdapter, and QuickSign helpers
+icon: Code
+---
+
+## Registry Functions
+
+### RegisterScheme
+
+```go
+func RegisterScheme(scheme Scheme)
+```
+
+Registers a threshold scheme. Call from `init()` in scheme packages. Panics if the scheme ID is already registered.
+
+### GetScheme
+
+```go
+func GetScheme(id SchemeID) (Scheme, error)
+```
+
+Returns a registered scheme by ID. Returns `ErrSchemeNotFound` if not registered.
+
+### MustGetScheme
+
+```go
+func MustGetScheme(id SchemeID) Scheme
+```
+
+Like `GetScheme` but panics on error. Use in initialization code where missing schemes are fatal.
+
+### ListSchemes
+
+```go
+func ListSchemes() []SchemeID
+```
+
+Returns all registered scheme IDs.
+
+### HasScheme
+
+```go
+func HasScheme(id SchemeID) bool
+```
+
+Returns true if the scheme is registered.
+
+## SchemeAdapter
+
+Convenience wrapper that creates a Signer, Aggregator, and Verifier from a single `KeyShare`.
+
+```go
+adapter, err := threshold.NewAdapter(keyShare)
+
+// Sign
+share, err := adapter.SignShare(ctx, message, signerIndices)
+
+// Aggregate
+sig, err := adapter.Aggregate(ctx, message, shares)
+
+// Verify
+valid := adapter.Verify(message, sig)
+
+// Metadata
+adapter.Index()       // Party index
+adapter.Threshold()   // Signing threshold
+adapter.SchemeID()    // Scheme identifier
+adapter.GroupKey()    // Group public key
+```
+
+## QuickSign
+
+One-shot helper for when all signers are local (testing, single-machine setups).
+
+```go
+qs, err := threshold.NewQuickSign(schemeID, groupKey, t)
+
+// Sign with local signers and aggregate in one call
+sig, err := qs.SignAndAggregate(ctx, message, signers)
+
+// Verify
+valid := qs.Verify(message, sig)
+```
+
+`SignAndAggregate` returns `ErrInsufficientShares` if fewer than `t+1` signers are provided.
+
+## SchemeInfo
+
+```go
+info, err := threshold.GetSchemeInfo(schemeID)
+```
+
+Returns metadata about a registered scheme:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `ID` | `SchemeID` | Scheme identifier |
+| `Name` | `string` | Human-readable name |
+| `PostQuantum` | `bool` | Whether scheme is quantum-resistant |
+| `NonInteractive` | `bool` | Whether aggregation needs no extra rounds |
+| `KeyShareSize` | `int` | Serialized key share size in bytes |
+| `SignatureSize` | `int` | Final signature size in bytes |
+
+## Errors
+
+| Error | Description |
+|-------|-------------|
+| `ErrSchemeNotFound` | Scheme ID not in registry |
+| `ErrInvalidThreshold` | Threshold less than 1 |
+| `ErrInvalidPartyCount` | Fewer than 2 parties |
+| `ErrThresholdTooHigh` | Threshold >= total parties |
+| `ErrInvalidPartyIndex` | Party index out of range |
+| `ErrInsufficientShares` | Not enough shares to aggregate |

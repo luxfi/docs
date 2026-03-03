@@ -1,0 +1,116 @@
+---
+title: Governance
+description: Governor, Timelock, vLUX voting power, Karma reputation, DLUX emissions, and GaugeController
+icon: Vote
+---
+
+The governance module (`contracts/governance/`) implements a full on-chain governance stack with reputation-weighted voting, soulbound Karma, and gauge-directed emissions.
+
+## Token Stack
+
+| Token | Type | Purpose |
+|-------|------|---------|
+| **xLUX** | Transferable, yield-bearing | LiquidLUX vault shares |
+| **DLUX** | Transferable, rebasing | Governance token with collateral backing |
+| **vLUX** | Non-transferable | Aggregated voting power (xLUX + DLUX) |
+| **Karma (K)** | Soulbound | Reputation score with activity-driven decay |
+
+### Voting Power Formula
+
+```
+vLUX = DLUX * sqrt(K / 100) * (1 + lock_months * 0.1)
+```
+
+Quadratic Karma scaling reduces whale dominance. Longer lock periods amplify voting weight.
+
+## Governor and Timelock
+
+Standard OpenZeppelin Governor with Timelock execution delay.
+
+```solidity
+import "@luxfi/contracts/governance/Governor.sol";
+
+Governor governor = Governor(GOVERNOR_ADDRESS);
+
+// Create proposal
+uint256 proposalId = governor.propose(
+    targets, values, calldatas, "Increase fee to 0.5%"
+);
+
+// Cast vote (0=Against, 1=For, 2=Abstain)
+governor.castVote(proposalId, 1);
+
+// Execute after timelock delay
+governor.execute(targets, values, calldatas, descriptionHash);
+```
+
+## Karma (K) -- Soulbound Reputation
+
+Karma is a non-transferable reputation token. It decays based on activity and provides a floor for verified DID holders.
+
+| Parameter | Value |
+|-----------|-------|
+| Active decay | 1% per year (at least 1 tx/month) |
+| Inactive decay | 10% per year |
+| Verified DID floor | 50 K minimum |
+| Max Karma | 1,000 K soft cap |
+| Activity period | 30 days |
+
+### KarmaMinter
+
+DAO-controlled minting for positive ecosystem actions:
+
+| Event | Base K | Cooldown |
+|-------|--------|----------|
+| DID verification | 100 | 1 year |
+| Proposal passed | 50 | None |
+| Vote cast | 1 | None |
+| Liquidity provided | 10 | 1 day |
+| Bug bounty | 100 | None |
+
+### Strike Mechanism
+
+Users can burn their own Karma to reduce another user's Karma at a 2:1 ratio (burn 2K to strike 1K from target), capped at 10% of the target's balance per day.
+
+## DLUX -- Governance Token
+
+Rebasing governance token with collateral-backed minting via `DLUXMinter`.
+
+```solidity
+import "@luxfi/contracts/governance/DLUXMinter.sol";
+
+DLUXMinter minter = DLUXMinter(MINTER_ADDRESS);
+
+// Collateral-backed minting: deposit LUX, receive DLUX 1:1
+uint256 dlux = minter.depositCollateral(luxAmount);
+
+// Withdraw: burn DLUX, receive LUX back
+uint256 lux = minter.withdrawCollateral(dluxAmount);
+```
+
+Protocol contracts can also emit DLUX as rewards for validator bonuses, LP provision, and staking milestones, all controlled by the DAO via Timelock.
+
+## GaugeController
+
+Directs protocol emissions across pools and fee recipients. vLUX holders vote on gauge weights to determine how rewards are distributed.
+
+```solidity
+import "@luxfi/contracts/governance/GaugeController.sol";
+
+GaugeController gauge = GaugeController(GAUGE_ADDRESS);
+
+// Vote for a gauge (allocate voting weight)
+gauge.voteForGaugeWeights(gaugeAddress, weight);
+
+// Read current gauge weight
+uint256 w = gauge.gaugeRelativeWeight(gaugeAddress, block.timestamp);
+```
+
+## Role Hierarchy
+
+| Role | Holder | Permissions |
+|------|--------|-------------|
+| `DEFAULT_ADMIN_ROLE` | Deployer, then multisig | Manage all roles |
+| `GOVERNOR_ROLE` | Timelock (DAO) | Configure mint/emission params |
+| `HOOK_ROLE` | Protocol contracts | Trigger Karma minting |
+| `EMITTER_ROLE` | Protocol contracts | Trigger DLUX emissions |

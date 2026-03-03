@@ -1,0 +1,61 @@
+---
+title: Post-Quantum Precompiles
+description: ML-DSA, ML-KEM, SLH-DSA, and Quasar consensus verification
+icon: Atom
+---
+
+Post-quantum precompiles provide NIST-standardized cryptographic operations at native EVM speed, protecting against future quantum computing threats.
+
+## Precompile Addresses
+
+| Address | Name | Standard | Gas | Description |
+|---------|------|----------|-----|-------------|
+| `0x0600` | ML_DSA | FIPS 204 | 50,000 | ML-DSA signature verification (Dilithium) |
+| `0x0601` | ML_KEM | FIPS 203 | 25,000 | ML-KEM key encapsulation (Kyber) |
+| `0x0602` | SLH_DSA | FIPS 205 | 75,000 | SLH-DSA hash-based signatures (SPHINCS+) |
+| `0x0603` | PQ_CRYPTO | -- | 30,000 | Multi-PQ operations |
+| `0x0604` | QUASAR | -- | 100,000 | Quantum consensus verification |
+
+## ML-DSA (FIPS 204)
+
+Lattice-based digital signatures. Three security levels:
+
+| Parameter Set | Security Level | Signature Size | Public Key |
+|---------------|---------------|----------------|------------|
+| ML-DSA-44 | NIST Level 2 | 2,420 bytes | 1,312 bytes |
+| ML-DSA-65 | NIST Level 3 | 3,309 bytes | 1,952 bytes |
+| ML-DSA-87 | NIST Level 5 | 4,627 bytes | 2,592 bytes |
+
+Lux uses ML-DSA-65 (192-bit security) by default.
+
+## ML-KEM (FIPS 203)
+
+Lattice-based key encapsulation mechanism for establishing shared secrets.
+
+| Parameter Set | Security Level | Ciphertext | Public Key |
+|---------------|---------------|------------|------------|
+| ML-KEM-512 | NIST Level 1 | 768 bytes | 800 bytes |
+| ML-KEM-768 | NIST Level 3 | 1,088 bytes | 1,184 bytes |
+| ML-KEM-1024 | NIST Level 5 | 1,568 bytes | 1,568 bytes |
+
+## SLH-DSA (FIPS 205)
+
+Stateless hash-based signatures. Conservative choice -- security relies only on hash function properties.
+
+| Parameter Set | Security | Signature Size |
+|---------------|----------|----------------|
+| SLH-DSA-SHA2-128f | NIST Level 1 | 17,088 bytes |
+| SLH-DSA-SHA2-192f | NIST Level 3 | 35,664 bytes |
+| SLH-DSA-SHA2-256f | NIST Level 5 | 49,856 bytes |
+
+## Hybrid Signatures (0x0610-0x0612)
+
+Combine classical and post-quantum signatures for defense in depth:
+
+| Address | Scheme | Classical | Post-Quantum |
+|---------|--------|-----------|-------------|
+| `0x0610` | Hybrid BLS+Ringtail | BLS12-381 | Ringtail lattice |
+| `0x0611` | Hybrid ECDSA+ML-DSA | secp256k1 | ML-DSA-65 |
+| `0x0612` | Hybrid Schnorr+Ringtail | Ed25519 | Ringtail lattice |
+
+Both signatures must verify for the hybrid to pass. Graceful degradation is not supported -- this is intentional for maximum security.

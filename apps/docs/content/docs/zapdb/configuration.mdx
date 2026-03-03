@@ -1,0 +1,81 @@
+---
+title: Configuration
+description: Database options, encryption, and storage backends
+icon: Settings
+---
+
+## Default Options
+
+```go
+opts := badger.DefaultOptions("/path/to/data")
+```
+
+This provides sensible defaults for most use cases. Override individual fields as needed.
+
+## Key Options
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `Dir` | (required) | Directory for LSM tree (keys + metadata) |
+| `ValueDir` | same as Dir | Directory for value log (can be separate SSD) |
+| `MemTableSize` | 64MB | Size of each in-memory table |
+| `NumMemtables` | 5 | Number of memtables to keep |
+| `NumLevelZeroTables` | 5 | Tables in level 0 before compaction |
+| `ValueLogFileSize` | 1GB | Size of each value log file |
+| `ValueThreshold` | 1MB | Values larger than this go to value log |
+| `NumCompactors` | 4 | Number of concurrent compaction goroutines |
+| `Compression` | Snappy | Compression algorithm (None, Snappy, ZSTD) |
+| `DetectConflicts` | true | Enable transaction conflict detection |
+
+## Encryption at Rest
+
+```go
+opts := badger.DefaultOptions("/path/to/data")
+
+// 16 or 32 byte key for AES-128 or AES-256
+encryptionKey := []byte("0123456789abcdef0123456789abcdef")
+opts.EncryptionKey = encryptionKey
+opts.EncryptionKeyRotationDuration = 10 * 24 * time.Hour
+
+db, err := badger.Open(opts)
+```
+
+When encryption is enabled, all data on disk (LSM tree and value log) is encrypted. The encryption key must be provided on every `Open` call.
+
+## In-Memory Mode
+
+```go
+opts := badger.DefaultOptions("").WithInMemory(true)
+db, err := badger.Open(opts)
+```
+
+Useful for testing or ephemeral caches. No data is persisted to disk.
+
+## Performance Tuning
+
+For write-heavy workloads (blockchain node sync):
+
+```go
+opts.NumMemtables = 10
+opts.NumLevelZeroTables = 10
+opts.NumLevelZeroTablesStall = 20
+opts.NumCompactors = 8
+opts.Compression = options.ZSTD
+```
+
+For read-heavy workloads (indexer queries):
+
+```go
+opts.NumMemtables = 3
+opts.BlockCacheSize = 256 << 20 // 256MB block cache
+opts.IndexCacheSize = 128 << 20 // 128MB index cache
+```
+
+## Platform Support
+
+| Platform | Locking | Notes |
+|----------|---------|-------|
+| Linux/macOS/BSD | POSIX flock | Full support |
+| Windows | LockFileEx | Full support |
+| AIX | No fsync | Reduced durability guarantees |
+| Plan9/WASM | No locking | Single-process only |

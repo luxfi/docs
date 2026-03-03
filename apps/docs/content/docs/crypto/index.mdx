@@ -1,0 +1,58 @@
+---
+title: Lux Crypto
+description: Cryptographic primitives including post-quantum signatures, BLS, and key encapsulation
+index: true
+icon: KeyRound
+---
+
+Lux Crypto (`github.com/luxfi/crypto`) is the core cryptographic library for the Lux blockchain, implementing classical, post-quantum, and threshold cryptographic primitives.
+
+## Algorithm Overview
+
+| Package | Algorithm | Security | Quantum Safe | Use Case |
+|---------|-----------|----------|-------------|----------|
+| `bls/` | BLS12-381 | 128-bit | No | Consensus aggregation |
+| `secp256k1/` | ECDSA | 128-bit | No | Ethereum-compatible signing |
+| `secp256r1/` | P-256 ECDSA | 128-bit | No | RIP-7212 verification |
+| `mldsa/` | ML-DSA-65 (FIPS 204) | 192-bit | Yes | Post-quantum signatures |
+| `mlkem/` | ML-KEM-768 (FIPS 203) | 192-bit | Yes | Key encapsulation |
+| `slhdsa/` | SLH-DSA (FIPS 205) | 128-bit | Yes | Hash-based signatures |
+| `lamport/` | Lamport OTS | 256-bit | Yes | One-time signatures |
+| `ring/` | LSAG / Lattice | Varies | Lattice variant | Anonymous signing |
+
+## Consensus Cryptography (Quasar)
+
+Lux consensus uses a hybrid BLS + Ringtail signing scheme:
+
+```
+Classical Layer:   BLS12-381 (aggregatable, 1-round)
+                          +
+Post-Quantum Layer: Ringtail (lattice threshold, 2-round)
+```
+
+| Package | Role | Notes |
+|---------|------|-------|
+| `signer/` | Hybrid BLS + Ringtail | Production consensus signing |
+| `bls/` | Classical aggregatable signatures | Fast single-round aggregation |
+
+## Key Packages
+
+- **`hash/`** -- SHA-256, SHA-512, BLAKE2b, Keccak-256, SHAKE
+- **`ecies/`** -- Hybrid encryption (ECDH + AES-GCM)
+- **`kzg4844/`** -- KZG polynomial commitments (EIP-4844)
+- **`ipa/`** -- Inner product arguments (Verkle trees)
+- **`cb58/`** -- Base58Check encoding for Lux addresses
+- **`rlp/`** -- Recursive Length Prefix encoding
+- **`gpu/`** -- GPU-accelerated ZK operations (Metal/CUDA)
+
+## Quick Start
+
+```bash
+go get github.com/luxfi/crypto
+
+# Run tests
+make test
+
+# Benchmarks
+make bench
+```

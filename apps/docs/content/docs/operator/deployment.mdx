@@ -1,0 +1,86 @@
+---
+title: Deployment
+description: Installing and configuring the Lux Operator on Kubernetes
+icon: Rocket
+---
+
+## Prerequisites
+
+- Kubernetes 1.28+
+- `kubectl` configured with cluster access
+- Container registry access to `ghcr.io/luxfi`
+
+## Install CRDs
+
+Apply the custom resource definitions before deploying the operator:
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/luxfi/operator/main/k8s/crds/
+```
+
+## Deploy the Operator
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lux-operator
+  namespace: lux-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lux-operator
+  template:
+    metadata:
+      labels:
+        app: lux-operator
+    spec:
+      serviceAccountName: lux-operator
+      containers:
+        - name: operator
+          image: ghcr.io/luxfi/operator:v0.3.9
+          args:
+            - --leader-election
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+```
+
+The operator requires a ServiceAccount with RBAC permissions to manage StatefulSets, Services, ConfigMaps, PodDisruptionBudgets, and all Lux CRDs.
+
+## Apply with Kustomize
+
+The recommended deployment method uses Kustomize:
+
+```bash
+cd k8s/
+kubectl kustomize . | kubectl apply -f -
+```
+
+## Configuration
+
+The operator is configured primarily through CRD specs. Key operational flags:
+
+| Flag | Description |
+|------|-------------|
+| `--leader-election` | Enable leader election for HA (presence = true) |
+| `--reconcile-interval` | Reconciliation loop interval (default: 60s) |
+| `--metrics-addr` | Prometheus metrics bind address (default: :8080) |
+
+## Verify Installation
+
+```bash
+kubectl get deployment lux-operator -n lux-system
+kubectl get crd | grep lux.network
+```
+
+Check operator logs for reconciliation activity:
+
+```bash
+kubectl logs -n lux-system deployment/lux-operator
+```

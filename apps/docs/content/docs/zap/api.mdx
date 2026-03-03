@@ -1,0 +1,118 @@
+---
+title: API Reference
+description: Message building, parsing, schemas, and node discovery
+icon: FileCode
+---
+
+## Building Messages
+
+```go
+b := zap.NewBuilder(256)
+
+ob := b.StartObject(24)
+ob.SetUint32(0, 42)
+ob.SetUint64(8, 0xDEADBEEF)
+ob.SetBool(16, true)
+ob.FinishAsRoot()
+
+data := b.Finish() // wire-ready bytes
+```
+
+## Parsing Messages
+
+```go
+msg, err := zap.Parse(data)
+root := msg.Root()
+
+root.Uint32(0)  // 42
+root.Uint64(8)  // 0xDEADBEEF
+root.Bool(16)   // true
+```
+
+Parsing is zero-copy: data is read directly from the byte buffer with no heap allocations (2.9 ns/op, 0 allocs).
+
+## Lists
+
+```go
+lb := b.StartList(4) // 4-byte elements
+lb.AddUint32(100)
+lb.AddUint32(200)
+listOffset, listLen := lb.Finish()
+
+ob.SetList(fieldOffset, listOffset, listLen)
+
+// Reading
+list := obj.List(fieldOffset)
+for i := 0; i < list.Len(); i++ {
+    list.Uint32(i)
+}
+```
+
+## Schema Definition
+
+```go
+schema := zap.NewSchema("myapp")
+
+person := zap.NewStructBuilder("Person").
+    Uint32("id").
+    Text("name").
+    Int32("age").
+    Bool("active").
+    List("tags", zap.TypeText).
+    Build()
+
+schema.AddStruct(person)
+```
+
+Predefined EVM schemas: `TransactionSchema`, `BlockHeaderSchema`, `LogSchema`.
+
+## EVM Types
+
+```go
+addr := obj.Address(0)       // 20-byte address
+hash := obj.Hash(20)         // 32-byte hash
+sig  := obj.Signature(52)    // 65-byte signature
+
+ob.SetAddress(0, addr)
+ob.SetHash(20, hash)
+
+addr, _ := zap.AddressFromHex("0x742d35Cc...")
+```
+
+## Node Discovery and Networking
+
+ZAP includes built-in mDNS peer discovery and TCP networking:
+
+```go
+node := zap.NewNode(zap.NodeConfig{
+    NodeID:      "node-1",
+    ServiceType: "_luxd._tcp",
+    Port:        9651,
+})
+
+node.Handle(MsgTypePing, func(ctx context.Context, from string, msg *zap.Message) (*zap.Message, error) {
+    return buildPong(), nil
+})
+
+node.Start()
+defer node.Stop()
+
+node.Send(ctx, "node-2", msg)     // unicast
+node.Broadcast(ctx, msg)          // broadcast
+peers := node.Peers()             // list discovered peers
+```
+
+## MCP Bridge
+
+Auto-discover MCP servers and accelerate them with ZAP transport:
+
+```go
+bridge := mcp.NewBridge(node)
+bridge.AddServer("filesystem", "npx", "-y", "@anthropic/mcp-filesystem")
+bridge.AddServer("github", "npx", "-y", "@anthropic/mcp-github")
+
+tools := bridge.GetTools()
+result, _ := bridge.CallToolByName(ctx, "read_file", map[string]interface{}{
+    "path": "/etc/hosts",
+})
+```

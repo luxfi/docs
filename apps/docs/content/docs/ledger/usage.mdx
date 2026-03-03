@@ -1,0 +1,83 @@
+---
+title: Usage
+description: Connect to Ledger, derive addresses, and sign transactions
+icon: Pen
+---
+
+## Connect to Ledger
+
+```go
+import "github.com/luxfi/ledger"
+
+app, err := ledger.NewLedger()
+if err != nil {
+    log.Fatal(err)
+}
+defer app.Disconnect()
+```
+
+`NewLedger()` and `FindLedgerLuxApp()` are equivalent. Both open a connection, verify the app version, and return a `LedgerLux` instance.
+
+## Address Derivation
+
+Lux uses derivation root `m/44'/60'/0'` with hardened child indices.
+
+### Single Address
+
+```go
+// Get address at index 0 (path: m/44'/60'/0'/0')
+addr, err := app.Address("lux", 0)
+```
+
+### Multiple Addresses
+
+```go
+indices := []uint32{0, 1, 2, 3, 4}
+addresses, err := app.GetAddresses(indices)
+```
+
+### With On-Device Display
+
+Use `GetPubKey` directly to show the address on the Ledger screen for verification:
+
+```go
+resp, err := app.GetPubKey("m/44'/60'/0'/0'", true, "lux", "")
+// resp.PublicKey - compressed public key
+// resp.Hash     - 20-byte address hash
+// resp.Address  - bech32 encoded address
+```
+
+## Sign Transactions
+
+### Sign a Transaction Hash
+
+```go
+hash := sha256.Sum256(unsignedTxBytes)
+sig, err := app.SignHash(hash[:], 0) // sign with key at index 0
+```
+
+### Sign with Multiple Keys
+
+```go
+indices := []uint32{0, 1, 2}
+sigs, err := app.SignTransaction(txHash, indices)
+// sigs[i] corresponds to indices[i]
+```
+
+### Sign Raw Message
+
+```go
+sig, err := app.Sign(messageBytes, 0)
+```
+
+## Verify Signatures
+
+```go
+valid := ledger.VerifySignature(pubkey, messageHash, signature)
+```
+
+The signature must be 64 bytes in `[R || S]` format. The public key can be compressed (33 bytes) or uncompressed (65 bytes). Malleable signatures (high-S) are rejected.
+
+## Wallet SDK Integration
+
+The `LedgerLux` type implements the `keychain.Ledger` interface from `github.com/luxfi/wallet`, making it compatible with the Lux wallet SDK for building and signing multi-chain transactions.

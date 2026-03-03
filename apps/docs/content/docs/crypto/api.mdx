@@ -1,0 +1,72 @@
+---
+title: Crypto API
+description: Go package API reference for Lux cryptographic primitives
+icon: FileCode
+---
+
+All packages live under `github.com/luxfi/crypto`.
+
+## Package Index
+
+| Package | Purpose |
+|---------|---------|
+| `bls` | BLS12-381 aggregatable signatures |
+| `secp256k1` | ECDSA (Ethereum-compatible) |
+| `secp256r1` | P-256 ECDSA (RIP-7212) |
+| `mldsa` | ML-DSA post-quantum signatures (FIPS 204) |
+| `mlkem` | ML-KEM key encapsulation (FIPS 203) |
+| `slhdsa` | SLH-DSA hash-based signatures (FIPS 205) |
+| `ring` | Ring signatures (LSAG, lattice) |
+| `ecies` | Hybrid encryption |
+| `signer` | Hybrid BLS + Ringtail consensus signing |
+| `gpu` | GPU-accelerated ZK operations |
+| `threshold` | Unified t-of-n signing interface |
+
+## Common Patterns
+
+```go
+// Key generation
+privKey, err := secp256k1.GenerateKey()
+pubKey, privKey, err := mldsa.GenerateKey()
+secretKey, err := bls.NewSecretKey()
+
+// Sign and verify
+sig, err := mldsa.Sign(privKey, message)
+ok := mldsa.Verify(pubKey, message, sig)
+```
+
+## Threshold Signing
+
+```go
+import "github.com/luxfi/crypto/threshold"
+
+scheme, _ := threshold.GetScheme(threshold.SchemeBLS)
+dealer, _ := scheme.NewTrustedDealer(threshold.DealerConfig{
+    Threshold: 2, TotalParties: 5,
+})
+shares, groupKey, _ := dealer.GenerateShares(ctx)
+
+signer, _ := scheme.NewSigner(shares[0])
+share, _ := signer.SignShare(ctx, message, participants, nil)
+
+aggregator, _ := scheme.NewAggregator(groupKey)
+signature, _ := aggregator.Aggregate(ctx, message, sigShares, nil)
+```
+
+## Security Levels
+
+| Algorithm | Classical | Quantum | NIST Level |
+|-----------|-----------|---------|------------|
+| secp256k1 | 128-bit | Broken | -- |
+| BLS12-381 | 128-bit | Broken | -- |
+| ML-DSA-65 | 192-bit | 192-bit | Level 3 |
+| ML-KEM-768 | 192-bit | 192-bit | Level 3 |
+| SLH-DSA-128f | 128-bit | 128-bit | Level 1 |
+
+## Build
+
+```bash
+make test       # Run all tests
+make bench      # Benchmarks
+CGO_ENABLED=1 go build -tags gpu ./...  # With GPU acceleration
+```

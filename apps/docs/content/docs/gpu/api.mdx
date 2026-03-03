@@ -1,0 +1,90 @@
+---
+title: API Reference
+description: Go API and C FFI interface for GPU acceleration
+icon: FileCode
+---
+
+## Context Management
+
+```go
+// Set the compute backend (Auto, CPU, Metal, CUDA, WebGPU)
+func SetBackend(backend Backend)
+
+// Get the current backend
+func GetBackend() Backend
+
+// Get device info (name, vendor, memory, compute units)
+func GetDevice() Device
+
+// Get runtime info string
+func Info() string
+
+// Wait for all pending GPU operations to complete
+func Synchronize()
+```
+
+## Array Type
+
+```go
+type Array struct {
+    // opaque - use methods below
+}
+
+func (a *Array) Shape() []int   // dimensions
+func (a *Array) Dtype() Dtype   // element type
+func (a *Array) Size() int      // total element count
+func (a *Array) Data() []float32 // read back to CPU (CPU backend only)
+```
+
+## Device Type
+
+```go
+type Device struct {
+    Type         Backend
+    Index        int
+    Name         string
+    Vendor       string
+    MemoryTotal  uint64
+    MemoryAvail  uint64
+    IsDiscrete   bool
+    IsUnified    bool
+    ComputeUnits int
+    MaxWorkgroup int
+}
+```
+
+## Error Values
+
+```go
+var (
+    ErrNoGPU          // no GPU available
+    ErrInvalidBackend // invalid backend selection
+    ErrOutOfMemory    // GPU out of memory
+    ErrKernelFailed   // kernel execution failed
+    ErrNotSupported   // operation not supported on backend
+)
+```
+
+## C FFI Interface
+
+The CGO bridge uses `lux_gpu_c_api.h` which wraps the `luxcpp/gpu` C API.
+
+### Build Flags
+
+```bash
+CGO_CFLAGS="-I/path/to/luxcpp/gpu/include"
+CGO_LDFLAGS="-L/path/to/luxcpp/gpu/build -llux-gpu"
+CGO_ENABLED=1 go build ./...
+```
+
+### File Structure
+
+| File | Build Tag | Purpose |
+|------|-----------|---------|
+| `types.go` | none | Type definitions, errors |
+| `gpu.go` | `!cgo` | Pure Go/CPU implementation |
+| `gpu_c.go` | `cgo` | GPU acceleration via CGO |
+| `zk_c.go` | `cgo` | ZK operations via CGO |
+| `metal.go` | `darwin` | Metal backend bridge |
+
+Without CGO, the package compiles to a pure Go CPU-only implementation with the same API surface.

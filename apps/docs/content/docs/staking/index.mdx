@@ -1,0 +1,43 @@
+---
+title: Staking
+description: Validator staking, delegation, and liquid staking on Lux Network
+icon: Layers
+---
+
+Lux Network uses a proof-of-stake consensus model. LUX holders can validate, delegate, or liquid-stake to earn rewards while securing the network.
+
+## Staking Options
+
+| Method | Min Stake | Lock Period | Rewards | Governance |
+|--------|-----------|-------------|---------|------------|
+| **Validator** | 2,000 LUX | 2 weeks min | Base + delegation fees | Direct |
+| **Delegation** | 25 LUX | 2 weeks min | Validator-shared | Via validator |
+| **Liquid (xLUX)** | None | None | Protocol fees + validator rewards | vLUX voting |
+
+## How Rewards Work
+
+Validators earn rewards proportional to their uptime and stake weight. The P-Chain distributes rewards at the end of each staking period.
+
+```
+Validator Stake + Delegated Stake → Uptime-Weighted Rewards
+         │                                    │
+         ▼                                    ▼
+  Validator Share                    Delegator Share
+  (minus delegation fee)            (proportional)
+```
+
+## Reward Parameters
+
+| Parameter | Value |
+|-----------|-------|
+| Maximum annual reward rate | 10% |
+| Minimum uptime for rewards | 80% |
+| Minimum staking period | 2 weeks |
+| Maximum staking period | 1 year |
+| Delegation fee range | 2% - 100% |
+
+## Quick Start
+
+1. **Validate** -- Run a node and register as a validator on the P-Chain.
+2. **Delegate** -- Choose a validator and delegate your LUX via the wallet or CLI.
+3. **Liquid stake** -- Deposit LUX into the xLUX vault for instant liquidity with no lock.

@@ -1,0 +1,63 @@
+---
+title: DeFi Precompiles
+description: Native DEX, lending, perpetuals, and cross-chain bridge precompiles
+icon: Coins
+---
+
+DeFi precompiles implement a complete financial stack as native EVM operations, achieving sub-microsecond execution latency.
+
+## DEX (Uniswap v4-Style)
+
+| Address | Name | Gas | Description |
+|---------|------|-----|-------------|
+| `0x0400` | PoolManager | 50,000 | Singleton AMM with flash accounting |
+| `0x0401` | SwapRouter | 10,000 | Optimized swap routing |
+| `0x0402` | HooksRegistry | 3,000 | Custom hook contracts |
+| `0x0403` | FlashLoan | 5,000 | Flash loan facility |
+
+### Flash Accounting
+
+All operations within a transaction are netted. Token transfers happen only at the end, reducing gas costs for multi-hop swaps.
+
+```solidity
+// Inside lock callback:
+BalanceDelta delta = IPoolManager(0x0400).swap(key, params, hookData);
+IPoolManager(0x0400).settle(currency0, amount0);
+IPoolManager(0x0400).take(currency1, recipient, amount1);
+```
+
+### Hooks
+
+Hook capabilities are encoded in the hook contract address (first 2 bytes). Available hooks: BeforeInitialize, AfterInitialize, BeforeSwap, AfterSwap, BeforeAddLiquidity, AfterAddLiquidity, BeforeDonate, AfterDonate.
+
+## Lending (Alchemist)
+
+| Address | Name | Gas | Description |
+|---------|------|-----|-------------|
+| `0x0410` | LendingPool | 15,000 | Supply/borrow with collateral |
+| `0x0411` | InterestRate | 5,000 | Dynamic interest rate curves |
+| `0x0412` | Liquidator | 50,000 | Liquidation engine |
+
+## Perpetuals
+
+| Address | Name | Gas | Description |
+|---------|------|-----|-------------|
+| `0x0420` | PerpEngine | 25,000 | Perpetual futures (up to 1111x leverage) |
+| `0x0421` | FundingRate | 10,000 | Funding rate calculation |
+| `0x0422` | InsuranceFund | 20,000 | Insurance and auto-deleveraging |
+
+## Liquid Staking
+
+| Address | Name | Gas | Description |
+|---------|------|-----|-------------|
+| `0x0430` | LiquidVault | 20,000 | Self-repaying loans (90% LTV) |
+| `0x0431` | LiquidFx | 25,000 | L-token to underlying conversion |
+| `0x0432` | LiquidToken | 5,000 | Liquid token registry (LUSD, LETH) |
+| `0x0433` | YieldRouter | 30,000 | Yield strategy routing |
+
+## Cross-Chain
+
+| Address | Name | Gas | Description |
+|---------|------|-----|-------------|
+| `0x0440` | TeleportBridge | 50,000 | Cross-chain transfer engine |
+| `0x0441` | OmnichainRouter | 40,000 | Multi-chain liquidity routing |

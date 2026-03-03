@@ -1,0 +1,91 @@
+---
+title: Token Transfers
+description: Transfer tokens between Lux subnets using Teleport
+icon: ArrowLeftRight
+---
+
+## Burning Tokens (Source Chain)
+
+Call `bridgeBurn()` on the Bridge contract deployed on the source chain. All destination parameters are committed into the on-chain event.
+
+```solidity
+function bridgeBurn(
+    address token,      // Whitelisted ERC20B token
+    uint256 amount,     // Amount to transfer
+    uint256 toChainId,  // Destination chain ID
+    address recipient,  // Recipient on destination chain
+    bool vault          // Whether to deposit into vault
+) external returns (bytes32 burnId);
+```
+
+The contract emits a `BridgeBurned` event:
+
+```solidity
+event BridgeBurned(
+    bytes32 indexed burnId,
+    address indexed token,
+    address indexed sender,
+    uint256 amount,
+    uint256 toChainId,
+    address recipient,
+    bool vault,
+    uint256 nonce
+);
+```
+
+## Requesting a Signature
+
+Submit the burn transaction hash to the API service. The service parses the on-chain event and returns an EIP-712 signature from the MPC oracle.
+
+```typescript
+// POST /api/signature
+const response = await fetch('/api/signature', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    burnTxHash: '0x...',  // 32-byte hex
+    fromChainId: 96369,
+    logIndex: 0,
+  }),
+});
+
+const { claimId, signature, ...claimData } = await response.json();
+```
+
+## Minting Tokens (Destination Chain)
+
+Submit the claim data and oracle signature to `bridgeMint()` on the destination chain.
+
+```solidity
+function bridgeMint(
+    ClaimData calldata claim,
+    bytes calldata signature
+) external returns (bytes32 claimId);
+```
+
+The contract verifies the EIP-712 signature against an authorized oracle address, checks replay protection via the claim ID, and mints tokens to the recipient.
+
+## API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/signature` | POST | Request claim signature for a burn tx |
+| `/api/claim/:claimId` | GET | Check claim status |
+| `/health` | GET | Service health check |
+
+## Rate Limits
+
+The API enforces 100 requests per 15 minutes per IP address. All sensitive operations use POST to keep parameters out of URLs and server logs.
+
+## Development
+
+```bash
+# Build and test contracts
+cd contracts && pnpm install && pnpm test
+
+# Run API service
+cd api && pnpm install && pnpm build && pnpm start
+
+# Run MPC service
+cd mpc && pnpm install && pnpm build && pnpm start
+```

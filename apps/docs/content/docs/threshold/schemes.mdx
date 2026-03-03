@@ -1,0 +1,65 @@
+---
+title: Supported Schemes
+description: CGGMP21, FROST, BLS, and Ringtail threshold signature scheme comparison
+icon: Layers
+---
+
+## Scheme Registry
+
+Each scheme registers itself via `init()` and is identified by a `SchemeID` constant.
+
+```go
+const (
+    SchemeFROST    SchemeID = 1  // Schnorr threshold (Ed25519)
+    SchemeCMP      SchemeID = 2  // CGGMP21 threshold ECDSA
+    SchemeBLS      SchemeID = 3  // BLS threshold (non-interactive)
+    SchemeRingtail SchemeID = 4  // Lattice-based (post-quantum)
+)
+```
+
+## Comparison
+
+| Property | CGGMP21 | FROST | BLS | Ringtail |
+|----------|---------|-------|-----|----------|
+| Signature type | ECDSA | Schnorr | BLS12-381 | Lattice |
+| Post-quantum | No | No | No | Yes |
+| Signing rounds | Multi | 2 | 1 (non-interactive) | 2 |
+| DKG rounds | Multi | 2 | 2 | Trusted dealer |
+| Aggregatable | No | No | Yes | No |
+| Chain compatibility | Bitcoin, Ethereum | Solana, Sui | Lux consensus | All (PQ bundles) |
+| Implementation | `mpc/pkg/threshold` | `mpc/pkg/threshold` | `crypto/threshold/bls` | `ringtail/threshold` |
+
+## CGGMP21 (SchemeCMP)
+
+Threshold ECDSA signing based on the Canetti-Gennaro-Goldfeder-Makriyannis-Peled protocol. Produces standard ECDSA signatures compatible with Bitcoin and Ethereum. Implemented in the `mpc` repository.
+
+## FROST (SchemeFROST)
+
+Flexible Round-Optimized Schnorr Threshold signatures. 2-round protocol producing Schnorr signatures compatible with Ed25519/EdDSA. Implemented in the `mpc` repository.
+
+## BLS (SchemeBLS)
+
+BLS12-381 threshold signatures with non-interactive aggregation. Shares can be combined without additional communication rounds. Built into `crypto/threshold/bls`. Used for Lux consensus block signing.
+
+## Ringtail (SchemeRingtail)
+
+Lattice-based threshold signatures using Module-LWE. The only post-quantum scheme. 2-round signing protocol with trusted dealer key generation. Implemented natively in the `ringtail` repository.
+
+## Selecting a Scheme
+
+```go
+func schemeForChain(chain string) (threshold.Scheme, error) {
+    switch chain {
+    case "ethereum", "bitcoin":
+        return threshold.GetScheme(threshold.SchemeCMP)
+    case "solana", "sui":
+        return threshold.GetScheme(threshold.SchemeFROST)
+    case "lux":
+        return threshold.GetScheme(threshold.SchemeBLS)
+    default:
+        return nil, fmt.Errorf("unsupported chain: %s", chain)
+    }
+}
+```
+
+Ringtail is used alongside BLS in Lux Quasar consensus for post-quantum security bundles, not as a standalone chain signing scheme.

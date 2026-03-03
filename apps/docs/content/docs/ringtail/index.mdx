@@ -1,0 +1,65 @@
+---
+title: Ringtail
+description: Post-quantum threshold signatures from Module-LWE with 2-round signing
+icon: Shield
+---
+
+Ringtail (`github.com/luxfi/ringtail`) implements a practical post-quantum threshold signature scheme based on the Module Learning-With-Errors (Module-LWE) problem. It is described in [eprint.iacr.org/2024/1113](https://eprint.iacr.org/2024/1113).
+
+## Security Properties
+
+| Property | Value |
+|----------|-------|
+| Security basis | Module-LWE (lattice) |
+| Post-quantum security | 128-bit |
+| Signing rounds | 2 |
+| Threshold model | t-of-n (configurable) |
+| Key generation | Trusted dealer with Shamir secret sharing |
+
+## Comparison with Classical Schemes
+
+| Scheme | Quantum-safe | Rounds | Aggregatable | Basis |
+|--------|-------------|--------|--------------|-------|
+| Ringtail | Yes | 2 | No | Module-LWE |
+| FROST | No | 2 | No | Discrete log |
+| BLS | No | 1 | Yes | Bilinear pairing |
+| CGGMP21 | No | Multi | No | ECDSA |
+
+Ringtail is the only post-quantum option. It provides comparable round complexity to FROST while offering security against quantum adversaries.
+
+## Architecture
+
+```
+ringtail/
+├── sign/           # Core signing protocol (Gen, SignRound1, SignRound2, Verify)
+├── primitives/     # Shamir secret sharing, hash, MAC, PRF
+├── utils/          # NTT/Montgomery conversions, matrix/vector ops
+├── threshold/      # threshold.Scheme interface implementation
+├── networking/     # TCP peer-to-peer message transport
+└── main.go         # CLI runner for benchmarking
+```
+
+## Parameters
+
+Ringtail uses a 48-bit NTT-friendly prime and discrete Gaussian sampling:
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| M | 8 | Public matrix rows |
+| N | 7 | Secret vector dimension |
+| Q | 2^48 + 0x4A01 | Ring modulus (NTT-friendly) |
+| Kappa | 23 | Challenge weight |
+| Key size | 256 bits | Seed and MAC key size |
+| Threshold | Configurable | Default: full-threshold (n-of-n) |
+
+## Use in Lux
+
+Ringtail is used alongside BLS in Lux Quasar consensus. BLS provides fast 1-round classical signatures for block finality at 500ms intervals. Ringtail provides post-quantum security via 3-second quantum bundles that anchor groups of BLS-signed blocks with lattice-based threshold signatures.
+
+```
+BLS:      [B1]--[B2]--[B3]--[B4]--[B5]--[B6]--...
+           500ms finality per block
+
+Ringtail: [─────────QB1: Merkle(B1..B6)─────────]
+           3-second quantum bundle, async 2-round signing
+```

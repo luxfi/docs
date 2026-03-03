@@ -1,0 +1,60 @@
+---
+title: Privacy & ZK Auctions
+description: Zero-knowledge proofs for private auctions and bid confidentiality
+icon: EyeOff
+---
+
+Lux ADX uses ZK proofs and TEE to ensure auction integrity without revealing bid values or targeting data.
+
+## Privacy Architecture
+
+```
+Advertiser ──► HPKE Encrypt ──► ADX Node ──► TEE Enclave
+                                                  │
+                                          ZK Proof (no values revealed)
+                                                  │
+                                            DA Layer (proof stored)
+```
+
+## HPKE Bid Encryption
+
+Bids sealed with Hybrid Public Key Encryption. Only the TEE enclave holds the decryption key.
+
+| Property | Value |
+|----------|-------|
+| KEM | DHKEM(X25519) |
+| KDF | HKDF-SHA256 |
+| AEAD | AES-128-GCM |
+
+## Halo2 ZK Proofs
+
+After each auction, a proof attests that the winner had the highest bid, the price equals the second-highest bid, all bids met the floor, and no bids were fabricated.
+
+| Property | Value |
+|----------|-------|
+| Proof system | Halo2 (no trusted setup) |
+| Generation | Under 500ms |
+| Verification | Under 10ms |
+| Size | ~1 KB |
+
+## TEE Attestation
+
+| Backend | Attestation Type |
+|---------|-----------------|
+| Intel SGX | DCAP remote attestation |
+| AMD SEV | SEV-SNP attestation report |
+| AWS Nitro | Nitro Enclave document |
+
+## Data Availability
+
+Proofs stored on the DA layer for auditability: local (dev), EIP-4844 (on-chain), Celestia (modular DA), or IPFS (archival).
+
+## Attack Resilience
+
+| Attack | Defense |
+|--------|---------|
+| Bid snooping | HPKE encryption + TEE isolation |
+| Bid manipulation | ZK proof of correctness |
+| Replay | Nonce tracking per bid |
+| Byzantine nodes | Blocklace equivocation detection |
+| Front-running | TEE time-based sealing |

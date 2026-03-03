@@ -1,0 +1,59 @@
+---
+title: Lux Oracle
+description: Optimistic oracle for assertions, disputes, and on-chain truth verification
+index: true
+icon: Eye
+---
+
+Lux Oracle (`github.com/luxfi/oracle`) provides an optimistic oracle system for the Lux ecosystem. Contracts assert truths about the world, and disputes are resolved through an escalation game backed by bonded stakes.
+
+## Architecture
+
+```
+Asserter ──► Oracle.assertTruth(claim, bond)
+                    │
+                    ▼
+             ┌─────────────┐
+             │  Liveness    │  (challenge period)
+             │  Window      │
+             └──────┬──────┘
+                    │
+          ┌─────────┼──────────┐
+          ▼                    ▼
+   No Dispute              Disputed
+   settleAssertion()       disputeAssertion()
+   Bond returned           ──► Escalation Manager / DVM
+                               resolves truth
+```
+
+## Contracts
+
+| Contract | Path | Purpose |
+|----------|------|---------|
+| Oracle | `prediction/Oracle.sol` | Assert-dispute-settle engine |
+| IOracle | `prediction/IOracle.sol` | Oracle interface with callbacks |
+| Finder | `registry/Finder.sol` | Service locator for ecosystem contracts |
+| Store | `registry/Store.sol` | Fee management and final fees |
+| IdentifierWhitelist | `registry/IdentifierWhitelist.sol` | Supported query identifiers |
+
+## Key Concepts
+
+- **Assertion** -- a bonded claim about the world (e.g. "ETH price is above 3000 at timestamp T")
+- **Liveness period** -- time window during which anyone can dispute the assertion
+- **Bond** -- ERC-20 collateral locked by the asserter and returned on truthful settlement
+- **Escalation Manager** -- optional contract that controls dispute policy and arbitration
+
+## Installation
+
+```bash
+forge install luxfi/oracle
+```
+
+```solidity
+import "@luxfi/oracle/prediction/Oracle.sol";
+import "@luxfi/oracle/registry/Finder.sol";
+```
+
+## License
+
+AGPL-3.0-only (derived from UMA Protocol Optimistic Oracle).

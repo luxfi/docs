@@ -1,0 +1,61 @@
+---
+title: Encryption & Key Encapsulation
+description: AES-GCM, ChaCha20-Poly1305, ECIES, ML-KEM (Kyber), and HPKE
+icon: Lock
+---
+
+Symmetric encryption, hybrid encryption, and post-quantum key encapsulation for securing data at rest and in transit.
+
+## Symmetric Encryption
+
+| Algorithm | Key Size | Nonce | Tag | Notes |
+|-----------|----------|-------|-----|-------|
+| AES-256-GCM | 256-bit | 96-bit | 128-bit | Standard AEAD, hardware-accelerated |
+| ChaCha20-Poly1305 | 256-bit | 96-bit | 128-bit | Software-optimized AEAD |
+
+## Hybrid Encryption (ECIES)
+
+Combines ECDH key agreement with AES-GCM symmetric encryption.
+
+```go
+import "github.com/luxfi/crypto/ecies"
+
+ciphertext, err := ecies.Encrypt(recipientPubKey, plaintext)
+plaintext, err := ecies.Decrypt(recipientPrivKey, ciphertext)
+```
+
+## ML-KEM (FIPS 203)
+
+Post-quantum key encapsulation based on lattice problems.
+
+```go
+import "github.com/luxfi/crypto/mlkem"
+
+pub, priv, err := mlkem.GenerateKey()
+ciphertext, sharedSecret, err := mlkem.Encapsulate(pub)
+sharedSecret, err := mlkem.Decapsulate(priv, ciphertext)
+```
+
+| Parameter Set | Security | Ciphertext | Shared Secret |
+|---------------|----------|------------|---------------|
+| ML-KEM-512 | NIST Level 1 | 768 bytes | 32 bytes |
+| ML-KEM-768 | NIST Level 3 | 1,088 bytes | 32 bytes |
+| ML-KEM-1024 | NIST Level 5 | 1,568 bytes | 32 bytes |
+
+## Hash Functions
+
+| Package | Algorithms |
+|---------|------------|
+| `hash/` | SHA-256, SHA-512 |
+| `blake2b/` | BLAKE2b-256, BLAKE2b-512 |
+| `hashing/` | Keccak-256 (Ethereum-compatible) |
+
+## GPU Acceleration
+
+The `gpu/` package auto-routes to GPU for large batches:
+
+| Operation | GPU Threshold |
+|-----------|---------------|
+| Poseidon2 batch hash | 64+ elements |
+| Merkle tree | 128+ leaves |
+| Multi-scalar multiplication | 256+ points |

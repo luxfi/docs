@@ -1,0 +1,64 @@
+---
+title: Lux ADX
+description: Decentralized CTV ad exchange with TEE auctions and ZK privacy
+index: true
+icon: Megaphone
+---
+
+Lux ADX (`github.com/luxfi/adx`) is a high-performance decentralized ad exchange for Connected TV (CTV) and digital advertising, built with Byzantine-resilient consensus, TEE-based sealed auctions, and zero-knowledge privacy.
+
+## Performance Targets
+
+| Metric | Target |
+|--------|--------|
+| Impressions | 100M+/day |
+| Auction latency | Sub-100ms |
+| Consensus finality | Under 10s |
+| Proof generation | Under 500ms |
+| Network throughput | 10,000+ RPS |
+
+## Architecture
+
+```
+Publisher ──► ADX Node ──► TEE Enclave (sealed auction)
+                │                  │
+           Blocklace DAG     HPKE-encrypted bids
+           (consensus)       ZK proof of correctness
+                │                  │
+           Verkle Tree        DA Layer
+           (freq caps)       (EIP-4844 / Celestia)
+```
+
+## Core Components
+
+| Component | Directory | Purpose |
+|-----------|-----------|---------|
+| Blocklace | `blocklace/` | Byzantine-repelling DAG consensus |
+| TEE | `tee/` | Sealed auctions in SGX/SEV/Nitro enclaves |
+| Halo2 ZK | `zk/` | Zero-knowledge bid validity proofs |
+| Verkle Trees | `verkle/` | O(1) frequency cap verification |
+| HPKE | `crypto/` | Hybrid Public Key Encryption for bid sealing |
+| DA Layer | `da/` | Data availability (local, EIP-4844, Celestia, IPFS) |
+| Settlement | `settlement/` | Budget management and payment settlement |
+
+## Auction Flow
+
+1. Bids encrypted with HPKE and submitted to ADX nodes
+2. Sealed auction created inside TEE enclave
+3. Bids decrypted and second-price auction executed in hardware
+4. Winner commitment and audit transcript generated
+5. ZK proof of auction correctness published
+6. Result with TEE attestation returned to participants
+
+## Quick Start
+
+```bash
+# Build and start 5-node local network
+make run-local
+
+# Check node health
+curl http://localhost:8000/health
+
+# Run all tests
+make test
+```

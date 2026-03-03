@@ -1,0 +1,95 @@
+---
+title: Staking API
+description: P-Chain staking API endpoints for validators and delegators
+icon: FileCode
+---
+
+All staking operations go through the P-Chain API at `/ext/bc/P`.
+
+## Add Validator
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "platform.addValidator",
+  "params": {
+    "nodeID": "NodeID-...",
+    "startTime": 1700000000,
+    "endTime": 1731536000,
+    "stakeAmount": 2000000000000,
+    "rewardAddress": "P-lux1...",
+    "delegationFeeRate": 200000
+  },
+  "id": 1
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `nodeID` | string | Node identifier from `info.getNodeID` |
+| `startTime` | uint64 | Unix timestamp for staking start |
+| `endTime` | uint64 | Unix timestamp for staking end |
+| `stakeAmount` | uint64 | Stake in nLUX (1 LUX = 1e9 nLUX) |
+| `rewardAddress` | string | P-Chain address for reward payout |
+| `delegationFeeRate` | uint32 | Fee in millionths (200000 = 2%) |
+
+## Add Delegator
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "platform.addDelegator",
+  "params": {
+    "nodeID": "NodeID-...",
+    "startTime": 1700000000,
+    "endTime": 1731536000,
+    "stakeAmount": 25000000000,
+    "rewardAddress": "P-lux1..."
+  },
+  "id": 1
+}
+```
+
+## Query Validators
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "platform.getCurrentValidators",
+  "params": {"subnetID": "11111111111111111111111111111111LpoYY"},
+  "id": 1
+}
+```
+
+Returns an array of active validators with `nodeID`, `stakeAmount`, `startTime`, `endTime`, `uptime`, `delegationFee`, and `delegators`.
+
+## Query Pending Validators
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "platform.getPendingValidators",
+  "params": {"subnetID": "11111111111111111111111111111111LpoYY"},
+  "id": 1
+}
+```
+
+## Query Staking Status
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "platform.getMinStake",
+  "params": {},
+  "id": 1
+}
+```
+
+Returns `minValidatorStake` and `minDelegatorStake` in nLUX.
+
+## API Endpoint
+
+| Network | URL |
+|---------|-----|
+| Mainnet | `https://api.lux.network/mainnet/ext/bc/P` |
+| Testnet | `https://api.lux.network/testnet/ext/bc/P` |

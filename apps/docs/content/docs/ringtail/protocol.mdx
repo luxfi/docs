@@ -1,0 +1,86 @@
+---
+title: Signing Protocol
+description: Key generation, 2-round threshold signing, and verification
+icon: Key
+---
+
+## Key Generation (Gen)
+
+Key generation is performed by a trusted dealer. The dealer generates the public parameters and distributes secret key shares to each party via Shamir secret sharing.
+
+1. Sample a public matrix **A** from the ring
+2. Sample a secret vector **s** from a discrete Gaussian distribution
+3. Compute **b = A*s + e** (with Gaussian error **e**)
+4. Round **b** to produce the public parameter **b-tilde**
+5. Split **s** into shares via `ShamirSecretSharing` with Lagrange coefficients
+6. Distribute per-party seeds and MAC keys for authenticated communication
+
+The output is a set of `KeyShare` values (one per party) and a `GroupKey` containing **A** and **b-tilde**.
+
+## Round 1: Nonce Generation
+
+Each signing party generates commitments using PRF-derived randomness.
+
+```go
+round1Data := signer.Round1(sessionID, prfKey, signerIndices)
+```
+
+Each party:
+
+1. Derives per-session randomness from the PRF key and session ID
+2. Samples masking vectors from the appropriate distributions
+3. Computes commitment values
+4. Broadcasts `Round1Data` to all other signing parties
+
+## Round 2: Signature Share
+
+After receiving all Round 1 data, each party computes its signature share.
+
+```go
+round2Data, err := signer.Round2(sessionID, message, prfKey, signerIndices, round1Data)
+```
+
+Each party:
+
+1. Computes the challenge hash **c** from the message and all Round 1 commitments
+2. Combines its secret share with the challenge and masking values
+3. Verifies MACs from other parties to detect malicious behavior
+4. Produces a partial signature vector **z_i**
+
+## Finalization
+
+The combiner collects all Round 2 data and produces the final signature.
+
+```go
+signature, err := signer.Finalize(round2Data)
+```
+
+The combiner:
+
+1. Aggregates all partial signature vectors
+2. Checks the norm bound on the combined signature
+3. Returns the final `Signature` containing vectors **z** and **h**
+
+## Verification
+
+Verification checks the signature against the group key without knowing any secret shares.
+
+```go
+valid := ringtail.Verify(groupKey, message, signature)
+```
+
+The verifier:
+
+1. Recomputes the challenge **c** from the message and signature components
+2. Checks **A*z = b-tilde*c + h** (mod rounding)
+3. Verifies that the signature norm is within the acceptance bound
+4. Returns true if all checks pass
+
+## Security Guarantees
+
+| Threat | Protection |
+|--------|-----------|
+| Quantum computer | Module-LWE hardness (128-bit PQ security) |
+| Malicious signer | MAC-authenticated messages between parties |
+| Replay | Session ID binding prevents cross-session reuse |
+| Forgery | Norm bounds and challenge binding prevent existential forgery |

@@ -1,0 +1,56 @@
+---
+title: Ledger Hardware Wallet
+description: Lux app for Ledger hardware wallets with P/X/C chain signing
+icon: Shield
+---
+
+Go client library and Ledger app for signing Lux transactions on hardware wallets. Communicates via APDU protocol over USB HID.
+
+## Supported Devices
+
+| Device | Status | Connection |
+|--------|--------|------------|
+| **Ledger Nano S** | Supported | USB HID |
+| **Ledger Nano X** | Supported | USB HID |
+| **Ledger Nano S Plus** | Supported | USB HID |
+
+## Chain Support
+
+| Chain | Derivation Path | Address Format |
+|-------|----------------|----------------|
+| **P-Chain** | `m/44'/60'/0'/n'` | Bech32 (`P-lux1...`) |
+| **X-Chain** | `m/44'/60'/0'/n'` | Bech32 (`X-lux1...`) |
+| **C-Chain** | `m/44'/60'/0'/n'` | Hex (`0x...`) |
+
+All chains share the `m/44'/60'/0'` root path with hardened child indices.
+
+## Features
+
+| Feature | Description |
+|---------|-------------|
+| **BIP-44 Derivation** | Ethereum-compatible HD key paths |
+| **Transaction Signing** | Full transaction and hash signing |
+| **Message Signing** | Arbitrary message signatures |
+| **Multi-Signature** | Batch signing across multiple paths |
+| **On-Device Display** | Address verification on Ledger screen |
+
+## Installation
+
+```bash
+go get github.com/luxfi/ledger
+```
+
+## Quick Start
+
+```go
+import "github.com/luxfi/ledger"
+
+app, err := ledger.FindLedgerLuxApp()
+if err != nil {
+    log.Fatal(err)
+}
+defer app.Close()
+
+version, err := app.GetVersion()
+fmt.Printf("Lux Ledger App v%s\n", version)
+```

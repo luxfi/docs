@@ -1,0 +1,56 @@
+---
+title: xLUX Vault
+description: Stake LUX, earn protocol-wide revenue, and participate in governance
+icon: Vault
+---
+
+xLUX (LiquidLUX) is the master yield vault for the Lux Network. It receives fees from every DeFi protocol in the stack and distributes them to depositors as increasing share value.
+
+## Deposit and Withdraw
+
+```solidity
+// Deposit LUX, receive xLUX shares
+uint256 shares = liquidLux.deposit(luxAmount);
+
+// Withdraw LUX by burning xLUX
+uint256 lux = liquidLux.withdraw(xLuxShares);
+
+// Check exchange rate (LUX per xLUX, scaled 1e18)
+uint256 rate = liquidLux.exchangeRate();
+```
+
+The first depositor receives shares 1:1 with LUX. As fees accumulate, each xLUX share represents more LUX.
+
+## Fee Sources
+
+| Source | Performance Fee | Description |
+|--------|----------------|-------------|
+| DEX fees | 10% | AMM swap fees |
+| Bridge fees | 10% | Cross-chain transfer fees |
+| Lending fees | 10% | Interest from Markets protocol |
+| Perps fees | 10% | Perpetual futures trading fees |
+| Liquid fees | 10% | Flash loan fees from LETH/LBTC/LUSD |
+| NFT fees | 10% | LSSVM marketplace fees |
+| Validator rewards | 0% | Exempt from performance fee |
+
+Performance fees go to the treasury. The remaining 89-90% increases the vault balance.
+
+## Slashing Protection
+
+A configurable reserve buffer (default 1% of incoming fees) absorbs validator slashing losses before they affect holders. If a slashing event exceeds the reserve, remaining losses are socialized across all xLUX holders proportionally.
+
+## Governance
+
+xLUX uses `ERC20Votes` for checkpointed voting power, making it resistant to flash loan governance attacks. Combined with DLUX, it forms vLUX (Voting LUX):
+
+```
+vLUX = xLUX + DLUX
+```
+
+## Emergency Controls
+
+| Role | Action |
+|------|--------|
+| `EMERGENCY_ROLE` | Pause deposits/withdrawals |
+| `GOVERNANCE_ROLE` (Timelock) | Unpause, set performance fee, set treasury |
+| `DEFAULT_ADMIN_ROLE` | Add/remove fee distributors and validator sources |

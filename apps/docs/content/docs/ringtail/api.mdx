@@ -1,0 +1,128 @@
+---
+title: Ringtail API Reference
+description: Go API for key generation, threshold signing, and verification
+icon: Code
+---
+
+## Core Package (sign)
+
+### Party
+
+```go
+type Party struct {
+    ID             int
+    Ring           *ring.Ring
+    SkShare        structs.Vector[ring.Poly]
+    Seed           map[int][][]byte
+    MACKeys        map[int][]byte
+    // ... internal state
+}
+
+func NewParty(id int, r, r_xi, r_nu *ring.Ring, sampler *ring.UniformSampler) *Party
+```
+
+### Gen (Key Generation)
+
+```go
+func Gen(
+    r *ring.Ring,
+    r_xi *ring.Ring,
+    uniformSampler *ring.UniformSampler,
+    trustedDealerKey []byte,
+    lagrangeCoefficients structs.Vector[ring.Poly],
+) (
+    A structs.Matrix[ring.Poly],        // Public matrix
+    skShares map[int]structs.Vector[ring.Poly], // Per-party secret shares
+    seeds map[int][][]byte,             // Per-party PRF seeds
+    macKeys map[int]map[int][]byte,     // Pairwise MAC keys
+    bTilde structs.Vector[ring.Poly],   // Rounded public key
+)
+```
+
+### SignRound1
+
+```go
+func (p *Party) SignRound1(sessionID int, prfKey []byte, signers []int) *Round1Data
+```
+
+Generates nonce commitments for the signing session. Must be called by each participating party.
+
+### SignRound2
+
+```go
+func (p *Party) SignRound2(
+    sessionID int,
+    message string,
+    prfKey []byte,
+    signers []int,
+    round1Data map[int]*Round1Data,
+) (*Round2Data, error)
+```
+
+Computes the party's signature share using the collected Round 1 data.
+
+### Verify
+
+```go
+func Verify(
+    groupKey *GroupKey,
+    message string,
+    sig *Signature,
+) bool
+```
+
+Verifies a threshold signature against the group public key.
+
+## Threshold Package (threshold)
+
+The `threshold/` subpackage implements the `crypto/threshold.Scheme` interface.
+
+### Types
+
+```go
+type GroupKey struct {
+    A      structs.Matrix[ring.Poly]
+    BTilde structs.Vector[ring.Poly]
+    Params *Params
+}
+
+type KeyShare struct {
+    Index    int
+    SkShare  structs.Vector[ring.Poly]
+    Seeds    map[int][][]byte
+    MACKeys  map[int][]byte
+    Lambda   ring.Poly
+    GroupKey *GroupKey
+}
+
+type Signer struct { /* wraps Party */ }
+
+type Signature struct {
+    Z []structs.Vector[ring.Poly]
+    H structs.Vector[ring.Poly]
+}
+```
+
+### Signer Methods
+
+```go
+func (s *Signer) Round1(sessionID int, prfKey []byte, signers []int) *Round1Data
+func (s *Signer) Round2(sessionID int, message string, prfKey []byte, signers []int, r1 map[int]*Round1Data) (*Round2Data, error)
+func (s *Signer) Finalize(r2 map[int]*Round2Data) (*Signature, error)
+```
+
+## CLI Runner
+
+```bash
+# Run locally with 3 parties, 1 iteration
+go run main.go l 1 3
+
+# Run party 0 in distributed mode with 5 parties
+go run main.go 0 1 5
+```
+
+| Argument | Description |
+|----------|-------------|
+| `id` | Party ID (0-based) or `l` for local mode |
+| `iters` | Number of iterations for benchmarking |
+| `parties` | Total number of signing parties |

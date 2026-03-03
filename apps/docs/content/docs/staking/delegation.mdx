@@ -1,0 +1,60 @@
+---
+title: Delegation
+description: Delegate LUX to validators and earn proportional rewards
+icon: Users
+---
+
+Delegation lets LUX holders earn staking rewards without running a node. Delegators choose a validator and lock their LUX for a defined period.
+
+## How It Works
+
+1. Choose a validator with high uptime and a competitive delegation fee.
+2. Submit an `addDelegator` transaction on the P-Chain.
+3. Your LUX is locked for the staking period.
+4. At the end of the period, you receive your stake plus rewards (minus the validator's delegation fee).
+
+## Requirements
+
+| Parameter | Value |
+|-----------|-------|
+| Minimum delegation | 25 LUX |
+| Minimum period | 2 weeks |
+| Maximum period | 1 year |
+| Delegation fee | Set by validator (2% - 100%) |
+
+## Delegate via CLI
+
+```bash
+lux network delegator add \
+  --node-id=NodeID-... \
+  --stake-amount=100 \
+  --start-time=$(date -u +%s) \
+  --end-time=$(($(date -u +%s) + 2592000))
+```
+
+## Rewards Calculation
+
+Delegator rewards depend on three factors:
+
+- **Stake weight**: Your delegation as a fraction of the validator's total stake.
+- **Validator uptime**: Must exceed 80% for rewards to be distributed.
+- **Delegation fee**: The validator's cut (e.g., 2% means you receive 98% of your proportional reward).
+
+```
+Your Reward = (Your Delegation / Total Validator Stake) * Total Reward * (1 - DelegationFee)
+```
+
+## Choosing a Validator
+
+Check validator metrics before delegating:
+
+```bash
+curl -s -X POST --data '{
+  "jsonrpc":"2.0",
+  "method":"platform.getCurrentValidators",
+  "params":{},
+  "id":1
+}' -H 'content-type:application/json' http://127.0.0.1:9630/ext/bc/P | jq '.result.validators[] | {nodeID, uptime, delegationFee}'
+```
+
+Look for validators with uptime above 95% and delegation fees at or near the 2% minimum.

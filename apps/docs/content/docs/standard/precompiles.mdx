@@ -1,0 +1,120 @@
+---
+title: Precompiles
+description: 39 EVM precompiles for post-quantum cryptography, DeFi, ZK proofs, and attestation
+icon: Cpu
+---
+
+Lux EVM includes 39 custom precompiles accessible as native Solidity calls. Interfaces are in `contracts/precompile/interfaces/` and addresses in `contracts/precompile/addresses/PrecompileRegistry.sol`.
+
+## Core Precompiles
+
+| Address | Name | Interface | Purpose |
+|---------|------|-----------|---------|
+| `0x0200...0001` | DeployerAllowList | -- | Deployer permissions |
+| `0x0200...0002` | TxAllowList | -- | Transaction permissions |
+| `0x0200...0003` | FeeManager | -- | Dynamic fee management |
+| `0x0200...0004` | NativeMinter | -- | Native token minting |
+| `0x0200...0005` | Warp | `IWarp.sol` | Cross-chain messaging with BLS |
+| `0x0200...0006` | RewardManager | -- | Validator rewards |
+
+## Cryptography Precompiles
+
+| Address | Name | Interface | Purpose |
+|---------|------|-----------|---------|
+| `0x0200...0007` | ML-DSA | `IMLDSA.sol` | FIPS 204 post-quantum signatures |
+| `0x0200...0008` | SLH-DSA | `ISLHDSA.sol` | Hash-based PQ signatures (SPHINCS+) |
+| `0x0200...0009` | PQCrypto | `IPQCrypto.sol` | Multi-PQ operations |
+| `0x0200...000A` | Quasar | `IQuasar.sol` | Quantum consensus operations |
+| `0x0200...000B` | Ringtail | `IRingtailThreshold.sol` | Post-quantum threshold signatures |
+| `0x0200...000C` | FROST | `IFROST.sol` | Schnorr threshold (BIP-340 Taproot) |
+| `0x0200...000D` | CGGMP21 | `ICGGMP21.sol` | ECDSA threshold (MPC custody) |
+
+### Usage: Post-Quantum Signatures
+
+```solidity
+import "@luxfi/contracts/precompile/interfaces/IMLDSA.sol";
+
+// Verify a post-quantum ML-DSA signature
+bool valid = IMLDSA.verify(publicKey, message, signature);
+```
+
+### Usage: Threshold Signatures
+
+```solidity
+import "@luxfi/contracts/precompile/interfaces/IFROST.sol";
+
+// Verify 2-of-3 FROST threshold signature
+FROSTLib.verifyOrRevert(2, 3, aggregatedPubKey, messageHash, signature);
+```
+
+## DeFi Precompiles
+
+| Address | Name | Interface | Purpose |
+|---------|------|-----------|---------|
+| `0x0200...0010` | DEX | `ILXBook.sol` | QuantumSwap on-chain CLOB |
+| `0x0200...0011` | Oracle | `IOracle.sol` | Multi-source price aggregation |
+| `0x0200...0012` | Lending | -- | Lending operations |
+| `0x0200...0013` | Staking | -- | Staking operations |
+| `0x0200...0014` | Yield | -- | Yield operations |
+| `0x0200...0015` | Perps | -- | Perpetuals operations |
+
+## Attestation Precompile
+
+| Address | Name | Purpose |
+|---------|------|---------|
+| `0x0200...0300` | Attestation | GPU/TEE hardware attestation for AI mining |
+
+## Hashing Precompiles
+
+| Address | Name | Interface | Gas | Purpose |
+|---------|------|-----------|-----|---------|
+| `0x0501` | Poseidon2 | `IHash.sol` | ~20K | ZK-friendly hash |
+| `0x0502` | Poseidon2Sponge | `IHash.sol` | ~25K | Variable-length Poseidon2 |
+| `0x0503` | Pedersen | `IHash.sol` | ~30K | BN254 curve commitment |
+| `0x0504` | Blake3 | `IHash.sol` | ~5K | High-performance hash |
+
+```solidity
+import "@luxfi/contracts/precompile/interfaces/IHash.sol";
+
+// Poseidon2 hash (ZK-friendly, post-quantum safe)
+bytes32 hash = IHash(0x0501).hash(abi.encode(left, right));
+```
+
+## ZK Proof Precompiles
+
+| Address | Name | Interface | Purpose |
+|---------|------|-----------|---------|
+| `0x0900` | ZKVerify | `IZK.sol` | Generic ZK verification |
+| `0x0901` | Groth16 | `IZK.sol` | Groth16 proof verification |
+| `0x0902` | PLONK | `IZK.sol` | PLONK proof verification |
+| `0x0903` | fflonk | `IZK.sol` | fflonk proof verification |
+| `0x0904` | Halo2 | `IZK.sol` | Halo2 proof verification |
+| `0x0910` | KZG | `IZK.sol` | KZG polynomial commitments |
+| `0x0912` | IPA | `IZK.sol` | Inner Product Arguments |
+| `0x0920` | PrivacyPool | `IZK.sol` | Confidential pool operations |
+| `0x0921` | Nullifier | `IZK.sol` | Nullifier verification |
+| `0x0922` | Commitment | `IZK.sol` | Commitment verification |
+| `0x0923` | RangeProof | `IZK.sol` | Bulletproof range proofs |
+| `0x0930` | RollupVerify | `IZK.sol` | ZK rollup batch verification |
+| `0x0931` | StateRoot | `IZK.sol` | State root verification |
+| `0x0932` | BatchProof | `IZK.sol` | Batch proof aggregation |
+
+## Dead/Burn Precompiles
+
+| Address | Name | Interface | Purpose |
+|---------|------|-----------|---------|
+| `0x0000...0000` | DeadZero | `IDead.sol` | Zero address intercept |
+| `0x0000...dEaD` | DeadShort | `IDead.sol` | Common dead address |
+| `0xdEaD...0000` | DeadFull | `IDead.sol` | Full dead prefix |
+
+Tokens sent to dead addresses are split: 50% burned (deflationary) and 50% sent to the DAO treasury as Protocol-Owned Liquidity.
+
+## Gas Costs
+
+| Precompile | Gas (3-of-5) | Signature Size |
+|------------|-------------|----------------|
+| FROST | 75,000 | 64 bytes |
+| CGGMP21 | 125,000 | 65 bytes |
+| Ringtail | 200,000 | ~4 KB |
+| ML-DSA | 100,000 | 3,309 bytes |
+| BLS (Warp) | 120,000 | 96 bytes |

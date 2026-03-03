@@ -1,0 +1,79 @@
+---
+title: Signature Algorithms
+description: ECDSA, Ed25519, BLS12-381, ML-DSA, and ring signature implementations
+icon: PenTool
+---
+
+Classical and post-quantum signature algorithms for the Lux blockchain.
+
+## Classical Signatures
+
+### ECDSA (secp256k1)
+
+Ethereum-compatible signatures for transaction signing on all EVM chains.
+
+```go
+import "github.com/luxfi/crypto/secp256k1"
+
+privKey, err := secp256k1.GenerateKey()
+sig, err := secp256k1.Sign(hash[:], privKey)
+pubKey, err := secp256k1.RecoverPubkey(hash[:], sig)
+```
+
+### BLS12-381
+
+Aggregatable signatures for Lux consensus. Multiple signatures combine into one.
+
+```go
+import "github.com/luxfi/crypto/bls"
+
+sk, err := bls.NewSecretKey()
+pk := bls.PublicFromSecretKey(sk)
+sig := bls.Sign(sk, msg)
+ok := bls.Verify(pk, sig, msg)
+
+aggSig := bls.AggregateSignatures(sigs)
+ok := bls.AggregateVerify(aggSig, pks, msgs)
+```
+
+## Post-Quantum Signatures
+
+### ML-DSA-65 (FIPS 204)
+
+Lattice-based signatures with 192-bit security (NIST Level 3).
+
+```go
+import "github.com/luxfi/crypto/mldsa"
+
+pub, priv, err := mldsa.GenerateKey()
+sig, err := mldsa.Sign(priv, msg)
+ok := mldsa.Verify(pub, msg, sig)
+```
+
+| Property | ML-DSA-65 | SLH-DSA-128f |
+|----------|-----------|-------------|
+| Public key | 1,952 bytes | 32 bytes |
+| Signature | 3,309 bytes | 17,088 bytes |
+| Security | NIST Level 3 | NIST Level 1 |
+| Basis | Lattice | Hash-only |
+
+## Ring Signatures
+
+Anonymous group signatures where the verifier cannot identify the signer.
+
+| Scheme | Security | Key Type |
+|--------|----------|----------|
+| LSAG | Classical | secp256k1 |
+| LatticeLSAG | Post-quantum | ML-DSA-65 |
+
+```go
+import "github.com/luxfi/crypto/ring"
+
+signer, _ := ring.NewSigner(ring.LSAG)
+sig, _ := signer.Sign(message, ringMembers, signerIndex)
+ok := sig.Verify(message, ringMembers)
+
+// Double-spend detection
+store := ring.NewMemoryKeyImageStore()
+err := ring.VerifyAndRecord(sig, message, ringMembers, store)
+```

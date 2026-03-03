@@ -1,0 +1,104 @@
+---
+title: Warp API Reference
+description: Core types, functions, and interfaces for Warp messaging
+icon: Code
+---
+
+## Core Types
+
+### UnsignedMessage
+
+```go
+type UnsignedMessage struct {
+    NetworkID     uint32
+    SourceChainID ids.ID
+    Payload       []byte
+}
+```
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `Verify()` | `error` | Validates format and size |
+| `Bytes()` | `[]byte` | Serialized representation |
+| `ID()` | `ids.ID` | SHA-256 hash of the serialized message |
+
+### Message
+
+```go
+type Message struct {
+    UnsignedMessage *UnsignedMessage
+    Signature       Signature
+}
+```
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `Verify()` | `error` | Validates message and signature are non-nil |
+| `Bytes()` | `[]byte` | Serialized representation |
+| `ID()` | `ids.ID` | Hash of the unsigned message |
+| `Equal(other)` | `bool` | Deep equality check |
+
+## Constructors
+
+```go
+func NewUnsignedMessage(networkID uint32, chainID ids.ID, payload []byte) (*UnsignedMessage, error)
+func NewMessage(unsigned *UnsignedMessage, signature Signature) (*Message, error)
+func ParseMessage(b []byte) (*Message, error)
+func ParseUnsignedMessage(b []byte) (*UnsignedMessage, error)
+```
+
+## Verification
+
+```go
+func VerifyMessage(msg *Message, networkID uint32, state ValidatorState, quorumNum, quorumDen uint64) error
+func VerifyWeight(signedWeight, totalWeight, quorumNum, quorumDen uint64) error
+```
+
+## Interfaces
+
+### Signature
+
+```go
+type Signature interface {
+    Verify(unsignedBytes []byte, validators []Validator) error
+    GetSignedWeight(validators []Validator) (uint64, error)
+    Equal(other Signature) bool
+    Bytes() []byte
+}
+```
+
+### ValidatorState
+
+```go
+type ValidatorState interface {
+    GetValidatorSet(ctx context.Context, height uint64, chainID ids.ID) ([]Validator, error)
+    GetCurrentHeight(ctx context.Context) (uint64, error)
+}
+```
+
+### Validator
+
+```go
+type Validator struct {
+    PublicKey      *bls.PublicKey
+    PublicKeyBytes []byte
+    Weight         uint64
+    NodeID         ids.NodeID
+}
+```
+
+## Constants
+
+| Constant | Value | Description |
+|----------|-------|-------------|
+| `CodecVersion` | `0` | Serialization codec version |
+| `MaxMessageSize` | `256 KiB` | Maximum serialized message size |
+
+## Errors
+
+| Error | Description |
+|-------|-------------|
+| `ErrInvalidSignature` | Signature verification failed |
+| `ErrInvalidMessage` | Message format is invalid |
+| `ErrUnknownValidator` | Validator not in the expected set |
+| `ErrInsufficientWeight` | Signed weight below quorum |

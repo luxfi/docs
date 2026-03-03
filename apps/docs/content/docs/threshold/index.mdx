@@ -1,0 +1,70 @@
+---
+title: Threshold Crypto
+description: Unified interfaces and registry for threshold signature schemes
+icon: Users
+---
+
+Lux Threshold (`github.com/luxfi/crypto/threshold`) defines the canonical interface layer for threshold cryptography across the Lux ecosystem. It provides a unified API for key generation, signing, aggregation, and verification that works with multiple underlying schemes.
+
+## Core Interfaces
+
+| Interface | Purpose |
+|-----------|---------|
+| `Scheme` | Factory for creating DKG, Signer, Aggregator, and Verifier instances |
+| `DKG` | Multi-round distributed key generation protocol |
+| `TrustedDealer` | Centralized key share generation (simpler, requires trust) |
+| `KeyShare` | A party's share of the threshold secret key |
+| `Signer` | Creates signature shares from a key share |
+| `Aggregator` | Combines signature shares into a final signature |
+| `Verifier` | Verifies threshold signatures against the group public key |
+
+## Registry Pattern
+
+Schemes register themselves via `init()` functions. Consumers look up schemes at runtime without compile-time coupling to specific implementations.
+
+```go
+import (
+    "github.com/luxfi/crypto/threshold"
+    _ "github.com/luxfi/crypto/threshold/bls"  // Register BLS
+    _ "github.com/luxfi/ringtail/threshold"    // Register Ringtail
+)
+
+scheme, err := threshold.GetScheme(threshold.SchemeBLS)
+```
+
+## Usage Flow
+
+```
+1. Get scheme       threshold.GetScheme(schemeID)
+2. Generate keys    scheme.NewTrustedDealer(config) or scheme.NewDKG(config)
+3. Create signers   scheme.NewSigner(keyShare)
+4. Sign shares      signer.SignShare(ctx, message, signers, nonce)
+5. Aggregate        aggregator.Aggregate(ctx, message, shares, commitments)
+6. Verify           verifier.Verify(message, signature)
+```
+
+## Package Structure
+
+```
+crypto/threshold/
+├── interfaces.go       # Scheme, DKG, Signer, Aggregator, Verifier
+├── registry.go         # RegisterScheme, GetScheme, ListSchemes
+├── session.go          # SigningSession, SessionManager
+├── adapter.go          # SchemeAdapter, QuickSign helpers
+├── errors.go           # Sentinel errors
+└── bls/                # Built-in BLS threshold implementation
+```
+
+## Dependency Graph
+
+```
+crypto/threshold       <-- Interface definitions (no external deps)
+       ^
+       |
+  ┌────┴────┐
+  |         |
+bls/     ringtail/threshold    mpc/pkg/threshold
+(built-in)  (native impl)      (CGGMP21/FROST adapters)
+```
+
+Implementations import `crypto/threshold` for the interfaces. Consumers import `crypto/threshold` plus the scheme packages they need. No circular dependencies.
