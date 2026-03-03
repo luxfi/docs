@@ -1,21 +1,109 @@
 ---
 title: "AI VM (A-Chain)"
-description: "On-chain AI model inference, attestation via TEE, and LLM gateway integration."
+description: "On-chain AI compute task orchestration, TEE attestation, and reward distribution."
 icon: Sparkles
 ---
 
-On-chain AI model inference, attestation via TEE, and LLM gateway integration.
+The AI VM (A-Chain) handles AI compute task orchestration on the Lux network. Compute providers register their GPU resources, tasks are submitted and assigned to providers, and results are verified via Trusted Execution Environment (TEE) attestation. Rewards are distributed per epoch and state is periodically anchored to the Q-Chain via merkle roots.
+
+## Architecture
+
+- **Provider Registry**: GPU compute providers register with attestation proof
+- **Task Queue**: Tasks submitted, assigned to providers, results verified
+- **TEE Attestation**: CPU (SGX/SEV-SNP/TDX) and GPU (nvtrust) attestation -- local verification, no cloud dependency
+- **Reward Distribution**: Per-epoch rewards based on compute contribution
+- **Merkle Anchoring**: Periodic state root anchoring to Q-Chain for verifiability
 
 ## Configuration
 
-Refer to the [node documentation](/nodes) for running a node with this VM enabled.
+```json
+{
+  "maxProvidersPerNode": 100,
+  "maxTasksPerProvider": 10,
+  "requireTEEAttestation": true,
+  "minTrustScore": 50,
+  "attestationTimeout": "30s",
+  "maxTaskQueueSize": 1000,
+  "taskTimeout": "5m",
+  "baseReward": 1000000000,
+  "epochDuration": "1h",
+  "merkleAnchorFreq": 100
+}
+```
 
-## RPC API
+### Key Parameters
 
-Standard JSON-RPC methods are available at:
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `maxProvidersPerNode` | 100 | Maximum providers per node |
+| `maxTasksPerProvider` | 10 | Maximum concurrent tasks per provider |
+| `requireTEEAttestation` | true | Require hardware attestation for providers |
+| `minTrustScore` | 50 | Minimum trust score (0-255) to accept tasks |
+| `taskTimeout` | 5m | Maximum time for a task to complete |
+| `baseReward` | 1 LUX | Base reward per epoch (in wei) |
+| `epochDuration` | 1h | Duration of each reward epoch |
+| `merkleAnchorFreq` | 100 | Blocks between Q-Chain merkle anchors |
+
+## REST API
+
+The A-Chain uses a REST API (not JSON-RPC). Endpoint:
 
 ```
-https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+https://api.lux.network/{network}/ext/bc/{blockchain-id}
+```
+
+### Provider Endpoints
+
+- **GET /providers** -- List all registered compute providers
+- **POST /providers/register** -- Register a new compute provider with GPU info and attestation
+
+### Task Endpoints
+
+- **GET /tasks** -- List pending tasks (or get a specific task by `?id=...`)
+- **POST /tasks/submit** -- Submit a new AI compute task
+- **POST /tasks/result** -- Submit task result from a provider
+
+### Model Endpoints
+
+- **GET /models** -- List available AI models
+
+### Attestation Endpoints
+
+- **POST /attestation/verify** -- Verify a TEE attestation proof
+
+### Reward Endpoints
+
+- **POST /rewards/claim** -- Claim accumulated rewards
+- **GET /rewards/stats** -- Get reward statistics
+
+### Status Endpoints
+
+- **GET /stats** -- Get A-Chain statistics (providers, tasks, throughput)
+- **GET /merkle** -- Get current merkle root
+- **GET /health** -- Health check
+
+## Example: Register a Provider
+
+```bash
+curl -X POST \
+  https://api.lux.network/mainnet/ext/bc/{blockchain-id}/providers/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "provider-1",
+    "wallet_address": "0x...",
+    "endpoint": "https://gpu.example.com",
+    "gpus": [
+      {
+        "model": "A100",
+        "memory": 80000,
+        "compute_capability": "8.0"
+      }
+    ],
+    "gpu_attestation": {
+      "type": "nvtrust",
+      "evidence": "..."
+    }
+  }'
 ```
 
 ## Related LPs

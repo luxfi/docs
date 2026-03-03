@@ -1,23 +1,102 @@
 ---
 title: "Bridge VM (B-Chain)"
-description: "Cross-chain bridge operations with MPC-secured signing and relay verification."
+description: "Cross-chain bridge operations with MPC-secured signing and opt-in signer set management."
 icon: Link
 ---
 
-Cross-chain bridge operations with MPC-secured signing and relay verification.
+The Bridge VM (B-Chain) manages cross-chain bridge operations using MPC threshold signing. Validators opt in as bridge signers by posting a slashable bond. The signer set uses a 2/3 threshold for signing bridge transactions. The B-Chain implements LP-333 for signer set management: the first 100 validators join without reshare, and reshare only occurs when a signer is replaced.
+
+## Architecture
+
+- **MPC Threshold Signing**: t-of-n signatures using the CMP protocol from `luxfi/threshold`
+- **Opt-In Signer Set**: First 100 validators accepted directly; waitlist after capacity
+- **Slashable Bond**: Each signer posts 100M LUX bond (separate from staking, slashable for misbehavior)
+- **Epoch-Based Resharing**: Epochs increment only on slot replacement, not on new joins
+- **Warp Verification**: Cross-chain messages verified via Lux Warp protocol
 
 ## Configuration
 
-Refer to the [node documentation](/nodes) for running a node with this VM enabled.
+```json
+{
+  "mpcThreshold": 2,
+  "mpcTotalParties": 5,
+  "minConfirmations": 6,
+  "bridgeFee": 1000000,
+  "supportedChains": [],
+  "maxBridgeAmount": 1000000000000,
+  "dailyBridgeLimit": 10000000000000,
+  "requireValidatorBond": 100000000,
+  "maxSigners": 100,
+  "thresholdRatio": 0.67
+}
+```
+
+### Key Parameters
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `mpcThreshold` | 2 | Threshold value (t+1 parties needed to sign) |
+| `minConfirmations` | 6 | Confirmations required before bridging |
+| `bridgeFee` | 1 LUX | Fee per bridge transaction |
+| `maxBridgeAmount` | -- | Maximum amount per bridge transaction |
+| `dailyBridgeLimit` | -- | Daily aggregate bridge limit |
+| `requireValidatorBond` | 100M LUX | Bond required to become a signer |
+| `maxSigners` | 100 | Maximum signers before set is frozen |
+| `thresholdRatio` | 0.67 | Threshold as ratio of signers (2/3) |
 
 ## RPC API
 
-Standard JSON-RPC methods are available at:
+The B-Chain API uses the `bridge` namespace. Endpoint:
 
 ```
-https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+https://api.lux.network/{network}/ext/bc/{blockchain-id}/rpc
+```
+
+### Signer Management (LP-333)
+
+- **bridge.registerValidator** -- Register as a bridge signer (requires 100M LUX bond)
+- **bridge.getSignerSetInfo** -- Get current signer set details (signers, threshold, epoch, frozen status)
+- **bridge.hasSigner** -- Check if a node is in the signer set
+- **bridge.replaceSigner** -- Remove a failed signer and trigger reshare (the only operation that triggers reshare)
+- **bridge.getWaitlist** -- Get validators waiting for a signer slot
+- **bridge.getCurrentEpoch** -- Get current epoch number
+- **bridge.slashSigner** -- Slash a misbehaving signer's bond
+
+## Signer Set Lifecycle
+
+1. **Registration**: Validator calls `bridge.registerValidator` with their node ID and MPC public key.
+2. **Acceptance**: If fewer than 100 signers exist, the validator is added directly. Otherwise, they join the waitlist.
+3. **Set Frozen**: Once 100 signers are active, the set is frozen. New validators can only enter via replacement.
+4. **Replacement**: When a signer is slashed or removed, a waitlisted validator takes the slot. This is the only event that triggers a key reshare and increments the epoch.
+
+## Example: Register as a Signer
+
+```bash
+curl -X POST --data '{
+  "jsonrpc": "2.0",
+  "method": "bridge.registerValidator",
+  "params": {
+    "nodeId": "NodeID-...",
+    "bondAmount": "100000000",
+    "mpcPubKey": "0x..."
+  },
+  "id": 1
+}' -H "Content-Type: application/json" \
+  https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+```
+
+## Example: Get Signer Set Info
+
+```bash
+curl -X POST --data '{
+  "jsonrpc": "2.0",
+  "method": "bridge.getSignerSetInfo",
+  "params": {},
+  "id": 1
+}' -H "Content-Type: application/json" \
+  https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
 ```
 
 ## Related LPs
 
-See [lps.lux.network](https://lps.lux.network) for the relevant Lux Proposals governing this chain.
+See [lps.lux.network](https://lps.lux.network) for the relevant Lux Proposals governing this chain. LP-333 defines the signer set management model.

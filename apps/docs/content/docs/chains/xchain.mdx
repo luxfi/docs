@@ -4,18 +4,121 @@ description: "The X-Chain handles UTXO-based asset transfers using DAG consensus
 icon: ArrowLeftRight
 ---
 
-The X-Chain handles UTXO-based asset transfers using DAG consensus.
+The X-Chain (Exchange Chain) is the asset creation and transfer platform on Lux Network. It uses a UTXO model (similar to Bitcoin) with DAG-based consensus for high-throughput parallel transaction processing. The X-Chain is powered by the ExchangeVM.
+
+## Purpose
+
+- **Asset Creation**: Create fungible tokens, NFTs, and variable-cap assets
+- **Fast Transfers**: UTXO-based transfers with sub-second finality via DAG consensus
+- **Cross-Chain Transfers**: Import and export assets between X-Chain, P-Chain, and C-Chain
+- **NFT Support**: Native NFT creation and transfer without smart contracts
+
+## RPC Endpoint
+
+```
+https://api.lux.network/{network}/ext/bc/X
+```
+
+The X-Chain API uses the `avm` namespace with Lux-style JSON-RPC.
 
 ## Configuration
 
-Refer to the [node documentation](/nodes) for running a node with this VM enabled.
-
-## RPC API
-
-Standard JSON-RPC methods are available at:
-
+```json
+{
+  "network": {},
+  "checksums-enabled": true,
+  "tx-fee": 1000,
+  "create-asset-tx-fee": 10000
+}
 ```
-https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+
+### Fee Schedule
+
+| Operation | Fee (nanoLUX) |
+|-----------|--------------|
+| Base transaction | 1,000 |
+| Create asset | 10,000 |
+
+## RPC Methods
+
+### Asset Operations
+
+- **avm.createAsset** -- Create a new fungible asset with initial holders and minters
+- **avm.createFixedCapAsset** -- Create a fixed-supply fungible asset
+- **avm.createVariableCapAsset** -- Create a variable-supply fungible asset
+- **avm.createNFTAsset** -- Create a new NFT collection
+- **avm.getAssetDescription** -- Get name, symbol, and denomination of an asset
+- **avm.mint** -- Mint additional units of a variable-cap asset
+- **avm.mintNFT** -- Mint a new NFT in an existing collection
+
+### Transfer Operations
+
+- **avm.send** -- Send a single asset to an address
+- **avm.sendMultiple** -- Send multiple assets in a single transaction
+- **avm.sendNFT** -- Send an NFT to an address
+- **avm.import** -- Import assets from another chain (P-Chain or C-Chain)
+- **avm.export** -- Export assets to another chain
+
+### Query Operations
+
+- **avm.getBalance** -- Get balance of a specific asset for an address
+- **avm.getAllBalances** -- Get all asset balances for an address
+- **avm.getUTXOs** -- Get UTXOs for given addresses (paginated, max 1024 addresses)
+- **avm.getTx** -- Get a transaction by ID
+- **avm.getTxStatus** -- Get the status of a transaction
+- **avm.getAddressTxs** -- Get transactions associated with an address
+- **avm.getBlock** -- Get a block by ID
+- **avm.getBlockByHeight** -- Get a block by height
+- **avm.getHeight** -- Get the current chain height
+
+### Key Management
+
+- **avm.createAddress** -- Create a new address controlled by the given user
+- **avm.listAddresses** -- List addresses controlled by the given user
+- **avm.exportKey** -- Export a private key
+- **avm.importKey** -- Import a private key
+
+### Transaction Submission
+
+- **avm.issueTx** -- Issue a signed transaction to the network
+
+## Example: Get All Balances
+
+```bash
+curl -X POST --data '{
+  "jsonrpc": "2.0",
+  "method": "avm.getAllBalances",
+  "params": {
+    "address": "X-lux1..."
+  },
+  "id": 1
+}' -H "Content-Type: application/json" \
+  https://api.lux.network/mainnet/ext/bc/X
+```
+
+## Example: Create a Fixed-Cap Asset
+
+```bash
+curl -X POST --data '{
+  "jsonrpc": "2.0",
+  "method": "avm.createFixedCapAsset",
+  "params": {
+    "name": "MyToken",
+    "symbol": "MTK",
+    "denomination": 6,
+    "initialHolders": [
+      {
+        "address": "X-lux1...",
+        "amount": 1000000
+      }
+    ],
+    "from": ["X-lux1..."],
+    "username": "user",
+    "password": "pass"
+  },
+  "id": 1
+}' -H "Content-Type: application/json" \
+  https://api.lux.network/mainnet/ext/bc/X
 ```
 
 ## Related LPs

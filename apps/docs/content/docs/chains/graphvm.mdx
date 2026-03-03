@@ -1,22 +1,75 @@
 ---
 title: "Graph VM (G-Chain)"
-description: "Graph-structured data on-chain for social networks and knowledge graphs."
+description: "GraphQL data layer for cross-chain queries, schema federation, and indexed data access."
 icon: GitBranch
 ---
 
-Graph-structured data on-chain for social networks and knowledge graphs.
+The Graph VM (G-Chain) provides a GraphQL-based data layer for the Lux network. It indexes data from multiple chains, supports schema registration and federation, and exposes a GraphQL query interface for cross-chain data access. The G-Chain acts as a unified query layer across all Lux subnets.
+
+## Architecture
+
+- **GraphQL Queries**: Full GraphQL query execution with variable support
+- **Schema Registry**: Register and manage GraphQL schemas per data type
+- **Cross-Chain Indexing**: Connect chain data sources and index across subnets
+- **Query Depth Protection**: Configurable max depth and result size limits
+- **DGraph Backend**: Optional DGraph endpoint for persistent graph storage
+- **Authentication**: Optional API key authentication for queries
 
 ## Configuration
 
-Refer to the [node documentation](/nodes) for running a node with this VM enabled.
+```json
+{
+  "dgraphEndpoint": "",
+  "schemaVersion": "1.0",
+  "enableFederation": false,
+  "maxQueryDepth": 10,
+  "queryTimeoutMs": 5000,
+  "maxResultSize": 1048576,
+  "autoIndex": true,
+  "indexBatchSize": 100,
+  "requireAuth": false,
+  "apiKeys": []
+}
+```
 
-## RPC API
+### Key Parameters
 
-Standard JSON-RPC methods are available at:
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `maxQueryDepth` | 10 | Maximum nesting depth for queries |
+| `queryTimeoutMs` | 5,000 | Query timeout in milliseconds |
+| `maxResultSize` | 1 MB | Maximum response size |
+| `autoIndex` | true | Automatically index new data sources |
+| `enableFederation` | false | Enable cross-chain schema federation |
+| `requireAuth` | false | Require API key for queries |
+
+## GraphQL API
+
+The G-Chain exposes a GraphQL endpoint:
 
 ```
-https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+https://api.lux.network/{network}/ext/bc/{blockchain-id}/graphql
 ```
+
+### Query Format
+
+```bash
+curl -X POST \
+  https://api.lux.network/mainnet/ext/bc/{blockchain-id}/graphql \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "{ blocks(limit: 10) { height timestamp txCount } }",
+    "variables": {}
+  }'
+```
+
+### Built-in Resolvers
+
+The G-Chain provides built-in resolvers for cross-chain data including blocks, transactions, DEX trading pairs, liquidity pools, and validator information from connected chain sources.
+
+### Schema Registration
+
+Schemas can be registered to extend the query API with custom types and resolvers via the `RegisterSchema` API.
 
 ## Related LPs
 
