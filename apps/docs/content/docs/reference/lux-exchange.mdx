@@ -1,0 +1,700 @@
+---
+title: "Lux Exchange"
+description: "DEX Frontend, Matching Engine & Omnichain Routing"
+---
+
+## Overview
+
+Lux Exchange is the full-stack decentralized exchange infrastructure for the Lux Network. It consists of four repositories that together provide: a Uniswap-fork web/mobile frontend, a GraphQL API proxy that unifies on-chain data from V2/V3 subgraphs and Blockscout, a CORS proxy for upstream Uniswap API access, and an in-memory CLOB matching engine SDK. The system supports AMM V2 (constant product), V3 (concentrated liquidity), native DEX precompiles (V4-style singleton PoolManager), and private cross-chain swaps via Z-Chain privacy layer with Pedersen commitments and FHE-encrypted reserves.
+
+## Repository Map
+
+| Repo | Path | Module | Language | Purpose |
+|------|------|--------|----------|---------|
+| **exchange** | `~/work/lux/exchange/` | `github.com/luxfi/exchange` | TypeScript | Nx monorepo: web/mobile/extension frontend + all SDK packages |
+| **exchange-api** | `~/work/lux/exchange-api/` | `@luxfi/exchange-api` v0.1.0 | TypeScript | GraphQL proxy: routes Lux/Zoo queries to subgraphs, proxies rest to Uniswap |
+| **exchange-sdk** | `~/work/lux/exchange-sdk/` | `@hanzo/matching-engine` v1.0.1 | TypeScript | CLOB order book engine with Fibonacci heap matching |
+| **exchange-proxy** | `~/work/lux/exchange-proxy/` | `github.com/luxfi/exchange-proxy` | Go 1.23 | CORS reverse proxy to Uniswap API endpoints with in-memory TTL cache |
+
+## Quick Reference
+
+| Item | Value |
+|------|-------|
+| Frontend URL | `lux.exchange` |
+| API Proxy Port | `:4000` (exchange-api) |
+| CORS Proxy Port | `:8088` (exchange-proxy) |
+| CLOB Engine Port | `:4000` (exchange-sdk server) |
+| Runtime | Bun 1.3.1+ / Node 22.13.1 |
+| Build System | Nx 22.2.0 with bun workspaces |
+| Framework | Next.js (App Router) / Vite SPA for production |
+| React | 19.0.3 |
+| Web3 | wagmi, viem 2.30.5 |
+| UI | Tamagui (cross-platform) + Tailwind CSS 4.1.18 |
+| State | Zustand (persisted) |
+| Data | React Query (@tanstack/query-core 5.90.20) |
+| Container | `node:22-alpine`, serve@14, port 3000 |
+| Solidity | 0.8.20 (Shanghai EVM, Foundry) |
+| License | GPL-3.0-or-later |
+
+## Architecture
+
+```
+                          lux.exchange (frontend)
+                                 |
+                    +------------+------------+
+                    |                         |
+              exchange-api (:4000)    exchange-proxy (:8088)
+              GraphQL proxy           CORS reverse proxy
+                    |                         |
+          +---------+---------+       +-------+-------+
+          |         |         |       |       |       |
+      Subgraph   Subgraph  Blockscout   Uniswap APIs (4 upstreams)
+        V2         V3       Explorer    api / liquidity / gateway / conversion
+          |         |         |
+     Lux C-Chain (96369)
+     V2 Factory   V3 Factory   DEX Precompiles (LP-9xxx)
+          |
+     exchange-sdk (CLOB engine)
+     In-memory order book matching
+```
+
+### Request Routing (exchange-api)
+
+The API proxy inspects every GraphQL request's `variables.chain` field:
+- **`LUX` or `ZOO`**: Handled natively by querying V2/V3 subgraphs at `subgraph.lux.network` and Blockscout at `api-explore.lux.network`
+- **All other chains**: Proxied to `interface.gateway.uniswap.org` with `Origin: https://app.uniswap.org`
+
+Supported native operations: `TopTokens`, `Token`, `TokenPrice`, `TopV2Pairs`, `TopV3Pools`, `V2Transactions`, `V3Transactions`, `HistoricalProtocolVolume`, `DailyProtocolTvl`, `IsV3SubgraphStale`
+
+### CORS Proxy Upstreams (exchange-proxy)
+
+| Path Prefix | Upstream | Cache TTL |
+|-------------|----------|-----------|
+| `/uniswap/` | `api.uniswap.org` | 15s default |
+| `/liquidity/` | `liquidity.backend-prod.api.uniswap.org` | 15s default |
+| `/gateway/` | `interface.gateway.uniswap.org` | 15s default |
+| `/conversion/` | `entry-gateway.backend-prod.api.uniswap.org` | 15s default |
+
+Cache strategy: tokens/chains 5min, pools/positions 30s, quotes/prices 5s, GraphQL 10s.
+
+## Monorepo Structure (exchange)
+
+```
+~/work/lux/exchange/
++-- apps/
+|   +-- web/              Next.js App Router (swap/, pool/, tokens/ pages)
+|   +-- mobile/           React Native 0.79.5
+|   +-- extension/        Browser extension
+|   +-- market/           Market data app
+|   +-- build/            Build tooling
+|   +-- cli/              CLI tools
+|   +-- api-self-serve/   Self-serve API
++-- packages/
+|   +-- exchange/         Core DEX logic: tokens, hooks, stores, ABIs, bridge
+|   +-- config/           Chain definitions, contract addresses, wagmi config
+|   +-- ui/               Tamagui components (Button, Card, TokenLogo)
+|   +-- api/              React Query client + data hooks
+|   +-- lx/               Business logic (swap utils, G-Chain integration, i18n)
+|   +-- wallet/           Wallet connection logic
+|   +-- luxamm-sdk-core/  @luxamm/sdk-core (pre-built Uniswap SDK fork)
+|   +-- luxamm-v2-sdk/    @luxamm/v2-sdk (pre-built)
+|   +-- luxamm-v3-sdk/    @luxamm/v3-sdk (pre-built)
+|   +-- luxamm-v4-sdk/    @luxamm/v4-sdk (pre-built)
+|   +-- luxdex-sdk/       @luxdex/sdk (pre-built router SDK)
+|   +-- luxdex-analytics/ Analytics package
+|   +-- prices/           Price service
+|   +-- sessions/         Session management
+|   +-- notifications/    Push notifications
+|   +-- gating/           Feature gating
+|   +-- mycelium/         PubSub/messaging
+|   +-- websocket/        WebSocket service
+|   +-- utilities/        Shared utilities
+|   +-- biome-config/     Code formatting config
+|   +-- eslint-config/    Lint config
++-- contracts/
+|   +-- LuxToken.sol      Mintable ERC20 for bridged assets (LETH, LBTC, LUSD)
+|   +-- WLUX.sol          Wrapped LUX (WETH-style deposit/withdraw)
++-- config/               Build configuration
+```
+
+### Package Dependency Graph
+
+```
+@luxfi/web (apps/web)
+  +-- @luxfi/exchange (packages/exchange)
+  |     +-- @luxfi/config
+  |     +-- viem, wagmi
+  +-- @luxfi/ui (packages/ui)
+  |     +-- @luxfi/config
+  +-- @luxfi/api (packages/api)
+  +-- lx (packages/lx)
+        +-- @apollo/client
+        +-- @luxamm/sdk-core, v2-sdk, v3-sdk, v4-sdk
+        +-- @luxdex/sdk
+```
+
+## Core Concepts
+
+### 1. Supported Chains
+
+| Chain | Chain ID | Native Token | RPC | Explorer |
+|-------|----------|-------------|-----|----------|
+| Lux Mainnet | 96369 | LUX | `https://api.lux.network/mainnet/ext/bc/C/rpc` | `explore.lux.network` |
+| Lux Testnet | 96368 | LUX | `https://api.lux.network/testnet/ext/bc/C/rpc` | `explore.lux-test.network` |
+| Zoo Mainnet | 200200 | ZOO | `https://api.zoo.network/rpc` | `explore.zoo.network` |
+| Zoo Testnet | 200201 | ZOO | `https://api.zoo-test.network/rpc` | `explore.zoo-test.network` |
+| Hanzo Network | 36963 | HANZO | Lux subnet RPC | `explore-hanzo.lux.network` |
+| SPC Network | 36911 | SPC | Lux subnet RPC | `explore-spc.lux.network` |
+| Pars Network | 494949 | PARS | Lux subnet RPC | `explore-pars.lux.network` |
+| Lux Dev | 1337 | LUX | `http://localhost:8545/ext/bc/C/rpc` | local |
+
+All chain definitions are in `packages/config/src/chains.ts` using viem's `defineChain()`.
+
+### 2. Contract Addresses
+
+#### AMM V2 (Constant Product) - Lux Mainnet (96369)
+
+| Contract | Address |
+|----------|---------|
+| V2 Factory | `0xD173926A10A0C4eCd3A51B1422270b65Df0551c1` |
+| V2 Router | `0xAe2cf1E403aAFE6C05A5b8Ef63EB19ba591d8511` |
+
+#### AMM V3 (Concentrated Liquidity) - Lux Mainnet (96369)
+
+| Contract | Address |
+|----------|---------|
+| V3 Factory | `0x80bBc7C4C7a59C899D1B37BC14539A22D5830a84` |
+| SwapRouter | `0xE8fb25086C8652c92f5AF90D730Bac7C63Fc9A58` |
+| SwapRouter02 | `0x939bC0Bca6F9B9c52E6e3AD8A3C590b5d9B9D10E` |
+| Quoter | `0x12e2B76FaF4dDA5a173a4532916bb6Bfa3645275` |
+| QuoterV2 | `0x15C729fdd833Ba675edd466Dfc63E1B737925A4c` |
+| NonfungiblePositionManager | `0x7a4C48B9dae0b7c396569b34042fcA604150Ee28` |
+
+#### AMM V2 - Lux Testnet (96368)
+
+| Contract | Address |
+|----------|---------|
+| V2 Factory | `0x1DD4e6cbC6B8FD032fCAD5A3B0a45e446A014637` |
+| V2 Router | `0xb06B31521Afc434F87Fe4852c98FC15A26c92aE8` |
+
+#### AMM V2 - Zoo Mainnet (200200)
+
+| Contract | Address |
+|----------|---------|
+| V2 Factory | `0xF034942c1140125b5c278aE9cEE1B488e915B2FE` |
+| V2 Router | `0x2cd306913e6546C59249b48d7c786A6D1d7ebE08` |
+
+#### AMM V2 - Hanzo Network (36963)
+
+| Contract | Address |
+|----------|---------|
+| V2 Factory | `0xDc384E006BAec602b0b2B2fe6f2712646EFb1e9D` |
+| V2 Router | `0x191067f88d61f9506555E88CEab9CF71deeD61A9` |
+
+#### AMM V2 - Pars Network (494949)
+
+| Contract | Address |
+|----------|---------|
+| V2 Factory | `0x84CF0A13db1be8e1F0676405cfcBC8b09692FD1C` |
+| V2 Router | `0x2382F7A49FA48E1F91Bec466c32e1D7F13ec8206` |
+
+#### AMM V2 - Lux Dev (1337)
+
+| Contract | Address |
+|----------|---------|
+| V2 Factory | `0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1` |
+| V2 Router | `0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE` |
+
+#### Governance & DeFi - Lux Mainnet
+
+| Contract | Address | Purpose |
+|----------|---------|---------|
+| Staked LUX | `0xc606302cd0722DD42c460B09930477d09993F913` | Staking |
+| vLUX | `0x55833074AD22E2aAE81ad377A600340eC0bc7cbd` | Vote-escrowed LUX |
+| KARMA | `0xc3d1efb6Eaedd048dDfE7066F1c719C7B6Ca43ad` | Rewards token |
+| dLUX | `0xAAbD65c4Fe3d3f9d54A7C3C7B95B9eD359CC52A8` | Delegated LUX |
+| Markets | `0x308EBD39eB5E27980944630A0af6F8B0d19e31C6` | Lending/Borrowing |
+| Perp | `0x82312E295533Ab5167B306d5aBF7F3eB2C0D95fD` | Perpetual futures |
+
+All contract addresses are in `packages/config/src/contracts.ts`. Use `getContracts(chainId)` to look up by chain.
+
+### 3. DEX Precompiles (Native AMM)
+
+Native Go precompiles at reserved addresses for sub-microsecond execution. V4-style singleton PoolManager design.
+
+| Precompile | LP | Address | Purpose |
+|------------|-----|---------|---------|
+| PoolManager | LP-9010 | `0x...9010` | Pool creation and state management |
+| OracleHub | LP-9011 | `0x...9011` | Multi-source price aggregation |
+| SwapRouter | LP-9012 | `0x...9012` | Swap execution and routing |
+| HooksRegistry | LP-9013 | `0x...9013` | Custom swap hooks |
+| FlashLoan | LP-9014 | `0x...9014` | Flash loan facility |
+| CLOB | LP-9020 | `0x...9020` | Central Limit Order Book |
+| Vault | LP-9030 | `0x...9030` | Vault management |
+| PriceFeed | LP-9040 | `0x...9040` | Price feed oracle |
+| Teleport | LP-6010 | `0x...6010` | Cross-chain teleportation |
+
+Enable in `~/.lux/chain-configs/C/config.json`:
+```json
+{
+  "dexConfig": {
+    "upgrade": { "blockTimestamp": 0 },
+    "enableFlashLoans": true,
+    "enableHooks": true,
+    "maxPools": 10000
+  }
+}
+```
+
+### 4. Fee Structure
+
+AMM fees are expressed in hundredths of a basis point:
+
+| Fee Tier | Value | Percentage | Tick Spacing | Use Case |
+|----------|-------|-----------|--------------|----------|
+| LOWEST | 100 | 0.01% | 1 | Stablecoin pairs |
+| LOW | 500 | 0.05% | 10 | Correlated assets |
+| MEDIUM | 3000 | 0.30% | 60 | Standard pairs |
+| HIGH | 10000 | 1.00% | 200 | Exotic/volatile |
+
+Default fee tier for swap hooks: 3000 (0.30%).
+
+### 5. Token Registry
+
+#### Lux Mainnet Native/Wrapped Tokens
+
+| Symbol | Address | Decimals | Type |
+|--------|---------|----------|------|
+| LUX | `0x0000...0000` (native) | 18 | Gas token |
+| WLUX | `0x4888E4a2Ee0F03051c72d2BD3ACf755eD3498B3E` | 18 | Wrapped native |
+| USDC | `0xF85CF66Fd0189C435033056edeC5e525F39374a6` | 6 | Bridged stablecoin |
+| LETH | `0x60E0a8167FC13dE89348978860466C9ceC24B9ba` | 18 | Bridged ETH |
+| LBTC | `0x1E48D32a4F5e9f08DB9aE4959163300FaF8A6C8e` | 8 | Bridged BTC |
+| LSOL | `0x26B40f650156C7EbF9e087Dd0dca181Fe87625B7` | 18 | Bridged SOL |
+| LTON | `0x3141b94b89691009b950c96e97Bff48e0C543E3C` | 9 | Bridged TON |
+| LAVAX | `0x0e4bD0DD67c15dECfBBBdbbE07FC9d51D737693D` | 18 | Bridged AVAX |
+| LBNB | `0x6EdcF3645DeF09DB45050638c41157D8B9FEa1cf` | 18 | Bridged BNB |
+| LPOL | `0x28BfC5DD4B7E15659e41190983e5fE3df1132bB9` | 18 | Bridged POL |
+| LUSD | `0x848Cff46eb323f323b6Bbe1Df274E40793d7f2c2` | 18 | Lux Dollar |
+
+Full token list with 20+ tokens in `exchange-api/src/lux-tokens.ts`.
+
+#### Zoo Mainnet Tokens
+
+| Symbol | Address | Decimals |
+|--------|---------|----------|
+| ZOO | `0x0000...0000` (native) | 18 |
+| WZOO | `0x5491216406daB99b7032b83765F36790E27F8A61` | 18 |
+| LETH | `0x4870621EA8be7a383eFCfdA225249d35888bD9f2` | 18 |
+| LBTC | `0x6fc44509a32E513bE1aa00d27bb298e63830C6A8` | 8 |
+| LUSD | `0xb2ee1CE7b84853b83AA08702aD0aD4D79711882D` | 18 |
+
+### 6. Swap Routing
+
+The frontend uses a layered routing strategy:
+
+1. **LuxGatewayClient** wraps TradingApiClient to intercept Lux/Zoo chain queries
+2. For chainId 96369 (Lux) or 200200 (Zoo): route to Lux DEX Gateway (`dex.lux.network`)
+3. For all other chains: forward to Uniswap TradingAPI
+4. On gateway failure: fallback to TradingAPI
+
+Gateway endpoints:
+```
+POST /v1/quote          -- Get swap quote
+POST /v1/quotes         -- Batch quotes
+POST /v1/swap           -- Build swap transaction
+GET  /v1/pools          -- List pools
+GET  /v1/tokens         -- List tokens
+GET  /v1/price          -- Token price
+```
+
+Quote request format:
+```json
+{
+  "tokenIn": "0x0000000000000000000000000000000000000000",
+  "tokenOut": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+  "amount": "1000000000000000000",
+  "isExactIn": true,
+  "chainId": 96369
+}
+```
+
+### 7. Liquidity Pool Operations
+
+V3 pools support concentrated liquidity positions with NFT-based position management.
+
+#### Pool Key (V4-style)
+
+```typescript
+interface PoolKey {
+  currency0: Address   // Lower address token
+  currency1: Address   // Higher address token
+  fee: number          // Fee in hundredths of a bip
+  tickSpacing: number  // Tick spacing for the fee tier
+  hooks: Address       // Hook contract (0x0 = no hooks)
+}
+```
+
+Pool ID is computed as `keccak256(abi.encode(currency0, currency1, fee, tickSpacing, hooks))`.
+
+#### Position Management
+
+Positions are NFTs managed by the NonfungiblePositionManager:
+- `balanceOf(owner)` returns position count
+- `tokenOfOwnerByIndex(owner, i)` returns NFT token ID
+- `positions(tokenId)` returns full position state (token0, token1, fee, tickLower, tickUpper, liquidity, tokensOwed0, tokensOwed1)
+
+### 8. SDK Usage (@luxfi/exchange)
+
+```typescript
+
+// Get swap quote from V3 QuoterV2
+const { data: quote } = useSwapQuote({
+  tokenIn: NATIVE_LUX,
+  tokenOut: LETH,
+  amountIn: parseUnits('1', 18),
+  chainId: 96369,
+})
+
+// Execute swap via V3 SwapRouter02
+const { swap, isPending } = useSwap()
+await swap({
+  tokenIn: NATIVE_LUX,
+  tokenOut: LETH,
+  amountIn: parseUnits('1', 18),
+  amountOutMinimum: quote.amountOut * 995n / 1000n, // 0.5% slippage
+  recipient: address,
+  deadline: BigInt(Math.floor(Date.now() / 1000) + 1800),
+  chainId: 96369,
+})
+
+// Zustand swap store (persisted slippage/deadline settings)
+const { tokenIn, setTokenIn, slippageTolerance, switchTokens } = useSwapStore()
+
+// Get all V3 pools for a pair (queries all 4 fee tiers)
+const { pools, bestPool } = usePools(token0, token1, 96369)
+
+// Get user positions
+const { data: positions } = usePositions(userAddress, 96369)
+```
+
+### 9. Cross-Chain Bridge (Warp/Teleport)
+
+Standard cross-chain minting:
+```typescript
+
+const { mint } = useCrossChainMint()
+await mint({
+  sourceAsset: xvmAssetId,
+  amount: 1000000n,
+  recipient: cChainAddress,
+  targetToken: tokenAddress,   // Optional swap on arrival
+  minReceive: 990000n,
+  deadline: Math.floor(Date.now() / 1000) + 3600,
+})
+```
+
+Status flow: `idle` -> `initiating` -> `locking` -> `waiting_confirmation` -> `minting` -> `swapping` -> `complete`
+
+Warp precompile: `0x0200000000000000000000000000000000000005`
+Bridge contract: `0x0000000000000000000000000000000000000410`
+
+### 10. Private Teleport (Z-Chain Privacy Layer)
+
+Fully shielded cross-chain swaps using:
+- **Pedersen Commitments**: Hide amounts
+- **FHE-encrypted reserves**: Z-Chain AMM pools have encrypted state
+- **ZNotes**: UTXO-style shielded notes with Merkle tree membership
+- **Bulletproof range proofs**: For withdrawal verification
+- **Nullifiers**: Prevent double-spending
+
+Flow: `XVM UTXO -> Warp -> ZNote (shielded) -> Z-Chain AMM (private swap) -> C-Chain/XVM`
+
+Contract addresses:
+| Contract | Address |
+|----------|---------|
+| PrivateTeleport | `0x...0420` |
+| ZNote | `0x...0421` |
+| ZChainAMM | `0x...0422` |
+| PrivateBridge | `0x...0423` |
+
+Teleport states: `INITIATED(0)` -> `SHIELDED(1)` -> `SWAP_COMPLETE(2)` -> `EXPORTED(3)` -> `COMPLETED(4)`
+
+```typescript
+
+const { teleport, executeSwap, exportToDestination } = usePrivateTeleport()
+
+const teleportId = await teleport({
+  sourceChain: LUX_CHAINS.xChain.chainId,
+  destChain: LUX_CHAINS.cChain.chainId,
+  sourceAsset: assetId,
+  amount: 1000000n,         // Will be encrypted
+  recipient: address,
+  deadline: Math.floor(Date.now() / 1000) + 3600,
+  privateSwap: true,
+})
+await executeSwap(teleportId, poolId, minOutput)
+await exportToDestination(teleportId)
+```
+
+### 11. CLOB Matching Engine (exchange-sdk)
+
+The `@hanzo/matching-engine` package provides a full order book implementation:
+
+- **Data structures**: Fibonacci heaps for bid/ask priority queues, AVL trees for order book rendering
+- **Order types**: `LIMIT` and `MARKET`
+- **Order sides**: `BID` and `ASK`
+- **Matching**: Price-time priority. Aggressive limit orders take the older order's price
+- **Partial fills**: Remainder orders are re-inserted into the book
+- **Candles**: OHLCV aggregation at 1m/1h/1d/1w intervals using AVL trees
+- **Real-time**: Socket.IO server broadcasts order book and trade data at 500ms intervals
+- **HTTP API**: REST endpoints for order submission and order book queries
+- **Precision**: `decimal.js` for all price/quantity calculations
+
+```typescript
+
+const book = new Book('LUX/USDC')
+book.addOrder(new Order('ext-1', OrderSide.BID, OrderType.LIMIT, 100, '42.50'))
+book.addOrder(new Order('ext-2', OrderSide.ASK, OrderType.LIMIT, 50, '42.50'))
+const trades = book.settle()
+// trades[0].fillPrice = 42.50, fillQuantity = 50
+
+// Continuous execution loop (uses requestAnimationFrame)
+const ctx = book.start((book, trades) => {
+  console.log(`Trades: ${trades.length}, Spread: ${book.displaySpread}`)
+})
+ctx.stop()  // Stop execution
+```
+
+HTTP endpoints (`:4000`):
+```
+POST /:name/orders     -- Submit order { externalId, side, type, quantity, price }
+PUT  /:name/orders     -- Same as POST
+GET  /:name/orders     -- Get order book { bids: [[price, qty]], asks: [[price, qty]] }
+GET  /:name/candles/:interval  -- Get candles (1m, 1h, 1d)
+```
+
+Socket.IO events:
+```
+book.subscribe { name }     -- Subscribe to order book updates
+book.data                   -- Order book broadcast (every 500ms)
+trade.subscribe { name }    -- Subscribe to trade feed
+trade.data                  -- Trade executions
+order.create                -- Submit order via WebSocket
+candles.get                 -- Request historical candles
+```
+
+### 12. Data Sources
+
+| Source | URL | Data |
+|--------|-----|------|
+| V2 Subgraph | `subgraph.lux.network/subgraphs/name/luxfi/uniswap-v2` | Pairs, reserves, swaps, token prices |
+| V3 Subgraph | `subgraph.lux.network/subgraphs/name/luxfi/uniswap-v3` | Pools, ticks, positions, concentrated liquidity |
+| Blockscout | `api-explore.lux.network/api/v2/tokens` | ERC-20 token metadata, holder counts |
+| G-Chain GraphQL | `localhost:9630/ext/bc/G/graphql` | Native blockchain data (blocks, accounts, balances) |
+| DEX Gateway | `dex.lux.network` | Unified quote/swap API |
+
+### 13. Smart Contracts
+
+#### LuxToken.sol
+Mintable ERC20 for bridged assets. Owner-only `mint()`, public `burn()`, unlimited approval support (`type(uint256).max`). Used for LETH, LBTC, LUSD, LSOL, etc.
+
+#### WLUX.sol
+Standard WETH-style wrapper for native LUX. `deposit()` via payable function or `receive()` fallback. `withdraw(wad)` returns native LUX. `totalSupply()` returns contract's native balance.
+
+## Development
+
+### Prerequisites
+
+```bash
+# Required: Bun 1.3.1+, Node 22.13.1
+bun --version   # Must be  &gt;= 1.3.1
+node --version  # Must be 22.13.1
+```
+
+### Exchange (Frontend)
+
+```bash
+cd ~/work/lux/exchange
+bun install
+bun run g:prepare          # Generate code
+bun run web dev             # Start web dev server
+
+# Build for production (Vite SPA)
+cd apps/web && ../../node_modules/.bin/vite build
+
+# Run tests
+bun run g:test
+bun run g:typecheck
+
+# Docker build
+docker build -f Dockerfile.k8s -t lux-exchange .
+```
+
+### Exchange API
+
+```bash
+cd ~/work/lux/exchange-api
+npm install
+npm run dev               # tsx watch mode on :4000
+npm run build && npm start  # Production
+
+# Environment
+BLOCKSCOUT_API=https://api-explore.lux.network
+SUBGRAPH_URL=https://subgraph.lux.network/subgraphs/name/luxfi/uniswap-v2
+SUBGRAPH_V3_URL=https://subgraph.lux.network/subgraphs/name/luxfi/uniswap-v3
+UNISWAP_API=https://interface.gateway.uniswap.org/v1/graphql
+PORT=4000
+```
+
+### Exchange SDK (CLOB Engine)
+
+```bash
+cd ~/work/lux/exchange-sdk
+npm install
+npm test             # Jest unit tests
+npm run build        # Rollup build (CJS + ESM + UMD + types)
+npm run serve        # Start CLOB server on :4000
+npm run watch        # Dev mode with auto-rebuild
+```
+
+### Exchange Proxy
+
+```bash
+cd ~/work/lux/exchange-proxy
+go build -o exchange-proxy .
+./exchange-proxy -addr :8088
+./exchange-proxy -addr :8088 -redis redis://localhost:6379  # With distributed cache
+```
+
+### Local Dev Network
+
+```bash
+lux dev start              # Single-node, port 8545, chain ID 1337
+# Pre-funded account: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+```
+
+## Subgraph Data Layer
+
+### Caching Strategy (exchange-api)
+
+| TTL | Seconds | Data Type |
+|-----|---------|-----------|
+| SHORT | 30 | Prices, volumes, swaps |
+| MEDIUM | 300 | Token lists, pool lists |
+| LONG | 3600 | Token metadata, logos |
+| PROXY | 60 | Proxied Uniswap responses |
+
+In-memory `Map<string, CacheEntry>` with periodic janitor cleanup every 60 seconds.
+
+### Price Computation
+
+1. Query V3 bundle for `ethPriceUSD`, fallback to V2 bundle `ethPrice` (these are LUX/USD prices)
+2. Token price = `derivedETH * ethPrice`
+3. Stablecoins (USDT, USDC, LUSD, DAI, BUSD) force-pinned to $1.00
+4. Prices > $1T and volumes > $1T are zeroed (decimal overflow protection)
+
+## Key Dependencies (Exact Versions)
+
+### Exchange (root package.json)
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| react | 19.0.3 | UI framework (resolution) |
+| react-dom | 19.0.3 | DOM rendering |
+| viem | 2.30.5 | Ethereum client |
+| typescript | 5.8.3 | Type system |
+| nx | 22.2.0 | Build orchestration |
+| tailwindcss | 4.1.18 | CSS framework |
+| @biomejs/biome | 2.2.0 | Code formatting |
+| zod | 4.3.6 | Schema validation (patched for CSP) |
+| react-native | 0.79.5 | Mobile framework |
+
+### LuxAMM SDK Packages
+
+| Package | Version | Base |
+|---------|---------|------|
+| @luxamm/sdk-core | pre-built | Uniswap SDK Core fork |
+| @luxamm/v2-sdk | pre-built | Uniswap V2 SDK fork |
+| @luxamm/v3-sdk | pre-built | Uniswap V3 SDK fork |
+| @luxamm/v4-sdk | pre-built | Uniswap V4 SDK fork |
+| @luxdex/sdk | pre-built | Uniswap Router SDK fork |
+
+### Exchange API
+
+| Package | Version |
+|---------|---------|
+| express | ^4.21.0 |
+| node-fetch | ^2.7.0 |
+| tsx | ^4.19.0 |
+| typescript | ^5.6.0 |
+
+### Exchange SDK (Matching Engine)
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| decimal.js | 10.2.0 | Arbitrary precision math |
+| mnemonist | 0.30.0 | Fibonacci heap |
+| avl | 1.4.4 | AVL tree (order book) |
+| socket.io | ^2.3.0 | Real-time WebSocket |
+| express | 4.17.1 | HTTP server |
+| fast-memoize | 2.5.1 | Candle time slice caching |
+| moment | 2.24.0 | Time handling |
+
+### Exchange Proxy
+
+| Dependency | Version |
+|------------|---------|
+| Go | 1.23 |
+| stdlib only | net/http, crypto/sha256, sync |
+
+## Deployment
+
+### Docker (K8s)
+
+Exchange frontend deploys as a static SPA served by `serve@14`:
+
+```dockerfile
+# Build: bun install + vite build
+# Run: serve -s public -l 3000
+```
+
+Key build-time env vars:
+```
+NEXT_PUBLIC_LXD_GATEWAY_URL=https://dex.lux.network
+REACT_APP_AWS_API_ENDPOINT=https://api-exchange.lux.network/v1/graphql
+```
+
+### K8s Ingress
+
+```
+lux.exchange       -> exchange frontend (:3000)
+api-exchange.lux.network -> exchange-api (:4000)
+```
+
+## DeFi Ecosystem Integration
+
+| Component | Repo | Description |
+|-----------|------|-------------|
+| Standard Contracts | `github.com/luxfi/standard` | V2/V3 AMM deployment scripts |
+| Markets (Morpho Blue) | `github.com/luxfi/markets` | Lending/borrowing protocol |
+| V2 Subgraph | `github.com/luxfi/uni-v2-subgraph` | V2 pair indexer |
+| V3 Subgraph | `github.com/luxfi/uni-v3-subgraph` | V3 pool indexer |
+| V4 Subgraph | `github.com/luxfi/uni-v4-subgraph` | V4 hooks indexer |
+| DEX Gateway | `github.com/luxfi/dex` | Go gateway service |
+
+## Known Issues
+
+- `@uniswap/router-sdk` internally depends on `@uniswap/*` SDKs, causing TypeScript errors when types cross boundaries with `@luxamm/*`. Workaround: type assertions (`as unknown as`) in swap analytics and trading utilities.
+- ~212 type errors remain in UI components due to SDK type mismatches (do not affect runtime).
+- SPC Mainnet (36911) deployment blocked -- genesis key unknown.
+- Backend API URLs (`api.uniswap.org`, `liquidity.backend-prod.api.uniswap.org`) still point to Uniswap infrastructure for non-Lux chains.
+
+## Related Skills
+
+- `lux/lux-dex.md` -- CLOB engine and DEX gateway (Go)
+- `lux/lux-evm.md` -- EVM with DEX precompiles
+- `lux/lux-oracle.md` -- Price feed oracles
+- `lux/lux-bridge.md` -- Cross-chain routing via Warp
+- `lux/lux-standard.md` -- AMM contract deployments
+- `lux/lux-teleport.md` -- Teleporter protocol

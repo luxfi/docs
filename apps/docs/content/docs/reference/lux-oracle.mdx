@@ -1,0 +1,140 @@
+---
+title: "Lux Oracle - Optimistic Oracle Protocol"
+description: "Lux Oracle is an optimistic oracle for on-chain price feeds and arbitrary data verification. Fork of UMA Protocol, adapted for Lux C-Chain. It is a..."
+---
+
+## Overview
+
+Lux Oracle is an **optimistic oracle** for on-chain price feeds and arbitrary data verification. Fork of UMA Protocol, adapted for Lux C-Chain. It is a Yarn/Lerna monorepo containing Solidity smart contracts, JavaScript/TypeScript off-chain services, and an SDK.
+
+## When to use
+
+- Integrating on-chain price feeds or arbitrary data verification into Lux dApps
+- Building financial derivatives or prediction markets on Lux C-Chain
+- Running off-chain oracle services (monitors, liquidators, dispute bots)
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/oracle` |
+| Language | JavaScript, TypeScript, Solidity |
+| Package manager | Yarn workspaces |
+| Monorepo tool | Lerna |
+| Build tool | Hardhat (with Foundry support in `packages/core`) |
+| Testing | Mocha, Ganache-CLI on port 9545 |
+| License | AGPL-3.0 |
+| Upstream | UMA Protocol |
+| Default branch | master |
+
+## How it works
+
+```
+1. Data requester posts question + reward bond
+2. Proposer submits answer + proposer bond
+3. Dispute window opens (configurable)
+4. If disputed: escalated to DVM (Data Verification Mechanism)
+5. If undisputed: answer accepted, bonds returned
+```
+
+## Monorepo packages
+
+| Package | Purpose |
+|---------|---------|
+| `core` | Smart contracts (OptimisticOracle, VotingToken, Finder, etc.) |
+| `sdk` | TypeScript SDK for oracle interaction |
+| `optimistic-oracle` | Optimistic oracle off-chain services |
+| `common` | Shared utilities and configuration |
+| `api` | API package |
+| `monitors` | On-chain monitoring services |
+| `monitor-v2` | Next-gen monitoring |
+| `financial-templates-lib` | Financial template utilities |
+| `contract-notifier` | Contract event notification |
+| `scripts` | Deployment and management scripts |
+| `affiliates` | Affiliate tracking |
+| `serverless-orchestration` | Serverless bot orchestration |
+| `contracts-frontend` | Frontend contract ABIs |
+| `contracts-node` | Node.js contract interfaces |
+| `fx-tunnel-relayer` | Cross-chain relay (FxPortal) |
+| `polymarket-notifier` | Polymarket integration |
+
+## One-file quickstart
+
+```bash
+git clone https://github.com/luxfi/oracle.git
+cd oracle
+yarn
+
+# Build all packages
+yarn build
+
+# Start local Ganache
+yarn ganache-cli -e 1000000000 -p 9545 -l 9000000 -d
+
+# Run all tests (requires Ganache running on port 9545)
+yarn test
+
+# Run tests for a specific package
+yarn workspace @uma/core test
+```
+
+## Core contracts
+
+| Contract | Purpose |
+|----------|---------|
+| OptimisticOracle | Core oracle with dispute mechanism |
+| SkinnyOptimisticOracle | Gas-optimized oracle variant |
+| VotingToken | Governance token for dispute resolution |
+| Finder | Contract registry for protocol components |
+| IdentifierWhitelist | Approved price identifiers |
+
+## Development
+
+```bash
+# Lint (ESLint + Prettier)
+yarn lint
+
+# Lint with autofix
+yarn lint-fix
+
+# Build (quick)
+yarn qbuild
+
+# Clean build artifacts
+yarn clean
+
+# Remove all node_modules
+yarn clean-packages
+
+# Add dependency to a specific package
+yarn workspace @uma/core add <dependency>
+
+# Add cross-package dependency
+yarn lerna add @uma/some-package --scope @uma/my-package
+```
+
+## Architecture
+
+```
+oracle/
+  packages/
+    core/             -- Solidity contracts + Hardhat + Foundry
+      contracts/      -- OptimisticOracle, VotingToken, Finder, etc.
+      deploy/         -- Deployment scripts
+      test/           -- Contract tests (Mocha)
+      foundry.toml    -- Foundry configuration (supplementary)
+      hardhat.config.js
+    sdk/              -- TypeScript SDK
+    optimistic-oracle/ -- Off-chain oracle services
+    monitors/         -- Chain monitoring bots
+    common/           -- Shared utilities
+    ...
+  hardhat.config.js   -- Root config (delegates to packages/core)
+  lerna.json          -- Lerna monorepo config
+```
+
+## Related Skills
+
+- `lux/lux-exchange.md` -- DEX that consumes price feeds
+- `lux/lux-evm.md` -- C-Chain deployment target
+- `lux/lux-safe.md` -- Multisig for oracle governance

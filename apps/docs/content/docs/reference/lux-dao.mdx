@@ -1,0 +1,156 @@
+---
+title: "Lux DAO - Governor Contracts & Governance Platform"
+description: "Documentation for Lux DAO - Governor Contracts description: '## Quick reference' Governance Platform"
+---
+
+## Overview
+
+Lux DAO is the **decentralized governance platform** for the Lux Protocol ecosystem. It provides modular governor contracts, fractal (nested) DAO support, on-chain identity with Karma reputation, and a React frontend at lux.vote. Built on `@luxfi/standard` contracts with political-terminology naming (Council, Charter, Sanction, Veto).
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/dao` |
+| Branch | `main` |
+| Languages | JavaScript, TypeScript, Solidity, Shell |
+| Frontend | React 18 + Vite + Chakra UI |
+| Web3 | Wagmi v2, Viem v2, RainbowKit v2 |
+| Wallet SDK | `@luxfi/wallet` (EVM + Solana omnichain) |
+| Contracts | Hardhat + Foundry (Solidity) |
+| Local chain | Anvil (chain ID 1337) |
+| E2E tests | Playwright |
+| Package manager | pnpm |
+| Domain | lux.vote |
+
+## Project Structure
+
+```
+dao/
+├── app/                 # React frontend (Vite, port 5173 dev / 3000 prod)
+│   └── src/
+│       ├── components/  # React components
+│       ├── pages/       # Route pages
+│       ├── providers/   # Context providers
+│       └── utils/       # Utilities
+├── contracts/           # Smart contracts (@luxfi/contracts, submodule)
+│   ├── contracts/       # Solidity source
+│   ├── ignition/        # Hardhat Ignition deployment modules
+│   └── publish/         # ABIs and addresses (re-exports @luxfi/standard)
+├── api/                 # Backend API (placeholder)
+├── sdk/                 # TypeScript SDK (submodule)
+├── subgraph/            # Graph Protocol integration
+├── packages/
+│   ├── brand-config/    # Branding configuration
+│   ├── component-library/ # Shared UI components
+│   ├── governance-hooks/  # React hooks for governance
+│   ├── treasury-subgraph-client/ # Treasury subgraph client
+│   ├── ui/              # UI package
+│   └── wallet/          # @luxfi/wallet SDK (RainbowKit + Solana)
+├── e2e/                 # Playwright E2E tests
+├── compose.yml          # Full stack (Anvil, API, PostgreSQL, Redis, IPFS)
+├── Makefile             # All commands
+└── scripts/             # Start/stop/deploy scripts
+```
+
+## Governance Contracts (Political Terminology)
+
+From `@luxfi/standard` -- the one source of truth:
+
+| Contract | Political Analog | Purpose |
+|----------|------------------|---------|
+| `Council` | Legislative Body | Proposal management, voting coordination |
+| `Charter` | Constitution | Voting strategy + rules + constitutional text |
+| `Safe` | Treasury | Asset custody, transaction execution |
+| `Veto` | Veto Power | Parent DAO blocks child actions |
+| `Sanction` | Enforcement | Guard that enforces veto decisions |
+| `Identity` | Citizenship | Governance token representing voting power |
+| `Secretariat` | Admin Office | Module integration and admin functions |
+
+## Identity System (LP-3006)
+
+Three-layer on-chain identity:
+
+| Layer | Contract | Purpose |
+|-------|----------|---------|
+| W3C DID | `DIDRegistry` | `did:lux:<id>` identifiers, verification methods |
+| SoulID | `SoulID.sol` | Soulbound NFT with reputation fields (humanity, governance, community, protocol) |
+| Karma | `Karma.sol` + `KarmaController.sol` | Non-transferable reputation token with activity-driven decay |
+
+Key functions: `createIdentity()`, `getVotingPower()` (karma x trust), `canPropose()` ( &gt;= 100 KARMA), `isHuman()` (humanityScore  &gt;= 50).
+
+## Treasury Contracts (OHM-Style Bonding)
+
+| Contract | Purpose |
+|----------|---------|
+| `LiquidBond.sol` | OHM-style bonding for ASHA with multi-collateral |
+| `CollateralRegistry.sol` | Bondable assets with risk tiers |
+| `Bond.sol` | Treasury bond issuance with vesting |
+| `Recall.sol` | Parent DAO fund recall (ALLOCATED only, not BONDED) |
+| `FeeRouter` | Automatic fee distribution |
+| `GaugeController` | Epoch-based allocation voting |
+
+Collateral tiers: TIER_1 (ecosystem, 25% discount), TIER_2 (majors, 20%), TIER_3 (LP, 15%), TIER_4 (volatile, 10%). All pricing in satoshis, not USD.
+
+## Fractal Governance
+
+Same governance patterns repeat at every scale:
+- **L1 DAO (Sovereign)**: Full autonomy, creates child DAOs
+- **L2+ DAO (Nested)**: Own Safe, parent can Veto/Sanction
+- Each level: Council + Charter + Safe
+- Fork freedom: disagreement leads to new DAO, no permission needed
+- Exit liquidity: members can always withdraw
+
+## Development Commands
+
+```bash
+# Makefile (recommended)
+make install          # Install all dependencies
+make up               # Start local stack (Anvil + app)
+make dev              # Start with hot reload
+make down             # Stop services
+make test             # Run all tests (unit + E2E)
+make test-unit        # Run unit tests (Hardhat)
+make test-e2e         # Run Playwright E2E
+make deploy           # Deploy contracts to local network
+make compile          # Compile contracts
+make format           # Format code
+make lint             # Lint code
+
+# Docker full stack
+make up-docker        # Anvil + API + PostgreSQL + Redis + IPFS
+make down-docker      # Stop Docker services
+make build-docker     # Build Docker images
+```
+
+## Package Dependencies
+
+```
+@luxfi/standard   — Core governance ABIs (Council, Charter, Identity, Veto, Sanction)
+@luxfi/contracts  — Re-exports ABIs from @luxfi/standard + network addresses
+@luxfi/wallet     — Omnichain wallet SDK (RainbowKit + Solana)
+```
+
+## Network Configuration
+
+| Network | Chain ID | Purpose |
+|---------|----------|---------|
+| Localhost | 1337 | Development (Anvil) |
+| Ethereum | 1 | Production |
+| Optimism | 10 | L2 |
+| Polygon | 137 | L2 |
+| Base | 8453 | L2 |
+| Sepolia | 11155111 | Testnet |
+
+## Deployment
+
+| Target | Domain |
+|--------|--------|
+| Lux DAO | lux.vote |
+| Pars DAO | pars.vote (GitHub Pages, separate repo `parsdao/pars.vote`) |
+
+## Related Skills
+
+- `lux/lux-governance.md` -- On-chain voting overview, LP proposals
+- `lux/lux-safe.md` -- Multisig smart accounts (Safe-Global fork)
+- `lux/lux-node.md` -- Validator integration with governance

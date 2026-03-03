@@ -1,0 +1,362 @@
+---
+title: "Lux Netrunner"
+description: "Multi-Engine Network Orchestrator"
+---
+
+## Overview
+
+Lux Netrunner is a **multi-engine network orchestration and testing tool** for the Lux blockchain. It manages local multi-node validator networks via a gRPC/REST control plane, supports heterogeneous consensus engines (Lux, Geth, OP Stack, Eth2), and provides snapshot-based state management with incremental BadgerDB backups.
+
+Not just a test runner -- Netrunner orchestrates full L1/L2/L3 stacks with cross-chain bridging, multi-network management with shared BadgerDB for cross-chain ACID transactions, and YAML-based stack manifests for reproducible environments.
+
+## Quick Reference
+
+| Item | Value |
+|------|-------|
+| Module | `github.com/luxfi/netrunner` |
+| Go | 1.26.1 |
+| Version | 1.15.0 |
+| RPC Version | 42 |
+| gRPC Port | 8080 |
+| HTTP Gateway | 8081 |
+| Default Nodes | 5 |
+| License | BSD-3-Clause |
+
+## Architecture
+
+```
+                    ┌──────────────────────────────────┐
+                    │        CLI / Client SDK           │
+                    └──────────┬───────────────────────┘
+                               │ gRPC / REST
+                    ┌──────────▼───────────────────────┐
+                    │      Control Server (server/)     │
+                    │  PingService + ControlService     │
+                    └──┬───────────┬───────────────────┘
+                       │           │
+          ┌────────────▼──┐  ┌─────▼──────────────────┐
+          │  Local Network │  │  Multi-Engine Host     │
+          │  (local/)      │  │  (orchestrator/)       │
+          │  Lux nodes     │  │  Lux/Geth/OP/Eth2     │
+          └────────┬───────┘  └──────┬─────────────────┘
+                   │                 │
+          ┌────────▼───────┐  ┌──────▼─────────────────┐
+          │  Snapshot Mgr  │  │  MultiNet Manager      │
+          │  BadgerDB/zstd │  │  (multinet/)           │
+          └────────────────┘  │  Cross-chain ACID txs  │
+                              └────────────────────────┘
+```
+
+## gRPC API (rpcpb/rpc.proto)
+
+### PingService
+
+| RPC | HTTP | Description |
+|-----|------|-------------|
+| `Ping` | `POST /v1/ping` | Health check, returns server PID |
+
+### ControlService
+
+| RPC | HTTP | Description |
+|-----|------|-------------|
+| `RPCVersion` | `POST /v1/control/rpcversion` | Returns RPC protocol version (42) |
+| `Start` | `POST /v1/control/start` | Start a network with config |
+| `Stop` | `POST /v1/control/stop` | Stop all nodes |
+| `Health` | `POST /v1/control/health` | Check cluster health |
+| `WaitForHealthy` | `POST /v1/control/waitforhealthy` | Block until healthy |
+| `Status` | `POST /v1/control/status` | Get cluster status |
+| `StreamStatus` | `POST /v1/control/streamstatus` | Server-streaming status updates |
+| `URIs` | `POST /v1/control/uris` | Get all node URIs |
+| `AddNode` | `POST /v1/control/addnode` | Add node to running network |
+| `RemoveNode` | `POST /v1/control/removenode` | Remove node from network |
+| `RestartNode` | `POST /v1/control/restartnode` | Restart node with new config |
+| `PauseNode` | `POST /v1/control/pausenode` | Pause node (preserves state) |
+| `ResumeNode` | `POST /v1/control/resumenode` | Resume paused node |
+| `CreateBlockchains` | `POST /v1/control/createblockchains` | Deploy custom VM chains |
+| `CreateChains` | `POST /v1/control/createchains` | Create participant groups |
+| `TransformElasticChains` | `POST /v1/control/transformelasticchains` | Transform to elastic chains |
+| `AddPermissionlessValidator` | `POST /v1/control/addpermissionlessvalidator` | Add elastic chain validator |
+| `RemoveChainValidator` | `POST /v1/control/removechainvalidator` | Remove chain validator |
+| `AttachPeer` | `POST /v1/control/attachpeer` | Attach test peer to node |
+| `SendOutboundMessage` | `POST /v1/control/sendoutboundmessage` | Send P2P message via peer |
+| `SaveSnapshot` | `POST /v1/control/savesnapshot` | Save network snapshot |
+| `SaveHotSnapshot` | `POST /v1/control/savehotsnapshot` | Hot snapshot (no stop) |
+| `LoadSnapshot` | `POST /v1/control/loadsnapshot` | Restore from snapshot |
+| `RemoveSnapshot` | `POST /v1/control/removesnapshot` | Delete snapshot |
+| `GetSnapshotNames` | `POST /v1/control/getsnapshotnames` | List all snapshots |
+
+### StartRequest Fields
+
+```protobuf
+message StartRequest {
+  string network_name = 1;    // "mainnet", "testnet", "devnet", "custom"
+  string node_type = 2;       // "luxd", "avalanchego", "geth", "op-node", "custom"
+  string exec_path = 4;
+  optional uint32 num_nodes = 5;
+  optional string global_node_config = 7;
+  optional string root_data_dir = 8;
+  string plugin_dir = 9;
+  repeated BlockchainSpec blockchain_specs = 10;
+  map<string, string> custom_node_configs = 11;
+  map<string, string> chain_configs = 12;
+  map<string, string> upgrade_configs = 13;
+  optional bool reassign_ports_if_used = 14;
+  optional bool dynamic_ports = 15;
+}
+```
+
+## Client SDK
+
+```go
+
+cli, _ := client.New(client.Config{
+    Endpoint:    "localhost:8080",
+    DialTimeout: 10 * time.Second,
+}, logger)
+defer cli.Close()
+
+// Start 5-node local network
+resp, _ := cli.Start(ctx, "/usr/local/bin/luxd",
+    client.WithNumNodes(5),
+    client.WithDynamicPorts(true),
+    client.WithPluginDir("/path/to/plugins"),
+    client.WithChainSpecs([]*rpcpb.BlockchainSpec{{
+        VmName:  "chainevm",
+        Genesis: "/path/to/genesis.json",
+    }}),
+)
+
+// Wait for health
+cli.WaitForHealthy(ctx)
+
+// Get node URIs
+uris, _ := cli.URIs(ctx)
+
+// Manage nodes
+cli.PauseNode(ctx, "node3")
+cli.ResumeNode(ctx, "node3")
+cli.RestartNode(ctx, "node1", client.WithExecPath("/new/luxd"))
+cli.AddNode(ctx, "node6", "/usr/local/bin/luxd")
+cli.RemoveNode(ctx, "node6")
+
+// Snapshots (incremental BadgerDB + zstd compression)
+cli.SaveSnapshot(ctx, "pre-upgrade")
+cli.SaveHotSnapshot(ctx, "live-backup")  // No network stop
+cli.LoadSnapshot(ctx, "pre-upgrade")
+
+// P2P testing
+attachResp, _ := cli.AttachPeer(ctx, "node1")
+cli.SendOutboundMessage(ctx, "node1", attachResp.AttachedPeerInfo.Id, 0, msgBytes)
+
+// Elastic chains
+cli.TransformElasticChains(ctx, []*rpcpb.ElasticChainSpec{{
+    ChainId:          "chain-id",
+    AssetName:        "TEST",
+    AssetSymbol:      "TST",
+    MinValidatorStake: 1000,
+}})
+cli.AddPermissionlessValidator(ctx, []*rpcpb.PermissionlessValidatorSpec{{
+    ChainId:           "chain-id",
+    NodeName:          "node1",
+    StakedTokenAmount: 5000,
+}})
+
+cli.Stop(ctx)
+```
+
+## Multi-Engine Orchestrator (orchestrator/)
+
+The orchestrator runs heterogeneous consensus engines in a single host.
+
+### Supported Engines
+
+| Engine | Type | Description |
+|--------|------|-------------|
+| Lux | `lux` | Lux Snow consensus (luxd) |
+| Geth | `geth` | Go-Ethereum execution client |
+| OP Stack | `op` | Optimism OP node (L2) |
+| Eth2 | `eth2` | Ethereum 2.0 beacon + execution |
+
+### Engine Interface
+
+```go
+type Engine interface {
+    Name() string
+    Type() EngineType
+    Start(ctx context.Context, config *NodeConfig) error
+    Stop(ctx context.Context) error
+    Restart(ctx context.Context) error
+    Health(ctx context.Context) (*HealthStatus, error)
+    IsRunning() bool
+    Uptime() time.Duration
+    NetworkID() uint32
+    ChainID() ids.ID
+    RPCEndpoint() string
+    WSEndpoint() string
+    P2PEndpoint() string
+    ParentChain() *ChainInfo  // nil for L1s
+    Metrics() map[string]interface{}
+}
+```
+
+### Stack Manifests (stacks/)
+
+YAML-based definitions for multi-engine stacks:
+
+```yaml
+# stacks/lux-local.yaml
+name: lux-local
+version: 1.0.0
+description: Local Lux L1 for testing
+
+engines:
+  - name: lux-node-1
+    type: lux
+    network_id: 96369
+    http_port: 9650
+    staking_port: 9651
+    log_level: info
+    wait_healthy: true
+    extra:
+      dev-mode: true
+
+networks:
+  - name: lux-local
+    type: l1
+    engine: lux-node-1
+    chain_id: 96369
+```
+
+Predefined stacks: `lux-local`, `lux-mainnet-5node`, `lux-testnet-5node`, `lux-mainnet-alt`, `lux-l1-l2-local`, `lux-avalanche-bridge`.
+
+Bridge config supports types: `awm`, `ibc`, `ccip`.
+
+## Multi-Network Manager (multinet/)
+
+Runs multiple heterogeneous networks in parallel with shared BadgerDB for cross-chain ACID transactions.
+
+```go
+mgr, _ := multinet.NewMultiNetworkManager(logger, "/tmp/shared-db")
+defer mgr.Shutdown()
+
+mgr.AddNetwork(multinet.NetworkConfig{
+    NetworkID: 1, Name: "mainnet", Type: multinet.NetworkTypePrimary,
+    Validators: 5,
+})
+mgr.AddNetwork(multinet.NetworkConfig{
+    NetworkID: 2, Name: "chain-a", Type: multinet.NetworkTypeChain,
+    ParentID: 1,
+})
+mgr.StartAll()
+
+// Cross-chain ACID transaction
+mgr.SubmitCrossChainTx(&multinet.CrossChainTx{
+    ID: "tx-1", SourceNet: 1, DestNet: 2,
+    Amount: 1000, Asset: "LUX",
+})
+```
+
+Consensus params are configurable per network (K, Alpha, BetaVirtuous, BetaRogue, ConcurrentPolls).
+
+## Snapshot System
+
+Snapshots use native BadgerDB incremental backup with zstd compression.
+
+| Feature | Detail |
+|---------|--------|
+| Format | BadgerDB native backup + zstd |
+| Manifest | `manifest.json` (version 2) |
+| Incremental | Yes, tracks `db_version` per node |
+| Hot snapshot | Supported (no network stop) |
+| Admin API | `admin.snapshot` / `admin.load` |
+| Storage | `~/.netrunner/snapshots/lux-snapshot-\{name\}/` |
+
+Snapshot contents: `network.json` (full config), `state.json` (elastic chain mapping), `\{nodeName\}.backup.zst` (per-node compressed backup), `manifest.json`.
+
+## Local Network (local/)
+
+Core local network implementation managing luxd processes:
+
+| Constant | Value |
+|----------|-------|
+| Default nodes | 5 |
+| Health check interval | 100ms |
+| Stop timeout | 30s |
+| Peer start timeout | 30s |
+| Staking key file | `luxtls.key` |
+| Staking cert file | `luxtls.crt` |
+| Signer key file | `signer.key` |
+
+The `network.Network` interface provides:
+- Node lifecycle: `AddNode`, `RemoveNode`, `PauseNode`, `ResumeNode`, `RestartNode`
+- Chain management: `CreateChains`, `CreateParticipantGroups`, `TransformChain`
+- Elastic chains: `AddPermissionlessValidators`, `RemoveChainValidators`
+- Snapshots: `SaveSnapshot`, `SaveHotSnapshot`, `LoadSnapshot`
+
+## Key Dependencies (from go.mod)
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `github.com/luxfi/node` | v1.23.21 | Lux node types |
+| `github.com/luxfi/sdk` | v1.16.46 | Client SDK (admin API) |
+| `github.com/luxfi/p2p` | v1.19.2-zap | P2P networking |
+| `github.com/luxfi/consensus` | v1.22.69 | Consensus engine |
+| `github.com/luxfi/crypto` | v1.17.42 | BLS/secp256k1 keys |
+| `github.com/luxfi/genesis` | v1.6.1 | Genesis generation |
+| `github.com/luxfi/ids` | v1.2.9 | ID types (NodeID, etc) |
+| `github.com/luxfi/evm` | v0.8.30 | EVM plugin |
+| `github.com/luxfi/vm` | v1.0.38 | VM interface |
+| `github.com/luxfi/config` | v1.1.1 | Node configuration |
+| `github.com/luxfi/tls` | v1.0.3 | TLS certificate handling |
+| `github.com/luxfi/rpc` | v1.0.0 | RPC layer |
+| `github.com/dgraph-io/badger/v4` | v4.9.0 | Database (shared DB) |
+| `google.golang.org/grpc` | v1.79.1 | gRPC framework |
+| `k8s.io/client-go` | v0.35.1 | K8s engine support |
+| `github.com/klauspost/compress` | v1.18.4 | zstd compression |
+| `github.com/spf13/cobra` | v1.10.2 | CLI commands |
+
+## CLI Commands
+
+| Command | Description |
+|---------|-------------|
+| `netrunner server` | Start gRPC + HTTP gateway server |
+| `netrunner control start` | Start network via RPC |
+| `netrunner control stop` | Stop network via RPC |
+| `netrunner ping` | Ping server |
+| `netrunner genkeys` | Generate staking keys |
+| `netrunner testkeys` | Generate test keys |
+
+## Build
+
+```bash
+make build        # Build netrunner binary
+make test         # Run tests
+make test-race    # Tests with race detector
+make bench        # Run benchmarks
+make build-all    # Cross-compile (linux/darwin/windows, amd64/arm64)
+make install      # Install to /usr/local/bin
+make lint         # golangci-lint
+make release      # Generate release artifacts
+```
+
+## Directory Structure
+
+```
+netrunner/
+  main.go              # Entry point
+  cmd/                  # CLI commands (server, control, ping, genkeys)
+  server/               # gRPC + HTTP gateway server
+  client/               # Go client SDK
+  rpcpb/                # Protobuf definitions
+  local/                # Local network implementation (process management)
+  network/              # Network interface + config + genesis generation
+  orchestrator/         # Multi-engine host (Lux/Geth/OP/Eth2)
+  engines/              # Engine interface + implementations (lux, geth, k8s, opstack, eth2)
+  multinet/             # Multi-network manager with shared BadgerDB
+  stacks/               # YAML stack manifests
+  api/                  # API client wrapper
+  utils/                # Utilities (color picker, JSON helpers)
+  tests/                # Integration tests
+  examples/             # Usage examples
+  build/                # Build output
+```

@@ -1,0 +1,185 @@
+---
+title: "Lux FHE Coprocessor"
+description: "The coprocessor is a Go service with three binaries: gateway blockchain event listener, scheduler worker coordination, and tfhe-worker FHE com..."
+---
+
+## Overview
+
+The FHE Coprocessor (`github.com/luxfi/fhe-coprocessor`) is a distributed computation engine that processes Fully Homomorphic Encryption operations off-chain on behalf of the Lux blockchain. It listens for FHE events emitted by on-chain smart contracts (via the FHEVM precompiles), executes TFHE operations on encrypted ciphertexts using worker pools, and submits results back to the chain.
+
+The coprocessor is a Go service with three binaries: **gateway** (blockchain event listener), **scheduler** (worker coordination), and **tfhe-worker** (FHE compute). Jobs flow through a Redis queue. Ciphertext blobs are stored on disk (content-addressed by SHA-256 hash) with optional Redis or in-memory caching. The actual FHE computation is performed via `github.com/luxfi/fhe`, which provides TFHE operations (add, sub, mul, comparison, bitwise, shifts, rotations, min/max, negation) on serialized ciphertexts.
+
+This is the Go-native coprocessor. The Rust-based coprocessor lives in `github.com/luxfi/fhevm/coprocessor/` (see `lux/lux-fhevm.md`). Both serve the same architectural role -- offloading FHE computation from the EVM -- but target different deployment contexts.
+
+## When to use
+
+- Deploying FHE compute infrastructure for Lux EVM chains
+- Scaling TFHE computation horizontally across multiple workers
+- Building or modifying the blockchain-to-FHE event pipeline
+- Setting up a local FHE development environment with Docker Compose
+- Integrating a new queue backend (NATS JetStream is already implemented alongside Redis)
+- Adding new FHE operation types to the worker execution pipeline
+
+## Hard requirements
+
+1. Go 1.26.1
+2. `github.com/luxfi/fhe` v1.7.5 -- the TFHE library. NEVER use Zama tfhe-rs or any other FHE library for the Go coprocessor.
+3. `github.com/luxfi/lattice/v7` v7.0.0 (indirect, via luxfi/fhe) -- NEVER use raw Lattigo.
+4. Redis 7+ for the job queue and optional ciphertext storage.
+5. NATS (optional) -- the queue package implements both Redis and NATS JetStream backends.
+6. A TFHE server key file for real computation. Without `-server-key`, the worker starts with a mock key (development only).
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Module | `github.com/luxfi/fhe-coprocessor` |
+| Go version | 1.26.1 |
+| Binaries | `tfhe-worker`, `gateway`, `scheduler` |
+| Gateway port | 8080 |
+| Scheduler port | 8081 |
+| Worker metrics port | 9090 |
+| Queue backends | Redis (primary), NATS JetStream |
+| Storage backends | File (default), Redis, Memory, Cached (memory + any backend) |
+| Key dependency | `github.com/luxfi/fhe` v1.7.5 |
+
+## Core Concepts
+
+### Architecture
+
+```
+Blockchain Events
+       |
+       v
+  +---------+    Redis/NATS    +-----------+
+  | Gateway |  ------------->  | Scheduler |
+  | (:8080) |    job queue     | (:8081)   |
+  +---------+                  +-----------+
+       |                            |
+       | ciphertext                 | worker registration
+       | storage                    | heartbeat / cleanup
+       v                            |
+  +---------+              +--------+--------+
+  |  File/  |              |    Workers      |
+  |  Redis  |<------------>| (tfhe-worker)   |
+  | Storage |  load/store  | N goroutines    |
+  +---------+  ciphertexts | per process     |
+                           +-----------------+
+                                 |
+                           github.com/luxfi/fhe
+                           (TFHE operations)
+```
+
+### Three Binaries
+
+**gateway** -- Listens to blockchain events (FHE compute, store, decrypt). Converts events to jobs and pushes them onto the Redis queue. Exposes `/health`, `/status` (last processed block), and `/job/\{id\}` HTTP endpoints. Uses a `BlockchainClient` interface (currently a mock; real implementation connects to Lux EVM RPC).
+
+**scheduler** -- Coordinates workers via HTTP registration (`POST /workers`), heartbeat (`POST /heartbeat`), and stale cleanup (configurable period/timeout). Provides `/submit` for manual job submission and `/status` for cluster capacity. Does not perform FHE computation itself.
+
+**tfhe-worker** -- Runs a pool of N goroutines (default 4) that pop jobs from Redis, load ciphertext operands from storage, execute the TFHE operation via `pkg/fhe.Adapter`, store the result, and update job status. Exposes Prometheus-format metrics at `/metrics`.
+
+### FHE Operations (20 opcodes)
+
+| Code | Op | Type | Description |
+|------|----|------|-------------|
+| 0 | Add | Binary | Addition |
+| 1 | Sub | Binary | Subtraction |
+| 2 | Mul | Binary | Multiplication |
+| 3 | Not | Unary | Bitwise NOT |
+| 4 | And | Binary | Bitwise AND |
+| 5 | Or | Binary | Bitwise OR |
+| 6 | Xor | Binary | Bitwise XOR |
+| 7 | Eq | Binary | Equality |
+| 8 | Ne | Binary | Not equal |
+| 9 | Gt | Binary | Greater than |
+| 10 | Ge | Binary | Greater or equal |
+| 11 | Lt | Binary | Less than |
+| 12 | Le | Binary | Less or equal |
+| 13 | Shl | Binary | Shift left |
+| 14 | Shr | Binary | Shift right |
+| 15 | Rotl | Binary | Rotate left |
+| 16 | Rotr | Binary | Rotate right |
+| 17 | Min | Binary | Minimum |
+| 18 | Max | Binary | Maximum |
+| 19 | Neg | Unary | Negation |
+
+### Job Lifecycle
+
+1. Gateway receives blockchain event (EventCompute, EventStore, or EventDecrypt)
+2. For compute events: creates a `Job` with operation code and ciphertext handles, pushes to Redis list `fhe:queue:<name>`
+3. Worker pops job via `BRPOP`, updates status to `StatusProcessing`
+4. Worker loads LHS (and optionally RHS) ciphertext from file storage
+5. Worker calls `fhe.Adapter.Execute()` which deserializes ciphertexts, runs the TFHE operation via `github.com/luxfi/fhe`, and serializes the result
+6. Worker stores result ciphertext, updates job to `StatusCompleted` with result handle
+7. On failure: job status becomes `StatusFailed` with error message
+
+### Storage Layer
+
+Ciphertexts are content-addressed (SHA-256 hash of data = handle). Four implementations:
+
+- **FileStorage** (default): Sharded directories (first 2 chars of hash). Atomic writes via temp file + rename. Path: `<base>/<hash[:2]>/<hash>`.
+- **MemoryStorage**: In-memory map with capacity limit (MB). Used for testing and as cache layer.
+- **RedisStorage**: Redis-backed with configurable TTL (default 24h). Key prefix `fhe:ct:`.
+- **CachedStorage**: Wraps any backend with MemoryStorage as read-through/write-through cache.
+
+### Queue Layer
+
+The `Queue` interface supports Push, Pop (blocking), Update, Get, and Close. Two implementations:
+
+- **RedisQueue**: Uses Redis lists (`LPUSH`/`BRPOP`) for job ordering and `SET` with 24h TTL for job metadata. Pipeline-based Push for atomicity.
+- **NATSQueue**: NATS JetStream with `WorkQueuePolicy` retention. Subject: `fhe.jobs.*`. Pull-based consumption with explicit Ack/Nak. Note: `Get()` is not implemented (use separate storage layer).
+
+### Docker Deployment
+
+```bash
+# Start all services (gateway, scheduler, 2 workers, Redis)
+docker compose up -d
+
+# Scale workers
+docker compose up -d --scale worker=4
+
+# With monitoring (Prometheus + Grafana)
+docker compose --profile monitoring up -d
+
+# Build images
+make docker
+```
+
+The Dockerfile uses multi-stage builds with separate targets per binary (`worker`, `gateway`, `scheduler`). Each runs as non-root user `fhe`.
+
+### Local Development
+
+```bash
+make build              # Build all 3 binaries to bin/
+make test               # go test -v -race ./...
+make test-coverage      # Coverage report to coverage.html
+make fmt                # gofumpt
+make lint               # golangci-lint
+make dev                # Start Redis + all 3 services locally
+make stop               # Kill all local services
+```
+
+## Troubleshooting
+
+**"no server key provided, using mock key"** -- The worker starts without real FHE computation capability. Pass `-server-key /path/to/server.key` with a valid TFHE server key generated by `github.com/luxfi/fhe`.
+
+**Redis connection refused** -- Ensure Redis is running on the configured address. Default is `localhost:6379`. Use `-redis` flag or start via `docker run -d -p 6379:6379 redis:alpine`.
+
+**Worker not processing jobs** -- Check that gateway and worker use the same `-queue` name (default: `default`). Verify Redis connectivity from both processes. Check scheduler `/workers` endpoint to confirm worker registration.
+
+**Ciphertext not found errors** -- Gateway and workers must share the same storage path (`-storage`). In Docker Compose, the `ciphertext-storage` volume is shared between gateway and worker containers.
+
+**NATS queue Get() returns error** -- The NATS implementation does not support `Get()` by design. Use Redis queue or add a separate KV store for job lookup.
+
+**docker-compose.yml naming** -- The repo still uses `docker-compose.yml` filename. For new deployments, rename to `compose.yml` per project conventions.
+
+## Related Skills
+
+- `lux/lux-fhe.md` -- Core Go FHE library (`github.com/luxfi/fhe`) that powers the worker's TFHE operations
+- `lux/lux-fhevm.md` -- Rust-based FHEVM coprocessor (alternative architecture using Zama tfhe crate)
+- `lux/lux-evm.md` -- EVM with FHE precompiles that emit the events this coprocessor consumes
+- `lux/lux-lattice.md` -- Underlying lattice cryptography primitives
+
+---
+
+Last Updated: 2026-03-13

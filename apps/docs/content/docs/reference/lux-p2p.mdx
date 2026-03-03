@@ -1,0 +1,363 @@
+---
+title: "Lux P2P Networking"
+description: "Node-to-Node Communication Layer"
+---
+
+## Overview
+
+The Lux P2P layer handles all node-to-node communication across the Lux consensus network. It is split across two complementary Go modules: `github.com/luxfi/node/network` (the node-integrated networking stack with TLS peer management, throttling, and health checks) and `github.com/luxfi/p2p` (application-level protocol abstraction for gossip, request-response, bloom filter set reconciliation, and validator-aware routing). Together they provide peer discovery, message routing, gossip propagation, bandwidth-aware peer selection, and multi-layer throttling.
+
+## Modules
+
+| Module | Go Version | Key Dependencies |
+|--------|-----------|-----------------|
+| `github.com/luxfi/node/network` | 1.26.1 | `luxfi/consensus`, `luxfi/crypto/bls`, `luxfi/ids`, `luxfi/warp`, `luxfi/node/message`, `luxfi/validators`, `luxfi/compress` |
+| `github.com/luxfi/p2p` | 1.26.1 | `luxfi/codec@v1.1.2`, `luxfi/consensus@v1.22.51`, `luxfi/crypto@v1.17.37`, `luxfi/ids@v1.2.8`, `luxfi/metric@v1.4.9`, `luxfi/node@v1.22.81`, `luxfi/warp@v1.18.2`, `luxfi/tls@v1.0.0`, `google.golang.org/protobuf@v1.36.11` |
+
+## Node Network Layer (luxfi/node/network)
+
+### Network Config
+
+The `Config` struct in `network/config.go` controls all networking parameters:
+
+```go
+type Config struct {
+    HealthConfig         // Health check parameters
+    PeerListGossipConfig // Peer list gossip settings
+    TimeoutConfig        // Ping/pong, handshake timeouts
+    DelayConfig          // Reconnect delay (exponential backoff)
+    ThrottlerConfig      // Inbound/outbound message throttling
+
+    ProxyEnabled           bool          // PROXY protocol support
+    ProxyReadHeaderTimeout time.Duration
+
+    MyNodeID           ids.NodeID
+    MyIPPort           *utils.Atomic[netip.AddrPort]
+    NetworkID          uint32
+    MaxClockDifference time.Duration
+    PingFrequency      time.Duration
+    AllowPrivateIPs    bool
+
+    SupportedLPs set.Set[uint32]  // LP proposals this node supports
+    ObjectedLPs  set.Set[uint32]  // LP proposals this node objects to
+
+    CompressionType compression.Type
+    TLSKey          crypto.Signer
+    BLSKey          bls.Signer
+
+    TrackedChains set.Set[ids.ID]
+    Beacons       validators.Manager
+    Validators    validators.Manager
+
+    // SequencerIDForChain returns the validator-set identity that sequences chainID
+    // Examples: C-Chain -> PrimaryNetworkID, Zoo L2 -> ZooChainID
+    SequencerIDForChain func(chainID ids.ID) ids.ID
+
+    GenesisBytes         []byte
+    UptimeCalculator     uptime.Calculator
+    UptimeMetricFreq     time.Duration
+    UptimeRequirement    float64
+    RequireValidatorToConnect bool
+
+    MaximumInboundMessageTimeout time.Duration
+    PeerReadBufferSize           int
+    PeerWriteBufferSize          int
+
+    ResourceTracker consensustracker.ResourceTracker
+    CPUTargeter     tracker.Targeter
+    DiskTargeter    tracker.Targeter
+}
+```
+
+### Health Checks
+
+The `HealthConfig` enables continuous network health monitoring:
+
+```go
+type HealthConfig struct {
+    Enabled                                bool
+    NoIngressValidatorConnectionGracePeriod time.Duration
+    MinConnectedPeers                      uint          // Minimum peers for healthy
+    MaxTimeSinceMsgReceived                time.Duration // Max silence before unhealthy
+    MaxTimeSinceMsgSent                    time.Duration
+    MaxPortionSendQueueBytesFull           float64       // (0,1]
+    MaxSendFailRate                        float64       // [0,1]
+    SendFailRateHalflife                   time.Duration
+}
+```
+
+Health check keys exposed: `"primary network validator health"`, `"connectedPeers"`, `"timeSinceLastMsgReceived"`, `"timeSinceLastMsgSent"`, `"sendFailRate"`.
+
+### Peer List Gossip
+
+```go
+type PeerListGossipConfig struct {
+    PeerListNumValidatorIPs uint32        // Validator IPs per gossip round
+    PeerListPullGossipFreq  time.Duration // How often to request IPs
+    PeerListBloomResetFreq  time.Duration // Bloom filter recalculation interval
+}
+```
+
+### IP Tracker
+
+`ip_tracker.go` maintains a bloom filter of known peer IPs for efficient gossip deduplication. Tracks claimed and connected IPs with timestamped entries. Supports gossip-based peer discovery via signed IP announcements.
+
+### No-Ingress Connection Alert
+
+`no_ingress_conn_alert.go` monitors validator nodes that have no inbound connections (indicates firewall/NAT issues). Reports unhealthy after the configured grace period.
+
+## Application Protocol Layer (luxfi/p2p)
+
+### Package Layout
+
+```
+github.com/luxfi/p2p/
+  network.go       Network (top-level coordinator), Peers, PeerSampler, ClientOption
+  handler.go       Handler interface (Gossip/Request), NoOpHandler, ValidatorHandler, responder
+  router.go        router (message dispatch by handlerID), ParseMessage, metrics
+  client.go        Client (RequestAny, Request, Gossip), ResponseCallback, PrefixMessage
+  sender.go        Sender interface (SendRequest/SendResponse/SendError/SendGossip), SendConfig
+  error.go         Error type with codes: ErrUnexpected(-1), ErrUnregisteredHandler(-2),
+                   ErrNotValidator(-3), ErrThrottled(-4)
+  validators.go    Validators (ValidatorSet/ValidatorSubset/NodeSampler), stake-weighted sampling
+  node_sampler.go  NodeSampler interface (Sample)
+  peer_tracker.go  PeerTracker (bandwidth-based peer selection), bandwidthHeap, exponential decay
+  throttler.go     SlidingWindowThrottler (per-node rate limiting)
+
+  gossip/
+    gossipable.go  Gossipable interface (GossipID), Marshaller, Set
+    gossip.go      PullGossiper, PushGossiper, ValidatorGossiper, BranchingFactor, Every()
+    bloom.go       BloomFilter (probabilistic membership, auto-reset)
+    handler.go     Gossip protocol handler
+    message.go     MarshalAppRequest/ParseAppResponse/MarshalAppGossip/ParseAppGossip
+
+  throttling/
+    bandwidth_throttler.go         Token-bucket bandwidth throttler (rate.Limiter)
+    inbound_msg_throttler.go       Composite inbound message throttler
+    inbound_msg_byte_throttler.go  Byte-level inbound throttling
+    inbound_msg_buffer_throttler.go Buffer-level throttling
+    inbound_conn_throttler.go      Connection rate throttling
+    inbound_conn_upgrade_throttler.go TLS upgrade throttling
+    inbound_resource_throttler.go  Resource-based throttling
+    outbound_msg_throttler.go      Outbound message throttling
+    dial_throttler.go              Outbound dial throttling
+
+  peer/
+    peer.go              Peer connection management (~33KB, largest file)
+    config.go            Peer configuration
+    set.go               Peer set with thread-safe operations
+    info.go              Peer metadata (NodeID, version, IP)
+    gossip_tracker.go    Per-peer gossip tracking
+    ip.go                Peer IP management
+    ip_signer.go         IP signature for peer identity
+    tls_config.go        TLS configuration for peer connections
+    message_queue.go     Priority message queue per peer
+    bounded_queue.go     Bounded queue implementation
+    upgrader.go          Connection upgrade (TCP -> TLS)
+    validator_id.go      Validator identity
+
+  message/
+    ops.go               Message operation types (all consensus + app messages)
+    messages.go          Message serialization/deserialization
+    inbound_msg_builder.go  Inbound message construction
+    outbound_msg_builder.go Outbound message construction
+    internal_msg_builder.go Internal message construction
+    creator.go           Message creator
+
+  lp118/
+    lp118.go          LP-118 signature request protocol
+    aggregator.go     Signature aggregation
+
+  tracker/
+    resource_tracker.go  CPU/bandwidth resource tracking
+    targeter_impl.go     Target selection for throttling
+
+  proto/
+    pb/p2p/p2p.pb.go  Protobuf-generated message types
+```
+
+### Network
+
+`Network` is the top-level coordinator. It tracks connected peers, routes messages, and creates protocol-specific clients.
+
+```go
+
+// Create network with metrics
+net, err := p2p.NewNetwork(logger, sender, registerer, "myvm")
+
+// Register a handler for a protocol
+err = net.AddHandler(p2p.TxGossipHandlerID, myHandler)
+
+// Create a client for sending messages
+client := net.NewClient(p2p.TxGossipHandlerID)
+
+// Peer connect/disconnect callbacks (implements validators.Connector)
+net.Connected(ctx, nodeID, version)
+net.Disconnected(ctx, nodeID)
+```
+
+### Handler Interface
+
+Server-side protocol logic. Two methods: `Gossip` (fire-and-forget) and `Request` (request-response with deadline).
+
+```go
+type Handler interface {
+    Gossip(ctx context.Context, nodeID ids.NodeID, gossipBytes []byte)
+    Request(ctx context.Context, nodeID ids.NodeID, deadline time.Time, requestBytes []byte) ([]byte, *Error)
+}
+```
+
+Standard handler IDs: `TxGossipHandlerID=0`, `AtomicTxGossipHandlerID=1`, `SignatureRequestHandlerID=2` (LP-118).
+
+`ValidatorHandler` wraps any handler and drops messages from non-validators. `NoOpHandler` drops everything.
+
+### Client
+
+Client-side message sending. Messages are prefixed with a varint-encoded handler ID for routing.
+
+```go
+// Request to a random peer
+client.RequestAny(ctx, requestBytes, func(ctx context.Context, nodeID ids.NodeID, response []byte, err error) {
+    // handle response
+})
+
+// Request to specific peers
+client.Request(ctx, nodeIDs, requestBytes, onResponse)
+
+// Gossip to peers
+client.Gossip(ctx, p2p.SendConfig{
+    Validators:    3,
+    NonValidators: 5,
+    Peers:         2,
+}, gossipBytes)
+```
+
+Request IDs use odd numbers (SDK invariant), incremented by 2 per request.
+
+### Sender Interface
+
+Transport abstraction with four operations: `SendRequest`, `SendResponse`, `SendError`, `SendGossip`.
+
+`SendConfig` controls gossip fanout: specific `NodeIDs`, random `Validators`, `NonValidators`, and `Peers` counts.
+
+### Router
+
+Internal message dispatch. Routes by handler ID prefix (varint). Tracks pending requests with callbacks. Fatal on protocol errors (unrequested responses, etc.). Collects per-handler metrics (message time, count).
+
+### PeerTracker
+
+Bandwidth-aware peer selection using a max-heap ordered by exponentially-weighted moving average (EWMA) bandwidth. Halflife: 5 minutes. Parameters:
+
+- `desiredMinResponsivePeers = 20` -- below this, always prefer untracked peers
+- `newPeerConnectFactor = 0.1` -- exponential decay for new peer probability
+- `randomPeerProbability = 0.2` -- 20% chance of random peer (avoid local optima)
+
+Selection priority: untracked peers (exploration) > bandwidth heap (exploitation) > responsive peers (random) > any tracked peer.
+
+### Throttling
+
+`SlidingWindowThrottler` uses a two-window sliding algorithm for per-node rate limiting. Estimates hit count by weighting the previous window proportionally to elapsed time.
+
+The `throttling/` package provides comprehensive transport-level throttling:
+- **Bandwidth**: Token-bucket per peer (refill rate + burst size)
+- **Inbound messages**: Byte-level, buffer-level, connection-level, and resource-based
+- **Outbound messages**: Per-peer rate limiting
+- **Connections**: Dial throttling, upgrade throttling
+
+## Gossip Subsystem
+
+### PullGossiper
+
+Polls peers for unknown gossipables using bloom filter set difference. Configurable `pollSize` (number of parallel requests per cycle).
+
+### PushGossiper
+
+Broadcasts new gossipables proactively. Maintains two queues: `toGossip` (unsent) and `toRegossip` (already-sent). Features:
+
+- **BranchingFactor**: `StakePercentage` (top validators by stake), `Validators` (uniform sample), `NonValidators`, `Peers`
+- **Regossip**: Separate branching factor, max frequency limit, LRU discarded cache
+- **Target size**: Batches gossipables up to `targetGossipSize` bytes per cycle
+
+### BloomFilter
+
+Probabilistic membership testing for efficient set reconciliation. Auto-resets when false positive rate exceeds threshold. Parameters: `minTargetElements`, `targetFalsePositiveProbability`, `resetFalsePositiveProbability`. Uses SHA-256 with random salt, 1-16 hash functions.
+
+### Gossipable Interface
+
+```go
+type Gossipable interface {
+    GossipID() ids.ID
+}
+
+type Set[T Gossipable] interface {
+    Add(T) error
+    Has(ids.ID) bool
+    Iterate(func(T) bool)
+    GetFilter() (bloom []byte, salt []byte)
+}
+```
+
+## Validators
+
+`Validators` implements `ValidatorSet`, `ValidatorSubset`, and `NodeSampler`. Refreshes validator set from consensus state with configurable staleness (`maxValidatorSetStaleness`). Sorts validators by descending weight. `Top()` returns validators covering a target stake percentage. `Sample()` returns connected validators. `Has()` checks membership (connected + in validator set).
+
+## Peer Management (peer/)
+
+The `peer/` package in `luxfi/node/network/peer` handles individual peer connections:
+
+- **TLS-based identity**: Certificate = node ID (32 bytes from TLS cert hash)
+- **Priority message queuing**: Bounded buffers with priority levels
+- **Per-peer gossip tracking**: Which gossipables each peer knows about
+- **Connection upgrade**: TCP to TLS with rate limiting
+- **IP signing**: Signed IP announcements for peer discovery
+- **Metrics**: Per-peer message counts, bandwidth, latency
+
+Key files:
+- `peer.go` (32KB): Full peer connection lifecycle, message send/receive, keepalive
+- `set.go`: Thread-safe peer set with O(1) lookup and iteration
+- `gossip_tracker.go`: Tracks which gossipable items each peer has seen
+- `endpoint_signer.go`: Signs IP/port pairs for verifiable peer announcements
+- `host.go`: Peer host identity management
+
+## Message Layer (message/)
+
+The `message/` package handles serialization of all consensus and application messages using protobuf. Defines operation types for all message categories:
+
+- **Consensus**: Chits, PullQuery, PushQuery, Put, Get, Accepted, AcceptedFrontier
+- **App**: AppRequest, AppResponse, AppGossip, AppError
+- **State Sync**: StateSummaryFrontier, AcceptedStateSummary
+
+Builders for inbound, outbound, and internal messages with creator pattern.
+
+## LP-118 Protocol
+
+`lp118/` implements the LP-118 signature request protocol for cross-chain Warp messaging. The aggregator collects BLS signatures from validators and combines them for cross-chain message verification.
+
+## Error Codes
+
+| Code | Constant | Meaning |
+|------|----------|---------|
+| -1 | `ErrUnexpected` | Generic handler failure |
+| -2 | `ErrUnregisteredHandler` | No handler for protocol ID |
+| -3 | `ErrNotValidator` | Sender is not a validator |
+| -4 | `ErrThrottled` | Rate limit exceeded |
+
+## Metrics
+
+Both modules expose Prometheus metrics:
+- `\{namespace\}_msg_time` (gauge vec): Handler message processing time in nanoseconds
+- `\{namespace\}_msg_count` (counter vec): Handler message count
+- `\{namespace\}_num_tracked_peers` (gauge): PeerTracker tracked count
+- `\{namespace\}_num_responsive_peers` (gauge): PeerTracker responsive count
+- `\{namespace\}_average_bandwidth` (gauge): PeerTracker average bandwidth
+- `\{namespace\}_gossip_count` (counter vec): Gossip message count by io/type
+- `\{namespace\}_gossip_bytes` (counter vec): Gossip bytes by io/type
+- `\{namespace\}_gossip_tracking` (gauge vec): Currently tracked gossipables
+- `\{namespace\}_bloom_*` (gauge/counter): Bloom filter statistics
+
+## Testing
+
+Test utilities in `p2ptest/`:
+- `client.go`: Test client with mock sender
+- `app_sender.go`: In-memory app sender for tests
+- `warp_sender.go`: In-memory warp sender for tests

@@ -1,0 +1,166 @@
+---
+title: "Lux Operator - Kubernetes Operator for Lux Network"
+description: "Documentation for Lux Operator - Kubernetes Operator for Lux Network"
+---
+
+## Overview
+
+Lux Operator is a **Kubernetes operator** written in Rust that manages Lux Network deployments on K8s. It handles 6 custom resource types: LuxNetwork, LuxChain, LuxIndexer, LuxExplorer, LuxGateway, and LuxMPC. Each CRD has a dedicated reconciliation controller.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/operator` |
+| Branch | `main` |
+| Crate | `lux-operator` v0.3.12 |
+| Language | Rust (edition 2021) |
+| Binary | `lux-operator` |
+| Image | `ghcr.io/luxfi/operator:v0.3.12` |
+| Namespace | `lux-system` |
+| Health port | 8081 (`/healthz`, `/readyz`) |
+| Metrics port | 8080 (`/metrics`) |
+| K8s API group | `lux.network/v1alpha1` |
+| License | BSD-3-Clause |
+
+## Architecture
+
+```
+lux-operator
+├── src/
+│   ├── main.rs         # CLI args, health/metrics servers, controller dispatch
+│   ├── crd.rs          # Custom Resource Definitions (6 CRDs)
+│   ├── controller.rs   # Reconciliation controllers (6 controllers)
+│   └── error.rs        # Error types
+├── k8s/
+│   ├── crds/           # CRD YAML manifests
+│   ├── rbac/           # RBAC (ServiceAccount, ClusterRole, etc.)
+│   ├── networks/       # Network configuration manifests
+│   ├── mpc/            # MPC service manifests
+│   ├── deployment.yaml # Operator deployment
+│   ├── service.yaml    # Operator service
+│   ├── namespace.yaml  # lux-system namespace
+│   ├── kms-secrets.yaml # KMS secret sync
+│   ├── deploy.sh       # Deployment script
+│   ├── deploy-subgraphs.sh # Subgraph deployment
+│   ├── indexers-*.yaml # Indexer configs (mainnet/testnet/devnet)
+│   ├── explorer-*.yaml # Explorer configs (mainnet/testnet/devnet)
+│   └── gateway-*.yaml  # Gateway configs (mainnet/testnet/devnet)
+└── Dockerfile          # Multi-stage Rust build (rust:1.88 → debian:bookworm-slim)
+```
+
+## Custom Resource Definitions
+
+| CRD | Kind | Shortname | Purpose |
+|-----|------|-----------|---------|
+| `luxnetwork-crd.yaml` | `LuxNetwork` | `luxnet` | Deploy validator network clusters |
+| `luxchain-crd.yaml` | `LuxChain` | - | Manage individual chain instances |
+| `luxindexer-crd.yaml` | `LuxIndexer` | - | Deploy blockchain indexers |
+| `luxexplorer-crd.yaml` | `LuxExplorer` | - | Deploy block explorers |
+| `luxgateway-crd.yaml` | `LuxGateway` | - | Deploy API gateways |
+| `luxmpc-crd.yaml` | `LuxMPC` | - | Deploy MPC key management nodes |
+
+## LuxNetwork CRD (Primary)
+
+```yaml
+apiVersion: lux.network/v1alpha1
+kind: LuxNetwork
+metadata:
+  name: mainnet
+spec:
+  networkId: 1        # 1=mainnet, 2=testnet, 3=devnet
+  validators: 15      # Number of validator nodes
+  image:
+    repository: ghcr.io/luxfi/node
+    tag: latest
+  resources:
+    requests:
+      cpu: "4"
+      memory: "8Gi"
+    limits:
+      cpu: "8"
+      memory: "16Gi"
+```
+
+Status fields: `phase`, `readyValidators`, `totalValidators`.
+
+## Controllers
+
+6 reconciliation controllers run concurrently via `tokio::select!`:
+
+| Controller | Function | Manages |
+|------------|----------|---------|
+| `run_network_controller` | Validator clusters | StatefulSets, Services, ConfigMaps |
+| `run_chain_controller` | Chain instances | Chain-specific deployments |
+| `run_indexer_controller` | Blockchain indexers | Indexer pods per network |
+| `run_explorer_controller` | Block explorers | Blockscout deployments |
+| `run_gateway_controller` | API gateways | Gateway routing |
+| `run_mpc_controller` | MPC nodes | Key management pods |
+
+## Key Dependencies
+
+```toml
+kube = "0.87"          # Kubernetes client (runtime, derive, ws)
+k8s-openapi = "0.20"   # K8s API types (v1.28)
+tokio = "1.35"          # Async runtime
+axum = "0.7"            # HTTP server (health + metrics)
+clap = "4.4"            # CLI argument parsing
+tracing = "0.1"         # Structured logging
+reqwest = "0.11"        # HTTP client (rustls-tls)
+schemars = "0.8"        # JSON Schema generation for CRDs
+```
+
+## CLI Arguments
+
+```bash
+lux-operator \
+  --namespace ""          # Watch namespace (empty = all)
+  --log-level info        # trace|debug|info|warn|error
+  --metrics-port 8080     # Prometheus metrics endpoint
+  --health-port 8081      # Health check endpoint
+  --leader-election       # Enable leader election
+  --mpc-endpoint URL      # Optional MPC service endpoint
+```
+
+## Deployment
+
+```bash
+# Apply CRDs
+kubectl apply -f k8s/crds/
+
+# Apply RBAC
+kubectl apply -f k8s/rbac/
+
+# Deploy operator
+kubectl apply -f k8s/namespace.yaml
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+```
+
+K8s deployment spec: 1 replica, 100m-1 CPU, 128Mi-512Mi memory, liveness/readiness probes on `:8081/healthz`.
+
+## Build
+
+```bash
+# Local
+cargo build --release
+
+# Docker
+docker build --platform linux/amd64 -t ghcr.io/luxfi/operator:v0.3.12 .
+```
+
+## Environment Manifests
+
+Pre-configured manifests for mainnet/testnet/devnet:
+- `k8s/indexers-\{mainnet,testnet,devnet\}.yaml`
+- `k8s/explorer-\{mainnet,testnet,devnet\}.yaml`
+- `k8s/gateway-\{mainnet,testnet,devnet\}.yaml`
+- `k8s/exchange-backend-mainnet.yaml`
+- `k8s/explorer-microservices-mainnet.yaml`
+
+## Related Skills
+
+- `lux/lux-node.md` -- Node binary managed by operator
+- `lux/lux-deploy.md` -- Network automation and DevOps
+- `lux/lux-universe.md` -- Production K8s infrastructure
+- `lux/lux-monitoring.md` -- Prometheus/Grafana for operator metrics

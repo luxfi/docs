@@ -1,0 +1,243 @@
+---
+title: "Lux ADX - High-Performance CTV Ad Exchange"
+description: "Documentation for Lux ADX - High-Performance CTV Ad Exchange"
+---
+
+## Overview
+
+ADX is a **high-performance Connected TV (CTV) ad exchange** designed for 100M+ impressions per day with sub-millisecond auction latency. It combines VAST 4.x video ad serving, OpenRTB 2.5/3.0 programmatic bidding, zero-knowledge privacy-preserving auctions, and a home miner network for decentralized ad serving. Built on FoundationDB for petabyte-scale storage.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/adx` |
+| Module | `github.com/luxfi/adx` |
+| Go | 1.26.1 |
+| Branch | `main` |
+| Exchange Port | 8080 |
+| Miner Port | 8081 |
+| License | MIT |
+
+## Hard requirements
+
+1. ALWAYS use `github.com/luxfi/*` packages -- NEVER `go-ethereum` or `ava-labs`
+2. NEVER use EWOQ keys -- generate fresh keys
+3. FoundationDB 7.3.27+ required for storage backend
+
+## Key Dependencies
+
+```
+github.com/luxfi/crypto@v1.17.38     — Cryptographic primitives
+github.com/luxfi/database@v1.2.17    — Storage layer
+github.com/luxfi/metric@v1.4.9       — Prometheus metrics
+github.com/luxfi/cache@v1.1.0        — Caching layer
+github.com/luxfi/geth@v1.16.69       — EVM integration (indirect)
+github.com/prebid/openrtb/v20        — OpenRTB 2.5/3.0 types
+github.com/gin-gonic/gin@v1.10.1     — HTTP framework
+go.uber.org/zap@v1.27.1              — Structured logging
+github.com/prometheus/client_golang   — Metrics
+```
+
+## Architecture
+
+```
+luxfi/adx
+├── cmd/
+│   ├── adx-exchange/    — CTV ad exchange server
+│   ├── adx-miner/       — Home miner node
+│   ├── adxd/            — Full daemon (exchange + miner)
+│   ├── adx-attack/      — Attack simulation tool
+│   └── api/             — API server
+├── pkg/
+│   ├── rtb/             — OpenRTB bidding engine
+│   ├── vast/            — VAST 4.x video ad generation
+│   ├── miner/           — Home miner management
+│   ├── auction/         — Sealed-bid auction engine
+│   ├── crypto/          — HPKE encryption (RFC 9180)
+│   ├── proof/           — Zero-knowledge proof generation
+│   ├── analytics/       — Privacy-preserving analytics
+│   ├── storage/         — FoundationDB backend
+│   ├── publica/         — Publica CTV SSP integration
+│   ├── blocklace/       — Byzantine-repelling consensus
+│   ├── settlement/      — On-chain settlement
+│   ├── chainvm/         — Chain VM integration
+│   ├── core/            — Core types and frequency management
+│   ├── da/              — Data availability
+│   ├── dex/             — DEX integration
+│   ├── fhe/             — Fully homomorphic encryption
+│   ├── ids/             — Identity management
+│   ├── log/             — Logging
+│   ├── metric/          — Metrics collection
+│   └── tee/             — Trusted execution environments
+├── contracts/
+│   ├── AdSlotSFT.sol    — Ad slot semi-fungible token
+│   └── EscrowManager.sol — Payment escrow
+├── sdk/
+│   ├── go/              — Go SDK
+│   ├── typescript/      — TypeScript SDK
+│   ├── python/          — Python SDK
+│   └── browser.ts       — Browser integration
+├── client/              — Client library
+├── config/              — Configuration
+├── k8s/                 — Kubernetes manifests
+└── tests/               — Integration tests
+```
+
+## One-file quickstart
+
+### Build and run
+
+```bash
+git clone https://github.com/luxfi/adx.git
+cd adx
+
+# Build all binaries
+make build
+# Outputs: bin/adx-exchange, bin/adx-miner, bin/adxd, bin/adx-attack
+
+# Run exchange
+make run-exchange
+
+# Run home miner
+make run-miner
+```
+
+### Run with Docker
+
+```bash
+docker-compose up -d
+```
+
+### Run a home miner
+
+```bash
+go install github.com/luxfi/adx/cmd/adx-miner@latest
+
+adx-miner start \
+  --wallet YOUR_WALLET_ADDRESS \
+  --tunnel localxpose \
+  --cache-size 10GB
+```
+
+## API Endpoints
+
+### CTV Exchange
+
+```bash
+# OpenRTB bid request
+curl -X POST http://localhost:8080/rtb/bid \
+  -H "Content-Type: application/json" \
+  -d '{"id":"req-1","imp":[{"id":"1","video":{"w":1920,"h":1080}}]}'
+
+# VAST ad request
+curl http://localhost:8080/vast?slot=homepage&w=1920&h=1080
+
+# Miner stats
+curl http://localhost:8080/miner/stats
+```
+
+### Privacy Network
+
+```bash
+# Submit sealed bid with ZK proof
+curl -X POST http://localhost:8080/auction/sealed \
+  -H "Content-Type: application/json" \
+  -d '{"bidder_id":"bid-1","commitment":"...","range_proof":"..."}'
+
+# Privacy-preserving frequency cap
+curl -X POST http://localhost:8080/frequency/check \
+  -d '{"device_id":"...","campaign_id":"...","cap":5}'
+```
+
+## Privacy Features
+
+### Zero-Knowledge Auctions
+
+```go
+
+a := auction.NewAuction(auctionID, reserve, duration, logger)
+bid := &auction.SealedBid{
+    BidderID:   bidderID,
+    Commitment: commitment,
+    RangeProof: proof,
+}
+a.SubmitBid(bid)
+outcome, _ := a.RunAuction(decryptionKey)
+```
+
+### HPKE Encryption (RFC 9180)
+
+```go
+
+hpke := crypto.NewHPKE()
+pub, priv, _ := hpke.GenerateKeyPair()
+encrypted, _ := hpke.Seal(bidData, pub, aad)
+```
+
+## Performance
+
+| Metric | CTV Exchange | Privacy Network |
+|--------|-------------|----------------|
+| Bid Requests/sec | 1,000,000+ | ~127,000 auctions/sec |
+| Auction Latency | \&lt;1ms | ~3.7ms (w/ ZK proof) |
+| Daily Impressions | 100M+ | -- |
+| Memory per Auction | -- | \&lt;8KB |
+
+## Earnings Model
+
+### Home Miners
+- **Base Rate**: $0.50 CPM (per 1000 impressions served)
+- **Bandwidth Bonus**: $0.10 per GB transferred
+- **Uptime Bonus**: 10% for 99.9% uptime
+
+### Privacy Network Validators
+- **Auction Fees**: 0.1% of clearing price
+- **Proof Verification**: Fixed fee per proof
+
+## Smart Contracts
+
+| Contract | Purpose |
+|----------|---------|
+| `AdSlotSFT.sol` | Semi-fungible token for ad slot ownership |
+| `EscrowManager.sol` | Payment escrow for advertiser-publisher settlement |
+
+## Makefile Targets
+
+| Target | Description |
+|--------|-------------|
+| `make build` | Build all binaries (exchange, miner, daemon, attack) |
+| `make test` | Run tests (rtb, vast, miner packages) |
+| `make bench` | Run benchmarks |
+| `make run-exchange` | Start the ad exchange |
+| `make run-miner` | Start a home miner |
+| `make run-local` | Start 5-node local network |
+| `make attack-all` | Run all attack simulations |
+| `make docker-build` | Build Docker images |
+| `make docker-run` | Docker Compose up |
+| `make setup-fdb` | Install FoundationDB client |
+
+## Docker
+
+```bash
+docker build -t luxfi/adx-exchange:latest .
+docker run -p 8080:8080 -p 8081:8081 luxfi/adx-exchange:latest
+```
+
+Health check at `http://localhost:8080/health`. Requires FoundationDB client library.
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| FoundationDB connection fails | FDB not installed | `make setup-fdb` |
+| Build fails with CGO errors | Missing C compiler | `apk add gcc g++ musl-dev` |
+| Miner not connecting | Tunnel not configured | Use `--tunnel localxpose` or `--tunnel ngrok` |
+| Low auction throughput | Insufficient resources | Scale FoundationDB cluster |
+
+## Related Skills
+
+- `lux/lux-crypto.md` -- Cryptographic primitives (HPKE, BLS)
+- `lux/lux-lattice.md` -- Post-quantum crypto for future privacy
+- `lux/lux-node.md` -- On-chain settlement integration
+- `lux/lux-fhe.md` -- Homomorphic encryption for analytics

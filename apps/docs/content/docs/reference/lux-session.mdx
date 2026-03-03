@@ -1,0 +1,341 @@
+---
+title: "Lux Session - Private Permissionless Session Execution Layer"
+description: "1. SessionVM  -- A pluggable Lux VM that manages encrypted messaging sessions with post-quantum cryptography ML-KEM-768, ML-DSA-65, XChaCha20-Po..."
+---
+
+## Overview
+
+Lux Session is a **session execution framework** for the Lux blockchain that provides two capabilities:
+
+1. **SessionVM** (`vm/`) -- A pluggable Lux VM that manages encrypted messaging sessions with post-quantum cryptography (ML-KEM-768, ML-DSA-65, XChaCha20-Poly1305).
+
+2. **sessiond** (`daemon/`) -- A standalone daemon that executes private permissionless workloads as multi-step sessions with oracle I/O, committee assignment, threshold attestations, and Merkle-proofed delivery receipts.
+
+The `core/` package defines the canonical session model shared by both: epoch-scoped, committee-assigned sessions with step-based execution, oracle integration, and finalization via output/oracle/receipts Merkle roots.
+
+### Tech Stack
+
+| Item | Value |
+|------|-------|
+| Language | Go 1.26.1 |
+| Module | `github.com/luxfi/session` |
+| License | BSD-3-Clause |
+| Tests | 81 passing across 8 packages |
+
+### Key Dependencies
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `github.com/luxfi/crypto` | v1.17.38 | ML-KEM-768, ML-DSA-65, Blake2b (via cloudflare/circl v1.6.3) |
+| `github.com/luxfi/ids` | v1.2.9 | ID types |
+| `github.com/luxfi/log` | v1.4.1 | Structured logging |
+| `github.com/gorilla/rpc` | v1.2.1 | JSON-RPC 2.0 server |
+| `golang.org/x/crypto` | v0.47.0 | XChaCha20-Poly1305 |
+
+## When to use
+
+- Building a private messaging layer on a Lux chain with post-quantum encryption
+- Executing private permissionless workloads that need oracle I/O and committee consensus
+- Integrating session-scoped computation with threshold attestation verification
+- Adding encrypted communication channels to a Lux VM or standalone service
+
+## Hard requirements
+
+- Go 1.26+
+- `github.com/luxfi/crypto` for all PQ primitives (never import circl directly)
+- Session IDs use prefix `07` (post-quantum) or `05` (legacy X25519/Ed25519)
+- All oracle requests use domain-separated hashing: `"LUX:OracleRequest:v1" || service_id || session_id || step || retry || tx_id`
+- Attestations use domain separation: `"LUX:QuantumAttest:<domain>:v1"`
+- Committee quorum threshold: 67% (configurable)
+
+## Quick reference table
+
+| Item | Value |
+|------|-------|
+| Module | `github.com/luxfi/session` |
+| VMID | `sessionvm` (Base58: `2ZbQaVuXHtT7vfJt8FmWEQKAT4NgtPqWEZHg5m3tUvEiSMnQNt`) |
+| Plugin port | `:9652` (env `SESSIONVM_ADDR`) |
+| Daemon port | `:9651` (flag `-listen`) |
+| Plugin build | `go build -o sessionvm ./plugin/` |
+| Daemon build | `go build -o sessiond ./cmd/sessiond/` |
+| Plugin install | `cp sessionvm ~/.lux/plugins/<VMID>` |
+| Run tests | `go test -v -race ./...` |
+| Run benchmarks | `go test -bench=. -benchmem ./crypto/...` |
+
+## One-file quickstart
+
+### Post-quantum identity and encryption
+
+```go
+package main
+
+    "fmt"
+    "log"
+
+    "github.com/luxfi/session/crypto"
+)
+
+func main() {
+    // Generate PQ identity (ML-KEM-768 + ML-DSA-65)
+    alice, err := crypto.GenerateIdentity()
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println("Alice Session ID:", alice.SessionID) // "07" + 64 hex chars
+
+    bob, err := crypto.GenerateIdentity()
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // Encrypt message from Alice to Bob (KEM encapsulate + XChaCha20)
+    plaintext := []byte("hello from alice")
+    ciphertext, err := alice.EncryptTo(bob.PublicIdentity(), plaintext)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // Bob decrypts (KEM decapsulate + XChaCha20)
+    decrypted, err := bob.DecryptFrom(ciphertext)
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println("Decrypted:", string(decrypted))
+
+    // Sign and verify
+    signed, err := alice.SignMessage(plaintext)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    msg, valid := alice.PublicIdentity().VerifyMessage(signed)
+    fmt.Println("Valid:", valid, "Message:", string(msg))
+}
+```
+
+### Create a session via daemon
+
+```go
+package main
+
+    "context"
+    "fmt"
+    "log"
+
+    "github.com/luxfi/session/core"
+    "github.com/luxfi/session/daemon"
+)
+
+func main() {
+    svc := daemon.New(daemon.DefaultConfig())
+    if err := svc.Start(context.Background()); err != nil {
+        log.Fatal(err)
+    }
+    defer svc.Stop()
+
+    serviceID := core.Hash([]byte("my-service"))
+    txID := core.Hash([]byte("tx-001"))
+    committee := []core.ID{core.Hash([]byte("node-1")), core.Hash([]byte("node-2")), core.Hash([]byte("node-3"))}
+
+    session, err := svc.CreateSession(serviceID, 1, txID, committee)
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println("Session ID:", session.ID.String())
+    fmt.Println("State:", session.State) // pending
+
+    if err := svc.StartSession(session.ID); err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println("State:", session.State) // running
+}
+```
+
+## Core Concepts
+
+### Architecture
+
+```
+github.com/luxfi/session
+├── core/                    # Canonical types shared by VM and daemon
+│   ├── id.go               # 32-byte ID type, domain-separated hashing
+│   ├── session.go           # Session struct (committee, steps, state machine)
+│   └── step.go              # Step types (compute, read/write external), oracle request IDs
+├── crypto/
+│   ├── identity.go          # PQ identity (ML-KEM-768 + ML-DSA-65 keypairs)
+│   └── identity_test.go     # Crypto tests and benchmarks
+├── vm/                      # Lux VM plugin (encrypted messaging)
+│   ├── vm.go                # SessionVM: sessions, messages, channels, JSON-RPC handlers
+│   ├── service.go           # RPC methods: CreateSession, GetSession, SendMessage, CloseSession, Health
+│   ├── factory.go           # VM factory, VMID constant
+│   └── vm_test.go           # VM unit tests
+├── daemon/
+│   └── service.go           # sessiond: session runner, oracle requests, attestation handling
+├── network/
+│   ├── peer.go              # Peer management, connection state, latency tracking
+│   └── transport.go         # Transport interface, message types, router, binary framing
+├── protocol/
+│   ├── domain.go            # Attestation domains (oracle/write, oracle/read, session/complete, epoch/beacon)
+│   ├── attestation.go       # Threshold attestations, equivocation detection
+│   ├── oracle.go            # Oracle requests/records, Merkle tree, inclusion proofs
+│   └── receipt.go           # Delivery receipts, receipt Merkle proofs
+├── storage/
+│   ├── store.go             # KV store interface (Get/Put/Delete/Has), batch, iterator, namespaces
+│   ├── memory.go            # In-memory store implementation
+│   └── encoding.go          # Binary codec for Session and Step serialization
+├── swarm/
+│   ├── registry.go          # Service node registry (register, activate, suspend, slash, exit)
+│   └── assignment.go        # Epoch-based committee assignment via deterministic VRF selection
+├── plugin/
+│   └── main.go              # Lux VM plugin entry point (HTTP server on :9652)
+├── cmd/sessiond/
+│   └── main.go              # Standalone daemon entry point (flags: -listen, -data-dir, -max-sessions)
+├── e2e/                     # End-to-end tests
+├── messaging/               # Empty (reserved)
+├── session/                 # Empty (reserved)
+└── docs/                    # Architecture, crypto, integration docs
+```
+
+### Session lifecycle (core/)
+
+Sessions in `core/` follow this state machine:
+
+```
+pending -> running -> waiting_io -> running -> ... -> finalized
+                  \-> failed
+```
+
+- **Pending**: Created with service ID, epoch, tx ID, and committee
+- **Running**: Actively executing steps
+- **WaitingIO**: Blocked on oracle read/write
+- **Finalized**: All steps completed, output/oracle/receipts roots set
+- **Failed**: Error occurred
+
+Session ID is deterministic: `H("LUX:Session:v1" || service_id || epoch || tx_id)`
+
+### Session lifecycle (vm/)
+
+The VM layer uses a simpler model for messaging:
+
+```
+active -> expired (TTL exceeded)
+       -> closed  (explicit close)
+```
+
+### Cryptographic Primitives
+
+| Algorithm | Purpose | Standard | Key Sizes |
+|-----------|---------|----------|-----------|
+| ML-KEM-768 | Key encapsulation | FIPS 203 | PK: 1184, SK: 2400, CT: 1088, SS: 32 |
+| ML-DSA-65 | Digital signatures | FIPS 204 | PK: 1952, SK: 4032, Sig: 3309 |
+| XChaCha20-Poly1305 | AEAD encryption | RFC 8439 | Key: 32, Nonce: 24 |
+| Blake2b-256 | Hashing | RFC 7693 | Output: 32 |
+
+Session ID format: `<prefix>` + hex(Blake2b-256(KEM_pk || DSA_pk)) = 66 characters.
+
+### Oracle Protocol
+
+Steps that require external I/O go through the oracle protocol:
+
+1. Session creates an `OracleRequest` (deterministic ID from service/session/tx/step/retry)
+2. Committee nodes submit `OracleRecord` observations (data + signature)
+3. Records are committed via `ComputeMerkleRoot` (binary Merkle tree)
+4. QuantumVM committee produces a threshold `Attestation` over the commit root
+5. Step completes with oracle commit root + attestation ID + output hash
+
+Attestation domains provide cryptographic separation:
+- `oracle/write` -- external write operations
+- `oracle/read` -- external read operations
+- `session/complete` -- session finalization
+- `epoch/beacon` -- epoch randomness
+
+### Swarm Assignment
+
+Committees are assigned deterministically per epoch:
+
+1. `EpochBeacon` provides VRF randomness for the epoch
+2. `Assigner.AssignCommittee` computes: `seed = H(epoch_randomness || service_id || epoch)`
+3. Each node scored: `score = H(seed || node_id)`
+4. Top N nodes by score form the committee (min 3, max 21, quorum 67%)
+
+### Network Messages
+
+12 message types defined in `network/transport.go`:
+
+| Type | Purpose |
+|------|---------|
+| `Handshake` | Initial connection |
+| `SessionCreate` | Create session |
+| `SessionStart` | Start session execution |
+| `OracleRequest` | Request external I/O |
+| `OracleRecord` | Submit oracle observation |
+| `OracleCommit` | Commit oracle records |
+| `Attestation` | Threshold attestation |
+| `Receipt` | Delivery receipt |
+| `Heartbeat` | Keepalive |
+| `Ping/Pong` | Latency measurement |
+
+Binary framing: 4-byte length prefix, 1MB max message size.
+
+### VM RPC Methods
+
+JSON-RPC 2.0 over HTTP at `/rpc`:
+
+| Method | Args | Reply |
+|--------|------|-------|
+| `sessionvm.CreateSession` | `participants[]`, `publicKeys[]` (hex ML-KEM) | `sessionId`, `expires` |
+| `sessionvm.GetSession` | `sessionId` | `session` object |
+| `sessionvm.SendMessage` | `sessionId`, `sender`, `ciphertext` (hex), `signature` (hex) | `messageId`, `sequence` |
+| `sessionvm.CloseSession` | `sessionId` | `success` |
+| `sessionvm.Health` | (none) | `healthy`, `sessions`, `channels`, `pending` |
+
+### VM Configuration
+
+```json
+{
+  "sessionTTL": 86400,
+  "maxMessages": 10000,
+  "maxChannels": 1000,
+  "retentionDays": 30,
+  "idPrefix": "07"
+}
+```
+
+### Daemon Configuration
+
+Flags for `sessiond`:
+
+| Flag | Default | Purpose |
+|------|---------|---------|
+| `-listen` | `:9651` | Listen address |
+| `-data-dir` | `""` | Persistent data directory |
+| `-max-sessions` | `100` | Max concurrent sessions |
+| `-bootstrap` | `""` | Comma-separated bootstrap peers |
+| `-version` | | Show version |
+
+### Storage
+
+KV interface with namespaced prefixes: `session:`, `step:`, `oracle:`, `receipt:`, `attest:`, `node:`, `epoch:`. Current backend: in-memory. Supports batch writes and range iteration.
+
+### Equivocation Detection
+
+`protocol.DetectEquivocation` identifies nodes that sign conflicting attestations (same domain + subject but different commit roots). Returns `EquivocationEvidence` with both attestations and the offending node ID. Used for slashing.
+
+## Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| `unknown session` | Session ID not found -- verify ID format and that session was created |
+| `session expired` | Session TTL exceeded -- create a new session |
+| `maximum sessions reached` | Daemon at capacity -- increase `-max-sessions` or wait for sessions to finalize |
+| `not enough eligible nodes` | Committee needs at least `MinCommitteeSize` (3) active nodes in registry |
+| `step kind does not require attestation` | Only `write_external` and `read_external` steps need attestations |
+| Tests fail on `crypto/` | Requires `github.com/luxfi/crypto` v1.17.38 with ML-KEM/ML-DSA support |
+| Plugin won't start | Check `SESSIONVM_ADDR` env var, ensure port `:9652` is free |
+
+## Related Skills
+
+- `lux/lux-crypto.md` -- Underlying PQ cryptographic primitives (ML-KEM, ML-DSA, Blake2b)
+- `lux/lux-node.md` -- Host node that loads SessionVM as a plugin
+- `lux/lux-vm.md` -- VM interface that SessionVM implements
+- `lux/lux-p2p.md` -- Network transport layer
