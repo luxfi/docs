@@ -13,7 +13,7 @@ Lux P2P networking layer — libp2p integration, mDNS peer discovery, publish-su
 |-----------|------|---------|
 | net/ | ``github.com/luxfi/net`` | Core networking |
 | p2p/ | ``github.com/luxfi/p2p`` | P2P protocols |
-| libp2p/ | ``github.com/luxfi/libp2p`` | libp2p integration |
+| libp2p/ | ``github.com/libp2p/go-libp2p`` | libp2p integration |
 | mdns/ | ``github.com/luxfi/mdns`` | mDNS peer discovery |
 | pubsub/ | ``github.com/luxfi/pubsub`` | PubSub messaging |
 

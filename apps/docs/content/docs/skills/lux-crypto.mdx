@@ -19,7 +19,6 @@ Lux Crypto provides the **cryptographic primitives** for the Lux Network — BLS
 | Package | Purpose |
 |---------|---------|
 | `bls/` | BLS12-381 threshold signatures (via `blst` v0.3.16) |
-| `keychain/` | SLIP-10 HD key derivation |
 | `secp256k1/` | Ethereum-compatible ECDSA |
 | `certificate.go` | TLS certificate handling |
 
@@ -30,7 +29,7 @@ github.com/supranational/blst@v0.3.16      — BLS signatures
 github.com/cloudflare/circl@v1.6.2         — PQ crypto (CIRCL)
 github.com/consensys/gnark-crypto@v0.19.2  — ZK-friendly crypto
 ethereum/c-kzg-4844/v2                     — KZG polynomial commitments
-filippo.io/age@v1.2.1                      — File encryption
+filippo.io/age@v1.3.1                      — File encryption
 ProjectZKM/Ziren                           — ZK runtime
 ```
 
@@ -92,7 +91,7 @@ sig, _ := pk.Sign(hash)
 | BLS12-381 | Fast finality signatures |
 | Lattice | Post-quantum finality |
 | secp256k1 + Lamport | EVM wallet signing |
-| secp256k1 + Dilithium | X-Chain UTXO signing |
+| secp256k1 + ML-DSA | X-Chain UTXO signing |
 
 ## Related Skills
 
