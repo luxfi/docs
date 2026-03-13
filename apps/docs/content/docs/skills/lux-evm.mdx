@@ -1,0 +1,132 @@
+---
+title: "Lux EVM - Unified Go Execution Engine"
+description: "Lux EVM is the unified Go-based EVM execution engine for both C-Chain and L1/L2 Subnet EVM chains."
+---
+
+## Overview
+
+Lux EVM is the **unified Go-based EVM execution engine** for both C-Chain and L1/L2 Subnet EVM chains. The former `coreth` codebase has been **merged into this repo** — it is not a separate dependency.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Module | `github.com/luxfi/evm` |
+| Version | v0.8.35+ |
+| Go | 1.26.1 |
+| C-Chain RPC | `http://<node>:9630/ext/bc/C/rpc` |
+| Chain ID | 96369 (mainnet), 96370 (testnet) |
+| Luxd compat | v1.12.0 through v1.13.3 (protocol versions 38-42) |
+
+## Hard requirements
+
+1. ALWAYS use `github.com/luxfi/evm` — NEVER `github.com/luxfi/coreth` (deprecated, merged here)
+2. ALWAYS use `github.com/luxfi/geth` — NEVER `go-ethereum`
+
+## Migration from coreth
+
+```go
+// OLD (deprecated):
+import "github.com/luxfi/coreth/ethclient"
+
+// NEW (correct):
+import "github.com/luxfi/evm/ethclient"
+```
+
+All `coreth` imports become `evm` imports. The API is identical.
+
+## Two Modes
+
+### C-Chain Mode
+- Atomic transactions for X-Chain/C-Chain cross-chain transfers
+- Shared memory with other chains on the same node
+- Integrated with P-Chain validator set
+
+### Subnet EVM Mode
+- Configurable fees, gas limits, and precompiles
+- No atomic transactions (uses Warp messaging instead)
+- Independent validator set per subnet
+
+## One-file quickstart
+
+### EVM RPC
+
+```bash
+# Get block number
+curl -X POST http://localhost:9630/ext/bc/C/rpc \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"eth_blockNumber","params":[]}'
+
+# Get balance
+curl -X POST http://localhost:9630/ext/bc/C/rpc \
+  -d '{"jsonrpc":"2.0","id":1,"method":"eth_getBalance","params":["0x...","latest"]}'
+
+# Send transaction
+curl -X POST http://localhost:9630/ext/bc/C/rpc \
+  -d '{"jsonrpc":"2.0","id":1,"method":"eth_sendRawTransaction","params":["0x..."]}'
+```
+
+### Go Client
+
+```go
+import "github.com/luxfi/evm/ethclient"
+
+client, _ := ethclient.Dial("http://localhost:9630/ext/bc/C/rpc")
+blockNum, _ := client.BlockNumber(ctx)
+balance, _ := client.BalanceAt(ctx, addr, nil)
+```
+
+### Custom Precompile
+
+```go
+import "github.com/luxfi/evm/precompile/contract"
+
+var Module = &contract.Module{
+    Address:   common.HexToAddress("0x0300000000000000000000000000000000000001"),
+    Configure: configure,
+}
+
+func configure(cfg *contract.StatefulPrecompileConfig) {
+    cfg.AddFunction("myFunction", myFunctionHandler)
+}
+```
+
+## API Namespaces
+
+| Namespace | Enabled | Purpose |
+|-----------|---------|---------|
+| `eth` | Default | Standard Ethereum JSON-RPC |
+| `personal` | Manual | Account management |
+| `txpool` | Manual | Transaction pool inspection |
+| `debug` | Manual | Debugging and tracing |
+
+## Key Dependencies
+
+```
+github.com/luxfi/consensus@v1.22.67  — Quasar consensus
+github.com/luxfi/crypto@v1.17.40     — Cryptographic primitives
+github.com/luxfi/geth@v1.16.75       — Go Ethereum fork (NOT go-ethereum)
+github.com/luxfi/database@v1.17.43   — Storage
+github.com/luxfi/precompile@v0.4.6   — Precompile framework
+github.com/luxfi/warp@v1.18.5        — Cross-chain messaging
+github.com/luxfi/fhe@v1.7.6          — FHE support in EVM
+github.com/luxfi/node@v1.23.4        — Node integration
+```
+
+## DEX Precompiles
+
+Native DEX precompiles at reserved addresses:
+
+| Address | Precompile | Purpose |
+|---------|------------|---------|
+| `0x0400` | PoolManager | AMM pool management |
+| `0x0401` | SwapRouter | Swap routing |
+| `0x0402` | HooksRegistry | Custom hooks |
+| `0x0403` | FlashLoan | Flash loans |
+
+## Related Skills
+
+- `lux/lux-node.md` — Core node (runs EVM)
+- `lux/lux-dex.md` — CLOB engine integrated via precompiles
+- `lux/lux-exchange.md` — DEX frontend
+- `lux/lux-bridge.md` — Cross-chain to/from C-Chain

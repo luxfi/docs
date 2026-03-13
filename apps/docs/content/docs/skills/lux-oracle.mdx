@@ -1,0 +1,60 @@
+---
+title: "Lux Oracle - Optimistic Oracle for DeFi"
+description: "Lux Oracle is an optimistic oracle for on-chain price feeds and arbitrary data verification."
+---
+
+## Overview
+
+Lux Oracle is an **optimistic oracle** for on-chain price feeds and arbitrary data verification. Fork of UMA Protocol's optimistic oracle, adapted for Lux C-Chain.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/oracle` |
+| Language | JavaScript, Solidity |
+| Upstream | UMA Protocol |
+| Build | Yarn workspaces, Lerna monorepo |
+| Testing | Ganache-CLI on port 9545 |
+| License | AGPL-3.0 |
+
+## How It Works
+
+```
+1. Data requester posts question + reward bond
+2. Proposer submits answer + proposer bond
+3. Dispute window opens (configurable)
+4. If disputed: escalated to DVM (Data Verification Mechanism)
+5. If undisputed: answer accepted, bonds returned
+```
+
+## Contracts
+
+| Contract | Purpose |
+|----------|---------|
+| OptimisticOracle | Core oracle with dispute mechanism |
+| SkinnyOptimisticOracle | Gas-optimized oracle |
+| VotingToken | Governance token for dispute resolution |
+| Finder | Contract registry |
+| IdentifierWhitelist | Approved price identifiers |
+
+## Development
+
+```bash
+git clone https://github.com/luxfi/oracle.git
+cd oracle
+yarn install
+yarn build
+
+# Run tests
+yarn test
+
+# Local Ganache
+npx ganache-cli --port 9545 --deterministic
+```
+
+## Related Skills
+
+- `lux/lux-exchange.md` — DEX (consumes price feeds)
+- `lux/lux-evm.md` — C-Chain deployment
+- `lux/lux-safe.md` — Multisig for oracle governance

@@ -1,0 +1,102 @@
+---
+title: "Lux Crypto - Cryptographic Primitives"
+description: "Lux Crypto provides the cryptographic primitives for the Lux Network — BLS threshold signatures, SLIP-10 HD wallets, secp256k1, KZG commitments, and post-quantum via gnark-crypto."
+---
+
+## Overview
+
+Lux Crypto provides the **cryptographic primitives** for the Lux Network — BLS threshold signatures, SLIP-10 HD wallets, secp256k1, KZG commitments, and post-quantum via gnark-crypto.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Module | `github.com/luxfi/crypto` |
+| Go | 1.26.1 |
+
+## Packages
+
+| Package | Purpose |
+|---------|---------|
+| `bls/` | BLS12-381 threshold signatures (via `blst` v0.3.16) |
+| `keychain/` | SLIP-10 HD key derivation |
+| `secp256k1/` | Ethereum-compatible ECDSA |
+| `certificate.go` | TLS certificate handling |
+
+## Key Dependencies
+
+```
+github.com/supranational/blst@v0.3.16      — BLS signatures
+github.com/cloudflare/circl@v1.6.2         — PQ crypto (CIRCL)
+github.com/consensys/gnark-crypto@v0.19.2  — ZK-friendly crypto
+ethereum/c-kzg-4844/v2                     — KZG polynomial commitments
+filippo.io/age@v1.2.1                      — File encryption
+ProjectZKM/Ziren                           — ZK runtime
+```
+
+## API
+
+### BLS Signatures
+
+```go
+import "github.com/luxfi/crypto/bls"
+
+// Generate key pair
+sk, _ := bls.NewSecretKey()
+pk := sk.PublicKey()
+
+// Sign and verify
+msg := []byte("transaction data")
+sig := bls.Sign(sk, msg)
+valid := bls.Verify(pk, msg, sig)
+
+// Threshold signatures (t-of-n)
+shares := bls.Split(sk, threshold, total)
+partialSigs := make([]bls.Signature, threshold)
+for i := 0; i < threshold; i++ {
+    partialSigs[i] = bls.Sign(shares[i], msg)
+}
+combinedSig := bls.Combine(partialSigs)
+```
+
+### HD Key Derivation (SLIP-10)
+
+```go
+import "github.com/luxfi/crypto/keychain"
+
+kc, _ := keychain.NewFromSeed(seed)
+child, _ := kc.Derive(keychain.DerivationPath{
+    44,   // purpose
+    9005, // Lux coin type
+    0,    // account
+    0,    // change
+    0,    // index
+})
+```
+
+### secp256k1
+
+```go
+import "github.com/luxfi/crypto/secp256k1"
+
+pk, _ := secp256k1.NewPrivateKey()
+addr := pk.EthAddress() // 0x...
+sig, _ := pk.Sign(hash)
+```
+
+## Key Hierarchy (Quasar Consensus)
+
+| Key Type | Usage |
+|----------|-------|
+| ed25519 | Node identity |
+| BLS12-381 | Fast finality signatures |
+| Lattice | Post-quantum finality |
+| secp256k1 + Lamport | EVM wallet signing |
+| secp256k1 + Dilithium | X-Chain UTXO signing |
+
+## Related Skills
+
+- `lux/lux-consensus.md` — Uses BLS for Quasar finality
+- `lux/lux-fhe.md` — Fully homomorphic encryption
+- `lux/lux-lattice.md` — Post-quantum lattice crypto
+- `lux/lux-wallet.md` — HD wallet implementation

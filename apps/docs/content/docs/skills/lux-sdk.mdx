@@ -1,0 +1,129 @@
+---
+title: "Lux SDK - Official Go SDK"
+description: "Lux SDK is the official Go SDK for building and managing Lux networks — unified interface wrapping CLI, netrunner, and node APIs."
+---
+
+## Overview
+
+Lux SDK is the **official Go SDK** for building and managing Lux networks — unified interface wrapping CLI, netrunner, and node APIs. Supports all 5 chain types.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Module | `github.com/luxfi/sdk` |
+| Go | 1.26.1 |
+
+## Key Dependencies
+
+```
+github.com/luxfi/consensus@v1.22.63
+github.com/luxfi/evm@v0.8.35
+github.com/luxfi/netrunner@v1.15.11
+github.com/luxfi/node@v1.23.4
+github.com/luxfi/genesis@v1.6.1
+github.com/luxfi/warp@v1.18.5
+github.com/luxfi/ledger@v1.1.6
+github.com/luxfi/lpm@v1.9.4
+```
+
+## Chain Support
+
+| Chain | Type | Operations |
+|-------|------|-----------|
+| P-Chain | Platform | Staking, validators, L1 creation |
+| X-Chain | Exchange | UTXO transfers, asset creation |
+| C-Chain | Contract | EVM transactions, contract deployment |
+| Q-Chain | Quantum | PQ-specific operations |
+| M-Chain | MPC | Multi-party custody |
+
+## Capabilities
+
+- Network management (start, stop, health)
+- L1/L2/L3 blockchain creation
+- Staking and validator management
+- Cross-chain transfers (Warp messaging)
+- Wallet management
+- Custom VM deployment
+- WASM support
+
+## Auto-Selection
+
+SDK auto-selects the best available backend:
+1. CLI (if installed)
+2. Netrunner (if running)
+3. Direct node APIs
+4. Built-in fallback
+
+## API Examples
+
+### Node Client
+
+```go
+import "github.com/luxfi/sdk/client"
+
+c := client.New("http://localhost:9630")
+
+// Node info
+nodeID, _ := c.Info().GetNodeID(ctx)
+peers, _ := c.Info().Peers(ctx)
+fmt.Printf("Node: %s, Peers: %d\n", nodeID, len(peers))
+
+// P-Chain: Validators
+validators, _ := c.Platform().GetCurrentValidators(ctx, nil)
+
+// Health
+health, _ := c.Health().Health(ctx)
+```
+
+### Wallet Operations
+
+```go
+import "github.com/luxfi/sdk/wallet"
+
+w, _ := wallet.New(ctx, wallet.Config{
+    URI:       "http://localhost:9630",
+    NetworkID: 1, // mainnet
+})
+
+// Get balances
+balance, _ := w.P().GetBalance(ctx)
+fmt.Printf("P-Chain: %d nLUX\n", balance)
+
+// Transfer on X-Chain
+txID, _ := w.X().Transfer(ctx, wallet.TransferArgs{
+    To:      "X-lux1...",
+    Amount:  1_000_000_000, // 1 LUX
+    AssetID: "LUX",
+})
+```
+
+### Transaction Building
+
+```go
+import "github.com/luxfi/sdk/tx"
+
+// Add validator (stake)
+stakeTx, _ := tx.NewAddValidatorTx(tx.AddValidatorTxArgs{
+    NodeID:      nodeID,
+    Start:       time.Now().Add(1 * time.Minute),
+    End:         time.Now().Add(365 * 24 * time.Hour),
+    StakeAmount: 2000 * units.Lux, // 2000 LUX minimum
+    RewardAddress: rewardAddr,
+})
+```
+
+### C-Chain (EVM)
+
+```go
+import "github.com/luxfi/evm/ethclient"
+
+ethClient, _ := ethclient.Dial("http://localhost:9630/ext/bc/C/rpc")
+block, _ := ethClient.BlockNumber(ctx)
+```
+
+## Related Skills
+
+- `lux/lux-node.md` — Node that SDK connects to
+- `lux/lux-cli.md` — CLI tool (SDK wraps CLI)
+- `lux/lux-netrunner.md` — Network testing (SDK wraps netrunner)

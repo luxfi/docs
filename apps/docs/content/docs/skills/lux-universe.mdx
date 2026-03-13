@@ -1,0 +1,46 @@
+---
+title: "Lux Universe - Production K8s Infrastructure"
+description: "Lux Universe is the production Kubernetes infrastructure for the Lux Network — validators, gateways, markets, and supporting services on DOKS."
+---
+
+## Overview
+
+Lux Universe is the **production Kubernetes infrastructure** for the Lux Network — validators, gateways, markets, and supporting services on DOKS.
+
+**NOTE**: This is a private repository. Public details are limited to architecture overview.
+
+## Architecture
+
+### Services
+
+| Service | Description |
+|---------|-------------|
+| Validators | Consensus validator nodes |
+| API Gateway | KrakenD gateway at api.lux.network |
+| Markets | DeFi/NFT marketplace at markets.lux.network |
+| Lux Cloud | Cloud management at cloud.lux.network |
+| PostgreSQL | In-cluster database |
+| Redis | Caching layer |
+| Datastore | Vector/KV store |
+
+### Key Domains
+
+| Domain | Service |
+|--------|---------|
+| api.lux.network | KrakenD Gateway |
+| cloud.lux.network | Lux Cloud |
+| markets.lux.network | Markets |
+
+### Database Strategy
+
+In-cluster PostgreSQL (no managed databases). Serves cloud, commerce, console, gateway, and KMS databases.
+
+## Access
+
+This is a **private repository**. Contact the infrastructure team for access.
+
+## Related Skills
+
+- `lux/lux-node.md` - Validator node software
+- `lux/lux-monitoring.md` - Cluster monitoring
+- `lux/lux-stack.md` - Local dev environment

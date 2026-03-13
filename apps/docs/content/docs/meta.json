@@ -1,0 +1,17 @@
+{
+  "title": "Documentation",
+  "pages": [
+    "---Getting Started---",
+    "index",
+    "---Learn---",
+    "learn/...",
+    "---Build---",
+    "build/...",
+    "---Run Nodes---",
+    "nodes/...",
+    "---Skills Reference---",
+    "skills",
+    "---Reference---",
+    "reference/..."
+  ]
+}

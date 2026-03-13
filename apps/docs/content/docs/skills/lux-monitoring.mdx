@@ -1,0 +1,90 @@
+---
+title: "Lux Monitoring - Full Observability Stack"
+description: "Lux Monitoring provides a complete observability stack for Lux validators and network services — metrics, logs, traces, and alerting."
+---
+
+## Overview
+
+Lux Monitoring provides a **complete observability stack** for Lux validators and network services — metrics, logs, traces, and alerting.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/monitoring` |
+| Stack | Docker Compose |
+| Public URL | monitor.lux.network |
+
+## Components
+
+| Component | Port | Purpose |
+|-----------|------|---------|
+| **Grafana** | 3100 | Dashboards and visualization |
+| **Prometheus** | 9090 | Metrics collection and querying |
+| **Loki** | 3101 | Log aggregation |
+| **Promtail** | — | Log shipping agent |
+| **Node Exporter** | 9100 | System metrics (CPU, RAM, disk) |
+| **Postgres Exporter** | 9187 | PostgreSQL metrics |
+| **Alertmanager** | 9093 | Alert routing and notification |
+
+## Pre-configured Dashboards
+
+7 dashboards included:
+1. **C-Chain** — EVM block production, gas usage, transaction throughput
+2. **P-Chain** — Validator set, staking metrics, subnet creation
+3. **X-Chain** — UTXO transactions, asset creation
+4. **Machine Metrics** — CPU, memory, disk I/O, network bandwidth
+5. **Database** — PostgreSQL query performance, connections, replication
+6. **Logs** — Structured log search via Loki
+7. **Overview** — Network-wide health summary
+
+## Key Metrics
+
+### Consensus
+- Finality time (target: <1s)
+- Transactions per second
+- Vote round latency
+- Certificate generation time
+
+### Networking
+- Peer count and churn
+- Message latency (P2P)
+- Bandwidth in/out
+- Warp message delivery
+
+### VM Performance
+- Blocks produced per minute
+- Gas used vs gas limit
+- Transaction pool depth
+
+### System
+- CPU utilization
+- Memory usage
+- Disk I/O and capacity
+- Network interface throughput
+
+## Alerts
+
+Pre-configured alert rules:
+- **Node down** — validator unreachable for >30s
+- **Chain sync** — block height falling behind peers
+- **Block rejection** — high rejection rate
+- **Low peers** — peer count below threshold
+- **Resource usage** — CPU/memory/disk above 80%
+
+## Quickstart
+
+```bash
+git clone https://github.com/luxfi/monitoring.git
+cd monitoring
+docker compose up -d
+
+# Grafana: http://localhost:3100 (default admin/admin)
+# Prometheus: http://localhost:9090
+# Alertmanager: http://localhost:9093
+```
+
+## Related Skills
+
+- `lux/lux-node.md` — Node that exports metrics
+- `lux/lux-universe.md` — Production K8s infrastructure

@@ -1,0 +1,28 @@
+---
+title: "Lux Precompiled Contracts & Smart Contract VM"
+description: "Custom EVM precompiled contracts for Lux-specific operations, SessionVM smart contract VM, and Foundry-based Solidity development."
+---
+
+## Overview
+
+Custom **EVM precompiled contracts** for Lux-specific operations, SessionVM smart contract VM, and Foundry-based Solidity development.
+
+## Components
+
+| Component | Path | Purpose |
+|-----------|------|---------|
+| precompile/ | ``github.com/luxfi/precompile`` | Custom precompiles |
+| session/ | ``github.com/luxfi/session`` | SessionVM |
+| liquid/ | ``github.com/luxfi/liquid`` | Foundry Solidity template |
+| erc20-go/ | ``github.com/luxfi/erc20-go`` | ERC20 in Go |
+
+## Precompile Development
+
+```go
+import "github.com/luxfi/evm/precompile/contract"
+
+var MyPrecompile = &contract.Module{
+    Address: common.HexToAddress("0x0300000000000000000000000000000000000001"),
+    Gas:     contract.GasCost{Base: 2000},
+}
+```

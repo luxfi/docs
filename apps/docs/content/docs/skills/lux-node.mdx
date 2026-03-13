@@ -1,0 +1,175 @@
+---
+title: "Lux Node - Core Validator Implementation"
+description: "Lux Node (`luxd`) is the core validator node for the Lux Network — a multi-chain blockchain with Quasar post-quantum consensus, 5 chain types, and custom VM support."
+---
+
+## Overview
+
+Lux Node (`luxd`) is the **core validator node** for the Lux Network — a multi-chain blockchain with Quasar post-quantum consensus, 5 chain types, and custom VM support. Written in Go.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Module | `github.com/luxfi/node` |
+| Go | 1.26.1 |
+| Binary | `luxd` |
+| HTTP API | Port 9630 |
+| Staking/P2P | Port 9631 |
+| Image | `ghcr.io/luxfi/node:<tag>` |
+| Hardware | 8 vCPU, 16 GiB RAM, 1 TiB storage minimum |
+
+## Hard requirements
+
+1. ALWAYS use `github.com/luxfi/*` packages — NEVER `go-ethereum` or `ava-labs`
+2. NEVER use EWOQ keys — generate fresh keys
+3. NEVER `pkill luxd` — use `lux cli` for proper shutdown
+
+## Chain Architecture
+
+| Chain | Type | Purpose |
+|-------|------|---------|
+| **P-Chain** | Platform | Validator management, staking, L1 creation |
+| **X-Chain** | Exchange | UTXO-based asset transfers |
+| **C-Chain** | Contract | EVM-compatible smart contracts |
+| **Q-Chain** | Quantum | Post-quantum specific operations |
+| **M-Chain** | MPC | Multi-party computation custody |
+
+## One-file quickstart
+
+### Build from source
+
+```bash
+git clone https://github.com/luxfi/node.git
+cd node
+go build -o luxd ./main/
+```
+
+### Run a validator
+
+```bash
+./luxd --network-id=mainnet \
+  --http-port=9630 \
+  --staking-port=9631 \
+  --db-dir=./db \
+  --log-level=info
+```
+
+### API Examples
+
+```bash
+# Get node info
+curl -X POST http://localhost:9630/ext/info \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"info.getNodeID"}'
+
+# Check health
+curl -X POST http://localhost:9630/ext/health \
+  -d '{"jsonrpc":"2.0","id":1,"method":"health.health"}'
+
+# P-Chain: Get validators
+curl -X POST http://localhost:9630/ext/bc/P \
+  -d '{"jsonrpc":"2.0","id":1,"method":"platform.getCurrentValidators","params":{}}'
+
+# C-Chain: EVM RPC
+curl -X POST http://localhost:9630/ext/bc/C/rpc \
+  -d '{"jsonrpc":"2.0","id":1,"method":"eth_blockNumber","params":[]}'
+
+# X-Chain: Get balance
+curl -X POST http://localhost:9630/ext/bc/X \
+  -d '{"jsonrpc":"2.0","id":1,"method":"avm.getBalance","params":{"address":"X-lux1...","assetID":"LUX"}}'
+```
+
+### Go SDK client
+
+```go
+import "github.com/luxfi/sdk/client"
+
+c := client.New("http://localhost:9630")
+
+nodeID, _ := c.Info().GetNodeID(ctx)
+peers, _ := c.Info().Peers(ctx)
+fmt.Printf("Node: %s, Peers: %d\n", nodeID, len(peers))
+```
+
+## Key Dependencies
+
+```
+github.com/luxfi/consensus@v1.22.69  — Quasar consensus engine
+github.com/luxfi/crypto@v1.17.42     — BLS, secp256k1, certificates
+github.com/luxfi/database@v1.17.43   — Storage layer
+github.com/luxfi/geth@v1.16.76       — Go Ethereum fork (luxfi, NOT go-ethereum)
+github.com/luxfi/sdk@v1.16.45        — SDK integration
+github.com/luxfi/warp@v1.18.5        — Cross-chain messaging (LP-118)
+github.com/luxfi/lattice/v7@v7.0.0   — Post-quantum lattice crypto
+github.com/luxfi/genesis@v1.6.2      — Genesis configuration
+github.com/luxfi/vm@v1.0.39          — VM interface
+github.com/luxfi/ai@v0.0.0           — AI integration
+```
+
+## Architecture
+
+```
+luxd
+├── chains/       — Chain manager (P, X, C, Q, M)
+├── network/      — P2P networking, peer management
+├── snow/         — Consensus integration (imports luxfi/consensus)
+├── vms/          — Virtual machines
+│   ├── platformvm/  — P-Chain (staking, validators)
+│   ├── avm/         — X-Chain (UTXO assets)
+│   └── proposervm/  — Block proposal wrapper
+├── database/     — Storage layer
+├── api/          — HTTP/JSON-RPC API
+├── config/       — Node configuration
+└── genesis/      — Network bootstrapping
+```
+
+## Configuration
+
+```bash
+# Key CLI flags
+--network-id=mainnet|testnet|local
+--http-port=9630
+--staking-port=9631
+--db-dir=/path/to/db
+--log-level=info|debug|trace
+--bootstrap-ips=...
+--bootstrap-ids=...
+--staking-tls-cert-file=staker.crt
+--staking-tls-key-file=staker.key
+```
+
+## Features
+
+- **Quasar Consensus**: Post-quantum 2-round finality (NOT Snow/Snowball/Avalanche)
+- **L1 Validators with BLS**: BLS signature aggregation for validator sets
+- **Warp Messaging (LP-118)**: Cross-chain message protocol
+- **Custom VMs**: Register any VM implementation
+- **ZK Integration**: `ProjectZKM/Ziren` ZK runtime support
+- **AI Integration**: `luxfi/ai` dependency for AI workloads
+
+## Docker
+
+```bash
+docker run -p 9630:9630 -p 9631:9631 \
+  -v luxd-data:/data \
+  ghcr.io/luxfi/node:latest \
+  --network-id=mainnet --db-dir=/data
+```
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Node won't start | Port conflict | Check 9630/9631 availability |
+| Slow sync | Insufficient hardware | Meet minimum 8 vCPU / 16 GiB requirements |
+| Peer connection fails | Firewall blocking | Open port 9631 for staking |
+| Bootstrap timeout | Bad bootstrap nodes | Use official bootstrap endpoints |
+| Import errors | Using go-ethereum | Switch to luxfi packages |
+
+## Related Skills
+
+- `lux/lux-consensus.md` — Quasar consensus engine (separate repo)
+- `lux/lux-evm.md` — C-Chain EVM execution
+- `lux/lux-sdk.md` — Go SDK for node interaction
+- `lux/lux-cli.md` — CLI for node management

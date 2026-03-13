@@ -1,0 +1,99 @@
+---
+title: "Lux Lattice - Post-Quantum Lattice Cryptography"
+description: "Lattice-based multiparty homomorphic encryption library."
+---
+
+## Overview
+
+Lattice-based **multiparty homomorphic encryption** library. Full-RNS RLWE-based HE supporting BFV, BGV, and CKKS schemes. Originally from EPFL Laboratory for Data Security, maintained by Lux Industries.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Module | `github.com/luxfi/lattice/v7` |
+| Version | v7.0.0 |
+| Go | 1.26.1 |
+| Upstream | EPFL Laboratory for Data Security |
+| License | Apache 2.0 |
+
+**NOTE**: Module is at v7 (inherited from upstream EPFL convention). All consumers (`node`, `evm`, `fhe`, `consensus`) import `lattice/v7`.
+
+## Schemes
+
+| Scheme | Type | Use Case |
+|--------|------|----------|
+| **BFV** | Exact integer | Counting, comparison, small integers |
+| **BGV** | Exact modular | Modular arithmetic circuits |
+| **CKKS** | Approximate real | Floating-point, ML inference |
+
+## Packages
+
+| Package | Purpose |
+|---------|---------|
+| `ring/` | Polynomial ring with NTT (Number Theoretic Transform) |
+| `core/rlwe/` | RLWE encryption primitives |
+| `core/rgsw/` | RGSW encryption |
+| `schemes/bfv/` | BFV scheme implementation |
+| `schemes/bgv/` | BGV scheme implementation |
+| `schemes/ckks/` | CKKS scheme implementation |
+| `circuits/` | High-level operations |
+| `circuits/lintrans/` | Linear transformations |
+| `circuits/polynomial/` | Polynomial evaluation |
+| `circuits/minimax/` | Min/max approximation |
+| `circuits/comparison/` | Comparison operations |
+| `circuits/dft/` | Discrete Fourier Transform |
+| `circuits/bootstrapping/` | CKKS bootstrapping |
+| `multiparty/` | Threshold/multiparty key generation and decryption |
+
+## Features
+
+- RGSW and external product
+- LMKCDEY blind rotations
+- CKKS bootstrapping (approximate)
+- Multiparty (threshold) key generation
+- WASM compilation support
+
+## Usage
+
+```go
+import (
+    "github.com/luxfi/lattice/v7/schemes/ckks"
+    "github.com/luxfi/lattice/v7/core/rlwe"
+)
+
+// Generate parameters
+params, _ := ckks.NewParametersFromLiteral(ckks.PN14QP438)
+
+// Key generation
+keygen := rlwe.NewKeyGenerator(params)
+sk := keygen.GenSecretKeyNew()
+pk := keygen.GenPublicKeyNew(sk)
+
+// Encrypt
+encoder := ckks.NewEncoder(params)
+encryptor := rlwe.NewEncryptor(params, pk)
+
+values := []complex128{1.0 + 0i, 2.0 + 0i, 3.0 + 0i}
+pt := encoder.EncodeNew(values, params.MaxLevel())
+ct := encryptor.EncryptNew(pt)
+
+// Homomorphic operations
+evaluator := ckks.NewEvaluator(params, nil)
+ctResult := evaluator.AddNew(ct, ct)  // encrypted(values + values)
+
+// Decrypt
+decryptor := rlwe.NewDecryptor(params, sk)
+ptResult := decryptor.DecryptNew(ctResult)
+result := encoder.Decode(ptResult, params.LogSlots())
+```
+
+## Consensus Integration
+
+The `github.com/luxfi/consensus` module uses lattice crypto for post-quantum certificates in Quasar 2-round finality (second round: lattice PQ certificate).
+
+## Related Skills
+
+- `lux/lux-fhe.md` — Higher-level FHE API (uses lattice internally)
+- `lux/lux-crypto.md` — Other cryptographic primitives
+- `lux/lux-consensus.md` — Quasar PQ certificates
