@@ -1,0 +1,97 @@
+---
+title: "Lux FHE - Fully Homomorphic Encryption"
+description: "Lux FHE enables computation on encrypted data — TFHE (boolean gates), CKKS (approximate arithmetic), and GPU acceleration."
+---
+
+## Overview
+
+Lux FHE enables **computation on encrypted data** — TFHE (boolean gates), CKKS (approximate arithmetic), and GPU acceleration. Integrated with the EVM via `github.com/luxfi/evm` indirect dependency.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Module | `github.com/luxfi/fhe` |
+| Go | 1.26.1 |
+| Schemes | TFHE (boolean), CKKS (approximate) |
+| Deps | `github.com/luxfi/lattice/v7`, `github.com/luxfi/mdns` |
+
+## Use Cases
+
+- **Privacy-preserving DeFi**: Trade without revealing positions
+- **Secret voting**: Encrypted ballot counting
+- **Confidential analytics**: Aggregate without seeing individual data
+- **Sealed-bid auctions**: Encrypted bids, verifiable results
+- **EVM privacy**: FHE operations in smart contracts
+
+## Performance
+
+| Operation | Latency |
+|-----------|---------|
+| TFHE gate (AND/OR/NOT) | ~10ms |
+| TFHE bootstrap | ~50ms |
+| CKKS Add | <1ms |
+| CKKS Multiply | ~5ms |
+| NTT (GPU) | ~1ms |
+
+## API
+
+### TFHE (Boolean Gates)
+
+```go
+import "github.com/luxfi/fhe"
+
+keys := fhe.GenerateTFHEKeys()
+
+// Encrypt booleans
+ct1 := fhe.TFHEEncrypt(keys, true)
+ct2 := fhe.TFHEEncrypt(keys, false)
+
+// Compute on encrypted data
+ctAnd := fhe.TFHEAnd(ct1, ct2)   // encrypted(true AND false)
+ctOr  := fhe.TFHEOr(ct1, ct2)    // encrypted(true OR false)
+ctNot := fhe.TFHENot(ct1)        // encrypted(NOT true)
+
+// Decrypt
+result := fhe.TFHEDecrypt(keys, ctAnd) // false
+```
+
+### TFHE Integers
+
+```go
+// Encrypt integers
+ctA := fhe.EncryptInt(keys, 42)
+ctB := fhe.EncryptInt(keys, 58)
+
+// Arithmetic on encrypted data
+ctSum  := fhe.IntAdd(ctA, ctB)  // encrypted(42 + 58)
+ctDiff := fhe.IntSub(ctA, ctB)  // encrypted(42 - 58)
+ctProd := fhe.IntMul(ctA, ctB)  // encrypted(42 * 58)
+
+// Decrypt
+sum := fhe.DecryptInt(keys, ctSum) // 100
+```
+
+### CKKS (Approximate Arithmetic)
+
+```go
+// For floating-point operations
+ctX := fhe.CKKSEncrypt(keys, 3.14159)
+ctY := fhe.CKKSEncrypt(keys, 2.71828)
+
+ctSum := fhe.CKKSAdd(ctX, ctY)
+ctProd := fhe.CKKSMul(ctX, ctY)
+ctRot := fhe.CKKSRotate(ctX, 1)
+
+result := fhe.CKKSDecrypt(keys, ctSum) // ~5.85987
+```
+
+## EVM Integration
+
+The `github.com/luxfi/evm` imports FHE as an indirect dependency, enabling FHE-aware smart contract operations on Lux C-Chain.
+
+## Related Skills
+
+- `lux/lux-lattice.md` — Underlying lattice crypto (BFV/BGV/CKKS schemes)
+- `lux/lux-crypto.md` — Other cryptographic primitives
+- `lux/lux-evm.md` — EVM with FHE support

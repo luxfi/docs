@@ -1,0 +1,44 @@
+---
+title: "Lux Netrunner - Network Testing & Simulation"
+description: "Lux Netrunner is a network simulation and testing tool for local development."
+---
+
+## Overview
+
+Lux Netrunner is a **network simulation and testing tool** for local development. Spin up multi-node networks, run performance benchmarks, and test consensus behavior.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Module | `github.com/luxfi/netrunner` |
+| SDK | `github.com/luxfi/netrunner-sdk` |
+| gRPC | Port 8080 |
+| HTTP Gateway | Port 8081 |
+
+## One-file quickstart
+
+```go
+import "github.com/luxfi/netrunner-sdk"
+
+// Create 5-node local network
+network, _ := netrunner.New(netrunner.Config{
+    NodeCount: 5,
+    LogLevel:  "info",
+})
+
+// Start network
+network.Start(ctx)
+defer network.Stop(ctx)
+
+// Get node URIs
+uris := network.GetNodeURIs()
+// ["http://localhost:9650", "http://localhost:9652", ...]
+
+// Run benchmark
+results, _ := network.Benchmark(ctx, netrunner.BenchmarkConfig{
+    Duration: 60 * time.Second,
+    TxRate:   1000,
+})
+fmt.Printf("TPS: %.0f, Finality: %v\n", results.TPS, results.AvgFinality)
+```

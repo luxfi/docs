@@ -1,0 +1,92 @@
+---
+title: "Lux Safe - Multisig Smart Accounts"
+description: "Lux Safe provides multisig smart account contracts — fork of Safe (Gnosis Safe) with ERC-4337 account abstraction support."
+---
+
+## Overview
+
+Lux Safe provides **multisig smart account contracts** — fork of Safe (Gnosis Safe) with ERC-4337 account abstraction support. Multi-chain deployment on Lux C-Chain and subnets.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/safe` |
+| Package | `@luxfi/safe` |
+| Version | v1.5.0 |
+| Language | Solidity 0.7.6 |
+| Framework | Hardhat |
+| Upstream | safe-global/safe-smart-account |
+| License | LGPL-3.0 |
+
+## Features
+
+- **M-of-N multisig**: Configurable threshold signatures
+- **ERC-4337**: Account abstraction compatibility
+- **Deterministic deployment**: Same address across all chains
+- **Module system**: Extensible via Safe modules
+- **Guard system**: Transaction validation hooks
+
+## Contracts
+
+| Contract | Purpose |
+|----------|---------|
+| `Safe.sol` | Core multisig account |
+| `SafeProxyFactory.sol` | Deterministic proxy deployment |
+| `CompatibilityFallbackHandler.sol` | ERC-1271 + token receiver |
+| `SafeL2.sol` | L2-optimized (emits events for indexing) |
+| `TokenCallbackHandler.sol` | ERC721/ERC1155 receiver |
+
+## Usage
+
+```solidity
+// Deploy new Safe with 2-of-3 threshold
+SafeProxyFactory factory = SafeProxyFactory(FACTORY_ADDRESS);
+
+address[] memory owners = new address[](3);
+owners[0] = 0x1234...;
+owners[1] = 0x5678...;
+owners[2] = 0xabcd...;
+
+bytes memory initializer = abi.encodeWithSelector(
+    Safe.setup.selector,
+    owners,
+    2,           // threshold
+    address(0),  // to
+    "",          // data
+    FALLBACK_HANDLER,
+    address(0),  // paymentToken
+    0,           // payment
+    address(0)   // paymentReceiver
+);
+
+SafeProxy proxy = factory.createProxyWithNonce(
+    SAFE_SINGLETON,
+    initializer,
+    salt
+);
+```
+
+## Audits
+
+Security audits from versions 0.0.1 through 1.5.0:
+- Certora (formal verification)
+- Ackee Blockchain
+- G0 Group
+- Runtime Verification
+
+## Development
+
+```bash
+git clone https://github.com/luxfi/safe.git
+cd safe
+npm install
+npx hardhat compile
+npx hardhat test
+```
+
+## Related Skills
+
+- `lux/lux-wallet.md` — Wallet integration with Safe
+- `lux/lux-crypto.md` — Cryptographic primitives
+- `lux/lux-governance.md` — DAO treasury management

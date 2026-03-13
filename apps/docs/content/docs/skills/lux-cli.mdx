@@ -1,0 +1,46 @@
+---
+title: "Lux CLI - Command-Line Interface"
+description: "Lux CLI is the command-line tool for Lux subnet development, local network testing, and validator operations."
+---
+
+## Overview
+
+Lux CLI is the **command-line tool** for Lux subnet development, local network testing, and validator operations. NEVER use `pkill luxd` — always use CLI for proper shutdown.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Module | `github.com/luxfi/cli` |
+| Config | `$HOME/.lux/cli.json` |
+| Platforms | Linux, macOS |
+| Build | `go build -o lux ./cmd/` |
+
+## Commands
+
+```bash
+# Network management
+lux network create local-net    # Create local network
+lux network start               # Start network
+lux network stop                # Stop network (proper shutdown!)
+lux network status              # Check status
+lux network clean               # Remove network data
+
+# Subnet operations
+lux subnet create my-subnet     # Create subnet
+lux subnet deploy my-subnet     # Deploy to local network
+lux subnet list                 # List subnets
+
+# Validator operations
+lux validator list              # List validators
+lux validator add --node-id=... # Add validator
+
+# Key management (NEVER use EWOQ keys!)
+lux key create my-key           # Generate fresh key
+lux key list                    # List keys
+```
+
+## Related Skills
+
+- `lux/lux-node.md` - Node management
+- `lux/lux-netrunner.md` - Network testing

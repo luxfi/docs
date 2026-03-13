@@ -1,0 +1,87 @@
+---
+title: "Lux Wallet - Multi-Platform HD Wallet"
+description: "Lux Wallet is a multi-platform hardware wallet application — `@luxwallet/monorepo` supporting Desktop, Web, Mobile (iOS/Android), and Browser Extension from a single codebase."
+---
+
+## Overview
+
+Lux Wallet is a **multi-platform hardware wallet application** — `@luxwallet/monorepo` supporting Desktop, Web, Mobile (iOS/Android), and Browser Extension from a single codebase. Fork of OneKey, extensively customized for Lux chain support.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/wallet` |
+| Package | `@luxwallet/monorepo` v1.0.0 |
+| Package manager | Yarn 4.1.0 (Berry) — NOT pnpm |
+| Workspace packages | `@onekeyfe/*`, `@luxwallet/*` |
+
+## Platforms
+
+| Platform | Technology | Status |
+|----------|-----------|--------|
+| **iOS** | React Native 0.73.7 | Production |
+| **Android** | React Native 0.73.7 | Production |
+| **Desktop** | Electron 27 | Production |
+| **Chrome/Firefox/Edge/Brave** | Extension | Production |
+| **Web** | React 18, Expo 50 | Production |
+
+## Chain Support
+
+Lux native chains plus multi-chain:
+- **Lux**: P-Chain, X-Chain, C-Chain, Q-Chain, M-Chain
+- **EVM**: Ethereum and all EVM-compatible chains
+- **Polkadot**: Substrate-based chains
+- **Sui/Aptos**: Move-based chains
+- **Cardano**: Via `@emurgo` libraries
+- **Bitcoin**: Via `btcsuite`
+
+## Hardware Wallet Support
+
+Hardware wallet integration via `@onekeyfe/hd-*` SDK packages:
+- OneKey Classic/Touch/Mini/Pro
+- Ledger (via `github.com/luxfi/ledger-go`)
+
+## Key Dependencies
+
+```
+react@18, react-native@0.73.7
+expo@50
+tamagui@1.79.19         — Cross-platform UI
+walletconnect@2.x       — WalletConnect protocol
+viem, wagmi             — EVM client libraries
+```
+
+## Related Repos
+
+| Component | Repo | Purpose |
+|-----------|------|---------|
+| BIP32 HD keys | `github.com/luxfi/go-bip32` | HD key derivation (Go) |
+| BIP39 mnemonics | `github.com/luxfi/go-bip39` | Mnemonic phrases (Go) |
+| Ledger integration | `github.com/luxfi/ledger-go` | Hardware wallet (Go) |
+
+## Go SDK Wallet
+
+```go
+import (
+    "github.com/luxfi/go-bip39"
+    "github.com/luxfi/wallet"
+)
+
+// Generate mnemonic
+mnemonic, _ := bip39.NewMnemonic(256) // 24 words
+
+// Create wallet
+w, _ := wallet.FromMnemonic(mnemonic)
+
+// Get addresses for each chain
+xAddr := w.X().Address()  // X-lux1...
+pAddr := w.P().Address()  // P-lux1...
+cAddr := w.C().Address()  // 0x...
+```
+
+## Related Skills
+
+- `lux/lux-crypto.md` — Cryptographic primitives
+- `lux/lux-safe.md` — Multisig wallets (Safe fork)
+- `lux/lux-sdk.md` — Go SDK wallet utilities

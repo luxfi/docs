@@ -1,0 +1,131 @@
+---
+title: "Lux Quasar - Post-Quantum Consensus Engine"
+description: "Lux Quasar is the post-quantum consensus engine with Photonic Selection — a novel consensus protocol achieving sub-second 2-round finality with dual-certificate security (BLS aggregate + lattice po..."
+---
+
+## Overview
+
+Lux Quasar is the **post-quantum consensus engine** with Photonic Selection — a novel consensus protocol achieving sub-second 2-round finality with dual-certificate security (BLS aggregate + lattice post-quantum). This is a SEPARATE repository from the node.
+
+**This is NOT Snow, Snowball, or Avalanche BFT.** Quasar is an original consensus protocol.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Module | `github.com/luxfi/consensus` |
+| Version | v1.22.0+ |
+| Language | Go 1.26.1 + C + Rust FFI + Python (Cython) |
+| Finality | 2-round, sub-second |
+| Test coverage | 96%+ |
+
+## Architecture
+
+### Sub-Protocols
+
+| Protocol | Role |
+|----------|------|
+| **Photon** | K-of-N committee selection (3.03us) |
+| **Emitter** | Committee coordination |
+| **Wave** | Threshold voting (3.38us per vote round) |
+| **Flare** | Certificate generation |
+| **Horizon** | Frontier management |
+| **Focus** | Confidence tracking |
+| **Nova** | DAG-based classical finality |
+| **Quasar** | Quantum finality (40.7ns Phase II) |
+| **Nebula** | State sync |
+| **QZMQ** | Post-quantum transport |
+
+### Finality Flow
+
+```
+1. Transaction proposed
+2. Photon selects committee (K-of-N)
+3. Wave: threshold voting round
+4. Round 1: BLS aggregate signature (fast finality)
+5. Round 2: Lattice PQ certificate (quantum-safe finality)
+6. Flare generates dual certificate
+7. Transaction finalized (<1s)
+```
+
+### Dual Certificate Security
+
+Every block requires TWO certificates to validate:
+- **BLS12-381 aggregate signature** — fast classical security
+- **Lattice post-quantum certificate** — quantum-safe assurance
+
+Both must pass validation. This ensures security even if one cryptographic scheme is compromised.
+
+### Chain Integration
+
+All chains use Quasar:
+- **Q-Chain** — quantum-specific operations
+- **C-Chain** — EVM-compatible contracts
+- **X-Chain** — exchange/UTXO transactions
+- **P-Chain** — platform/validator management
+- **M-Chain** — MPC custody operations
+
+### Key Hierarchy
+
+| Key Type | Usage |
+|----------|-------|
+| ed25519 | Node identity |
+| BLS12-381 | Fast finality signatures |
+| Lattice | Post-quantum finality |
+| secp256k1 + Lamport | EVM wallet signing |
+| secp256k1 + Dilithium | X-Chain UTXO signing |
+
+## Multi-Language Implementations
+
+| Language | Performance | Usage |
+|----------|-------------|-------|
+| C | 9M+ blocks/sec | Core engine |
+| Rust FFI | High | Integration layer |
+| Python (Cython) | 6.7M blocks/sec | SDK/tooling |
+| Go (CGO) | Primary | Node integration |
+
+## Key Dependencies
+
+```
+github.com/luxfi/crypto      — BLS, secp256k1, certificates
+github.com/luxfi/database    — State storage
+github.com/luxfi/ids         — Identifiers
+github.com/luxfi/warp        — Cross-chain messaging
+github.com/luxfi/lattice/v7  — Post-quantum lattice crypto
+github.com/luxfi/ringtail    — Ring signatures
+github.com/luxfi/zap         — Zero-copy protocol
+```
+
+## Performance Benchmarks
+
+| Operation | Latency |
+|-----------|---------|
+| Vote round | 3.38us |
+| K-of-N selection | 3.03us |
+| Quasar Phase II | 40.7ns |
+| End-to-end finality | <1s |
+
+## Tuning Parameters
+
+| Parameter | Description |
+|-----------|-------------|
+| Committee size (K) | Validators in selection pool |
+| Threshold (T) | Required signatures for consensus |
+| Vote rounds | Rounds before commitment |
+| Certificate mode | `dual` (BLS+Lattice), `classical` (BLS only) |
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Slow finality | Low peer count | Ensure sufficient connected peers |
+| Consensus stall | Network partition | Check P2P connectivity |
+| Certificate validation fail | Key mismatch | Verify BLS and lattice keys registered |
+| Phase II timeout | Lattice computation slow | Check hardware requirements |
+
+## Related Skills
+
+- `lux/lux-node.md` — Node that imports and runs Quasar
+- `lux/lux-p2p.md` — Networking layer
+- `lux/lux-crypto.md` — Cryptographic primitives (BLS, lattice)
+- `lux/lux-sdk.md` — SDK for querying consensus state
