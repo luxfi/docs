@@ -77,7 +77,13 @@ Pre-configured alert rules:
 ```bash
 git clone https://github.com/luxfi/monitoring.git
 cd monitoring
-docker compose up -d
+
+# Network-specific compose files (no root compose.yml):
+#   compose.dex.yml      — DEX monitoring
+#   compose.luxnet.yml   — Lux network monitoring
+
+# Start via helper script:
+./start-monitoring.sh
 
 # Grafana: http://localhost:3100 (default admin/admin)
 # Prometheus: http://localhost:9090
