@@ -1,0 +1,125 @@
+---
+title: "Lux Web Wallet - Web-Based Network Wallet"
+description: "## When to use"
+---
+
+## Overview
+
+Lux Web Wallet is a **web-based wallet** for the Lux Network. It is a pnpm monorepo with a Vue.js wallet application, a TypeScript wallet SDK (`@luxfi/wallet-sdk`), a Next.js marketing site, and shared UI components. It supports mnemonic, Ledger, and keystore-based access to X-Chain, P-Chain, C-Chain, and EVM assets.
+
+## When to use
+
+- Building or deploying the Lux web wallet UI
+- Integrating the `@luxfi/wallet-sdk` for programmatic wallet operations
+- Working with Lux chain transactions (X/P/C) from a browser
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/wwallet` |
+| Language | TypeScript |
+| Package manager | pnpm |
+| Workspaces | `app`, `components`, `sdk`, `web` |
+| Default branch | main |
+| License | Lux Ecosystem License |
+
+## Monorepo structure
+
+### Workspaces
+
+| Workspace | Package | Purpose |
+|-----------|---------|---------|
+| `app/` | `@luxwallet/app` v0.1.4 | Vue 2.6 wallet SPA (Vuetify, Vue Router, Vuex) |
+| `sdk/` | `@luxfi/wallet-sdk` v0.20.29 | Core wallet SDK (X/P/C chain ops, Ledger, BIP32/39, Bitcoin) |
+| `web/` | (Next.js site) | Marketing / landing page |
+| `components/` | Shared UI components | Reusable Vue components |
+
+### App (`app/`)
+
+Vue.js single-page application with:
+
+- **Framework**: Vue 2.6, Vuetify 2.6, Vue Router, Vuex
+- **Chain support**: X-Chain, P-Chain, C-Chain via `luxnet` SDK
+- **Ledger**: `@luxfi/hw-app-lux`, `@luxfi/hw-app-luxz`, `@ledgerhq/hw-transport-webhid`
+- **EVM**: ethers.js 5.6, web3.js 4.10, `@ethereumjs/tx`
+- **Bitcoin**: `bitcoinjs-lib`, `bip32`, `bip39`, `ecpair`, `tiny-secp256k1`
+- **Analytics**: `@hanzo/insights`
+- **Tests**: Jest, Cypress (e2e)
+
+### SDK (`sdk/`)
+
+Published as `@luxfi/wallet-sdk` on npm:
+
+- **Peer dep**: `luxnet >= 3.15.5`
+- **Key deps**: `@luxfi/cloud`, `@luxfi/hw-app-lux`, `@metamask/eth-sig-util`, ethers 5.6
+- **Bitcoin**: Full BIP32/39/ecpair/bitcoinjs-lib support
+- **Build**: Rollup, TypeScript 5.4
+- **Tests**: Jest
+
+## One-file quickstart
+
+```bash
+git clone https://github.com/luxfi/wwallet.git
+cd wwallet
+pnpm install
+
+# Start the wallet app
+cd app && pnpm serve
+
+# Run tests
+cd app && pnpm test
+cd sdk && pnpm test
+```
+
+## Key dependencies
+
+```
+luxnet@3.15.6           -- Lux JS SDK (X/P/C chain)
+@luxfi/wallet-sdk       -- Wallet SDK (published npm package)
+@luxfi/cloud            -- Lux cloud API client
+@luxfi/hw-app-lux       -- Ledger app for Lux
+@luxfi/hw-app-luxz      -- Ledger app for Lux Z-chain
+@hanzo/insights         -- Analytics
+vue@2.6                 -- Frontend framework
+ethers@5.6              -- EVM interaction
+web3@4.10               -- EVM interaction (app)
+bitcoinjs-lib           -- Bitcoin transaction support
+```
+
+## Default connections
+
+| Network | Lux API | Explorer API |
+|---------|---------|-------------|
+| Mainnet | `https://api.lux.network` | `https://api-explore.lux.network` |
+| Testnet | `https://api.lux-test.network` | `https://api-explore.lux-test.network` |
+
+## Development
+
+```bash
+# Install all workspace deps
+pnpm install
+
+# Dev server (wallet app)
+cd app && pnpm serve
+
+# Production build
+cd app && pnpm build
+
+# SDK build
+cd sdk && pnpm build
+
+# SDK tests
+cd sdk && pnpm test
+```
+
+## Deployment
+
+- Vercel config present (`vercel.json` at root)
+- App builds to `app/dist/` for static serving
+
+## Related Skills
+
+- `lux/lux-wallet.md` -- Multi-platform HD wallet (OneKey fork, mobile/desktop/extension)
+- `lux/lux-sdk.md` -- Go SDK wallet utilities
+- `lux/lux-explorer.md` -- Explorer API used for balance/history

@@ -1,0 +1,215 @@
+---
+title: "Lux Graph Node - Blockchain Data Indexing via GraphQL"
+description: "The fork is maintained at  with the upstream at ."
+---
+
+## Overview
+
+Lux Graph Node is a fork of [The Graph](https://thegraph.com/) protocol's **graph-node** -- an open-source Rust implementation that indexes blockchain data and serves it via GraphQL. It event-sources Ethereum-compatible blockchains (including the Lux C-Chain) to deterministically update a data store queryable through a GraphQL endpoint.
+
+The fork is maintained at `luxfi/graph-node` with the upstream at `graphprotocol/graph-node`.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/graph-node` |
+| Upstream | `github.com/graphprotocol/graph-node` |
+| Language | Rust (stable toolchain) |
+| Version | 0.35.0 (workspace) |
+| Branch | `master` |
+| GraphQL HTTP | Port 8000 |
+| GraphQL WS | Port 8001 |
+| Admin | Port 8020 |
+| License | MIT / Apache-2.0 (dual) |
+
+## Hard requirements
+
+1. **Rust** (latest stable) -- `rustfmt` required at build time
+2. **PostgreSQL** -- primary data store
+3. **IPFS** -- for subgraph manifest and data retrieval
+4. **Ethereum RPC** -- Lux C-Chain RPC or any EVM-compatible endpoint
+5. 8 GB RAM minimum for `cargo build`
+
+## Workspace Crates
+
+```toml
+[workspace]
+members = [
+    "core",               # Core implementations
+    "core/graphman",      # Graph manager CLI
+    "core/graphman_store",# Graph manager store
+    "chain/*",            # Chain adapters
+    "graphql",            # GraphQL implementation
+    "node",               # Local graph node binary
+    "runtime/*",          # WASM mapping runtime
+    "server/*",           # HTTP/WS/admin servers
+    "store/*",            # PostgreSQL store
+    "substreams/*",       # Substreams integration
+    "graph",              # Core library (traits, types)
+    "tests",              # Integration tests
+    "graph/derive",       # Derive macros
+]
+```
+
+## Supported Chains
+
+| Chain Adapter | Directory | Purpose |
+|--------------|-----------|---------|
+| Ethereum | `chain/ethereum` | EVM-compatible chains (including Lux C-Chain) |
+| NEAR | `chain/near` | NEAR Protocol |
+| Cosmos | `chain/cosmos` | Cosmos SDK chains |
+| Arweave | `chain/arweave` | Arweave storage chain |
+| Starknet | `chain/starknet` | StarkNet L2 |
+| Substreams | `chain/substreams` | Substreams-based indexing |
+| Common | `chain/common` | Shared chain abstractions |
+
+## One-file quickstart
+
+### Build from source
+
+```bash
+git clone https://github.com/luxfi/graph-node.git
+cd graph-node
+cargo build --release
+```
+
+### Run with Lux C-Chain
+
+```bash
+# Prerequisites: PostgreSQL running, IPFS daemon running
+
+# Create database
+createdb graph-node
+
+# Required PostgreSQL extensions (as superuser)
+psql -U postgres graph-node <<EOF
+CREATE EXTENSION pg_trgm;
+CREATE EXTENSION pg_stat_statements;
+CREATE EXTENSION btree_gist;
+CREATE EXTENSION postgres_fdw;
+GRANT USAGE ON FOREIGN DATA WRAPPER postgres_fdw TO your_user;
+EOF
+
+# Run graph-node pointing at Lux C-Chain
+cargo run -p graph-node --release -- \
+  --postgres-url postgresql://user:pass@localhost:5432/graph-node \
+  --ethereum-rpc lux:https://api.lux.network/ext/bc/C/rpc \
+  --ipfs 127.0.0.1:5001
+```
+
+### Docker
+
+```bash
+cd docker
+# Follow instructions in docker/README.md
+# Starts PostgreSQL, IPFS, and graph-node
+docker-compose up -d
+```
+
+## Architecture
+
+```
+graph-node
+├── node/       — Local graph node binary
+├── graph/      — Core library: traits, types, shared abstractions
+├── core/       — Core component implementations
+├── chain/      — Chain-specific adapters (ethereum, near, cosmos, etc.)
+├── graphql/    — GraphQL implementation (schema gen, introspection, queries)
+├── runtime/    — WASM mapping execution (AssemblyScript subgraph handlers)
+├── server/     — HTTP, WebSocket, and admin JSON-RPC servers
+├── store/      — PostgreSQL store with GraphQL-friendly interface
+├── substreams/ — Substreams-powered indexing
+├── docker/     — Docker Compose setup
+├── docs/       — Documentation
+├── resources/  — Static resources
+└── tests/      — Integration tests
+```
+
+## CLI Reference
+
+```
+graph-node [FLAGS] [OPTIONS]
+  --postgres-url <URL>           PostgreSQL connection string
+  --ethereum-rpc <NAME:[CAPS]:URL>  Ethereum/EVM RPC endpoint
+  --ethereum-ws <NAME:[CAPS]:URL>   Ethereum/EVM WebSocket endpoint
+  --ethereum-ipc <NAME:[CAPS]:FILE> Ethereum/EVM IPC pipe
+  --ipfs <HOST:PORT>             IPFS node address
+  --http-port <PORT>             GraphQL HTTP port [default: 8000]
+  --ws-port <PORT>               GraphQL WebSocket port [default: 8001]
+  --admin-port <PORT>            Admin JSON-RPC port [default: 8020]
+  --node-id <NODE_ID>            Unique node identifier [default: default]
+  --debug                        Enable debug logging
+```
+
+### Ethereum RPC format
+
+```
+--ethereum-rpc NETWORK_NAME:[CAPABILITIES]:URL
+
+# Examples:
+--ethereum-rpc lux:full,archive:https://api.lux.network/ext/bc/C/rpc
+--ethereum-rpc mainnet:https://eth-mainnet.g.alchemy.com/v2/KEY
+```
+
+## Subgraph Development
+
+### Deploy a subgraph to local node
+
+```bash
+# In subgraph project directory
+yarn codegen          # Generate types from ABIs
+yarn create-local     # Register subgraph
+yarn deploy-local     # Build and deploy
+```
+
+GraphiQL interface available at `http://127.0.0.1:8000/`.
+
+## Key Dependencies
+
+| Crate | Version | Purpose |
+|-------|---------|---------|
+| diesel | 2.2.4 | PostgreSQL ORM |
+| tokio | 1.38.0 | Async runtime |
+| wasmtime | 15.0.1 | WASM execution for mappings |
+| axum | 0.7.5 | HTTP server |
+| async-graphql | 7.0.11 | GraphQL engine |
+| prost | 0.12.6 | Protobuf for substreams |
+| tonic | 0.11.0 | gRPC for substreams |
+
+## Feature Status
+
+| Feature | Status |
+|---------|--------|
+| Smart contract event indexing | Complete |
+| Chain reorganization handling | Complete |
+| WASM-based mappings | Complete |
+| TypeScript-to-WASM toolchain | Complete |
+| Autogenerated TypeScript types | Complete |
+| GraphQL query by ID | Complete |
+| GraphQL entity collections | Complete |
+| Pagination, Filtering | Complete |
+| Block-based filtering | Complete |
+| Entity relationships | Complete |
+| GraphQL subscriptions | Complete |
+
+## Advanced Configuration
+
+- [Environment variables](https://github.com/luxfi/graph-node/blob/master/docs/environment-variables.md) for fine-tuning
+- [Multi-database config](https://github.com/luxfi/graph-node/blob/master/docs/config.md) for large deployments
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Build OOM | Less than 8GB RAM | Use `--jobs 1` or add swap |
+| Missing pg_trgm | PostgreSQL extension not created | Run extension SQL as superuser |
+| IPFS connection refused | IPFS daemon not running | `ipfs daemon &` |
+| Chain sync slow | RPC rate limiting | Use archive node or increase polling interval |
+| WASM execution error | Subgraph mapping bug | Check mapping code, run with `--debug` |
+
+## Related Skills
+
+- `lux/lux-node.md` -- Lux validator node (C-Chain RPC source)
+- `lux/lux-evm.md` -- EVM execution engine
+- `lux/lux-indexer.md` -- Other indexing approaches

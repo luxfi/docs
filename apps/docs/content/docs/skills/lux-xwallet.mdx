@@ -1,0 +1,158 @@
+---
+title: "Lux xWallet - Browser Extension Wallet for DeFi"
+description: "## When to use"
+---
+
+## Overview
+
+Lux xWallet is an **open-source browser extension wallet** (`@luxwallet/x`) for the DeFi ecosystem. Fork of Rabby Wallet, customized with Lux branding and `@luxfi/*` keyring/API packages. Supports Chrome, Firefox, and Safari. Provides multi-chain EVM access with transaction pre-signing security analysis, hardware wallet support, and Gnosis Safe integration.
+
+## When to use
+
+- Building or extending the Lux browser extension wallet
+- Integrating dapps with the Lux wallet `window.ethereum` provider
+- Working with `@luxfi/*` keyring packages for key management
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/xwallet` |
+| Package | `@luxwallet/x` v0.92.79 |
+| Language | TypeScript |
+| Package manager | pnpm (also has yarn.lock) |
+| Framework | React 17, Redux (Rematch), Webpack 5 |
+| UI | Ant Design 4, Tailwind CSS 2, styled-components |
+| Tests | Jest 29, Playwright (e2e) |
+| Default branch | main |
+| License | MIT |
+
+## Architecture
+
+```
+Dapp Page
+  |
+  v
+pageProvider.js (injected via content-script)
+  |  broadcastChannel
+  v
+content-script (shares DOM with dapp)
+  |  runtime.connect
+  v
+background.js
+  |-- walletController (exposed to UI)
+  |-- providerController (handles dapp RPC requests)
+  v
+Chrome Storage (encrypted keyrings, preferences)
+```
+
+### Extension scripts
+
+| Script | Context | Purpose |
+|--------|---------|---------|
+| `background.js` | Service worker | Async requests, encryption, keyring storage |
+| `content-script` | Page DOM | Injects pageProvider, message relay |
+| `pageProvider.js` | Dapp context | Mounts `window.ethereum` |
+| `ui` | Popup/tab/notification | React UI (3 HTML entry points) |
+
+### UI pages
+
+| Page | Purpose |
+|------|---------|
+| `popup.html` | Extension icon click |
+| `index.html` | Full tab view |
+| `notification.html` | Dapp permission requests |
+
+## Key Lux packages
+
+```
+@luxfi/common              -- Chain data and utilities
+@luxfi/lux-api             -- Lux backend API client
+@luxfi/lux-security-engine -- Transaction security analysis
+@luxfi/lux-swap            -- Swap aggregation
+@luxfi/page-provider       -- window.ethereum injection
+@luxfi/widgets             -- Shared UI widgets
+@luxfi/eth-hd-keyring      -- HD keyring (BIP44)
+@luxfi/eth-simple-keyring  -- Simple private key keyring
+@luxfi/eth-trezor-keyring  -- Trezor hardware wallet
+@luxfi/eth-lattice-keyring -- GridPlus Lattice1 hardware wallet
+@luxfi/eth-coinbase-keyring-- Coinbase Wallet SDK
+@luxfi/eth-walletconnect-keyring -- WalletConnect v2
+@luxfi/eth-watch-keyring   -- Watch-only addresses
+@luxfi/eth-gnosis-keyring  -- Gnosis Safe multisig
+@luxfi/gnosis-sdk          -- Gnosis Safe protocol
+@luxfi/festats             -- Analytics/stats
+```
+
+## Hardware wallet support
+
+| Device | Package |
+|--------|---------|
+| Ledger | `@ledgerhq/hw-app-eth`, `@ledgerhq/hw-transport-webhid` |
+| Trezor | `@trezor/connect-webextension` |
+| Keystone | `@keystonehq/metamask-airgapped-keyring` |
+| OneKey | `@onekeyfe/hd-core`, `@onekeyfe/hd-web-sdk` |
+| BitBox02 | `bitbox-api` |
+| imKey | `@imkey/web3-provider` |
+
+## One-file quickstart
+
+```bash
+git clone https://github.com/luxfi/xwallet.git
+cd xwallet
+pnpm install    # runs patch-package + sync-chain postinstall
+
+# Development build (with file watching + dev logging)
+pnpm build:dev
+
+# Production build (outputs to dist/)
+pnpm build:pro
+
+# Load in Chrome: chrome://extensions -> Load unpacked -> select dist/
+```
+
+## Development
+
+```bash
+# Install
+pnpm install
+
+# Dev build (watch mode)
+pnpm build:dev
+
+# Production build
+pnpm build:pro
+
+# Debug build (with source maps)
+pnpm build:debug
+
+# Run unit tests
+pnpm test
+
+# Run e2e tests
+pnpm test:e2e
+
+# Lint
+pnpm lint:fix
+```
+
+## Key dependencies
+
+```
+react@17, react-dom@17     -- UI framework
+antd@4.15                  -- Component library
+tailwindcss@2.2             -- Utility CSS
+styled-components@5         -- CSS-in-JS
+ethers@5.4                  -- EVM interaction
+viem@2.9                    -- EVM client
+@scure/bip39               -- Mnemonic generation
+@sentry/browser            -- Error tracking
+i18next                    -- Internationalization
+recharts                   -- Charts
+```
+
+## Related Skills
+
+- `lux/lux-wallet.md` -- Multi-platform HD wallet (OneKey fork)
+- `lux/lux-dwallet.md` -- Desktop wallet (Electron, Rabby Desktop fork)
+- `lux/lux-dex.md` -- DEX that xwallet connects to
