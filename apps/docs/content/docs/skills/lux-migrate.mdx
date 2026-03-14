@@ -1,0 +1,182 @@
+---
+title: "Lux Migrate - Blockchain Data Migration Framework"
+description: "## When to use"
+---
+
+## Overview
+
+Lux Migrate is a **generic blockchain data migration framework** for importing and exporting block data, state, and accounts between Lux VM implementations. It defines Exporter, Importer, and Migrator interfaces with implementations for SubnetEVM (PebbleDB), C-Chain (BadgerDB + RPC), and other Lux chain types. JSONL is the canonical intermediate format.
+
+## When to use
+
+- Migrating blockchain data between SubnetEVM and C-Chain
+- Exporting blocks or state from PebbleDB/BadgerDB/LevelDB
+- Importing blocks via the `migrate_importBlocks` RPC API
+- Converting genesis files to JSONL for block import
+- Performing regenesis or state migration on Lux networks
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/migrate` |
+| Go module | `github.com/luxfi/migrate` |
+| Language | Go 1.25.5 |
+| Key deps | `luxfi/geth`, `luxfi/ids`, `luxfi/crypto`, `cockroachdb/pebble`, `dgraph-io/badger/v4`, `syndtr/goleveldb` |
+| License | (not specified) |
+| Default branch | main |
+
+## Project structure
+
+```
+migrate/
+  types.go            # Core types: BlockData, Account, Config, MigrationOptions
+  exporter.go         # Exporter interface + base implementation
+  importer.go         # Importer interface + base implementation
+  migrator.go         # Migrator orchestration (source -> dest with options)
+  factory.go          # VM-specific Exporter/Importer constructors
+  errors.go           # Typed error definitions
+  subnetevm/          # SubnetEVM exporter (PebbleDB reader)
+  cchain/             # C-Chain importer (RPC-based)
+  pchain/             # Platform chain support (stub)
+  xchain/             # Exchange chain support (stub)
+  qchain/             # Quantum chain support (stub)
+  zool2/              # Zoo L2 chain support (stub)
+  jsonl/              # JSONL streaming format (reader/writer)
+  rpcapi/             # RPC API type definitions
+  cmd/                # CLI tools (20 commands)
+  bin/                # Pre-built binaries
+```
+
+## Core interfaces
+
+```go
+// Exporter reads data from a source VM
+type Exporter interface {
+    Init(config ExporterConfig) error
+    ExportBlocks(ctx context.Context, start, end uint64) (<-chan *BlockData, <-chan error)
+    ExportState(ctx context.Context, blockNumber uint64) (<-chan *Account, <-chan error)
+    Close() error
+}
+
+// Importer writes data to a target VM
+type Importer interface {
+    Init(config ImporterConfig) error
+    ImportBlock(block *BlockData) error
+    ImportBlocks(blocks []*BlockData) error
+    ImportState(accounts []*Account, blockNumber uint64) error
+    FinalizeImport(blockNumber uint64) error
+    Close() error
+}
+
+// Migrator orchestrates full migrations
+type Migrator interface {
+    Migrate(ctx context.Context, source Exporter, dest Importer, options MigrationOptions) (*MigrationResult, error)
+}
+```
+
+## VM type support
+
+| VM Type | Export | Import | Database |
+|---------|--------|--------|----------|
+| `subnet-evm` | Implemented | Stub | PebbleDB |
+| `c-chain` | Stub | Implemented | BadgerDB + RPC |
+| `p-chain` | Stub | Stub | - |
+| `x-chain` | Stub | Stub | - |
+| `q-chain` | Stub | Stub | - |
+| `zoo-l2` | Stub | Stub | - |
+
+## CLI tools
+
+| Command | Purpose |
+|---------|---------|
+| `export` | Export blocks from database to JSONL |
+| `export-full` | Full export with state |
+| `export-state` | Export state trie only |
+| `export-genesis` | Export genesis block |
+| `export-trie` | Export raw trie data |
+| `export-kv` | Export raw key-value pairs |
+| `extract-genesis` | Extract genesis from existing chain |
+| `genesis-to-jsonl` | Convert genesis.json to JSONL with state |
+| `import` | Import blocks from JSONL to database |
+| `import-jsonl` | Import JSONL with stateChanges support |
+| `import-rpc` | Import via `migrate_importBlocks` RPC |
+| `import-kv` | Import raw key-value pairs |
+| `parallel-import` | Multi-worker parallel import |
+| `rpcserver` | Stand-alone RPC server for migration |
+| `process-rpc` | Process blocks via RPC |
+| `analyze-keys` | Analyze database key patterns |
+| `key-sniff` | Inspect database keys |
+| `survey-buckets` | Survey database bucket structure |
+| `validate-state` | Validate state trie integrity |
+| `debug` | Debug utilities |
+
+## One-file quickstart
+
+```bash
+git clone https://github.com/luxfi/migrate.git
+cd migrate
+
+# Build all tools
+go build -o bin/export ./cmd/export/
+go build -o bin/import-rpc ./cmd/import-rpc/
+
+# Export from SubnetEVM PebbleDB
+./bin/export \
+  -db /path/to/pebbledb \
+  -output blocks.jsonl \
+  -start 0 -end 0
+
+# Import to C-Chain via RPC
+./bin/import-rpc \
+  -jsonl blocks.jsonl \
+  -rpc http://127.0.0.1:9630/ext/bc/C/rpc \
+  -batch 100 -start 1 -reload 10000
+```
+
+## RPC API methods
+
+| Method | Purpose |
+|--------|---------|
+| `migrate_importBlocks` | Import RLP-encoded blocks with optional stateChanges |
+| `migrate_setGenesis` | Replace genesis block (block 0) |
+| `lux_reloadBlockchain` | Force blockchain to recognize imported data |
+| `lux_verifyBlockchain` | Verify blockchain integrity post-import |
+
+## JSONL format
+
+Line-delimited JSON with camelCase fields. Supports legacy PascalCase and RPC formats via UnmarshalJSON.
+
+```json
+{"height":1,"hash":"0x...","header":"0x...","body":"0x...","receipts":"0x...","stateChanges":{}}
+```
+
+## Migration sequence
+
+1. **Genesis**: Either start node with correct genesis, or use `migrate_setGenesis`
+2. **Blocks 1+**: Import via `migrate_importBlocks` with stateChanges
+3. **Reload**: Call `lux_reloadBlockchain` periodically
+4. **Verify**: Call `lux_verifyBlockchain` and `eth_getBalance` to confirm state
+
+### Critical: block 0 cannot be imported via `migrate_importBlocks`
+
+The node initializes its own genesis from the genesis file. Importing block 0 via API creates a duplicate with a different hash. Use `migrate_setGenesis` or restart with the correct genesis file.
+
+## Development
+
+```bash
+# Build all
+go build ./...
+
+# Test
+go test ./...
+
+# Build specific tool
+go build -o bin/import-jsonl ./cmd/import-jsonl/
+```
+
+## Related Skills
+
+- `lux/lux-node.md` -- Node that hosts the migrate_importBlocks API
+- `lux/lux-evm.md` -- SubnetEVM with MigrateAPI endpoint
+- `lux/lux-cli.md` -- CLI integration for `lux network export/import data`

@@ -1,0 +1,229 @@
+---
+title: "Lux Ringtail - Post-Quantum Lattice Threshold Signatures"
+description: "This is a critical building block for Lux's post-quantum consensus -- enabling t-of-n threshold signing without relying on classical assumptions (RSA, ECDSA) that are vulnerable to quantum..."
+---
+
+## Overview
+
+Ringtail is a pure Go implementation of the **Ringtail** post-quantum threshold signature scheme from [eprint.iacr.org/2024/1113](https://eprint.iacr.org/2024/1113). It provides practical 2-round lattice-based threshold signatures from standard LWE (Learning With Errors) assumptions, using the `luxfi/lattice` library for ring polynomial operations.
+
+This is a critical building block for Lux's post-quantum consensus -- enabling t-of-n threshold signing without relying on classical assumptions (RSA, ECDSA) that are vulnerable to quantum computers.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/ringtail` |
+| Module | `github.com/luxfi/ringtail` |
+| Go | 1.26.1 |
+| Binary | `ringtail` |
+| Paper | [eprint.iacr.org/2024/1113](https://eprint.iacr.org/2024/1113) |
+| Branch | `main` |
+| License | Apache 2.0 |
+
+## Hard requirements
+
+1. ALWAYS use `github.com/luxfi/*` packages -- NEVER `go-ethereum` or `ava-labs`
+2. NEVER use EWOQ keys -- generate fresh keys
+3. Requires `github.com/luxfi/lattice/v7` for ring operations
+
+## Key Dependencies
+
+```
+github.com/luxfi/lattice/v7@v7.0.0   — Ring polynomial NTT, sampling, structs
+github.com/zeebo/blake3@v0.2.4       — BLAKE3 hashing
+github.com/montanaflynn/stats@v0.7.1 — Statistical benchmarking
+```
+
+## Architecture
+
+```
+luxfi/ringtail
+├── main.go              — Entry point (local sim or P2P party)
+├── sign/
+│   ├── config.go        — Scheme parameters (Q, N, M, bounds)
+│   ├── sign.go          — Core: Gen, SignRound1, SignRound2, Finalize, Verify
+│   ├── local.go         — Local single-machine simulation
+│   └── sign_test.go     — Unit tests
+├── primitives/
+│   ├── hash.go          — Hash, MAC, PRF implementations
+│   ├── hash_test.go     — Hash tests
+│   ├── shamir.go        — Shamir secret sharing for key vectors
+│   └── shamir_test.go   — Shamir tests
+├── networking/
+│   └── networking.go    — TCP P2P communication between signers
+├── utils/
+│   ├── utils.go         — NTT/Montgomery conversions, matrix/vector ops
+│   └── utils-naive.go   — Naive ring multiplication (testing)
+├── threshold/           — Threshold-specific logic
+├── test_helpers.go      — Shared test utilities
+├── basic_test.go        — Basic integration tests
+└── docs/                — Documentation
+```
+
+## Scheme Parameters
+
+From `sign/config.go`:
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| LogN | 8 | Ring dimension N = 256 |
+| Q | `0x1000000004A01` | 48-bit NTT-friendly prime |
+| M | 8 | Public key rows |
+| N | 7 | Secret key dimension |
+| Kappa | 23 | Security parameter |
+| KeySize | 32 (256 bits) | Key size |
+| SigmaE | 6.108 | Error distribution width |
+| SigmaStar | ~2^37.3 | Masking distribution width |
+
+## Protocol Flow
+
+```
+1. GEN (Trusted Dealer)
+   - Generate secret key shares via Shamir
+   - Distribute seeds and MAC keys to parties
+
+2. SIGN ROUND 1 (Each party)
+   - Compute commitment D_i and MAC tags
+   - Broadcast D_i to all parties
+
+3. SIGN ROUND 2 (Each party)
+   - Verify MACs from all parties
+   - Compute partial signature z_i
+   - Send z_i to combiner
+
+4. FINALIZE (Combiner)
+   - Aggregate partial signatures
+   - Output final signature (z, Delta)
+
+5. VERIFY (Anyone)
+   - Verify signature against public key
+```
+
+## One-file quickstart
+
+### Build
+
+```bash
+git clone https://github.com/luxfi/ringtail.git
+cd ringtail
+make build
+# Output: bin/ringtail
+```
+
+### Run local simulation
+
+```bash
+# Local single-machine simulation (no networking)
+./bin/ringtail l 1 3
+# Args: l=local, 1=iterations, 3=parties
+```
+
+### Run distributed (P2P)
+
+```bash
+# Party 0 (trusted dealer + signer)
+./bin/ringtail 0 1 3
+
+# Party 1 (combiner + signer)
+./bin/ringtail 1 1 3
+
+# Party 2 (signer)
+./bin/ringtail 2 1 3
+```
+
+### Run tests
+
+```bash
+make test
+# Or with race detector:
+make test-race
+```
+
+### Benchmarks
+
+```bash
+make bench
+# CPU profiling:
+make bench-cpu
+# Memory profiling:
+make bench-mem
+```
+
+## API Usage
+
+```go
+import (
+    "github.com/luxfi/ringtail/sign"
+    "github.com/luxfi/ringtail/primitives"
+    "github.com/luxfi/lattice/v7/ring"
+    "github.com/luxfi/lattice/v7/utils/sampling"
+)
+
+// Setup ring
+r, _ := ring.NewRing(1<<sign.LogN, []uint64{sign.Q})
+prng, _ := sampling.NewKeyedPRNG(randomKey)
+uniformSampler := ring.NewUniformSampler(prng, r)
+
+// Create party
+party := sign.NewParty(partyID, r, r_xi, r_nu, uniformSampler)
+
+// Trusted dealer: generate key shares
+A, skShares, seeds, MACKeys, b := sign.Gen(r, r_xi, uniformSampler, dealerKey, lagrangeCoeffs)
+
+// Sign Round 1
+D, MACs := party.SignRound1(A, sessionID, prfKey, T)
+
+// Sign Round 2 (after receiving all D and MACs)
+valid, DSum, hash := party.SignRound2Preprocess(A, b, D, MACs, sessionID, T)
+z := party.SignRound2(A, b, DSum, sessionID, message, T, prfKey, hash)
+
+// Finalize (combiner collects all z)
+_, sig, Delta := party.SignFinalize(zMap, A, b)
+
+// Verify
+verified := sign.Verify(r, r_xi, r_nu, sig, A, message, b, party.C, Delta)
+```
+
+## Makefile Targets
+
+| Target | Description |
+|--------|-------------|
+| `make build` | Build binary to `bin/ringtail` |
+| `make test` | Run all tests |
+| `make test-race` | Tests with race detector |
+| `make bench` | Run benchmarks |
+| `make bench-cpu` | Benchmark with CPU profiling |
+| `make bench-mem` | Benchmark with memory profiling |
+| `make coverage` | Generate coverage report |
+| `make run-local` | Run local simulation |
+| `make ci` | Full CI pipeline (fmt, vet, lint, test-race, coverage, build) |
+| `make docker-build` | Build Docker image |
+
+## Docker
+
+```bash
+docker build -t ringtail:latest .
+docker run --rm -it ringtail:latest
+# Default: local simulation (l 0 0)
+```
+
+## Consensus Integration
+
+Ringtail provides the post-quantum threshold signature primitive used in Lux's Quasar consensus for the second-round lattice-based PQ certificate. The `luxfi/consensus` module depends on this for quantum-resistant finality.
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| MAC verification failed | Network latency or corruption | Check TCP connectivity between parties |
+| NTT panic | Ring dimension mismatch | Ensure LogN matches across all parties |
+| Slow benchmarks | Large party count | Start with 3 parties, scale up |
+| Connection refused | Party not started | Start all parties before timeout |
+
+## Related Skills
+
+- `lux/lux-lattice.md` -- Ring polynomial library (RLWE, NTT) used internally
+- `lux/lux-crypto.md` -- Classical crypto primitives (BLS, secp256k1)
+- `lux/lux-consensus.md` -- Quasar consensus (uses Ringtail for PQ certificates)
+- `lux/lux-fhe.md` -- Homomorphic encryption (shares lattice foundations)

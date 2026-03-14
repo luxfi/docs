@@ -1,0 +1,112 @@
+---
+title: "Lux Bitcoin - Bitcoin Integration Static Site"
+description: "## When to use"
+---
+
+## Overview
+
+Lux Bitcoin is a **static marketing site** for Lux Network's Bitcoin integration. Built with Next.js 15, Tailwind CSS, and Radix UI primitives, it uses MDX for content and pulls from the `@luxfi/ui` and `@hanzo/ui` component libraries. Content covers Lux's energy-efficient approach to Bitcoin, ESG commitments, and global expansion.
+
+## When to use
+
+- Modifying the Lux Bitcoin landing page content or design
+- Updating marketing copy about Lux Network's Bitcoin integration
+- Working with the `@luxfi/ui` or `@luxfi/data` component libraries
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/bitcoin` |
+| Package name | `@luxfi/bitcoin` |
+| Version | 0.0.7 |
+| Language | TypeScript |
+| Framework | Next.js 15.1.6 |
+| Package manager | pnpm@10.12.4 |
+| License | (not specified) |
+| Default branch | main |
+| Private | Yes |
+
+## Project structure
+
+```
+bitcoin/
+  public/              # Static assets
+  src/
+    app/               # Next.js App Router pages
+    content/           # MDX and TSX content blocks
+      about-lux-energy.mdx     # Energy efficiency content
+      commitment-to-esg.mdx    # ESG commitment content
+      global-expansion.mdx     # Global expansion content
+      powering.tsx             # Powering section
+      index.ts                 # Content barrel export
+    mdx-components.tsx # Custom MDX component overrides
+    metadata.ts        # Site metadata and SEO
+    site-def.ts        # Site definition constants
+  next.config.js       # Next.js configuration
+  postcss.config.js    # PostCSS with Tailwind
+  tailwind.config.ts   # Tailwind CSS configuration
+  tsconfig.json        # TypeScript configuration
+  svgr.next.config.js  # SVG-as-React-component config
+```
+
+## Key dependencies
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `next` | 15.1.6 | React framework |
+| `react` | 18.3.1 | UI library |
+| `@luxfi/ui` | 5.5.2 | Lux design system components |
+| `@luxfi/data` | 1.1.1 | Lux data models |
+| `@hanzo/ui` | 5.3.22 | Hanzo shared UI components |
+| `@hanzo/auth` | 2.5.5 | Authentication components |
+| `@hanzo/commerce` | 7.3.8 | Commerce integration |
+| `@splinetool/react-spline` | 4.0.0 | 3D graphics |
+| `lucide-react` | 0.470.0 | Icons |
+| `tailwindcss` | 3.4.17 | Utility-first CSS |
+
+## One-file quickstart
+
+```bash
+git clone https://github.com/luxfi/bitcoin.git
+cd bitcoin
+pnpm install
+pnpm dev
+```
+
+## Development
+
+```bash
+# Dev server
+pnpm dev
+
+# Production build
+pnpm build
+
+# Start production server
+pnpm prod
+
+# Type check
+pnpm tc
+
+# Clean build artifacts
+pnpm cn
+
+# Full clean (remove node_modules)
+pnpm clean
+```
+
+## Content architecture
+
+The site uses MDX files in `src/content/` for marketing copy, paired with TSX files that define layout and component structure. Content is imported via a barrel `index.ts` and rendered through custom `mdx-components.tsx` overrides.
+
+Content sections:
+- **About Lux Energy** -- Energy efficiency of Lux Bitcoin
+- **Commitment to ESG** -- Environmental, social, governance positioning
+- **Global Expansion** -- Network growth and partnerships
+- **Powering** -- What Lux Bitcoin powers
+
+## Related Skills
+
+- `lux/lux-bridge.md` -- Cross-chain bridge for Bitcoin transfers
+- `lux/lux-ui.md` -- Shared UI component libraries

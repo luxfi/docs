@@ -1,0 +1,178 @@
+---
+title: "Lux AI - Decentralized AI Inference and Mining"
+description: "AI proofs generated on the network can mint tokens on any teleport-supported network (Lux, Hanzo, Zoo)."
+---
+
+## Overview
+
+Lux AI is a **decentralized AI compute network** for mining AI tokens and running AI inference on the Lux Network. It provides an OpenAI-compatible chat API, coordinates GPU miners, generates AI proofs for Q-Chain attestation, and includes a Tauri-based desktop application for mining and chat.
+
+AI proofs generated on the network can mint tokens on any teleport-supported network (Lux, Hanzo, Zoo).
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/ai` |
+| Module | `github.com/luxfi/ai` |
+| Go | 1.26.1 |
+| Binary | `lux-ai` |
+| Desktop | `lux-desktop` (Tauri v2 + React + Vite) |
+| Default Port | 9090 |
+| Branch | `main` |
+| License | Proprietary (Lux Industries) |
+
+## Hard requirements
+
+1. ALWAYS use `github.com/luxfi/*` packages -- NEVER `go-ethereum` or `ava-labs`
+2. NEVER use EWOQ keys -- generate fresh keys
+3. Desktop requires Rust (for Tauri), Node.js 20+, pnpm
+
+## Architecture
+
+```
+luxfi/ai
+├── cmd/
+│   └── lux-ai/          — Main node binary
+├── pkg/
+│   ├── aivm/            — AI virtual machine
+│   ├── attestation/     — Q-Chain AI proof generation
+│   ├── cc/              — Chat completion handler
+│   ├── miner/           — Miner management and task distribution
+│   └── rewards/         — Reward tracking and distribution
+├── desktop/             — Tauri desktop app (React, TypeScript, Vite)
+│   ├── src/             — React frontend
+│   └── src-tauri/       — Rust backend (Tauri)
+├── benchmarks/          — Performance benchmarks
+└── docs/                — Documentation
+```
+
+## One-file quickstart
+
+### Build and run the node
+
+```bash
+git clone https://github.com/luxfi/ai.git
+cd ai
+
+# Build
+make build
+# Output: bin/lux-ai
+
+# Run
+make run
+# Or manually:
+./bin/lux-ai -port 9090
+```
+
+### Run the desktop app
+
+```bash
+cd desktop
+pnpm install
+pnpm tauri:dev     # Development mode
+pnpm tauri:build   # Production build
+```
+
+## API Reference
+
+### Chat Completion (OpenAI-compatible)
+
+```bash
+curl -X POST http://localhost:9090/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "zen-mini-0.5b",
+    "messages": [
+      {"role": "user", "content": "Hello!"}
+    ]
+  }'
+```
+
+### List Models
+
+```bash
+curl http://localhost:9090/v1/models
+```
+
+### Register Miner
+
+```bash
+curl -X POST http://localhost:9090/api/miners/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "miner-001",
+    "wallet_address": "0x...",
+    "endpoint": "http://localhost:8888",
+    "gpu_enabled": true
+  }'
+```
+
+### Stats
+
+```bash
+curl http://localhost:9090/api/stats
+```
+
+## Available Models
+
+| Model | Parameters | Context | Capabilities |
+|-------|-----------|---------|--------------|
+| zen-coder-1.5b | 1.5B | 32K | Code, Chat |
+| zen-mini-0.5b | 0.5B | 8K | Chat |
+| qwen3-8b | 8B | 128K | Chat, Code, Reasoning |
+
+## Earnings Model
+
+Miners earn AI coins for:
+- **Inference Tasks**: Variable rate based on model size and tokens
+- **Uptime Bonus**: 10% bonus for 99.9% uptime
+- **Speed Bonus**: 5% bonus for sub-100ms latency
+
+AI proofs are attested on Q-Chain, then mintable on Lux, Hanzo, or Zoo networks via Teleport Bridge.
+
+## Docker
+
+```bash
+docker build -t luxfi/ai:latest .
+docker run -p 9090:9090 -v ai-data:/data luxfi/ai:latest
+```
+
+Health check at `http://localhost:9090/health`.
+
+## Makefile Targets
+
+| Target | Description |
+|--------|-------------|
+| `make build` | Build `lux-ai` binary |
+| `make build-desktop` | Build Tauri desktop app |
+| `make run` | Build and run node on port 9090 |
+| `make dev-desktop` | Run desktop in dev mode |
+| `make test` | Run all Go tests |
+| `make fmt` | Format Go code |
+| `make lint` | Run golangci-lint |
+
+## Desktop Stack
+
+| Component | Technology |
+|-----------|-----------|
+| Framework | Tauri v2 |
+| Frontend | React 18, TypeScript 5, Vite 5 |
+| Styling | Tailwind CSS 3 |
+| Icons | lucide-react |
+| Build | `pnpm tauri:build` |
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Port 9090 in use | Another service on port | `lsof -i :9090` and kill, or use `-port` flag |
+| Desktop build fails | Missing Rust toolchain | Install Rust via rustup |
+| No models available | No miners registered | Register a miner endpoint |
+| API returns 404 | Wrong endpoint path | Use `/v1/chat/completions` (OpenAI-compatible) |
+
+## Related Skills
+
+- `lux/lux-node.md` -- Core validator node (Q-Chain integration)
+- `lux/lux-consensus.md` -- Quasar consensus for AI proof attestation
+- `lux/lux-crypto.md` -- Cryptographic primitives used in attestation
