@@ -1,0 +1,17 @@
+---
+title: Transit Encryption
+description: Encrypt and decrypt data without managing keys
+icon: Shield
+---
+
+The transit encryption engine provides encryption-as-a-service. Data is encrypted/decrypted via API without exposing keys.
+
+## Algorithms
+
+| Algorithm | Key Size | Use Case |
+|-----------|----------|----------|
+| AES-256-GCM | 256-bit | General purpose |
+| ChaCha20-Poly1305 | 256-bit | High-performance |
+| RSA-OAEP | 2048/4096 | Key wrapping |
+| ECDSA P-256 | 256-bit | Signing |
+| HMAC-SHA256 | 256-bit | Authentication |

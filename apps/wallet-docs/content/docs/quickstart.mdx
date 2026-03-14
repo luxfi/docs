@@ -1,0 +1,14 @@
+---
+title: Quick Start
+description: Create a wallet and send a transaction
+icon: Zap
+---
+
+## Create Wallet
+
+```go
+import "github.com/luxfi/wallet"
+
+w, _ := wallet.New(wallet.WithMnemonic(mnemonic))
+addr := w.CChainAddress()
+```

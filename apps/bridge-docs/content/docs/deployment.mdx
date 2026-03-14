@@ -1,0 +1,22 @@
+---
+title: Deployment
+description: Deploy the bridge on Kubernetes
+icon: Server
+---
+
+## K8s
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bridge-ui
+spec:
+  template:
+    spec:
+      containers:
+        - name: bridge-ui
+          image: ghcr.io/luxfi/bridge-ui:latest
+          ports:
+            - containerPort: 3000
+```

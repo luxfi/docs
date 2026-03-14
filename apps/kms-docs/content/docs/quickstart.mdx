@@ -1,0 +1,21 @@
+---
+title: Quick Start
+description: Create your first secret
+icon: Zap
+---
+
+## Create a Project
+
+```bash
+curl -X POST https://kms.lux.network/api/v3/workspaces \
+  -H 'Authorization: Bearer $TOKEN' \
+  -d '{"name": "my-project"}'
+```
+
+## Store a Secret
+
+```bash
+curl -X POST https://kms.lux.network/api/v3/secrets \
+  -H 'Authorization: Bearer $TOKEN' \
+  -d '{"key": "DATABASE_URL", "value": "postgres://...", "type": "shared"}'
+```

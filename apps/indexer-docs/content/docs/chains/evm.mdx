@@ -1,0 +1,37 @@
+---
+title: EVM Chains
+description: Full-featured EVM indexer with Blockscout parity
+---
+
+## Features
+
+- Block indexing (types 0-3 transactions)
+- Token tracking (ERC20, ERC721, ERC1155)
+- Internal transaction tracing (3 tracer types)
+- Smart contract verification (Solc-based)
+- Proxy detection (EIP-1967, EIP-1822, EIP-1167, Gnosis Safe)
+- Account abstraction (ERC-4337 UserOps)
+- MEV detection framework
+- EIP-4844 blob data indexing
+- Pending transaction pool monitoring
+- Full-text fuzzy search
+
+## Lux EVM Chains
+
+| Chain | Chain ID | Default Port |
+|-------|----------|-------------|
+| C-Chain | 96369 | 4000 |
+| Zoo | 200200 | 4000 |
+| Hanzo | 36963 | 4000 |
+| SPC | 36911 | 4000 |
+| Pars | 494949 | 4000 |
+
+## Usage
+
+```bash
+./indexer -chain cchain -rpc http://luxd:9630/ext/bc/C/rpc -port 4000
+```
+
+## API Endpoints
+
+The EVM adapter exposes 40+ Blockscout v2 compatible endpoints. See the [API Reference](/docs/api) for details.

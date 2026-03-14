@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "---Getting Started---",
+    "installation",
+    "quickstart",
+    "---Protocols---",
+    "protocols",
+    "---Operations---",
+    "deployment",
+    "configuration",
+    "---Integration---",
+    "hsm",
+    "bridge",
+    "---API Reference---",
+    "api"
+  ]
+}

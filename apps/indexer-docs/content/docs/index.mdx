@@ -1,0 +1,32 @@
+---
+title: Lux Indexer
+description: High-performance Go blockchain indexer
+index: true
+icon: Database
+---
+
+The Lux Indexer is a Go-based blockchain data indexer supporting all 9 Lux native chain types and 100+ external blockchains with Blockscout API v2 compatibility.
+
+## Three Binaries
+
+| Binary | Purpose | Use Case |
+|--------|---------|----------|
+| `indexer` | Single-chain indexer | One chain per process |
+| `evmchains` | Multi-chain EVM | Multiple EVM chains, shared DB |
+| `multichain` | Universal indexer | 100+ chains in parallel |
+
+## Supported Chain Types
+
+| Type | Chains | Protocol | Ports |
+|------|--------|----------|-------|
+| EVM | C (96369), Zoo, Hanzo, SPC, Pars | HTTP RPC | 4000 |
+| DAG | X, A, B, Q, T, Z, K | Vertex/Parent | 4200-4900 |
+| Linear | P | Block/Parent | 4100 |
+
+## Technology
+
+- **Language**: Go 1.26.1
+- **Storage**: PostgreSQL (production) + SQLite (dev) + BadgerDB (KV)
+- **API**: Blockscout v2 compatible REST + GraphQL + WebSocket
+- **DeFi**: Native protocol indexing (AMMs, lending, perps, NFTs, bridges)
+- **Image**: `ghcr.io/luxfi/indexer:v0.2.2`

@@ -1,0 +1,80 @@
+---
+title: Best Practices
+description: Security recommendations for production HSM deployments
+icon: CheckCircle
+---
+
+## Provider Selection
+
+| Environment | Recommended Provider | Reason |
+|-------------|---------------------|--------|
+| Production (AWS) | `aws` | IAM roles, audit logging, FIPS 140-2 L3 |
+| Production (GCP) | `gcp` | Workload Identity, audit logging |
+| Production (Azure) | `azure` | Managed Identity, compliance |
+| Edge / IoT | `zymbit` | Hardware tamper resistance |
+| PQ compliance | `mldsa` | FIPS 204, quantum resistance |
+| Development | `local` | Zero setup, fast iteration |
+
+> Never use `local` in production. It provides no key protection, audit trail, or rotation capability.
+
+## Key Management
+
+1. **Use IAM roles**, not static credentials. On AWS, attach roles to EC2/ECS/EKS. On GCP, use Workload Identity. On Azure, use Managed Identity.
+
+2. **Enable key usage logging**. All cloud KMS providers support audit logging — enable it and monitor for anomalous signing patterns.
+
+3. **Rotate keys regularly**. Create new key versions and migrate gradually. Cloud KMS providers support automatic key rotation.
+
+4. **Separate signing keys from password keys**. The HSM signer key and the ZapDB password decryption key should be different KMS keys with different IAM policies.
+
+## Network Security
+
+1. **Zymbit devices** should be on an isolated network segment. If not on localhost, use TLS for the REST API connection.
+
+2. **MPC nodes** should communicate over PQ TLS (already the default with X25519MLKEM768 key exchange).
+
+3. **Never expose KMS credentials** in logs, error messages, or config files.
+
+## Testing
+
+1. **Use `local` signer in tests** — it's fast and deterministic per `keyID`.
+
+2. **Test PQ signatures** before deploying — ML-DSA signatures are ~46x larger than ECDSA. Ensure your transport and storage can handle ~3.3KB signatures.
+
+3. **Run concurrent tests** — the HSM package is thread-safe, but your integration code should be tested under concurrent load.
+
+```go
+func TestConcurrentSigning(t *testing.T) {
+    signer, _ := hsm.NewSigner("local", nil)
+    var wg sync.WaitGroup
+    for i := 0; i < 100; i++ {
+        wg.Add(1)
+        go func() {
+            defer wg.Done()
+            sig, _ := signer.Sign(ctx, "key", msg)
+            ok, _ := signer.Verify(ctx, "key", msg, sig)
+            assert.True(t, ok)
+        }()
+    }
+    wg.Wait()
+}
+```
+
+## Monitoring
+
+| Metric | Alert Threshold | Action |
+|--------|----------------|--------|
+| Sign latency | > 500ms (cloud), > 50ms (local) | Check network / KMS health |
+| Sign error rate | > 1% | Check IAM permissions, key state |
+| Key not found | Any | Check key rotation, key ID config |
+| Verify failure rate | > 0.1% | Investigate key mismatch or tampering |
+
+## Compliance
+
+| Standard | Relevant Providers |
+|----------|-------------------|
+| FIPS 140-2 Level 3 | AWS KMS, Zymbit |
+| FIPS 140-2 Level 2 | GCP Cloud KMS |
+| FIPS 204 (ML-DSA) | `mldsa` provider |
+| SOC 2 | AWS KMS, GCP Cloud KMS, Azure Key Vault |
+| PCI DSS | All cloud providers with proper configuration |

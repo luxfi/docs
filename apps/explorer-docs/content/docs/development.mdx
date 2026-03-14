@@ -1,0 +1,61 @@
+---
+title: Development
+description: Contributing to the Lux Explorer
+icon: Code
+---
+
+## Backend Development
+
+```bash
+cd explorer
+mix deps.get
+mix compile
+mix phx.server
+```
+
+### Running Tests
+
+```bash
+mix test --no-start
+```
+
+Uses ExUnit with Mox for mocking and Bypass for HTTP stubbing.
+
+## Frontend Development
+
+```bash
+cd explore
+pnpm install
+pnpm dev
+```
+
+### Code Style
+
+ESLint enforces strict design system rules:
+
+- Import from `toolkit/chakra/**` before native Chakra UI
+- No hardcoded colors — use semantic tokens
+- Use `toolkit/chakra/link` instead of `next/link`
+- Use `lib/date/dayjs.ts` for dates
+- Time via `Time` or `TimeWithTooltip` components
+
+### Running Tests
+
+```bash
+pnpm test:vitest     # Unit tests
+pnpm test:pw         # E2E tests (all 3 projects)
+```
+
+## GitHub Actions
+
+The CI pipeline runs on every PR:
+
+1. Type checking (`tsc --noEmit`)
+2. Linting (ESLint)
+3. Unit tests (Vitest)
+4. E2E tests (Playwright — desktop, mobile, dark mode)
+5. Docker build verification
+
+## GHA Deploy
+
+The `build-lux.yml` workflow builds and pushes Docker images to GHCR. On deploy, all 5 frontend instances are restarted (not just mainnet).

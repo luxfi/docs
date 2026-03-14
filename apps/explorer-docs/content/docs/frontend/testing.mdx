@@ -1,0 +1,58 @@
+---
+title: Testing
+description: Vitest unit tests and Playwright E2E testing
+---
+
+## Unit Tests (Vitest)
+
+```bash
+pnpm test:vitest
+```
+
+Unit tests use `*.spec.ts` / `*.spec.tsx` files alongside source code.
+
+## E2E Tests (Playwright)
+
+Three test projects run in parallel:
+
+| Project | Viewport | Purpose |
+|---------|----------|---------|
+| `default` | 1200x750 (Chrome) | Desktop testing |
+| `mobile` | iPhone 13 Pro | Mobile responsive |
+| `dark-color-mode` | 1200x750 | Dark mode rendering |
+
+```bash
+pnpm test:pw           # All projects
+pnpm test:pw:mobile    # Mobile only
+```
+
+### Tag Tests
+
+```tsx
+// Target specific projects
+test('@mobile address page renders', async ({ page }) => { ... });
+test('@dark-mode theme applies', async ({ page }) => { ... });
+```
+
+### Selector Strategy
+
+Use accessible selectors (no CSS classes):
+
+```tsx
+// Preferred
+page.getByRole('button', { name: 'Search' })
+page.getByTestId('block-height')
+page.getByText('Latest Blocks')
+
+// Avoid
+page.locator('.search-btn')
+```
+
+## CI/CD
+
+GitHub Actions workflow `checks.yml` (432 lines) runs:
+
+1. ESLint + TypeScript type checking
+2. Vitest unit tests
+3. Playwright E2E tests (all 3 projects)
+4. Spell check (cspell)

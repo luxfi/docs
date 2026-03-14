@@ -1,0 +1,82 @@
+---
+title: DeFi Indexing
+description: Native protocol indexing for AMMs, lending, perps, NFTs, and bridges
+icon: TrendingUp
+---
+
+The indexer has native support for indexing DeFi protocol events, providing structured data beyond raw transaction logs.
+
+## Supported Protocols
+
+### AMMs / DEXs
+
+| Protocol | Versions | Features |
+|----------|----------|----------|
+| Uniswap | V2, V3 | Swaps, liquidity, positions |
+| SushiSwap | V1, V2 | Swaps, farms |
+| Curve | All | Stable swaps, gauges |
+| Balancer | V2 | Weighted pools |
+| PancakeSwap | V2, V3 | BSC + multi-chain |
+
+### Lending
+
+| Protocol | Versions | Features |
+|----------|----------|----------|
+| Aave | V2, V3 | Supply, borrow, liquidations |
+| Compound | V2, V3 | cTokens, governance |
+| Morpho | V1 | Peer-to-peer matching |
+| Benqi | V1 | Lux-native lending |
+
+### Perpetuals
+
+| Protocol | Features |
+|----------|----------|
+| GMX | V1, V2 positions |
+| Synthetix | Synth tracking |
+| dYdX | Order book |
+
+### NFT Marketplaces
+
+| Protocol | Features |
+|----------|----------|
+| Seaport | 1.1-1.6, all order types |
+| LooksRare | V2, royalties |
+| Blur | Bids, listings |
+| X2Y2 | Orders, royalties |
+| Rarible | Multi-chain |
+| Zora | Editions, drops |
+
+### Staking
+
+| Protocol | Features |
+|----------|----------|
+| Lido | stETH, withdrawals |
+| Rocket Pool | rETH, node operators |
+| Eigenlayer | Restaking, AVS |
+
+### Bridges
+
+| Protocol | Features |
+|----------|----------|
+| Wormhole | Cross-chain messages |
+| LayerZero | Omnichain transfers |
+| Stargate | Liquidity pools |
+| Axelar | GMP calls |
+
+### NFT AMMs
+
+| Protocol | Features |
+|----------|----------|
+| Sudoswap | Bonding curves |
+| Niftydex | NFT/token swaps |
+
+### Orderbooks
+
+| Protocol | Features |
+|----------|----------|
+| LX DEX | CLOB engine |
+| Phoenix | Solana CLOB |
+
+## OHLCV Market Data
+
+The indexer generates OHLCV (Open-High-Low-Close-Volume) candles for all indexed trading pairs, suitable for charting.

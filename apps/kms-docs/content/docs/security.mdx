@@ -1,0 +1,14 @@
+---
+title: Security
+description: Security best practices and audit logging
+icon: ShieldAlert
+---
+
+## Rules
+
+1. **ALL passwords MUST come from KMS** — Never plaintext
+2. **Rotate keys regularly** via KMS key rotation
+3. **Audit all access** via KMS audit logs
+4. **Use the K8s operator** for automated secret sync
+5. **Enable MFA** for administrative access
+6. **IP allowlisting** for production environments

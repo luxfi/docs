@@ -1,0 +1,171 @@
+---
+title: API Reference
+description: Complete API reference for the Lux HSM package
+icon: FileCode
+---
+
+## Interfaces
+
+### Signer
+
+```go
+type Signer interface {
+    // Sign produces a signature for the given message using the specified key.
+    Sign(ctx context.Context, keyID string, message []byte) ([]byte, error)
+
+    // Verify checks a signature against the original message.
+    Verify(ctx context.Context, keyID string, message, signature []byte) (bool, error)
+
+    // Provider returns the provider name (e.g., "aws", "gcp", "local").
+    Provider() string
+}
+```
+
+### PasswordProvider
+
+```go
+type PasswordProvider interface {
+    // GetPassword retrieves a decrypted password for the given key ID.
+    GetPassword(ctx context.Context, keyID string) (string, error)
+}
+```
+
+## Factory Functions
+
+### NewSigner
+
+```go
+func NewSigner(providerType string, config map[string]string) (Signer, error)
+```
+
+Creates a new signer for the given provider type. Provider names are case-insensitive and trimmed.
+
+| Provider Type | Aliases | Returns |
+|--------------|---------|---------|
+| `aws` | — | `*AWSKMSSigner` |
+| `gcp` | — | `*GCPKMSSigner` |
+| `azure` | — | `*AzureKVSigner` |
+| `zymbit` | — | `*ZymbitSigner` |
+| `mldsa` | `pq`, `post-quantum` | `*MLDSASigner` |
+| `local` | `` (empty) | `*LocalSigner` |
+
+### NewPasswordProvider
+
+```go
+func NewPasswordProvider(providerType string, config map[string]string) (PasswordProvider, error)
+```
+
+Creates a new password provider. Provider names are case-insensitive and trimmed.
+
+| Provider Type | Aliases | Returns |
+|--------------|---------|---------|
+| `aws` | — | `*AWSKMSProvider` |
+| `gcp` | — | `*GCPKMSProvider` |
+| `azure` | — | `*AzureKVProvider` |
+| `env` | `` (empty) | `*EnvProvider` |
+| `file` | — | `*FileProvider` |
+
+## Manager
+
+### Config
+
+```go
+type Config struct {
+    PasswordProvider string            // Password provider type
+    PasswordKeyID    string            // Key ID for password decryption
+    PasswordConfig   map[string]string // Provider-specific config
+
+    SignerProvider   string            // Signer provider type
+    SignerKeyID      string            // Default signing key ID
+    SignerConfig     map[string]string // Provider-specific config
+
+    Region           string            // Convenience: AWS/GCP region
+}
+```
+
+### New
+
+```go
+func New(cfg Config) (*Manager, error)
+```
+
+Creates a new Manager with both a PasswordProvider and Signer configured.
+
+### Manager Methods
+
+```go
+func (m *Manager) Signer() Signer
+func (m *Manager) PasswordProvider() PasswordProvider
+
+// Sign/Verify using the configured default SignerKeyID
+func (m *Manager) Sign(ctx context.Context, message []byte) ([]byte, error)
+func (m *Manager) Verify(ctx context.Context, message, signature []byte) (bool, error)
+
+// Sign/Verify with an explicit key ID
+func (m *Manager) SignWithKey(ctx context.Context, keyID string, message []byte) ([]byte, error)
+func (m *Manager) VerifyWithKey(ctx context.Context, keyID string, message, signature []byte) (bool, error)
+
+// Get password using the configured PasswordKeyID
+func (m *Manager) GetPassword(ctx context.Context) (string, error)
+```
+
+## Provider Structs
+
+### AWSKMSSigner
+
+```go
+type AWSKMSSigner struct {
+    Region string // AWS region (default: "us-east-1")
+}
+```
+
+### GCPKMSSigner
+
+```go
+type GCPKMSSigner struct{}
+```
+
+### AzureKVSigner
+
+```go
+type AzureKVSigner struct {
+    VaultURL string // e.g., "https://my-vault.vault.azure.net"
+}
+```
+
+### ZymbitSigner
+
+```go
+type ZymbitSigner struct {
+    APIAddr string // defaults to "http://localhost:6789"
+}
+```
+
+### MLDSASigner
+
+```go
+type MLDSASigner struct {
+    // internal: sync.Mutex, mode, keys map
+}
+
+func NewMLDSASigner(mode mldsa.Mode) *MLDSASigner
+```
+
+### LocalSigner
+
+```go
+func NewLocalSigner() *LocalSigner
+```
+
+## Helper Functions
+
+```go
+// SHA-256 hex digest
+func sha256Hex(data []byte) string
+
+// HMAC-SHA256
+func hmacSHA256(key, data []byte) []byte
+
+// Parse GCP key resource name into components
+func parseGCPKeyResourceName(name string) map[string]string
+```

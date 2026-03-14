@@ -1,0 +1,26 @@
+---
+title: Installation
+description: Install Lux KMS
+icon: Download
+---
+
+## Docker
+
+```bash
+docker pull ghcr.io/luxfi/kms:latest
+docker compose up -d
+```
+
+## Kubernetes
+
+```bash
+helm install kms luxfi/kms --namespace kms --create-namespace
+```
+
+## Environment
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `DATABASE_URL` | PostgreSQL connection string | Yes |
+| `ENCRYPTION_KEY` | Root encryption key (from KMS) | Yes |
+| `REDIS_URL` | Redis connection string | Yes |

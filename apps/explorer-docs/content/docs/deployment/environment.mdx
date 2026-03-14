@@ -1,0 +1,44 @@
+---
+title: Environment Variables
+description: Complete reference for backend and frontend configuration
+---
+
+## Backend Variables
+
+| Variable | Example | Description |
+|----------|---------|-------------|
+| `DATABASE_URL` | `postgresql://user:pass@host:5432/db` | PostgreSQL connection |
+| `REDIS_URL` | `redis://redis:6379` | Redis cache |
+| `ETHEREUM_JSONRPC_HTTP_URL` | `http://luxd:9630/ext/bc/C/rpc` | RPC endpoint |
+| `ETHEREUM_JSONRPC_WS_URL` | `ws://luxd:9630/ext/bc/C/ws` | WebSocket RPC |
+| `CHAIN_ID` | `96369` | EVM chain ID |
+| `COIN` | `LUX` | Native currency symbol |
+| `NETWORK` | `LUX Network` | Network display name |
+| `SUBNETWORK` | `C-Chain` | Subnetwork name |
+
+## Frontend Variables
+
+| Variable | Example | Description |
+|----------|---------|-------------|
+| `NEXT_PUBLIC_API_HOST` | `https://api-explore.lux.network` | Backend API URL |
+| `NEXT_PUBLIC_NETWORK_NAME` | `LUX Network` | Display name |
+| `NEXT_PUBLIC_NETWORK_ID` | `96369` | Network ID |
+| `NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL` | `LUX` | Currency symbol |
+| `NEXT_PUBLIC_APP_HOST` | `explore.lux.network` | Frontend hostname |
+| `NEXT_PUBLIC_COLOR_THEME_DEFAULT` | `dark` | Default theme |
+| `NEXT_PUBLIC_FONT_FAMILY_HEADING` | `Geist, sans-serif` | Heading font |
+
+## Memory Optimization Variables
+
+```bash
+INDEXER_DISABLE_COIN_BALANCE_FETCHER=true
+INDEXER_DISABLE_BLOCK_REWARD_FETCHER=true
+INDEXER_DISABLE_EMPTY_BLOCKS_SANITIZER=true
+INDEXER_DISABLE_CATALOGED_TOKEN_UPDATER_FETCHER=true
+POOL_SIZE=3
+POOL_SIZE_API=2
+INDEXER_MEMORY_LIMIT=1gb
+TXS_STATS_DAYS_TO_COMPILE_AT_INIT=1
+```
+
+See `explore/docs/ENVS.md` for the complete list of 100+ frontend environment variables.

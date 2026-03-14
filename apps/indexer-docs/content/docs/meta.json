@@ -1,0 +1,25 @@
+{
+  "pages": [
+    "---Getting Started---",
+    "installation",
+    "quickstart",
+    "---Architecture---",
+    "architecture",
+    "---Chain Types---",
+    "chains",
+    "---Storage---",
+    "storage",
+    "---DeFi---",
+    "defi",
+    "---API---",
+    "api",
+    "---Deployment---",
+    "deployment",
+    "---Integration---",
+    "explorer",
+    "---Configuration---",
+    "configuration",
+    "---Development---",
+    "development"
+  ]
+}

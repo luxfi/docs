@@ -1,0 +1,20 @@
+{
+  "pages": [
+    "---Getting Started---",
+    "quickstart",
+    "---Backend---",
+    "backend",
+    "---Frontend---",
+    "frontend",
+    "---Deployment---",
+    "deployment",
+    "---Configuration---",
+    "configuration",
+    "---Integration---",
+    "indexer",
+    "---API---",
+    "api",
+    "---Development---",
+    "development"
+  ]
+}

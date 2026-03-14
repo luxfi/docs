@@ -1,0 +1,22 @@
+---
+title: API Reference
+description: REST API endpoints
+icon: FileCode
+---
+
+## Authentication
+
+All API requests require a Bearer token or Universal Auth credentials.
+
+## Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/v3/secrets` | List secrets |
+| POST | `/api/v3/secrets` | Create secret |
+| PATCH | `/api/v3/secrets/:id` | Update secret |
+| DELETE | `/api/v3/secrets/:id` | Delete secret |
+| POST | `/api/v3/transit/encrypt` | Encrypt data |
+| POST | `/api/v3/transit/decrypt` | Decrypt data |
+| GET | `/api/v3/pki/ca` | List CAs |
+| POST | `/api/v3/pki/certificates` | Issue certificate |

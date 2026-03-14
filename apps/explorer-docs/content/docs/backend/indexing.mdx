@@ -1,0 +1,53 @@
+---
+title: Indexing
+description: Block fetching, token tracking, and contract verification
+---
+
+## Fetchers
+
+The indexer app runs multiple concurrent fetchers:
+
+| Fetcher | Purpose | Default |
+|---------|---------|---------|
+| Block | Fetch and index new blocks | Enabled |
+| Internal Transaction | Trace internal calls | Enabled |
+| Token Balance | Track ERC20/721/1155 balances | Enabled |
+| Coin Balance | Track native coin balances | Enabled |
+| Contract Code | Fetch contract bytecode | Enabled |
+| Block Reward | Calculate block rewards | Disabled on small chains |
+
+## Memory Optimization
+
+For small chains (subnets with few blocks), disable unnecessary fetchers:
+
+```bash
+export INDEXER_DISABLE_COIN_BALANCE_FETCHER=true
+export INDEXER_DISABLE_BLOCK_REWARD_FETCHER=true
+export INDEXER_DISABLE_EMPTY_BLOCKS_SANITIZER=true
+export INDEXER_DISABLE_CATALOGED_TOKEN_UPDATER_FETCHER=true
+export POOL_SIZE=3
+export POOL_SIZE_API=2
+export INDEXER_MEMORY_LIMIT=1gb
+export TXS_STATS_DAYS_TO_COMPILE_AT_INIT=1
+```
+
+> Container memory limit should be set to 8Gi with Recreate strategy (not RollingUpdate) to prevent OOM during indexing spikes.
+
+## Smart Contract Verification
+
+Supports Solidity contract verification via `solc`:
+
+1. User submits source code and compiler version
+2. Backend compiles with matching `solc` version
+3. Compares deployed bytecode with compilation output
+4. Stores verified source, ABI, and constructor arguments
+
+## Tracer Types
+
+Three tracer modes for internal transactions:
+
+| Tracer | Speed | Detail |
+|--------|-------|--------|
+| `call_tracer` | Fast | Call tree only |
+| `opcode_tracer` | Slow | Full opcode trace |
+| `js_tracer` | Medium | Custom JavaScript tracer |

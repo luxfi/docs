@@ -1,0 +1,29 @@
+---
+title: Providers
+description: Six signing providers and five password providers
+icon: Layers
+index: true
+---
+
+Lux HSM ships with six signing providers and five password providers. All are accessed through the same `Signer` and `PasswordProvider` interfaces via the factory functions.
+
+## Signing Providers
+
+| Provider | Struct | Algorithm | Auth Method |
+|----------|--------|-----------|-------------|
+| `aws` | `AWSKMSSigner` | ECDSA_SHA_256 | IAM role / SigV4 |
+| `gcp` | `GCPKMSSigner` | EC_SIGN_P256_SHA256 | Metadata service |
+| `azure` | `AzureKVSigner` | ES256 | MSI token |
+| `zymbit` | `ZymbitSigner` | ECDSA P-256 | Local REST API |
+| `mldsa` | `MLDSASigner` | ML-DSA-65 (FIPS 204) | In-memory |
+| `local` | `LocalSigner` | ECDSA P-256 | In-memory |
+
+## Password Providers
+
+| Provider | Struct | Source |
+|----------|--------|--------|
+| `aws` | `AWSKMSProvider` | KMS Decrypt operation |
+| `gcp` | `GCPKMSProvider` | Cloud KMS Decrypt |
+| `azure` | `AzureKVProvider` | Key Vault unwrapKey |
+| `env` | `EnvProvider` | `LUX_MPC_PASSWORD` or `ZAPDB_PASSWORD` |
+| `file` | `FileProvider` | File path (K8s mounted secret) |

@@ -1,0 +1,37 @@
+---
+title: Deployment
+description: Deploy MPC nodes on Kubernetes
+icon: Server
+---
+
+## Prerequisites
+
+- Kubernetes cluster with NATS and Consul
+- AWS/GCP/Azure KMS access for HSM
+- 3+ nodes for threshold security
+
+## K8s Configuration
+
+```yaml
+env:
+  - name: MPC_HSM_SIGNER
+    value: "aws"
+  - name: MPC_HSM_SIGNER_KEY_ID
+    value: "arn:aws:kms:us-east-1:123456789:key/co-sign-key"
+  - name: MPC_HSM_PROVIDER
+    value: "aws"
+  - name: MPC_HSM_KEY_ID
+    value: "arn:aws:kms:us-east-1:123456789:key/zapdb-pw-key"
+  - name: MPC_HSM_ATTEST
+    value: "true"
+```
+
+## Service Discovery
+
+MPC nodes use Consul for service discovery and NATS for message transport. Configure via:
+
+```bash
+mpcd start \
+  --consul-addr consul.mpc.svc:8500 \
+  --nats-url nats://nats.mpc.svc:4222
+```

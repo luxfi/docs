@@ -1,0 +1,25 @@
+---
+title: Configuration
+description: CLI configuration options
+icon: Settings
+---
+
+## Config File
+
+The CLI reads from `~/.lux/config.json`:
+
+```json
+{
+  "network": "mainnet",
+  "node_url": "https://api.lux.network",
+  "key_name": "default"
+}
+```
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `LUX_NETWORK` | Network to connect to |
+| `LUX_KEY_NAME` | Default key name |
+| `LUX_PRIVATE_KEY` | Private key (hex) |

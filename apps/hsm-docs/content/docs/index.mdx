@@ -1,0 +1,94 @@
+---
+title: Lux HSM
+description: Unified hardware security module for blockchain infrastructure
+index: true
+icon: ShieldCheck
+---
+
+Lux HSM provides a single Go interface for signing and verification across six different backend providers — from cloud HSMs to post-quantum algorithms. All secrets are managed through [Lux KMS](/docs/kms) — never stored as plaintext.
+
+## Core Interfaces
+
+```go
+type Signer interface {
+    Sign(ctx context.Context, keyID string, message []byte) ([]byte, error)
+    Verify(ctx context.Context, keyID string, message, signature []byte) (bool, error)
+    Provider() string
+}
+
+type PasswordProvider interface {
+    GetPassword(ctx context.Context, keyID string) (string, error)
+}
+```
+
+## Signing Providers
+
+| Provider | Algorithm | Use Case |
+|----------|-----------|----------|
+| `aws` | ECDSA P-256 via KMS | Production cloud signing |
+| `gcp` | EC_SIGN_P256_SHA256 | Production cloud signing |
+| `azure` | ES256 via Key Vault | Production cloud signing |
+| `zymbit` | ECDSA P-256 via PKCS#11 | Edge/IoT hardware signing |
+| `mldsa` | ML-DSA-65 (FIPS 204) | Post-quantum signing |
+| `local` | ECDSA P-256 in-memory | Development and testing |
+
+## Password Providers
+
+| Provider | Source | Use Case |
+|----------|--------|----------|
+| `aws` | AWS KMS Decrypt | ZapDB password from KMS |
+| `gcp` | GCP Cloud KMS Decrypt | ZapDB password from KMS |
+| `azure` | Azure Key Vault unwrapKey | ZapDB password from Key Vault |
+| `env` | Environment variable | Development only (never production) |
+| `file` | File on disk | K8s mounted secrets (via KMS operator) |
+
+## Quick Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "github.com/luxfi/hsm"
+)
+
+func main() {
+    // Create a signer
+    signer, _ := hsm.NewSigner("aws", map[string]string{
+        "region": "us-east-1",
+    })
+
+    ctx := context.Background()
+    keyID := "arn:aws:kms:us-east-1:123456789:key/my-signing-key"
+
+    // Sign
+    sig, _ := signer.Sign(ctx, keyID, []byte("hello world"))
+
+    // Verify
+    ok, _ := signer.Verify(ctx, keyID, []byte("hello world"), sig)
+    fmt.Println("Valid:", ok) // true
+}
+```
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────┐
+│                  Manager                     │
+│  ┌──────────────────┐  ┌──────────────────┐ │
+│  │  PasswordProvider │  │     Signer       │ │
+│  └────────┬─────────┘  └────────┬─────────┘ │
+│           │                     │            │
+│  ┌────────▼─────────────────────▼─────────┐ │
+│  │         Factory (NewSigner / etc)       │ │
+│  └────┬────┬────┬────┬────┬────┬──────────┘ │
+│       │    │    │    │    │    │             │
+│      AWS  GCP Azure Zymbit MLDSA Local      │
+└─────────────────────────────────────────────┘
+         │    │    │    │
+    ┌────▼────▼────▼────▼────┐
+    │   Cloud / Hardware /    │
+    │   Software Backends     │
+    └─────────────────────────┘
+```

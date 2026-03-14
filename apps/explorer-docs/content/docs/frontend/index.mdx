@@ -1,0 +1,41 @@
+---
+title: Frontend
+description: Next.js 15 explorer frontend with Chakra UI
+index: true
+icon: Layout
+---
+
+The explorer frontend is a Next.js 15 application using React 19 and Chakra UI v3 with a monochrome design system.
+
+## Technology
+
+| Library | Version | Purpose |
+|---------|---------|---------|
+| Next.js | 15 | React framework (Pages Router) |
+| React | 19 | UI library |
+| Chakra UI | v3 | Component library |
+| Wagmi | 2 | Wallet integration |
+| Viem | 2 | Ethereum utilities |
+| Vitest | — | Unit testing |
+| Playwright | — | E2E testing |
+
+## Structure
+
+```
+explore/
+├── pages/          # Next.js page routes (62 files)
+├── ui/             # Feature-based UI (71 dirs)
+├── lib/            # Business logic (192 files)
+├── toolkit/        # Design system layer
+├── configs/app/    # Runtime configuration
+├── deploy/         # Docker + Helm + scripts
+└── public/         # Static assets
+```
+
+## Design System
+
+- **Fonts**: Geist Sans + Geist Mono
+- **Theme**: Dark mode default, monochrome palette
+- **Icons**: Lucide React
+- **Colors**: Semantic tokens in `toolkit/theme/foundations/`
+- **ESLint**: Enforces design system usage (no hardcoded colors, use toolkit components)

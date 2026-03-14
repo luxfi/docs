@@ -1,0 +1,18 @@
+---
+title: Custom Topology
+description: Configure network topology
+icon: GitBranch
+---
+
+## Topology File
+
+```yaml
+nodes:
+  - id: node-0
+    connections: [node-1, node-2]
+  - id: node-1
+    connections: [node-0, node-2]
+  - id: node-2
+    connections: [node-0, node-1]
+latency: 10ms
+```

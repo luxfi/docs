@@ -1,0 +1,18 @@
+---
+title: Installation
+description: Deploy Lux Cloud
+icon: Download
+---
+
+## Docker
+
+```bash
+docker pull ghcr.io/luxfi/cloud:latest
+docker compose up -d
+```
+
+## Kubernetes
+
+```bash
+helm install cloud luxfi/cloud --namespace cloud
+```

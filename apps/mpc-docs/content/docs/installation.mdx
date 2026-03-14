@@ -1,0 +1,50 @@
+---
+title: Installation
+description: Install the Lux MPC daemon
+icon: Download
+---
+
+## Go Install
+
+```bash
+go install github.com/luxfi/mpc/cmd/mpcd@latest
+```
+
+## Docker
+
+```bash
+docker pull ghcr.io/luxfi/mpc:latest
+docker run -d --name mpcd ghcr.io/luxfi/mpc:latest
+```
+
+## Kubernetes
+
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mpc-node
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+        - name: mpcd
+          image: ghcr.io/luxfi/mpc:latest
+          ports:
+            - containerPort: 8080
+            - containerPort: 8081
+          env:
+            - name: MPC_HSM_SIGNER
+              value: "aws"
+            - name: MPC_HSM_PROVIDER
+              value: "aws"
+```
+
+## Build from Source
+
+```bash
+git clone https://github.com/luxfi/mpc
+cd mpc
+go build -o mpcd ./cmd/mpcd
+```

@@ -1,0 +1,16 @@
+---
+title: API Reference
+description: Programmatic CLI usage
+icon: FileCode
+---
+
+The CLI can be used programmatically via the Go SDK:
+
+```go
+import "github.com/luxfi/cli/pkg/network"
+
+net, _ := network.Start(network.Config{
+    NumNodes: 5,
+})
+defer net.Stop()
+```

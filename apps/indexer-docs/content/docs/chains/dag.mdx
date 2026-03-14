@@ -1,0 +1,35 @@
+---
+title: DAG Chains
+description: Vertex/edge indexing for Avalanche DAG consensus
+---
+
+## DAG Data Model
+
+DAG chains use vertex/edge consensus instead of linear blocks:
+
+- **Vertices**: Units of consensus (like blocks)
+- **Edges**: Parent relationships between vertices
+- **Transactions**: UTXO-based asset transfers
+
+## Supported DAG Chains
+
+| Chain | Purpose | Port |
+|-------|---------|------|
+| X-Chain | Asset exchange (UTXO) | 4200 |
+| A-Chain | AI compute operations | 4500 |
+| B-Chain | Bridge transfers | 4600 |
+| Q-Chain | Quantum operations | 4300 |
+| T-Chain | MPC key shares | 4700 |
+| Z-Chain | ZK proof verification | 4400 |
+| K-Chain | KMS operations | 4900 |
+
+## Usage
+
+```bash
+./indexer -chain xchain -rpc http://luxd:9630/ext/bc/X -port 4200
+./indexer -chain achain -rpc http://luxd:9630/ext/bc/A -port 4500
+```
+
+## DAG Traversal
+
+The indexer traverses the DAG by following parent edges from the frontier (latest vertices) back to genesis. Each vertex is stored with its parent relationships for graph queries.

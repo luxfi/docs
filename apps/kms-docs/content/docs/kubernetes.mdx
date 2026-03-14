@@ -1,0 +1,40 @@
+---
+title: Kubernetes Operator
+description: CRDs for automated secret management
+icon: Container
+---
+
+## Custom Resources
+
+### KMSSecret
+
+Sync KMS secrets into K8s Secrets:
+
+```yaml
+apiVersion: kms.lux.network/v1alpha1
+kind: KMSSecret
+metadata:
+  name: app-secrets
+spec:
+  secretRef:
+    name: app-env
+  data:
+    - secretKey: DATABASE_URL
+      property: value
+```
+
+### KMSPushSecret
+
+Push K8s Secrets to KMS:
+
+```yaml
+apiVersion: kms.lux.network/v1alpha1
+kind: KMSPushSecret
+metadata:
+  name: push-creds
+spec:
+  secretRef:
+    name: local-secret
+  destination:
+    path: /production/creds
+```

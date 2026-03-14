@@ -1,0 +1,19 @@
+{
+  "pages": [
+    "---Getting Started---",
+    "installation",
+    "quickstart",
+    "---Providers---",
+    "providers",
+    "---Integration---",
+    "mpc",
+    "consensus",
+    "bridge",
+    "kms",
+    "---API Reference---",
+    "api",
+    "---Security---",
+    "post-quantum",
+    "best-practices"
+  ]
+}

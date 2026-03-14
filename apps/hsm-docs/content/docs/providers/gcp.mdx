@@ -1,0 +1,78 @@
+---
+title: GCP Cloud KMS
+description: ECDSA signing via Google Cloud Key Management Service
+icon: Cloud
+---
+
+The `GCPKMSSigner` uses Google Cloud KMS asymmetric keys. Verification is performed locally by fetching the public key — GCP does not provide a server-side verify API for asymmetric keys.
+
+## Configuration
+
+```go
+signer, err := hsm.NewSigner("gcp", nil)
+```
+
+No explicit configuration is needed when running on GCE/GKE — the signer uses the metadata service for authentication.
+
+## Key ID Format
+
+Pass the full Cloud KMS resource name as the `keyID`:
+
+```
+projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{key}/cryptoKeyVersions/{version}
+```
+
+```go
+keyID := "projects/my-project/locations/us-central1/keyRings/mpc/cryptoKeys/signer/cryptoKeyVersions/1"
+sig, err := signer.Sign(ctx, keyID, msg)
+```
+
+## KMS Key Requirements
+
+- **Purpose**: `ASYMMETRIC_SIGN`
+- **Algorithm**: `EC_SIGN_P256_SHA256`
+
+Create the key:
+
+```bash
+gcloud kms keys create signer \
+  --keyring=mpc \
+  --location=us-central1 \
+  --purpose=asymmetric-signing \
+  --default-algorithm=ec-sign-p256-sha256
+```
+
+## Authentication
+
+Uses the GCE metadata service to obtain access tokens:
+
+```
+GET http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token
+```
+
+Works automatically on GCE instances, GKE pods, and Cloud Run containers with the appropriate IAM permissions:
+
+- `cloudkms.cryptoKeyVersions.useToSign`
+- `cloudkms.cryptoKeyVersions.viewPublicKey`
+
+## Verification
+
+Since GCP has no server-side verify API, verification works by:
+
+1. Fetching the public key PEM via `getPublicKey`
+2. Parsing the ECDSA public key
+3. Verifying the signature locally with `ecdsa.VerifyASN1`
+
+## Helper: parseGCPKeyResourceName
+
+The package includes a helper to parse GCP key resource names:
+
+```go
+parts := hsm.ParseGCPKeyResourceName(
+    "projects/prod/locations/global/keyRings/mpc/cryptoKeys/signer",
+)
+// parts["project"] = "prod"
+// parts["location"] = "global"
+// parts["keyRing"] = "mpc"
+// parts["cryptoKey"] = "signer"
+```

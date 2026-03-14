@@ -1,0 +1,32 @@
+---
+title: Quick Start
+description: First transaction in each language
+icon: Zap
+---
+
+## Go
+
+```go
+import "github.com/luxfi/sdk/client"
+
+c := client.New("https://api.lux.network/mainnet")
+height, _ := c.CChain().BlockNumber(ctx)
+```
+
+## TypeScript
+
+```typescript
+import { LuxClient } from '@luxfi/sdk';
+
+const client = new LuxClient('https://api.lux.network/mainnet');
+const height = await client.cchain.getBlockNumber();
+```
+
+## Python
+
+```python
+from luxfi_sdk import LuxClient
+
+client = LuxClient('https://api.lux.network/mainnet')
+height = client.cchain.block_number()
+```

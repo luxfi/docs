@@ -1,0 +1,19 @@
+---
+title: API Reference
+description: REST API endpoints
+icon: FileCode
+---
+
+## Authentication
+
+All requests require an API key via Bearer token.
+
+## Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/v1/rpc/{chain}` | JSON-RPC proxy |
+| GET | `/v1/tokens/balances` | Token balances |
+| GET | `/v1/nft/owner` | NFT ownership |
+| POST | `/v1/webhooks` | Create webhook |
+| GET | `/v1/health` | Health check |

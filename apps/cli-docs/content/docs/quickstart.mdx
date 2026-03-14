@@ -1,0 +1,29 @@
+---
+title: Quick Start
+description: Deploy your first subnet in minutes
+icon: Zap
+---
+
+## Create a Local Network
+
+```bash
+lux network start
+```
+
+## Create a Subnet
+
+```bash
+lux subnet create mysubnet --evm
+```
+
+## Deploy the Subnet
+
+```bash
+lux subnet deploy mysubnet --local
+```
+
+## Send a Transaction
+
+```bash
+lux wallet transfer --to 0x... --amount 1 --chain mysubnet
+```

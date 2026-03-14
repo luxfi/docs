@@ -1,0 +1,42 @@
+---
+title: Kubernetes
+description: K8s deployment via Lux Operator
+---
+
+## Operator
+
+The Lux Operator (`ghcr.io/luxfi/operator:v0.3.9`) manages indexer deployments via the `LuxIndexer` CRD.
+
+## Namespace
+
+All indexer instances run in `lux-explorer` namespace on the `lux-k8s` cluster.
+
+## Current Deployment
+
+13 indexer instances running:
+
+| Chain | Port | External API |
+|-------|------|-------------|
+| C-Chain | 4000 | api-indexer.lux.network |
+| P-Chain | 4100 | api-indexer-pchain.lux.network |
+| X-Chain | 4200 | api-indexer-xchain.lux.network |
+| Q-Chain | 4300 | api-indexer-qchain.lux.network |
+| Z-Chain | 4400 | api-indexer-zchain.lux.network |
+| A-Chain | 4500 | api-indexer-achain.lux.network |
+| B-Chain | 4600 | api-indexer-bchain.lux.network |
+| T-Chain | 4700 | api-indexer-tchain.lux.network |
+| K-Chain | 4900 | api-indexer-kchain.lux.network |
+
+## PostgreSQL
+
+```
+Host: indexer-postgres.lux-explorer.svc
+Port: 5432
+User: indexer
+Database: indexer
+PVC: 20Gi
+```
+
+## TLS
+
+Certificate `indexer-api-tls` (letsencrypt-prod) covers all 9 external API SANs.

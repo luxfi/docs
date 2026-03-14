@@ -1,0 +1,22 @@
+{
+  "pages": [
+    "---Getting Started---",
+    "installation",
+    "quickstart",
+    "---Secrets---",
+    "secrets",
+    "dynamic-secrets",
+    "---Encryption---",
+    "encryption",
+    "hsm",
+    "---PKI---",
+    "pki",
+    "---Integration---",
+    "mpc",
+    "kubernetes",
+    "---API Reference---",
+    "api",
+    "---Security---",
+    "security"
+  ]
+}

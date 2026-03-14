@@ -1,0 +1,48 @@
+---
+title: Installation
+description: Install the Lux Indexer
+icon: Download
+---
+
+## Go Install
+
+```bash
+go install github.com/luxfi/indexer/cmd/indexer@latest
+```
+
+## Docker
+
+```bash
+docker pull ghcr.io/luxfi/indexer:v0.2.2
+```
+
+## Build from Source
+
+```bash
+git clone https://github.com/luxfi/indexer.git
+cd indexer
+
+# Default (SQLite)
+go build -o bin/indexer ./cmd/indexer
+
+# PostgreSQL
+go build -tags postgres -o bin/indexer ./cmd/indexer
+
+# All binaries
+make build-all
+```
+
+## Cross-Compilation
+
+```bash
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+  go build -tags postgres -o bin/indexer ./cmd/indexer
+```
+
+## Build Tags
+
+| Tag | Backend | Use Case |
+|-----|---------|----------|
+| (none) | SQLite | Local development |
+| `postgres` | PostgreSQL | Production |
+| `mysql` | MySQL | Alternative production |
