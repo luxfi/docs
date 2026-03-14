@@ -1,0 +1,228 @@
+---
+title: "Lux Plugin Manager (LPM)"
+description: "Status: Alpha."
+---
+
+## Overview
+
+LPM is a command-line tool for managing virtual machine binaries and subnet definitions for the Lux Network. It tracks plugin repositories (git-based), downloads and builds VM binaries, installs them to the Lux node plugin directory, and can join subnets by installing all required VMs. The default plugin source is `luxfi/plugins-core`, but users can add custom repositories.
+
+**Status**: Alpha.
+
+## When to use
+
+- Installing VM plugins for the Lux node
+- Joining subnets that require specific VM binaries
+- Managing custom plugin repositories for VM distribution
+- Upgrading installed VM binaries to latest versions
+- Building and linking local VM source code to the plugin directory
+
+## Hard requirements
+
+1. ALWAYS use `github.com/luxfi/*` packages -- NEVER `go-ethereum` or `ava-labs`
+2. Go packages stay at v1.x.x (module is `github.com/luxfi/lpm`, no version suffix)
+3. NEVER use EWOQ keys
+4. Requires a running Lux node for VM hot-reload via admin API (optional; works offline too)
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/lpm` |
+| Module | `github.com/luxfi/lpm` |
+| Go version | 1.26.1 |
+| Binary | `build/lpm` |
+| Default plugin repo | `luxfi/plugins-core` (master branch) |
+| Plugin dir | `~/.lux/plugins` |
+| LPM state dir | `~/.lpm` |
+| License | See LICENSE |
+
+## Core Concepts
+
+### Directory structure
+
+```
+luxfi/lpm/
+  main/
+    main.go                -- Entry point
+  cmd/
+    root.go                -- Root cobra command, global flags, config init
+    install.go             -- install-vm command
+    install_github.go      -- install-github (from GitHub releases)
+    install_gitlab.go      -- install-gitlab (from GitLab releases)
+    install_url.go         -- install-url (from arbitrary URL)
+    install_source.go      -- install-source (build from local source)
+    uninstall.go           -- uninstall-vm command
+    join_subnet.go         -- join-subnet command
+    link.go                -- link command (symlink local binary)
+    update.go              -- update command (fetch latest definitions)
+    upgrade.go             -- upgrade command (rebuild/reinstall VMs)
+    add_repository.go      -- add-repository command
+    remove_repository.go   -- remove-repository command
+    list_repositories.go   -- list-repositories command
+  lpm/
+    (core LPM logic)
+  workflow/
+    workflow.go            -- Workflow orchestration
+    install.go             -- Install workflow
+    installer.go           -- Installer interface + impls
+    uninstall.go           -- Uninstall workflow
+    upgrade_vm.go          -- Upgrade workflow
+    add_repository.go      -- Repository management
+    link.go                -- Local binary linking
+    executor.go            -- Command execution
+  config/                  -- Configuration types
+  constant/
+    constants.go           -- AppName, CoreAlias, CoreURL, CoreBranch
+  types/                   -- Shared type definitions
+  state/                   -- Persistent state management
+  engine/                  -- Plugin engine
+  git/                     -- Git operations (go-git)
+  url/                     -- URL handling
+  checksum/                -- Checksum verification
+  admin/                   -- Lux node admin API client
+  internal/
+    vmid/                  -- VM ID utilities
+  pkg/                     -- Shared utilities
+  util/                    -- Helper functions
+  scripts/
+    build.sh               -- Build script
+    lint.sh                -- Linter script
+```
+
+### Key dependencies
+
+```
+github.com/luxfi/codec    v1.1.3    -- Serialization
+github.com/luxfi/ids      v1.2.9    -- ID types (VM IDs, subnet IDs)
+github.com/luxfi/sdk      v1.16.46  -- Lux SDK (admin API client)
+github.com/luxfi/crypto   v1.17.40  -- Crypto primitives (indirect)
+github.com/go-git/go-git  v5.16.4   -- Git repository operations
+github.com/spf13/cobra    v1.10.2   -- CLI framework
+github.com/spf13/viper    v1.21.0   -- Configuration
+github.com/spf13/afero    v1.15.0   -- Filesystem abstraction (testable)
+```
+
+### Commands
+
+```bash
+# Repository management
+lpm add-repository --alias luxfi/core --url https://github.com/luxfi/plugins-core.git --branch master
+lpm remove-repository --alias luxfi/core
+lpm list-repositories
+lpm update                          # Fetch latest definitions from all repos
+
+# VM installation
+lpm install-vm --vm spacesvm        # Install by alias (partial or fully qualified)
+lpm install-vm --vm luxfi/core:spacesvm   # Fully qualified (repo:vm)
+lpm uninstall-vm --vm spacesvm      # Remove VM binary from plugin dir
+
+# Alternative install sources
+lpm install-github --repo org/repo --release v1.0.0
+lpm install-gitlab --repo org/repo --release v1.0.0
+lpm install-url --url https://example.com/vm.tar.gz
+lpm install-source --path /path/to/source
+
+# Subnet operations
+lpm join-subnet --subnet spaces     # Install all VMs required by a subnet
+
+# Upgrade
+lpm upgrade                         # Upgrade all installed VMs
+lpm upgrade --vm spacesvm           # Upgrade specific VM
+
+# Link local build
+lpm link --vm myvm --path /path/to/binary
+```
+
+### Global flags
+
+```
+--config-file         Path to LPM config file
+--lpm-path            LPM artifacts directory (default: ~/.lpm)
+--plugin-path         Lux plugin directory (default: ~/.lux/plugins)
+--credentials-file    Path to credentials file (for private repos)
+--admin-api-endpoint  Lux admin API (default: 127.0.0.1:9650/ext/admin)
+```
+
+### Credentials file format (for private repos)
+
+```yaml
+username: your-username
+password: <github-personal-access-token>
+```
+
+### Build and test
+
+```bash
+# Build
+make build              # Output: build/lpm
+./scripts/build.sh      # Alternative
+
+# Test
+make test               # go test -v -race -coverprofile=coverage.out ./...
+make test-short         # Short tests only
+make coverage           # HTML coverage report
+
+# Lint
+make lint               # Runs scripts/lint.sh
+
+# Release (multi-platform)
+make release            # linux/amd64, linux/arm64, darwin/amd64, darwin/arm64, windows/amd64
+
+# Install
+make install            # Copy to $GOPATH/bin
+
+# Docker
+make docker             # Build luxfi/lpm:VERSION image
+
+# CI
+make ci                 # deps, verify, check (fmt, lint, test)
+```
+
+### Install from release binary
+
+```bash
+curl -sSfL https://raw.githubusercontent.com/luxfi/pm/master/scripts/install.sh | sh -s
+cd bin && export PATH=$PWD:$PATH
+```
+
+### Constants (constant/constants.go)
+
+| Constant | Value |
+|----------|-------|
+| AppName | `lpm` |
+| CoreAlias | `luxfi/plugins-core` |
+| CoreURL | `https://github.com/luxfi/plugins-core.git` |
+| CoreBranch | `master` |
+| QualifiedNameDelimiter | `:` |
+| AliasDelimiter | `/` |
+| DefaultNetwork | `testnet` |
+
+### VM naming
+
+- Partial alias: `spacesvm` (searches all tracked repos)
+- Fully qualified: `luxfi/core:spacesvm` (org/repo:vm)
+- When multiple repos have the same VM alias, you must use the fully qualified name
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| `Node was offline` after install | Lux node not running | VMs will be loaded on next node start |
+| Permission errors on Mac | Downloaded binary from GitHub UI | Use curl install script instead |
+| Multiple matches for VM alias | Same VM name in multiple repos | Use fully qualified name: `repo:vm` |
+| Private repo auth failure | Missing or invalid credentials | Use `--credentials-file` with valid PAT |
+| Build script fails | Missing Go toolchain | Install Go 1.26+ |
+| Plugin directory not found | Custom node install path | Set `--plugin-path` to correct location |
+
+## Related Skills
+
+- `lux/lux-node.md` -- Lux node (loads plugins from the plugin directory)
+- `lux/lux-plugins.md` -- Plugin repository format and definitions
+- `lux/lux-vm.md` -- Virtual machine interface and development
+- `lux/lux-cli.md` -- Lux CLI (alternative node management tool)
+- `lux/lux-sdk.md` -- Lux SDK (admin API used by LPM)
+
+---
+
+Last Updated: 2026-03-13

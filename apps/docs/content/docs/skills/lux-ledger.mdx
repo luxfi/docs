@@ -1,0 +1,195 @@
+---
+title: "Lux Ledger - Hardware Wallet Integration"
+description: "## When to use"
+---
+
+## Overview
+
+Lux Ledger (`github.com/luxfi/ledger`) is a **Go client library** for interacting with the Lux app on Ledger hardware wallets (Nano S, Nano X, Nano S Plus, Stax, Flex). It implements the APDU protocol over USB HID for key derivation (BIP32/BIP44), address generation, transaction signing, hash signing, and multi-signature support. The repository also contains the **Rust source for the Ledger app itself** in `/rust/`.
+
+## When to use
+
+- Integrating Ledger hardware wallet signing into Go applications
+- Implementing the `keychain.Ledger` interface for wallet/signing flows
+- Building or modifying the Ledger app firmware (Rust, in `/rust/`)
+- Debugging Ledger device communication issues (APDU protocol)
+- Adding new Ledger device model support
+
+## Hard requirements
+
+1. ALWAYS use `github.com/luxfi/*` packages -- NEVER `go-ethereum` or `ava-labs`
+2. NEVER bump Go package versions above v1.x.x
+3. Tests require a **physical Ledger device** with the Lux app installed and unlocked
+4. HRP (human-readable part) must be <= 83 characters
+5. Build tags: `ledger_mock` and `ledger_zemu` exclude real HID transport
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Module | `github.com/luxfi/ledger` |
+| Go | 1.26.1 |
+| License | Apache 2.0 |
+| Package Type | Library (no binary) |
+| Default HRP | `lux` |
+| Derivation Path | `m/44'/60'/0'` (Ethereum-compatible) |
+| Default Chain ID | `2q9e4r6Mu3U68nU1fYjgbR6JvwrRx36CohpAX5UQxse55x1Q5` |
+| Ledger App CLA | `0x80` |
+
+## Core Concepts
+
+### Entry Points
+
+```go
+// Recommended: implements keychain.Ledger interface
+ledger, err := ledger.NewLedger()
+defer ledger.Disconnect()
+
+// Or directly
+app, err := ledger.FindLedgerLuxApp()
+defer app.Close()
+```
+
+### keychain.Ledger Interface
+
+The library implements the `keychain.Ledger` interface for seamless wallet integration:
+
+| Method | Signature | Purpose |
+|--------|-----------|---------|
+| `Address` | `(hrp string, index uint32) (ids.ShortID, error)` | Get address at derivation index |
+| `GetAddresses` | `(indices []uint32) ([]ids.ShortID, error)` | Get multiple addresses |
+| `Sign` | `(message []byte, index uint32) ([]byte, error)` | Sign raw message |
+| `SignHash` | `(hash []byte, index uint32) ([]byte, error)` | Sign pre-hashed data (32 bytes) |
+| `SignTransaction` | `(hash []byte, indices []uint32) ([][]byte, error)` | Multi-address transaction signing |
+| `Disconnect` | `() error` | Close device connection |
+
+### Low-Level API
+
+| Method | Purpose |
+|--------|---------|
+| `GetVersion()` | Get app version (major.minor.patch) |
+| `GetPubKey(path, show, hrp, chainID)` | Get public key, hash, and bech32 address |
+| `SignFull(pathPrefix, signerPaths, message, changePaths)` | Sign full transaction with multiple paths |
+| `SignHashFull(pathPrefix, signerPaths, hash)` | Sign a 32-byte hash with multiple paths |
+| `VerifyMultipleSignatures(resp, hash, rootPath, paths, hrp, chainID)` | Verify all signatures from a multi-sign |
+
+### APDU Instructions
+
+| Instruction | Code | Purpose |
+|-------------|------|---------|
+| `INS_GET_VERSION` | `0x00` | Get app version |
+| `INS_WALLET_ID` | `0x01` | Get wallet identifier |
+| `INS_GET_ADDR` | `0x02` | Get address/pubkey |
+| `INS_GET_EXTENDED_PUBLIC_KEY` | `0x03` | Get extended public key |
+| `INS_SIGN_HASH` | `0x04` | Sign a hash |
+| `INS_SIGN` | `0x05` | Sign a transaction |
+| `INS_SIGN_MSG` | `0x06` | Sign a message |
+
+### Supported Devices
+
+| Device | Product ID (high byte) | Interface |
+|--------|----------------------|-----------|
+| Ledger Nano S | `0x10` | 0 |
+| Ledger Nano X | `0x40` | 0 |
+| Ledger Nano S Plus | `0x50` | 0 |
+| Ledger Stax | `0x60` | 0 |
+| Ledger Flex | `0x70` | 0 |
+
+All use USB HID with vendor ID `0x2c97`, channel `0x0101`, packet size 64 bytes.
+
+### Signature Verification
+
+Uses `btcec/v2` secp256k1 ECDSA verification with malleable signature rejection:
+
+```go
+// 64-byte [R || S] format
+ok := ledger.VerifySignature(pubkey, hash, signature)
+```
+
+### Key Dependencies
+
+```
+github.com/luxfi/hid@v0.9.3       -- USB HID device access
+github.com/luxfi/ids@v1.2.9       -- Lux ID types (ShortID)
+github.com/luxfi/crypto@v1.17.38  -- Cryptographic primitives
+github.com/btcsuite/btcd/btcec/v2 -- secp256k1 ECDSA
+github.com/mr-tron/base58         -- Base58 encoding (chain IDs)
+go.uber.org/zap                    -- Structured logging
+github.com/stretchr/testify       -- Test assertions
+```
+
+## File Structure
+
+```
+ledger/
+  lux.go           -- Main API: FindLedgerLuxApp, keychain.Ledger impl
+  types.go         -- LedgerLux, VersionInfo, ResponseSign, ResponseAddr
+  common.go        -- Path/HRP/ChainID serialization, signature helpers
+  hid.go           -- USB HID transport (LedgerAdmin, LedgerDevice)
+  apdu.go          -- APDU command wrapping/unwrapping
+  logger.go        -- zap-based logger (LEDGER_LOG_LEVEL env)
+  lux_test.go      -- Integration tests (require physical device)
+  common_test.go   -- Unit tests (path serialization, version check)
+  rust/            -- Ledger app source (Rust workspace)
+    app/           -- Main Ledger app crate
+    app-derive/    -- Derive macros
+    Cargo.toml     -- Workspace config (resolver v2)
+    deps/          -- Build dependencies
+    hfuzz/         -- Fuzz testing
+    zemu/          -- Zemu device emulator tests
+  docs/            -- Documentation
+  go-docs/         -- Go-specific documentation
+```
+
+### Rust Ledger App
+
+The `/rust/` directory contains the Ledger app firmware:
+
+- Workspace with `app` and `app-derive` crates
+- Build profiles: dev (abort on panic), release (size-optimized, `opt-level = "z"`)
+- Testing via Zemu emulator and Miri
+- Fuzz testing via `cargo-hfuzz`
+- Build: `make` (requires BOLOS SDK or Docker via `deps/dockerized_build.mk`)
+
+## Build and Test
+
+```bash
+# Go library (unit tests, no device needed)
+go test -short ./...
+
+# Go library (full tests, requires Ledger device)
+go test -v ./...
+
+# Rust Ledger app
+cd rust && cargo build
+cd rust && cargo test
+
+# Zemu emulator tests
+cd rust/zemu && yarn test
+
+# Fuzz testing
+cd rust/hfuzz && cargo hfuzz run apdu
+```
+
+### Logging
+
+Set `LEDGER_LOG_LEVEL` environment variable: `debug`, `info` (default), `warn`, `error`.
+
+## Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| `device not found` | No Ledger connected or locked | Connect device, unlock, open Lux app |
+| `CLA not supported` | Lux app not open on device | Open the Lux app on the Ledger |
+| `APDU commands < 5` | Malformed command | Check message construction |
+| `timeout reading from device` | Device busy or unresponsive | Disconnect and reconnect, 20s timeout |
+| `wrong hash size` | Hash not 32 bytes | Pass SHA-256 digest (32 bytes) |
+| `invalid path` | Bad BIP32 path format | Use format `m/44'/60'/0'/0/0` |
+| `read channel closed` | USB connection dropped | Reconnect device |
+| `Version required error` | App version too old | Update Ledger app firmware |
+
+## Related Skills
+
+- `lux/lux-wallet.md` -- Wallet implementation (uses ledger as signing backend)
+- `lux/lux-hsm.md` -- HSM integration (software signing alternative)
+- `lux/lux-crypto.md` -- Cryptographic primitives

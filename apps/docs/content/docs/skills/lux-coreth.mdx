@@ -1,0 +1,149 @@
+---
+title: "Lux Coreth - C-Chain EVM (DEPRECATED)"
+description: "Coreth ("core Ethereum") was the original Go EVM implementation that powered the Lux C-Chain. As of January 2025, it was consolidated with the Subnet EVM codebase into the unified  package. The..."
+---
+
+## Overview
+
+**Coreth is deprecated and merged into `github.com/luxfi/evm`.** All new development MUST use `github.com/luxfi/evm`. This repository is archived for historical reference only.
+
+Coreth ("core Ethereum") was the original Go EVM implementation that powered the Lux C-Chain. As of January 2025, it was consolidated with the Subnet EVM codebase into the unified `github.com/luxfi/evm` package. The deprecation commit is `ac7aec973` in the coreth repo. The README explicitly directs to the evm repo, and `DEPRECATED.md` provides a full migration guide and timeline.
+
+The coreth repo still compiles (Go 1.26.1, module `github.com/luxfi/coreth`) and received post-deprecation maintenance fixes through early 2026 (dependency bumps, build fixes), but no new features. The final meaningful commits were block import persistence fixes and txpool sync improvements. The `github.com/luxfi/evm` module preserves all coreth functionality with identical package paths (just replace `coreth` with `evm` in imports).
+
+### Relationship to `github.com/luxfi/evm`
+
+| Aspect | coreth (deprecated) | evm (canonical) |
+|--------|-------------------|-----------------|
+| Module | `github.com/luxfi/coreth` | `github.com/luxfi/evm` |
+| C-Chain support | Yes | Yes |
+| Subnet EVM support | No | Yes |
+| Warp messaging | Yes | Yes |
+| FHE precompiles | Yes (via `luxfi/fhe`) | Yes (via `luxfi/fhe`) |
+| ZK precompiles | No | Yes (blake3, zk, dead address) |
+| Bridge precompile | No | Yes |
+| Native asset transfers | Yes (`nativeasset/` dir) | No (removed; uses Warp) |
+| State upgrades | No | Yes (`stateupgrade/` dir) |
+| `api/` package | No | Yes |
+| `commontype/` package | No | Yes |
+| Active development | No (archived) | Yes |
+
+Both repos share nearly identical dependency sets (`luxfi/consensus`, `luxfi/geth`, `luxfi/crypto`, `luxfi/node`, `luxfi/warp`, etc.) at the same versions. The evm repo has slightly newer versions of some dependencies (e.g., `luxfi/database` v1.17.43 vs v1.17.42, `luxfi/accel` v1.0.5 vs v1.0.1).
+
+## When to use
+
+- **Do NOT use coreth for new code.** Use `github.com/luxfi/evm` instead.
+- Reference coreth only when:
+  - Migrating legacy code that still imports `github.com/luxfi/coreth`
+  - Investigating historical C-Chain behavior or block format changes
+  - Understanding the block import persistence fix (vm.go `PostImportCallback` consensus state update)
+  - Tracing the origin of C-Chain-specific features like atomic transactions and native asset transfers
+
+## Hard requirements
+
+1. NEVER use `github.com/luxfi/coreth` in new Go modules. Use `github.com/luxfi/evm`.
+2. NEVER use `go-ethereum` directly. Use `github.com/luxfi/geth`.
+3. When migrating, replace all `coreth` imports with `evm` -- the package paths are identical after the module prefix.
+
+## Quick reference
+
+| Item | Value |
+|------|-------|
+| Module (DEPRECATED) | `github.com/luxfi/coreth` |
+| Replacement module | `github.com/luxfi/evm` |
+| Go version | 1.26.1 |
+| Deprecation date | January 2025 |
+| Deprecation commit | `ac7aec973` |
+| C-Chain ID | 96369 (mainnet), 96370 (testnet) |
+| Genesis hash | `0x3f4fa2a0b0ce089f52bf0ae9199c75ffdd76ecafc987794050cb0d286f1ec61e` |
+| Final status | Security fixes only through Q2 2025, then archive-only |
+
+## Core Concepts
+
+### Migration Guide
+
+Replace go.mod dependency:
+```
+// Remove
+require github.com/luxfi/coreth v1.x.x
+
+// Add
+require github.com/luxfi/evm v0.8.x
+```
+
+Replace all imports:
+```go
+// OLD (deprecated)
+import "github.com/luxfi/coreth/core"
+import "github.com/luxfi/coreth/params"
+import "github.com/luxfi/coreth/plugin/evm"
+import "github.com/luxfi/coreth/eth"
+import "github.com/luxfi/coreth/ethclient"
+
+// NEW (canonical)
+import "github.com/luxfi/evm/core"
+import "github.com/luxfi/evm/params"
+import "github.com/luxfi/evm/plugin/evm"
+import "github.com/luxfi/evm/eth"
+import "github.com/luxfi/evm/ethclient"
+```
+
+The API surface is identical. No code changes needed beyond import paths.
+
+### Why Coreth Was Deprecated
+
+1. **Single implementation**: Eliminates divergence between C-Chain (coreth) and Subnet EVM code paths
+2. **Simplified maintenance**: One codebase to maintain, test, and audit
+3. **Consistent behavior**: All EVM chains on Lux use identical code
+4. **New features**: Bridge precompiles, ZK precompiles, state upgrades, and `commontype`/`api` packages were added only to the unified evm repo
+
+### C-Chain Differences from Ethereum
+
+These behaviors are preserved in `github.com/luxfi/evm` (C-Chain mode):
+
+- **Atomic transactions**: Cross-chain transfers between X-Chain and C-Chain via `ExtData` in block body
+- **Block timing**: Blocks can have the same timestamp as parent (async Consensusman consensus, no fixed interval)
+- **Difficulty**: Always 1 (Consensusman does not use PoW difficulty)
+- **RANDOM opcode**: Returns block difficulty (always 1), no Eth2 randomness beacon equivalent
+- **Block header extensions**: `ExtDataHash`, `BaseFee`, `ExtDataGasUsed`, `BlockGasCost`
+- **Block body extensions**: `Version` and `ExtData` fields
+
+### Historical Block Import Fix
+
+The `PostImportCallback` fix (documented in coreth LLM.md, vm.go lines 710-758) resolved a critical issue where `admin_importChain` stored blocks in the database but did not update `chain.State.lastAcceptedBlock`. This caused the chain to appear frozen after import. The fix wraps the imported eth block and calls `SetLastAcceptedBlock()` on the consensus layer. This fix is carried forward in `github.com/luxfi/evm`.
+
+### Key luxfi Dependencies (coreth final versions)
+
+```
+github.com/luxfi/consensus v1.22.67
+github.com/luxfi/crypto v1.17.40
+github.com/luxfi/geth v1.16.73
+github.com/luxfi/database v1.17.42
+github.com/luxfi/node v1.23.4
+github.com/luxfi/precompile v0.4.7
+github.com/luxfi/warp v1.18.5
+github.com/luxfi/fhe v1.7.6
+github.com/luxfi/lattice/v7 v7.0.0
+```
+
+## Troubleshooting
+
+**"coreth" imports in existing code** -- Run `find . -name "*.go" | xargs grep "luxfi/coreth"` to find all references. Replace with `luxfi/evm`. Run `go mod tidy` after updating.
+
+**Build failures after migration** -- The `nativeasset/` package exists in coreth but not in evm. If your code imports it, you need to refactor to use Warp messaging for cross-chain asset transfers.
+
+**go.mod replace directive** -- If you had `replace github.com/luxfi/coreth => ../coreth`, change to `replace github.com/luxfi/evm => ../evm`.
+
+**Conflicting dependency versions** -- The evm repo uses slightly newer versions of some packages (database v1.17.43 vs v1.17.42, accel v1.0.5 vs v1.0.1). Run `go mod tidy` to resolve.
+
+## Related Skills
+
+- `lux/lux-evm.md` -- The canonical replacement for coreth. Use this for all new work.
+- `lux/lux-node.md` -- Lux node that runs the EVM plugin
+- `lux/lux-warp.md` -- Cross-chain messaging (replaces atomic transactions for subnets)
+- `lux/lux-precompile.md` -- Custom precompile development
+- `lux/lux-fhe.md` -- FHE library used by both coreth and evm
+
+---
+
+Last Updated: 2026-03-13
