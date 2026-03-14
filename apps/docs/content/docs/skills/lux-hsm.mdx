@@ -1,11 +1,27 @@
 ---
 title: "Lux HSM - Unified Hardware Security Module Integration"
-description: "## Quick reference"
+description: "## When to use"
 ---
 
 ## Overview
 
-Lux HSM (`github.com/luxfi/hsm`) is a **unified Go library** for hardware security module, KMS, and custody operations across the Lux ecosystem. It provides a single entry point for password providers (symmetric KMS decrypt), signing providers (asymmetric sign/verify), post-quantum ML-DSA signatures, threshold key share storage with AES-256-GCM encryption, and HSM-attested threshold signing.
+Lux HSM (`github.com/luxfi/hsm`) is a **unified Go library** for hardware security module, KMS, and custody operations across the Lux ecosystem. It provides a single entry point for password providers (symmetric KMS decrypt), signing providers (asymmetric sign/verify), post-quantum ML-DSA signatures (FIPS 204 via Cloudflare CIRCL), threshold key share storage with AES-256-GCM encryption, and HSM-attested threshold signing.
+
+## When to use
+
+- Adding HSM-backed signing to the MPC API server
+- Decrypting ZapDB encryption passwords via cloud KMS
+- Implementing post-quantum signing (ML-DSA-44/65/87)
+- Storing threshold key shares with hardware attestation
+- Supporting a new cloud KMS provider
+
+## Hard requirements
+
+1. ALWAYS use `github.com/luxfi/*` packages -- NEVER `go-ethereum` or `ava-labs`
+2. NEVER store key shares in plaintext -- always use `KeyShareVault` with AES-256-GCM
+3. NEVER hardcode passwords -- use PasswordProvider interface (cloud KMS or env/file)
+4. Cloud SDK calls use raw HTTP with SigV4/OAuth -- NO AWS/GCP/Azure SDK imports
+5. `LocalSigner` is development only -- NEVER use in production
 
 ## Quick reference
 
@@ -13,126 +29,81 @@ Lux HSM (`github.com/luxfi/hsm`) is a **unified Go library** for hardware securi
 |------|-------|
 | Module | `github.com/luxfi/hsm` |
 | Go | 1.26.1 |
-| Default Branch | `main` |
 | License | Apache 2.0 |
 | Package Type | Library (no binary) |
-| Only Dependency | `github.com/luxfi/crypto` |
+| Only Dependency | `github.com/luxfi/crypto@v1.17.40` |
+| Transitive | `github.com/cloudflare/circl@v1.6.3` (ML-DSA) |
 
-## Hard requirements
+## Core Concepts
 
-1. ALWAYS use `github.com/luxfi/*` packages -- NEVER `go-ethereum` or `ava-labs`
-2. NEVER store key shares in plaintext -- always use `KeyShareVault` with AES-256-GCM
-3. NEVER hardcode passwords -- use PasswordProvider interface (cloud KMS or env/file)
+### Interfaces
 
-## Supported Providers
+```go
+// Signer provides asymmetric signing and verification using HSM-backed keys.
+type Signer interface {
+    Sign(ctx context.Context, keyID string, message []byte) ([]byte, error)
+    Verify(ctx context.Context, keyID string, message, signature []byte) (bool, error)
+    Provider() string
+}
 
-### Signer Providers (Asymmetric Sign/Verify)
+// PasswordProvider retrieves or derives a decrypted password string.
+type PasswordProvider interface {
+    GetPassword(ctx context.Context, keyID string) (string, error)
+}
+```
+
+### Signer Providers
 
 | Provider | Type | Algorithm | File |
 |----------|------|-----------|------|
 | `aws` | AWS KMS | ECDSA_SHA_256 | `signer_aws.go` |
 | `gcp` | Google Cloud KMS | EC_SIGN_P256_SHA256 | `signer_gcp.go` |
 | `azure` | Azure Key Vault | ECDSA P-256 | `signer_azure.go` |
-| `zymbit` | Zymbit SCM | ECDSA P-256 (PKCS#11) | `signer_zymbit.go` |
-| `mldsa` | Post-Quantum | ML-DSA-44/65/87 (FIPS 204) | `signer_mldsa.go` |
-| `local` | In-Memory | ECDSA P-256 (dev only) | `signer_local.go` |
+| `zymbit` | Zymbit SCM | ECDSA P-256 (PKCS#11, port 6789) | `signer_zymbit.go` |
+| `mldsa` / `pq` / `post-quantum` | Post-Quantum | ML-DSA-44/65/87 (FIPS 204) | `signer_mldsa.go` |
+| `local` / `""` | In-Memory | ECDSA P-256 (dev only) | `signer_local.go` |
 
-### Password Providers (Symmetric Decrypt)
+### Password Providers
 
-| Provider | Type | Purpose | Env Var |
-|----------|------|---------|---------|
-| `aws` | AWS KMS Decrypt | ZapDB password decryption | `MPC_HSM_KEY_ID`, `AWS_REGION` |
-| `gcp` | GCP KMS Decrypt | ZapDB password decryption | `GCP_PROJECT_ID`, `GCP_KMS_*` |
-| `azure` | Azure Key Vault | Key unwrap | `AZURE_VAULT_URL`, `AZURE_KEY_*` |
-| `env` | Environment Variable | Direct password read | `LUX_MPC_PASSWORD` |
-| `file` | File Read | K8s mounted secret | `MPC_PASSWORD_FILE` |
+| Provider | Type | Env Vars |
+|----------|------|----------|
+| `aws` | AWS KMS Decrypt | `ZAPDB_ENCRYPTED_PASSWORD`, `MPC_HSM_KEY_ID`, `AWS_REGION` |
+| `gcp` | GCP KMS Decrypt | `ZAPDB_ENCRYPTED_PASSWORD`, `GCP_PROJECT_ID`, `GCP_KMS_LOCATION`, `GCP_KMS_KEYRING`, `GCP_KMS_KEY` |
+| `azure` | Azure Key Vault unwrapKey | `ZAPDB_ENCRYPTED_PASSWORD`, `AZURE_VAULT_URL`, `AZURE_KEY_NAME`, `AZURE_KEY_VERSION` |
+| `env` | Environment Variable | `LUX_MPC_PASSWORD` or `ZAPDB_PASSWORD` |
+| `file` | File Read (K8s secret) | `MPC_PASSWORD_FILE` |
 
-## Architecture
-
-```
-hsm/
-├── hsm.go                  # Package doc, consolidation overview
-├── signer.go               # Signer + PasswordProvider interfaces
-├── factory.go              # NewSigner() + NewPasswordProvider() factories
-├── manager.go              # Manager: unified Config + Sign/Verify/GetPassword
-├── auth_helpers.go         # AWS SigV4 request signing helpers
-├── password_providers.go   # AWSKMSProvider, GCPKMSProvider, AzureKVProvider, EnvProvider, FileProvider
-├── signer_aws.go           # AWS KMS signer (ECDSA_SHA_256)
-├── signer_gcp.go           # GCP KMS signer (EC_SIGN_P256_SHA256)
-├── signer_azure.go         # Azure Key Vault signer
-├── signer_zymbit.go        # Zymbit SCM signer (local PKCS#11, port 6789)
-├── signer_mldsa.go         # ML-DSA post-quantum signer (FIPS 204 via circl)
-├── signer_local.go         # In-memory ECDSA P-256 (dev only)
-├── threshold_adapter.go    # ThresholdHSM, KeyShareVault, HSMAttestingSigner, ThresholdManager
-├── threshold_adapter_test.go # Tests for threshold integration
-└── hsm_test.go             # Tests for all providers
-```
-
-## Core Interfaces
-
-### Signer
-
-```go
-type Signer interface {
-    Sign(ctx context.Context, keyID string, message []byte) ([]byte, error)
-    Verify(ctx context.Context, keyID string, message, signature []byte) (bool, error)
-    Provider() string
-}
-```
-
-### PasswordProvider
-
-```go
-type PasswordProvider interface {
-    GetPassword(ctx context.Context, keyID string) (string, error)
-}
-```
-
-## One-file quickstart
-
-### Installation
-
-```go
-import "github.com/luxfi/hsm"
-```
-
-### Basic Manager usage
+### Manager (Unified Entry Point)
 
 ```go
 cfg := hsm.Config{
-    PasswordProvider: "aws",   // or "gcp", "azure", "env", "file"
+    PasswordProvider: "aws",
     PasswordKeyID:    "arn:aws:kms:us-east-1:...",
-    SignerProvider:   "aws",   // or "gcp", "zymbit", "mldsa", "local"
+    SignerProvider:   "aws",
     SignerKeyID:      "arn:aws:kms:us-east-1:...",
     Region:           "us-east-1",
 }
 mgr, err := hsm.New(cfg)
 
-// Get ZapDB password from KMS
-password, err := mgr.GetPassword(ctx)
-
-// Sign a message
-sig, err := mgr.Sign(ctx, message)
-
-// Verify
-ok, err := mgr.Verify(ctx, message, sig)
+password, err := mgr.GetPassword(ctx)         // Decrypt ZapDB password
+sig, err := mgr.Sign(ctx, message)             // Sign with default key
+sig, err := mgr.SignWithKey(ctx, keyID, msg)   // Sign with specific key
+ok, err := mgr.Verify(ctx, message, sig)       // Verify with default key
 ```
 
-### Direct factory usage
+### Factory Functions
 
 ```go
-// Create signer directly
+// Create signer directly (no Manager overhead)
 signer, err := hsm.NewSigner("mldsa", nil)
 sig, err := signer.Sign(ctx, "my-key", message)
 
 // Create password provider directly
-pw, err := hsm.NewPasswordProvider("env", map[string]string{
-    "env_var": "MY_DB_PASSWORD",
-})
+pw, err := hsm.NewPasswordProvider("env", map[string]string{"env_var": "MY_DB_PASSWORD"})
 password, err := pw.GetPassword(ctx, "")
 ```
 
-### Post-quantum signing (ML-DSA)
+### Post-Quantum Signing (ML-DSA)
 
 ```go
 signer := hsm.NewMLDSASigner(mldsa.MLDSA65) // NIST Level 3, 192-bit PQ security
@@ -140,65 +111,40 @@ sig, err := signer.Sign(ctx, "validator-0", message)
 ok, err := signer.Verify(ctx, "validator-0", message, sig)
 ```
 
-ML-DSA modes: `MLDSA44` (128-bit), `MLDSA65` (192-bit, recommended), `MLDSA87` (256-bit).
+Modes: `MLDSA44` (128-bit), `MLDSA65` (192-bit, recommended), `MLDSA87` (256-bit).
 
-## Threshold Integration
+### AWS Authentication
 
-### KeyShareVault
+AWS requests use SigV4 signing implemented from scratch (no AWS SDK). Credential resolution:
 
-AES-256-GCM encrypted storage for threshold key shares. Encryption key derived from PasswordProvider:
+1. `AWS_ACCESS_KEY_ID` + `AWS_SECRET_ACCESS_KEY` + optional `AWS_SESSION_TOKEN`
+2. EC2 Instance Metadata Service (IMDS v2) for IAM role credentials
+
+### Threshold Integration
+
+#### KeyShareVault
+
+AES-256-GCM encrypted storage for threshold key shares:
 
 ```go
 vault := hsm.NewKeyShareVault(passwordProvider, "kms-key-id")
-
-// Store encrypted key share
 vault.Store(ctx, "validator-0", share.Bytes(), meta)
-
-// Load and decrypt
 raw, meta, err := vault.Load(ctx, "validator-0")
-
-// List, delete, get metadata without decryption
-ids := vault.List()
-vault.Delete("validator-0")
-meta, err := vault.GetMeta("validator-0")
 ```
 
-### HSMAttestingSigner
+#### HSMAttestingSigner
 
-Wraps any `threshold.Signer` with HSM co-signatures. Every signature share is attested by the node's HSM key, binding shares to specific hardware:
+Wraps any `threshold.Signer` with HSM co-signatures for hardware binding:
 
 ```go
-inner, _ := scheme.NewSigner(keyShare)
 signer := hsm.NewAttestingSigner(inner, hsmSigner, "attestation-key")
 share, _ := signer.SignShare(ctx, message, signers, nonce)
-
-// Verify attestation
 ok, _ := hsm.VerifyAttestation(ctx, hsmSigner, "attestation-key", share)
 ```
 
 Wire format: `[4-byte share length][share bytes][attestation bytes]`
 
-### ThresholdManager
-
-Complete HSM-backed threshold signing solution combining vault + attestation:
-
-```go
-mgr, _ := hsm.NewThresholdManager(hsm.ThresholdConfig{
-    PasswordProvider: "aws",
-    PasswordKeyID:    "arn:aws:kms:...",
-    SignerProvider:   "local",
-    AttestKeyID:      "node-attest",
-})
-
-// Store key share (encrypted at rest)
-mgr.StoreKeyShare(ctx, "validator-0", keyShare)
-
-// Create attesting signer
-signer, _ := mgr.NewSigner(ctx, "validator-0")
-attestedShare, _ := signer.SignShare(ctx, msg, signers, nil)
-```
-
-### ThresholdHSM Interface
+#### ThresholdHSM Interface
 
 For HSMs with native threshold support (Zymbit SCM, custom FPGA):
 
@@ -212,14 +158,26 @@ type ThresholdHSM interface {
 }
 ```
 
-## Key Dependencies
+## File Structure
 
 ```
-github.com/luxfi/crypto@v1.17.40    -- ECDSA, EdDSA, BLS, ML-DSA
-github.com/cloudflare/circl@v1.6.3  -- ML-DSA (FIPS 204) implementation
+hsm/
+  hsm.go                    -- Package doc, consolidation overview
+  signer.go                 -- Signer + PasswordProvider interfaces
+  factory.go                -- NewSigner() + NewPasswordProvider() factories
+  manager.go                -- Manager: unified Config + Sign/Verify/GetPassword
+  auth_helpers.go           -- AWS SigV4, GCP metadata token, Azure MSI token
+  password_providers.go     -- AWSKMSProvider, GCPKMSProvider, AzureKVProvider, EnvProvider, FileProvider
+  signer_aws.go             -- AWS KMS signer (ECDSA_SHA_256)
+  signer_gcp.go             -- GCP KMS signer (EC_SIGN_P256_SHA256)
+  signer_azure.go           -- Azure Key Vault signer
+  signer_zymbit.go          -- Zymbit SCM signer (local PKCS#11, port 6789)
+  signer_mldsa.go           -- ML-DSA post-quantum signer (FIPS 204 via circl)
+  signer_local.go           -- In-memory ECDSA P-256 (dev only)
+  threshold_adapter.go      -- ThresholdHSM, KeyShareVault, HSMAttestingSigner, ThresholdManager
+  threshold_adapter_test.go -- Tests for threshold integration
+  hsm_test.go               -- Tests for all providers and manager
 ```
-
-Minimal dependency footprint. Cloud SDK calls use raw HTTP with SigV4 (no AWS/GCP/Azure SDK imports).
 
 ## Testing
 
@@ -227,20 +185,34 @@ Minimal dependency footprint. Cloud SDK calls use raw HTTP with SigV4 (no AWS/GC
 go test ./... -v
 ```
 
-Tests cover all signer providers (local, MLDSA), password providers (env, file), KeyShareVault encrypt/decrypt roundtrips, threshold adapter attestation and verification, and ThresholdManager lifecycle.
+Tests cover:
+- All signer factory providers (13 cases including case/whitespace normalization)
+- Config passthrough (region, API addr)
+- Local signer sign/verify roundtrip
+- ML-DSA sign/verify roundtrip
+- Manager lifecycle (sign, verify, password)
+- Env and File password providers
+- KeyShareVault encrypt/decrypt roundtrips
+- Threshold adapter attestation and verification
+- ThresholdManager full lifecycle
 
 ## Troubleshooting
 
 | Issue | Cause | Solution |
 |-------|-------|----------|
-| AWS KMS 400 error | Wrong key type | Use SIGN_VERIFY key (not ENCRYPT_DECRYPT) |
-| Zymbit timeout | Device not connected | Check USB/I2C connection, port 6789 |
-| ML-DSA key not found | Key auto-generated per ID | Keys live in memory, persist externally |
-| Vault decryption fail | Password changed | Re-encrypt vault with new password |
-| Attestation invalid | Wrong HSM key | Verify attestation key ID matches |
+| AWS KMS 400 error | Wrong key type | Use SIGN_VERIFY key (not ENCRYPT_DECRYPT) for signers |
+| `no AWS credentials` | Missing env vars and not on EC2 | Set `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY` or use instance role |
+| Zymbit timeout | Device not connected | Check USB/I2C connection, verify port 6789 |
+| ML-DSA key not found | Keys are per-process in-memory | Keys auto-generate per keyID, persist externally if needed |
+| Vault decryption fail | KMS password changed | Re-encrypt vault contents with new password |
+| Attestation invalid | Wrong HSM key | Verify attestation key ID matches signing key |
+| GCP metadata 404 | Not on GCE/GKE | Use env/file provider locally, GCP only in cloud |
+| Azure MSI fail | No managed identity | Assign system or user-assigned managed identity |
+| `unknown signer provider` | Typo in provider name | Supported: aws, gcp, azure, zymbit, mldsa, pq, post-quantum, local |
 
 ## Related Skills
 
-- `lux/lux-mpc.md` -- MPC wallet service (primary consumer)
+- `lux/lux-mpc.md` -- MPC wallet service (primary consumer of HSM signing)
 - `lux/lux-threshold.md` -- Threshold signature protocols
 - `lux/lux-crypto.md` -- Underlying crypto primitives (ML-DSA, ECDSA, BLS)
+- `lux/lux-ledger.md` -- Hardware wallet (Ledger device) integration
