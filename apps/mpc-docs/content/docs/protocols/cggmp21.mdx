@@ -1,0 +1,24 @@
+---
+title: CGGMP21
+description: Threshold ECDSA for Bitcoin and Ethereum
+icon: Key
+---
+
+CGGMP21 implements threshold ECDSA signing based on the Canetti-Goldwasser-Goldreich-Micali-Pinkas protocol. It enables t-of-n ECDSA signatures compatible with Bitcoin, Ethereum, and other secp256k1/P-256 chains.
+
+## Usage
+
+```go
+scheme, _ := threshold.GetScheme(threshold.SchemeCGGMP21)
+signer, _ := scheme.NewSigner(keyShare)
+share, _ := signer.SignShare(ctx, message, signers, nil)
+```
+
+## Properties
+
+| Property | Value |
+|----------|-------|
+| Curve | secp256k1, P-256 |
+| Rounds | 4 (keygen), 5 (sign) |
+| Threshold | t-of-n |
+| Compatible Chains | Bitcoin, Ethereum, BSC, Polygon |

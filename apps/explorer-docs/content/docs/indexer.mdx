@@ -1,0 +1,43 @@
+---
+title: Indexer Integration
+description: Using the Lux Indexer as an alternative backend
+icon: Database
+---
+
+The [Lux Indexer](https://indexer.lux.network) (`github.com/luxfi/indexer`) is a high-performance Go alternative to the Blockscout Elixir backend.
+
+## API Compatibility
+
+The indexer provides Blockscout API v2 compatible endpoints, so the explorer frontend can use either backend:
+
+| Endpoint | Blockscout | Lux Indexer |
+|----------|-----------|-------------|
+| `/api/v2/blocks` | Yes | Yes |
+| `/api/v2/transactions` | Yes | Yes |
+| `/api/v2/addresses/:hash` | Yes | Yes |
+| `/api/v2/tokens` | Yes | Yes |
+| `/api/v2/stats` | Yes | Yes |
+| GraphQL | Yes | Yes |
+| WebSocket | Yes | Yes |
+
+## Switching Backends
+
+To use the Lux Indexer instead of Blockscout:
+
+```bash
+# Frontend .env
+NEXT_PUBLIC_API_HOST=http://indexer-api.lux.network
+```
+
+No frontend code changes required.
+
+## When to Use Each
+
+| Use Case | Recommendation |
+|----------|---------------|
+| Standard EVM explorer | Blockscout (battle-tested) |
+| High-performance indexing | Lux Indexer |
+| DAG chain indexing (X, A, B, Q, T, Z, K) | Lux Indexer (exclusive) |
+| P-Chain indexing | Lux Indexer (exclusive) |
+| Multi-chain (100+) | Lux Indexer (exclusive) |
+| DeFi protocol indexing | Lux Indexer |

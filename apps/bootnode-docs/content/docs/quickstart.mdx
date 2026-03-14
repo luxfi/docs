@@ -1,0 +1,14 @@
+---
+title: Quick Start
+description: Your first API call
+icon: Zap
+---
+
+## Get Block Number
+
+```bash
+curl -X POST https://api.lux.cloud/v1/rpc/lux \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
+```

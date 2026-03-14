@@ -1,0 +1,19 @@
+---
+title: HSM Integration
+description: Hardware security module integration for MPC
+icon: ShieldCheck
+---
+
+The MPC daemon uses HSM for intent co-signing, ZapDB password decryption, and threshold attestation. See the [HSM documentation](https://hsm.lux.network) for provider details.
+
+## Intent Co-signing
+
+Every approved transaction is co-signed by the HSM before threshold signing begins.
+
+## ZapDB Password
+
+The encryption password for the key share database is derived from cloud KMS — never stored in plaintext.
+
+## Threshold Attestation
+
+When enabled (`--hsm-attest`), every signature share is co-signed by the HSM, binding it to specific hardware.

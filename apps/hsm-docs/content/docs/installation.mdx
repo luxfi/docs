@@ -1,0 +1,58 @@
+---
+title: Installation
+description: Install the Lux HSM Go module
+icon: Download
+---
+
+## Requirements
+
+- Go 1.22 or later
+- Module-aware project (`go.mod`)
+
+## Install
+
+```bash
+go get github.com/luxfi/hsm@latest
+```
+
+## Import
+
+```go
+import "github.com/luxfi/hsm"
+```
+
+## Module Path
+
+```
+github.com/luxfi/hsm
+```
+
+The module has a single external dependency — `github.com/luxfi/crypto` for post-quantum ML-DSA support. All cloud provider integrations use the Go standard library HTTP client with no SDK dependencies.
+
+## Verify Installation
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "github.com/luxfi/hsm"
+)
+
+func main() {
+    s, err := hsm.NewSigner("local", nil)
+    if err != nil {
+        panic(err)
+    }
+
+    sig, _ := s.Sign(context.Background(), "test", []byte("hello"))
+    ok, _ := s.Verify(context.Background(), "test", []byte("hello"), sig)
+    fmt.Println("HSM working:", ok)
+}
+```
+
+```bash
+go run main.go
+# HSM working: true
+```

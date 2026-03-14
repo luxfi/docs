@@ -1,0 +1,77 @@
+---
+title: Quick Start
+description: Index your first chain in 60 seconds
+icon: Zap
+---
+
+## 1. Start luxd
+
+Ensure a Lux node is running with JSON-RPC accessible.
+
+## 2. Run the Indexer
+
+```bash
+# Index C-Chain
+./indexer -chain cchain \
+  -rpc http://localhost:9650/ext/bc/C/rpc \
+  -port 4000
+
+# Index X-Chain
+./indexer -chain xchain \
+  -rpc http://localhost:9650/ext/bc/X \
+  -port 4200
+
+# Index P-Chain
+./indexer -chain pchain \
+  -rpc http://localhost:9650/ext/bc/P \
+  -port 4100
+```
+
+## 3. Check Health
+
+```bash
+curl http://localhost:4000/health
+```
+
+## 4. Query Data
+
+```bash
+# Latest blocks
+curl http://localhost:4000/api/v2/blocks
+
+# Statistics
+curl http://localhost:4000/api/v2/stats
+
+# Search
+curl "http://localhost:4000/api/v2/search?q=0x..."
+```
+
+## 5. List Available Chains
+
+```bash
+./indexer -list
+```
+
+Output:
+```
+Available chains:
+  cchain   - EVM C-Chain (port 4000)
+  pchain   - Platform Chain (port 4100)
+  xchain   - Exchange Chain (port 4200)
+  qchain   - Quantum Chain (port 4300)
+  zchain   - ZK Chain (port 4400)
+  achain   - AI Chain (port 4500)
+  bchain   - Bridge Chain (port 4600)
+  tchain   - MPC Chain (port 4700)
+  kchain   - KMS Chain (port 4900)
+```
+
+## Docker Quick Start
+
+```bash
+docker run -it \
+  -e RPC_ENDPOINT=http://host.docker.internal:9650/ext/bc/C/rpc \
+  -e DATABASE_URL=postgresql://indexer:indexer@postgres:5432/indexer \
+  -p 4000:4000 \
+  ghcr.io/luxfi/indexer:v0.2.2 indexer -chain cchain
+```

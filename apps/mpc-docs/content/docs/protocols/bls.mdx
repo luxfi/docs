@@ -1,0 +1,26 @@
+---
+title: BLS
+description: Non-interactive aggregatable signatures
+icon: Layers
+---
+
+BLS implements non-interactive aggregatable threshold signatures. Each signer produces an independent share that can be aggregated without interaction.
+
+## Usage
+
+```go
+scheme, _ := threshold.GetScheme(threshold.SchemeBLS)
+signer, _ := scheme.NewSigner(keyShare)
+
+// Non-interactive: no nonce needed
+share, _ := signer.SignShare(ctx, blockHash, signers, nil)
+```
+
+## Properties
+
+| Property | Value |
+|----------|-------|
+| Curve | BLS12-381 |
+| Rounds | 1 (non-interactive) |
+| Threshold | t-of-n |
+| Use Case | Lux consensus block finality |

@@ -1,0 +1,29 @@
+---
+title: FROST
+description: Two-round EdDSA threshold signing
+icon: Snowflake
+---
+
+FROST (Flexible Round-Optimized Schnorr Threshold) implements two-round EdDSA threshold signing for Ed25519-based chains.
+
+## Usage
+
+```go
+scheme, _ := threshold.GetScheme(threshold.SchemeFROST)
+signer, _ := scheme.NewSigner(keyShare)
+
+// Round 1: Generate nonce
+commitment, nonce, _ := signer.NonceGen(ctx)
+
+// Round 2: Sign with nonce
+share, _ := signer.SignShare(ctx, message, signers, nonce)
+```
+
+## Properties
+
+| Property | Value |
+|----------|-------|
+| Curve | Ed25519 |
+| Rounds | 2 (sign) |
+| Threshold | t-of-n |
+| Compatible Chains | Solana, Sui, Aptos |

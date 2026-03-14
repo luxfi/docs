@@ -1,0 +1,76 @@
+---
+title: Zymbit SCM
+description: Hardware PKCS#11 signing via Zymbit Secure Compute Module
+icon: Cpu
+---
+
+The `ZymbitSigner` communicates with a local Zymbit SCM device via its REST API. Keys never leave the hardware — all signing operations happen on-device.
+
+## Configuration
+
+```go
+signer, err := hsm.NewSigner("zymbit", map[string]string{
+    "api_addr": "http://10.0.0.5:6789",
+})
+```
+
+| Config Key | Default | Description |
+|-----------|---------|-------------|
+| `api_addr` | `http://localhost:6789` | Zymbit REST API address |
+
+## Key ID Format
+
+The `keyID` is the slot number on the Zymbit device:
+
+```go
+// Slot 0
+sig, err := signer.Sign(ctx, "0", msg)
+
+// Slot 1
+sig, err := signer.Sign(ctx, "1", msg)
+```
+
+## API Endpoints
+
+The signer calls two REST endpoints:
+
+### Sign
+
+```
+POST http://localhost:6789/sign
+Content-Type: application/json
+
+{
+  "slot": "0",
+  "digest": "<base64-encoded SHA-256 digest>"
+}
+```
+
+### Verify
+
+```
+POST http://localhost:6789/verify
+Content-Type: application/json
+
+{
+  "slot": "0",
+  "digest": "<base64-encoded SHA-256 digest>",
+  "signature": "<base64-encoded signature>"
+}
+```
+
+## Hardware Setup
+
+Zymbit SCM devices are typically deployed on Raspberry Pi or custom edge hardware:
+
+1. Install the Zymbit SDK and daemon
+2. Configure the REST API listener (default: port 6789)
+3. Generate keys in the desired slots
+4. Ensure network connectivity between your application and the Zymbit device
+
+## Security Considerations
+
+- Keys are generated and stored in tamper-resistant hardware
+- Private key material never leaves the device
+- Network traffic between your app and the Zymbit API should be on a trusted network segment
+- Consider TLS termination if the Zymbit device is not on localhost

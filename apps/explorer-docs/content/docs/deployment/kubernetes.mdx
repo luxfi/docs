@@ -1,0 +1,60 @@
+---
+title: Kubernetes
+description: K8s deployment for production
+---
+
+## Namespace
+
+All explorer services run in `lux-explorer` namespace on the `lux-k8s` cluster.
+
+## Components
+
+| Resource | Type | Replicas |
+|----------|------|----------|
+| Backend (per chain) | Deployment | 1 |
+| Frontend (per chain) | Deployment | 1 |
+| PostgreSQL (per chain) | StatefulSet | 1 |
+| Redis | Deployment | 1 |
+
+## Five Explorer Deployments
+
+Each chain gets its own backend + frontend pair:
+
+```yaml
+# RPC endpoint format (internal)
+ETHEREUM_JSONRPC_HTTP_URL: "http://luxd-1.luxd-headless.lux-mainnet.svc:9630/ext/bc/{blockchain_id}/rpc"
+```
+
+## TLS & Ingress
+
+Traefik IngressRoute with Let's Encrypt:
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+spec:
+  routes:
+    - match: Host(`explore.lux.network`)
+      services:
+        - name: explore-frontend
+          port: 3000
+```
+
+## DNS
+
+All `explore-*.lux.network` domains point to the lux-k8s load balancer (`134.199.138.27`) in DNS-only mode (no Cloudflare proxy).
+
+## Memory Management
+
+For subnet chains with small block counts, use the memory-saving environment variables from the [Indexing](/docs/backend/indexing) page. Set container memory limit to 8Gi with `Recreate` strategy.
+
+## PostgreSQL Selector
+
+Each chain's PostgreSQL must have a `chain` label:
+
+```yaml
+selector:
+  matchLabels:
+    app: explorer-postgres
+    chain: zoo  # Required for service routing
+```

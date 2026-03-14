@@ -1,0 +1,14 @@
+---
+title: MPC Integration
+description: Threshold key management for MPC nodes
+icon: Users
+---
+
+KMS provides key share storage and backup for MPC nodes.
+
+## Key Share Backup
+
+1. Key shares exported from ZapDB
+2. Encrypted with scrypt + AES-256-GCM using KMS-derived backup key
+3. Stored to S3 with org-prefixed paths
+4. Can be restored to a new node

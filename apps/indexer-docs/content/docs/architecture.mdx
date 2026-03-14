@@ -1,0 +1,49 @@
+---
+title: Architecture
+description: Two-layer storage, chain adapters, and API server
+icon: Layers
+---
+
+## Overview
+
+```
+┌──────────────────────────────────────────────────┐
+│              API Server (40+ endpoints)           │
+│  REST v2 │ GraphQL │ WebSocket │ Etherscan RPC    │
+├──────────────────────────────────────────────────┤
+│           Chain-Specific Adapters                 │
+│  EVM │ DAG │ P-Chain │ Solana │ Bitcoin │ Cosmos  │
+├──────────────────────────────────────────────────┤
+│           Unified Storage Layer                   │
+│  ┌──────────────┐  ┌──────────────────────────┐  │
+│  │  KV Layer    │  │    Query Layer            │  │
+│  │  (BadgerDB)  │  │  (PostgreSQL / SQLite)    │  │
+│  └──────────────┘  └──────────────────────────┘  │
+└──────────────────────────────────────────────────┘
+```
+
+## Key Files
+
+| File | Size | Purpose |
+|------|------|---------|
+| `evm/adapter.go` | 77.5 KB | Full EVM indexer with Blockscout compat |
+| `evm/api/server.go` | 32.9 KB | HTTP/WebSocket API server |
+| `evm/api/repository.go` | 30.3 KB | Database query layer |
+| `storage/unified.go` | 20.8 KB | Unified KV + Query storage |
+| `config/chains.yaml` | 1450 lines | 100+ chain configuration |
+
+## Directory Structure
+
+```
+indexer/
+├── cmd/indexer/        # Single-chain CLI
+├── cmd/evmchains/      # Multi-EVM CLI
+├── cmd/multichain/     # Universal CLI
+├── evm/                # EVM indexer + API + DeFi
+├── chain/              # Linear chain (P-Chain)
+├── dag/                # DAG consensus (X, A, B, Q, T, Z, K)
+├── storage/            # Unified storage layer
+├── multichain/         # 100+ chain orchestrator
+├── migrations/         # SQL migrations
+└── config/             # Chain configurations
+```

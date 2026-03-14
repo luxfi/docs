@@ -1,0 +1,48 @@
+---
+title: Theming
+description: Monochrome design system and per-chain branding
+---
+
+## Dark Mode Default
+
+The explorer uses a monochrome dark theme by default:
+
+```bash
+NEXT_PUBLIC_COLOR_THEME_DEFAULT=dark
+```
+
+## Fonts
+
+- **Sans**: Geist (body, headings)
+- **Mono**: Geist Mono (addresses, hashes, code)
+
+```bash
+NEXT_PUBLIC_FONT_FAMILY_HEADING="Geist, sans-serif"
+NEXT_PUBLIC_FONT_FAMILY_BODY="Geist, sans-serif"
+```
+
+## Per-Chain Branding
+
+Each explorer instance has unique branding:
+
+| Chain | Logo | Colors |
+|-------|------|--------|
+| C-Chain | Lux diamond | Default monochrome |
+| Zoo | Three circles | Zoo brand colors |
+| Hanzo | Geometric H | Hanzo brand colors |
+| SPC | Unicorn | SPC brand colors |
+| Pars | 8-point star | Pars brand colors |
+
+Logos are loaded from `~/work/{org}/logo/` repositories. Dynamic favicons are handled by the `useChainFavicon` hook.
+
+## Semantic Tokens
+
+All colors use semantic tokens from `toolkit/theme/foundations/semanticTokens.ts`. ESLint rules enforce this — no hardcoded colors allowed.
+
+```tsx
+// Wrong
+<Box color="#ff0000">Error</Box>
+
+// Correct
+<Box color="semantic.error">Error</Box>
+```

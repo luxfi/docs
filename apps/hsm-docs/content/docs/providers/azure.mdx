@@ -1,0 +1,76 @@
+---
+title: Azure Key Vault
+description: ES256 signing via Azure Key Vault
+icon: Cloud
+---
+
+The `AzureKVSigner` uses Azure Key Vault for ES256 (ECDSA P-256) signing and verification via the REST API v7.4.
+
+## Configuration
+
+```go
+signer, err := hsm.NewSigner("azure", map[string]string{
+    "vault_url": "https://my-vault.vault.azure.net",
+})
+```
+
+| Config Key | Environment Variable | Description |
+|-----------|---------------------|-------------|
+| `vault_url` | `AZURE_VAULT_URL` | Key Vault URL (trailing slash stripped) |
+
+## Key ID Format
+
+Pass the key name as the `keyID`. The vault URL is prepended automatically:
+
+```go
+sig, err := signer.Sign(ctx, "my-signing-key", msg)
+// Calls: POST https://my-vault.vault.azure.net/keys/my-signing-key/sign?api-version=7.4
+```
+
+For versioned keys, include the version in the key name:
+
+```go
+sig, err := signer.Sign(ctx, "my-signing-key/abc123", msg)
+```
+
+## Key Vault Key Requirements
+
+- **Key type**: EC
+- **Curve**: P-256
+- **Key operations**: Sign, Verify
+
+Create the key via Azure CLI:
+
+```bash
+az keyvault key create \
+  --vault-name my-vault \
+  --name my-signing-key \
+  --kty EC \
+  --curve P-256 \
+  --ops sign verify
+```
+
+## Authentication
+
+Uses Azure Managed Service Identity (MSI) via the instance metadata service:
+
+```
+GET http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https://vault.azure.net
+```
+
+Works on Azure VMs, VMSS, AKS, and App Service with system-assigned or user-assigned managed identity.
+
+Required permissions:
+- `keys/sign`
+- `keys/verify`
+
+## Password Provider
+
+The `AzureKVProvider` uses Key Vault's `unwrapKey` operation:
+
+```go
+provider, _ := hsm.NewPasswordProvider("azure", map[string]string{
+    "vault_url": "https://my-vault.vault.azure.net",
+})
+password, _ := provider.GetPassword(ctx, "password-key")
+```

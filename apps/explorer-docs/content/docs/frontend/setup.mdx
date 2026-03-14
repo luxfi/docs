@@ -1,0 +1,60 @@
+---
+title: Setup
+description: Local frontend development setup
+---
+
+## Requirements
+
+- Node.js >= 22.14.0
+- pnpm >= 10.11.0
+
+## Install
+
+```bash
+git clone https://github.com/luxfi/explore.git
+cd explore
+pnpm install
+```
+
+## Environment
+
+Copy and configure environment:
+
+```bash
+cp .env.example .env.local
+```
+
+Key variables:
+
+```bash
+# API Backend
+NEXT_PUBLIC_API_HOST=http://localhost:4000
+NEXT_PUBLIC_API_PROTOCOL=http
+NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL=ws
+
+# Chain
+NEXT_PUBLIC_NETWORK_NAME="LUX Network"
+NEXT_PUBLIC_NETWORK_ID=96369
+NEXT_PUBLIC_NETWORK_CURRENCY_NAME=LUX
+NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL=LUX
+
+# App
+NEXT_PUBLIC_APP_HOST=localhost
+NEXT_PUBLIC_APP_PORT=3000
+NEXT_PUBLIC_APP_PROTOCOL=http
+```
+
+## Run
+
+```bash
+pnpm dev    # Development (http://localhost:3000)
+pnpm build  # Production build
+pnpm start  # Start production server
+```
+
+## Docker
+
+```bash
+docker build -t explore:latest -f Dockerfile .
+docker run -p 3000:3000 --env-file .env.production explore:latest
+```

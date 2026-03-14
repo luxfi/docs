@@ -1,0 +1,88 @@
+---
+title: API Reference
+description: REST, GraphQL, and WebSocket APIs
+icon: FileCode
+---
+
+## REST API v2
+
+Base URL: `https://api-explore.lux.network/api/v2`
+
+### Blocks
+
+```
+GET /api/v2/blocks                    # List blocks
+GET /api/v2/blocks/:number_or_hash    # Get block
+```
+
+### Transactions
+
+```
+GET /api/v2/transactions              # List transactions
+GET /api/v2/transactions/:hash        # Get transaction
+GET /api/v2/transactions/:hash/logs   # Transaction logs
+```
+
+### Addresses
+
+```
+GET /api/v2/addresses/:hash                  # Address details
+GET /api/v2/addresses/:hash/transactions     # Address transactions
+GET /api/v2/addresses/:hash/token-transfers  # Token transfers
+GET /api/v2/addresses/:hash/tokens           # Held tokens
+```
+
+### Tokens
+
+```
+GET /api/v2/tokens                    # List tokens
+GET /api/v2/tokens/:address           # Token details
+GET /api/v2/tokens/:address/transfers # Token transfers
+```
+
+### Smart Contracts
+
+```
+GET /api/v2/smart-contracts/:address  # Contract details + ABI
+POST /api/v2/smart-contracts/:address/verification  # Verify contract
+```
+
+### Search
+
+```
+GET /api/v2/search?q=...             # Search blocks, txs, addresses, tokens
+```
+
+### Stats
+
+```
+GET /api/v2/stats                    # Network statistics
+GET /api/v2/stats/charts/market      # Market chart data
+```
+
+## GraphQL
+
+```
+POST /graphql
+```
+
+Available at the GraphQL playground: `GET /graphql`
+
+## WebSocket
+
+```
+WS /api/v2/ws
+```
+
+Subscribe to:
+- New blocks
+- New transactions
+- Address activity
+- Token transfers
+
+## Etherscan-Compatible RPC
+
+```
+POST /api?module=account&action=txlist&address=0x...
+POST /api?module=contract&action=getabi&address=0x...
+```

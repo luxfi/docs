@@ -1,0 +1,23 @@
+---
+title: Custom VM
+description: Build and deploy a custom virtual machine
+icon: Cpu
+---
+
+## Build
+
+```bash
+go build -o myvm ./cmd/myvm
+```
+
+## Register
+
+```bash
+lux subnet create mychain --custom --vm-path ./myvm
+```
+
+## Deploy
+
+```bash
+lux subnet deploy mychain --local
+```

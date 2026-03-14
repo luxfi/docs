@@ -1,0 +1,64 @@
+---
+title: Configuration
+description: CLI flags, environment variables, and config files
+icon: Settings
+---
+
+## CLI Flags
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `-chain` | (required) | Chain type: cchain, pchain, xchain, etc. |
+| `-rpc` | `$RPC_ENDPOINT` | RPC endpoint URL |
+| `-data` | `~/.lux/indexer/<chain>` | Data directory |
+| `-port` | Chain-specific | HTTP API port |
+| `-poll` | `30s` | Poll interval for new data |
+| `-version` | — | Print version and exit |
+| `-list` | — | List available chains |
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `RPC_ENDPOINT` | RPC URL (overridden by `-rpc` flag) |
+| `DATA_DIR` | Data directory |
+| `HTTP_PORT` | HTTP server port |
+| `DATABASE_URL` | PostgreSQL connection string |
+| `POLL_INTERVAL` | Stats poll interval |
+
+## Config Files
+
+### chains.yaml (Multi-chain)
+
+```yaml
+chains:
+  ethereum:
+    type: evm
+    rpc: https://eth-mainnet.g.alchemy.com/v2/KEY
+    chain_id: 1
+    poll_interval: 12s
+    features:
+      - erc4337
+      - mev
+      - blobs
+
+  solana:
+    type: solana
+    rpc: https://api.mainnet-beta.solana.com
+    poll_interval: 400ms
+```
+
+### evmchains.yaml (Multi-EVM)
+
+```yaml
+database: postgresql://indexer:pass@localhost:5432/indexer
+chains:
+  - name: cchain
+    rpc: http://luxd:9630/ext/bc/C/rpc
+    chain_id: 96369
+    port: 4000
+  - name: zoo
+    rpc: http://luxd:9630/ext/bc/BLOCKCHAIN_ID/rpc
+    chain_id: 200200
+    port: 4001
+```

@@ -1,0 +1,49 @@
+---
+title: Local ECDSA
+description: In-memory P-256 signing for development and testing
+icon: Code
+---
+
+The `LocalSigner` generates ECDSA P-256 keypairs in-memory. Keys are deterministic per `keyID` within the process lifetime but do not persist.
+
+## Configuration
+
+```go
+signer, err := hsm.NewSigner("local", nil)
+
+// Or use the constructor directly
+signer := hsm.NewLocalSigner()
+```
+
+An empty provider string defaults to `local`:
+
+```go
+signer, _ := hsm.NewSigner("", nil) // local signer
+```
+
+## Usage
+
+```go
+ctx := context.Background()
+msg := []byte("test message")
+
+sig, _ := signer.Sign(ctx, "dev-key", msg)
+ok, _ := signer.Verify(ctx, "dev-key", msg, sig) // true
+```
+
+## Characteristics
+
+- **Algorithm**: ECDSA P-256 (secp256r1)
+- **Key storage**: In-memory `sync.Map`
+- **Thread-safe**: Yes — concurrent reads and writes are safe
+- **Deterministic**: Same `keyID` always produces the same keypair within a single process
+- **Persistence**: None — keys are lost on process restart
+
+## When to Use
+
+- Local development
+- Unit and integration testing
+- CI/CD pipelines
+- Prototyping
+
+> Never use the local signer in production. Key material exists only in process memory with no tamper protection, audit logging, or key rotation capabilities.

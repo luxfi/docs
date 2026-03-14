@@ -1,0 +1,40 @@
+---
+title: Backend
+description: Blockscout-based Elixir/Erlang backend
+index: true
+icon: Server
+---
+
+The explorer backend is a Blockscout fork built with Elixir/Erlang OTP. It handles blockchain data indexing, storage, and API serving.
+
+## OTP Umbrella Apps
+
+| App | Purpose |
+|-----|---------|
+| `block_scout_web` | Phoenix web API and endpoints |
+| `explorer` | Core chain data and business logic |
+| `ethereum_jsonrpc` | JSON-RPC client interface |
+| `indexer` | Blockchain data fetcher and indexer |
+| `utils` | Shared utilities |
+| `nft_media_handler` | NFT media processing |
+
+## Technology Stack
+
+- **Runtime**: Elixir 1.19.4 + Erlang 27.3.4.6
+- **Web**: Phoenix 1.7 + Plug
+- **Database**: Ecto + PostgreSQL 14+
+- **Cache**: Redis
+- **GraphQL**: Absinthe + Relay pagination
+- **Crypto**: ex_keccak, ex_secp256k1, ex_eth_bls
+- **Docker**: Multi-stage Alpine build
+
+## Docker Image
+
+```bash
+docker build -t blockscout:latest \
+  --build-arg MIX_ENV=prod \
+  --build-arg RELEASE_VERSION=10.0.1 \
+  -f docker/Dockerfile .
+```
+
+Production image: `ghcr.io/luxfi/blockscout-lux`

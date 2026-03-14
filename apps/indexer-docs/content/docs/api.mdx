@@ -1,0 +1,54 @@
+---
+title: API Reference
+description: REST v2, GraphQL, WebSocket, and Etherscan-compatible RPC
+icon: FileCode
+---
+
+## REST API v2 (Blockscout-Compatible)
+
+```
+GET  /api/v2/blocks                    # List blocks
+GET  /api/v2/blocks/:id               # Get block by number or hash
+GET  /api/v2/blocks/height/:height    # Get block by height
+GET  /api/v2/transactions             # List transactions
+GET  /api/v2/transactions/:hash       # Get transaction
+GET  /api/v2/addresses/:hash          # Get address
+GET  /api/v2/tokens                   # List tokens
+GET  /api/v2/tokens/:address          # Get token
+GET  /api/v2/smart-contracts          # List verified contracts
+GET  /api/v2/search                   # Full-text search
+GET  /api/v2/stats                    # Network statistics
+GET  /health                          # Health check
+```
+
+## Etherscan-Compatible RPC
+
+```
+POST /api/v1
+```
+
+Supported modules: `account`, `contract`, `transaction`, `block`, `token`, `stats`.
+
+## GraphQL
+
+```
+POST /graphql          # Query endpoint
+GET  /graphql          # Playground
+```
+
+## WebSocket Subscriptions
+
+```
+WS /api/v2/blocks/subscribe          # New blocks
+WS /api/v2/transactions/subscribe    # New transactions
+WS /api/v2/addresses/subscribe       # Address activity
+WS /api/v2/tokens/subscribe          # Token events
+```
+
+## Prometheus Metrics
+
+```
+GET /metrics
+```
+
+Exposes indexing progress, API latency, error rates, and database performance metrics.

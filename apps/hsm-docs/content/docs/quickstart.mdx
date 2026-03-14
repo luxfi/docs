@@ -1,0 +1,86 @@
+---
+title: Quick Start
+description: Get signing in under 5 minutes
+icon: Zap
+---
+
+## 1. Install
+
+```bash
+go get github.com/luxfi/hsm@latest
+```
+
+## 2. Create a Signer
+
+```go
+// Local signer for development
+signer, err := hsm.NewSigner("local", nil)
+
+// AWS KMS for production
+signer, err := hsm.NewSigner("aws", map[string]string{
+    "region": "us-east-1",
+})
+
+// Post-quantum ML-DSA
+signer, err := hsm.NewSigner("mldsa", nil)
+```
+
+## 3. Sign a Message
+
+```go
+ctx := context.Background()
+message := []byte("transaction payload")
+
+signature, err := signer.Sign(ctx, "my-key-id", message)
+if err != nil {
+    log.Fatal(err)
+}
+```
+
+## 4. Verify the Signature
+
+```go
+valid, err := signer.Verify(ctx, "my-key-id", message, signature)
+if err != nil {
+    log.Fatal(err)
+}
+fmt.Println("Signature valid:", valid)
+```
+
+## 5. Use the Manager
+
+The `Manager` combines a `PasswordProvider` and a `Signer` under a single config:
+
+```go
+mgr, err := hsm.New(hsm.Config{
+    PasswordProvider: "aws",
+    SignerProvider:   "aws",
+    SignerKeyID:      "arn:aws:kms:us-east-1:123456789:key/sign-key",
+    Region:           "us-east-1",
+})
+if err != nil {
+    log.Fatal(err)
+}
+
+// Sign with the configured default key
+sig, _ := mgr.Sign(ctx, []byte("payload"))
+
+// Verify
+ok, _ := mgr.Verify(ctx, []byte("payload"), sig)
+
+// Get ZapDB password
+password, _ := mgr.GetPassword(ctx)
+```
+
+## Provider Aliases
+
+| Input | Resolves To |
+|-------|-------------|
+| `aws`, `AWS` | AWS KMS |
+| `gcp`, `GCP` | GCP Cloud KMS |
+| `azure`, `Azure` | Azure Key Vault |
+| `zymbit` | Zymbit SCM |
+| `mldsa`, `pq`, `post-quantum` | ML-DSA-65 |
+| `local`, `` (empty) | Local ECDSA |
+
+All provider names are case-insensitive and trimmed of whitespace.

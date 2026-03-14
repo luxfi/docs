@@ -1,0 +1,49 @@
+---
+title: Lux MPC
+description: Threshold signing network for secure multi-party computation
+index: true
+icon: Lock
+---
+
+Lux MPC (`github.com/luxfi/mpc`) is a threshold signing daemon that enables secure multi-party key generation and signing across multiple cryptographic protocols.
+
+## Architecture
+
+```
+┌──────────────────────────────────────────────┐
+│              MPC Network                     │
+│  ┌────────┐  ┌────────┐  ┌────────┐        │
+│  │ Node 0 │  │ Node 1 │  │ Node 2 │  ...   │
+│  └───┬────┘  └───┬────┘  └───┬────┘        │
+│      │           │           │              │
+│  ┌───▼───────────▼───────────▼───┐          │
+│  │         NATS Messaging        │          │
+│  └───────────────┬───────────────┘          │
+│                  │                          │
+│  ┌───────────────▼───────────────┐          │
+│  │       Consul Discovery        │          │
+│  └───────────────────────────────┘          │
+└──────────────────────────────────────────────┘
+         │              │
+    ┌────▼────┐    ┌────▼────┐
+    │   HSM   │    │  ZapDB  │
+    │ Attest  │    │ Storage │
+    └─────────┘    └─────────┘
+```
+
+## Supported Protocols
+
+| Protocol | Type | Chains | Rounds |
+|----------|------|--------|--------|
+| CGGMP21 | ECDSA threshold | Bitcoin, Ethereum | Multi-round |
+| FROST | EdDSA threshold | Solana, Sui | 2 rounds |
+| BLS | Aggregatable | Lux consensus | 1 round |
+| Ringtail | Post-quantum lattice | All (PQ bundles) | 2 rounds |
+
+## Key Features
+
+- **Threshold signing** — t-of-n key generation and signing
+- **HSM attestation** — Hardware-bound signature shares
+- **ZapDB storage** — ChaCha20-Poly1305 encrypted key shares
+- **Intent co-signing** — Server-side HSM signature on every transaction
+- **Multi-protocol** — ECDSA, EdDSA, BLS, and post-quantum in one daemon

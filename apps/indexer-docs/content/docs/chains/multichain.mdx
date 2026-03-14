@@ -1,0 +1,61 @@
+---
+title: Multi-Chain
+description: Index 100+ blockchains in parallel
+---
+
+## Overview
+
+The `multichain` binary indexes over 100 blockchains concurrently from a single process, using the configuration in `config/chains.yaml`.
+
+```bash
+./multichain -config config/chains.yaml -port 5000 -max-chains 100
+```
+
+## Supported Ecosystems
+
+### EVM (50+ chains)
+Ethereum, Polygon, Arbitrum, Optimism, Base, BSC, Avalanche, Fantom, Gnosis, zkSync, Scroll, Linea, Mantle, Blast, and more.
+
+### Solana
+Mainnet and Devnet — SPL tokens, Metaplex NFTs, program indexing.
+
+### Bitcoin
+Mainnet with Ordinals, Runes, BRC-20, and Atomicals support.
+
+### Cosmos
+Osmosis, Injective, dYdX, Celestia, Sei — IBC transfers, staking.
+
+### Move
+Aptos and Sui — Move module indexing, coin/NFT tracking.
+
+### Others
+NEAR, Tron, TON, Polkadot, Cardano, Stacks, ICP.
+
+## Configuration
+
+Chain configuration is defined in YAML:
+
+```yaml
+chains:
+  ethereum:
+    type: evm
+    rpc: https://eth-mainnet.g.alchemy.com/v2/...
+    chain_id: 1
+    poll_interval: 12s
+
+  solana:
+    type: solana
+    rpc: https://api.mainnet-beta.solana.com
+    poll_interval: 400ms
+
+  bitcoin:
+    type: bitcoin
+    rpc: https://btc-rpc.example.com
+    features: [ordinals, runes, brc20]
+```
+
+## Resource Management
+
+- `max-chains`: Maximum concurrent chains (default: unlimited)
+- Each chain runs in its own goroutine with independent error handling
+- Shared PostgreSQL with table prefixes per chain

@@ -1,0 +1,16 @@
+---
+title: Bridge Integration
+description: MPC signing for cross-chain bridge transfers
+icon: ArrowLeftRight
+---
+
+The Lux Bridge uses MPC for threshold signing of cross-chain transfers. Each bridge transaction requires t-of-n MPC nodes to produce a valid signature.
+
+## Flow
+
+1. User initiates transfer via Bridge UI
+2. Bridge API validates and creates intent
+3. MPC nodes receive signing request via NATS
+4. Each node produces a threshold signature share
+5. Shares are aggregated into a valid signature
+6. Transaction is broadcast to the destination chain

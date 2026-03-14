@@ -1,0 +1,32 @@
+---
+title: Docker
+description: Building and running Docker images
+---
+
+## Build
+
+```bash
+make docker
+# or
+docker build -t ghcr.io/luxfi/indexer:v0.2.2 .
+```
+
+## Run Single Chain
+
+```bash
+docker run -it \
+  -e RPC_ENDPOINT=http://host.docker.internal:9630/ext/bc/C/rpc \
+  -e DATABASE_URL=postgresql://indexer:indexer@postgres:5432/indexer \
+  -p 4000:4000 \
+  ghcr.io/luxfi/indexer:v0.2.2 indexer -chain cchain
+```
+
+## Docker Compose
+
+The `docker-compose.yml` starts the full stack with 8+ indexer services:
+
+```bash
+docker-compose up -d
+```
+
+Services include: PostgreSQL, plus one indexer instance per chain type (C, P, X, A, B, Q, T, Z, K).

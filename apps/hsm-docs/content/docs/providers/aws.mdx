@@ -1,0 +1,71 @@
+---
+title: AWS KMS
+description: ECDSA P-256 signing via AWS Key Management Service
+icon: Cloud
+---
+
+The `AWSKMSSigner` uses AWS KMS asymmetric keys for ECDSA P-256 signing. Authentication uses AWS SigV4 — no SDK dependency required.
+
+## Configuration
+
+```go
+signer, err := hsm.NewSigner("aws", map[string]string{
+    "region": "us-east-1",
+})
+```
+
+| Config Key | Environment Variable | Default | Description |
+|-----------|---------------------|---------|-------------|
+| `region` | `AWS_REGION` | `us-east-1` | AWS region |
+| — | `AWS_ACCESS_KEY_ID` | IAM role | Static credentials |
+| — | `AWS_SECRET_ACCESS_KEY` | IAM role | Static credentials |
+
+## Key ID Format
+
+Pass the full KMS key ARN or alias as the `keyID` parameter:
+
+```go
+// ARN format
+sig, err := signer.Sign(ctx, "arn:aws:kms:us-east-1:123456789:key/abcd-1234", msg)
+
+// Alias format
+sig, err := signer.Sign(ctx, "alias/my-signing-key", msg)
+```
+
+## KMS Key Requirements
+
+- **Key type**: Asymmetric
+- **Key usage**: Sign and verify
+- **Key spec**: `ECC_NIST_P256`
+- **Algorithm**: `ECDSA_SHA_256`
+
+Create the key via AWS CLI:
+
+```bash
+aws kms create-key \
+  --key-usage SIGN_VERIFY \
+  --key-spec ECC_NIST_P256 \
+  --description "Lux HSM signing key"
+```
+
+## Authentication
+
+The signer uses SigV4 manual signing with zero SDK dependencies. Authentication is resolved in order:
+
+1. Static credentials from environment (`AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY`)
+2. EC2 instance metadata service (IAM role attached to the instance)
+3. ECS task role (via `AWS_CONTAINER_CREDENTIALS_RELATIVE_URI`)
+
+> For production, always use IAM roles — never static credentials.
+
+## Password Provider
+
+The `AWSKMSProvider` password provider uses `kms:Decrypt` to unwrap an encrypted password:
+
+```go
+provider, _ := hsm.NewPasswordProvider("aws", map[string]string{
+    "region": "us-east-1",
+})
+
+password, err := provider.GetPassword(ctx, "arn:aws:kms:us-east-1:123456789:key/pw-key")
+```

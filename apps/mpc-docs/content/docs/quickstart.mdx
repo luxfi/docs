@@ -1,0 +1,32 @@
+---
+title: Quick Start
+description: Generate your first threshold key and sign a message
+icon: Zap
+---
+
+## Start the Daemon
+
+```bash
+mpcd start \
+  --hsm-signer aws \
+  --hsm-signer-key-id arn:aws:kms:us-east-1:123456789:key/sign-key \
+  --hsm-provider aws \
+  --hsm-key-id arn:aws:kms:us-east-1:123456789:key/pw-key \
+  --hsm-attest
+```
+
+## Generate a Key
+
+```bash
+curl -X POST http://localhost:8080/v1/keygen \
+  -H 'Content-Type: application/json' \
+  -d '{"scheme": "cggmp21", "threshold": 2, "parties": 3}'
+```
+
+## Sign a Message
+
+```bash
+curl -X POST http://localhost:8080/v1/sign \
+  -H 'Content-Type: application/json' \
+  -d '{"key_id": "...", "message": "aGVsbG8gd29ybGQ="}'
+```

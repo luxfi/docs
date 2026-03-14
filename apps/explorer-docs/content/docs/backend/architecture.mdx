@@ -1,0 +1,50 @@
+---
+title: Architecture
+description: Elixir OTP umbrella application structure
+---
+
+## Mix Umbrella
+
+The backend is a Mix umbrella project with six OTP applications:
+
+```
+explorer/
+├── apps/
+│   ├── block_scout_web/    # Web API (Phoenix)
+│   ├── explorer/           # Core data layer (Ecto)
+│   ├── ethereum_jsonrpc/   # RPC client
+│   ├── indexer/            # Data fetcher
+│   ├── utils/              # Shared utilities
+│   └── nft_media_handler/  # NFT media
+├── config/                 # Configuration
+├── docker/                 # Docker files
+└── mix.exs                 # Root project
+```
+
+## Dependencies
+
+Key Elixir packages:
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `phoenix` | 1.7.x | Web framework |
+| `absinthe` | 1.5.x | GraphQL |
+| `ecto` | 3.x | Database ORM |
+| `postgrex` | — | PostgreSQL driver |
+| `httpoison` | 2.0 | HTTP client |
+| `jason` | — | JSON codec |
+| `prometheus` | — | Metrics |
+
+## Build Process
+
+```bash
+# Development
+mix deps.get
+mix compile
+mix phx.server
+
+# Production release
+MIX_ENV=prod mix release blockscout
+```
+
+The production release creates an OTP release at `/opt/release/blockscout/` that can run without Elixir/Erlang installed (ERTS is bundled).

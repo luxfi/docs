@@ -1,0 +1,17 @@
+---
+title: WebSockets
+description: Real-time blockchain subscriptions
+icon: Radio
+---
+
+## Connect
+
+```javascript
+const ws = new WebSocket('wss://api.lux.cloud/v1/ws/lux');
+ws.send(JSON.stringify({
+  jsonrpc: '2.0',
+  method: 'eth_subscribe',
+  params: ['newHeads'],
+  id: 1
+}));
+```

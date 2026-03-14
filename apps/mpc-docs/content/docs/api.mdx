@@ -1,0 +1,17 @@
+---
+title: API Reference
+description: MPC daemon REST API
+icon: FileCode
+---
+
+## Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/v1/keygen` | Initiate threshold key generation |
+| POST | `/v1/sign` | Request threshold signature |
+| GET | `/v1/keys` | List available keys |
+| GET | `/v1/keys/:id` | Get key metadata |
+| DELETE | `/v1/keys/:id` | Delete a key |
+| GET | `/v1/health` | Health check |
+| GET | `/v1/metrics` | Prometheus metrics |

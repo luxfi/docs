@@ -1,0 +1,18 @@
+---
+title: Configuration
+description: CLI flags and environment variables
+icon: Settings
+---
+
+## CLI Flags
+
+| Flag | Env Var | Description | Default |
+|------|---------|-------------|---------|
+| `--hsm-signer` | `MPC_HSM_SIGNER` | Signer provider (aws/gcp/azure/local) | local |
+| `--hsm-signer-key-id` | `MPC_HSM_SIGNER_KEY_ID` | Key ID for signing | — |
+| `--hsm-provider` | `MPC_HSM_PROVIDER` | Password provider type | env |
+| `--hsm-key-id` | `MPC_HSM_KEY_ID` | Key ID for password decryption | — |
+| `--hsm-attest` | `MPC_HSM_ATTEST` | Enable threshold attestation | false |
+| `--data-dir` | `MPC_DATA_DIR` | ZapDB data directory | /data/mpc |
+| `--port` | `MPC_PORT` | API listen port | 8080 |
+| `--metrics-port` | `MPC_METRICS_PORT` | Prometheus metrics port | 9090 |

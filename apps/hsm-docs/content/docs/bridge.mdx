@@ -1,0 +1,73 @@
+---
+title: Bridge Integration
+description: HSM in the Lux cross-chain bridge signing pipeline
+icon: ArrowLeftRight
+---
+
+The Lux Bridge uses the MPC network for cross-chain transaction signing. HSM provides the co-signing layer within the MPC nodes.
+
+## Architecture
+
+```
+Bridge UI (Next.js)
+      │
+      ▼
+Bridge Server (Node.js)
+      │
+      ▼ POST /api/v1/generate_mpc_sig
+MPC API Server
+      │
+      ├─► HSM Co-sign (intent attestation)
+      │
+      ▼
+MPC Threshold Signing (CGGMP21/FROST)
+      │
+      ▼
+Destination Chain (broadcast)
+```
+
+## How It Works
+
+1. **User initiates bridge** — selects source/destination chain and amount
+2. **Bridge server** calls the MPC API at `POST /api/v1/generate_mpc_sig`
+3. **MPC API** receives the request, the HSM signer co-signs the intent
+4. **MPC nodes** execute threshold signing (CGGMP21 for ECDSA, FROST for EdDSA)
+5. **Signature** is returned to the bridge server
+6. **Bridge server** broadcasts the signed transaction to the destination chain
+
+## Configuration
+
+The bridge server connects to MPC via:
+
+```yaml
+# K8s
+MPC_URL: "http://mpc-api-svc.lux-mpc.svc:8081"
+MPC_API_KEY: "<api-key>"
+
+# Local development
+MPC_URL: "http://mpc-node-0:8080"
+```
+
+The MPC nodes themselves have HSM configured as described in the [MPC Integration](/docs/mpc) guide.
+
+## Initiator Key
+
+The bridge server authenticates to the MPC network using an Ed25519 initiator key:
+
+```
+/app/identity/initiator.key  (mounted from K8s secret)
+```
+
+This key is separate from the HSM signer — it proves the bridge server's identity to the MPC network.
+
+## Cross-Chain Support
+
+The bridge operates across all Lux chains and selected external networks:
+
+| Chain | Type | HSM Key Type |
+|-------|------|-------------|
+| C-Chain | EVM | ECDSA P-256 |
+| Zoo, Hanzo, SPC, Pars | EVM Subnets | ECDSA P-256 |
+| X-Chain | UTXO/DAG | ECDSA secp256k1 |
+| P-Chain | Platform | ECDSA secp256k1 |
+| External EVMs | EVM | ECDSA P-256 |

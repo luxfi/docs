@@ -1,0 +1,41 @@
+---
+title: Lux KMS
+description: Enterprise key management with HSM integration and secrets automation
+index: true
+icon: Key
+---
+
+Lux KMS (`github.com/luxfi/kms`) is a centralized key management and secrets platform with HSM integration, PKI, and Kubernetes automation.
+
+## Architecture
+
+```
+┌──────────────────────────────────────────────┐
+│              Lux KMS (Control Plane)         │
+│  ┌────────┬──────────┬──────────┬─────────┐  │
+│  │Secrets │ Policies │ Audit    │ PKI     │  │
+│  └────┬───┴────┬─────┴───┬─────┴────┬────┘  │
+│       │        │         │          │        │
+│  ┌────▼────────▼─────────▼──────────▼────┐   │
+│  │         Unified Encryption API        │   │
+│  └────┬────────┬──────────┬──────────┬───┘   │
+│       │        │          │          │        │
+│  ┌────▼──┐ ┌───▼──┐  ┌───▼───┐  ┌───▼───┐   │
+│  │  HSM  │ │ MPC  │  │ Soft  │  │ Ext   │   │
+│  │Engine │ │Engine│  │Engine │  │  KMS  │   │
+│  └───────┘ └──────┘  └───────┘  └───────┘   │
+└──────────────────────────────────────────────┘
+```
+
+## Capabilities
+
+| Feature | Description |
+|---------|-------------|
+| **Secrets** | Centralized storage, versioning, rotation, access control |
+| **Transit Encryption** | AES-256-GCM, ChaCha20-Poly1305, RSA, ECDSA, HMAC |
+| **External KMS** | AWS KMS, GCP Cloud KMS, Azure Key Vault |
+| **HSM** | Zymbit SCM, AWS CloudHSM, Google Cloud HSM |
+| **PKI** | X.509 certificate authority and lifecycle |
+| **MPC** | Threshold key management (ECDSA, EdDSA, Taproot) |
+| **Dynamic Secrets** | Ephemeral database credentials |
+| **K8s Operator** | CRDs for KMSSecret, KMSPushSecret, KMSDynamicSecret |

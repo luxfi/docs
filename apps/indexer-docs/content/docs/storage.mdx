@@ -1,0 +1,68 @@
+---
+title: Storage
+description: Unified two-layer storage architecture
+icon: HardDrive
+---
+
+## Two-Layer Design
+
+```
+┌─────────────────────┐  ┌──────────────────────────┐
+│     KV Layer        │  │      Query Layer          │
+│     (BadgerDB v4)   │  │  (PostgreSQL / SQLite)    │
+│                     │  │                           │
+│  - Fast key lookups │  │  - SQL queries            │
+│  - Block data       │  │  - Full-text search       │
+│  - Vertex/edges     │  │  - Aggregations           │
+│  - State storage    │  │  - Pagination             │
+└─────────────────────┘  └──────────────────────────┘
+```
+
+## PostgreSQL Schema
+
+Core tables (Blockscout-compatible):
+
+| Table | Description |
+|-------|-------------|
+| `blocks` | Block headers (partitioned by chain_id) |
+| `transactions` | All transaction types |
+| `logs` | Event logs |
+| `internal_transactions` | Call traces |
+| `addresses` | All addresses |
+| `tokens` | ERC20/721/1155 metadata |
+| `token_transfers` | Transfer events |
+| `token_balances` | Balance history (partitioned) |
+| `smart_contracts` | Verified contracts |
+| `address_coin_balances` | Native balance history |
+
+## Extensions
+
+```sql
+CREATE EXTENSION IF NOT EXISTS pg_trgm;         -- Fuzzy search
+CREATE EXTENSION IF NOT EXISTS btree_gist;      -- GiST indexes
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements; -- Query analysis
+```
+
+## Migrations
+
+Four migration files in `migrations/`:
+
+```
+001_initial_schema.sql      # Core tables
+002_indexes.sql             # Index definitions
+003_functions.sql           # SQL functions
+004_nft_marketplace.sql     # NFT marketplace support
+```
+
+## Build Tags
+
+```bash
+go build ./...                    # SQLite (default)
+go build -tags postgres ./...     # PostgreSQL
+```
+
+## PostgreSQL v0.2.2 Fixes
+
+- `AUTOINCREMENT` → `SERIAL`
+- `INSERT OR IGNORE` → `ON CONFLICT DO NOTHING`
+- `datetime()` → `NOW()` / `to_timestamp()`

@@ -1,0 +1,69 @@
+@import 'tailwindcss';
+@import '@hanzo/docs-base-ui/css/neutral.css';
+@import '@hanzo/docs-base-ui/css/preset.css';
+@plugin 'tailwindcss-animate';
+
+@theme {
+  --spacing-page: 1436px;
+  --color-brand: hsl(160, 84%, 39%);
+  --color-brand-foreground: white;
+  --color-brand-secondary: hsl(200, 90%, 50%);
+  --color-brand-secondary-foreground: white;
+  --color-brand-200: hsl(160, 70%, 55%);
+
+  --color-landing-foreground: #1a1a2e;
+  --color-landing-foreground-200: #4a4a6a;
+}
+
+.dark {
+  --color-landing-foreground: #e4e4f0;
+  --color-landing-foreground-200: #a0a0c0;
+
+  --color-brand: hsl(160, 100%, 45%);
+  --color-brand-secondary: hsl(200, 100%, 60%);
+  --color-brand-secondary-foreground: black;
+  --color-brand-foreground: white;
+  --color-brand-200: hsl(160, 90%, 60%);
+}
+
+@theme inline {
+  --default-mono-font-family: var(--font-mono);
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html:has(body[data-scroll-locked]) {
+  scrollbar-gutter: auto;
+}
+
+body {
+  background-color: var(--color-fd-background);
+}
+
+:root {
+  color-scheme: dark;
+  --color-fd-background: hsl(0, 0%, 2%);
+  --color-fd-foreground: hsl(0, 0%, 96%);
+  --color-fd-muted: hsl(0, 0%, 10%);
+  --color-fd-muted-foreground: hsla(0, 0%, 70%, 0.85);
+  --color-fd-popover: hsl(0, 0%, 4%);
+  --color-fd-popover-foreground: hsl(0, 0%, 90%);
+  --color-fd-card: hsl(0, 0%, 4%);
+  --color-fd-card-foreground: hsl(0, 0%, 96%);
+  --color-fd-border: hsla(0, 0%, 40%, 0.2);
+  --color-fd-primary: hsl(0, 0%, 96%);
+  --color-fd-primary-foreground: hsl(0, 0%, 8%);
+  --color-fd-secondary: hsl(0, 0%, 12%);
+  --color-fd-secondary-foreground: hsl(0, 0%, 92%);
+  --color-fd-accent: hsla(0, 0%, 40%, 0.3);
+  --color-fd-accent-foreground: hsl(0, 0%, 92%);
+  --color-fd-ring: hsl(0, 0%, 55%);
+  --color-fd-overlay: hsla(0, 0%, 0%, 0.3);
+}
+
+.dark {
+  --color-fd-background: hsl(0, 0%, 2%);
+  --color-fd-foreground: hsl(0, 0%, 96%);
+}

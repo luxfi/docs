@@ -1,0 +1,202 @@
+---
+title: MPC Integration
+description: Using HSM with the Lux MPC threshold signing network
+icon: Lock
+---
+
+The Lux MPC daemon (`github.com/luxfi/mpc`) uses HSM for three purposes:
+
+1. **Intent co-signing** — server-side HSM signature on every approved transaction
+2. **ZapDB password decryption** — unlocking the encrypted key share database
+3. **Threshold attestation** — binding signature shares to specific hardware
+
+## Interface Compatibility
+
+The MPC server defines its own `HSMProvider` interface:
+
+```go
+// In pkg/api/server.go
+type HSMProvider interface {
+    Sign(ctx context.Context, keyID string, message []byte) ([]byte, error)
+    Verify(ctx context.Context, keyID string, message, signature []byte) (bool, error)
+}
+```
+
+The `hsm.Signer` interface is a superset (it adds `Provider() string`), so any HSM signer satisfies `HSMProvider` implicitly via Go's structural typing. No adapter is needed.
+
+## Wiring in mpcd
+
+The MPC daemon accepts HSM configuration via CLI flags or environment variables:
+
+```bash
+mpcd start \
+  --hsm-signer aws \
+  --hsm-signer-key-id arn:aws:kms:us-east-1:123456789:key/co-sign-key \
+  --hsm-attest
+```
+
+| Flag | Env Var | Description |
+|------|---------|-------------|
+| `--hsm-signer` | `MPC_HSM_SIGNER` | Signer provider type |
+| `--hsm-signer-key-id` | `MPC_HSM_SIGNER_KEY_ID` | Key ID for signing |
+| `--hsm-provider` | `MPC_HSM_PROVIDER` | Password provider type |
+| `--hsm-key-id` | `MPC_HSM_KEY_ID` | Key ID for password decryption |
+| `--hsm-attest` | `MPC_HSM_ATTEST` | Enable threshold share attestation |
+
+## Intent Co-signing Flow
+
+```
+User submits transaction
+        │
+        ▼
+  MPC API receives request
+        │
+        ▼
+  HSM co-signs the intent ◄── hsm.Signer.Sign()
+        │
+        ▼
+  MPC nodes produce threshold signature
+        │
+        ▼
+  Settlement attestation ◄── hsm.Signer.Sign()
+        │
+        ▼
+  Transaction broadcast
+```
+
+## ZapDB Password Flow
+
+The MPC daemon stores key shares in ZapDB (ChaCha20-Poly1305 encrypted BadgerDB). The encryption password is fetched from a cloud KMS:
+
+```go
+provider, _ := hsm.NewPasswordProvider("aws", nil)
+password, _ := provider.GetPassword(ctx, kmsKeyID)
+
+// Password is used to open ZapDB
+db, _ := zapdb.Open(dataDir, password)
+```
+
+## Threshold Attestation
+
+When `--hsm-attest` is enabled, every threshold signature share produced by the MPC node is co-signed by the HSM. This binds each share to the hardware that produced it — an attacker who obtains key shares cannot forge valid attested shares without the HSM.
+
+### Architecture
+
+```
+┌──────────────────────────────────────────────┐
+│              MPC Node                        │
+│                                              │
+│  threshold.Signer ──► HSMAttestingSigner     │
+│       │                      │               │
+│       │ SignShare()          │ attest()       │
+│       ▼                      ▼               │
+│  [signature share]    [HSM attestation]      │
+│       │                      │               │
+│       └──────────┬───────────┘               │
+│                  ▼                            │
+│     attestedSignatureShare                   │
+│     { share + attestation }                  │
+└──────────────────────────────────────────────┘
+```
+
+### KeyShareVault
+
+The `KeyShareVault` provides AES-256-GCM encrypted storage for threshold key shares. The encryption key is derived from the HSM password provider:
+
+```go
+import "github.com/luxfi/hsm"
+
+// Create vault backed by cloud KMS password
+vault := hsm.NewKeyShareVault(passwordProvider, "kms-key-id")
+
+// Store key share (encrypts with AES-256-GCM)
+vault.Store(ctx, "validator-0", share.Bytes(), hsm.KeyShareMeta{
+    SchemeID:     threshold.SchemeBLS,
+    Index:        0,
+    Threshold:    2,
+    TotalParties: 5,
+    PublicShare:  share.PublicShare(),
+    GroupKey:     share.GroupKey().Bytes(),
+})
+
+// Load key share (decrypts on demand)
+raw, meta, _ := vault.Load(ctx, "validator-0")
+keyShare, _ := scheme.ParseKeyShare(raw)
+
+// Query metadata without decryption
+meta, _ := vault.GetMeta("validator-0")
+```
+
+### HSMAttestingSigner
+
+The `HSMAttestingSigner` wraps any `threshold.Signer` with HSM attestation:
+
+```go
+import (
+    "github.com/luxfi/hsm"
+    "github.com/luxfi/crypto/threshold"
+)
+
+// Create inner threshold signer (BLS, FROST, CGGMP21, or Ringtail)
+inner, _ := scheme.NewSigner(keyShare)
+
+// Wrap with HSM attestation
+signer := hsm.NewAttestingSigner(inner, hsmSigner, "attest-key-id")
+
+// Sign — produces attested share
+share, _ := signer.SignShare(ctx, message, signerIndices, nonce)
+
+// Verify attestation on received shares
+ok, _ := hsm.VerifyAttestation(ctx, hsmSigner, "attest-key-id", share)
+```
+
+### ThresholdManager
+
+The `ThresholdManager` combines vault + attestation for a complete HSM-backed threshold solution:
+
+```go
+mgr, _ := hsm.NewThresholdManager(hsm.ThresholdConfig{
+    PasswordProvider: "aws",
+    PasswordKeyID:    "arn:aws:kms:us-east-1:...:key/vault-key",
+    SignerProvider:   "aws",
+    AttestKeyID:      "arn:aws:kms:us-east-1:...:key/attest-key",
+})
+
+// Store key shares (encrypted with vault)
+mgr.StoreKeyShare(ctx, "validator-0", blsShare)
+
+// Create attesting signer (decrypts share, wraps with attestation)
+signer, _ := mgr.NewSigner(ctx, "validator-0")
+share, _ := signer.SignShare(ctx, msg, signers, nil)
+```
+
+### Supported Schemes
+
+The threshold adapter works with any scheme registered via `threshold.RegisterScheme`:
+
+| Scheme | Type | HSM Usage | Notes |
+|--------|------|-----------|-------|
+| BLS | Non-interactive | Attestation + vault | 1-round signing |
+| FROST | 2-round | Attestation + vault | Nonce gen delegated |
+| CGGMP21 | Multi-round | Attestation + vault | ECDSA threshold |
+| Ringtail | 2-round lattice | Attestation + vault | Post-quantum |
+
+## Kubernetes Deployment
+
+In K8s, HSM configuration is set via environment variables:
+
+```yaml
+env:
+  - name: MPC_HSM_SIGNER
+    value: "aws"
+  - name: MPC_HSM_SIGNER_KEY_ID
+    value: "arn:aws:kms:us-east-1:123456789:key/co-sign-key"
+  - name: MPC_HSM_PROVIDER
+    value: "aws"
+  - name: MPC_HSM_KEY_ID
+    value: "arn:aws:kms:us-east-1:123456789:key/zapdb-pw-key"
+  - name: MPC_HSM_ATTEST
+    value: "true"
+```
+
+The pod's service account should have an IAM role with `kms:Sign`, `kms:Verify`, and `kms:Decrypt` permissions.

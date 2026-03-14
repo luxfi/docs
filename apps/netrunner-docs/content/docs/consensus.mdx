@@ -1,0 +1,17 @@
+---
+title: Consensus Testing
+description: Verify consensus correctness
+icon: CheckCircle
+---
+
+## Liveness
+
+```bash
+netrunner test --liveness --duration 120s
+```
+
+## Safety
+
+```bash
+netrunner test --safety --faults 1
+```

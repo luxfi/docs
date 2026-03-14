@@ -1,0 +1,29 @@
+---
+title: Ringtail
+description: Post-quantum lattice-based threshold signing
+icon: ShieldCheck
+---
+
+Ringtail implements post-quantum lattice-based threshold signing using Module-LWE. It provides 128-bit post-quantum security.
+
+## Usage
+
+```go
+scheme, _ := threshold.GetScheme(threshold.SchemeRingtail)
+signer, _ := scheme.NewSigner(keyShare)
+
+// Round 1: Lattice commitment
+commitment, nonce, _ := signer.NonceGen(ctx)
+
+// Round 2: Sign
+share, _ := signer.SignShare(ctx, message, signers, nonce)
+```
+
+## Properties
+
+| Property | Value |
+|----------|-------|
+| Lattice | Module-LWE |
+| Rounds | 2 |
+| PQ Security | 128-bit |
+| Use Case | Quantum-safe consensus bundles |

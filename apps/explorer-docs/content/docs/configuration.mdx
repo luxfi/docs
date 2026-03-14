@@ -1,0 +1,41 @@
+---
+title: Configuration
+description: Multi-chain setup and chain aliases
+icon: Settings
+---
+
+## Multi-Chain Architecture
+
+One codebase, five explorers. Each deployment uses different environment variables:
+
+```
+explore.lux.network       → CHAIN_ID=96369  (C-Chain)
+explore-zoo.lux.network   → CHAIN_ID=200200 (Zoo)
+explore-hanzo.lux.network → CHAIN_ID=36963  (Hanzo)
+explore-spc.lux.network   → CHAIN_ID=36911  (SPC)
+explore-pars.lux.network  → CHAIN_ID=494949 (Pars)
+```
+
+## Chain Aliases
+
+The luxd configmap maps chain names to blockchain IDs. Each subnet explorer uses the actual blockchain ID in its RPC URL:
+
+```
+luxd-1.luxd-headless.lux-mainnet.svc:9630/ext/bc/{blockchain_id}/rpc
+```
+
+> Do NOT alias subnet names to C-chain. This was a bug that caused subnet explorers to index C-chain data instead of the actual subnet.
+
+## Chain Registry
+
+The frontend `configs/app/chainRegistry.ts` defines all supported chains with their parameters, logos, and colors.
+
+## Featured Networks
+
+The network dropdown is configured via:
+
+```bash
+NEXT_PUBLIC_FEATURED_NETWORKS=/networks.json
+```
+
+This JSON file lists all chains available in the explorer's network switcher.

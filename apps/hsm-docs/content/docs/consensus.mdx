@@ -1,0 +1,188 @@
+---
+title: Consensus Integration
+description: HSM-backed signing for Lux consensus protocols
+icon: Shield
+---
+
+The `github.com/luxfi/hsm` package provides HSM integration for Lux consensus threshold signing, supporting BLS, FROST, CGGMP21, and Ringtail (lattice-based post-quantum) protocols.
+
+## Architecture
+
+Lux uses dual-threshold consensus (Quasar):
+- **BLS** (1 round) — classical aggregatable signatures for fast finality
+- **Ringtail** (2 rounds) — lattice-based threshold for post-quantum security
+
+Both run in parallel. BLS provides 500ms block finality; Ringtail creates quantum-safe bundles every 3 seconds.
+
+```
+Validator Node
+┌─────────────────────────────────────────────────┐
+│                                                 │
+│  KeyShareVault (AES-256-GCM encrypted)          │
+│  ├── BLS key share                              │
+│  ├── Ringtail key share                         │
+│  └── FROST key share (for EdDSA chains)         │
+│       │                                         │
+│       ▼                                         │
+│  HSMAttestingSigner                              │
+│  ├── threshold.Signer (BLS/FROST/Ringtail)      │
+│  └── hsm.Signer (attestation co-signature)      │
+│       │                                         │
+│       ▼                                         │
+│  Attested Signature Shares                      │
+│  { share_bytes || hsm_attestation }             │
+└─────────────────────────────────────────────────┘
+```
+
+## HSMAttestingSigner
+
+Wraps any `threshold.Signer` with HSM attestation. Works with all four supported schemes:
+
+```go
+import (
+    "github.com/luxfi/hsm"
+    "github.com/luxfi/crypto/threshold"
+    _ "github.com/luxfi/crypto/threshold/bls"     // Register BLS
+    _ "github.com/luxfi/mpc/pkg/threshold"        // Register CGGMP21/FROST
+    _ "github.com/luxfi/ringtail/threshold"        // Register Ringtail
+)
+
+// Create HSM signer for attestation
+hsmSigner, _ := hsm.NewSigner("aws", map[string]string{
+    "region": "us-east-1",
+})
+
+// Get threshold scheme and create signer
+scheme, _ := threshold.GetScheme(threshold.SchemeBLS)
+inner, _ := scheme.NewSigner(blsKeyShare)
+
+// Wrap with attestation
+signer := hsm.NewAttestingSigner(inner, hsmSigner, "attestation-key-arn")
+
+// Sign a consensus block
+share, _ := signer.SignShare(ctx, blockHash[:], participantIndices, nil)
+
+// Share is now attested — aggregator can verify hardware binding
+ok, _ := hsm.VerifyAttestation(ctx, hsmSigner, "attestation-key-arn", share)
+```
+
+## KeyShareVault for Validators
+
+Store validator key shares encrypted with HSM-derived keys:
+
+```go
+// Vault uses HSM password provider for encryption key
+pwProvider, _ := hsm.NewPasswordProvider("aws", nil)
+vault := hsm.NewKeyShareVault(pwProvider, "kms-key-arn")
+
+// Store BLS key share
+vault.Store(ctx, "bls-validator-0", blsShare.Bytes(), hsm.KeyShareMeta{
+    SchemeID:     threshold.SchemeBLS,
+    Index:        0,
+    Threshold:    2,
+    TotalParties: 5,
+    PublicShare:  blsShare.PublicShare(),
+    GroupKey:     blsShare.GroupKey().Bytes(),
+})
+
+// Store Ringtail key share (post-quantum)
+vault.Store(ctx, "rt-validator-0", rtShareBytes, hsm.KeyShareMeta{
+    SchemeID:     threshold.SchemeRingtail,
+    Index:        0,
+    Threshold:    2,
+    TotalParties: 5,
+})
+
+// Load when needed (decrypts on demand)
+raw, meta, _ := vault.Load(ctx, "bls-validator-0")
+share, _ := blsScheme.ParseKeyShare(raw)
+```
+
+## ThresholdManager
+
+High-level API combining vault + attestation:
+
+```go
+mgr, _ := hsm.NewThresholdManager(hsm.ThresholdConfig{
+    PasswordProvider: "aws",
+    PasswordKeyID:    "arn:aws:kms:...:key/vault-key",
+    SignerProvider:   "aws",
+    AttestKeyID:      "arn:aws:kms:...:key/attest-key",
+})
+
+// Store both BLS and Ringtail shares
+mgr.StoreKeyShare(ctx, "bls-0", blsKeyShare)
+mgr.StoreKeyShare(ctx, "rt-0", ringtailKeyShare)
+
+// Create attesting signers
+blsSigner, _ := mgr.NewSigner(ctx, "bls-0")
+rtSigner, _ := mgr.NewSigner(ctx, "rt-0")
+
+// Sign consensus block
+blsShare, _ := blsSigner.SignShare(ctx, blockHash[:], signers, nil)
+```
+
+## ThresholdHSM Interface
+
+For hardware HSMs that natively support threshold protocols (Zymbit SCM, custom FPGA), implement `ThresholdHSM`:
+
+```go
+type ThresholdHSM interface {
+    hsm.Signer
+
+    // Generate nonces inside HSM (secret never leaves hardware)
+    NonceGen(ctx context.Context, keyID, sessionID string) (
+        commitment []byte, nonceRef string, err error)
+
+    // Sign with HSM-stored nonce (consumed on use)
+    SignThresholdShare(ctx context.Context, keyID, sessionID,
+        nonceRef string, message []byte, signerIndices []int) ([]byte, error)
+
+    // Import key share into HSM storage
+    ImportKeyShare(ctx context.Context, keyID string, share []byte) error
+
+    // Export only the public portion
+    ExportPublicShare(ctx context.Context, keyID string) ([]byte, error)
+}
+```
+
+Cloud KMS (AWS, GCP, Azure) do not implement `ThresholdHSM` — they provide attestation and password decryption. Hardware HSMs provide both.
+
+## Scheme Comparison
+
+| Scheme | Rounds | Post-Quantum | Use Case |
+|--------|--------|-------------|----------|
+| BLS | 1 (non-interactive) | No | Lux consensus blocks |
+| Ringtail | 2 | Yes | Quantum-safe bundles |
+| FROST | 2 | No | EdDSA chains (Solana, Sui) |
+| CGGMP21 | Multi | No | ECDSA chains (Ethereum, Bitcoin) |
+
+## Attestation Wire Format
+
+Attested shares are serialized for network transmission:
+
+```
+┌──────────┬───────────────────┬──────────────────────┐
+│ 4 bytes  │  shareLen bytes   │  remaining bytes     │
+│ shareLen │  inner share      │  HSM attestation     │
+└──────────┴───────────────────┴──────────────────────┘
+```
+
+```go
+// Serialize
+marshaled := attestedShare.MarshalAttested()
+
+// Deserialize
+parsed, _ := hsm.ParseAttestedShare(marshaled, scheme)
+```
+
+## Security Properties
+
+| Property | Mechanism |
+|----------|-----------|
+| Key share at-rest encryption | AES-256-GCM via HSM-derived key |
+| Hardware binding | HSM attestation on each share |
+| Share forgery prevention | Attacker needs both key share and HSM |
+| Key share rotation | Vault supports overwrite + delete |
+| Multi-scheme support | Single vault stores any scheme's shares |
+| Post-quantum readiness | Ringtail shares in same vault |

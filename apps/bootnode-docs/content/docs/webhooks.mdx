@@ -1,0 +1,12 @@
+---
+title: Webhooks
+description: Event-driven notifications
+icon: Bell
+---
+
+## Create Webhook
+
+```bash
+curl -X POST https://api.lux.cloud/v1/webhooks \
+  -d '{"url": "https://example.com/hook", "events": ["transfer"]}'
+```

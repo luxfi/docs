@@ -1,0 +1,44 @@
+---
+title: Database
+description: PostgreSQL schema and optimization
+---
+
+## Core Tables
+
+| Table | Description |
+|-------|-------------|
+| `blocks` | Block headers with consensus data |
+| `transactions` | All transaction types (0-3) |
+| `logs` | Event logs from smart contracts |
+| `internal_transactions` | Traces from internal calls |
+| `addresses` | All seen addresses |
+| `tokens` | ERC20/721/1155 token metadata |
+| `token_transfers` | Token transfer events |
+| `token_balances` | Historical token balances |
+| `smart_contracts` | Verified contract source code |
+| `address_coin_balances` | Native coin balance history |
+| `withdrawals` | EIP-4895 withdrawals |
+
+## Setup
+
+```bash
+# Create database
+createdb explorer
+
+# Run migrations
+mix ecto.create
+mix ecto.migrate
+```
+
+## Connection
+
+```bash
+export DATABASE_URL="postgresql://user:pass@localhost:5432/explorer?sslmode=disable"
+```
+
+## Performance
+
+- Index on `block_number`, `hash`, `from/to` address, `inserted_at`
+- Partitioning by block number range for large chains
+- Connection pool: `POOL_SIZE=10` (default), reduce for small chains
+- WAL mode for concurrent reads

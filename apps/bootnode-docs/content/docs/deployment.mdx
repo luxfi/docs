@@ -1,0 +1,13 @@
+---
+title: Deployment
+description: Deploy Lux Cloud infrastructure
+icon: Server
+---
+
+## Architecture
+
+```
+Traefik LB → API Gateway → RPC Proxy → Lux Nodes
+                        → Token Indexer → PostgreSQL
+                        → WebSocket Hub → Redis
+```

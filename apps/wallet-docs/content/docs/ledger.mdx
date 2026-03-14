@@ -1,0 +1,12 @@
+---
+title: Ledger
+description: Hardware wallet integration
+icon: Usb
+---
+
+## Connect
+
+```go
+w, _ := wallet.New(wallet.WithLedger())
+addr := w.CChainAddress()
+```

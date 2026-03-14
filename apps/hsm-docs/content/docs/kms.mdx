@@ -1,0 +1,193 @@
+---
+title: KMS / ZapDB
+description: Centralized key management and encrypted key stores
+icon: Key
+---
+
+All secrets in the Lux ecosystem MUST be managed through KMS — never stored as plaintext environment variables, flat files, or hardcoded values.
+
+## Lux KMS Platform
+
+The Lux KMS (`github.com/luxfi/kms`) is the central secrets and key management platform:
+
+| Capability | Description |
+|-----------|-------------|
+| **Secrets Management** | Centralized storage, versioning, rotation, access control |
+| **Internal KMS** | Key generation, encryption/decryption, signing |
+| **External KMS** | AWS KMS, GCP Cloud KMS, Azure Key Vault |
+| **HSM Integration** | Zymbit SCM, Google Cloud HSM, AWS CloudHSM |
+| **PKI** | X.509 certificate authority |
+| **MPC** | Threshold key management (ECDSA, EdDSA, Taproot) |
+| **Dynamic Secrets** | Ephemeral database credentials |
+| **K8s Operator** | CRDs for KMSSecret, KMSPushSecret, KMSDynamicSecret |
+
+### Architecture
+
+```
+┌──────────────────────────────────────────────┐
+│              Lux KMS (Control Plane)         │
+│  ┌────────┬──────────┬──────────┬─────────┐  │
+│  │Secrets │ Policies │ Audit    │ PKI     │  │
+│  └────┬───┴────┬─────┴───┬─────┴────┬────┘  │
+│       │        │         │          │        │
+│  ┌────▼────────▼─────────▼──────────▼────┐   │
+│  │         Unified Signing API           │   │
+│  └────┬────────┬──────────┬──────────┬───┘   │
+│       │        │          │          │        │
+│  ┌────▼──┐ ┌───▼──┐  ┌───▼───┐  ┌───▼───┐   │
+│  │  HSM  │ │ MPC  │  │ Soft  │  │ Ext   │   │
+│  │Signer │ │Signer│  │Signer │  │  KMS  │   │
+│  └───────┘ └──────┘  └───────┘  └───────┘   │
+└──────────────────────────────────────────────┘
+```
+
+## ZapDB Encrypted Storage
+
+ZapDB (`github.com/luxfi/database/zapdb`) wraps BadgerDB with ChaCha20-Poly1305 encryption. Every key-value pair is encrypted at rest.
+
+### Password Hierarchy
+
+```
+Lux KMS → External KMS (AWS/GCP/Azure)
+        │
+        ▼ Decrypt / unwrapKey
+  Encryption Password (plaintext, memory-only)
+        │
+        ▼
+  ZapDB (ChaCha20-Poly1305)
+        │
+        ▼
+  MPC Key Shares (encrypted at rest)
+```
+
+The encryption password is NEVER stored in plaintext. It exists only in memory during the node's lifetime, derived on-demand from cloud KMS.
+
+## Password Providers
+
+### AWS KMS (Production)
+
+```go
+provider, _ := hsm.NewPasswordProvider("aws", map[string]string{
+    "region": "us-east-1",
+})
+password, _ := provider.GetPassword(ctx, "arn:aws:kms:us-east-1:123456789:key/pw-key")
+```
+
+The password is stored as KMS-encrypted ciphertext in `ZAPDB_ENCRYPTED_PASSWORD`. The `Decrypt` operation returns the plaintext, which exists only in memory.
+
+### GCP Cloud KMS (Production)
+
+```go
+provider, _ := hsm.NewPasswordProvider("gcp", nil)
+password, _ := provider.GetPassword(ctx, "projects/p/locations/l/keyRings/kr/cryptoKeys/ck")
+```
+
+### Azure Key Vault (Production)
+
+```go
+provider, _ := hsm.NewPasswordProvider("azure", map[string]string{
+    "vault_url": "https://my-vault.vault.azure.net",
+})
+password, _ := provider.GetPassword(ctx, "password-key")
+```
+
+### File (K8s Secrets Only)
+
+```go
+provider, _ := hsm.NewPasswordProvider("file", map[string]string{
+    "path": "/etc/mpc/password",
+})
+password, _ := provider.GetPassword(ctx, "")
+```
+
+For Kubernetes, the file should be a KMS-backed K8s Secret managed by the KMS operator (`KMSSecret` CRD). The operator syncs secrets from KMS into K8s Secrets, which are mounted as files.
+
+### Environment Variable (Development Only)
+
+```go
+// ⚠️ DEVELOPMENT ONLY — never use in production
+provider, _ := hsm.NewPasswordProvider("env", nil)
+password, _ := provider.GetPassword(ctx, "")
+```
+
+Reads from `LUX_MPC_PASSWORD` or `ZAPDB_PASSWORD`. **Never use this in production** — environment variables can leak via process listings, crash dumps, and container inspection.
+
+## Manager Usage
+
+The `Manager` combines password and signing with KMS backends:
+
+```go
+mgr, _ := hsm.New(hsm.Config{
+    PasswordProvider: "aws",
+    PasswordKeyID:    "arn:aws:kms:us-east-1:123456789:key/pw-key",
+    SignerProvider:   "aws",
+    SignerKeyID:      "arn:aws:kms:us-east-1:123456789:key/sign-key",
+    Region:           "us-east-1",
+})
+
+// Get ZapDB password (from KMS, never plaintext)
+password, _ := mgr.GetPassword(ctx)
+
+// Open ZapDB
+db, _ := zapdb.Open("/data/mpc", password)
+```
+
+## Key Share Vault
+
+The `KeyShareVault` stores threshold key shares encrypted with AES-256-GCM. The encryption key is derived from a KMS-backed password provider:
+
+```go
+// Always use a KMS-backed provider
+pwProvider, _ := hsm.NewPasswordProvider("aws", map[string]string{
+    "region": "us-east-1",
+})
+vault := hsm.NewKeyShareVault(pwProvider, "arn:aws:kms:...:key/vault-key")
+
+// Store key share (AES-256-GCM encrypted)
+vault.Store(ctx, "validator-0", share.Bytes(), hsm.KeyShareMeta{
+    SchemeID: threshold.SchemeBLS,
+    Index:    0,
+})
+
+// Load on demand (decrypts, holds plaintext only during operation)
+raw, meta, _ := vault.Load(ctx, "validator-0")
+```
+
+## K8s Operator Integration
+
+The KMS Kubernetes operator (`k8-operator/`) manages secrets as CRDs:
+
+```yaml
+apiVersion: kms.lux.network/v1alpha1
+kind: KMSSecret
+metadata:
+  name: mpc-zapdb-password
+spec:
+  secretRef:
+    name: mpc-password
+  data:
+    - secretKey: password
+      property: value
+```
+
+The operator syncs KMS secrets into K8s Secrets, which mpcd mounts via `--hsm-provider file --hsm-key-id /etc/mpc/password`.
+
+## MPC Key Share Backup
+
+The MPC KMS integration provides backup/restore with envelope encryption:
+
+1. Key shares exported from ZapDB
+2. Encrypted with scrypt + AES-256-GCM using a KMS-derived backup key
+3. Stored to S3 with org-prefixed paths
+4. Can be restored to a new node
+
+The backup password is managed through KMS — never hardcoded.
+
+## Security Rules
+
+1. **ALL passwords MUST come from KMS** (AWS, GCP, Azure, or Lux KMS)
+2. **NEVER store passwords in environment variables** for production
+3. **NEVER store passwords as plaintext in databases** — always hash or encrypt
+4. **Use the KMS operator** for K8s secret management
+5. **Rotate keys regularly** via KMS key rotation
+6. **Audit all access** via KMS audit logs

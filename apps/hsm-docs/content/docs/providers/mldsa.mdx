@@ -1,0 +1,81 @@
+---
+title: ML-DSA (FIPS 204)
+description: Post-quantum digital signatures using ML-DSA-65
+icon: Shield
+---
+
+The `MLDSASigner` provides post-quantum digital signatures using ML-DSA (Module-Lattice Digital Signature Algorithm) as defined in FIPS 204. It uses `github.com/luxfi/crypto/mldsa`, which provides a clean Go interface over lattice-based cryptography.
+
+## Configuration
+
+```go
+signer, err := hsm.NewSigner("mldsa", nil)
+
+// Aliases also work:
+signer, err = hsm.NewSigner("pq", nil)
+signer, err = hsm.NewSigner("post-quantum", nil)
+```
+
+## Security Levels
+
+| Mode | NIST Level | PQ Security | Signature Size |
+|------|-----------|-------------|----------------|
+| ML-DSA-44 | 2 | 128-bit | ~2,420 bytes |
+| ML-DSA-65 | 3 | 192-bit | ~3,309 bytes |
+| ML-DSA-87 | 5 | 256-bit | ~4,627 bytes |
+
+The default mode is **ML-DSA-65** (NIST Level 3, 192-bit post-quantum security), which is the recommended balance of security and performance.
+
+## How It Works
+
+Keys are generated in-memory per `keyID` on first use and cached for the lifetime of the signer:
+
+```go
+signer, _ := hsm.NewSigner("mldsa", nil)
+ctx := context.Background()
+
+// First call generates a new ML-DSA-65 keypair for "pq-key-1"
+sig, _ := signer.Sign(ctx, "pq-key-1", []byte("message"))
+
+// Subsequent calls reuse the same keypair
+ok, _ := signer.Verify(ctx, "pq-key-1", []byte("message"), sig) // true
+```
+
+## Thread Safety
+
+The `MLDSASigner` is thread-safe. Key generation and access are protected by `sync.Mutex`:
+
+```go
+signer, _ := hsm.NewSigner("mldsa", nil)
+
+// Safe to use from multiple goroutines
+for i := 0; i < 20; i++ {
+    go func() {
+        sig, _ := signer.Sign(ctx, "shared-key", msg)
+        ok, _ := signer.Verify(ctx, "shared-key", msg, sig)
+        // ok == true
+    }()
+}
+```
+
+## Cross-Key Isolation
+
+Each `keyID` gets its own independent keypair. Signatures from one key cannot be verified with another:
+
+```go
+sig, _ := signer.Sign(ctx, "key-A", msg)
+ok, _ := signer.Verify(ctx, "key-B", msg, sig) // false
+```
+
+## When to Use ML-DSA
+
+- **Post-quantum compliance**: When your security requirements mandate PQ resistance
+- **Long-term signatures**: Documents or attestations that must remain valid for decades
+- **Regulatory environments**: NIST FIPS 204 compliance requirements
+- **Defense-in-depth**: As an additional signing layer alongside classical ECDSA
+
+## Limitations
+
+- Keys are in-memory only — they do not persist across process restarts
+- For production PQ HSM signing, consider AWS KMS (which now supports ML-DSA) or a Zymbit device with PQ firmware
+- Signature sizes are significantly larger than ECDSA (~3.3KB vs ~72 bytes)

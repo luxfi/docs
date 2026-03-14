@@ -1,0 +1,25 @@
+---
+title: P-Chain
+description: Platform chain indexing — validators, staking, subnets
+---
+
+## Purpose
+
+The P-Chain (Platform Chain) manages the Lux Network's validators, staking, and subnet creation. It uses linear block consensus (Snowman).
+
+## Indexed Data
+
+- Validator set (current and historical)
+- Staking transactions (AddValidator, AddDelegator)
+- Subnet creation and management
+- Block production
+
+## Usage
+
+```bash
+./indexer -chain pchain -rpc http://luxd:9630/ext/bc/P -port 4100
+```
+
+## Default Port
+
+P-Chain indexer listens on port **4100**.

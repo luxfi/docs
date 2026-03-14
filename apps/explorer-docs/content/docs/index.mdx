@@ -1,0 +1,57 @@
+---
+title: Lux Explorer
+description: Full-featured blockchain explorer for the Lux Network
+index: true
+icon: Search
+---
+
+The Lux Explorer is a Blockscout-based blockchain explorer with a modern Next.js frontend, customized for the Lux Network ecosystem.
+
+## Architecture
+
+```
+┌──────────────────────────┐     ┌──────────────────────────┐
+│   Frontend (Next.js 15)  │     │   Backend (Blockscout)   │
+│   React 19, Chakra UI v3 │────►│   Elixir/Erlang OTP      │
+│   explore.lux.network    │     │   Phoenix + Absinthe      │
+└──────────────────────────┘     └────────────┬─────────────┘
+                                              │
+                                 ┌────────────▼─────────────┐
+                                 │      PostgreSQL           │
+                                 │  + Redis Cache            │
+                                 └────────────┬─────────────┘
+                                              │
+                                 ┌────────────▼─────────────┐
+                                 │   luxd (JSON-RPC)         │
+                                 │   C-Chain + Subnets       │
+                                 └──────────────────────────┘
+```
+
+## Live Explorers
+
+| Chain | URL | Chain ID |
+|-------|-----|----------|
+| C-Chain | explore.lux.network | 96369 |
+| Zoo | explore-zoo.lux.network | 200200 |
+| Hanzo | explore-hanzo.lux.network | 36963 |
+| SPC | explore-spc.lux.network | 36911 |
+| Pars | explore-pars.lux.network | 494949 |
+
+## Repositories
+
+| Component | Repository | Technology |
+|-----------|-----------|------------|
+| Backend | `github.com/luxfi/explorer` | Elixir 1.19, Erlang 27, PostgreSQL |
+| Frontend | `github.com/luxfi/explore` | Next.js 15, React 19, Chakra UI v3 |
+| Indexer | `github.com/luxfi/indexer` | Go 1.26, PostgreSQL, BadgerDB |
+
+## Key Features
+
+- Real-time block and transaction indexing
+- Smart contract verification (Solidity)
+- Token tracking (ERC20, ERC721, ERC1155)
+- REST API v2 + GraphQL + WebSocket subscriptions
+- Multi-chain support (5 explorers from one codebase)
+- Dark mode default with monochrome theme
+- OIDC authentication via hanzo.id
+- Per-chain branding with dynamic favicons

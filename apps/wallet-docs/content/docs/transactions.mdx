@@ -1,0 +1,13 @@
+---
+title: Transactions
+description: Build and sign transactions
+icon: Send
+---
+
+## Build Transaction
+
+```go
+tx, _ := w.BuildCChainTx(to, amount)
+signed, _ := w.Sign(tx)
+hash, _ := w.Broadcast(signed)
+```

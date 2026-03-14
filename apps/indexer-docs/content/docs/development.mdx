@@ -1,0 +1,52 @@
+---
+title: Development
+description: Building, testing, and contributing
+icon: Code
+---
+
+## Build
+
+```bash
+make build-all                    # All 3 binaries
+go build -o bin/indexer ./cmd/indexer  # Single binary
+```
+
+## Test
+
+```bash
+make test                         # Unit tests
+go test -v ./...                  # Verbose
+go test -coverprofile=cov.out ./... # Coverage
+```
+
+431 tests across 7 packages.
+
+## E2E Tests
+
+```bash
+go test -v -tags=integration ./e2e/...
+```
+
+Requires a running luxd node.
+
+## Lint
+
+```bash
+make lint
+golangci-lint run ./...
+```
+
+## Makefile Targets
+
+| Target | Description |
+|--------|-------------|
+| `build` | Build main indexer |
+| `build-all` | Build all 3 binaries |
+| `test` | Run unit tests |
+| `test-coverage` | Run with coverage |
+| `test-integration` | Run E2E tests |
+| `lint` | Run linter |
+| `fmt` | Format code |
+| `vet` | Run go vet |
+| `docker` | Build Docker image |
+| `clean` | Remove build artifacts |
