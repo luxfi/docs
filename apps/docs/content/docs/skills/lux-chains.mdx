@@ -1,0 +1,505 @@
+---
+title: "Lux Chains"
+description: "Comprehensive Chain Reference"
+---
+
+## Overview
+
+The Lux network is a multi-chain architecture where each blockchain is an instance of a Virtual Machine (VM). The node (`github.com/luxfi/node`) supports 3 core chains (always registered) and 11 optional chains (registered with the `allvms` build tag). All VM IDs and chain IDs are defined in `github.com/luxfi/constants@v1.4.4`.
+
+## Chain Summary
+
+| Letter | Name | VM | Build | Purpose |
+|--------|------|----|-------|---------|
+| P | Platform | PlatformVM | Core | Validators, staking, subnet management |
+| X | Exchange | ExchangeVM | Core | UTXO-based asset creation and exchange |
+| C | Contract | EVM | Core (plugin) | EVM smart contracts, Solidity |
+| Q | Quantum | QuantumVM | Optional | Post-quantum cryptography, Quasar consensus |
+| A | Attestation/AI | AIVM | Optional | AI compute tasks, TEE attestation, mining rewards |
+| B | Bridge | BridgeVM | Optional | Cross-chain MPC bridge |
+| T | Threshold | ThresholdVM | Optional | MPC-as-a-service for all chains |
+| Z | Zero-Knowledge | ZKVM | Optional | ZK proofs, privacy, confidential transfers |
+| G | Graph | GraphVM | Optional | GraphQL/DGraph unified data layer |
+| D | DEX | DexVM | Optional | Native decentralized exchange |
+| K | Key | KeyVM | Optional | Post-quantum distributed key management |
+| O | Oracle | OracleVM | Optional | Decentralized oracle data feeds |
+| R | Relay | RelayVM | Optional | Cross-chain message relay |
+| I | Identity | IdentityVM | Optional | Decentralized identity (DID/VC) |
+
+## Build Tags
+
+```bash
+# Minimal build (3 core chains: P, X, C)
+go build ./...
+
+# Full build (3 core + 11 optional = 14 chains)
+go build -tags=allvms ./...
+```
+
+The `optionalVMCount` constant is 0 in minimal builds and 11 in `allvms` builds. See `node/vms_allvms.go` and `node/vms_minimal.go`.
+
+## VM ID Definitions
+
+From `github.com/luxfi/constants@v1.4.4/vm_ids.go`:
+
+```go
+PlatformVMID    = ids.ID{'p', 'l', 'a', 't', 'f', 'o', 'r', 'm', 'v', 'm'}
+ExchangeVMID    = ids.ID{'a', 'v', 'm'}
+XVMID           = ExchangeVMID          // Alias
+ContractVMID    = ids.ID{'e', 'v', 'm'}
+EVMID           = ContractVMID          // Alias
+QuantumVMID     = ids.ID{'q', 'u', 'a', 'n', 't', 'u', 'm', 'v', 'm'}
+AttestationVMID = ids.ID{'a', 'i', 'v', 'm'}
+AIVMID          = AttestationVMID       // Alias
+BridgeVMID      = ids.ID{'b', 'r', 'i', 'd', 'g', 'e', 'v', 'm'}
+ThresholdVMID   = ids.ID{'t', 'h', 'r', 'e', 's', 'h', 'o', 'l', 'd', 'v', 'm'}
+KeyVMID         = ids.ID{'k', 'e', 'y', 'v', 'm'}
+ZKVMID          = ids.ID{'z', 'k', 'v', 'm'}
+GraphVMID       = ids.ID{'g', 'r', 'a', 'p', 'h', 'v', 'm'}
+DexVMID         = ids.ID{'d', 'e', 'x', 'v', 'm'}
+OracleVMID      = ids.ID{'o', 'r', 'a', 'c', 'l', 'e', 'v', 'm'}
+RelayVMID       = ids.ID{'r', 'e', 'l', 'a', 'y', 'v', 'm'}
+IdentityVMID    = ids.ID{'i', 'd', 'e', 'n', 't', 'i', 't', 'y', 'v', 'm'}
+```
+
+## Chain Registry
+
+The `ChainRegistry` in `github.com/luxfi/constants@v1.4.4/chain_registry.go` provides dynamic chain ID lookup per network (mainnet, testnet, devnet, custom). All networks use the same `ids.{P,X,C,Q,A,B,T,Z,G,K,D}ChainID` defaults. Chain IDs can be migrated at runtime via `MigrateChain()`.
+
+## Core Chains (Always Registered)
+
+### P-Chain (Platform)
+
+| Property | Value |
+|----------|-------|
+| VM | PlatformVM |
+| VM ID | `platformvm` |
+| Package | `github.com/luxfi/node/vms/platformvm` |
+| Consensus | Snowman (linear chain) |
+| Registration | Direct factory in `node.go` |
+| Critical | Yes |
+
+**Purpose:** The P-Chain is the metadata chain that coordinates validators and staking across the entire Lux network. It manages subnet creation, validator registration, delegation, and cross-chain transfers of the LUX token between the P-Chain and other chains.
+
+**Key Features:**
+- Validator set management and staking
+- Subnet creation and governance
+- Single-validator mode support
+- Block adapter pattern for compatibility
+- Warp messaging (anycast support)
+
+### X-Chain (Exchange)
+
+| Property | Value |
+|----------|-------|
+| VM | ExchangeVM |
+| VM ID | `avm` (alias: `ExchangeVMID`, `XVMID`) |
+| Package | `github.com/luxfi/node/vms/exchangevm` |
+| Consensus | DAG (Lux consensus, vertex-based) |
+| Registration | Direct factory in `node.go` |
+| Critical | Yes |
+
+**Purpose:** The X-Chain is a UTXO-based chain for creating and trading digital assets. It uses DAG consensus for high-throughput asset operations. Unlike the C-Chain (account model), the X-Chain uses the UTXO model.
+
+**Key Features:**
+- UTXO-based transaction model
+- Asset creation (fungible and NFTs)
+- DAG consensus engine (`github.com/luxfi/consensus/engine/dag`)
+- Transaction indexing by address
+- Mempool management
+- secp256k1 FX for signature verification
+- Wallet client and service
+- Configurable transaction fees (`TxFee`, `CreateAssetTxFee`)
+- Etna network upgrade support
+
+### C-Chain (Contract)
+
+| Property | Value |
+|----------|-------|
+| VM | EVM (Lux EVM) |
+| VM ID | `evm` (alias: `ContractVMID`, `EVMID`) |
+| Package | `github.com/luxfi/evm` (external plugin) |
+| Consensus | Snowman (linear chain, block-based) |
+| Registration | Plugin binary via ZAP gRPC transport |
+| Critical | Yes |
+
+**Purpose:** The C-Chain runs the Ethereum Virtual Machine, supporting Solidity smart contracts, ERC-20 tokens, DeFi protocols, and all standard Ethereum tooling. It is loaded as an external plugin binary placed at `<plugin-dir>/<EVMID>`.
+
+**Key Features:**
+- Full EVM compatibility (Solidity, Vyper)
+- All Ethereum JSON-RPC APIs (`eth`, `personal`, `txpool`, `debug`)
+- 40+ stateful precompiles (see `lux/lux-evm.md`)
+- QuantumSwap native DEX precompiles (LP-9xxx)
+- FHE precompiles for confidential computing
+- Cross-chain atomic transactions (X-Chain <-> C-Chain)
+- Warp messaging for subnet interoperability
+- Network upgrades: EVM, Durango, Etna, Fortuna, Granite
+
+See `lux/lux-evm.md` for complete precompile addresses and architecture.
+
+## Optional Chains (allvms Build Tag)
+
+### Q-Chain (Quantum)
+
+| Property | Value |
+|----------|-------|
+| VM | QuantumVM |
+| VM ID | `quantumvm` (alias: `QVMID`) |
+| Package | `github.com/luxfi/node/vms/quantumvm` |
+| Consensus | DAG + Quasar PQ-BFT (hybrid BLS + Ringtail) |
+| Version | 1.0.0 |
+
+**Purpose:** The Q-Chain provides post-quantum cryptographic security using ML-DSA signatures (NIST FIPS 204) and Ringtail threshold lattice cryptography. It serves as the quantum-safe anchor for the entire Lux network, providing quantum stamps that other chains can reference for PQ finality.
+
+**Key Features:**
+- **ML-DSA quantum signatures** (NIST PQC, FIPS 204)
+- **Ringtail threshold** ring-LWE post-quantum signatures
+- **Quasar hybrid consensus**: dual BLS + Ringtail threshold signing
+  - BLS fast path for classical consensus speed
+  - Ringtail path for post-quantum security guarantee
+- Parallel transaction processing (configurable batch size and max parallelism)
+- Quantum stamp interface (`StampBlock`/`VerifyStamp`) for cross-chain PQ finality
+- Block-level quantum signatures
+- Configurable: `QuantumAlgorithmVersion`, `RingtailKeySize`, `QuantumStampWindow`, `QuantumSigCacheSize`
+
+**Consensus Architecture:**
+```
+QuasarBridge
+  BLS Threshold  -->  Classical fast-path consensus
+  Ringtail       -->  Post-quantum lattice threshold
+  Combined       -->  Dual signature for PQ-BFT finality
+```
+
+### A-Chain (Attestation/AI)
+
+| Property | Value |
+|----------|-------|
+| VM | AIVM |
+| VM ID | `aivm` (alias: `AttestationVMID`, `AIVMID`) |
+| Package | `github.com/luxfi/node/vms/aivm` |
+| Consensus | Snowman (linear) |
+| Version | 1.0.0 |
+
+**Purpose:** The A-Chain handles AI compute task management, provider attestation, and mining reward distribution. Providers register with TEE attestation and are assigned inference/training tasks.
+
+**Key Features:**
+- **TEE attestation**: CPU (SGX, SEV-SNP, TDX) and GPU (nvtrust, local, no cloud dependency)
+- Task submission, assignment, and result verification
+- Provider registration with trust scoring (`MinTrustScore`)
+- Mining rewards with epoch-based distribution (`BaseReward`: 1 LUX)
+- Merkle root anchoring to Q-Chain (`MerkleAnchorFreq`: every 100 blocks)
+- Core AI VM from `github.com/luxfi/ai/pkg/aivm`
+- Attestation from `github.com/luxfi/ai/pkg/attestation`
+- Model registry and stats
+- RPC service at `/rpc`
+
+### B-Chain (Bridge)
+
+| Property | Value |
+|----------|-------|
+| VM | BridgeVM |
+| VM ID | `bridgevm` |
+| Package | `github.com/luxfi/node/vms/bridgevm` |
+| Consensus | Snowman (linear) |
+| Version | 1.0.0 |
+
+**Purpose:** The B-Chain provides secure cross-chain bridging using MPC (multi-party computation) threshold signatures. Validators act as MPC signers to collectively authorize bridge transfers.
+
+**Key Features:**
+- **MPC threshold signing** for cross-chain operations (CGGMP21 protocol)
+- Configurable threshold (`MPCThreshold`) and total parties (`MPCTotalParties`)
+- **LP-333 Opt-in Signer Set**: first 100 validators join without reshare; reshare only on slot replacement
+- Signer set management: active signers (max 100), waitlist, epoch tracking
+- Combined threshold public key
+- Bridge fee and daily limits
+- Validator bond requirement (100M LUX, slashable, NOT staked)
+- Supported chains configuration
+- Maximum bridge amount per transaction
+- Uses `github.com/luxfi/threshold` for MPC protocols
+
+### T-Chain (Threshold)
+
+| Property | Value |
+|----------|-------|
+| VM | ThresholdVM |
+| VM ID | `thresholdvm` |
+| Package | `github.com/luxfi/node/vms/thresholdvm` |
+| Consensus | Snowman (linear) |
+| Version | 1.0.0 |
+
+**Purpose:** The T-Chain provides MPC-as-a-service for all other Lux chains. Any chain can request threshold signature operations (keygen, signing, key rotation) through the T-Chain.
+
+**Key Features:**
+- **MPC keygen and signing** sessions (LSS protocol from `github.com/luxfi/threshold`)
+- Per-chain authorization and permissions (`AuthorizedChains`)
+- Daily signing quotas per chain (`DailySigningQuota`)
+- Concurrent session management (`MaxActiveSessions`, `MaxSessionsPerChain`)
+- Key rotation with configurable period and maximum key age
+- Session timeout and expiry
+- Signing quota enforcement
+- secp256k1 key support via `github.com/luxfi/crypto/secp256k1`
+
+### Z-Chain (Zero-Knowledge)
+
+| Property | Value |
+|----------|-------|
+| VM | ZKVM |
+| VM ID | `zkvm` |
+| Package | `github.com/luxfi/node/vms/zkvm` |
+| Consensus | Snowman (linear) |
+| Version | 1.0.0 |
+
+**Purpose:** The Z-Chain implements a UTXO-based privacy chain with zero-knowledge proofs, confidential transfers, and optional FHE support. It uses nullifier-based double-spend prevention.
+
+**Key Features:**
+- **Confidential transfers** with ZK proofs
+- **Private addresses** (stealth address support)
+- **Proof systems**: Groth16, PLONK (configurable)
+- **FHE support**: BFV, CKKS schemes with configurable security level (128/192/256)
+- UTXO database with nullifier tracking
+- Merkle state tree for state commitments
+- Proof verification with caching (`ProofCacheSize`)
+- Address manager for private/stealth addresses
+- Configurable max UTXOs per block
+- Proof verification timeout
+
+### G-Chain (Graph)
+
+| Property | Value |
+|----------|-------|
+| VM | GraphVM |
+| VM ID | `graphvm` |
+| Package | `github.com/luxfi/node/vms/graphvm` |
+| Consensus | Snowman (linear) |
+| Version | 1.0.0 |
+
+**Purpose:** The G-Chain provides a GraphQL/DGraph unified data layer for cross-chain queries and data indexing across the Lux network.
+
+**Key Features:**
+- **DGraph integration** for graph-native storage
+- **GraphQL API** with configurable query depth and timeout
+- Federation support for cross-chain queries
+- Automatic indexing with batch processing
+- Query result size limits
+- Authentication via API keys
+- DEX-specific GraphQL resolvers (`dex_resolvers.go`)
+- Schema versioning
+
+### D-Chain (DEX)
+
+| Property | Value |
+|----------|-------|
+| VM | DexVM |
+| VM ID | `dexvm` |
+| Package | `github.com/luxfi/node/vms/dexvm` |
+| Consensus | Snowman (linear) |
+| Version | From `github.com/luxfi/version` |
+| Critical | Yes (in allvms builds) |
+
+**Purpose:** The D-Chain runs a native decentralized exchange with an order book, AMM pools, perpetual contracts, and MEV protection. It is marked as critical in `allvms` builds.
+
+**Key Features:**
+- **Order book** matching engine (`orderbook` package)
+- **AMM liquidity pools** (`liquidity` package)
+- **Perpetual contracts** (`perpetuals` package)
+- **MEV protection** (`mev` package)
+- WebSocket support for real-time market data
+- Warp messaging for cross-chain settlement
+- Deterministic block results for verifiability
+- Network layer for order propagation
+- Transaction types for DEX operations (`txs` package)
+- Configurable via `config` package
+
+### K-Chain (Key)
+
+| Property | Value |
+|----------|-------|
+| VM | KeyVM |
+| VM ID | `keyvm` (alias: `KVMID`) |
+| Package | `github.com/luxfi/node/vms/keyvm` |
+| Consensus | Snowman (linear) |
+| Version | 1.0.0 |
+
+**Purpose:** The K-Chain provides distributed key management using post-quantum cryptography (ML-KEM) and threshold secret sharing.
+
+**Key Features:**
+- **ML-KEM key encapsulation** (post-quantum, FIPS 203) via `github.com/luxfi/crypto/mlkem`
+- **ML-DSA signatures** (post-quantum, FIPS 204) via `github.com/luxfi/crypto/mldsa`
+- **BLS key support** via `github.com/luxfi/crypto/bls`
+- AES-256 encryption with HKDF key derivation
+- Threshold secret sharing for key shares
+- Key metadata and share storage with database prefixes
+- LRU cache for frequently accessed keys
+- Parallel crypto operations (max 100 concurrent)
+- RPC service at `/rpc`
+- Registered via `NewDefaultFactory()` (unlike other VMs that use `&Factory{}`)
+
+### O-Chain (Oracle)
+
+| Property | Value |
+|----------|-------|
+| VM | OracleVM |
+| VM ID | `oraclevm` (alias: `OVMID`) |
+| Package | `github.com/luxfi/node/vms/oraclevm` |
+| Consensus | Snowman (linear) |
+| Version | 1.0.0 |
+
+**Purpose:** The O-Chain provides decentralized oracle services for external data feeds with cryptographic verification.
+
+**Key Features:**
+- **Observe-Commit-Aggregate** pipeline:
+  1. Operators fetch data from external sources
+  2. Signed observations submitted on-chain
+  3. Canonical output computed (median, TWAP, weighted, bounded deviation)
+- ZK aggregation proofs for correctness
+- Threshold attestation fallback for compatibility
+- Configurable observation window and minimum observers
+- Per-block feed limits
+- Artifact-based block management
+
+### R-Chain (Relay)
+
+| Property | Value |
+|----------|-------|
+| VM | RelayVM |
+| VM ID | `relayvm` (alias: `RVMID`) |
+| Package | `github.com/luxfi/node/vms/relayvm` |
+| Consensus | Snowman (linear) |
+| Version | From `github.com/luxfi/node/vms/artifacts` |
+
+**Purpose:** The R-Chain handles cross-chain message relay with Ed25519 signature verification, providing a general-purpose inter-chain communication layer.
+
+**Key Features:**
+- Message lifecycle: pending -> verified -> delivered (or failed)
+- Channel-based message routing
+- Ed25519 signature verification per message
+- Configurable max message size (default 1MB)
+- Confirmation depth (default 6 blocks)
+- Relay timeout (default 300 seconds)
+- Database-backed message and channel state
+
+### I-Chain (Identity)
+
+| Property | Value |
+|----------|-------|
+| VM | IdentityVM |
+| VM ID | `identityvm` (alias: `IVMID`) |
+| Package | `github.com/luxfi/node/vms/identityvm` |
+| Consensus | Snowman (linear) |
+| Version | From `github.com/luxfi/node/vms/artifacts` |
+
+**Purpose:** The I-Chain provides decentralized identity management with W3C-compatible verifiable credentials and zero-knowledge proof support.
+
+**Key Features:**
+- Credential lifecycle: pending -> active -> revoked/expired
+- Credential TTL (default 1 year)
+- Maximum 100 claims per credential
+- Issuer authorization tracking
+- Revocation registry
+- Zero-knowledge proof verification for selective disclosure
+- Database-backed identity, credential, issuer, and revocation stores
+
+## Additional VM Components
+
+### FalconFX
+
+| Package | `github.com/luxfi/node/vms/falconfx` |
+|---------|--------------------------------------|
+
+Post-quantum transaction signing FX using Falcon lattice signatures. Provides `Credential`, `Transfer`, and `FX` types for Falcon-signed UTXO transactions. Not a standalone chain -- used as an FX plugin by X-Chain and P-Chain.
+
+### ServiceNodeVM
+
+| Package | `github.com/luxfi/node/vms/servicenodevm` |
+|---------|------------------------------------------|
+
+Service node registration and management VM. Provides a registry for service nodes with configurable service types. Includes block, config, factory, registry, and service components.
+
+### ExchangeVM (extended)
+
+| Package | `github.com/luxfi/node/vms/exchangevm` |
+|---------|---------------------------------------|
+
+The X-Chain VM also supports:
+- Block builder pattern for vertex/block construction
+- PubSub filtering for transaction notifications
+- Static service for genesis utilities
+- Wallet service for transaction construction
+
+### ChainAdapter
+
+| Package | `github.com/luxfi/node/vms/chainadapter` |
+|---------|----------------------------------------|
+
+Cross-chain adapters for external blockchain integration:
+- **Ethereum** adapter (EVM chains)
+- **Bitcoin** adapter
+- **Cosmos** adapter (IBC)
+- **Solana** adapter
+- **AppChain** generic adapter
+- **Bridge adapter** (MPC wallet integration)
+- **FHE-CRDT** adapter (encrypted CRDT with FHE compute, DA layer, and encryption)
+
+### Data Availability (DA)
+
+| Package | `github.com/luxfi/node/vms/da` |
+|---------|-------------------------------|
+
+Blob storage and data availability layer. Provides `Blob` and `Store` types for DA commitments used by rollup verification precompiles.
+
+## Chain Registration Flow
+
+### Core Chains (node.go)
+
+```go
+// P-Chain: registered directly with internal config
+n.VMManager.RegisterFactory(ctx, constants.PlatformVMID, &platformvm.Factory{...})
+
+// X-Chain: registered directly
+n.VMManager.RegisterFactory(ctx, constants.XVMID, &exchangevm.Factory{})
+
+// C-Chain: loaded as plugin binary via ZAP transport
+// Binary at <plugin-dir>/<EVMID>
+```
+
+### Optional Chains (vms_allvms.go)
+
+All 11 optional VMs are registered via `registerOptionalVMs()`:
+
+```go
+n.VMManager.RegisterFactory(ctx, constants.QuantumVMID, &qvm.Factory{})
+n.VMManager.RegisterFactory(ctx, constants.AIVMID, &aivm.Factory{})
+n.VMManager.RegisterFactory(ctx, constants.BridgeVMID, &bvm.Factory{})
+n.VMManager.RegisterFactory(ctx, constants.ThresholdVMID, &tvm.Factory{})
+n.VMManager.RegisterFactory(ctx, constants.ZKVMID, &zvm.Factory{})
+n.VMManager.RegisterFactory(ctx, constants.GraphVMID, &graphvm.Factory{})
+n.VMManager.RegisterFactory(ctx, constants.DexVMID, &dexvm.Factory{})
+n.VMManager.RegisterFactory(ctx, constants.KeyVMID, keyvm.NewDefaultFactory())
+n.VMManager.RegisterFactory(ctx, constants.OracleVMID, &ovm.Factory{})
+n.VMManager.RegisterFactory(ctx, constants.RelayVMID, &rvm.Factory{})
+n.VMManager.RegisterFactory(ctx, constants.IdentityVMID, &ivm.Factory{})
+```
+
+Note: KeyVM uses `NewDefaultFactory()` instead of `&Factory{}`.
+
+## Consensus Engines
+
+| Engine | Type | Used By |
+|--------|------|---------|
+| Snowman | Linear (block-based) | P, C, A, B, T, Z, G, D, K, O, R, I |
+| Lux/DAG | DAG (vertex-based) | X |
+| Quasar PQ-BFT | Hybrid DAG + BLS + Ringtail | Q |
+
+## Related Skills
+
+- `lux/lux-node.md` -- Core node that hosts all VMs
+- `lux/lux-evm.md` -- C-Chain EVM with all precompile addresses
+- `lux/lux-vm.md` -- VM interface definitions
+- `lux/lux-consensus.md` -- Snowman, DAG, Quasar consensus
+- `lux/lux-dex.md` -- D-Chain DEX details
+- `lux/lux-fhe.md` -- FHE integration (Z-Chain, C-Chain)
+- `lux/lux-threshold.md` -- T-Chain MPC details
+- `lux/lux-bridge.md` -- B-Chain bridge operations
+- `lux/lux-crypto.md` -- Cryptographic primitives
+
+Last Updated: 2026-03-13

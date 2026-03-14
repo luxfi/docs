@@ -1,46 +1,297 @@
 ---
-title: "Lux Universe - Production K8s Infrastructure"
-description: "Lux Universe is the production Kubernetes infrastructure for the Lux Network — validators, gateways, markets, and supporting services on DOKS."
+title: "Lux Universe"
+description: "Production Network Infrastructure"
 ---
 
 ## Overview
 
-Lux Universe is the **production Kubernetes infrastructure** for the Lux Network — validators, gateways, markets, and supporting services on DOKS.
+Lux Universe is the **production-grade infrastructure monorepo** for running the Lux Network. It orchestrates triple 5-node validator networks (mainnet, testnet, devnet) using `lux cli` for node management and Docker Compose for supporting services (explorers, indexers, graph nodes, exchange, bridge, wallet, bank). The repo uses Git submodules to pin versions of core components (node, geth, evm, cli, netrunner, consensus).
 
-**NOTE**: This is a private repository. Public details are limited to architecture overview.
+## Quick Reference
+
+| Item | Value |
+|------|-------|
+| Module | `luxpatch` (Go 1.26, minimal) |
+| Networks | mainnet, testnet, devnet |
+| Nodes per network | 5 validators |
+| Node management | `lux cli` (not Docker) |
+| Services | Docker Compose profiles |
+| Chains | C-Chain (96369), Zoo (200200), Hanzo (36963) |
+| State dir | `~/work/lux/state` |
+| Snapshot dir | `~/.lux/snapshots/` |
 
 ## Architecture
 
-### Services
+```
+                ┌────────────────────────────────────────┐
+                │            lux universe                │
+                │  ┌──────────┐ ┌────────┐ ┌──────────┐ │
+                │  │ mainnet  │ │testnet │ │ devnet   │ │
+                │  │ 5 nodes  │ │5 nodes │ │ 5 nodes  │ │
+                │  │9630-9638 │ │9640-48 │ │ 9650-58  │ │
+                │  └────┬─────┘ └───┬────┘ └────┬─────┘ │
+                │       │           │            │       │
+                │  ┌────▼───────────▼────────────▼─────┐ │
+                │  │         Docker Services            │ │
+                │  │  Explorers  Graph  Exchange  IAM   │ │
+                │  │  Indexers   IPFS   Bridge   Bank   │ │
+                │  │  Postgres   Redis  Pricing  Wallet │ │
+                │  └───────────────────────────────────┘ │
+                └────────────────────────────────────────┘
+```
 
-| Service | Description |
-|---------|-------------|
-| Validators | Consensus validator nodes |
-| API Gateway | KrakenD gateway at api.lux.network |
-| Markets | DeFi/NFT marketplace at markets.lux.network |
-| Lux Cloud | Cloud management at cloud.lux.network |
-| PostgreSQL | In-cluster database |
-| Redis | Caching layer |
-| Datastore | Vector/KV store |
+## Port Allocation
 
-### Key Domains
+| Network | HTTP Ports | Staking Ports | Chain ID | Zoo Chain ID |
+|---------|-----------|---------------|----------|-------------|
+| Mainnet | 9630-9638 (even) | 9631-9639 (odd) | 96369 | 200200 |
+| Testnet | 9640-9648 (even) | 9641-9649 (odd) | 96368 | 200201 |
+| Devnet | 9650-9658 (even) | 9651-9659 (odd) | 1337 | 1338 |
 
-| Domain | Service |
-|--------|---------|
-| api.lux.network | KrakenD Gateway |
-| cloud.lux.network | Lux Cloud |
-| markets.lux.network | Markets |
+Service ports: PostgreSQL 5432, Redis 6380, LUX Explorer 4010, Zoo Explorer 4011, Hanzo Explorer 4012, Graph Node 8000, IPFS 5001, Pricing API 8085, LXD Gateway 8080.
 
-### Database Strategy
+## Network Operations
 
-In-cluster PostgreSQL (no managed databases). Serves cloud, commerce, console, gateway, and KMS databases.
+```bash
+# Start/stop individual networks
+make start network=main    # or test, dev
+make stop network=main
+make restart network=main
 
-## Access
+# Start everything (all 3 networks + Docker services)
+make all
+make stop-all
 
-This is a **private repository**. Contact the infrastructure team for access.
+# Health checks
+make health network=main
+make status network=main
+make status-all            # All networks + Docker services
 
-## Related Skills
+# Chain tracking (ensure tracked chains are deployed)
+make track network=main
+```
 
-- `lux/lux-node.md` - Validator node software
-- `lux/lux-monitoring.md` - Cluster monitoring
-- `lux/lux-stack.md` - Local dev environment
+## Snapshot Management
+
+```bash
+# Save/load snapshots
+make snapshot network=main name=pre-upgrade
+make resume network=main name=pre-upgrade
+
+# Bootstrap from pre-built snapshots
+make bootstrap network=main
+make bootstrap-start network=main
+
+# Manual snapshot operations
+make snapshot-save network=main name=checkpoint
+make snapshot-load network=main name=checkpoint
+make snapshot-list
+make snapshot-clean
+```
+
+## Docker Compose Profiles
+
+The `compose.yml` uses profiles to selectively start service groups:
+
+| Profile | Services |
+|---------|----------|
+| (default) | 5 validator nodes, postgres, redis, pricing, IPFS, LUX explorer |
+| `explorers` | Zoo explorer, Hanzo explorer |
+| `graph` | Graph Protocol node |
+| `indexers` | P-Chain indexer, X-Chain indexer |
+| `bridge` | Bridge NATS, Consul, KMS (Vault) |
+| `ui` | Exchange UI, Wallet, Bridge UI, LXD Gateway, Explorer Frontend |
+| `bank` | Bank API, Dashboard, Admin, Docs, Marketing Site |
+| `iam` | Hanzo IAM (lux.id) |
+| `dev` | Adminer (DB admin), Redis Commander |
+
+```bash
+# Start with profiles
+docker compose up -d                          # Default services
+docker compose --profile explorers up -d      # Add explorers
+docker compose --profile graph up -d          # Add Graph Protocol
+docker compose --profile ui up -d             # Add frontend UIs
+docker compose --profile bank up -d           # Add Lux Bank (lux.financial)
+```
+
+## Validator Nodes (Docker)
+
+5 validator nodes run as Docker containers with:
+- Image: `ghcr.io/luxfi/node:latest`
+- Network: `lux-network` (172.30.0.0/16)
+- Static IPs: 172.30.0.10-14
+- Bootstrap: Node 1 (172.30.0.10) is the bootstrap node
+- Keys: Mounted from `~/.lux/keys/node{0-4}/`
+- Genesis: Mounted from `~/work/lux/genesis/configs/mainnet/`
+- Health checks: `curl http://localhost:9630/ext/health` every 30s
+
+## Blockchain Explorers
+
+| Explorer | Chain | Chain ID | Port | Image |
+|----------|-------|----------|------|-------|
+| LUX Explorer | C-Chain | 96369 | 4010 | Blockscout |
+| Zoo Explorer | Zoo Network | 200200 | 4011 | Blockscout |
+| Hanzo Explorer | AI Chain | 36963 | 4012 | Blockscout |
+| Explorer Frontend | C-Chain | 96369 | 3100 | `ghcr.io/luxfi/explore` |
+
+All explorers use shared PostgreSQL with separate databases (`explorer_lux`, `explorer_zoo`, `explorer_hanzo`).
+
+## Chain Import
+
+```bash
+# Import chain data from RLP files
+make import network=main    # Imports C-Chain + Zoo via admin_importChain RPC
+make import network=test
+```
+
+RLP files stored at `~/work/lux/state/rlp/`.
+
+## AMM Testing
+
+```bash
+make amm network=main       # Test AMM on C-chain
+make amm-zoo network=main   # Test AMM on Zoo chain
+```
+
+## Submodules
+
+### Core
+
+| Submodule | Description |
+|-----------|-------------|
+| `node` | Lux consensus node (luxd) |
+| `geth` | Go-Ethereum fork (luxfi/geth) |
+| `evm` | EVM plugin for Lux |
+| `cli` | Lux CLI tool |
+| `netrunner` | Network testing/orchestration |
+| `consensus` | Consensus engine library |
+
+### Application
+
+| Submodule | Description |
+|-----------|-------------|
+| `bridge` | Cross-chain bridge |
+| `exchange` | AMM DEX frontend |
+| `explorer-lux` | LUX block explorer |
+| `explorer-zoo` | Zoo block explorer |
+| `explore-lux` | Explorer frontend |
+| `graph-node-lux` | Graph Protocol node |
+| `v2-subgraph` | Uniswap V2 subgraph |
+| `v3-subgraph` | Uniswap V3 subgraph |
+
+### Data
+
+| Submodule | Description |
+|-----------|-------------|
+| `state` | Network state data (snapshots, RLP, keys) |
+
+```bash
+make init       # Initialize all submodules
+make update     # Pull latest for all
+make sync       # Sync URLs from .gitmodules
+make list       # List submodules with commits
+```
+
+## Infrastructure Layer
+
+### Database
+
+Shared PostgreSQL (ghcr.io/hanzoai/sql) with databases: `explorer_lux`, `explorer_zoo`, `explorer_hanzo`, `explorer_pchain`, `explorer_xchain`, `graph_node`, `iam`, `bank`.
+
+### Caching
+
+Redis (ghcr.io/hanzoai/kv) with appendonly, 2GB max memory, allkeys-lru eviction.
+
+### K8s Manifests (k8s/)
+
+Production Kubernetes manifests for DOKS clusters:
+
+| Directory | Purpose |
+|-----------|---------|
+| `lux-k8s/` | Main Lux services cluster |
+| `lux-mainnet/` | Mainnet validator deployment |
+| `lux-testnet/` | Testnet validator deployment |
+| `lux-devnet/` | Devnet deployment |
+| `lux-gateway/` | KrakenD API gateway |
+| `lux-explorer/` | Block explorer |
+| `lux-bridge/` | Bridge infrastructure |
+| `lux-mpc/` | MPC key management |
+| `lux-ns/` | Namespace definitions |
+| `bootnode/` | Bootstrap node |
+| `dns/` | DNS configuration |
+| `hanzo-k8s/` | Hanzo services on Lux cluster |
+
+### Configuration (configs/)
+
+- `genesis.json` -- Network genesis configuration
+- `validators.json` -- Validator definitions
+- `node1.json` - `node5.json` -- Per-node configurations
+- `node-template.json` -- Node config template
+- `chains/` -- Chain-specific configurations
+- `gateway/` -- API gateway configuration
+- `chain-configs/C/` -- C-Chain configuration
+
+## Lux Bank (lux.financial)
+
+B2B stablecoin infrastructure with:
+- Bank API (port 4000) -- Backend services with Currency Cloud integration
+- Dashboard (port 3500) -- Client portal
+- Admin (port 3502) -- Admin dashboard
+- Docs (port 3503) -- Documentation
+- Site (port 3501) -- Marketing site
+
+Domains: `lux.financial`, `app.lux.financial`, `api.lux.financial`, `admin.lux.financial`, `docs.lux.financial`.
+
+## Build & Test
+
+```bash
+make build          # Build node + CLI
+make build-node     # Build lux node only
+make build-cli      # Build lux CLI only
+make build-evm      # Build EVM plugin
+make build-docker   # Build Docker images
+make test           # Run tests for node/geth/evm/cli
+make fmt            # Format Go code
+make lint           # Run go vet
+```
+
+## Key Endpoints (Running)
+
+| Endpoint | URL |
+|----------|-----|
+| Mainnet C-Chain RPC | `http://127.0.0.1:9630/ext/bc/C/rpc` |
+| Testnet C-Chain RPC | `http://127.0.0.1:9640/ext/bc/C/rpc` |
+| Devnet C-Chain RPC | `http://127.0.0.1:9650/ext/bc/C/rpc` |
+| LUX Explorer | `http://127.0.0.1:4010` |
+| Zoo Explorer | `http://127.0.0.1:4011` |
+| Graph Node | `http://127.0.0.1:8000` |
+| LXD Gateway | `http://127.0.0.1:8080` |
+
+## Directory Structure
+
+```
+universe/
+  compose.yml              # Main Docker Compose (all services)
+  compose.mainnet.yml      # Mainnet-specific overrides
+  compose.testnet.yml      # Testnet-specific overrides
+  compose.devnet.yml       # Devnet overrides
+  compose.local.yml        # Local development
+  compose.services.yml     # Services-only
+  compose.server.yml       # Server deployment
+  Makefile                 # Network + service management
+  configs/                 # Node configs, genesis, validators
+  chain-configs/           # Chain-specific configs (C/)
+  docker/                  # Dockerfiles, init SQL, genesis
+  k8s/                     # Production K8s manifests
+  iam/                     # IAM init data
+  scripts/                 # Operational scripts
+  docs/                    # Documentation
+  node -> (submodule)      # luxfi/node
+  geth -> (submodule)      # luxfi/geth
+  evm -> (submodule)       # luxfi/evm
+  cli -> (submodule)       # luxfi/cli
+  netrunner -> (submodule) # luxfi/netrunner
+  consensus -> (submodule) # luxfi/consensus
+  explore -> (symlink)     # Explorer frontend
+  explorer -> (symlink)    # Explorer backend
+```

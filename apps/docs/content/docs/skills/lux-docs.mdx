@@ -1,16 +1,153 @@
 ---
-title: "Lux Documentation - Official Docs Site"
-description: "Official Lux Network documentation at `docs.lux.network` — Next.js based (@luxfi/docs)."
+title: "Lux Documentation"
+description: "Official Docs Site"
 ---
 
 ## Overview
 
-Official Lux Network documentation at `docs.lux.network` — Next.js based (@luxfi/docs).
+Official Lux Network documentation platform hosted at `docs.lux.network`. Built as a Turborepo monorepo with 13 independent documentation apps, each powered by Next.js and the `@hanzo/docs` framework. Covers the full Lux ecosystem: node operation, consensus, SDK usage, contract deployment, subnet/L2 architecture, and every major subsystem (bridge, explorer, wallet, HSM, MPC, bootnode, KMS, indexer, netrunner, CLI).
 
-## Quick reference
+## Repository
 
 | Item | Value |
 |------|-------|
+| Repo | `github.com/luxfi/docs` |
+| Local | `~/work/lux/docs/` |
 | URL | `https://docs.lux.network` |
-| Tech | Next.js |
-| Dev | `pnpm dev` |
+| Package Manager | pnpm 10.12.4 |
+| Build Orchestrator | Turborepo 2.8.9 |
+| Node | 22 (Alpine in Docker) |
+| License | See LICENSE |
+
+## Tech Stack
+
+| Technology | Purpose |
+|------------|---------|
+| Next.js 16 | Static site generation and SSR |
+| React 19 | Component rendering |
+| Tailwind CSS 4 | Styling |
+| `@hanzo/docs` 16.x | Documentation framework (routing, search, layout) |
+| `@hanzo/docs-core` 16.x | Core MDX processing and plugins |
+| `@hanzo/docs-mdx` 14.x | MDX compilation, `docs-mdx` CLI for codegen |
+| `@hanzo/docs-ui` 16.x | Pre-built UI components (sidebar, TOC, nav) |
+| `@hanzo/docs-openapi` 10.x | OpenAPI spec rendering |
+| `@hanzo/docs-typescript` 5.x | TypeScript type documentation |
+| `@hanzo/docs-twoslash` 3.x | Inline TypeScript evaluation in code blocks |
+| Shiki 3.x | Syntax highlighting (10 languages configured) |
+| Zod 4.x | Runtime schema validation |
+| nginx | Production static file serving |
+
+## Project Structure
+
+```
+~/work/lux/docs/
+  package.json          # Root workspace (lux-docs v0.1.0)
+  pnpm-workspace.yaml   # Workspace: apps/*
+  turbo.json            # Build/dev/clean/lint/types:check tasks
+  Dockerfile            # Multi-stage: node build + nginx serve
+  nginx.conf            # Static serving config
+  apps/
+    docs/               # Main documentation site (port 3000)
+    bootnode-docs/       # Bootnode setup and operation
+    bridge-docs/         # Cross-chain bridge documentation
+    cli-docs/            # Lux CLI reference
+    explorer-docs/       # Block explorer documentation
+    hsm-docs/            # Hardware Security Module integration
+    indexer-docs/        # Chain indexer documentation
+    kms-docs/            # Key Management Service
+    mpc-docs/            # Multi-Party Computation custody
+    netrunner-docs/      # Network testing tool
+    sdk-docs/            # Go and JS SDK reference
+    wallet-docs/         # Wallet integration guides
+```
+
+## Main Docs App (apps/docs/)
+
+### Content Structure
+
+Content lives in `apps/docs/content/docs/` as MDX files:
+
+| Section | Files | Topics |
+|---------|-------|--------|
+| `build/` | contracts, sdks, subnets, tutorials | Smart contract deployment, SDK usage, subnet creation |
+| `learn/` | architecture, consensus, post-quantum, tokenomics | Core concepts and protocol design |
+| `nodes/` | archive, full-node, validator | Node operation and setup guides |
+| `reference/` | health, info, json-rpc, platform, sdk-go, sdk-js | API reference documentation |
+| `skills/` | 25+ skill pages | Per-component skill documentation |
+
+### Source Configuration
+
+`source.config.ts` uses `@hanzo/docs/mdx/config` with:
+- Async document loading
+- Rehype code plugin with dual themes (github-light / github-dark)
+- Languages: ts, js, html, tsx, mdx, go, rust, bash, json, yaml, toml
+- Inline code with tailing-curly-colon syntax
+
+### Dependencies (apps/docs/package.json)
+
+- `@hanzo/docs` 16.2.9 (framework)
+- `@hanzo/docs-core` 16.4.3 (core)
+- `@hanzo/docs-base-ui` 16.4.3 (base components)
+- `@hanzo/docs-ui` 16.4.3 (UI components)
+- `@hanzo/docs-mdx` 14.2.5 (MDX processing)
+- `@hanzo/docs-openapi` 10.2.3 (API docs)
+- `@hanzo/docs-typescript` 5.0.1 (TS docs)
+- `@hanzo/docs-twoslash` 3.1.11 (inline eval)
+- `@hanzo/docs-docgen` 3.0.5 (doc generation)
+- `@hanzo/docs-cli` 1.2.5 (CLI tooling)
+- Next.js 16, React 19, Tailwind CSS 4
+
+## Development
+
+```bash
+cd ~/work/lux/docs
+
+# Install dependencies
+pnpm install
+
+# Start all docs apps in parallel
+pnpm dev
+
+# Start main docs only (port 3000)
+cd apps/docs && pnpm dev
+
+# Build all apps
+pnpm build
+
+# Lint all apps
+pnpm lint
+
+# Type check all apps
+pnpm types:check
+```
+
+## Docker Build
+
+Multi-stage build producing an nginx-served static site:
+
+```dockerfile
+FROM node:22-alpine AS build
+# pnpm install + build (apps/docs)
+FROM nginx:alpine
+# Copy built output to /usr/share/nginx/html
+EXPOSE 3000
+```
+
+## Key Patterns
+
+- Each docs app is independent with its own `package.json`, `source.config.ts`, and content directory
+- All apps share the same `@hanzo/docs` framework stack
+- Build command runs `docs-mdx` CLI before `next build` to generate MDX metadata
+- Static export (`out/` directory) for nginx serving
+- Content is MDX with frontmatter, supporting code blocks with syntax highlighting
+- Turborepo caches `.next/**` outputs (excluding `.next/cache/**`)
+
+## Related Repos
+
+| Repo | Purpose |
+|------|---------|
+| `github.com/luxfi/node` | Node software documented here |
+| `github.com/luxfi/sdk` | SDK reference source |
+| `github.com/luxfi/cli` | CLI command reference |
+| `github.com/luxfi/bridge` | Bridge protocol docs |
+| `github.com/luxfi/explorer` | Explorer docs |

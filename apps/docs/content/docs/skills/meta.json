@@ -1,6 +1,6 @@
 {
   "title": "Lux Skills Reference",
-  "description": "Comprehensive reference for all 72+ Lux skills",
+  "description": "Comprehensive reference for all 75 Lux skills",
   "icon": "BookOpen",
   "pages": [
     "index",
@@ -14,6 +14,7 @@
     "lux-spacesvm",
     "lux-session",
     "lux-p2p",
+    "lux-chains",
     "lux-genesis",
     "lux-staking",
     "---Cryptography & Security---",
@@ -91,6 +92,7 @@
     "lux-upgrade",
     "---Research---",
     "lux-faucet",
-    "lux-papers"
+    "lux-papers",
+    "lux-lps"
   ]
 }

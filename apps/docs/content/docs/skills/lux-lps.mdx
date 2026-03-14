@@ -1,0 +1,517 @@
+---
+title: "Lux Proposals (LPs)"
+description: "Governance and Standardization Framework"
+---
+
+## Overview
+
+Lux Proposals (LPs) are the governance and standardization framework for the Lux Network blockchain ecosystem. They define technical specifications, protocol changes, token standards, and governance processes through community-driven proposals. LPs serve the same role as Ethereum's EIPs or Bitcoin's BIPs, adapted for Lux Network's 8-chain architecture.
+
+**Repository**: `github.com/luxfi/lps`
+**Local Path**: `~/work/lux/lps/`
+**Documentation Site**: `lps.lux.network`
+**Forum**: `forum.lux.network`
+
+## Quick Reference
+
+| Item | Value |
+|------|-------|
+| Repository | `github.com/luxfi/lps` |
+| Total LPs | 348 numbered proposals |
+| LP File Format | `LPs/lp-NNNN-title-slug.md` |
+| Template | `LPs/TEMPLATE.md` |
+| License | BSD 3-Clause (specs), Ecosystem License (specialized chains) |
+| Docs Framework | Next.js 16 with Tailwind CSS |
+| Docs Port | 3002 |
+
+## LP Lifecycle
+
+LPs follow a structured progression from idea to finalized standard:
+
+```
+Idea (Forum) --> Draft --> Review --> Last Call (14 days) --> Final
+                  |          |            |
+                  v          v            v
+               Withdrawn  Stagnant    Stagnant
+```
+
+| Status | Meaning | Duration | Allowed Changes |
+|--------|---------|----------|-----------------|
+| **Draft** | Initial proposal, actively edited | Until ready | Any changes |
+| **Review** | Open for community feedback | Varies | Clarifications only |
+| **Last Call** | Final review period before acceptance | 14 days | Critical fixes only |
+| **Final** | Accepted and immutable | Permanent | Errata via new LP only |
+| **Withdrawn** | Abandoned by author | -- | -- |
+| **Stagnant** | No activity for 60+ days | -- | Can be revived |
+| **Superseded** | Replaced by a newer LP | -- | -- |
+
+### Progression Rules
+
+- **Draft to Review**: All required sections complete, initial feedback addressed.
+- **Review to Last Call**: Community support demonstrated, concerns resolved.
+- **Last Call to Final**: No critical objections raised, reference implementations exist.
+- Editors review for **format and completeness**, not technical merit. Community consensus determines acceptance.
+
+## LP Types
+
+| Type | Purpose | Test Cases Required |
+|------|---------|---------------------|
+| **Standards Track** | Technical specifications requiring implementation | Yes |
+| **Meta** | Process and governance proposals | No |
+| **Informational** | Guidelines, best practices, research | No |
+
+## LP Categories (Standards Track)
+
+Standards Track LPs are further categorized by the chain or domain they affect:
+
+| Category | Description | Examples |
+|----------|-------------|---------|
+| **Core** | Consensus rules, protocol-level changes | LP-0110 (Quasar), LP-1181 (Epoching) |
+| **Networking** | P2P protocols, transport layer | LP-0120 (ZAP Transport), LP-6420 (GossipSub) |
+| **Interface** | APIs, RPC specifications, precompiles | LP-3500 (ML-DSA Precompile), LP-9002 (DEX API) |
+| **LRC** | Application standards (tokens, NFTs, DeFi) | LP-3020 (LRC-20), LP-3721 (LRC-721) |
+| **Bridge** | Cross-chain protocols and interoperability | LP-6332 (Teleport), LP-6602 (Warp) |
+
+## Chain-Based Number Allocation
+
+LPs are organized by number range corresponding to Lux Network's 8 chains plus cross-cutting concerns:
+
+| Range | Chain/Domain | Focus |
+|-------|-------------|-------|
+| **0000-0099** | Network | Architecture, governance, developer tools |
+| **0100-0199** | Consensus | Photon, Flare, Quasar, Wave, Horizon |
+| **0200-0299** | Privacy/FHE | FHEVM, ZKVM architectures |
+| **0300-0599** | Cryptography | ZK precompiles, receipt registry, data seals |
+| **1000-1199** | P-Chain | Platform coordination, validators, staking |
+| **1200-1299** | C-Chain (alt) | EVM specification, compatibility |
+| **1600-1699** | P-Chain (ext) | Elastic validators, L1 chains |
+| **2000-2399** | Q-Chain | Post-quantum crypto, quantum-safe operations |
+| **2500-2999** | LRC Standards | Token extensions (LRC-1155, LRC-1271, etc.) |
+| **3000-3899** | C-Chain/EVM | Token standards, precompiles, VM, state mgmt |
+| **4000-4599** | Z-Chain | ZKVM, FHE, L2 rollups |
+| **5000-5799** | T-Chain | Threshold sigs, MPC, key management |
+| **6000-6599** | B-Chain | Bridge, Teleport, Warp, LuxDA, messaging |
+| **7000-7699** | A-Chain | AI/Attestation, TEE, GPU, LLM gateway |
+| **8800-8999** | Governance/ESG | DAO, fund management, impact metrics |
+| **9000-9499** | DEX/Finance | Trading, oracle, DeFi, derivatives |
+| **9500-9999** | Application | Token-bound accounts, marketplace |
+| **10000-10199** | Learning/Research | Learning paths, research papers |
+
+## Complete LP Index
+
+### Core & Meta (0xxx)
+
+| LP | Title |
+|----|-------|
+| 0000 | Network Architecture and Community Framework |
+| 0001 | Primary Chain Native Tokens and Tokenomics |
+| 0002 | Network Architecture |
+| 0003 | Governance Framework |
+| 0004 | Philosophy |
+| 0005 | Open Source |
+| 0006 | Security |
+| 0007 | Supply Chain Control |
+| 0008 | Plugin Architecture |
+| 0009 | CLI Tool Specification |
+| 0010 | Technology Portfolio (Patent Pending) |
+| 0011 | Chain Types L1/L2/L3 Specification |
+| 0012 | Ecosystem Licensing |
+| 0015 | Ecosystem Overview |
+| 0016 | Fee Pricing Protocol |
+| 0038 | Native Chain Indexer Architecture |
+| 0039 | Lx Python SDK |
+| 0040 | Network Runner and Testing Framework |
+| 0041 | Wallet Standards |
+| 0042 | Multi-Signature Wallet Standard |
+| 0042 | Session VM Specification (duplicate number) |
+| 0050 | Developer Tools Overview |
+| 0051 | Enterprise Licensing |
+| 0070 | Key Management System |
+| 0085 | Security Audit Framework |
+| 0086 | Security Practices and Responsible Disclosure |
+| 0098 | GraphDB and GraphQL Engine Integration |
+| 0099 | LP Numbering Scheme and Chain Organization |
+
+### Consensus (01xx)
+
+| LP | Title |
+|----|-------|
+| 0100 | Optimistic Oracle Integration |
+| 0101 | Prediction Markets Framework |
+| 0102 | Oracle Dispute Resolution |
+| 0110 | Quasar Consensus |
+| 0111 | Photon Selection |
+| 0112 | Flare Finalization |
+| 0113 | Wave Voting |
+| 0114 | Focus Confidence |
+| 0115 | Horizon Finality |
+| 0116 | Prism Geometry |
+| 0118 | Warp Signature Aggregation Protocol |
+| 0120 | ZAP Transport Protocol |
+| 0150 | Dead Precompile |
+
+### Privacy & ZK Architecture (02xx-05xx)
+
+| LP | Title |
+|----|-------|
+| 0200 | FHEVM Architecture |
+| 0201 | ZKVM Architecture |
+| 0202 | Z-Chain GPU Acceleration |
+| 0203 | Threshold FHE Integration |
+| 0300 | (Unlabeled specification) |
+| 0510 | STARK Verifier Precompile |
+| 0530 | Receipt Registry |
+| 0535 | Verifiable Data Integrity Seal |
+| 0536 | Seal Finality Quantum Horizon |
+
+### P-Chain Platform (1xxx)
+
+| LP | Title |
+|----|-------|
+| 1000 | P-Chain Core Platform Specification |
+| 1024 | Parallel Validation and Shared Mempool |
+| 1033 | P-Chain State Rollup to C-Chain EVM |
+| 1034 | P-Chain as Superchain L2 (OP Stack) |
+| 1100 | X-Chain Exchange Chain Specification |
+| 1136 | X-Chain Order Book DEX API and RPC |
+| 1137 | Native Swap Integration (T/X/Z-Chain) |
+| 1181 | Epoching |
+| 1200 | C-Chain EVM Specification |
+| 1226 | C-Chain EVM Equivalence and Core EIPs |
+| 1227 | Standard Ethereum Precompiles |
+| 1605 | Elastic Validator Chains |
+
+### Q-Chain Quantum (2xxx)
+
+| LP | Title |
+|----|-------|
+| 2000 | Q-Chain Quantum Specification |
+| 2004 | Quantum-Resistant Cryptography Integration |
+| 2005 | Quantum-Safe Wallets and Multisig |
+| 2099 | Quasar Consensus Protocol Family |
+| 2105 | Lamport One-Time Signatures for Lux Safe |
+| 2106 | (Specification in progress) |
+| 2155 | LRC-1155 Multi-Token Standard |
+| 2157 | LRC-1155 Supply Extension |
+| 2200 | Post-Quantum Cryptography Suite |
+| 2201 | Hybrid Classical-Quantum Crypto Transitions |
+| 2202 | Cryptographic Agility Framework |
+| 2210 | PQ Hybrid Transport |
+| 2211 | PQXDH DM Handshake |
+| 2212 | PQ MLS Group Chat |
+| 2213 | PQ DA Certificates |
+| 2214 | PQ DKG Protocol |
+| 2271 | LRC-1271 Signature Validation |
+| 2303 | Lux Q-Security P-Chain Integration |
+| 2316 | ML-DSA Post-Quantum Digital Signatures |
+| 2317 | SLH-DSA Hash-Based Digital Signatures |
+| 2318 | ML-KEM Post-Quantum Key Encapsulation |
+| 2363 | LRC-1363 Payable Token |
+| 2967 | LRC-1967 Proxy Storage Slots |
+
+### C-Chain EVM / Token Standards (3xxx)
+
+| LP | Title |
+|----|-------|
+| 3000 | Standard Library Registry |
+| 3001 | Teleport Bridge MPC |
+| 3002 | Governance Token Stack (K, dLUX, vLUX) |
+| 3003 | Liquid Protocol Self-Repaying Loans |
+| 3004 | Teleport Protocol Cross-Chain Bridge |
+| 3009 | LRC-3009 Transfer with Authorization |
+| 3020 | LRC-20 Fungible Token Standard |
+| 3021-3030 | LRC-20 Extensions (Burnable, Mintable, Bridgable, Capped, Votes, Permit, FlashMint, x402 Payment, Adoption Guide, Wrapper) |
+| 3093 | Decentralized Identity (DID) |
+| 3165 | LRC-165 Interface Detection |
+| 3173 | LRC-173 Contract Ownership |
+| 3201 | LRC-7201 Namespaced Storage Layout |
+| 3210 | NFT Staking Standard |
+| 3211 | Media Content NFT Standard |
+| 3310 | Safe Multisig Standard |
+| 3320 | Lamport Signatures for Safe |
+| 3338 | Paymaster Standard |
+| 3500-3521 | Precompile Suite (ML-DSA, SLH-DSA, Quasar, Fee Manager, Overview, PQ Implementation Guide) |
+| 3550 | Verkle Proof Precompile |
+| 3572 | LRC-7572 Contract-Level Metadata |
+| 3579 | LRC-7579 Modular Smart Accounts |
+| 3600 | Virtual Machine and Execution Environment |
+| 3601 | VM SDK Specification |
+| 3620 | C-Chain Rollup Plugin Architecture |
+| 3621 | Stage-Sync Pipeline for Coreth |
+| 3630 | Random Number Generation Standard |
+| 3640-3641 | C-Chain Upgrade Mapping, ChainVM Compatibility |
+| 3650-3668 | Precompiles (Dynamic Gas, secp256r1, Block Times, BLS12-381, Ed25519, SHA3, Blake2/3, VRF, Poseidon2, ChaCha20, HPKE, ECIES, Ring Sigs, KZG4844, secp256k1, Gas Limit, Pedersen) |
+| 3670-3674 | EVM Upgrades (EOA Code, Execution Requests, Max Balance, Calldata Cost, Blob Throughput) |
+| 3675 | LRC-4675 Multi-Fractional NFT |
+| 3680 | CLZ Count Leading Zeros Opcode |
+| 3690-3691 | EVM Security Hardening, Developer Improvements |
+| 3700-3704 | State Management (Sync/Pruning, Verkle Trees, Verkle Transition, Statelessness Gas, Historical Hashes) |
+| 3721-3723 | LRC-721 NFT Standard + Extensions (Burnable, Enumerable) |
+| 3777 | LRC-777 Advanced Token |
+| 3800 | Bridged Asset Standard |
+| 3810 | Teleport Token Standard |
+| 3820 | L2 to Sovereign L1 Ascension |
+
+### Z-Chain Zero-Knowledge (4xxx)
+
+| LP | Title |
+|----|-------|
+| 4000 | Z-Chain ZKVM Specification |
+| 4045 | Encrypted Execution Layer Interface |
+| 4100 | FHE Precompiles and Infrastructure |
+| 4101 | FHE Patent Strategy |
+| 4169 | LRC-5169 Client Script URI |
+| 4192 | LRC-5192 Soulbound Tokens |
+| 4500-4505 | L2 Rollup Framework (DA Layer, Fraud Proofs, Validity Proofs, Sequencer Registry, Block Format) |
+| 4528 | LRC-5528 Refundable Token |
+
+### T-Chain Threshold (5xxx)
+
+| LP | Title |
+|----|-------|
+| 5000 | T-Chain Threshold Specification |
+| 5013 | MPC Custody and Swap-Signature Layer |
+| 5014 | CGG21 Threshold ECDSA |
+| 5103 | MPC-LSS Linear Secret Sharing |
+| 5104 | FROST Threshold Signatures |
+| 5321-5325 | Precompiles (FROST, CGGMP21, LSS-MPC, Ringtail, KMS/HSM) |
+| 5330-5341 | ThresholdVM, FHE Guide, Signer Rotation, Per-Asset Keys, K-Chain, Account Abstraction, Crypto Library, TypeScript SDK |
+| 5350 | MPC Node Cluster |
+| 5626-5627 | LRC-4626 Tokenized Vault + Multi-Vault Extensions |
+| 5700-5704 | GPU Acceleration, Lattice Crypto, FHE Implementation, Threshold Crypto, Composable Architecture |
+
+### B-Chain Bridge / Data Availability (6xxx)
+
+| LP | Title |
+|----|-------|
+| 6000 | B-Chain Bridge Specification |
+| 6017-6019 | Bridge Asset Registry, Message Format, Security Framework |
+| 6022-6023 | Warp 2.0 Native Transfers, NFT Interchain Transfer |
+| 6156 | LRC-3156 Flash Loans |
+| 6315 | Enhanced Cross-Chain Communication |
+| 6329-6341 | Teleport Bridge Suite (Index, BridgeVM, Architecture, Smart Contracts, Security/Emergency, SDK, Secrets Mgmt) |
+| 6350-6353 | Bridge Verification (Light Client, Receipt Proofs, ZK State Proofs, Privacy Range Proofs) |
+| 6400-6413 | LuxDA Bus (Glossary, Namespaces, Headers, Batching, Finality) |
+| 6420-6422 | LuxRelay (GossipSub, Persistence, Abuse Controls) |
+| 6430-6433 | Blob Layer (API, Availability Certs, Erasure Coding, DAS Upgrade) |
+| 6440-6442 | LuxStore (Content Addressing, Retrieval Markets) |
+| 6460-6463 | Messaging (Key Directory, DM Sessions, Group Chat, Attachments) |
+| 6470-6475 | TFHE (Sidecar, Orchestration, Key Registry, DKG, Threshold Decrypt, Sealed Messages) |
+| 6480-6482 | Operations (Operator Roles, Fee Markets, Slashing) |
+| 6490-6491 | Infrastructure (Node Modularization, Observability SLOs) |
+| 6495-6502 | Cross-Chain (Namespaces, DeFi Integration, Conformance Tests, fheCRDT Architecture, DocReceipts, DAReceipts) |
+| 6525 | LRC-3525 Semi-Fungible Token |
+
+### A-Chain AI/Attestation (7xxx)
+
+| LP | Title |
+|----|-------|
+| 7000 | A-Chain AI/Attestation Specification |
+| 7075 | TEE Integration Standard |
+| 7101 | Solidity GraphQL Extension |
+| 7102 | Immutable Training Ledger |
+| 7106 | LLM Gateway Integration with Hanzo AI |
+| 7110 | AI Media Content Provenance |
+| 7200 | AI Mining Standard |
+| 7302 | Privacy AI Attestation Layer |
+| 7601 | Dynamic Gas Fee with AI Compute Pricing |
+| 7607 | GPU Acceleration Framework |
+| 7610 | AI Confidential Compute Tiers |
+| 7981 | LRC-2981 NFT Royalties |
+
+### DAO & Governance (8xxx)
+
+| LP | Title |
+|----|-------|
+| 8800-8805 | Lux DAO (Platform, Azorius Module, Voting, Freeze Guard, Account Abstraction, SDK) |
+| 8850 | DAO Governance Index |
+| 8860 | Fund Management Index |
+| 8900-8903 | ESG (Vision Fund Framework, Environmental Policy, Social Benefit, Governance Architecture) |
+| 8910 | Lux Network Impact Thesis |
+| 8920-8921 | ESG Principles, Carbon Accounting |
+| 8930-8995 | ESG/Impact Suite (Green Compute, Energy Transparency, Risk, Anti-Greenwashing, Standards, Evidence Locker, Impact Framework, Measurement, Stakeholder Engagement, Community Grants, Financial Inclusion, Impact Index) |
+
+### DEX & Finance (9xxx)
+
+| LP | Title |
+|----|-------|
+| 9000 | DEX Core Specification |
+| 9001-9006 | Trading (Engine, API/RPC, High-Performance Protocol, Oracle, HFT Venues) |
+| 9010-9011 | DEX Precompile, Oracle Precompile |
+| 9014 | QuantumSwap HFT |
+| 9015 | Precompile Registry |
+| 9018-9030 | DeFi (Liquidity Mining, Fee Distribution, LXBook, MEV Protection, LXVault) |
+| 9040 | Perpetuals and Derivatives Protocol |
+| 9060 | DeFi Protocols Overview |
+| 9073-9074 | Multicall Standard, CREATE2 Factory |
+| 9099 | DEX Series Overview |
+| 9101-9109 | DeFi Integration, NFT Marketplace, Compound Lending |
+| 9400-9403 | Privacy DeFi (Private AMM, Confidential Lending, ZK Swap, Private Staking) |
+| 9551 | LRC-6551 Token-Bound Accounts |
+| 9701 | Reticulum Network Stack |
+| 9909 | LRC-6909 Minimal Multi-Token |
+
+### Learning & Research (10xxx)
+
+| LP | Title |
+|----|-------|
+| 10000-10009 | Learning Paths (Index, Core, Developer, Validator, Trading, Security, MPC, Privacy, Investor, Researcher) |
+| 10100-10106 | Research Papers (Index, Payments, Cross-Chain, Governance, Stablecoins, MEV, Data Availability) |
+
+## How to Submit a New LP
+
+### Step-by-Step Process
+
+1. **Discuss your idea** on the Lux Forum (`forum.lux.network`) or GitHub Discussions (`github.com/luxfi/lps/discussions`).
+2. **Create a draft** using the interactive wizard:
+   ```bash
+   cd ~/work/lux/lps
+   make new
+   ```
+   Or manually copy the template:
+   ```bash
+   cp LPs/TEMPLATE.md LPs/lp-draft.md
+   ```
+3. **Fill out required sections** (see below).
+4. **Validate** your proposal:
+   ```bash
+   make validate FILE=LPs/lp-draft.md
+   make pre-pr   # full validation suite
+   ```
+5. **Submit a Pull Request** -- the PR number becomes your LP number.
+6. **Rename** your file to `lp-N.md` where N is the assigned PR number.
+7. **Address editor feedback** and iterate until consensus.
+
+### Required YAML Frontmatter
+
+```yaml
+lp: <number>
+title: <descriptive title>
+description: <one-line description>
+author: <Name (@github-username)>
+discussions-to: <URL to discussion>
+status: Draft
+type: Standards Track|Meta|Informational
+category: Core|Networking|Interface|LRC|Bridge
+created: YYYY-MM-DD
+```
+
+### Required Content Sections
+
+1. **Abstract** -- approximately 200 words summarizing the proposal.
+2. **Motivation** -- why this LP is needed.
+3. **Specification** -- precise technical details.
+4. **Rationale** -- explanation of design decisions.
+5. **Backwards Compatibility** -- impact on existing systems.
+6. **Test Cases** -- required for Standards Track.
+7. **Reference Implementation** -- optional but recommended.
+8. **Security Considerations** -- potential risks and mitigations.
+9. **Copyright** -- must be CC0.
+
+## Key Makefile Commands
+
+```bash
+make new           # Interactive LP creation wizard
+make validate      # Validate a single LP (FILE=LPs/lp-N.md)
+make validate-all  # Validate all LP files
+make check-links   # Verify all links in LP documents
+make update-index  # Regenerate the LP index in README.md
+make stats         # Show LP statistics by status and type
+make list          # List all LPs with titles
+make pre-pr        # Run full validation suite before submitting PR
+make draft         # Create lp-draft.md from template
+make decision      # Create an Informational Decision LP draft
+make docs-dev      # Run documentation site on localhost:3002
+make docs-build    # Build static documentation site
+```
+
+## Development Phases
+
+The Lux Network follows a phased roadmap defined in `phases/`:
+
+| Phase | Period | Focus |
+|-------|--------|-------|
+| Phase 1 | Q1 2025 | Foundational Governance and Core Protocol |
+| Phase 2 | Q2 2025 | Execution Environment and Asset Standards |
+| Phase 3 | Q3 2025 | Cross-Chain Interoperability |
+| Phase 4 | Q4 2025 | Attestations and Compliance |
+| Phase 5 | Q1 2026 | Privacy and Zero-Knowledge |
+| Phase 6 | Q2 2026 | Data Availability and Scalability |
+| Phase 7 | Q3 2026+ | Application Layer Standards |
+
+## Notable LRC Standards (Ethereum-Compatible)
+
+LRC standards maintain compatibility with Ethereum ERCs:
+
+| LRC Standard | LP Number | Ethereum Equivalent |
+|-------------|-----------|---------------------|
+| LRC-20 | LP-3020 | ERC-20 (Fungible Token) |
+| LRC-721 | LP-3721 | ERC-721 (NFT) |
+| LRC-777 | LP-3777 | ERC-777 (Advanced Token) |
+| LRC-1155 | LP-2155 | ERC-1155 (Multi-Token) |
+| LRC-4337 | LP-5337 | ERC-4337 (Account Abstraction) |
+| LRC-4626 | LP-5626 | ERC-4626 (Tokenized Vault) |
+| LRC-6551 | LP-9551 | ERC-6551 (Token-Bound Accounts) |
+
+## Relationship to HIPs (Hanzo Improvement Proposals)
+
+LPs and HIPs (Hanzo Improvement Proposals) are separate governance systems for different ecosystems that integrate at the AI/attestation boundary:
+
+- **LPs** govern the Lux blockchain protocol, consensus, chain specifications, and on-chain standards.
+- **HIPs** govern Hanzo AI infrastructure including LLM Gateway, MCP, agent frameworks, and AI services.
+- **LP-7106** (LLM Gateway Integration with Hanzo AI) is the primary bridge LP, connecting Lux's A-Chain to the Hanzo LLM Gateway defined in HIP-4.
+- LP-7000 series (A-Chain) covers AI attestation and compute that interoperates with Hanzo services.
+- ZIPs (Zoo Improvement Proposals at `zips.zoo.ngo`) handle the Zoo Labs Foundation's DeSci and frontier AI research governance.
+
+## Repository Structure
+
+```
+~/work/lux/lps/
+  LPs/                    # 348 numbered proposals (lp-NNNN-slug.md)
+    TEMPLATE.md           # Template for new proposals
+  phases/                 # 7 development phases (phase-1 through phase-7)
+  docs/                   # Next.js documentation site + governance docs
+    FAQ.md, TAXONOMY.md   # Reference documentation
+    EDITORS.md            # Editor guidelines
+  examples/               # Example implementations (content-provenance, data-seal, etc.)
+  licenses/               # Lux Ecosystem License v1.2
+  scripts/                # 24 automation scripts (validation, indexing, renumbering)
+  research/               # External research (Polymarket, UMA)
+  _config.yml             # GitHub Pages config (lps.lux.network)
+  Makefile                # Build automation and LP management
+  CONTRIBUTING.md         # Contribution guidelines
+```
+
+## Governance Structure
+
+### Roles
+
+- **Authors**: Write and champion LP proposals.
+- **Editors**: Review for format, completeness, and proper structure. Do not judge technical merit.
+- **Community**: Provides technical feedback, determines acceptance through consensus.
+- **Validators**: Implement accepted standards on-chain.
+
+### Discussion Categories
+
+| Category | Scope |
+|----------|-------|
+| Consensus | Photon, Flare, Quasar, finality protocols |
+| Threshold Crypto | FROST, CGGMP, Ringtail, distributed signing |
+| MPC | Secure computation (not signing) |
+| PQC | Post-quantum: ML-KEM, ML-DSA, SLH-DSA |
+| Chains | P, C, X, T, Q, Z, A, B chain specifications |
+| DeFi | AMMs, lending, oracles |
+| Governance | DAOs, voting, treasury |
+| Ideas | New concepts not yet categorized |
+
+### Key Distinction
+
+Subjects describe knowledge. Chains describe deployment. An LP about FROST threshold signatures (subject: threshold crypto) may be deployed on the T-Chain (chain: threshold). These are independent axes.
+
+## Important Conventions
+
+- All LP files use `github.com/luxfi/*` import paths -- never go-ethereum or ava-labs.
+- While some LPs adopt Avalanche ACP specifications, all Lux implementations use **LP naming** (LP-181, not ACP-181).
+- Go package names follow `lpNNN` convention (e.g., `lp176`, `lp226`).
+- Implementation imports: `github.com/luxfi/node/vms/evm/lp176`.
+- LP content is licensed under CC0 (public domain). Specifications are BSD 3-Clause. Specialized chain implementations use the Lux Ecosystem License.

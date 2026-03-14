@@ -1,11 +1,11 @@
 ---
-title: "Lux Login - Custom Auth Portal for lux.id"
-description: "## Quick Reference"
+title: "Lux Login"
+description: "Custom Auth Portal for lux.id"
 ---
 
 ## Overview
 
-Lux Login is the **custom authentication portal** for Lux Network, providing a monochrome dark-themed sign-in experience at `lux.id`. It supports both direct password login (via Casdoor/IAM API) and OAuth2 Authorization Code flow against `lux.id` IAM.
+Lux Login is the **custom authentication portal** for Lux Network, providing a monochrome dark-themed sign-in experience. It supports direct password login (proxied to Casdoor/IAM API), user registration, password reset, and OAuth2 Authorization Code flow against `lux.id` IAM. Built with Next.js 15 (App Router), it runs as a standalone Docker container and is deployed to GHCR via GitHub Actions.
 
 ## Quick Reference
 
@@ -14,94 +14,243 @@ Lux Login is the **custom authentication portal** for Lux Network, providing a m
 | Repo | `github.com/luxfi/login` |
 | Package | `@luxfi/login` v0.1.0 |
 | Default branch | `main` |
-| Framework | Next.js 15 (App Router) |
+| Framework | Next.js 15 (App Router, `output: 'standalone'`) |
 | Package manager | pnpm 9.15.4 |
 | Node | 22 |
 | Docker image | `ghcr.io/luxfi/login:latest` |
 | Port | 3000 |
+| Private | Yes |
 
-## Architecture
+## Tech Stack
+
+| Layer | Technology | Version |
+|-------|------------|---------|
+| Framework | Next.js (App Router, standalone output) | 15.1.x |
+| React | react, react-dom | 19.0.x |
+| CSS | Tailwind CSS | 3.4.17 |
+| Font | Inter (Google Fonts, weights 400/500/600) |
+| TypeScript | 5.7.x |
+
+Notably minimal -- no `@luxfi/ui`, no `@hanzo/ui`, no `@hanzo/auth`. This is a standalone auth portal with zero shared component library dependencies.
+
+## Project Structure
 
 ```
 login/
 ├── app/
-│   ├── page.tsx            # Login page (email/password + OAuth)
-│   ├── signup/page.tsx     # Sign up page
-│   ├── forgot/page.tsx     # Forgot password page
-│   ├── callback/page.tsx   # OAuth callback handler
-│   ├── layout.tsx          # Root layout (dark theme)
-│   ├── globals.css         # Tailwind styles
-│   ├── api/
-│   │   ├── login/route.ts  # POST /api/login (Casdoor proxy)
-│   │   ├── signup/route.ts # POST /api/signup
-│   │   └── forgot/route.ts # POST /api/forgot
+│   ├── page.tsx                # Login page (email/password + OAuth2)
+│   ├── signup/
+│   │   └── page.tsx            # Sign up page (name/email/password + OAuth2)
+│   ├── forgot/
+│   │   └── page.tsx            # Forgot password page (email → reset link)
+│   ├── callback/
+│   │   └── page.tsx            # OAuth2 callback handler (code → token exchange)
+│   ├── layout.tsx              # Root layout (dark theme, centered flex)
+│   ├── globals.css             # Tailwind + Inter font + autofill fix
+│   └── api/
+│       ├── login/route.ts      # POST /api/login (proxies to IAM)
+│       ├── signup/route.ts     # POST /api/signup (proxies to IAM)
+│       └── forgot/route.ts     # POST /api/forgot (sends verification code)
 ├── components/
-│   └── lux-wordmark.tsx    # LUX SVG wordmark component
+│   └── lux-wordmark.tsx        # LUX SVG wordmark (126x34, white fill)
 ├── lib/
-│   └── oauth.ts            # OAuth2 helpers (authorize URL, token exchange)
-├── Dockerfile              # Multi-stage Node 22 Alpine build
-├── next.config.ts
-├── tailwind.config.ts
-└── package.json
+│   └── oauth.ts                # OAuth2 helpers (authorize URL, token exchange)
+├── Dockerfile                  # Multi-stage Node 22 Alpine (standalone output)
+├── next.config.ts              # { output: 'standalone' }
+├── tailwind.config.ts          # Custom colors: surface #141414, border #262626
+├── postcss.config.mjs
+├── tsconfig.json
+├── package.json
+└── .github/
+    └── workflows/
+        └── ci.yml              # Build + typecheck + GHCR push
 ```
 
 ## Auth Flows
 
-### Direct Password Login
-1. User submits email + password on `/`
-2. `POST /api/login` proxies to IAM: `${IAM_URL}/api/login`
-3. Payload: `{ application: "app-lux", organization: "lux", username, password, type: "login" }`
-4. On success, redirects to `NEXT_PUBLIC_REDIRECT_URL` (default: `cloud.lux.network`)
+### Direct Password Login (`/`)
 
-### OAuth2 Authorization Code
+1. User submits email + password on the login page
+2. Client POSTs to `/api/login` with `{ email, password }`
+3. Server-side route handler proxies to IAM: `POST ${IAM_URL}/api/login`
+4. Payload sent to IAM:
+   ```json
+   {
+     "application": "app-lux",
+     "organization": "lux",
+     "username": "<email>",
+     "password": "<password>",
+     "type": "login"
+   }
+   ```
+5. IAM returns `{ status: "ok", data: "<token>" }` on success
+6. API route returns `{ redirect: REDIRECT_URL, token: data.data }`
+7. Client redirects to `REDIRECT_URL` (default: `cloud.lux.network`)
+
+### User Registration (`/signup`)
+
+1. User submits name + email + password (min 8 chars)
+2. Client POSTs to `/api/signup` with `{ name, email, password }`
+3. Server proxies to IAM: `POST ${IAM_URL}/api/signup`
+4. Payload:
+   ```json
+   {
+     "application": "app-lux",
+     "organization": "lux",
+     "username": "<email>",
+     "name": "<name>",
+     "email": "<email>",
+     "password": "<password>",
+     "type": "signup"
+   }
+   ```
+5. On success, redirects to `REDIRECT_URL`
+
+### Password Reset (`/forgot`)
+
+1. User submits email
+2. Client POSTs to `/api/forgot` with `{ email }`
+3. Server proxies to IAM: `POST ${IAM_URL}/api/send-verification-code`
+4. Payload: `{ application: "app-lux", organization: "lux", dest: email, type: "reset" }`
+5. **Always returns success** (`{ ok: true }`) regardless of whether the email exists, to prevent email enumeration
+
+### OAuth2 Authorization Code Flow
+
 1. User clicks "Sign in with Lux ID"
-2. Redirects to `lux.id/oauth/authorize` with `response_type=code`
-3. After IAM login, callback to `/callback` with authorization code
-4. `/callback` exchanges code for token via `lux.id/oauth/token`
-5. Stores `access_token` + `refresh_token` in sessionStorage
-6. Redirects to target URL
+2. `getOAuthAuthorizeUrl()` constructs URL:
+   ```
+   https://lux.id/oauth/authorize?client_id=...&response_type=code&redirect_uri=.../callback&scope=openid+profile+email&state=<uuid>
+   ```
+3. User authenticates on IAM
+4. IAM redirects back to `/callback?code=<code>`
+5. `CallbackHandler` component calls `exchangeCodeForToken(code)`:
+   - POSTs to `IAM_TOKEN_URL` with `grant_type=authorization_code`
+   - Content-Type: `application/x-www-form-urlencoded`
+6. On success, stores tokens in `sessionStorage`:
+   - `lux_access_token` -- access token
+   - `lux_refresh_token` -- refresh token (if present)
+7. Redirects to `REDIRECT_URL` (default: `cloud.lux.network`)
+8. Error handling: displays error description with "Back to sign in" link
 
 ## Environment Variables
 
-```bash
-# IAM backend (server-side)
-IAM_URL=https://iam.hanzo.ai          # Casdoor API endpoint
-IAM_APP=app-lux                        # Casdoor application name
+### Server-side (API routes)
 
-# OAuth (client-side)
-NEXT_PUBLIC_IAM_CLIENT_ID=lux-cloud-client-id
-NEXT_PUBLIC_IAM_AUTHORIZE_URL=https://lux.id/oauth/authorize
-NEXT_PUBLIC_IAM_TOKEN_URL=https://lux.id/oauth/token
-NEXT_PUBLIC_REDIRECT_URL=https://cloud.lux.network
-NEXT_PUBLIC_IAM_ORG=lux
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `IAM_URL` | `https://iam.hanzo.ai` | Casdoor API base URL |
+| `IAM_APP` | `app-lux` | Casdoor application name |
+
+### Client-side (OAuth2 + redirect)
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `NEXT_PUBLIC_IAM_CLIENT_ID` | `lux-cloud-client-id` | OAuth2 client ID |
+| `NEXT_PUBLIC_IAM_AUTHORIZE_URL` | `https://lux.id/oauth/authorize` | OAuth2 authorize endpoint |
+| `NEXT_PUBLIC_IAM_TOKEN_URL` | `https://lux.id/oauth/token` | OAuth2 token endpoint |
+| `NEXT_PUBLIC_REDIRECT_URL` | `https://cloud.lux.network` | Post-auth redirect target |
+| `NEXT_PUBLIC_IAM_ORG` | `lux` | Casdoor organization name |
+
+The callback URL is derived at runtime: `${window.location.origin}/callback`.
+
+## OAuth2 Helper (`lib/oauth.ts`)
+
+Exports 5 functions:
+
+| Function | Purpose |
+|----------|---------|
+| `getOAuthAuthorizeUrl(state?)` | Constructs authorize URL with client_id, response_type=code, redirect_uri, scope, state |
+| `exchangeCodeForToken(code)` | POSTs to token endpoint, returns `{ access_token, token_type, expires_in, refresh_token? }` |
+| `getRedirectUrl()` | Returns `NEXT_PUBLIC_REDIRECT_URL` |
+| `getIamOrg()` | Returns `NEXT_PUBLIC_IAM_ORG` |
+| `getIamClientId()` | Returns `NEXT_PUBLIC_IAM_CLIENT_ID` |
+
+## UI Design
+
+### Theme
+- **Background**: Pure black (`#000000`)
+- **Text**: White (`#ffffff`)
+- **Surface color**: `#141414` (input backgrounds, cards)
+- **Border color**: `#262626` (input borders, dividers)
+- **Font**: Inter (400, 500, 600) via Google Fonts CDN
+- **Layout**: Centered card (`max-w-sm`), full-height flex
+- **Autofill fix**: WebKit autofill background forced to `#141414` with white text
+
+### Branding
+`LuxWordmark` component -- SVG wordmark, 126x34 viewport (63x17 actual), white fill. Renders "LUX" with the geometric L, connected U, and crossing X from the official Lux brand.
+
+### Pages
+
+| Route | Title | Content |
+|-------|-------|---------|
+| `/` | Sign in | Email + password form, "Forgot password?" link, "Sign in with Lux ID" OAuth button, "Sign up" link |
+| `/signup` | Create account | Name + email + password (min 8 chars), "Sign up with Lux ID" OAuth button, "Sign in" link |
+| `/forgot` | Reset password | Email form, success confirmation message, "Back to sign in" link |
+| `/callback` | -- | Spinner ("Completing sign in...") or error display with back link |
+
+All pages use the `LuxWordmark` component centered at top. Error messages display in red (`text-red-400`) on `bg-surface` with `border-red-900/50`.
+
+## Docker Build
+
+Multi-stage build on Node 22 Alpine:
+
+```dockerfile
+# Stage 1: Install deps
+FROM node:22-alpine AS deps
+RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
+COPY package.json pnpm-lock.yaml* ./
+RUN pnpm install --frozen-lockfile || pnpm install
+
+# Stage 2: Build
+FROM base AS build
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN pnpm build
+
+# Stage 3: Runtime (standalone output)
+FROM node:22-alpine AS runtime
+ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=3000 HOSTNAME="0.0.0.0"
+RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
+COPY --from=build /app/public ./public
+COPY --from=build /app/.next/standalone ./
+COPY --from=build /app/.next/static ./.next/static
+USER nextjs
+EXPOSE 3000
+CMD ["node", "server.js"]
 ```
 
-## Commands
-
-```bash
-pnpm install
-pnpm dev              # Next.js dev server
-pnpm build            # Production build
-pnpm start            # Start production server
-pnpm typecheck        # TypeScript check
-pnpm lint             # ESLint
-```
+Uses Next.js `standalone` output for minimal image size.
 
 ## CI/CD
 
 `.github/workflows/ci.yml`:
-- Triggers on push/PR to `main`
-- Runs `pnpm typecheck` + `pnpm build`
-- On main push: builds and pushes Docker image to GHCR
-- Tags: `ghcr.io/luxfi/login:latest` + `ghcr.io/luxfi/login:<sha>`
 
-## Design
+- **Triggers**: Push to `main`, PRs to `main`
+- **Build steps**: `pnpm install --frozen-lockfile` -> `pnpm typecheck` -> `pnpm build`
+- **Docker push** (main branch only): Builds and pushes to GHCR
+- **Tags**: `ghcr.io/luxfi/login:latest` + `ghcr.io/luxfi/login:<commit-sha>`
+- **Auth**: `GITHUB_TOKEN` (built-in, no external secrets needed)
 
-- **Theme**: Monochrome dark (black background, white text)
-- **Branding**: Production LUX wordmark SVG (126x34)
-- **UI**: Tailwind CSS, minimal, centered card layout
-- **Pages**: Login, Sign up, Forgot password, OAuth callback
+## Commands
+
+```bash
+pnpm install          # Install dependencies
+pnpm dev              # Next.js dev server (port 3000)
+pnpm build            # Production build (standalone output)
+pnpm start            # Start production server
+pnpm typecheck        # TypeScript check (tsc --noEmit)
+pnpm lint             # ESLint (next lint)
+```
+
+## Security Notes
+
+- Password reset endpoint always returns success to prevent email enumeration
+- API routes validate required fields before proxying to IAM
+- Signup enforces minimum 8-character password on server side
+- Tokens stored in `sessionStorage` (cleared on tab close), not `localStorage`
+- IAM credentials (`IAM_URL`) are server-side only, not exposed to client
 
 ## Related Skills
 
+- `lux/lux-id.md` -- Web3 identity portal (static marketing site at lux.id)
 - `lux/lux-brand.md` -- Brand assets and design system

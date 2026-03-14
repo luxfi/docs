@@ -1,24 +1,236 @@
 ---
-title: "Lux Governance - On-Chain Voting & DAO"
-description: "Lux Governance covers on-chain voting, treasury management, and DAO infrastructure for the Lux Network."
+title: "Lux Governance"
+description: "On-Chain Voting, DAO & Treasury"
 ---
 
 ## Overview
 
-Lux Governance covers **on-chain voting, treasury management, and DAO infrastructure** for the Lux Network. The voting platform is published as `@pars/vote` (under Pars organization, not @luxfi directly).
+Lux Governance covers **on-chain voting, treasury management, fractal DAO infrastructure, and identity-based reputation** for the Lux Network. The platform implements a political-terminology governance stack with fractal (nested) DAO support, OHM-style bonding, and soulbound identity integration.
 
-## Components
+## Repositories
 
-| Component | Repo | Purpose |
-|-----------|------|---------|
-| Vote | `github.com/luxfi/vote` | Web voting platform (`@pars/vote`) |
-| Treasury | `github.com/luxfi/treasury` | Treasury management |
-| DAO | `github.com/luxfi/dao` | DAO infrastructure |
+| Repo | Module/Package | Purpose |
+|------|----------------|---------|
+| `github.com/luxfi/dao` | `@luxfi/contracts`, `@pars/vote` | Full DAO platform (React + Solidity) |
+| `github.com/luxfi/lps` | N/A | Lux Proposals (governance specs) |
+| `github.com/luxfi/standard` | `@luxfi/standard` | Core governance Solidity contracts (ABIs) |
+| `github.com/luxfi/vote` | `@pars/vote` | Web voting frontend |
+| `github.com/luxfi/treasury` | N/A | Treasury management |
 
-## Proposals
+## Technology Stack
 
-Governance changes are tracked via **LPs** (Lux Proposals) at `github.com/luxfi/lps`:
-- **1xxx**: P-Chain proposals (validators, staking)
-- **2xxx**: C-Chain proposals (EVM, precompiles)
-- **3xxx**: X-Chain proposals (assets)
-- **4xxx**: Network proposals (consensus, P2P)
+| Layer | Technology |
+|-------|------------|
+| Frontend | React 18, TypeScript, Vite, Chakra UI |
+| Web3 | Wagmi v2, Viem v2, RainbowKit v2 |
+| Wallet | `@luxfi/wallet` (omnichain: EVM + Solana) |
+| Contracts | Solidity, Hardhat, Foundry (Forge) |
+| Testing | Playwright (E2E), Vitest |
+| Indexing | The Graph (subgraph) |
+| Package Manager | pnpm |
+
+## Contract Architecture (Political Terminology)
+
+The governance stack uses political/diplomatic terms that governments and NGOs understand:
+
+| Contract | Political Analog | Solidity File |
+|----------|------------------|---------------|
+| `Council` | Legislative Body / Board | `governance/Council.sol` |
+| `Charter` | Constitution / Bylaws | `governance/Charter.sol` |
+| `Safe` | Treasury / Execution | Gnosis Safe (custody) |
+| `Veto` | Veto Power | `governance/Veto.sol` |
+| `Sanction` | Enforcement / Sanctions | `governance/Sanction.sol` |
+| `Identity` | Citizenship / Voting Rights | `tokens/VotesERC20V1.sol` |
+| `Secretariat` | Administrative Office | `governance/Secretariat.sol` |
+
+**Legacy names to avoid**: Azorius, Governor, Strategy, FreezeGuard, FreezeVoting, SubDAO, GnosisSafe.
+
+## Voting Weight Adapters
+
+| Adapter | Mechanism |
+|---------|-----------|
+| `VotingWeightERC20V1` | ERC20 token-based voting |
+| `VotingWeightERC721V1` | NFT-based voting (one-NFT-one-vote) |
+| `ProposerAdapterHatsV1` | Hats Protocol role-based proposing |
+
+## Fractal Governance (Nested DAOs)
+
+The same governance pattern repeats at every scale:
+
+- **L1 DAO (Sovereign)**: Full autonomy, can create child DAOs
+- **L2+ DAO (Nested)**: Own Safe, may have parent Veto/Sanction
+- Each level: Council + Charter + Safe
+- Fork freedom: disagreement leads to new DAO, no permission needed
+- Exit liquidity: members can always withdraw
+
+## Treasury Contracts (OHM-Style Bonding)
+
+| Contract | Purpose |
+|----------|---------|
+| `LiquidBond.sol` | OHM-style bonding for ASHA with multi-collateral |
+| `CollateralRegistry.sol` | Registry for bondable assets with risk tiers |
+| `Bond.sol` | DAO treasury bond issuance with vesting |
+| `Recall.sol` | Parent DAO fund recall (ALLOCATED only, not BONDED) |
+| `FeeRouter` | Automatic fee distribution by policy |
+| `GaugeController` | Epoch-based allocation voting |
+| `VaultRegistry` | Multi-vault management |
+| `SpendingTimelock` | Tiered spending delays (24h-168h) |
+
+### Collateral Tiers
+
+| Tier | Assets | Bond Discount |
+|------|--------|---------------|
+| TIER_1 | Native ecosystem (LUSD, LETH, CYRUS, MIGA, PARS) | 25% |
+| TIER_2 | Major assets (ETH, BTC wrappers, stables) | 20% |
+| TIER_3 | LP tokens (ASHA pairs) | 15% |
+| TIER_4 | Other volatile assets | 10% |
+
+## Identity System (LP-3006)
+
+Three-layer identity for governance:
+
+| Layer | Contract | Purpose |
+|-------|----------|---------|
+| DID | `DIDRegistry.sol` | W3C DID (`did:lux:<id>`) |
+| SoulID | `SoulID.sol` | Soulbound NFT with reputation fields |
+| Karma | `Karma.sol` + `KarmaController.sol` | Non-transferable reputation token |
+
+### Reputation Scores (0-100)
+
+| Score | Purpose |
+|-------|---------|
+| `humanityScore` | Sybil resistance, humanity verification |
+| `governanceParticipation` | Voting and proposal activity |
+| `communityContribution` | Community involvement |
+| `protocolUsage` | DeFi/protocol activity |
+| `trustLevel` | Composite score for voting weight |
+
+### Voting Power Formula
+
+```
+votingPower = karma * (50 + trustLevel / 2) / 100
+canPropose = karma >= 100 KARMA
+isHuman = humanityScore >= 50
+```
+
+## Lux Proposals (LPs)
+
+Governance changes tracked via **LPs** at `github.com/luxfi/lps`:
+
+| Range | Chain | Examples |
+|-------|-------|---------|
+| LP-0xxx | Network-wide | Architecture, governance, philosophy, licensing |
+| LP-1xxx | P-Chain | Validators, staking |
+| LP-2xxx | C-Chain | EVM, precompiles |
+| LP-3xxx | X-Chain / Identity | Assets, DID, SoulID |
+| LP-4xxx | Network | Consensus, P2P |
+| LP-6xxx | Cross-chain | Teleport bridge |
+| LP-9xxx | DEX | AMM precompiles |
+
+Currently 350+ proposals in the repository.
+
+## Deployed Contract Addresses (localhost:1337)
+
+| Contract | Address | Role |
+|----------|---------|------|
+| Council | `0x4A679253410272dd5232B3Ff7cF5dbB88f295319` | Legislative Body |
+| Charter | `0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f` | Constitution |
+| Identity | `0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44` | Voting Rights |
+| Sanction | `0x7a2088a1bFc9d81c55368AE168C2C02570cB814F` | Enforcement |
+| Veto | `0x09635F643e140090A9A8Dcd712eD6285858ceBef` | Veto Power |
+| SafeL2 | `0x3Aa5ebB10DC797CAC828524e59A333d0A371443c` | Treasury |
+
+## Package Architecture
+
+```
+@luxfi/standard    Core ABIs (Council, Charter, Identity, Veto, Sanction)
+    ^
+    |  re-exports
+@luxfi/contracts   DAO-specific ABIs + per-network addresses
+    ^
+    |  imports
+@luxfi/wallet      Omnichain wallet SDK (RainbowKit + Solana)
+```
+
+### Import Usage
+
+```typescript
+// From @luxfi/contracts (DAO apps)
+import { GovernorAbi, StrategyAbi, abis, addresses } from '@luxfi/contracts';
+
+// From @luxfi/standard directly (general use)
+import { GovernorAbi, StrategyAbi } from '@luxfi/standard';
+
+// Wallet SDK
+import { LuxWalletProvider, ConnectButton } from '@luxfi/wallet';
+```
+
+## Directory Structure
+
+```
+dao/
+  app/              # React frontend (Vite + Chakra UI)
+    src/
+      components/   # React components
+      pages/        # Route pages
+      providers/    # Context providers (wagmi, rainbowkit)
+      hooks/        # useIdentity, useSoulID, useKarma
+  contracts/        # Solidity contracts (@luxfi/contracts)
+    contracts/      # .sol files
+    ignition/       # Hardhat Ignition deployment modules
+    publish/        # ABIs and deployed addresses
+  api/              # Backend API
+  sdk/              # TypeScript SDK
+  subgraph/         # The Graph indexing
+  packages/
+    wallet/         # @luxfi/wallet SDK
+  e2e/              # Playwright E2E tests
+  stack/            # Docker Compose full stack
+```
+
+## Development
+
+```bash
+# Install and run locally
+make install            # Install all dependencies
+make up                 # Start local dev (Anvil + frontend)
+make test               # Run all tests
+make down               # Stop services
+
+# Docker (full stack)
+make build-docker       # Build Docker images
+make up-docker          # Start with Docker Compose
+make logs-docker        # View logs
+
+# Contract deployment
+cd ~/work/lux/standard
+forge script script/DeployLocal.s.sol --rpc-url http://127.0.0.1:8545 --broadcast
+```
+
+### Docker Stack Services
+
+| Service | Port | Purpose |
+|---------|------|---------|
+| Anvil | 8545 | Local blockchain (chain ID 1337) |
+| Frontend | 3000 | React app |
+| API | 4000 | Backend |
+| PostgreSQL | 5432 | Database |
+| Redis | 6379 | Cache |
+| IPFS | 8080/5001 | Decentralized storage |
+
+## Production Deployment
+
+| Domain | Purpose |
+|--------|---------|
+| `lux.vote` | Lux DAO voting platform |
+| `pars.vote` | Pars DAO (GitHub Pages via `parsdao/pars.vote`) |
+
+## Network Configuration
+
+| Network | Chain ID | Consensus Time |
+|---------|----------|----------------|
+| Lux Mainnet | 96369 | 9.63s |
+| Lux Testnet | 96368 | 6.3s |
+| Localhost | 1337 | Instant (Anvil) |
+
+Multichain support: Ethereum, Optimism, Polygon, Base, Sepolia.

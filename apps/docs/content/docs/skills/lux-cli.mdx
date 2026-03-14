@@ -1,46 +1,382 @@
 ---
-title: "Lux CLI - Command-Line Interface"
-description: "Lux CLI is the command-line tool for Lux subnet development, local network testing, and validator operations."
+title: "Lux CLI"
+description: "Developer Toolchain for Blockchain Development"
 ---
 
 ## Overview
 
-Lux CLI is the **command-line tool** for Lux subnet development, local network testing, and validator operations. NEVER use `pkill luxd` — always use CLI for proper shutdown.
+`github.com/luxfi/cli` is the command-line tool for Lux blockchain development, local network management, validator operations, key management, DEX trading, MPC wallets, and Kubernetes node deployment. Version 1.22.5, built on `spf13/cobra`.
 
-## Quick reference
+## Module
 
-| Item | Value |
-|------|-------|
+| Field | Value |
+|-------|-------|
 | Module | `github.com/luxfi/cli` |
+| Go | 1.26.1 |
+| Version | 1.22.5 (from `cmd/root.go`) / 1.9.9 (from `VERSION` file) |
+| Binary | `lux` |
 | Config | `$HOME/.lux/cli.json` |
+| Data | `$HOME/.lux/` (chains, keys, networks, snapshots, plugins, repos, logs, mpc) |
 | Platforms | Linux, macOS |
-| Build | `go build -o lux ./cmd/` |
+| Build | `go build -o lux ./cmd/` or `make` |
 
-## Commands
+### Key Dependencies
 
-```bash
-# Network management
-lux network create local-net    # Create local network
-lux network start               # Start network
-lux network stop                # Stop network (proper shutdown!)
-lux network status              # Check status
-lux network clean               # Remove network data
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `luxfi/sdk` | v1.16.46 | Lux SDK (wallet, API, tx building) |
+| `luxfi/node` | v1.23.21 | Node binary management |
+| `luxfi/evm` | v0.8.35 | EVM/Subnet-EVM configuration |
+| `luxfi/coreth` | v1.21.48 | C-Chain coreth dependency |
+| `luxfi/netrunner` | v1.15.7 | Local network runner |
+| `luxfi/genesis` | v1.6.1 | Genesis configuration |
+| `luxfi/warp` | v1.18.5 | Cross-chain Warp messaging |
+| `luxfi/crypto` | v1.17.42 | Cryptographic operations |
+| `luxfi/keychain` | v1.0.2 | Key management |
+| `luxfi/ledger` | v1.1.6 | Hardware wallet support |
+| `luxfi/config` | v1.1.2 | Configuration management |
+| `luxfi/erc20-go` | v0.2.1 | ERC20 token operations |
+| `luxfi/lpm` | v1.9.4 | Lux Plugin Manager |
+| `spf13/cobra` | v1.10.2 | CLI framework |
+| `spf13/viper` | v1.21.0 | Configuration |
+| `aws/aws-sdk-go-v2` | v1.41.1 | AWS cloud operations |
+| `google.golang.org/api` | v0.256.0 | GCP operations |
+| `k8s.io/client-go` | v0.35.1 | Kubernetes API |
 
-# Subnet operations
-lux subnet create my-subnet     # Create subnet
-lux subnet deploy my-subnet     # Deploy to local network
-lux subnet list                 # List subnets
+## Command Tree
 
-# Validator operations
-lux validator list              # List validators
-lux validator add --node-id=... # Add validator
+```
+lux
+  chain          Blockchain lifecycle (create/deploy/list/describe/delete/import)
+    create       Create new blockchain configuration (L1/L2/L3)
+    deploy       Deploy to local/testnet/mainnet
+    list         List all configured blockchains
+    describe     Show detailed blockchain information
+    delete       Delete a blockchain configuration
+    import       Import blocks from RLP file
+    upgrade      Manage chain upgrades
+      generate   Generate upgrade config
+      apply      Apply upgrade
+      export     Export upgrade config
+      import     Import upgrade config
+      print      Print upgrade config
+      validate   Validate upgrade config
+      vm         VM upgrade operations
 
-# Key management (NEVER use EWOQ keys!)
-lux key create my-key           # Generate fresh key
-lux key list                    # List keys
+  network        Manage local network runtime
+    start        Start local network (mainnet/testnet/devnet/dev)
+    stop         Stop and save snapshot
+    status       Show network status and endpoints
+    clean        Stop and delete runtime data
+    monitor      Real-time network monitor
+    snapshot     Manage network snapshots
+    bootstrap    Bootstrap network operations
+    describe     Network describe with genesis info
+    send         C-Chain send convenience
+
+  key            Manage cryptographic keys
+    create       Generate new key set from mnemonic (EC, BLS, Ringtail, ML-DSA)
+    list         List all key sets
+    show         Show key set details and addresses
+    delete       Delete a key set
+    export       Export key set (mnemonic or individual keys)
+    import       Import key set from mnemonic
+    generate     Batch generate key sets (-n count, -p prefix)
+    derive       Derive keys from LUX_MNEMONIC env var
+    genesis      Genesis key operations
+    export-signer  Export signer key
+    lock         Lock key (clear from memory), --all supported
+    unlock       Unlock key for use
+    backend      Manage key storage backends (list/set)
+    kchain       K-Chain distributed key management (status/create/sign)
+    ring         Ring signatures for anonymous signing
+    migrate      Migrate plaintext to encrypted storage
+
+  validator      Manage P-Chain validator balance
+    list         List validators
+    getBalance   Get validator balance
+    increaseBalance  Increase validator balance
+
+  node           Manage luxd nodes (local + Kubernetes)
+    link         Symlink luxd binary to ~/.lux/bin/luxd
+    deploy       Deploy/update via Helm chart
+    upgrade      Rolling upgrade with zero downtime (partition-based)
+    status       Show pod status, images, health
+    logs         Stream logs from luxd pod
+    rollback     Revert to previous StatefulSet revision
+
+  contract       Smart contract operations
+    deploy       Deploy contract
+    deploy-erc20 Deploy ERC20 token
+    init-validator-manager  Initialize validator manager
+
+  dev            Local development environment
+    start        Start single-node dev mode (K=1 consensus)
+    stop         Stop dev environment
+
+  dex            Decentralized exchange operations
+    market       Manage markets (list/info/create)
+    order        Manage orders (place/cancel/list/history)
+    pool         Manage liquidity pools (list/create/add/remove/swap)
+    perp         Perpetual futures (markets/open/close/positions/pnl/funding)
+    account      Trading account (balance/deposit/withdraw/history)
+    status       DEX status and statistics
+
+  amm            Uniswap-style AMM trading
+
+  mpc            Multi-Party Computation (threshold signing)
+    node         Manage MPC nodes
+      init       Initialize t-of-n network (--threshold, --nodes)
+      start      Start all nodes
+      stop       Stop all nodes
+      status     Check node status
+      clean      Stop and remove data
+      list       List networks
+    deploy       Deploy MPC nodes to cloud (create/status/ssh)
+    backup       Backup and restore
+    wallet       Manage MPC wallets (list/create/show/export)
+    sign         Threshold signing (request/approve/status)
+
+  gpu            GPU acceleration management
+    status       Check GPU availability (NTT, FHE, lattice ops)
+
+  primary        Primary network operations
+    add-validator  Add validator to primary network
+    describe     Describe primary network
+
+  config         CLI configuration
+    lint         Lint configuration
+    metrics      Metrics configuration
+
+  vm             VM management
+    install      Install VM binary
+    link         Link VM to node
+    unlink       Unlink VM
+    reload       Reload VM plugins
+    status       VM status
+
+  warp           Cross-chain messaging (ICM/Interchain Messaging)
+
+  rpc            Direct RPC calls
+    transfer     RPC transfer
+
+  self           CLI self-management (like nvm for node)
+    install      Install specific CLI version
+    list         List available versions
+    use          Switch to specific version
+    link         Link CLI binary
+
+  update         Update CLI to latest version
+
+  snapshot       Manage network snapshots
+
+  netrunner      Network runner management
+    link         Link netrunner binary
+
+  kms            Key Management Service integration
+
+  link           Unified binary linking
+
+  backend        Hidden backend server commands
+    spawnServer  Spawn backend gRPC server
+    (per-network backend commands: lux-mainnet-grpc, lux-testnet-grpc, etc.)
 ```
 
-## Related Skills
+## Network Types
 
-- `lux/lux-node.md` - Node management
-- `lux/lux-netrunner.md` - Network testing
+| Type | Validators | Port | Flag |
+|------|-----------|------|------|
+| mainnet | 5 | 9630 | `--mainnet, -m` |
+| testnet | 5 | 9640 | `--testnet, -t` |
+| devnet | 5 | 9650 | `--devnet, -d` |
+| dev | 1 (K=1) | varies | `--dev` |
+| custom | varies | varies | `--custom` |
+
+## Chain Architecture
+
+| Type | Description |
+|------|-------------|
+| L1 (Sovereign) | Independent validator set, own tokenomics |
+| L2 (Rollup) | Based on L1 sequencing (Lux, Ethereum, OP Stack) |
+| L3 (App Chain) | Built on L2 for application-specific use |
+
+Sequencing options: `lux` (100ms blocks, lowest cost), `ethereum` (12s blocks, highest security), `op` (OP Stack compatible).
+
+## Key Management
+
+Keys are stored in `~/.lux/keys/<name>/` with subdirectories per type:
+
+| Type | Algorithm | Purpose |
+|------|-----------|---------|
+| EC | secp256k1 | Transaction signing, Ethereum compatibility |
+| BLS | BLS12-381 | Consensus participation, aggregated signatures |
+| Ringtail | Lattice-based ring | Ring signatures for privacy |
+| ML-DSA | NIST Level 3 | Post-quantum digital signatures |
+
+All key types derived from a single BIP39 mnemonic using HKDF. Keys can be locked/unlocked for session management. Backend system supports multiple storage providers (keychain, file, K-Chain distributed).
+
+NEVER use EWOQ keys. Always generate fresh keys with `lux key create`.
+
+## MPC Operations
+
+Threshold signing network for distributed custody:
+
+```bash
+# Initialize 3-of-5 network
+lux mpc node init --threshold 3 --nodes 5 --devnet
+
+# Start / stop / status
+lux mpc node start
+lux mpc node status
+lux mpc node stop
+
+# Wallet operations
+lux mpc wallet create --name "Treasury"
+lux mpc wallet list
+
+# Threshold signing
+lux mpc sign request --wallet <id> --message "0x..."
+lux mpc sign approve <request-id>
+```
+
+MPC port ranges: mainnet 9700-9799, testnet 9710-9809, devnet 9720-9819.
+Data stored in `~/.lux/mpc/`.
+
+## DEX Operations
+
+Full decentralized exchange with CLOB, AMM, and perpetual futures:
+
+```bash
+# Market operations
+lux dex market list
+lux dex market info LUX/USDT
+
+# Order placement
+lux dex order place --market LUX/USDT --side buy --type limit --price 10.50 --amount 100
+lux dex order list
+lux dex order cancel <order-id>
+
+# AMM liquidity
+lux dex pool create --token0 LUX --token1 USDT --amount0 1000 --amount1 10000 --type constant-product --fee 30
+lux dex pool swap --from LUX --to USDT --amount 100 --slippage 0.5
+
+# Perpetual futures (up to 100x leverage)
+lux dex perp open --market BTC-PERP --side long --size 0.1 --leverage 10
+lux dex perp positions
+lux dex perp close BTC-PERP --percent 50
+
+# Account management
+lux dex account balance
+lux dex account deposit --token LUX --amount 1000
+```
+
+Pool types: constant-product (Uniswap V2), stableswap (Curve), concentrated (Uniswap V3).
+
+## Kubernetes Node Management
+
+The `node` command manages luxd nodes both locally and on Kubernetes:
+
+```bash
+# Local binary linking
+lux node link --auto
+
+# K8s deployment via Helm
+lux node deploy --mainnet
+lux node deploy --testnet --set image.tag=luxd-v1.23.15
+
+# Zero-downtime rolling upgrade
+lux node upgrade --mainnet --image ghcr.io/luxfi/node:v1.23.6
+
+# Operations
+lux node status --mainnet
+lux node logs --mainnet luxd-0 -f
+lux node rollback --mainnet
+```
+
+All K8s commands accept: `--mainnet`, `--testnet`, `--devnet`, `--namespace`, `--context`.
+Uses canonical Helm chart at `~/work/lux/devops/charts/lux/` (configurable via `--chart-path` or `$LUX_CHART_PATH`).
+
+## GPU Acceleration
+
+```bash
+lux gpu status
+```
+
+Reports availability for: NTT operations (Ringtail consensus), FHE operations (ThresholdVM), lattice cryptography. Builds with CGO for GPU support (`cgo_enabled.go` / `cgo_disabled.go`).
+
+## Configuration
+
+Config file: `$HOME/.lux/cli.json` (JSON format).
+
+Environment variables:
+- `LUX_NODE_PATH` -- path to luxd binary
+- `LUX_NETRUNNER_PATH` -- path to netrunner binary
+- `LUX_EVM_PATH` -- path to EVM binary
+- `LUX_PLUGINS_DIR` -- plugins directory
+- `LUX_NON_INTERACTIVE=1` -- disable prompts
+- `CI=1` -- also disables prompts
+- `LUX_MNEMONIC` -- mnemonic for key derivation
+
+CLI flags: `--config`, `--log-level`, `--skip-update-check`, `--non-interactive`, `--verbose`, `--debug`, `--quiet`.
+
+## Directory Structure
+
+```
+$HOME/.lux/
+  cli.json           Configuration file
+  chains/            Chain configurations (genesis.json, sidecar.json per chain)
+  keys/              Cryptographic keys (ec/, bls/, rt/, mldsa/ per key name)
+    mpc/             MPC key shards
+  networks/          Network runtime data per type
+  snapshots/         Network snapshots
+  bin/               Linked binaries (luxd, etc.)
+  plugins/           VM plugins
+  repos/             Downloaded repos
+  logs/              CLI log files
+  mpc/               MPC network data
+```
+
+## Typical Workflows
+
+### Local Development
+
+```bash
+lux key create validator1        # Generate keys
+lux network start --devnet       # Start 5-node network
+lux chain create mychain         # Create chain config
+lux chain deploy mychain --devnet # Deploy to network
+lux network status               # Check endpoints
+lux network stop                 # Save and stop
+lux network clean                # Wipe runtime (keeps chains)
+```
+
+### Contract Deployment
+
+```bash
+lux contract deploy-erc20        # Deploy ERC20
+lux contract init-validator-manager  # Initialize validator manager
+```
+
+### Chain Upgrades
+
+```bash
+lux chain upgrade generate       # Generate upgrade config
+lux chain upgrade validate       # Validate config
+lux chain upgrade apply          # Apply to running chain
+```
+
+## Internal Architecture
+
+- `cmd/root.go`: Root cobra command, `createApp` initializer, config loading, update checking
+- `cmd/commands.go`: Command name constants
+- `pkg/application/`: Core `Lux` application struct
+- `pkg/config/`: Configuration management
+- `pkg/prompts/`: Interactive/non-interactive prompt system
+- `pkg/ux/`: User-facing logger (stdout for user output, stderr for logs)
+- `pkg/lpmintegration/`: Lux Plugin Manager integration
+- `pkg/mpc/`: MPC node management (NodeManager)
+- `pkg/cobrautils/`: Cobra command utilities
+- `pkg/utils/`: General utilities (metrics, tracking)
+- `internal/migrations/`: Data migration system
+
+The CLI uses `luxfi/log` for structured logging with configurable levels. Logging defaults to WARN display level; file logging at INFO level. Output goes to `$HOME/.lux/logs/`.

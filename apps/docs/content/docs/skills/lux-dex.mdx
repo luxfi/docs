@@ -1,85 +1,408 @@
 ---
-title: "Lux DEX (LX) - Ultra-High Performance Order Matching"
-description: "LX is an ultra-high performance CLOB (Central Limit Order Book) DEX engine with multi-engine order matching and GPU acceleration."
+title: "Lux DEX (LX)"
+description: "Ultra-High Performance Order Matching Engine"
 ---
 
 ## Overview
 
-LX is an **ultra-high performance CLOB (Central Limit Order Book) DEX engine** with multi-engine order matching and GPU acceleration. This is a standalone order matching engine — NOT an AMM. Separate product from `luxfi/exchange`.
+LX is an **ultra-high performance Central Limit Order Book (CLOB) order matching engine** with multi-backend acceleration (Go, C++, Rust, CUDA, MLX, FPGA). It is a standalone matching engine -- NOT an AMM. It integrates with `luxfi/exchange` for AMM routing but the core is a price-time priority CLOB with a full derivatives stack (perpetuals, margin, lending, vaults, clearing house).
+
+The engine includes a pluggable gateway layer that aggregates liquidity from the native CLOB and external AMM providers (Uniswap V2/V3/V4, Lux AMM) across multiple chains, plus DAG-based consensus for multi-node orderbook synchronization.
 
 **Performance**: 434M+ orders/sec (GPU/MLX), 2ns order latency (GPU), 487ns (CPU).
 
-## Quick reference
+## Quick Reference
 
 | Item | Value |
 |------|-------|
 | Module | `github.com/luxfi/dex` |
-| Language | Go 1.26.1 + C++ + Rust + MLX (Apple Metal) |
+| Go | 1.26.1 |
+| Binary | `luxd` (built to `bin/luxd`) |
+| C++ Engine | `luxcpp/dex/` (CMake, C++17, `-O3 -march=native -flto`) |
 | License | Proprietary (Lux Industries Inc) |
-| Protocol | FIX (Financial Information eXchange) |
-
-## Matching Engines
-
-| Engine | Language | Performance |
-|--------|----------|-------------|
-| Pure Go | Go | 830K orders/sec |
-| C++ | C++ | 800K+ orders/sec |
-| Rust | Rust | 585K+ orders/sec |
-| MLX GPU | Metal/CUDA | **434M+ orders/sec** |
-
-### Latency
-
-| Mode | Order Latency |
-|------|---------------|
-| GPU (MLX) | **2ns** |
-| CPU | **487ns** |
+| gRPC proto | `proto/lxdex.proto` |
+| Chains | LUX (96369), Zoo (200200), Ethereum (1), Arbitrum (42161), etc. |
 
 ## Architecture
 
 ```
-Client → FIX Protocol → Order Gateway
-                            ↓
-                    ┌───────────────┐
-                    │  Order Router  │
-                    └───────┬───────┘
-              ┌─────────────┼─────────────┐
-              ↓             ↓             ↓
-         ┌─────────┐  ┌─────────┐  ┌──────────┐
-         │ Go CLOB │  │ C++ CLOB│  │ GPU CLOB │
-         └─────────┘  └─────────┘  └──────────┘
-              ↓             ↓             ↓
-                    ┌───────────────┐
-                    │  Match Events  │
-                    └───────┬───────┘
-                            ↓
-                    ┌───────────────┐
-                    │  Settlement   │
-                    └───────────────┘
+                     +-----------------------------+
+                     |  External Clients            |
+                     |  FIX / REST / WS / gRPC / ZAP|
+                     +------+----------------------+
+                            |
+              +-------------v------------------------+
+              |         API Gateway (pkg/gateway)     |
+              |  Router -> Registry -> Providers      |
+              |  (Lux AMM, Uniswap V2/V3/V4, ...)    |
+              +------+------------------+------------+
+                     |                  |
+          +----------v---------+  +----v-------------+
+          |  CLOB Engine       |  |  AMM Providers    |
+          |  (pkg/lx)          |  |  (pkg/gateway/)   |
+          |  +------------+    |  |  lux/  uniswap/   |
+          |  | OrderBook  |    |  +------------------+
+          |  +------------+    |
+          |  |ClearingHouse|   |
+          |  +------------+    |
+          |  | RiskEngine |    |
+          |  +------------+    |
+          |  |MarginEngine|    |
+          |  +------------+    |
+          |  |FundingEngine|   |
+          |  +------------+    |
+          |  |PriceOracle |    |
+          |  +------------+    |
+          +------+-------------+
+                 |
+    +------------v------------------------------------+
+    |        Matching Backends (pkg/orderbook)        |
+    |   +------+  +------+  +------+  +------+       |
+    |   |  Go  |  | C++  |  | Rust |  | MLX  |       |
+    |   | Pure |  | CGO  |  | FFI  |  | GPU  |       |
+    |   +------+  +------+  +------+  +------+       |
+    +----+----------------------------------------+---+
+         |
+    +----v--------------------------------------------+
+    |     Infrastructure                              |
+    |  DPDK/XDP   NATS   ZeroMQ   BadgerDB           |
+    |  Consensus (DAG/Quasar/Ringtail)                |
+    +-------------------------------------------------+
 ```
 
-## FIX Protocol Support
+## Matching Engines
 
-| Message | Type |
-|---------|------|
-| NewOrderSingle | Order submission |
-| ExecutionReport | Fill/cancel notifications |
-| MarketDataSnapshot | Order book snapshots |
+| Engine | Language | Performance | Build Tag |
+|--------|----------|-------------|-----------|
+| Pure Go | Go | 830K orders/sec | (default, CGO_ENABLED=0) |
+| C++ (CGO) | C++ | 800K+ orders/sec | `cpp` (CGO_ENABLED=1) |
+| Rust | Rust | 585K+ orders/sec | (ext/) |
+| MLX GPU | Apple Metal | **434M+ orders/sec** | `cpp gpu mlx` |
+| CUDA GPU | NVIDIA CUDA | **434M+ orders/sec** | `cpp gpu` |
+| FPGA | AMD Alveo / AWS F2 | Sub-microsecond | `cgo fpga` |
 
-## Key Dependencies
+### Build Variants
 
+```bash
+make build-go           # Pure Go, CGO_ENABLED=0
+make build-cpp          # C++ acceleration via CGO
+make build-gpu          # GPU (MLX + CUDA), tags: cpp gpu mlx
+make build-fpga         # Generic FPGA
+make build-fpga-versal  # AMD Versal FPGA
+make build-fpga-f2      # AWS F2 FPGA
 ```
-github.com/luxfi/accel   — GPU/FPGA acceleration
-github.com/luxfi/czmq/v4 — ZeroMQ messaging
-github.com/luxfi/database — State storage
-github.com/luxfi/geth    — Ethereum types (luxfi, NOT go-ethereum)
-github.com/luxfi/rpc     — RPC layer
-nats-io/nats.go          — NATS messaging
-google.golang.org/grpc   — gRPC API
+
+### Backend Auto-Detection
+
+At `init()`, the engine detects the best available backend:
+1. `CUDA_VISIBLE_DEVICES` set -> `BackendCUDA`
+2. macOS arm64 + Metal.framework -> `BackendMLX`
+3. `CGO_ENABLED=1` -> `BackendCGO`
+4. Default -> `BackendGo`
+
+## Order Types
+
+Defined in `pkg/lx/types.go`:
+
+| Type | Constant | Description |
+|------|----------|-------------|
+| Limit | `Limit` | Price-time priority limit order |
+| Market | `Market` | Immediate execution at best available |
+| Stop | `Stop` | Triggers at stop price |
+| Stop-Limit | `StopLimit` | Triggers at stop price, places limit |
+| Iceberg | `Iceberg` | Hidden size with display quantity, auto-refill |
+| Peg | `Peg` | Pegged to BBO with offset |
+| Bracket | `Bracket` | OCO with take-profit and stop-loss |
+| Hidden | `Hidden` | Dark pool order, fully hidden |
+
+### Order Flags
+
+```go
+const (
+    FlagPostOnly   OrderFlags = 1 << iota  // Reject if would take liquidity
+    FlagReduceOnly                          // Only reduce existing position
+    FlagImmediate                           // IOC semantics
+    FlagHidden                              // Dark pool order
+)
+const OrderFlagSTP OrderFlags = 1 << 2     // Self-trade prevention
 ```
 
-## Integration with Exchange
+### Time-in-Force
 
-The DEX engine integrates with `github.com/luxfi/exchange` via the DEX precompiles:
+| TIF | Description |
+|-----|-------------|
+| `TIF_GTC` | Good Till Cancelled |
+| `TIF_IOC` | Immediate Or Cancel (partial fills ok) |
+| `TIF_FOK` | Fill Or Kill (all or nothing) |
+| `TIF_DAY` | Day order (expires end of session) |
+
+## OrderBook Internals (pkg/lx/orderbook.go)
+
+The CLOB uses:
+
+- **Integer prices**: `PriceInt` (int64, 8 decimal precision via `PriceMultiplier = 100_000_000`) for fast map lookups
+- **B-tree price index**: `IntBTree` with configurable degree (default 32) for sorted price traversal
+- **Lock-free order map**: `sync.Map` for concurrent order lookups alongside `map[uint64]*Order` for API compat
+- **Linked list per level**: `OrderLinkedList` for O(1) order insertion/removal at each price
+- **Circular trade buffer**: Fixed-capacity ring buffer (initial 1000) for trade history
+- **Atomic counters**: Lock-free trade ID, order ID, update ID, sequence generation
+- **Cache-line padding**: `_padding [64]byte` to prevent false sharing
+- **Optimized price levels**: `OptimizedPriceLevel` with atomic size/count counters
+
+### OrderTree
+
+Each side (bids/asks) is an `OrderTree`:
+
+```go
+type OrderTree struct {
+    side        Side
+    priceLevels map[PriceInt]*OptimizedPriceLevel  // Integer keys for fast lookup
+    priceTree   *IntBTree                          // B-tree for sorted iteration
+    orders      map[uint64]*Order
+    bestPrice   atomic.Int64                       // Lock-free best price
+}
+```
+
+## Package Structure
+
+### `pkg/lx/` - Core Trading Engine (71 files)
+
+| File | Purpose |
+|------|---------|
+| `types.go` | Core types: Order, Trade, TradingEngine, PriceLevel, OrderBookSnapshot |
+| `orderbook.go` | Optimized CLOB: OrderBook, OrderTree, IntBTree, CircularTradeBuffer |
+| `orderbook_advanced.go` | Iceberg, hidden, peg, bracket, conditional orders |
+| `orderbook_extended.go` | Extended order book features |
+| `clearinghouse.go` | ClearingHouse: perps margin, spot balances, multi-source oracle, funding |
+| `margin.go` | MarginEngine: cross/isolated/portfolio margin |
+| `risk_engine.go` | RiskEngine: pre-trade risk checks, VaR, exposure limits |
+| `liquidation.go` | LiquidationEngine: forced position closes, ADL |
+| `funding.go` | 8-hour funding rate mechanism for perpetuals |
+| `lending.go` | LendingPool: borrow/supply with utilization-based rates |
+| `vaults.go` | VaultManager: yield vaults |
+| `vault_strategy.go` | Strategy implementations (Sharpe ratio, max drawdown, profit factor) |
+| `staking.go` | Token staking with reward distribution |
+| `oracle.go` | PriceOracle: multi-source weighted median, TWAP/VWAP |
+| `pyth_source.go` | Pyth Network oracle adapter |
+| `chainlink_source.go` | Chainlink oracle adapter |
+| `alpaca_source.go` | Alpaca Markets oracle adapter |
+| `bridge.go` | Cross-chain bridge: multi-validator consensus, daily limits, nonce tracking |
+| `x_chain_integration.go` | Lux X-Chain integration |
+| `multisig.go` | Multisig governance |
+| `compliance.go` | KYC/AML compliance checking |
+| `reconciliation.go` | Balance reconciliation |
+| `funds.go` | Fund management |
+| `fpga_accelerator.go` | FPGA acceleration: parser/risk/match/encoder pipelines, DMA channels |
+| `market_config.go` | Per-market configuration |
+
+### `pkg/api/` - API Servers
+
+| File | Purpose |
+|------|---------|
+| `jsonrpc.go` | JSON-RPC 2.0 server with IP rate limiting (100 req/s/IP) |
+| `websocket_server.go` | Real-time WebSocket: auth, subscriptions, per-client rate limit |
+| `zap_server.go` | ZAP binary protocol for HFT (zero-copy, cache-aligned wire format) |
+
+### `pkg/orderbook/` - Pluggable OrderBook Backends
+
+| File | Purpose |
+|------|---------|
+| `factory.go` | Pure Go orderbook factory |
+| `factory_cgo.go` | CGO factory (routes to C++ when available) |
+| `cpp_orderbook.go` | C++ orderbook binding |
+
+### `pkg/consensus/` - DEX Consensus
+
+DAG-based ordering with Quasar certificate consensus and Ringtail post-quantum engine. Security levels: 128, 192, 256 bits.
+
+### `pkg/gateway/` - API Gateway
+
+Multi-provider aggregation supporting external DEX routing:
+
+| File | Purpose |
+|------|---------|
+| `gateway.go` | Main gateway: register/unregister providers, start HTTP server |
+| `router.go` | Parallel quote aggregation with fallback |
+| `registry.go` | Provider registry |
+| `provider.go` | Provider interface: QuoteProvider, LiquidityProvider, PriceProvider |
+| `types.go` | Token, SwapQuote, PoolHop, chain IDs |
+| `lux/` | Native Lux AMM provider |
+| `uniswap/` | Uniswap V2/V3/V4 provider |
+
+### `pkg/fpga/` - FPGA Acceleration
+
+| File | Purpose |
+|------|---------|
+| `fpga_engine.go` | FPGA matching engine core |
+| `fpga_interface.go` | Hardware abstraction layer |
+| `amd_versal.go` | AMD Versal FPGA target |
+| `aws_f2.go` | AWS F2 FPGA target |
+| `stubs.go` | Build stubs when FPGA not available |
+
+Supported cards: AMD Alveo U50 (8GB HBM, 100GbE), Alveo U55C (16GB HBM, 100GbE), Intel Agilex-7 (400GbE). Pipeline stages: Parser -> Risk -> Match -> Encoder with DMA channels and memory pools in BRAM/URAM/HBM.
+
+## Wire Protocols
+
+### ZAP Binary Protocol (`pkg/api/zap_server.go`)
+
+Ultra-low-latency zero-copy binary protocol via `luxfi/rpc`:
+
+| Message | ID | Wire Size | Description |
+|---------|----|-----------|-------------|
+| PlaceOrder | 1 | 64 bytes | symbol(8)+id(8)+price(8)+size(8)+side(1)+type(1)+flags(2)+ts(8)+user(16)+pad(4) |
+| CancelOrder | 2 | 32 bytes | order_id(8)+user(16)+pad(8) |
+| ModifyOrder | 3 | - | In-place order modification |
+| OrderAck | 8 | 24 bytes | order_id(8)+status(1)+seq(8)+pad(7) |
+| Trade | 10 | 48 bytes | id(8)+price(8)+size(8)+buyer(8)+seller(8)+ts(8) |
+| Quote | - | 24 bytes | price(8)+size(8)+count(4)+pad(4) |
+
+All messages are cache-line aligned. Pre-allocated 4KB response buffers via `sync.Pool`.
+
+### gRPC Service (`proto/lxdex.proto`)
+
+| RPC | Streaming | Description |
+|-----|-----------|-------------|
+| PlaceOrder | No | Place order (limit/market/stop/iceberg/peg) |
+| CancelOrder | No | Cancel by order ID |
+| GetOrder / GetOrders | No | Query orders |
+| GetOrderBook | No | Snapshot with configurable depth |
+| StreamOrderBook | Server | Real-time incremental updates |
+| GetTrades | No | Query executed trades |
+| StreamTrades | Server | Real-time trade feed |
+| GetBalance | No | Account balance (available/locked/total) |
+| GetPositions | No | Open positions with PnL |
+| GetNodeInfo | No | Node version, block height, markets, uptime |
+| GetPeers | No | P2P peer list |
+| Ping | No | Health check |
+
+### FIX Protocol
+
+Standard Financial Information eXchange:
+
+| FIX Message | Tag | Purpose |
+|-------------|-----|---------|
+| NewOrderSingle | D | Order submission |
+| OrderCancelRequest | F | Cancel request |
+| ExecutionReport | 8 | Fill/cancel/reject notifications |
+| MarketDataSnapshot | W | Full order book snapshot |
+| MarketDataIncRefresh | X | Incremental book updates |
+
+### WebSocket API
+
+Real-time trading with per-client authentication, symbol subscriptions, and rate limiting. Integrates with TradingEngine, MarginEngine, LendingPool, PriceOracle, VaultManager, XChainIntegration, and LiquidationEngine.
+
+### JSON-RPC 2.0
+
+Methods: `orderbook.getBestBid`, `orderbook.getBestAsk`, `orderbook.getStats`. Rate-limited to 100 req/s per IP.
+
+## ClearingHouse (pkg/lx/clearinghouse.go)
+
+Manages perpetual margin state and spot balances:
+
+- **Cross margin**: Shared balance across all positions
+- **Isolated margin**: Per-position margin allocation
+- **Multi-source oracles**: Weighted median from Chainlink, Pyth, Alpaca
+- **8-hour funding**: Standard intervals (00:00, 08:00, 16:00 UTC)
+- **Per-account locks**: Parallel processing with per-account RWMutex
+- **FPGA acceleration flags**: Optional FPGA for order processing and risk checks
+
+## Risk Engine (pkg/lx/risk_engine.go)
+
+Pre-trade risk with VaR, max drawdown, concentration limits. Default max leverage: BTC-USDT/ETH-USDT 100x, BNB-USDT 50x, default 20x.
+
+## Bridge (pkg/lx/bridge.go)
+
+Cross-chain asset bridging with multi-validator signatures, daily volume limits, nonce tracking, confirmation requirements, and expiry times. Status flow: Pending -> Validating -> Confirmed -> Executing -> Completed.
+
+## C++ Engine (`luxcpp/dex/`)
+
+Standalone C++17 matching engine:
+
+| Source | Purpose |
+|--------|---------|
+| `src/orderbook.cpp` | Core CLOB |
+| `src/matching.cpp` | Matching algorithm |
+| `src/engine.cpp` | Engine orchestration |
+| `src/oracle.cpp` | Price oracle |
+| `src/book.cpp` | Book management |
+| `src/pool.cpp` | Liquidity pool |
+| `src/vault.cpp` | Vault operations |
+| `src/feed.cpp` | Market data feed |
+| `src/lx.cpp` | Main entry point |
+
+Build: `cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build`
+
+## SDKs
+
+Multi-language SDKs in `sdk/` and `ext/`:
+
+| Language | Path |
+|----------|------|
+| Go | `sdk/go/`, `sdk/lx-trading-go/` |
+| TypeScript | `sdk/typescript/`, `sdk/lx-trading-ts/` |
+| Python | `sdk/python/`, `sdk/lx-trading-py/` |
+| Rust | `sdk/rust/`, `sdk/lx-trading-rust/` |
+| C | `sdk/c/`, `sdk/lx-trading-c/` |
+| C++ | `sdk/cpp/`, `sdk/lx-trading-cpp/` |
+| Core | `sdk/lx-trading-core/` |
+
+External integrations: Hummingbot market maker connector (`ext/hummingbot/`, `ext/hummingbot-gateway/`).
+
+## Key Dependencies (from go.mod)
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `github.com/luxfi/accel` | v1.0.1 | GPU/FPGA acceleration |
+| `github.com/luxfi/czmq/v4` | v4.2.2 | ZeroMQ messaging (C binding) |
+| `github.com/luxfi/database` | v1.2.15 | State storage |
+| `github.com/luxfi/geth` | v1.16.64 | Ethereum types |
+| `github.com/luxfi/log` | v1.2.5 | Structured logging |
+| `github.com/luxfi/rpc` | v1.0.0 | Zero-copy RPC (ZAP protocol) |
+| `github.com/luxfi/crypto` | v1.17.26 | Cryptographic primitives |
+| `github.com/luxfi/ids` | v1.2.5 | ID types (base58) |
+| `github.com/nats-io/nats.go` | v1.48.0 | NATS messaging |
+| `github.com/shopspring/decimal` | v1.4.0 | Decimal arithmetic |
+| `google.golang.org/grpc` | v1.79.1 | gRPC framework |
+| `github.com/gorilla/websocket` | v1.5.4 | WebSocket server |
+
+## Build and Run
+
+```bash
+# Build
+make build          # Build luxd + tools
+make build-go       # Pure Go (CGO_ENABLED=0)
+make build-cpp      # C++ acceleration (CGO_ENABLED=1, -tags cpp)
+make build-gpu      # GPU/MLX (-tags "cpp gpu mlx")
+
+# Test
+make test           # Unit tests (pkg/lx, pkg/api)
+make test-all       # Full test suite
+make test-race      # With race detector
+make bench          # Standard benchmarks (10s)
+make bench-all      # Comprehensive benchmarks
+
+# Run
+make run            # Single node (port 8080)
+make run-cluster    # 3-node cluster
+make run-local      # Local network
+make run-fpc        # FPC consensus network
+
+# Docker
+make docker-build   # Standard image
+make docker-cuda    # CUDA-enabled image
+make up / make down # Docker Compose
+
+# CI/CD
+make ci             # clean + fmt + vet + test + build
+make verify-all     # deps + fmt + vet + lint + test-100 + bench
+make prod           # clean + verify-all + build + docker-build
+make proto          # Generate gRPC code from proto/
+make sdk-all        # Build all language SDKs
+```
+
+## EVM Precompile Integration
+
+The DEX engine integrates with `github.com/luxfi/exchange` via precompiles:
 
 | Precompile | Address | Purpose |
 |------------|---------|---------|
@@ -88,10 +411,9 @@ The DEX engine integrates with `github.com/luxfi/exchange` via the DEX precompil
 | HooksRegistry | `0x0402` | Custom swap hooks |
 | FlashLoan | `0x0403` | Flash loan facility |
 
-Exchange routes limit/market orders to this CLOB engine for execution.
-
 ## Related Skills
 
-- `lux/lux-exchange.md` — AMM frontend (routes orders to DEX)
-- `lux/lux-evm.md` — EVM with DEX precompiles
-- `lux/lux-accel.md` — GPU/FPGA acceleration
+- `lux/lux-exchange.md` -- AMM frontend (routes orders to DEX)
+- `lux/lux-evm.md` -- EVM with DEX precompiles
+- `lux/lux-accel.md` -- GPU/FPGA acceleration library
+- `lux/lux-consensus.md` -- Quasar consensus integration
