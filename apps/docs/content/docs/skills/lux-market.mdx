@@ -1,17 +1,194 @@
 ---
-title: "Lux Marketplace - NFT Trading & AMM"
-description: "Lux Marketplace is the NFT trading platform on Lux Network — Genesis NFTs, AMM integration, and marketplace features."
+title: "Lux Market"
+description: "Multi-Chain NFT Marketplace"
 ---
 
 ## Overview
 
-Lux Marketplace is the **NFT trading platform** on Lux Network — Genesis NFTs, AMM integration, and marketplace features. Live at `markets.lux.network`.
+Lux Market (`@luxfi/market`) is the NFT trading platform for the Lux Network ecosystem. It supports NFT listings, offers, purchases, and AMM-based NFT trading (sudoswap/LSSVM) across all five Lux EVM chains: Lux (C-Chain), Zoo, Hanzo, SPC, and Pars. Built with Next.js 15, React 19, wagmi 2, and viem 2 for full on-chain interaction.
 
-## Quick reference
+## Repository
 
 | Item | Value |
 |------|-------|
-| URL | `https://markets.lux.network` |
-| Tech | Node.js |
-| market/ | ``github.com/luxfi/market`` |
-| marketplace/ | ``github.com/luxfi/marketplace`` |
+| Repo | `github.com/luxfi/market` |
+| Local | `~/work/lux/market/` |
+| Package | `@luxfi/market` v1.0.0 |
+| License | GPL-3.0-or-later |
+| Dev Port | 3100 |
+| Live URL | `https://markets.lux.network` |
+
+## Tech Stack
+
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| Next.js | 15.5.0 | App router, SSR, standalone output |
+| React | 19.1.0 | UI rendering |
+| TypeScript | 5.8.3 | Type safety |
+| Tailwind CSS | 4.1.18 | Styling |
+| wagmi | 2.15.5 | React hooks for Ethereum |
+| viem | 2.43.3 | Low-level EVM client |
+| TanStack Query | 5.77.2 | Async state management |
+| Radix UI | Dialog, Dropdown, Slot | Accessible UI primitives |
+| lucide-react | 0.511.0 | Icons |
+| class-variance-authority | 0.7.x | Component variants |
+| next-themes | 0.4.x | Dark/light mode |
+
+## Supported Chains
+
+All chains defined via `viem.defineChain()` in `src/lib/chains.ts`:
+
+| Chain | ID | Symbol | RPC | Explorer |
+|-------|-----|--------|-----|----------|
+| Lux (C-Chain) | 96369 | LUX | `api.lux.network/mainnet/ext/bc/C/rpc` | `explore.lux.network` |
+| Zoo | 200200 | ZOO | `api.lux.network/mainnet/ext/bc/zoo/rpc` | `explore-zoo.lux.network` |
+| Hanzo | 36963 | HNZ | `api.lux.network/mainnet/ext/bc/hanzo/rpc` | `explore-hanzo.lux.network` |
+| SPC | 36911 | SPC | `api.lux.network/mainnet/ext/bc/spc/rpc` | `explore-spc.lux.network` |
+| Pars | 494949 | PARS | `api.lux.network/mainnet/ext/bc/pars/rpc` | `explore-pars.lux.network` |
+
+Explorer API base URLs follow `https://explore[-chain].lux.network/api/v2` for on-chain data queries.
+
+## Smart Contracts
+
+Contracts are deployed on all five chains. Addresses in `src/lib/contracts.ts`:
+
+### Contract Types
+
+| Contract | Purpose |
+|----------|---------|
+| `markets` | Seaport-based NFT marketplace (list, buy, offer, accept) |
+| `lssvmPairFactory` | LSSVM pair factory for NFT AMM pools (sudoswap model) |
+| `linearCurve` | Linear bonding curve for AMM pricing |
+| `exponentialCurve` | Exponential bonding curve for AMM pricing |
+
+### Market Contract ABI (Seaport-based)
+
+Key functions:
+- `list(nftContract, tokenId, paymentToken, price, duration)` -- Create listing
+- `buy(listingId)` -- Purchase listed NFT (payable)
+- `makeOffer(nftContract, tokenId, paymentToken, amount, duration)` -- Make offer (payable)
+- `acceptOffer(offerId)` -- Accept an offer
+- `cancelListing(listingId)` / `cancelOffer(offerId)` -- Cancel
+- `getListing(listingId)` -- View listing details
+
+Events: `Listing`, `Sale`, `OfferMade`
+
+### LSSVM AMM ABI
+
+Key functions for NFT AMM trading:
+- `swapTokenForSpecificNFTs(nftIds, maxInput, recipient, ...)` -- Buy specific NFTs from pool
+- `swapNFTsForToken(nftIds, minOutput, recipient, ...)` -- Sell NFTs to pool
+- `getBuyNFTQuote(assetId, numNFTs)` -- Get buy price quote
+- `getSellNFTQuote(assetId, numNFTs)` -- Get sell price quote
+- `spotPrice()` -- Current spot price
+- `nft()` -- NFT contract address for the pair
+
+### Token Standards
+
+Full ABI support for:
+- **ERC-721**: name, symbol, tokenURI, ownerOf, balanceOf, approve, setApprovalForAll, Transfer event
+- **ERC-1155**: balanceOf, uri, setApprovalForAll
+
+## Project Structure
+
+```
+~/work/lux/market/
+  package.json           # @luxfi/market v1.0.0
+  next.config.ts         # Standalone output, IPFS/Arweave image domains
+  Dockerfile             # Multi-stage Next.js standalone build
+  src/
+    app/                 # Next.js App Router pages
+      page.tsx           # Homepage
+      layout.tsx         # Root layout with providers
+      client-providers.tsx  # wagmi + query + theme providers
+      providers.tsx      # Server-side providers
+      genesis/           # Genesis NFT collection pages
+      collection/        # Collection detail pages
+      collections/       # Collection listing pages
+      nft/               # Individual NFT detail pages
+      activity/          # Trading activity feed
+      portfolio/         # User portfolio pages
+      globals.css        # Global styles
+    components/
+      Header.tsx         # Site header with navigation
+      NFTCard.tsx        # NFT display card
+      CollectionCard.tsx # Collection summary card
+      ActivityRow.tsx    # Activity feed row
+      ListingForm.tsx    # Create listing form
+      OfferForm.tsx      # Make offer form
+      SearchBar.tsx      # Search functionality
+      TraitFilter.tsx    # Filter by NFT traits
+      ui/                # Shared UI primitives
+    hooks/
+      useChain.ts        # Chain selection and switching
+      useNFTData.ts      # NFT metadata and ownership queries
+    lib/
+      chains.ts          # Chain definitions (viem defineChain)
+      contracts.ts       # Contract addresses and ABIs per chain
+      explorer.ts        # Explorer API integration
+      utils.ts           # Utility functions
+      wagmi.ts           # wagmi client configuration
+```
+
+## Development
+
+```bash
+cd ~/work/lux/market
+
+# Install dependencies
+pnpm install
+
+# Start development server (port 3100)
+pnpm dev
+
+# Production build
+pnpm build
+
+# Start production server
+pnpm start
+
+# Type checking
+pnpm typecheck
+
+# Lint
+pnpm lint
+```
+
+## Docker Build
+
+Multi-stage standalone Next.js build:
+
+```dockerfile
+FROM node:22-alpine AS builder
+# pnpm install + next build (standalone output)
+FROM node:22-alpine AS runner
+# Copy standalone + static + public
+USER nextjs
+EXPOSE 3000
+```
+
+## Image Handling
+
+`next.config.ts` allows remote images from:
+- `*.lux.network` (explorer thumbnails)
+- `ipfs.io`, `*.ipfs.io`, `cloudflare-ipfs.com` (IPFS gateways)
+- `arweave.net` (Arweave storage)
+- `gateway.pinata.cloud`, `dweb.link`, `w3s.link` (decentralized storage)
+- `nft-cdn.alchemy.com`, `*.nftstorage.link` (NFT CDNs)
+
+## Key Patterns
+
+- All chain interactions go through wagmi hooks backed by viem
+- Contract addresses are per-chain-ID maps -- adding a new chain means adding entries to `CONTRACTS`, `supportedChains`, `EXPLORER_API`, and `CHAIN_INFO`
+- Explorer API v2 is used for collection/activity data fetching
+- LSSVM AMM pools provide instant liquidity for NFT collections without order book
+- Standalone Next.js output for container deployment
+
+## Related Repos
+
+| Repo | Purpose |
+|------|---------|
+| `github.com/luxfi/explorer` | Block explorer providing API v2 for NFT data |
+| `github.com/luxfi/evm` | EVM execution engine running the chains |
+| `github.com/luxfi/node` | Node software hosting the RPC endpoints |
+| `github.com/luxfi/ui` | Shared component library |

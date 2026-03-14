@@ -1,79 +1,242 @@
 ---
-title: "Lux Safe - Multisig Smart Accounts"
-description: "Lux Safe provides multisig smart account contracts — fork of Safe (Gnosis Safe) with ERC-4337 account abstraction support. Multi-chain deployment on Lux C-Chain and subnets."
+title: "Lux Safe"
+description: "Multisig Smart Accounts + Wallet UI"
 ---
 
 ## Overview
 
-Lux Safe provides **multisig smart account contracts** — fork of Safe (Gnosis Safe) with ERC-4337 account abstraction support. Multi-chain deployment on Lux C-Chain and subnets.
+Lux Safe is a **multisig smart account platform** combining Safe v1.5.0 contracts (fork of safe-global/safe-smart-account) with a legacy React wallet UI and a Next.js static docs/landing site. Supports ERC-4337 account abstraction, EIP-7702 delegation detection, and secp256r1 signature verification via EIP-7951/RIP-7212 precompiles.
 
-## Quick reference
+## Quick Reference
 
 | Item | Value |
 |------|-------|
 | Repo | `github.com/luxfi/safe` |
 | Package | `@luxfi/safe` |
 | Version | v0.0.7 |
-| Language | Solidity >=0.7.0 <0.9.0 |
-| Framework | Hardhat |
+| Contract Version | Safe v1.5.0 |
+| Solidity | >=0.7.0 <0.9.0 |
+| Framework | Hardhat 2.27+ / hardhat-deploy |
+| Compiler | solc 0.7.6 (default) |
 | Upstream | safe-global/safe-smart-account |
 | License | BSD-3-Clause |
 
-## Features
+## Repository Structure
 
-- **M-of-N multisig**: Configurable threshold signatures
-- **ERC-4337**: Account abstraction compatibility
-- **Deterministic deployment**: Same address across all chains
-- **Module system**: Extensible via Safe modules
-- **Guard system**: Transaction validation hooks
+```
+safe/
+  contracts/           # Solidity source (Safe v1.5.0)
+  src/
+    app/               # Next.js 15 landing/docs site (static export)
+    deploy/            # Hardhat deployment scripts (7 scripts)
+    tasks/             # Custom Hardhat tasks
+    utils/             # TypeScript utilities
+  react/               # Legacy Safe React wallet UI (v3.32.1, React 17)
+  app/                 # Legacy CRA app shell (service worker, mocks)
+  test/                # Hardhat test suite (10 categories)
+  benchmark/           # Gas benchmarks (6 specs)
+  certora/             # Certora formal verification (14 specs)
+  modules/             # Safe module stubs (dutchx_seller, recurring_transfers)
+  modules-deployments/ # Module deployment artifacts
+  docs/                # Audit reports (PDFs), docs site (Next.js/MDX)
+  types/               # TypeScript type definitions
+```
 
 ## Contracts
 
+### Core
+
+| Contract | File | Purpose |
+|----------|------|---------|
+| `Safe` | `Safe.sol` | Core multisig (1487 LOC). EIP-712 typed data signing, M-of-N threshold, gas refund, module/guard system. Inherits EIP7951 for secp256r1 |
+| `SafeL2` | `SafeL2.sol` | L2-optimized variant that emits events for indexing (mainnet Safe does not emit for gas savings) |
+| `SafeProxy` | `proxies/SafeProxy.sol` | Minimal proxy (EIP-1167 style) delegating to singleton |
+| `SafeProxyFactory` | `proxies/SafeProxyFactory.sol` | Deterministic proxy deployment via CREATE2 |
+
+### Base Modules
+
 | Contract | Purpose |
 |----------|---------|
-| `Safe.sol` | Core multisig account |
-| `SafeProxyFactory.sol` | Deterministic proxy deployment |
-| `CompatibilityFallbackHandler.sol` | ERC-1271 + token receiver |
-| `SafeL2.sol` | L2-optimized (emits events for indexing) |
-| `TokenCallbackHandler.sol` | ERC721/ERC1155 receiver |
+| `Executor` | Low-level CALL/DELEGATECALL execution |
+| `FallbackManager` | Configurable fallback handler routing |
+| `GuardManager` | Pre/post transaction guard hooks |
+| `ModuleManager` | Module registration and execution (linked list) |
+| `OwnerManager` | Owner add/remove/swap with threshold management |
 
-## Usage
+### EIP Support
 
-```solidity
-// Deploy new Safe with 2-of-3 threshold
-SafeProxyFactory factory = SafeProxyFactory(FACTORY_ADDRESS);
+| Contract | Standard | Purpose |
+|----------|----------|---------|
+| `EIP7702` | EIP-7702 | Detects EOA delegation context via EXTCODECOPY (0xef0100 prefix) |
+| `EIP7951` | EIP-7951/RIP-7212 | secp256r1 (P-256) signature verification via precompile at 0x100 |
 
-address[] memory owners = new address[](3);
-owners[0] = 0x1234...;
-owners[1] = 0x5678...;
-owners[2] = 0xabcd...;
+### Handlers
 
-bytes memory initializer = abi.encodeWithSelector(
-    Safe.setup.selector,
-    owners,
-    2,           // threshold
-    address(0),  // to
-    "",          // data
-    FALLBACK_HANDLER,
-    address(0),  // paymentToken
-    0,           // payment
-    address(0)   // paymentReceiver
-);
+| Contract | Purpose |
+|----------|---------|
+| `CompatibilityFallbackHandler` | ERC-1271 signature validation + ERC-721/ERC-1155 token receiver |
+| `ExtensibleFallbackHandler` | Fully extensible fallback with pluggable sub-handlers |
+| `TokenCallbackHandler` | ERC-721 + ERC-1155 receiver callbacks |
+| `HandlerContext` | Provides msg.sender context for fallback handler calls |
 
-SafeProxy proxy = factory.createProxyWithNonce(
-    SAFE_SINGLETON,
-    initializer,
-    salt
-);
+### Extensible Handler System
+
+| Contract | Purpose |
+|----------|---------|
+| `ERC165Handler` | ERC-165 interface detection with per-Safe overrides |
+| `FallbackHandler` | Custom method routing per Safe |
+| `SignatureVerifierMuxer` | Domain-specific ERC-1271 signature verification |
+| `TokenCallbacks` | Token receive hooks |
+| `MarshalLib` | ABI encoding utilities for handler data |
+
+### Libraries
+
+| Contract | Purpose |
+|----------|---------|
+| `CreateCall` | CREATE/CREATE2 from Safe context |
+| `MultiSend` | Batch multiple transactions in one call |
+| `MultiSendCallOnly` | Batch CALL-only transactions (no DELEGATECALL) |
+| `SafeMigration` | Singleton upgrade with optional fallback handler update |
+| `SafeStorage` | Storage slot layout (singleton at slot 0) |
+| `SafeToL2Setup` | Setup helper for L2 Safe initialization |
+| `SignMessageLib` | EIP-191/EIP-712 message signing from Safe |
+| `SimulateTxAccessor` | Simulate transaction for gas estimation |
+
+### Guards (Examples)
+
+| Guard | Purpose |
+|-------|---------|
+| `DebugTransactionGuard` | Logs all transaction details for debugging |
+| `DelegateCallTransactionGuard` | Blocks DELEGATECALL operations |
+| `OnlyOwnersGuard` | Restricts execution to Safe owners only |
+| `ReentrancyTransactionGuard` | Prevents reentrancy during execution |
+
+## Deployment Scripts
+
+7 Hardhat deploy scripts in `src/deploy/`:
+
+| Script | Tags | Deploys |
+|--------|------|---------|
+| `deploy_safe_singleton.ts` | `singleton, main-suite` | Safe implementation |
+| `deploy_safe_l2.ts` | `l2, main-suite` | SafeL2 implementation |
+| `deploy_factories.ts` | `factory, main-suite` | SafeProxyFactory |
+| `deploy_handlers.ts` | `handlers, main-suite` | Fallback handlers |
+| `deploy_libraries.ts` | `libraries, main-suite` | MultiSend, CreateCall, etc. |
+| `deploy_accessors.ts` | `accessors, main-suite` | SimulateTxAccessor |
+| `deploy_migrations.ts` | `migrations, main-suite` | SafeMigration |
+
+All deployments use deterministic deployment (safe-singleton-factory) for identical addresses cross-chain.
+
+## Hardhat Tasks
+
+| Task | Purpose |
+|------|---------|
+| `deploy_contracts` | Deploy all contracts to a network |
+| `local_verify` | Verify contract source on local explorer |
+| `show_codesize` | Display contract bytecode sizes |
+
+## Test Suite
+
+Tests organized in `test/` with 10+ categories:
+
+| Directory | Coverage |
+|-----------|----------|
+| `core/` | Execution, signatures, storage, setup, owner/module/guard/fallback management |
+| `factory/` | Proxy creation, deterministic deployment |
+| `guards/` | Guard hook behavior |
+| `handlers/` | Fallback handler routing, extensible handlers |
+| `integration/` | End-to-end workflows |
+| `l2/` | SafeL2 event emission |
+| `libraries/` | MultiSend, CreateCall, migration |
+| `migration/` | Singleton upgrade paths |
+| `json/` | ABI/JSON compatibility |
+| `utils/` | Test utilities |
+
+Benchmark specs in `benchmark/`: Creation, ERC1155, ERC20, Ether, MultiSend, Proxy.
+
+Test commands:
+```bash
+npm run test:hardhat    # All Hardhat tests
+npm run test:L1         # L1-specific tests (chainId=1)
+npm run test:L2         # L2 tests (SafeL2)
+npm run test:secp256r1  # EIP-7951 P-256 precompile tests
+npm run benchmark       # Gas benchmarks
+npm run coverage        # Coverage report
 ```
 
-## Audits
+## Formal Verification (Certora)
 
-Security audits from versions 0.0.1 through 1.5.0:
-- Certora (formal verification)
-- Ackee Blockchain
-- G0 Group
-- Runtime Verification
+14 CVL specs in `certora/specs/`:
+
+| Spec | Verifies |
+|------|----------|
+| `Execute.spec` | Transaction execution invariants |
+| `Signatures.spec` | Signature validation correctness |
+| `Setup.spec` | Initialization safety |
+| `Safe.spec` | Core Safe properties |
+| `SafeMigration.spec` | Migration correctness |
+| `OwnerReach.spec` | Owner linked list reachability |
+| `ModuleReach.spec` | Module linked list reachability |
+| `Guards.spec` | Guard hook execution |
+| `Fallback.spec` | Fallback routing |
+| `Hash.spec` | EIP-712 hash computation |
+| `NativeTokenRefund.spec` | Gas refund in native token |
+| `SafeToL2Setup.spec` | L2 setup correctness |
+| `Extensible.spec` | Extensible handler properties |
+
+## Audit History
+
+Audit reports in `docs/` covering versions 1.0.0 through 1.5.0:
+
+| Version | Auditor | Type |
+|---------|---------|------|
+| 1.0.0 | G0 Group | Security audit |
+| 1.0.0 | Runtime Verification | Formal verification |
+| 1.1.0 | G0 Group | Security audit |
+| 1.1.1 | G0 Group | Security audit |
+| 1.2.0 | G0 Group | Security audit |
+| 1.3.0 | G0 Group | Security audit (initial + final) |
+| 1.4.0 | Certora | Formal verification |
+| 1.4.1 | Ackee Blockchain | Library contracts |
+| 1.5.0 | Ackee Blockchain | Security audit |
+| 1.5.0 | Certora | Formal verification |
+
+## React Wallet UI (Legacy)
+
+Located in `react/`, version 3.32.1. React 17 + Redux + Material-UI application.
+
+| Item | Value |
+|------|-------|
+| Framework | CRA (rescripts) |
+| State | Redux + redux-thunk |
+| Web3 | web3.js 1.7, @gnosis.pm/safe-core-sdk |
+| UI | Material-UI v4 |
+| Testing | Jest, Cypress |
+| Node | 16 (.nvmrc) |
+
+## Next.js Landing/Docs Site
+
+Located in `src/app/`, uses Next.js with static export (`output: 'export'`).
+
+| Item | Value |
+|------|-------|
+| Framework | Next.js 15, React 18 |
+| Styling | Tailwind CSS |
+| Dependencies | `@luxfi/ui`, `@luxfi/data`, `@luxfi/menu-icons`, `@hanzo/auth`, `@hanzo/commerce` |
+| Deployment | GitHub Pages (static) |
+
+## Hardhat Network Configuration
+
+| Network | URL |
+|---------|-----|
+| hardhat | Local (chainId configurable via `HARDHAT_CHAIN_ID`, default 31337) |
+| mainnet | Infura (requires `INFURA_KEY`) |
+| sepolia | Infura (requires `INFURA_KEY`) |
+| gnosis | `rpc.gnosischain.com` |
+| zksync | `mainnet.era.zksync.io` |
+| custom | Any URL via `NODE_URL` env var |
+
+RIP-7212 precompile enabled via `HARDHAT_SECP256R1_PRECOMPILE=1`.
 
 ## Development
 
@@ -81,12 +244,27 @@ Security audits from versions 0.0.1 through 1.5.0:
 git clone https://github.com/luxfi/safe.git
 cd safe
 npm install
-npx hardhat compile
-npx hardhat test
+npx hardhat compile         # Compile contracts
+npx hardhat test            # Run all tests
+npm run test:secp256r1      # Test P-256 verification
+npm run coverage            # Coverage report
+npm run codesize            # Check bytecode sizes
+npm run deploy-all custom   # Deploy to custom network (NODE_URL)
 ```
+
+## Key Interfaces
+
+| Interface | Purpose |
+|-----------|---------|
+| `ISafe` | Full Safe API (setup, execTransaction, checkSignatures, approveHash, nonce) |
+| `IModuleManager` | Module enable/disable/execute |
+| `IOwnerManager` | Owner add/remove/swap, threshold |
+| `IGuardManager` | Guard set/get |
+| `IFallbackManager` | Fallback handler set |
+| `ISignatureValidator` | ERC-1271 isValidSignature |
 
 ## Related Skills
 
-- `lux/lux-wallet.md` — Wallet integration with Safe
-- `lux/lux-crypto.md` — Cryptographic primitives
-- `lux/lux-governance.md` — DAO treasury management
+- `lux/lux-wallet.md` -- Wallet integration with Safe
+- `lux/lux-crypto.md` -- Cryptographic primitives
+- `lux/lux-governance.md` -- DAO treasury management via Safe

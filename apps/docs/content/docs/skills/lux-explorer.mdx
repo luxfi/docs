@@ -1,23 +1,239 @@
 ---
-title: "Lux Explorer - Block Explorer"
-description: "## Components"
+title: "Lux Explorer"
+description: "Multi-Chain Block Explorer"
 ---
 
 ## Overview
 
-Lux Explorer is a **Blockscout-based block explorer** for browsing transactions, contracts, tokens, and network activity on Lux Network.
+Lux Explorer is a **Blockscout-based block explorer** for browsing transactions, contracts, tokens, and network activity across the Lux ecosystem. It is an Elixir/OTP umbrella application forked from Blockscout v10.0.1, extended with multi-chain compose files, Lux branding, and per-network JSON configuration for LUX, Zoo, SPC, Hanzo, and testnet deployments.
 
-## Components
+**Repository**: `github.com/luxfi/explorer`
+**License**: GPL-3.0
 
-| Component | Path | Purpose |
-|-----------|------|---------|
-| explorer/ | ``github.com/luxfi/explorer`` | Blockscout backend |
-| explore/ | ``github.com/luxfi/explore`` | Next.js frontend |
+## Technology Stack
 
-## Features
+| Component | Version | Notes |
+|-----------|---------|-------|
+| Elixir | ~> 1.19 | All umbrella apps pin `elixir: "~> 1.19"` |
+| Erlang/OTP | 27.3.4.6 | Docker base: `hexpm/elixir:1.19.4-erlang-27.3.4.6-alpine-3.22.2` |
+| Phoenix | 1.6.16 | Exact pin in `block_scout_web/mix.exs` |
+| Phoenix LiveView | ~> 1.1 | Real-time UI updates |
+| Ecto | ~> 3.3 | PostgreSQL ORM, override for cross-app compatibility |
+| PostgreSQL | 14+ | One database per chain (e.g., `explorer_luxnet`, `explorer_zoonet`) |
+| Blockscout | 10.0.1 | All umbrella apps at version 10.0.1 |
+| Alpine Linux | 3.22.2 | Runtime image base |
 
-- Transaction search and details
-- Contract verification and source code
-- Token tracking (ERC20/721/1155)
-- Network statistics and charts
-- API for programmatic access
+## Architecture
+
+### Umbrella Apps
+
+The project is an OTP umbrella with 6 apps under `apps/`:
+
+| App | Module | Purpose |
+|-----|--------|---------|
+| `block_scout_web` | `BlockScoutWeb` | Phoenix web API and UI (GraphQL, REST v2, WebSocket) |
+| `ethereum_jsonrpc` | `EthereumJSONRPC` | JSON-RPC client for EVM nodes (HTTP, WebSocket) |
+| `explorer` | `Explorer` | Data layer -- Ecto schemas, chain queries, caches |
+| `indexer` | `Indexer` | Fetchers that pull data from RPC and write to DB |
+| `utils` | `Utils` | Shared utilities (HTTP, MIME, Tesla) |
+| `nft_media_handler` | `NFTMediaHandler` | NFT image/video processing (S3, eVision) |
+
+### Database Schema
+
+318 Ecto migrations from `20180117` through `20260305`. Core tables include:
+
+- `addresses`, `blocks`, `transactions`, `logs`, `internal_transactions`
+- `tokens`, `token_transfers`, `address_current_token_balances`
+- `smart_contracts` (verified sources with ABI)
+- Chain-specific modules: Arbitrum, Optimism, ZkSync, Beacon, Celo, Filecoin, Polygon zkEVM
+
+### Supported Chain Types
+
+The `CHAIN_TYPE` build arg / env var selects chain-specific modules at compile time:
+
+- Default (EVM-compatible)
+- `optimism` -- L2 deposits, withdrawals, output roots
+- `arbitrum` -- L2 batches, cross-chain messages
+- `polygon_zkevm` -- ZK proofs, batches
+- `zksync` -- ZK batches, reader
+- `filecoin` -- Filecoin-specific
+- `celo` -- Celo-specific
+- `blackfort` -- BlackFort-specific
+
+## Supported Networks
+
+### Chain Configurations (`configs/chains/`)
+
+| Network | Chain ID | Currency | Frontend Host | Backend Host |
+|---------|----------|----------|--------------|--------------|
+| LUX Mainnet | 96369 | LUX | explore.lux.network | api-explore.lux.network |
+| LUX Testnet | 96368 | LUX | testnet.explore.lux.network | api-testnet.explore.lux.network |
+| Zoo Mainnet | 200200 | ZOO | explore.zoo.network | api-explore.zoo.network |
+| SPC Mainnet | 36911 | SPC | explore.spc.network | api-explore.spc.network |
+| Hanzo AI | 36963 | HZO | -- | -- |
+
+### Compose Files
+
+Per-network compose files bring up backend, frontend, visualizer, sig-provider, and stats:
+
+| File | Network | Backend Port | Frontend Port |
+|------|---------|-------------|---------------|
+| `compose.luxnet.yml` | LUX Mainnet | 4000 | 3000 |
+| `compose.luxtest.yml` | LUX Testnet | 4010 | 3010 |
+| `compose.zoonet.yml` | Zoo Mainnet | 4001 | 3001 |
+| `compose.zootest.yml` | Zoo Testnet | 4011 | 3011 |
+| `compose.hanzonet.yml` | Hanzo AI | 4003 | 3003 |
+
+### Multi-Chain All-In-One (`docker-compose.all-chains.yml`)
+
+Brings up C-Chain (Blockscout) plus Go indexers for all native chains:
+
+- **C-Chain**: Blockscout backend on port 4000, frontend on port 3000
+- **Native chains**: `ghcr.io/luxfi/indexer` image for A, B, P, Q, T, X, Z chains (ports 4100-4700)
+- Shared visualizer (8050), sig-provider (8051)
+
+### Microservices (`docker-compose/services/`)
+
+Backend, DB, frontend, NFT media handler, Nginx, Redis, sig-provider, smart-contract-verifier, stats, user-ops-indexer, visualizer.
+
+## Core Concepts
+
+### RPC Integration
+
+The `EthereumJSONRPC` app connects to Lux nodes via SubnetEVM-compatible endpoints:
+
+```
+ETHEREUM_JSONRPC_HTTP_URL = http://<luxd>:9650/ext/bc/<blockchain-id>/rpc
+ETHEREUM_JSONRPC_WS_URL   = ws://<luxd>:9650/ext/bc/<blockchain-id>/ws
+ETHEREUM_JSONRPC_VARIANT  = geth
+```
+
+Each Lux subnet chain has a unique blockchain ID (e.g., `dnmzhuf6poM6PUNQCe7MWWfBdTJEnddhHRNXz2x7H6qSmyBEJ` for LUX mainnet C-Chain).
+
+### Branding
+
+Custom branding lives in `branding/` (logos, favicon) and is applied via:
+
+1. **Dockerfile.luxfi** -- extends official Blockscout image with logo overlays and env defaults
+2. **Environment variables** -- `FOOTER_LOGO`, `FOOTER_CHAT_LINK`, `FOOTER_GITHUB_LINK`
+
+### API Surface
+
+- **REST API v2**: `/api/v2/` (blocks, transactions, addresses, tokens, stats)
+- **GraphQL**: Absinthe-based (`/graphql`), with Relay-compatible pagination
+- **WebSocket**: Phoenix PubSub for real-time block/transaction updates
+- **Prometheus**: `/metrics` endpoint via `prometheus_plugs`
+
+### Key Dependencies
+
+| Library | Purpose |
+|---------|---------|
+| `absinthe` ~> 1.5 | GraphQL toolkit |
+| `tesla` ~> 1.16.0 | HTTP client (shared across all apps) |
+| `bcrypt_elixir` ~> 3.0 | Password hashing (explorer app) |
+| `ex_keccak` ~> 0.7.5 | Keccak-256 hashing |
+| `redix` ~> 1.1 | Redis client for caching |
+| `hammer` ~> 7.0 | Rate limiting |
+| `ueberauth_auth0` ~> 2.0 | Auth0 authentication |
+| `spandex` ~> 3.0 | Datadog tracing |
+| `ezstd` ~> 1.2 | ZSTD compression |
+| `cloak_ecto` ~> 1.3.0 | Ecto field encryption |
+
+### Embedded Go Indexers (`indexers/`)
+
+A small Go module (`github.com/luxfi/explorer-indexers`, Go 1.24.0) inside the explorer repo provides native-chain indexer code for non-EVM chains (A, B, P, Q, T, X, Z). These are lightweight companions to the full Go indexer at `github.com/luxfi/indexer`.
+
+Dependencies: `gorilla/mux` 1.8.1, `gorilla/websocket` 1.5.4, `lib/pq` 1.11.2.
+
+## Development
+
+### Prerequisites
+
+- Elixir 1.19+, Erlang/OTP 27+
+- PostgreSQL 14+
+- Node.js 16+ (for frontend)
+- Running Lux node (luxd) with SubnetEVM
+
+### Build
+
+```bash
+# Fetch deps and compile
+mix deps.get
+mix compile
+
+# Create and migrate database
+mix ecto.create
+mix ecto.migrate
+
+# Start development server
+mix phx.server
+```
+
+### Docker
+
+```bash
+# Build Lux-branded image
+docker build -f docker/Dockerfile.luxfi .
+
+# Or from scratch
+docker build -f docker/Dockerfile \
+  --build-arg CHAIN_TYPE="" \
+  --build-arg RELEASE_VERSION=10.0.1 \
+  -t luxfi/explorer:latest .
+
+# Run a network
+docker compose -f compose.luxnet.yml up -d
+```
+
+### Tests
+
+```bash
+# Run all tests (umbrella-wide)
+mix test --no-start
+
+# Run specific app tests
+cd apps/explorer && mix test
+cd apps/block_scout_web && mix test
+```
+
+### Environment Variables
+
+Key variables (see `docker-compose/envs/common-blockscout.env`):
+
+| Variable | Purpose | Example |
+|----------|---------|---------|
+| `DATABASE_URL` | PostgreSQL connection | `postgresql://blockscout:pass@host:5432/explorer_luxnet` |
+| `ETHEREUM_JSONRPC_HTTP_URL` | RPC endpoint | `http://luxd:9650/ext/bc/.../rpc` |
+| `ETHEREUM_JSONRPC_WS_URL` | WebSocket endpoint | `ws://luxd:9650/ext/bc/.../ws` |
+| `ETHEREUM_JSONRPC_VARIANT` | Client type | `geth` |
+| `CHAIN_ID` | EVM chain ID | `96369` |
+| `COIN_NAME` | Native currency display | `LUX` |
+| `PORT` | HTTP server port | `4000` |
+| `SECRET_KEY_BASE` | Phoenix secret | 64-char random string |
+| `API_V2_ENABLED` | Enable REST v2 | `true` |
+| `CHAIN_TYPE` | Chain-specific modules | (empty for default) |
+| `DISABLE_WEBAPP` | API-only mode | `true` |
+
+## File Structure
+
+```
+explorer/
+  apps/
+    block_scout_web/     # Phoenix web app (API + UI)
+    ethereum_jsonrpc/    # JSON-RPC client library
+    explorer/            # Data layer (Ecto schemas, 318 migrations)
+    indexer/             # Data fetchers (blocks, txs, tokens, traces)
+    nft_media_handler/   # NFT media processing (S3, eVision)
+    utils/               # Shared utilities
+  branding/              # Lux logos and favicon
+  config/                # Elixir config (dev/test/prod/runtime)
+  configs/chains/        # Per-network JSON config (lux, zoo, spc, lux-testnet)
+  compose.*.yml          # Per-network Docker Compose files
+  docker/                # Dockerfiles (standard + Lux-branded)
+  docker-compose/        # Shared compose services and env files
+  docker-*-mainnet/      # Per-chain Docker Compose dirs (a/b/p/q/t/x/z/zoo)
+  docker-*-testnet/      # Per-chain testnet Docker Compose dirs
+  indexers/              # Embedded Go indexers for native chains
+  mix.exs                # Umbrella project (Elixir ~> 1.19, v10.0.1)
+  Dockerfile             # Root Dockerfile (Node.js 16 for frontend)
+```

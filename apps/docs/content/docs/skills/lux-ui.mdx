@@ -1,17 +1,229 @@
 ---
-title: "Lux UI - Component Library & Visualization"
-description: "Lux UI provides React components, chart visualizations, status dashboards, and terminal tools for the Lux ecosystem."
+title: "Lux UI"
+description: "Multi-Framework Component Library"
 ---
 
 ## Overview
 
-Lux UI provides **React components, chart visualizations, status dashboards, and terminal tools** for the Lux ecosystem.
+Lux UI (`@luxfi/ui`) is a comprehensive design system and component library for the Lux ecosystem. It is a pnpm monorepo built on top of shadcn/ui, extended with domain-specific packages for commerce, web3, finance, 3D, animation, and agent UI. Supports React, Vue, Svelte, and React Native via multi-framework registry system. Published to npm as `@luxfi/ui` at version 5.3.37.
 
-## Components
+## Repository
 
-| Component | Path | Purpose |
-|-----------|------|---------|
-| ui/ | ``github.com/luxfi/ui`` | @lux/ui React components |
-| charts/ | ``github.com/luxfi/charts`` | Chart visualizations |
-| status/ | ``github.com/luxfi/status`` | Status monitoring dashboard |
-| tui/ | ``github.com/luxfi/tui`` | Terminal UI tools (Go) |
+| Item | Value |
+|------|-------|
+| Repo | `github.com/luxfi/ui` |
+| Local | `~/work/lux/ui/` |
+| Package | `@luxfi/ui` v5.3.37 |
+| License | MIT |
+| Homepage | `https://ui.lux.finance` |
+| Package Manager | pnpm 9.0.6 |
+| Build Orchestrator | Turborepo 2.x |
+| Node | 22+ |
+
+## Tech Stack
+
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| React | 19.2.x | Primary rendering framework |
+| Next.js | 14-16 | App framework for demo sites |
+| Tailwind CSS | 4.1.x | Utility-first styling |
+| TypeScript | 5.9.x | Type safety |
+| Radix UI | Latest | Accessible primitives |
+| Vitest | 4.0.x | Unit testing |
+| Playwright | 1.56.x | E2E and visual regression testing |
+| tsup | 8.5.x | Library bundling |
+| Changeset | 2.29.x | Version management and changelogs |
+| motion (Framer) | 12.12.x | Animation library |
+| Recharts | 3.3.x | Chart components |
+| dnd-kit | 6.x | Drag and drop |
+| Lucide | 0.544.x | Icon system |
+
+## Project Structure
+
+```
+~/work/lux/ui/
+  package.json          # Root workspace (@luxfi/ui v0.1.0)
+  pnpm-workspace.yaml   # app, apps/*, packages/*, pkg/*
+  brand.config.ts       # Theme: pure black/white monochrome
+  components.json       # shadcn/ui component registry config
+  playwright.config.ts  # E2E test configuration
+
+  app/                  # Main docs/registry app (@luxfi/ui-web)
+    components/         # 60+ component implementations
+    registry/           # Component registry system
+    hooks/              # 13 React hooks
+    lib/                # Utilities
+    scripts/            # Build scripts
+    __registry__/       # Auto-generated registry data
+    __tests__/          # Test suites
+
+  apps/
+    v4/                 # v4 preview app (port 4000, Turbopack)
+    www/                # Marketing site
+
+  packages/
+    shadcn/             # shadcn CLI fork (v3.8.4) -- component installer
+    og/                 # Open Graph image generation
+    tests/              # Shared test utilities
+
+  pkg/                  # Domain-specific packages
+    ui/                 # Core component library (@luxfi/ui v5.3.37)
+    brand/              # Brand assets and tokens
+    commerce/           # E-commerce components
+    checkout/           # Checkout flow components
+    shop/               # Shop/storefront components
+    web3/               # Web3/wallet components
+    react/              # React-specific utilities
+    data/               # Data display components
+    agent-ui/           # AI agent interface components
+    menu-icons/         # Menu icon set
+    ui-templates/       # Page templates
+```
+
+## Core Component Library (pkg/ui/)
+
+Published as `@luxfi/ui` v5.3.37 to npm. Source in `pkg/ui/src/`:
+
+### Component Categories
+
+| Category | Path | Contents |
+|----------|------|----------|
+| `ui/` | Core UI | announcement, avatar-group, banner, cursor, marquee, pill, spinner, tags, ticker |
+| `3d/` | 3D rendering | Three.js/Spline integrations |
+| `animation/` | Motion | Framer Motion wrappers and presets |
+| `auth/` | Authentication | Login/signup forms |
+| `billing/` | Billing | Subscription and payment UI |
+| `calendar-ext/` | Calendar | Extended calendar components |
+| `charts/` | Data viz | Chart wrappers (Recharts) |
+| `code/` | Code display | Syntax highlighting, code blocks |
+| `desktop/` | Desktop | Desktop app chrome components |
+| `device/` | Device frames | Phone/tablet/desktop device frames |
+| `dock/` | App dock | macOS-style dock component |
+| `form/` | Form elements | Input, select, checkbox, radio, etc. |
+| `hooks/` | React hooks | Shared hook utilities |
+| `kanban/` | Kanban board | Drag-and-drop board (dnd-kit) |
+| `mcp/` | MCP UI | Model Context Protocol interfaces |
+| `mermaid/` | Diagrams | Mermaid.js diagram rendering |
+| `models/` | Data models | TypeScript model definitions |
+| `navigation/` | Nav components | Sidebar, breadcrumbs, tabs |
+| `pattern/` | Background | Decorative background patterns |
+| `project/` | Project mgmt | Project management components |
+| `registry/` | Registry system | Component registry infrastructure |
+| `spline/` | Spline 3D | Spline.design integrations |
+| `primitives-export.ts` | Primitives | Container, Box, Heading, Text, Button, Link, Stack, Grid |
+
+### Domain Packages
+
+| Package | Path | Purpose |
+|---------|------|---------|
+| `@luxfi/ui` | `pkg/ui/` | Core library (5.3.37) |
+| Brand | `pkg/brand/` | Brand tokens, logos, colors |
+| Commerce | `pkg/commerce/` | Product cards, cart, pricing |
+| Checkout | `pkg/checkout/` | Payment flow, address, summary |
+| Shop | `pkg/shop/` | Storefront layouts |
+| Web3 | `pkg/web3/` | Wallet connect, chain selector, tx status |
+| Agent UI | `pkg/agent-ui/` | Chat bubbles, tool calls, agent status |
+| React | `pkg/react/` | React-specific wrappers |
+| Data | `pkg/data/` | Data tables, lists, grids |
+
+## Brand Configuration
+
+Defined in `brand.config.ts`:
+
+```typescript
+{
+  name: "Lux UI",
+  siteUrl: "https://ui.lux.network",
+  company: "Lux Partners Limited",
+  github: { org: "luxfi", repo: "ui" },
+  theme: {
+    primary: "#1a1a1a",        // Near black
+    darkBackground: "#000000", // Pure black
+    darkForeground: "#fafafa"  // Near white
+  }
+}
+```
+
+Pure black/white monochrome design language.
+
+## Development
+
+```bash
+cd ~/work/lux/ui
+
+# Install dependencies
+pnpm install
+
+# Start all apps in parallel
+pnpm dev
+
+# Start specific apps
+pnpm v4:dev          # v4 preview (port 4000)
+pnpm www:dev         # Marketing site
+pnpm hanzo-ui:dev    # Hanzo UI variant
+
+# Build
+pnpm build           # Build all
+pnpm v4:build        # Build v4 app
+pnpm cli:build       # Build CLI
+
+# Testing
+pnpm test            # Unit tests (Vitest)
+pnpm test:e2e        # E2E tests (Playwright)
+pnpm test:visual     # Visual regression tests
+pnpm health-check    # Component health validation
+
+# Registry
+pnpm build:registry  # Build component registry
+pnpm registry:build  # Alternative registry build
+pnpm registry:capture # Capture component screenshots
+
+# Code quality
+pnpm lint            # ESLint
+pnpm lint:fix        # Auto-fix lint issues
+pnpm format:write    # Prettier formatting
+pnpm typecheck       # TypeScript type checking
+pnpm check           # lint + typecheck + format:check
+
+# Publishing
+pnpm pub:beta        # Publish beta to npm
+pnpm pub:release     # Publish release to npm
+pnpm release         # Changeset version bump
+```
+
+## shadcn CLI (packages/shadcn/)
+
+Forked shadcn CLI (v3.8.4) for component installation:
+- Adds components from the Lux UI registry
+- Supports multiple frameworks (React, Vue, Svelte, React Native)
+- Handles Tailwind CSS 4 configuration
+- Includes tests (Vitest)
+
+## Testing Strategy
+
+| Type | Tool | Command |
+|------|------|---------|
+| Unit | Vitest 4.0.6 | `pnpm test` |
+| E2E | Playwright 1.56 | `pnpm test:e2e` |
+| Visual | Playwright | `pnpm test:visual` |
+| Accessibility | jest-axe / vitest-axe | Integrated in unit tests |
+| Health | Custom script | `pnpm health-check` |
+| Registry | Custom validator | `pnpm validate:registries` |
+
+## Key Patterns
+
+- Components follow shadcn/ui patterns: copy-paste, customizable, no runtime dependency lock-in
+- Registry system auto-generates component metadata for the CLI installer
+- Multi-framework support via separate registry entries per framework
+- All components use Tailwind CSS with the monochrome theme tokens
+- Domain packages (commerce, web3, agent-ui) extend the core primitives
+- Changeset-based versioning with GitHub changelog generation
+
+## Related Repos
+
+| Repo | Purpose |
+|------|---------|
+| `github.com/luxfi/market` | NFT marketplace using these components |
+| `github.com/luxfi/docs` | Documentation site using these components |
+| `github.com/luxfi/explorer` | Block explorer using these components |
+| `github.com/luxfi/bridge` | Bridge UI using these components |

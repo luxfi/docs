@@ -1,24 +1,210 @@
 ---
-title: "Lux Stack - Local Development Environment"
-description: "Full local integration environment for Lux development — nodes, EVM, explorer, gateway, and monitoring via Docker Compose."
+title: "Lux Stack"
+description: "Sovereign L1 White-Label Ecosystem"
 ---
 
 ## Overview
 
-Full local integration environment for Lux development — nodes, EVM, explorer, gateway, and monitoring via Docker Compose.
+Lux Stack is a **Docker Compose-based white-label L1 blockchain ecosystem**. Deploy a complete sovereign chain with explorer, DEX, marketplace, bridge, wallet, DeFi platform, and subgraph indexing in a single `docker compose up`. Post-quantum cryptography is enabled by default via Lux precompiles.
 
-## Quick reference
+## Quick Reference
 
 | Item | Value |
 |------|-------|
-| Path | ``github.com/luxfi/stack`` |
-| Stack | Docker Compose |
-| Start | `docker compose up` or `make up` |
+| Repo | `github.com/luxfi/stack` |
+| Orchestration | Docker Compose (`compose.yml`) |
+| Start | `docker compose up -d` |
+| Dev mode | `docker compose --profile dev up` |
+| Indexers | `docker compose --profile indexers up` |
+| Config | `.env` (copy from `.env.example`) |
 
-## Included Services
+## Services
 
-- Lux nodes (validators)
-- EVM (C-Chain)
-- Block explorer
-- KrakenD API gateway
-- Prometheus + Grafana monitoring
+### Core Infrastructure
+
+| Service | Image | Port | Purpose |
+|---------|-------|------|---------|
+| `node` | `ghcr.io/luxfi/node:latest` | 9650 (HTTP), 9651 (staking) | Lux consensus blockchain node |
+| `redis` | `ghcr.io/hanzoai/kv:latest` | 6380 | Cache (2GB max, allkeys-lru) |
+| `ipfs` | `ipfs/kubo:latest` | 5001 (API), 8081 (gateway), 4002 (swarm) | Decentralized storage |
+
+### Databases (all `ghcr.io/hanzoai/sql:latest`)
+
+| Service | Default User | Default DB | Purpose |
+|---------|-------------|------------|---------|
+| `explorer-db` | `explorer` | `explorer` | Block explorer data |
+| `exchange-db` | `exchange` | `exchange` | DEX/exchange data |
+| `graph-postgres` | `graph` | `graph-node` | The Graph indexer |
+
+### Applications
+
+| Service | Image | Port | Purpose |
+|---------|-------|------|---------|
+| `explorer` | `ghcr.io/blockscout/blockscout:latest` | 4000 | Block explorer (Blockscout) |
+| `exchange` | `ghcr.io/luxfi/exchange:latest` | 3000 | DEX / Token exchange |
+| `exchange-api` | `ghcr.io/luxfi/exchange-api:latest` | 3010 | Exchange backend API |
+| `marketplace` | `ghcr.io/luxfi/marketplace:latest` | 3001 | NFT marketplace |
+| `bridge` | `ghcr.io/luxfi/bridge:latest` | 3002 | Cross-chain bridge (to Lux mainnet) |
+| `finance` | `ghcr.io/luxfi/finance:latest` | 3003 | DeFi platform |
+| `wallet` | `ghcr.io/luxfi/wallet:latest` | 3004 | Web wallet |
+| `graph-node` | `graphprotocol/graph-node:latest` | 8000 (HTTP), 8001 (WS), 8020 (admin) | Subgraph indexing |
+
+### Optional: Chain Indexers (`--profile indexers`)
+
+| Service | Port | Purpose |
+|---------|------|---------|
+| `pchain-indexer` | 4100 | P-Chain block indexer |
+| `xchain-indexer` | 4200 | X-Chain block indexer |
+
+### Optional: Dev Tools (`--profile dev`)
+
+| Service | Port | Purpose |
+|---------|------|---------|
+| `adminer` | 8082 | Database admin UI |
+| `redis-commander` | 8083 | Redis admin UI |
+| `mailhog` | 8025 (UI), 1025 (SMTP) | Email testing |
+
+## Chain Configuration
+
+All chain identity is configured via `.env`:
+
+```bash
+# Chain identity
+NETWORK_NAME="My Chain"     # Display name
+NETWORK_SLUG=mychain        # Container prefix
+COIN_NAME=MYC               # Native coin name
+COIN_SYMBOL=MYC             # Coin ticker
+COIN_DECIMALS=18            # Token decimals
+CHAIN_ID=99999              # EVM chain ID (unique)
+NETWORK_ID=12345            # Lux network ID
+
+# Lux mainnet connection (bridge + PQ safety)
+LUX_MAINNET_RPC=https://api.lux.network/mainnet/ext/bc/C/rpc
+
+# Node
+LOG_LEVEL=info
+NODE_HTTP_PORT=9650
+NODE_STAKING_PORT=9651
+
+# Image registry (override for custom builds)
+IMAGE_REGISTRY=ghcr.io/luxfi
+```
+
+## Port Allocation Summary
+
+```
+9650: Node RPC          3000: Exchange         8000: GraphQL
+9651: Node Staking       3001: Marketplace      8001: GraphQL WS
+5001: IPFS API          3002: Bridge           8020: Graph Admin
+8081: IPFS Gateway      3003: Finance          8082: Adminer
+6380: Redis             3004: Wallet           8083: Redis Commander
+4000: Explorer          3010: Exchange API     8025: Mailhog UI
+4100: P-Chain Indexer   4200: X-Chain Indexer
+```
+
+## Startup Order
+
+Services start in dependency order:
+
+1. **Redis** -- cache layer
+2. **PostgreSQL databases** -- explorer-db, exchange-db, graph-postgres
+3. **IPFS** -- decentralized storage
+4. **Lux Node** -- blockchain (waits for health check)
+5. **Explorer** -- depends on node + explorer-db
+6. **Graph Node** -- depends on node + graph-postgres + IPFS
+7. **Exchange API** -- depends on node + exchange-db + redis
+8. **Application frontends** -- exchange, marketplace, bridge, finance, wallet
+
+Health checks are configured on all critical services (node, redis, all databases, explorer).
+
+## Explorer Configuration
+
+The Blockscout explorer connects to the C-Chain:
+
+```
+RPC:       http://node:9650/ext/bc/C/rpc
+Trace:     http://node:9650/ext/bc/C/rpc
+WebSocket: ws://node:9650/ext/bc/C/ws
+```
+
+Environment variables control chain display: `COIN`, `COIN_NAME`, `NETWORK`, `CHAIN_ID`.
+
+## Development Workflow
+
+```bash
+# Initial setup
+cp .env.example .env        # Configure your chain
+# Edit .env with your chain identity
+
+# Production stack
+docker compose up -d                        # Start all services
+docker compose logs -f node                 # Follow node logs
+docker compose ps                           # Check status
+
+# Development stack (with admin tools)
+docker compose --profile dev up -d
+
+# With P/X chain indexers
+docker compose --profile indexers up -d
+
+# Selective services
+docker compose up -d node redis explorer    # Core only
+
+# Teardown
+docker compose down                         # Stop services
+docker compose down -v                      # Stop + remove volumes
+```
+
+### Dev Mode Overlay
+
+For hot-reloading during development:
+
+```bash
+docker compose -f compose.yml -f compose.dev.yml up
+```
+
+## Networking
+
+- All services run on Docker bridge network `chain-network`
+- Internal communication uses container names (e.g., `http://node:9650`)
+- External access via mapped host ports
+- CORS and SSL are not configured (development only)
+
+## Makefile Targets
+
+```bash
+make up          # Start production stack
+make down        # Stop all services
+make dev         # Start with dev tools
+make logs        # Follow all logs
+make status      # Check service health
+make clean       # Remove volumes and data
+make build       # Build local images
+make validate    # Validate compose config
+make test        # Run integration tests
+make health      # Check all health endpoints
+```
+
+## Architecture Decisions
+
+| Decision | Rationale |
+|----------|-----------|
+| Docker Compose | Simple orchestration, easy to customize |
+| Separate databases | Service isolation, independent scaling |
+| Blockscout | Most complete open-source EVM explorer |
+| The Graph | Standard subgraph indexing for DApps |
+| `ghcr.io/hanzoai/sql` | Hanzo PostgreSQL image (consistent infra) |
+| `ghcr.io/hanzoai/kv` | Hanzo Redis/Valkey image (consistent infra) |
+| Bridge to Lux mainnet | Shared validator security, PQ signatures |
+
+## White-Label Customization
+
+To create your own sovereign L1:
+
+1. Copy `.env.example` to `.env`
+2. Set `NETWORK_NAME`, `COIN_NAME`, `COIN_SYMBOL`, `CHAIN_ID`
+3. Optionally customize `IMAGE_REGISTRY` for your own container images
+4. Run `docker compose up -d`
+5. Access explorer at `http://localhost:4000`, exchange at `http://localhost:3000`
+
+The stack is designed so that every configurable value flows from `.env` into container names, database credentials, and application environment -- a single file controls the entire chain identity.

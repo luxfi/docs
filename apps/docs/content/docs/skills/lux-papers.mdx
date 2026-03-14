@@ -1,22 +1,176 @@
 ---
-title: "Lux Research Papers - Academic & Technical Whitepapers"
-description: "Academic and technical whitepapers covering Lux consensus proofs, cryptographic protocols, and network design."
+title: "Lux Papers"
+description: "Academic and Technical Whitepapers"
 ---
 
 ## Overview
 
-Academic and technical whitepapers covering Lux consensus proofs, cryptographic protocols, and network design.
+The Lux papers repository (`github.com/luxfi/papers`) contains 35+ LaTeX research papers and technical specifications covering the full breadth of the Lux Network: consensus protocols, post-quantum cryptography, DeFi protocols, governance frameworks, privacy systems, cross-chain communication, and application-specific chains. Also includes a dedicated FHE (Fully Homomorphic Encryption) sub-directory with four specialized papers. All papers are authored in LaTeX with BibTeX references.
 
-## Quick reference
+## Repository
 
 | Item | Value |
 |------|-------|
-| Format | LaTeX, PDF |
+| Repo | `github.com/luxfi/papers` |
+| Local | `~/work/lux/papers/` |
+| Format | LaTeX (.tex), BibTeX (.bib), PDF |
+| License | See LICENSE |
 
-## Key Papers
+## Paper Catalog
 
-- Snow consensus family proof of safety and liveness
-- Post-quantum lattice-based signature schemes
-- FHE coprocessor architecture
-- Subnet security model
-- Cross-chain warp messaging protocol
+### Consensus
+
+| File | Title | Topic |
+|------|-------|-------|
+| `lux-consensus.tex` | (Lux Consensus) | Core Snow consensus family: safety and liveness proofs |
+| `lux-fpc-consensus.tex` | (FPC Consensus) | Fast Probabilistic Consensus variant |
+| `lux-quantum-consensus.tex` | Lux Quantum Consensus: Post-Quantum Secure Multi-Consensus Architecture | Quantum-resistant consensus with multiple engines |
+| `lux-quasar-consensus.tex` | Quasar: Quantum-Secure Multi-Engine Consensus with Dual-Certificate Finality | Dual-certificate finality with quantum security |
+
+### Cryptography and Post-Quantum
+
+| File | Title | Topic |
+|------|-------|-------|
+| `lux-ethfalcon-post-quantum.tex` | ETHFALCON: EVM-Optimized Post-Quantum Signatures | Lattice-based signatures optimized for EVM execution |
+| `lux-universal-threshold-signatures.tex` | Universal Threshold Signatures: Multi-Chain Cryptographic Infrastructure with Post-Quantum Security | Threshold signature schemes across chains |
+| `lux-ntt-transform.tex` | (NTT Transform) | Number Theoretic Transform for post-quantum operations |
+
+### Cross-Chain and Interoperability
+
+| File | Title | Topic |
+|------|-------|-------|
+| `lux-bridge.tex` | Lux Bridge: Zero-Knowledge Cross-Chain Communication with Sub-Second Finality | ZK bridge protocol with fast finality |
+| `lux-interchain-transfers.tex` | (Interchain Transfers) | Cross-chain asset transfer protocol |
+| `lux-warp-messaging.tex` | (Warp Messaging) | Cross-subnet message passing |
+
+### Application-Specific Chains
+
+| File | Title | Topic |
+|------|-------|-------|
+| `lux-achain-attestation.tex` | A-Chain: Unified Trusted Execution Environment Attestation for Decentralized AI Compute | TEE attestation for AI compute |
+| `lux-gchain-graphql.tex` | G-Chain: Unified GraphQL Query Engine with Decentralized Indexing for Multi-Chain State | Decentralized GraphQL indexing chain |
+| `lux-mchain-mpc.tex` | M-Chain: Decentralized Multi-Party Computation Custody with Quantum-Safe Threshold Signatures | MPC custody with quantum safety |
+| `lux-zchain.tex` | Lux Z-Chain: Privacy-Preserving Smart Contracts with Zero-Knowledge Proofs | Private smart contract execution |
+
+### DeFi Protocols
+
+| File | Title | Topic |
+|------|-------|-------|
+| `lux-lightspeed-dex.tex` | Lux Lightspeed DEX: High-Frequency Trading at the Speed of Light | High-frequency DEX design |
+| `lux-credit-lending.tex` | Lux Credit: Zero-Interest Self-Repaying Lending Protocol with 90% LTV and Cross-Chain Collateral | Self-repaying lending protocol |
+| `lux-liquid-staking.tex` | (Liquid Staking) | Liquid staking derivatives |
+| `lux-perpetuals-derivatives.tex` | (Perpetuals and Derivatives) | On-chain perpetual futures |
+| `lux-restaking.tex` | Restaking Protocol for Lux Network Security Extension | Restaking for extended security |
+| `lux-market-nft.tex` | (NFT Market) | NFT marketplace protocol |
+
+### Governance and Identity
+
+| File | Title | Topic |
+|------|-------|-------|
+| `lux-governance-dao.tex` | Lux Governance: Unified DAO Framework for Multi-Ecosystem Coordination | DAO governance framework |
+| `lux-dao-governance-framework.tex` | (DAO Governance Framework) | Extended governance specification |
+| `lux-id-did-specification.tex` | (Lux ID DID Specification) | Decentralized Identifier standard |
+| `lux-id-iam.tex` | (Lux ID IAM) | Identity and Access Management protocol |
+
+### Economics
+
+| File | Title | Topic |
+|------|-------|-------|
+| `lux-economics.tex` | Appchain Economics: Incentive Design for Application-Specific Chains | Economic model for app chains |
+| `lux-tokenomics.tex` | (Tokenomics) | Token distribution and supply model |
+| `lux-validator-economics.tex` | (Validator Economics) | Validator reward and slashing mechanics |
+
+### Infrastructure and Scaling
+
+| File | Title | Topic |
+|------|-------|-------|
+| `lux-data-availability.tex` | (Data Availability) | DA layer design |
+| `lux-state-sync.tex` | (State Sync) | Fast state synchronization protocol |
+| `lux-verkle-trees.tex` | (Verkle Trees) | Verkle tree state commitments |
+| `lux-fraud-proofs.tex` | (Fraud Proofs) | Fraud proof system for rollups |
+| `lux-evm-precompiles.tex` | (EVM Precompiles) | Custom EVM precompiled contracts |
+| `lux-oracle-infrastructure.tex` | (Oracle Infrastructure) | Decentralized oracle design |
+
+### Privacy and Security
+
+| File | Title | Topic |
+|------|-------|-------|
+| `lux-privacy-pool.tex` | (Privacy Pool) | Privacy-preserving transaction pool |
+| `lux-tee-computing-mesh.tex` | (TEE Computing Mesh) | Trusted Execution Environment compute network |
+
+## FHE (Fully Homomorphic Encryption) Papers
+
+Located in `~/work/lux/papers/fhe/` with four sub-directories, each containing `main.tex`, `main.pdf`, and `references.bib`:
+
+| Directory | Topic |
+|-----------|-------|
+| `fhe/fhevm/` | FHE Virtual Machine -- encrypted smart contract execution |
+| `fhe/fhecrdt/` | FHE CRDTs -- conflict-free replicated data types with homomorphic encryption |
+| `fhe/voting/` | FHE Voting -- privacy-preserving on-chain voting |
+| `fhe/ml-privacy/` | FHE ML Privacy -- machine learning with encrypted data |
+
+### FHE Shared Resources
+
+`fhe/shared/` contains common LaTeX macros and BibTeX entries shared across all FHE papers.
+
+## Additional Documents
+
+| File | Purpose |
+|------|---------|
+| `AUTHORSHIP_STANDARD.md` | Paper authorship guidelines |
+| `LUX_ID_SUMMARY.md` | Summary of Lux ID specifications |
+| `lux-dao-paper-summary.md` | DAO governance paper summary |
+| `LLM.md` | AI assistant guidance for the repo |
+
+## Research Areas Summary
+
+The papers span seven major research domains:
+
+1. **Consensus** (4 papers): Snow family, FPC, quantum-secure consensus, Quasar dual-certificate
+2. **Cryptography** (3 papers): Post-quantum signatures (ETHFALCON), threshold signatures, NTT
+3. **Cross-Chain** (3 papers): ZK bridge, interchain transfers, warp messaging
+4. **App Chains** (4 papers): A-Chain (TEE/AI), G-Chain (GraphQL), M-Chain (MPC), Z-Chain (ZK privacy)
+5. **DeFi** (6 papers): DEX, lending, liquid staking, perpetuals, restaking, NFT market
+6. **Governance/Identity** (4 papers): DAO framework, DID specification, IAM
+7. **Infrastructure** (8 papers): DA, state sync, verkle trees, fraud proofs, precompiles, oracles, privacy pools, TEE mesh
+8. **FHE** (4 papers): FHEVM, CRDTs, voting, ML privacy
+
+## Building Papers
+
+```bash
+cd ~/work/lux/papers
+
+# Build a specific paper
+pdflatex lux-consensus.tex
+bibtex lux-consensus
+pdflatex lux-consensus.tex
+pdflatex lux-consensus.tex
+
+# Build FHE papers
+cd fhe/fhevm
+pdflatex main.tex
+bibtex main
+pdflatex main.tex
+pdflatex main.tex
+
+# Build all FHE papers
+cd fhe && make
+```
+
+## Key Themes Across Papers
+
+- **Post-quantum readiness**: Multiple papers address quantum resistance (ETHFALCON, Quasar, universal threshold sigs, quantum consensus)
+- **Multi-chain architecture**: Papers define how subnets/L2s interact (warp messaging, interchain transfers, bridge)
+- **Application-specific chains**: Dedicated chain designs for specific workloads (AI compute, MPC custody, privacy, GraphQL)
+- **Privacy**: Z-Chain ZK proofs, privacy pools, FHE for computation privacy
+- **Economic sustainability**: Tokenomics, validator economics, appchain incentive design
+
+## Related Repos
+
+| Repo | Purpose |
+|------|---------|
+| `github.com/luxfi/node` | Node implementation of consensus protocols |
+| `github.com/luxfi/evm` | EVM execution engine (precompiles paper) |
+| `github.com/luxfi/bridge` | Bridge implementation (bridge paper) |
+| `github.com/luxfi/crypto` | Cryptographic library (ETHFALCON, threshold sigs) |
+| `github.com/luxfi/docs` | Documentation referencing these papers |

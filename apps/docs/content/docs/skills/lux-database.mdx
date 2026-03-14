@@ -1,18 +1,266 @@
 ---
-title: "Lux Storage Layer - Database & Caching"
-description: "Lux storage layer covering database abstractions, ZapDB (BadgerDB-based KV store), caching, compression, and filesystem abstractions."
+title: "Lux Database"
+description: "Blockchain Storage Abstraction Layer"
 ---
 
 ## Overview
 
-Lux storage layer covering database abstractions, ZapDB (BadgerDB-based KV store), caching, compression, and filesystem abstractions.
+Lux Database (`github.com/luxfi/database`) is the Go storage abstraction layer for the Lux blockchain. It defines a unified key-value `Database` interface modeled after Ethereum's database API (enabling direct use of Geth/EVM code) and provides multiple pluggable backends: ZapDB (BadgerDB-based, default), PebbleDB (CockroachDB), LevelDB (Google), and in-memory. Also includes database wrappers for encryption, corruption detection, hooking, prefixing, versioning, metering, and linked-list storage. Used by `github.com/luxfi/node` for all persistent state.
 
-## Components
+## Repository
 
-| Component | Path | Purpose |
-|-----------|------|---------|
-| database/ | ``github.com/luxfi/database`` | Storage abstraction |
-| zapdb/ | ``github.com/luxfi/zapdb`` | BadgerDB KV store |
-| cache/ | ``github.com/luxfi/cache`` | In-memory + distributed cache |
-| compress/ | ``github.com/luxfi/compress`` | Data compression |
-| filesystem/ | ``github.com/luxfi/filesystem`` | VFS abstraction |
+| Item | Value |
+|------|-------|
+| Module | `github.com/luxfi/database` |
+| Local | `~/work/lux/database/` |
+| Go | 1.26.1 |
+| License | See LICENSE |
+| Build | `go build ./...` |
+| Test | `go test ./...` |
+
+## Core Dependencies
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `github.com/luxfi/zapdb/v4` | v4.9.2 | Default KV backend (BadgerDB-based) |
+| `github.com/cockroachdb/pebble` | v1.1.5 | PebbleDB backend (build tag) |
+| `github.com/syndtr/goleveldb` | v1.0.1 | LevelDB backend (build tag) |
+| `github.com/luxfi/codec` | v1.1.3 | Binary serialization |
+| `github.com/luxfi/crypto` | v1.17.39 | Encryption for encdb |
+| `github.com/luxfi/ids` | v1.2.9 | ID types |
+| `github.com/luxfi/log` | v1.4.1 | Structured logging |
+| `github.com/luxfi/metric` | v1.5.0 | Prometheus metrics |
+| `github.com/luxfi/cache` | v1.2.1 | Caching layer |
+| `github.com/luxfi/compress` | v0.0.5 | Data compression |
+| `github.com/luxfi/concurrent` | v0.0.3 | Concurrency utilities |
+| `github.com/luxfi/math` | v1.2.3 | Math utilities |
+| `github.com/stretchr/testify` | v1.11.1 | Testing assertions |
+| `go.uber.org/mock` | v0.6.0 | Mock generation |
+| `golang.org/x/crypto` | v0.48.0 | Cryptographic primitives |
+| `golang.org/x/sync` | v0.19.0 | Sync utilities |
+| `github.com/klauspost/compress` | v1.18.4 | Fast compression |
+
+## Core Interface
+
+The `Database` interface in `database.go` composes:
+
+```go
+type Database interface {
+    KeyValueReaderWriterDeleter  // Has, Get, Put, Delete
+    Batcher                     // NewBatch
+    Iteratee                    // NewIterator variants
+    Compacter                   // Compact(start, limit)
+    Syncer                      // Sync() - flush to disk
+    io.Closer                   // Close
+    HealthCheck(context.Context) (interface{}, error)
+    Backup(w io.Writer, since uint64) (uint64, error)  // Incremental backup
+    Load(r io.Reader) error                             // Restore from backup
+}
+```
+
+### Sub-Interfaces
+
+| Interface | Methods | Purpose |
+|-----------|---------|---------|
+| `KeyValueReader` | `Has(key)`, `Get(key)` | Read access |
+| `KeyValueWriter` | `Put(key, value)` | Write access |
+| `KeyValueDeleter` | `Delete(key)` | Delete access |
+| `KeyValueReaderWriter` | Reader + Writer | Read/write |
+| `KeyValueWriterDeleter` | Writer + Deleter | Write/delete |
+| `KeyValueReaderWriterDeleter` | All three | Full access |
+| `Compacter` | `Compact(start, limit)` | Storage compaction |
+| `Syncer` | `Sync()` | Flush to persistent storage |
+| `Batch` | `Size`, `Write`, `Reset`, `Replay`, `Inner` | Atomic batch writes |
+| `Batcher` | `NewBatch()` | Batch factory |
+| `Iterator` | `Next`, `Error`, `Key`, `Value`, `Release` | Key-value iteration |
+| `Iteratee` | `NewIterator[WithStart][WithPrefix]` | Iterator factory |
+| `HeightIndex` | `Put(height, value)`, `Get(height)`, `Has`, `Delete`, `Close` | Height-based blockchain state |
+
+### Error Types
+
+```go
+var ErrClosed   = errors.New("closed")
+var ErrNotFound = errors.New("not found")
+type ErrBackendDisabled struct { Backend string }
+```
+
+### Memory Management
+
+`memory.go` provides `MemoryManager` for controlling database memory usage:
+- Configurable percentage of system memory
+- Reserve allocation for critical operations
+- Prometheus gauge metrics (usage, available, remaining)
+
+### Constants
+
+```go
+MaxExcessCapacityFactor = 4  // Above which capacity is excessive
+CapacityReductionFactor = 2  // Reduction factor for excess capacity
+```
+
+## Storage Backends
+
+### ZapDB (Default)
+
+| Item | Value |
+|------|-------|
+| Package | `github.com/luxfi/zapdb/v4` |
+| Wrapper | `database/badgerdb/` (compatibility) |
+| Based on | BadgerDB |
+| Build tag | None (always available) |
+
+The `badgerdb/` package is a thin compatibility wrapper that delegates to `zapdb.New()`. Registered as the default backend in `manager/manager.go` via `init()`.
+
+### PebbleDB
+
+| Item | Value |
+|------|-------|
+| Package | `database/pebbledb/` |
+| Based on | CockroachDB Pebble |
+| Build tag | `-tags=pebbledb` |
+| Features | Bloom filters, batch operations, custom iterators |
+
+8 source files: `db.go`, `batch.go`, `iterator.go`, `constants.go`, `errors.go`, `set.go`, `db_test.go`, `batch_test.go`.
+
+### LevelDB
+
+| Item | Value |
+|------|-------|
+| Package | `database/leveldb/` |
+| Based on | Google LevelDB (syndtr/goleveldb) |
+| Build tag | `-tags=leveldb` |
+| Features | Metrics collection, configurable constants |
+
+5 source files: `db.go`, `constants.go`, `errors.go`, `metrics.go`, `db_test.go`.
+
+### In-Memory (memdb)
+
+| Item | Value |
+|------|-------|
+| Package | `database/memdb/` |
+| Purpose | Testing, ephemeral storage |
+| Build tag | None (always available) |
+
+4 source files: `db.go`, `constants.go`, `iterator.go`, `db_test.go`.
+
+## Database Wrappers
+
+| Package | Purpose | Key Feature |
+|---------|---------|-------------|
+| `encdb/` | Encrypted database | AES encryption via `golang.org/x/crypto` |
+| `corruptabledb/` | Corruption injection | Testing fault tolerance |
+| `hookdb/` | Event hooks | Notifiers on write/delete operations |
+| `linkeddb/` | Linked-list storage | Ordered traversal over key-value pairs |
+| `heightindexdb/` | Height-indexed storage | Blockchain state by block height (big-endian uint64 keys) |
+| `codec/` | Serialization layer | Binary codec with `codec/linear/` sub-package |
+
+## Database Infrastructure
+
+### Factory (`factory/`)
+
+Pluggable database creation system:
+- `RegisterDatabase(name, factory)` -- Register a backend
+- `AvailableDatabases()` -- List available backends
+- Default: ZapDB + memdb always available
+- PebbleDB/LevelDB available via build tags
+
+### Manager (`manager/`)
+
+Database lifecycle management:
+- `NewManager(baseDir, registerer)` -- Create manager
+- `RegisterDatabaseType(name, creator)` -- Register backend type
+- Supports `zapdb`, `pebbledb`, `leveldb` via files `manager_zapdb.go`, `manager_pebbledb.go`, `manager_leveldb.go`
+- Wraps databases with metering, versioning, and prefixing
+
+### Test Suite (`dbtest/`)
+
+Comprehensive test harness:
+- `dbtest.go` -- Full interface compliance tests
+- `benchmark.go` -- Performance benchmarks
+- `testsuite.go` -- Reusable test suite for any backend
+
+### Mocks (`databasemock/`)
+
+Generated mock implementations:
+- `batch.go` -- Mock Batch
+- `iterator.go` -- Mock Iterator
+
+## Project Structure
+
+```
+~/work/lux/database/
+  go.mod                 # github.com/luxfi/database, Go 1.26.1
+  database.go            # Core Database/HeightIndex interfaces
+  batch.go               # Batch/Batcher interfaces and BatchOps
+  iterator.go            # Iterator/Iteratee interfaces
+  errors.go              # ErrClosed, ErrNotFound, ErrBackendDisabled
+  memory.go              # MemoryManager (system memory control)
+  helpers.go             # Utility functions
+  database_util.go       # Additional utilities
+  Makefile               # Build/test targets
+
+  badgerdb/              # ZapDB compatibility wrapper
+  pebbledb/              # PebbleDB backend (build tag)
+  leveldb/               # LevelDB backend (build tag)
+  memdb/                 # In-memory backend
+  encdb/                 # Encrypted database wrapper
+  corruptabledb/         # Corruption testing wrapper
+  hookdb/                # Event hook wrapper
+  linkeddb/              # Linked-list storage
+  heightindexdb/         # Height-indexed storage
+  codec/                 # Serialization (with linear/ sub-pkg)
+  factory/               # Pluggable backend factory
+  manager/               # Database lifecycle management
+  dbtest/                # Test suite and benchmarks
+  databasemock/          # Generated mocks
+  bin/                   # Build output
+```
+
+## Development
+
+```bash
+cd ~/work/lux/database
+
+# Build all packages
+go build ./...
+
+# Run all tests
+go test ./...
+
+# Run with race detector
+go test -race ./...
+
+# Build with PebbleDB support
+go build -tags=pebbledb ./...
+
+# Build with LevelDB support
+go build -tags=leveldb ./...
+
+# Run benchmarks
+go test -bench=. ./dbtest/
+
+# Run specific backend tests
+go test ./pebbledb/ -tags=pebbledb -v
+go test ./leveldb/ -tags=leveldb -v
+go test ./memdb/ -v
+```
+
+## Key Design Decisions
+
+1. **Ethereum-compatible interface**: Matches go-ethereum's database API for seamless EVM integration
+2. **Build-tag backends**: PebbleDB and LevelDB are compile-time optional to minimize binary size
+3. **ZapDB as default**: BadgerDB-based ZapDB is always available, registered in `init()`
+4. **Wrapper composition**: Encryption, metering, versioning are separate wrappers that can be composed
+5. **HeightIndex**: Specialized interface for blockchain state indexed by block height using big-endian uint64 keys for efficient range queries
+6. **Backup/Restore**: Built into the core `Database` interface with incremental backup support
+7. **Memory management**: System-level memory control with configurable limits and Prometheus metrics
+
+## Related Packages
+
+| Package | Module | Purpose |
+|---------|--------|---------|
+| `github.com/luxfi/zapdb` | v4.9.2 | Default storage engine |
+| `github.com/luxfi/cache` | v1.2.1 | In-memory caching layer |
+| `github.com/luxfi/compress` | v0.0.5 | Data compression |
+| `github.com/luxfi/codec` | v1.1.3 | Binary serialization |
+| `github.com/luxfi/node` | Latest | Primary consumer of this package |

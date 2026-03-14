@@ -1,97 +1,332 @@
 ---
-title: "Lux Plugins Core - VM & Subnet Plugin Registry"
-description: "## Quick reference"
+title: "Lux Plugins Core"
+description: "VM & Subnet Plugin Registry"
 ---
 
 ## Overview
 
-Lux Plugins Core is the **official plugin repository** for the Lux Plugin Manager (LPM). It contains YAML definitions for virtual machines and subnets that LPM uses to download, install, and manage VM binaries on Lux nodes.
+Lux Plugins Core is the **official plugin repository** for the Lux Plugin Manager (LPM). It ships with LPM as the default repository and contains YAML definitions for virtual machines and subnets. LPM uses these definitions to download, install, verify, and manage VM binaries on Lux nodes. Community-driven -- anyone can submit a new VM or subnet via pull request.
 
-## Quick reference
+## Quick Reference
 
 | Item | Value |
 |------|-------|
 | Repo | `github.com/luxfi/plugins-core` |
+| Local | `~/work/lux/plugins-core/` |
 | Branch | `master` |
 | Format | YAML definition files |
 | Tool | Lux Plugin Manager (LPM) |
 | Maintainer | `z@lux.network` |
+| License | Open |
 
 ## Repository Structure
 
 ```
 plugins-core/
-├── vms/              — VM definitions
-│   ├── blobvm.yaml       — Content-addressable KV store VM
-│   ├── spacesvm.yaml     — Hierarchical storage VM
-│   └── subnet-evm.yaml   — Subnet EVM (Solidity smart contracts)
-├── subnets/          — Subnet definitions
-│   ├── spaces.yaml       — Spaces Subnet Demo
-│   └── zoo.yaml          — Zoo subnet
-└── examples/         — Template files
-    ├── vm.yaml           — VM definition template
-    └── subnet.yaml       — Subnet definition template
+  vms/                   -- VM definitions (one YAML per VM)
+    blobvm.yaml              Content-addressable KV store VM
+    spacesvm.yaml            Hierarchical storage VM
+    subnet-evm.yaml          Subnet EVM (Solidity smart contracts)
+  subnets/               -- Subnet definitions (one YAML per subnet)
+    spaces.yaml              Spaces Subnet Demo (SpacesVM)
+    wagmi.yaml               Zoo EVM Demo (high-throughput testbed)
+  examples/              -- Template files for contributors
+    vm.yaml                  VM definition template
+    subnet.yaml              Subnet definition template
+  README.md              -- Contributing guide
+  LICENSE
 ```
 
 ## Registered VMs
 
-| VM | Alias | ID | Version |
-|----|-------|----|---------|
-| BlobVM | `blobvm` | `kM6h4LYe3AcEU1MB2UNg6ubzAiDAALZzpVrbX8zn3hXF6Avd8` | 0.0.6 |
-| SpacesVM | `spacesvm` | `sqja3uK17MJxfC7AN8nGadBw9JK5BcrsNwNynsqP5Gih8M5Bm` | 0.0.3 |
-| Subnet EVM | `subnet-evm` | `srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy` | 0.2.7 |
+### BlobVM
+
+| Field | Value |
+|-------|-------|
+| Alias | `blobvm` |
+| VM ID | `kM6h4LYe3AcEU1MB2UNg6ubzAiDAALZzpVrbX8zn3hXF6Avd8` |
+| Version | 0.0.6 |
+| Homepage | `https://github.com/luxdefi/blobvm` |
+| Description | Content-Addressable Key-Value Store with EIP-712 compatibility and fee-based metering |
+| Install Script | `scripts/build.sh` |
+| Binary Path | `build/kM6h4LYe3AcEU1MB2UNg6ubzAiDAALZzpVrbX8zn3hXF6Avd8` |
+| Release URL | `https://github.com/luxdefi/blobvm/archive/refs/tags/v0.0.6.tar.gz` |
+| SHA256 | `72d1b8fa3ee89412b406e7b0e9a968ca06746ea1bb5dd02c2b87f1ad1eaa4ca6` |
+
+BlobVM provides a content-addressable key-value store chain. Keys are derived from content hashes, data is stored on-chain with EIP-712 signature verification, and fees are calculated based on data size (metered storage).
+
+### SpacesVM
+
+| Field | Value |
+|-------|-------|
+| Alias | `spacesvm` |
+| VM ID | `sqja3uK17MJxfC7AN8nGadBw9JK5BcrsNwNynsqP5Gih8M5Bm` |
+| Version | 0.0.3 |
+| Homepage | `https://tryspaces.xyz` |
+| Description | Virtual machine that processes the Spaces subnet |
+| Install Script | `scripts/build.sh` |
+| Binary Path | `build/sqja3uK17MJxfC7AN8nGadBw9JK5BcrsNwNynsqP5Gih8M5Bm` |
+| Release URL | `https://github.com/luxdefi/spacesvm/archive/refs/tags/v0.0.3.tar.gz` |
+| SHA256 | `1ac250f6c40472f22eaf0616fc8c886078a4eaa9b2b85fbb4fb7783a1db6af3f` |
+
+SpacesVM provides authenticated, hierarchical key-value storage using any EIP-712 compatible wallet. It powers the Spaces subnet where users can claim hierarchical namespaces (like DNS) and store arbitrary key/value data under them.
+
+### Subnet EVM
+
+| Field | Value |
+|-------|-------|
+| Alias | `subnet-evm` |
+| VM ID | `srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy` |
+| Version | 0.2.7 |
+| Homepage | `https://github.com/luxdefi/subnet-evm` |
+| Description | Subnet EVM -- simplified Coreth VM for Subnet Contract Chains with full Ethereum Virtual Machine and Solidity smart contract support |
+| Install Script | `scripts/build.sh build/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy` |
+| Binary Path | `build/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy` |
+| Release URL | `https://github.com/luxdefi/subnet-evm/archive/refs/tags/v0.2.7.tar.gz` |
+| SHA256 | `c0d63b56031820007cce5fa8ea635628b8b9a5897111290a78b60538838509f8` |
+
+Subnet EVM is the primary VM for creating new EVM-compatible blockchains on Lux. It is a simplified version of Coreth (C-Chain VM), parameterizable for different throughput and gas configurations.
+
+## Registered Subnets
+
+### Spaces Subnet
+
+| Field | Value |
+|-------|-------|
+| Alias | `spaces` |
+| Subnet ID | `Ai42MkKqk8yjXFCpoHXw7rdTWSHiKEMqh5h8gbxwjgkCUfkrk` |
+| Homepage | `https://tryspaces.xyz` |
+| VM | `spacesvm` |
+| Description | Authenticated, hierarchical storage of arbitrary keys/values using any EIP-712 compatible wallet |
+
+**Consensus parameters**:
+```
+k: 20                            -- Sample size
+alpha: 15                        -- Quorum size
+betaVirtuous: 15                 -- Confidence threshold (virtuous)
+betaRogue: 20                    -- Confidence threshold (rogue)
+concurrentRepolls: 4             -- Concurrent repolls
+optimalProcessing: 50            -- Optimal processing buffer
+maxOutstandingItems: 1024        -- Max outstanding items
+maxItemProcessingTime: 120s      -- Max processing time per item
+parents: 5                       -- Parent count
+batchSize: 30                    -- Batch size
+validatorOnly: false             -- Open to non-validators
+```
+
+### Zoo EVM Demo (WAGMI)
+
+| Field | Value |
+|-------|-------|
+| Alias | `wagmi` |
+| Subnet ID | `28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY` |
+| Homepage | `https://github.com/luxfi/evm` |
+| VM | `evm` (Coreth/Subnet-EVM) |
+| Description | High-throughput testbed for EVM optimizations, parameterized to run at higher capacity than mainnet C-Chain |
+| Maintainer | `z@zoolabs.io` |
+
+Used to experiment with EVM release candidates before they ship as official Coreth releases.
 
 ## VM Definition Format
 
+Complete YAML schema for a VM definition (`vms/<name>.yaml`):
+
 ```yaml
 vm:
-  id: "<base58 encoded VM ID>"
-  alias: "<unique alias>"
-  homepage: "<project URL>"
-  description: "<description>"
+  # Required: Base58-encoded VM ID (deterministic from build)
+  id: "kM6h4LYe3AcEU1MB2UNg6ubzAiDAALZzpVrbX8zn3hXF6Avd8"
+
+  # Required: Unique human-readable alias (used in LPM commands)
+  alias: "blobvm"
+
+  # Required: Project homepage URL
+  homepage: "https://github.com/luxdefi/blobvm"
+
+  # Required: Human-readable description
+  description: "Content-Addressable Key-Value Store w/EIP-712 Compatibility"
+
+  # Required: Maintainer contact emails
   maintainers:
-    - "<email>"
-  installScript: "<path to build script>"
-  binaryPath: "<path to built binary>"
-  url: "<release tarball URL>"
-  sha256: "<checksum>"
+    - "z@lux.network"
+
+  # Required: Path to build script (relative to extracted source)
+  # LPM clones the repo and runs this script to build the binary
+  installScript: "scripts/build.sh"
+
+  # Required: Path to the built binary (relative to extracted source)
+  # Must match the VM ID for the node to load it correctly
+  binaryPath: "build/kM6h4LYe3AcEU1MB2UNg6ubzAiDAALZzpVrbX8zn3hXF6Avd8"
+
+  # Required: URL to release tarball (for pre-built download)
+  url: "https://github.com/luxdefi/blobvm/archive/refs/tags/v0.0.6.tar.gz"
+
+  # Required: SHA256 checksum of the release tarball
+  sha256: "72d1b8fa3ee89412b406e7b0e9a968ca06746ea1bb5dd02c2b87f1ad1eaa4ca6"
+
+  # Required: Semantic version
   version:
     major: 0
     minor: 0
-    patch: 1
+    patch: 6
 ```
 
 ## Subnet Definition Format
 
-Subnet definitions reference VMs by alias and include network-specific configuration (subnet ID, blockchain IDs, genesis).
+Complete YAML schema for a subnet definition (`subnets/<name>.yaml`):
+
+```yaml
+subnet:
+  # Required: Base58-encoded Subnet ID (from P-Chain)
+  id: "Ai42MkKqk8yjXFCpoHXw7rdTWSHiKEMqh5h8gbxwjgkCUfkrk"
+
+  # Required: Unique human-readable alias
+  alias: "spaces"
+
+  # Required: Project homepage
+  homepage: "https://tryspaces.xyz"
+
+  # Required: Description
+  description: |
+    Spaces enables authenticated, hierarchical storage of arbitrary
+    keys/values using any EIP-712 compatible wallet.
+
+  # Required: Maintainer emails
+  maintainers:
+    - "z@lux.network"
+
+  # Optional: Install script (empty if no additional setup needed)
+  installScript: ""
+
+  # Required: List of VM aliases this subnet uses
+  vms:
+    - "spacesvm"
+
+  # Optional: Subnet-specific configuration
+  config:
+    # Gossip settings
+    gossipAcceptedFrontierValidatorSize: 0
+    gossipAcceptedFrontierNonValidatorSize: 0
+    gossipAcceptedFrontierPeerSize: 35
+    gossipOnAcceptValidatorSize: 0
+    gossipOnAcceptNonValidatorSize: 0
+    gossipOnAcceptPeerSize: 20
+    appGossipValidatorSize: 10
+    appGossipNonValidatorSize: 0
+    appGossipPeerSize: 0
+
+    # Access control
+    validatorOnly: false
+
+    # Consensus parameters
+    consensusParameters:
+      k: 20              # Sample size
+      alpha: 15           # Quorum threshold
+      betaVirtuous: 15    # Virtuous confidence
+      betaRogue: 20       # Rogue confidence
+      concurrentRepolls: 4
+      optimalProcessing: 50
+      maxOutstandingItems: 1024
+      maxItemProcessingTime: 120_000_000_000  # 120 seconds in nanoseconds
+      parents: 5
+      batchSize: 30
+```
+
+## How LPM Works
+
+The Lux Plugin Manager (LPM) uses this repository to:
+
+1. **Discover VMs**: LPM reads `vms/*.yaml` to list available virtual machines
+2. **Download**: Fetches the release tarball from the `url` field
+3. **Verify**: Checks the SHA256 checksum against the `sha256` field
+4. **Build** (if needed): Runs the `installScript` to compile from source
+5. **Install**: Copies the binary to the node's plugin directory at the path matching the VM ID
+6. **Track**: Records installed version for upgrade tracking
+
+### Binary Naming Convention
+
+VM binaries must be named with their base58-encoded VM ID. The Lux node discovers plugins by scanning its plugin directory for files whose names match registered VM IDs. Example:
+
+```
+~/.lux/plugins/kM6h4LYe3AcEU1MB2UNg6ubzAiDAALZzpVrbX8zn3hXF6Avd8   # BlobVM
+~/.lux/plugins/sqja3uK17MJxfC7AN8nGadBw9JK5BcrsNwNynsqP5Gih8M5Bm   # SpacesVM
+~/.lux/plugins/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy   # Subnet EVM
+```
 
 ## Usage with LPM
 
 ```bash
-# Install a VM via LPM using this repository
-lpm install --vm spacesvm
+# Add this repository (ships as default with LPM)
+lpm add-repository --alias luxfi --url https://github.com/luxfi/plugins-core.git
 
-# List available VMs
+# List all available VMs
 lpm list-vms
 
-# Install from a specific plugin repository
-lpm add-repository --alias luxfi --url https://github.com/luxfi/plugins-core.git
+# Install a VM by alias
+lpm install --vm blobvm
+lpm install --vm spacesvm
+lpm install --vm subnet-evm
+
+# Update a VM to latest version
+lpm update --vm subnet-evm
+
+# Install a subnet (installs all referenced VMs)
+lpm install --subnet spaces
+
+# List installed VMs
+lpm list-installed
 ```
 
 ## Adding a New VM
 
-1. Create a YAML file in `vms/` following the example template
-2. Include: VM ID, alias, install script, binary path, release URL, and sha256 checksum
-3. Submit a pull request
+1. **Generate a VM ID**: Build your VM binary; its name is the base58 VM ID
+2. **Create release**: Tag a release on GitHub and note the tarball URL
+3. **Compute checksum**: `sha256sum <tarball>` to get the SHA256 hash
+4. **Write YAML**: Create `vms/<alias>.yaml` following the format above
+5. **Test locally**: Verify LPM can install from your fork
+6. **Submit PR**: Open a pull request to `github.com/luxfi/plugins-core`
+
+Required fields checklist:
+- `id`: Base58 VM ID (matches binary name)
+- `alias`: Unique short name (lowercase, hyphens ok)
+- `homepage`: URL to project
+- `description`: What the VM does
+- `maintainers`: At least one email
+- `installScript`: Build script path
+- `binaryPath`: Built binary path
+- `url`: Release tarball URL
+- `sha256`: Checksum of tarball
+- `version`: Semantic version (major/minor/patch)
 
 ## Adding a New Subnet
 
-1. Create a YAML file in `subnets/` following the example template
-2. Reference the VM alias, subnet ID, and blockchain configuration
-3. Submit a pull request
+1. **Create subnet on P-Chain**: Deploy via `lux subnet create` CLI command
+2. **Note Subnet ID**: Base58-encoded ID from the P-Chain transaction
+3. **List VM dependencies**: Which VMs the subnet uses (by alias)
+4. **Configure consensus**: Set Snow consensus parameters appropriate for your use case
+5. **Write YAML**: Create `subnets/<alias>.yaml` following the format above
+6. **Submit PR**: Open a pull request
+
+## Consensus Parameter Reference
+
+These parameters control Snow consensus behavior for subnets:
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `k` | Sample size (number of validators polled per round) | 20 |
+| `alpha` | Quorum size (required agreement to accept) | 15 |
+| `betaVirtuous` | Confidence threshold for virtuous transactions | 15 |
+| `betaRogue` | Confidence threshold for conflicting transactions | 20 |
+| `concurrentRepolls` | Number of concurrent polls | 4 |
+| `optimalProcessing` | Target number of in-flight transactions | 50 |
+| `maxOutstandingItems` | Maximum unprocessed items | 1024 |
+| `maxItemProcessingTime` | Timeout per item (nanoseconds) | 120,000,000,000 (120s) |
+| `parents` | Number of parents per vertex (DAG depth) | 5 |
+| `batchSize` | Transactions per batch | 30 |
+| `validatorOnly` | Restrict to validators only | false |
 
 ## Related Skills
 
-- `lux/lux-node.md` — Core node that runs VM plugins
-- `lux/lux-evm.md` — Subnet EVM execution engine
-- `lux/lux-spacesvm.md` — SpacesVM storage chain
+- `lux/lux-node.md` -- Core node that loads and runs VM plugins
+- `lux/lux-evm.md` -- Subnet EVM execution engine
+- `lux/lux-spacesvm.md` -- SpacesVM storage chain
+- `lux/lux-cli.md` -- CLI for subnet creation and management
