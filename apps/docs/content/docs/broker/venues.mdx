@@ -4,28 +4,55 @@ description: Supported venues and connectivity
 icon: Globe
 ---
 
-## Crypto Exchanges
+The broker connects to 16 institutional providers spanning crypto exchanges, broker-dealers, custody platforms, FX desks, market data, and payment processors.
 
-| Venue | Assets | Features |
-|-------|--------|----------|
-| **Coinbase** | 200+ crypto | Advanced Trade API, custody |
-| **Binance** | 500+ crypto | Spot, margin, futures |
-| **Kraken** | 200+ crypto | Spot, futures, staking |
-| **Gemini** | 100+ crypto | Regulated US exchange |
-| **SFOX** | 50+ crypto | Institutional aggregation |
-| **FalconX** | 100+ crypto | OTC, prime brokerage |
+## Provider Table
 
-## Equities
+| Provider | Asset Classes | Type | Order Types | Key Features |
+|----------|-------------|------|-------------|--------------|
+| **Alpaca** | US equity, crypto | Broker-dealer (SEC/FINRA) | market, limit, stop, stop_limit, trailing_stop | ACH, wire, fractional, extended hours, margin |
+| **Interactive Brokers** | US equity, options, futures, FX, bonds, crypto | Prime broker | market, limit, stop, stop_limit, trailing_stop, algo | Margin, short selling, options, futures, global markets |
+| **Tradier** | US equity, options | Broker-dealer | market, limit, stop, stop_limit | Commission-free, options, streaming, extended hours |
+| **Coinbase** | Crypto | Exchange (Advanced Trade) | market, limit, stop | Staking, custody, 250+ pairs |
+| **Binance** | Crypto | Exchange | market, limit, stop, OCO | Margin, futures, staking, 600+ pairs |
+| **Kraken** | Crypto | Exchange | market, limit, stop, stop_limit, trailing_stop | Staking, margin, futures, 200+ pairs |
+| **Gemini** | Crypto | Exchange | market, limit, stop | Custody, staking, 100+ pairs |
+| **SFOX** | Crypto | Prime dealer / SOR | market, limit, stop, smart_route, TWAP, sniper, hare, tortoise, polar_bear, gorilla | Smart routing, dark pool, custody, 150+ pairs |
+| **FalconX** | Crypto | Institutional RFQ | RFQ | Institutional OTC, settlement |
+| **Fireblocks** | Crypto | Custody + OTC | transfer | Custody, multisig, MPC, DeFi, staking, NFT, 500+ assets |
+| **BitGo** | Crypto | Custody + Prime | market, limit | Custody, multisig, staking, prime trading |
+| **Circle** | USDC / Stablecoins | Stablecoin infrastructure | transfer | USDC, EURC, mint, burn, cross-chain |
+| **CurrencyCloud** | FX (35+ currencies) | Institutional FX (Visa) | spot, forward | FX trading, cross-border, competitive spreads, payments |
+| **LMAX** | FX, crypto, commodities | Institutional CLOB | market, limit, stop | FCA regulated, sub-ms matching, precious metals |
+| **Polygon.io** | US equity, crypto, FX, options | Market data | -- | Snapshots, bars, trades, quotes, real-time |
+| **Finix** | Payments | Payment processor | -- | ACH, wire, card, Apple Pay, Google Pay |
 
-| Venue | Assets | Features |
-|-------|--------|----------|
-| **Alpaca** | US equities | Commission-free, fractional |
-| **Interactive Brokers** | Global | Multi-asset, margin |
-| **Tradier** | US equities/options | Brokerage-as-a-service |
+## Provider Credentials
 
-## FX
+Each provider is enabled by setting its API key environment variables. Only providers with valid credentials are registered at startup.
 
-| Venue | Pairs | Features |
-|-------|-------|----------|
-| **CurrencyCloud** | 35 pairs | Cross-border payments |
-| **LMAX** | Major pairs | Institutional CLOB |
+| Provider | Environment Variables |
+|----------|---------------------|
+| Alpaca | `ALPACA_API_KEY`, `ALPACA_API_SECRET` |
+| Interactive Brokers | `IBKR_ACCESS_TOKEN`, `IBKR_ACCOUNT_ID`, `IBKR_GATEWAY_URL`, `IBKR_CONSUMER_KEY` |
+| Coinbase | `COINBASE_API_KEY`, `COINBASE_API_SECRET` |
+| Binance | `BINANCE_API_KEY`, `BINANCE_API_SECRET` |
+| Kraken | `KRAKEN_API_KEY`, `KRAKEN_API_SECRET` |
+| Gemini | `GEMINI_API_KEY`, `GEMINI_API_SECRET` |
+| SFOX | `SFOX_API_KEY` |
+| FalconX | `FALCON_API_KEY`, `FALCON_API_SECRET`, `FALCON_PASSPHRASE` |
+| Fireblocks | `FIREBLOCKS_API_KEY`, `FIREBLOCKS_PRIVATE_KEY` |
+| BitGo | `BITGO_ACCESS_TOKEN`, `BITGO_ENTERPRISE` |
+| Circle | `CIRCLE_API_KEY` |
+| Tradier | `TRADIER_ACCESS_TOKEN`, `TRADIER_ACCOUNT_ID` |
+| Polygon.io | `POLYGON_API_KEY` |
+| CurrencyCloud | `CURRENCYCLOUD_LOGIN_ID`, `CURRENCYCLOUD_API_KEY` |
+| LMAX | `LMAX_API_KEY`, `LMAX_USERNAME`, `LMAX_PASSWORD` |
+| Finix | `FINIX_USERNAME`, `FINIX_PASSWORD` |
+
+## Runtime Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/v1/providers` | List all registered (active) providers |
+| GET | `/v1/providers/capabilities` | Detailed capabilities per provider including asset classes, order types, features, and fees |

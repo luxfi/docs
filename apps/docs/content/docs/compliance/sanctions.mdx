@@ -1,67 +1,97 @@
 ---
 title: Sanctions Screening
-description: OFAC, UN, EU sanctions lists, PEP detection, and enhanced due diligence
+description: OFAC SDN, EU, UK HMT sanctions lists, PEP detection, and adverse media screening
 icon: ShieldAlert
 ---
 
-The AML screening service (`pkg/aml`) checks individuals and entities against global sanctions lists and politically exposed persons databases.
+The AML screening service (`pkg/aml.ScreeningService`) checks individuals and entities against global sanctions lists and politically exposed persons databases.
 
 ## Sanctions Lists
 
-| List | Source | Coverage |
-|------|--------|----------|
-| **OFAC SDN** | US Treasury | Specially Designated Nationals |
-| **EU Consolidated** | European Union | EU sanctions targets |
-| **UK HMT** | HM Treasury | UK financial sanctions |
-| **UN Security Council** | United Nations | Global sanctions |
-| **PEP Database** | Multi-source | Politically exposed persons |
-| **Adverse Media** | Multi-source | Negative news screening |
+| List | Constant | Source | Coverage |
+|------|----------|--------|----------|
+| **OFAC SDN** | `ofac_sdn` | US Treasury | Specially Designated Nationals and Blocked Persons |
+| **EU Consolidated** | `eu_sanctions` | European Union | EU sanctions targets |
+| **UK HMT** | `uk_hmt` | HM Treasury | UK financial sanctions targets |
+| **PEP** | `pep` | Multi-source | Politically exposed persons, family, and associates |
+| **Adverse Media** | `adverse_media` | Multi-source | Negative news screening |
 
-## Matching
+All five lists are checked on every screening request. Results include which lists produced matches.
+
+## Match Types
 
 The screening service uses three matching strategies:
 
-| Match Type | Method | Threshold |
-|------------|--------|-----------|
-| **Exact** | String equality | 100% |
-| **Fuzzy** | Levenshtein distance | Configurable similarity |
-| **Partial** | Substring and token matching | Name component overlap |
+| Match Type | Constant | Method |
+|------------|----------|--------|
+| **Exact** | `exact` | Case-insensitive string equality after normalization |
+| **Fuzzy** | `fuzzy` | Levenshtein distance with configurable similarity threshold |
+| **Partial** | `partial` | Substring and token-level matching on name components |
+
+### Fuzzy Matching
+
+Fuzzy matching uses Levenshtein edit distance to find near-matches. The Levenshtein distance counts the minimum number of single-character insertions, deletions, or substitutions needed to transform one string into another. A similarity score is calculated as:
+
+```
+similarity = 1 - (distance / max(len(a), len(b)))
+```
+
+Names with similarity above the configured threshold (typically 0.85) are flagged as fuzzy matches. This catches common variations: transliteration differences, typos, and alternate spellings.
 
 ## Risk Scoring
 
-Each screening result receives a risk level:
+Each screening result receives a risk level that determines the required action:
 
-| Risk Level | Action Required |
-|------------|----------------|
-| **Low** | Auto-approve, periodic rescreening |
-| **Medium** | Manual review within 24 hours |
-| **High** | Escalate to compliance officer |
-| **Critical** | Block immediately, file SAR |
+| Risk Level | Constant | Action Required |
+|------------|----------|----------------|
+| **Low** | `low` | Auto-approve, periodic rescreening |
+| **Medium** | `medium` | Manual review within 24 hours |
+| **High** | `high` | Escalate to compliance officer |
+| **Critical** | `critical` | Block immediately, file SAR |
+
+Risk is determined by match quality, list source, and number of matches. An exact match on the OFAC SDN list produces `critical`. A fuzzy match on adverse media produces `medium`.
 
 ## PEP Detection
 
-Politically exposed persons (current and former government officials, their family members, and close associates) trigger enhanced due diligence requirements:
+Politically exposed persons (current and former government officials, their family members, and close associates) trigger enhanced due diligence:
 
 - Source of wealth verification
 - Source of funds documentation
 - Senior management approval for onboarding
 - Enhanced ongoing monitoring (quarterly review)
 
-## EDD Process
+## Enhanced Due Diligence
 
-Enhanced Due Diligence is required for:
+EDD is required for:
 
-- PEP matches
+- PEP matches (any match type)
 - High-risk jurisdictions
 - Complex ownership structures
 - Unusual transaction patterns
 
 ```
-Screening Hit ──► Risk Assessment ──► EDD Required?
-                                          │
-                      ┌───────────────────┤
-                      ▼                   ▼
+Screening Hit --> Risk Assessment --> EDD Required?
+                                         |
+                      +------------------+
+                      v                  v
                   Standard CDD       Enhanced CDD
                   (periodic)         (source of funds,
                                       senior approval)
 ```
+
+## List Management
+
+Sanctions lists are loaded at startup and can be refreshed without restart. The screening service uses `sync.RWMutex` for thread-safe concurrent access during list updates and screening operations.
+
+## API
+
+Screen an individual:
+
+```bash
+curl -X POST http://localhost:8091/v1/aml/screen \
+  -H "X-Api-Key: $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"John Doe","country":"US","date_of_birth":"1980-01-15"}'
+```
+
+See the [API Reference](/docs/compliance/api#aml-screening) for full request/response details.

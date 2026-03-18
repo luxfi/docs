@@ -1,17 +1,58 @@
 ---
-title: Multi-Asset
-description: Crypto, equities, FX, and derivatives
+title: Multi-Asset Support
+description: Unified API across crypto, equities, FX, and derivatives
 icon: Layers
 ---
 
-## Asset Classes
+The broker provides a single API surface for trading across multiple asset classes. Symbol format and market data routing are handled automatically based on the asset type.
 
-| Class | Examples | Venues |
-|-------|----------|--------|
-| **Crypto Spot** | BTC, ETH, LUX | Coinbase, Binance, Kraken |
-| **Crypto Futures** | BTC-PERP, ETH-PERP | Binance, Kraken |
-| **US Equities** | AAPL, TSLA, SPY | Alpaca, IBKR |
-| **Options** | US equity options | IBKR, Tradier |
-| **FX** | EUR/USD, GBP/JPY | CurrencyCloud, LMAX |
-| **Metals** | Gold, Silver | IBKR |
-| **Stablecoins** | USDC mint/redeem | Circle |
+## Symbol Format
+
+The broker distinguishes asset classes by symbol format:
+
+| Format | Asset Class | Examples | Routing |
+|--------|------------|----------|---------|
+| Contains `/` | Crypto pair | `BTC/USD`, `ETH/BTC` | Crypto exchanges (Coinbase, Binance, Kraken, etc.) |
+| Plain uppercase | US equity | `AAPL`, `TSLA`, `SPY` | Broker-dealers (Alpaca, IBKR, Tradier) |
+| Three-letter pair | FX | `EUR/USD`, `GBP/JPY` | FX desks (CurrencyCloud, LMAX) |
+
+When you request a route or place a smart order, the router queries all providers that support the asset class and returns only those with active quotes.
+
+## Asset Classes by Provider
+
+| Asset Class | Providers |
+|-------------|-----------|
+| **US Equities** | Alpaca, Interactive Brokers, Tradier |
+| **Crypto Spot** | Coinbase, Binance, Kraken, Gemini, SFOX, BitGo, LMAX |
+| **Options** | Interactive Brokers, Tradier |
+| **Futures** | Interactive Brokers |
+| **FX** | CurrencyCloud, LMAX, Interactive Brokers |
+| **Commodities/Metals** | LMAX, Interactive Brokers |
+| **Stablecoins** | Circle (USDC/EURC mint/burn) |
+
+## Market Data Routing
+
+Market data endpoints are provider-scoped: `/v1/market/{provider}/snapshot/{symbol}`. This lets you query a specific provider's view of an asset.
+
+For cross-venue comparison, use the consolidated endpoints:
+
+- `GET /v1/bbo/{symbol}` -- Best bid/offer across all venues
+- `GET /v1/bbo/{symbol}/{quote}` -- BBO for a specific pair
+- `GET /v1/stream` -- SSE stream of real-time consolidated tickers
+
+The consolidated BBO response includes provider attribution, showing which venue has the best bid and which has the best ask.
+
+## Aggregated Asset List
+
+`GET /v1/assets` returns all tradable assets deduplicated across providers. Each asset includes the list of providers that support it:
+
+```json
+{
+  "symbol": "BTC/USD",
+  "name": "Bitcoin",
+  "class": "crypto",
+  "providers": ["binance", "coinbase", "kraken", "sfox"]
+}
+```
+
+This is useful for building UIs that show which venues are available for a given instrument.

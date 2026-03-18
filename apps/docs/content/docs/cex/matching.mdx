@@ -1,21 +1,101 @@
 ---
 title: Matching Engine
-description: Central Limit Order Book
+description: Central Limit Order Book with price-time priority
 icon: List
 ---
 
+The Lux CEX matching engine is a Central Limit Order Book (CLOB) with price-time priority. Internally it uses `int64` price and quantity representations for cache-line-aligned, allocation-free matching.
+
 ## Price-Time Priority
 
-Orders matched by:
-1. Best price (highest bid / lowest ask)
-2. Time priority (FIFO at each price level)
+Orders are matched by:
+
+1. **Best price** -- highest bid / lowest ask
+2. **Time priority** -- FIFO at each price level (earliest order fills first)
 
 ## Order Types
 
-| Type | Description |
-|------|-------------|
-| Limit | Execute at specified price or better |
-| Market | Immediate execution at best price |
-| Stop | Triggered limit/market at stop price |
-| Pegged | Tracks reference price with offset |
-| Iceberg | Hidden quantity with display size |
+| Type | Description | Supported TIF |
+|------|-------------|---------------|
+| `limit` | Execute at specified price or better | GTC, IOC, FOK, DAY |
+| `market` | Immediate execution at best available price | IOC, FOK |
+| `stop` | Triggered market order when stop price is reached | GTC, IOC, FOK, DAY |
+| `stop_limit` | Triggered limit order when stop price is reached | GTC, IOC, FOK, DAY |
+
+## Time-in-Force
+
+| TIF | Name | Behavior |
+|-----|------|----------|
+| `gtc` | Good-Til-Cancelled | Remains on book until filled or cancelled |
+| `ioc` | Immediate-Or-Cancel | Fill what is available immediately, cancel remainder |
+| `fok` | Fill-Or-Kill | Fill entire quantity immediately or reject entirely |
+| `day` | Day | Expires at end of trading session |
+
+## Order Lifecycle
+
+| Status | Description |
+|--------|-------------|
+| `new` | Order created, not yet validated |
+| `pending_approval` | Awaiting compliance gate |
+| `open` | On the order book, available for matching |
+| `partial_fill` | Partially executed |
+| `filled` | Fully executed |
+| `cancelled` | Cancelled by user or system |
+| `rejected` | Failed compliance check or matching |
+| `expired` | TIF expired (DAY orders) |
+| `suspended` | Halted by surveillance |
+
+## Execution Path
+
+```
+Order submitted
+     |
+     v
+Market validation (exists, tradable, not halted)
+     |
+     v
+Pre-trade compliance (8 sequential checks)
+     |
+     v
+Internal CLOB match (price-time priority)
+     |
+     v  (unfilled remainder)
+Broker SOR fallback (luxfi/broker)
+     |
+     v
+Execution reports generated
+     |
+     v
+Post-trade hooks (reporting + surveillance)
+```
+
+The `MatchEngine` attempts to fill against the internal order book first. Any unfilled quantity is routed to the `luxfi/broker` Smart Order Router, which finds the best external venue (Alpaca, IBKR, Coinbase, etc.) based on price and availability.
+
+## Circuit Breakers
+
+The engine supports market halts triggered by:
+
+- **Admin action** -- `POST /v1/admin/markets/{symbol}/halt` with a reason
+- **Surveillance alerts** -- price spike or manipulation detection
+- **System errors** -- automated halt on anomalous conditions
+
+When a market is halted:
+
+1. `Market.Status` is set to `"halted"` and `Market.Tradable` to `false`
+2. All new orders for that symbol are rejected with `"market {symbol} is halted"`
+3. Existing open orders remain on the book (not cancelled)
+4. Admin resumes with `POST /v1/admin/markets/{symbol}/resume`
+
+## Orderbook Queries
+
+All protocols can query the current orderbook state:
+
+| Protocol | Method |
+|----------|--------|
+| REST | `GET /v1/markets/{symbol}/book?depth=20` |
+| WebSocket | `get_orderbook` message or `orderbook` subscription |
+| JSON-RPC | `cex.getOrderBook` |
+| FIX | MarketDataRequest (V) / MarketDataSnapshot (W) |
+| ZAP | `GetBestBid` (0x04), `GetBestAsk` (0x05), `GetBook` (0x06) |
+
+The `MatchEngine.GetSnapshot()` returns an `OrderBookSnapshot` with bid and ask levels, each containing price, quantity, and order count.

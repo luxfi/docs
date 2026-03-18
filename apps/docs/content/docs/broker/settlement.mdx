@@ -1,0 +1,99 @@
+---
+title: Settlement Engine
+description: Instant execution with prefunding pool and margin monitoring
+icon: Timer
+---
+
+The settlement engine enables instant crypto execution while ACH/wire transfers settle. An operator-funded prefunding pool advances capital so trades execute immediately, with KYC-tiered limits and margin monitoring to manage risk.
+
+## Instant Buy Flow
+
+```
+User: "Buy 1 BTC"  ->  Pool reserves $50k  ->  Executes at market  ->  ACH initiated
+                                                                        |
+                                              ACH clears (2-5 days) ----+
+                                              -> Pool credit released   |
+                                                                        |
+                                              ACH fails ----------------+
+                                              -> Auto-liquidate position
+                                              -> Recover pool capital
+```
+
+1. **Validate** -- Check the account's KYC tier and outstanding credit against tier limits.
+2. **Reserve** -- The pool locks funds equal to the order value. Four risk controls are enforced: per-transaction limit, per-user outstanding limit, pool utilization cap, and available capital check.
+3. **Execute** -- The broker places the trade via the best provider (caller handles execution).
+4. **Initiate ACH** -- The funding service starts the ACH transfer in parallel.
+5. **Track** -- Settlement lifecycle events update the reservation status until the ACH clears or fails.
+
+## KYC-Tiered Limits
+
+The maximum total outstanding prefunded credit per account depends on KYC verification level:
+
+| Tier | Instant Limit | Use Case |
+|------|--------------|----------|
+| `basic` | $250 | Email-verified users |
+| `standard` | $5,000 | ID-verified users |
+| `enhanced` | $25,000 | Full KYC + accredited |
+| `institutional` | $250,000 | Institutional accounts |
+
+If a new order would push an account's outstanding credit above its tier limit, the request is rejected.
+
+## Prefunding Pool
+
+The pool is funded by the ATS operator and acts as a short-term credit facility. Pool configuration:
+
+| Parameter | Description |
+|-----------|-------------|
+| `max_pool_size` | Maximum total capital the pool can hold |
+| `max_per_user` | Maximum outstanding credit for a single account |
+| `max_per_transaction` | Maximum single reservation amount |
+| `utilization_warning_pct` | Warning threshold (e.g. 0.80 = warn at 80% utilization) |
+
+The pool tracks utilization in real time. When a reservation settles (ACH clears), the credited amount is released back to available capital.
+
+## Reservation Lifecycle
+
+```
+pending_settlement -> settled        (ACH cleared, happy path)
+pending_settlement -> failed         (ACH bounced)
+pending_settlement -> margin_called  (price crash)
+failed             -> liquidated     (force-sell to recover capital)
+margin_called      -> liquidated     (force-sell after grace period)
+margin_called      -> settled        (user deposits funds in time)
+```
+
+## Margin Monitoring
+
+While ACH is pending, the pool is exposed to price risk on the purchased asset. The margin policy defines three escalation levels based on drawdown from entry price:
+
+| Level | Default Threshold | Action |
+|-------|-------------------|--------|
+| Warning | 20% drawdown | Notify user, log alert |
+| Margin Call | 30% drawdown | Demand additional funds, freeze further instant buys |
+| Auto-Liquidation | 50% drawdown | Force-sell position to recover pool capital |
+
+A 24-hour grace period is given between margin call and forced liquidation, allowing the user to deposit additional funds.
+
+Drawdown is calculated as:
+
+```
+drawdown = (entry_price - current_price) / entry_price
+```
+
+The `CheckMarginHealth` function scans all pending reservations against current market prices and returns alerts for any positions that have breached a threshold.
+
+## Pool Status
+
+The pool exposes real-time utilization metrics:
+
+```json
+{
+  "total": 1000000.00,
+  "available": 750000.00,
+  "reserved": 250000.00,
+  "utilization_pct": 25.0,
+  "active_reservations": 12
+}
+```
+
+Operators can add or withdraw unreserved capital at any time.

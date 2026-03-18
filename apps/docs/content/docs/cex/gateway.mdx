@@ -1,29 +1,150 @@
 ---
 title: Gateway
-description: Multi-protocol trading gateway
+description: Multi-protocol trading gateway with REST, FIX 4.4, WebSocket, JSON-RPC, and ZAP
 icon: Server
 ---
 
-## FIX 4.4
+The Lux CEX gateway accepts connections over five protocols. All protocols share the same engine instance, so every order follows the identical compliance and matching pipeline regardless of how it was submitted.
 
-```
-# Connect via FIX
-Host: fix.lux.exchange
-Port: 8443
-SenderCompID: YOUR_FIRM
-TargetCompID: LUXCEX
-```
+## Protocol Overview
 
-## REST API
+| Protocol | Transport | Default Port | Latency | Use Case |
+|----------|-----------|-------------|---------|----------|
+| REST/HTTP | HTTP/1.1 | `:8091` | ~1ms | Web clients, admin, integrations |
+| JSON-RPC 2.0 | HTTP POST | `:8091` `/rpc` | ~1ms | Programmatic access, batch queries |
+| WebSocket | WS over HTTP | `:8091` `/ws` | ~10ms (broadcast) | Real-time streaming, interactive trading |
+| FIX 4.4 | TCP | `:8094` | <1ms | Institutional connectivity |
+| ZAP | TCP (binary) | `:8093` | <100us | Ultra-low-latency / HFT |
+
+## REST/HTTP
+
+Built on `go-chi/chi/v5` with structured middleware:
+
+- **RequestID** — unique ID per request
+- **RealIP** — extract client IP from proxy headers
+- **Recoverer** — panic recovery
+- **Timeout** — 30-second request timeout
+- **CORS** — allowed origins: `lux.financial`, `app.lux.financial`, `cex.lux.network`, `localhost:3000/3001`
+
+JWT auth is enabled when `CEX_JWT_SECRET` is set. Without it, the gateway runs in dev mode (all endpoints open).
 
 ```bash
-curl -X POST https://api.lux.exchange/v1/orders \
-  -H 'Authorization: Bearer $TOKEN' \
-  -d '{"symbol":"LUX-USD","side":"buy","type":"limit","price":"10.00","qty":"100"}'
+# List markets
+curl https://cex.lux.network/v1/markets
+
+# Submit order (authenticated)
+curl -X POST https://cex.lux.network/v1/accounts/acct1/orders \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"symbol":"BTC-USD","side":"buy","type":"limit","time_in_force":"gtc","qty":"0.5","limit_price":"45000"}'
 ```
+
+## FIX 4.4
+
+Full FIX 4.4 implementation for institutional trading. Connects via raw TCP.
+
+```
+Host: fix.lux.network
+Port: 8094
+TargetCompID: LUX-CEX (configurable via CEX_FIX_COMP_ID)
+```
+
+### Session Management
+
+| Message | Type | Description |
+|---------|------|-------------|
+| Logon (A) | Bidirectional | Establishes session; `Account` tag (1) maps to CEX account ID |
+| Logout (5) | Bidirectional | Graceful disconnection |
+| Heartbeat (0) | Bidirectional | Configurable interval (default 30s) |
+| TestRequest (1) | Client->Server | Solicits heartbeat response |
+
+### Trading Messages
+
+| Message | Type | Description |
+|---------|------|-------------|
+| NewOrderSingle (D) | Client->Server | Side (54), OrdType (40), Symbol (55), Qty (38), Price (44) |
+| OrderCancelRequest (F) | Client->Server | OrderID (37), ClOrdID (11) |
+| ExecutionReport (8) | Server->Client | Fill, partial fill, rejection, cancellation |
+| OrderCancelReject (9) | Server->Client | Cancel request rejected |
+| MarketDataRequest (V) | Client->Server | Subscribe to orderbook |
+| MarketDataSnapshot (W) | Server->Client | Full orderbook refresh with bid/ask levels |
+
+### FIX Side/Type Mapping
+
+| FIX Value | CEX Value |
+|-----------|-----------|
+| Side 1 | buy |
+| Side 2 | sell |
+| OrdType 1 | market |
+| OrdType 2 | limit |
+| OrdType 3 | stop |
+| OrdType 4 | stop_limit |
+| TIF 0 | day |
+| TIF 1 | gtc |
+| TIF 3 | ioc |
+| TIF 4 | fok |
 
 ## WebSocket
 
+Upgrade from HTTP at `/ws`. JSON message framing. Rate-limited to 200 messages/minute per connection. Ping/pong keep-alive every 30 seconds.
+
 ```javascript
-const ws = new WebSocket('wss://api.lux.exchange/v1/ws');
+const ws = new WebSocket("wss://cex.lux.network/ws");
+
+// Authenticate
+ws.send(JSON.stringify({
+  type: "auth",
+  user_id: "user1",
+  account_id: "acct1",
+  org_id: "org1"
+}));
+
+// Subscribe to orderbook
+ws.send(JSON.stringify({
+  type: "subscribe",
+  channel: "orderbook",
+  symbols: ["BTC-USD", "ETH-USD"]
+}));
+
+// Place order
+ws.send(JSON.stringify({
+  type: "place_order",
+  request_id: "req-1",
+  order: {
+    symbol: "BTC-USD",
+    side: "buy",
+    type: "limit",
+    time_in_force: "gtc",
+    qty: "0.1",
+    limit_price: "45000"
+  }
+}));
 ```
+
+Orderbook snapshots are broadcast every 100ms to subscribed clients.
+
+## JSON-RPC 2.0
+
+Mounted at `/rpc` on the HTTP gateway. Standard JSON-RPC 2.0 envelope. Rate-limited to 100 requests/second per IP.
+
+```bash
+curl -X POST https://cex.lux.network/rpc \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"cex.getMarket","params":{"symbol":"ETH-USD"},"id":1}'
+```
+
+## ZAP Binary Protocol
+
+Zero-copy binary protocol for ultra-low-latency trading. Cache-line aligned wire format (64-byte order messages). Connects via raw TCP.
+
+### Wire Format
+
+| Message | Size | Fields |
+|---------|------|--------|
+| PlaceOrder (0x01) | 64 bytes | symbol(8) + id(8) + price(8) + qty(8) + side(1) + type(1) + tif(1) + pad(1) + ts(8) + user(16) + acct(4) |
+| CancelOrder (0x02) | 32 bytes | order_id(8) + user(16) + pad(8) |
+| GetBestBid (0x04) | variable | symbol (null-padded) |
+| GetBestAsk (0x05) | variable | symbol (null-padded) |
+| GetBook (0x06) | 12+ bytes | symbol(8) + levels(4) |
+
+All numeric values use big-endian encoding. Float64 fields use IEEE 754 binary representation. The ZAP protocol shares the same wire format as `luxfi/dex` for cross-compatibility.

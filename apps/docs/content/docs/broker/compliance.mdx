@@ -1,21 +1,98 @@
 ---
-title: Compliance
-description: Best execution and regulatory compliance
+title: Compliance & Risk
+description: Pre-trade risk engine, audit trail, and settlement compliance
 icon: ShieldCheck
 ---
 
-## Best Execution
+The broker enforces institutional compliance through three systems: a pre-trade risk engine, an immutable audit log, and KYC-tiered settlement limits.
 
-| Framework | Requirement | Implementation |
-|-----------|-------------|---------------|
-| FINRA 5310 | Reasonable diligence | Multi-venue price comparison |
-| MiFID II | Best execution policy | Documented SOR decisions |
+## Pre-Trade Risk Engine
 
-## Pre-Trade Risk
+Every order passes through the risk engine before reaching a provider. The engine enforces both global (platform-wide) and per-account limits.
 
-| Check | Description |
-|-------|-------------|
-| Position limits | Max position per asset |
-| Concentration | Max % of portfolio in single asset |
-| Rate limiting | Orders per second caps |
-| Notional limits | Max order value |
+### Global Limits
+
+| Check | Default | Description |
+|-------|---------|-------------|
+| Max order value | $1,000,000 | Maximum single order in USD |
+| Max daily volume | $10,000,000 | Maximum daily volume per account |
+| Max open orders | 100 | Maximum concurrent open orders per account |
+| Max position value | $5,000,000 | Maximum position size in USD |
+| Rate limit | 60/min | Maximum orders per minute per account |
+| Blocked symbols | (none) | Symbols that cannot be traded |
+| Allowed providers | (all) | Whitelist of usable providers |
+| Cooldown after loss | (none) | Cooldown period after significant loss |
+
+### Per-Account Overrides
+
+Each account can have custom limits that override the global defaults. Per-account configuration also supports:
+
+- **Allowed symbols** -- whitelist restricting which symbols the account can trade
+- **Blocked symbols** -- blacklist preventing specific symbols
+
+### Risk Check Response
+
+```json
+{
+  "allowed": true,
+  "warnings": ["large order: $500000.00 (50% of limit)"],
+  "errors": []
+}
+```
+
+When `allowed` is `false`, the `errors` array explains which limits were breached. Warnings fire at 50% of order value limit and 80% of daily volume limit.
+
+### Risk Check Endpoint
+
+```
+GET /v1/risk/check?provider=alpaca&account_id=abc&symbol=AAPL&side=buy&qty=100&price=150&type=market
+```
+
+## Audit Log
+
+The audit log is an immutable, append-only trail of every trading operation. Required for SEC, FINRA, and MiFID II compliance.
+
+### Tracked Actions
+
+| Action | Description |
+|--------|-------------|
+| `order.create` | Order submitted |
+| `order.cancel` | Order cancelled |
+| `order.fill` | Order filled |
+| `order.reject` | Order rejected by provider |
+| `transfer.create` | Transfer initiated |
+| `account.create` | Account created |
+| `account.read` | Account accessed |
+| `route.decision` | SOR routing decision |
+| `route.split_plan` | Split plan generated |
+| `route.split_execute` | Split plan executed |
+| `market_data.query` | Market data accessed |
+| `auth` | Authentication event |
+| `error` | System error |
+
+### Audit Entry Fields
+
+Each entry records: timestamp, action, provider, account ID, symbol, side, quantity, price, order ID, algorithm, status, latency, error, metadata, client IP, user agent, and request ID.
+
+### Query & Export
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/v1/audit` | Query with filters: `action`, `provider`, `account_id`, `symbol`, `since`, `until` |
+| GET | `/v1/audit/stats` | Aggregate statistics: counts by action, provider, status, and average order latency |
+| GET | `/v1/audit/export` | Full JSON export for compliance reporting |
+
+### Hooks
+
+External logging systems can be registered as hooks. Every audit entry is dispatched to all registered hooks after being appended to the log.
+
+## KYC-Tiered Settlement Limits
+
+The settlement engine enforces instant-buy limits based on the account's KYC verification tier. See the [Settlement Engine](/docs/broker/settlement) page for full details.
+
+| Tier | Instant Limit | Use Case |
+|------|--------------|----------|
+| basic | $250 | Email-verified users |
+| standard | $5,000 | ID-verified users |
+| enhanced | $25,000 | Full KYC + accredited |
+| institutional | $250,000 | Institutional accounts |

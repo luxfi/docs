@@ -4,36 +4,108 @@ description: Institutional Alternative Trading System with full regulatory compl
 icon: Building
 ---
 
-The Lux CEX (`github.com/luxfi/cex`) is an institutional-grade Alternative Trading System (ATS) with a CLOB matching engine, multi-protocol gateway, and comprehensive compliance infrastructure.
+The Lux CEX (`github.com/luxfi/cex`) is an institutional-grade Alternative Trading System (ATS) built in Go. It provides a CLOB matching engine, multi-protocol gateway, pre- and post-trade compliance, and automated regulatory reporting across 30+ jurisdictions.
+
+The CEX integrates with `luxfi/broker` for smart order routing to external venues (Alpaca, IBKR, BitGo, Coinbase, Binance, Kraken, Gemini, FalconX, SFOX, Finix) and with `luxfi/dex` for on-chain order book compatibility.
 
 ## Regulatory Coverage
 
 | Framework | Coverage |
 |-----------|----------|
-| **FINRA** | Rule 5310 (Best Execution), OATS reporting |
-| **SEC** | ATS-N filing, CAT reporting |
-| **MiFID II** | Best execution, transaction reporting |
-| **Sanctions** | OFAC, UN, EU sanctions screening |
-| **AML/KYC** | 30+ jurisdictions, PEP/EDD screening |
+| **FINRA** | Rule 5310 (Best Execution), OATS trade reporting |
+| **SEC** | ATS-N quarterly filing, CAT reporting, Reg D/S/A+/CF gating |
+| **MiFID II** | Article 26 transaction reporting, best execution |
+| **MAS** | SFA/PS Act compliance, CMS license reporting |
+| **SFC** | HK professional investor gating, trade reporting |
+| **Sanctions** | OFAC, UN, EU consolidated sanctions screening |
+| **AML/KYC** | 30+ jurisdictions, PEP/EDD, FATF high-risk country screening |
 
 ## Architecture
 
 ```
-Clients → Gateway (REST/FIX/WS/ZAP) → Pre-Trade Compliance
-              ↓                              ↓
-         Matching Engine (CLOB)      Sanctions/PEP Check
-              ↓                              ↓
-         Settlement                  Post-Trade Surveillance
-              ↓                              ↓
-         Custody                     Regulatory Reporting
+              Clients
+     +----+----+----+----+----+
+     |    |    |    |    |    |
+   HTTP  FIX  WS  RPC  ZAP  gRPC
+     |    |    |    |    |    |
+     +----+----+----+----+----+
+              |
+         [Gateway :8091]
+              |
+      +-------+-------+
+      |               |
+ [Compliance]    [Engine]
+  Pre-trade       CLOB
+      |            |
+      +-----+------+
+            |
+    [Surveillance]
+     Post-trade
+            |
+    [Reporting]
+     FINRA/MiFID/MAS
 ```
+
+## Asset Classes
+
+| Class | Examples |
+|-------|----------|
+| US Equity | AAPL, MSFT, SPY, QQQ |
+| Crypto | BTC, ETH, SOL, LUX, ZOO |
+| Forex | EUR/USD, GBP/USD, JPY/USD |
+| Precious Metals | XAU, XAG, XPT, XPD |
+| Commodities | Crude Oil, Natural Gas, Copper |
+| Fixed Income | Treasuries, corporate bonds, munis |
+| Structured Credit | ABS, MBS, CDO, CLO |
+| Private Equity/Venture | PE fund tokens, SAFE tokens |
+| Real Estate | REITs, fractional RE tokens |
+| DeFi-native | CDPs, LP tokens |
 
 ## Protocols
 
-| Protocol | Port | Use Case |
-|----------|------|----------|
-| REST/HTTP | 8080 | Web clients, APIs |
-| FIX 4.4 | 8443 | Institutional trading |
-| WebSocket | 8080 | Real-time streaming |
-| JSON-RPC | 8080 | Programmatic access |
-| ZAP | 8000 | Lux native protocol |
+| Protocol | Default Port | Use Case |
+|----------|-------------|----------|
+| REST/HTTP | 8091 | Web clients, APIs |
+| JSON-RPC 2.0 | 8091 (`/rpc`) | Programmatic access |
+| WebSocket | 8091 (`/ws`) | Real-time streaming |
+| FIX 4.4 | 8094 | Institutional trading |
+| ZAP | 8093 | Ultra-low-latency binary (HFT) |
+| gRPC | (proto defined) | Service-to-service |
+
+## Quick Start
+
+```bash
+# Build
+go build -o cexd ./cmd/cexd/
+
+# Run in demo mode (no external providers)
+CEX_DEMO_MODE=1 ./cexd
+
+# Run with Alpaca for US equities + crypto
+ALPACA_API_KEY=xxx ALPACA_API_SECRET=yyy ./cexd
+
+# Run with auth enabled
+CEX_JWT_SECRET=your-secret CEX_JWT_ISSUER=https://hanzo.id ./cexd
+```
+
+## Docker
+
+```bash
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o cexd ./cmd/cexd/
+docker build --platform linux/amd64 -t ghcr.io/luxfi/cex:latest .
+```
+
+## Configuration
+
+| Env Var | Default | Description |
+|---------|---------|-------------|
+| `CEX_LISTEN` | `:8091` | HTTP/REST listen address |
+| `CEX_WS_LISTEN` | `:8092` | WebSocket listen address |
+| `CEX_ZAP_LISTEN` | `:8093` | ZAP binary protocol listen address |
+| `CEX_FIX_LISTEN` | `:8094` | FIX 4.4 listen address |
+| `CEX_FIX_COMP_ID` | `LUX-CEX` | FIX SenderCompID |
+| `CEX_ATS_NAME` | `Lux ATS` | ATS name for regulatory filings |
+| `CEX_CRD_ID` | `000000` | FINRA CRD number |
+| `CEX_JWT_SECRET` | (none) | JWT HMAC secret; empty = dev mode (no auth) |
+| `CEX_JWT_ISSUER` | `https://hanzo.id` | Expected JWT issuer |
+| `CEX_DEMO_MODE` | (none) | Set to `1` to run without execution providers |

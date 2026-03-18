@@ -1,90 +1,206 @@
 ---
 title: Compliance API
-description: Go interfaces for identity verification, screening, and monitoring
+description: Complete REST API reference for complianced
 icon: FileCode
 ---
 
-The compliance module (`github.com/luxfi/compliance`) exposes Go interfaces. All services are thread-safe with `sync.RWMutex`.
+The `complianced` server exposes a REST API on port `8091`. All request and response bodies are JSON. The server uses only the Go standard library for HTTP routing.
 
-## IDV Provider Interface
+## Authentication
 
-```go
-type Provider interface {
-    Name() string
-    InitiateVerification(ctx context.Context, req VerificationRequest) (VerificationResponse, error)
-    CheckStatus(ctx context.Context, verificationID string) (VerificationStatus, error)
-    ParseWebhook(r *http.Request) (WebhookEvent, error)
-}
+All endpoints require the `X-Api-Key` header, except:
 
-// Get a provider by name
-provider, err := idv.GetProvider("jumio", config)
+- `GET /healthz` -- health check
+- `POST /v1/kyc/webhook/{provider}` -- provider webhook callbacks
+
+If `COMPLIANCE_API_KEY` is not set, authentication is disabled.
+
+## Applications
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | `/v1/applications` | Create a new application |
+| `GET` | `/v1/applications` | List applications (filter with `?status=`) |
+| `GET` | `/v1/applications/stats` | Application statistics by status |
+| `GET` | `/v1/applications/{id}` | Get application by ID |
+| `PATCH` | `/v1/applications/{id}` | Update application (draft save) |
+| `POST` | `/v1/applications/{id}/submit` | Submit application for review |
+
+### Create Application
+
+```bash
+curl -X POST http://localhost:8091/v1/applications \
+  -H "X-Api-Key: $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"given_name":"Alice","family_name":"Smith","email":"alice@example.com"}'
 ```
 
-Supported providers: `jumio`, `onfido`, `plaid`.
+Response (201):
 
-## KYC Service
-
-```go
-type Service struct {
-    // Multi-provider KYC lifecycle
+```json
+{
+  "id": "a1b2c3d4...",
+  "status": "draft",
+  "given_name": "Alice",
+  "family_name": "Smith",
+  "created_at": "2026-03-17T00:00:00Z"
 }
-
-func (s *Service) InitiateKYC(app *Application, provider string) (string, error)
-func (s *Service) HandleWebhook(provider string, r *http.Request) error
-func (s *Service) GetApplication(id string) (*Application, error)
-func (s *Service) ListApplications(status string) ([]*Application, error)
-func (s *Service) GetStats() Stats
 ```
 
-## AML Screening Service
+### Submit Application
 
-```go
-type ScreeningService struct {
-    // Screens against OFAC, EU, UK, PEP, adverse media
-}
+Only applications in `draft` status can be submitted. Returns `409 Conflict` otherwise.
 
-func (s *ScreeningService) Screen(ctx context.Context, req ScreeningRequest) (*ScreeningResult, error)
-func (s *ScreeningService) BatchScreen(ctx context.Context, reqs []ScreeningRequest) ([]*ScreeningResult, error)
+```bash
+curl -X POST http://localhost:8091/v1/applications/{id}/submit \
+  -H "X-Api-Key: $API_KEY"
 ```
 
-`ScreeningResult` contains match type (exact, fuzzy, partial), risk level (low, medium, high, critical), and matched list details.
+## KYC Verification
 
-## Transaction Monitoring
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | `/v1/kyc/verify` | Initiate KYC verification |
+| `GET` | `/v1/kyc/status/{verificationId}` | Check verification status |
+| `GET` | `/v1/kyc/application/{applicationId}` | List verifications for an application |
+| `POST` | `/v1/kyc/webhook/{provider}` | Receive provider webhook (no auth) |
 
-```go
-type MonitoringService struct {
-    // Real-time transaction monitoring rules engine
-}
+### Initiate Verification
 
-func (m *MonitoringService) Monitor(ctx context.Context, tx Transaction) (*Alert, error)
-func (m *MonitoringService) GetAlert(id string) (*Alert, error)
-func (m *MonitoringService) UpdateAlert(id string, status AlertStatus) error
-func (m *MonitoringService) GenerateSAR(alertID string) (*SAR, error)
+```bash
+curl -X POST http://localhost:8091/v1/kyc/verify \
+  -H "X-Api-Key: $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "application_id": "a1b2c3d4...",
+    "given_name": "Alice",
+    "family_name": "Smith",
+    "email": "alice@example.com",
+    "provider": "jumio"
+  }'
 ```
 
-Alert statuses: `open`, `investigating`, `escalated`, `closed`, `filed`.
+Response (201):
 
-## Payment Compliance
-
-```go
-type ComplianceEngine struct {
-    // Validates payments against jurisdiction rules
+```json
+{
+  "verification_id": "v-abc123...",
+  "provider": "jumio",
+  "status": "pending",
+  "redirect_url": "https://netverify.com/...",
+  "created_at": "2026-03-17T00:00:00Z"
 }
-
-func (e *ComplianceEngine) ValidatePayin(ctx context.Context, payment Payment) error
-func (e *ComplianceEngine) ValidatePayout(ctx context.Context, payment Payment) error
-func (e *ComplianceEngine) CheckTravelRule(ctx context.Context, transfer Transfer) (*TravelRuleResult, error)
 ```
 
-## Stablecoin Compliance
+### Verification Status Values
 
-```go
-type StablecoinEngine struct {
-    // Token allowlists, address risk, mint/burn compliance
+| Status | Description |
+|--------|-------------|
+| `pending` | Verification in progress |
+| `approved` | Identity verified |
+| `declined` | Verification failed |
+| `expired` | Session expired |
+| `error` | Provider error |
+
+### Webhook
+
+Providers send results to `/v1/kyc/webhook/{provider}`. The handler validates the HMAC-SHA256 signature, deduplicates events, and updates KYC status. Signature headers per provider:
+
+| Provider | Signature Header |
+|----------|-----------------|
+| Jumio | `X-Jumio-Signature` |
+| Onfido | `X-SHA2-Signature` |
+| Plaid | `Plaid-Verification` |
+
+## AML Screening
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | `/v1/aml/screen` | Screen individual against sanctions/PEP lists |
+| `POST` | `/v1/aml/monitor` | Monitor a transaction against rules |
+| `GET` | `/v1/aml/alerts` | List alerts (filter with `?status=`) |
+
+### Screen Individual
+
+```bash
+curl -X POST http://localhost:8091/v1/aml/screen \
+  -H "X-Api-Key: $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"John Doe","country":"US","date_of_birth":"1980-01-15"}'
+```
+
+Response:
+
+```json
+{
+  "id": "scr-abc123...",
+  "risk_level": "low",
+  "matches": [],
+  "lists_checked": ["ofac_sdn","eu_sanctions","uk_hmt","pep","adverse_media"],
+  "screened_at": "2026-03-17T00:00:00Z"
 }
+```
 
-func (e *StablecoinEngine) ValidateToken(token string) error
-func (e *StablecoinEngine) CheckAddressRisk(ctx context.Context, address string) (RiskLevel, error)
-func (e *StablecoinEngine) ValidateMint(ctx context.Context, req MintRequest) error
-func (e *StablecoinEngine) ValidateBurn(ctx context.Context, req BurnRequest) error
+### Monitor Transaction
+
+```bash
+curl -X POST http://localhost:8091/v1/aml/monitor \
+  -H "X-Api-Key: $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"account_id":"acct-1","amount":15000,"currency":"USD","country":"US"}'
+```
+
+If rules trigger, an alert is generated with status `open`.
+
+## Payments
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | `/v1/payments/validate` | Validate payin or payout compliance |
+
+### Validate Payment
+
+```bash
+curl -X POST http://localhost:8091/v1/payments/validate \
+  -H "X-Api-Key: $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "pay-1",
+    "direction": "payout",
+    "amount": 12000,
+    "currency": "USD",
+    "country": "US",
+    "account_id": "acct-1",
+    "type": "wire",
+    "originator_name": "Alice Smith",
+    "beneficiary_name": "Bob Jones"
+  }'
+```
+
+Response includes `decision` (`approve`, `decline`, or `review`), `requires_ctr`, `requires_sar`, and `travel_rule` compliance status.
+
+## Regulatory
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/v1/regulatory/{jurisdiction}` | Get jurisdiction requirements and limits |
+
+Supported jurisdiction codes: `US`, `UK`, `IM` (Isle of Man).
+
+```bash
+curl http://localhost:8091/v1/regulatory/US -H "X-Api-Key: $API_KEY"
+```
+
+## System
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/healthz` | Health check (no auth) |
+| `GET` | `/v1/providers` | List registered IDV providers |
+
+### Health Check
+
+```bash
+curl http://localhost:8091/healthz
+# {"status":"ok"}
 ```

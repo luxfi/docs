@@ -1,20 +1,110 @@
 ---
 title: Regulatory Reporting
-description: Automated regulatory report generation
+description: Automated FINRA, SEC, MiFID II, MAS, and SFC trade reporting
 icon: FileText
 ---
 
+The Lux CEX generates regulatory reports automatically as post-trade hooks. Every executed trade triggers reporting to the appropriate regulatory framework based on jurisdiction configuration.
+
 ## Report Types
 
-| Report | Framework | Frequency |
-|--------|-----------|-----------|
-| **OATS** | FINRA | Real-time |
-| **ATS-N** | SEC | Quarterly |
-| **CAT** | SEC/FINRA | Real-time |
-| **Transaction Reports** | MiFID II | T+1 |
-| **Best Execution** | FINRA 5310 | Monthly |
-| **Suspicious Activity** | FinCEN SAR | As needed |
+| Report | Framework | Frequency | Trigger |
+|--------|-----------|-----------|---------|
+| **FINRA Trade Report** | FINRA TRF/ADF/ORF | Real-time | Every trade (US) |
+| **ATS-N** | SEC | Quarterly | Admin-generated aggregate |
+| **CAT** | SEC/FINRA | Real-time | Consolidated audit trail |
+| **MiFIR Article 26** | MiFID II (UK/EU) | T+1 | Every trade (UK/EU) |
+| **MAS Trade Report** | MAS SFA (Singapore) | Per-trade | Every trade (SG) |
+| **SFC Trade Report** | SFC (Hong Kong) | Per-trade | Every trade (HK) |
+| **SAR** | FinCEN | As needed | Surveillance escalation |
+| **Best Execution** | FINRA 5310 | Monthly | Quality metrics |
+
+## FINRA Trade Reporting
+
+Each trade generates a `FINRAReport` with:
+
+| Field | Description |
+|-------|-------------|
+| `trade_id` | Internal trade ID |
+| `symbol` | Traded instrument |
+| `side` | Buy/sell |
+| `qty` / `price` | Execution details |
+| `venue` | ATS name |
+| `execution_time` | When the trade was executed |
+| `report_time` | When the report was filed |
+| `report_type` | `last_sale` or `ats` |
+| `mediately_type` | `on_time` (<10s), `late` (<90s), `as_of` (>90s) |
+| `capacity` | `principal`, `agency`, or `riskless_principal` |
+| `status` | `pending`, `accepted`, `rejected` |
+
+Access via: `GET /v1/admin/reports/finra`
+
+## ATS-N Quarterly Reports
+
+Form ATS-N aggregate reports include:
+
+| Field | Description |
+|-------|-------------|
+| `quarter` | e.g., `2026-Q1` |
+| `ats_name` | Registered ATS name |
+| `crd_id` | FINRA CRD number |
+| `total_volume` | Total notional traded |
+| `total_trades` | Number of executions |
+| `unique_symbols` | Distinct instruments |
+| `by_asset_class` | Per-asset-class breakdown (volume, trades, symbols) |
+
+Generate via: `GET /v1/admin/reports/ats?quarter=2026-Q1`
+
+## MiFID II Reporting
+
+MiFIR Article 26 transaction reports for UK (FCA) and EU (ESMA/NCAs). Fields include:
+
+| Field | Description |
+|-------|-------------|
+| `trading_venue_id` | MIC code |
+| `instrument_id` | ISIN |
+| `buyer_id` / `seller_id` | LEI or national identifier |
+| `waiver_indicator` | LIS, OILQ, PRIC, ILQD |
+| `short_selling_flag` | Short sale indicator |
+| `invest_decision_id` | Algorithm ID or natural person |
+| `jurisdiction` | UK or EU member state |
+
+Configure via environment variables:
+
+```bash
+FCA_FRN=123456        # FCA Firm Reference Number
+FCA_MIC=XLON          # MIC code for venue
+ENTITY_LEI=549300...  # Legal Entity Identifier
+```
+
+## MAS Reporting (Singapore)
+
+Trade reports for MAS-regulated activities under SFA/PS Act:
+
+```bash
+MAS_CMS_LICENSE=CMS100000  # CMS license number
+```
+
+## SFC Reporting (Hong Kong)
+
+Trade reports for SFC-regulated Type 1/7 activities:
+
+```bash
+SFC_CE_NUMBER=ABC123  # SFC CE number
+```
+
+## Multi-Jurisdiction Routing
+
+The `JurisdictionReporter` automatically routes trade reports based on the configured jurisdictions. If `FCA_FRN` is set, UK trades generate MiFID reports. If `MAS_CMS_LICENSE` is set, Singapore trades generate MAS reports. Multiple jurisdictions can be active simultaneously.
 
 ## Data Retention
 
-All trade data, order history, and compliance logs retained for 7 years per regulatory requirements.
+All trade data, order history, compliance logs, and regulatory reports are retained for 7 years per SEC Rule 17a-4 and FINRA Rule 4511 requirements.
+
+## Admin Endpoints
+
+| Endpoint | Description |
+|----------|-------------|
+| `GET /v1/admin/reports/finra` | List all FINRA trade reports |
+| `GET /v1/admin/reports/ats?quarter=YYYY-QN` | Generate ATS-N quarterly aggregate |
+| `GET /v1/admin/surveillance/alerts` | List surveillance alerts (feeds into SAR) |

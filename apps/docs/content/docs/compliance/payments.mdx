@@ -1,0 +1,95 @@
+---
+title: Payment Compliance
+description: Travel Rule, CTR detection, and stablecoin validation
+icon: Banknote
+---
+
+The payments package (`pkg/payments`) validates payins and payouts against regulatory rules, enforces the FATF Travel Rule, detects CTR thresholds, and validates stablecoin transfers.
+
+## Payment Validation
+
+The `ComplianceEngine` evaluates every payment against jurisdiction-specific rules. It accepts a `PaymentRequest` with direction (`payin` or `payout`), amount, currency, country, and counterparty information. It returns a `PaymentResult` with a decision:
+
+| Decision | Description |
+|----------|-------------|
+| `approve` | Payment passes all compliance checks |
+| `decline` | Payment blocked by a compliance rule |
+| `review` | Payment requires manual compliance review |
+
+The result also includes `requires_ctr` (true if amount triggers CTR), `requires_sar` (true if suspicious), and a `travel_rule` object.
+
+## Travel Rule (FATF Recommendation 16)
+
+For transfers exceeding $3,000, originator and beneficiary information must accompany the transaction. The engine checks completeness of both parties:
+
+| Field | Required |
+|-------|----------|
+| Originator name | Yes |
+| Originator account | Yes |
+| Originator address or country | Yes |
+| Beneficiary name | Yes |
+| Beneficiary account | Yes |
+
+The `TravelRuleResult` reports whether the rule is `applicable`, whether originator and beneficiary information is `complete`, and the overall `compliant` status.
+
+```bash
+curl -X POST http://localhost:8091/v1/payments/validate \
+  -H "X-Api-Key: $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "pay-1",
+    "direction": "payout",
+    "amount": 5000,
+    "currency": "USD",
+    "country": "US",
+    "account_id": "acct-1",
+    "type": "wire",
+    "originator_name": "Alice Smith",
+    "originator_account": "acct-1",
+    "originator_country": "US",
+    "beneficiary_name": "Bob Jones",
+    "beneficiary_account": "ext-acct-2"
+  }'
+```
+
+## CTR Detection
+
+The engine flags transactions at or above $10,000 for Currency Transaction Report filing. It tracks daily aggregates per account -- if the cumulative daily total crosses $10,000, the result sets `requires_ctr: true`.
+
+Daily totals reset at midnight. The engine uses a `sync.RWMutex`-protected map of account ID to daily total.
+
+## Stablecoin Validation
+
+The `StablecoinEngine` validates stablecoin transfers with:
+
+### Token Allowlists
+
+Per-jurisdiction policies define which stablecoins are permitted. The `StablecoinPolicy` struct includes:
+
+| Field | Description |
+|-------|-------------|
+| `allowed_tokens` | Tokens permitted in this jurisdiction (e.g., USDC, USDT, DAI, LUSD) |
+| `prohibited_tokens` | Explicitly banned tokens |
+| `requires_reserve_attestation` | Whether the token issuer must provide reserve proof |
+| `max_transfer_amount` | Per-transaction ceiling (0 = no limit) |
+| `min_transfer_amount` | Per-transaction floor |
+
+### Address Risk
+
+The engine scores blockchain addresses as `clean`, `flagged`, or `sanctioned`. This is an integration point for chain analysis providers. The `AddressRisk` struct includes the address, risk level, source, and detail.
+
+### Transfer Types
+
+Stablecoin transfers are categorized as `mint`, `burn`, or `transfer`. Each type can have different compliance rules. Mint and burn operations may require additional verification depending on the jurisdiction.
+
+### Supported Chains
+
+The `StablecoinTransfer` struct supports any chain via the `chain_id` field: ethereum, lux, solana, and others.
+
+## Per-Jurisdiction Policies
+
+Payment validation is jurisdiction-aware. The engine consults `pkg/regulatory` for the transaction's country to apply the correct rules:
+
+- **US**: CIP, CTR ($10k), SAR ($5k suspicious), Travel Rule ($3k), OFAC screening
+- **UK**: FCA CDD/EDD, HM Treasury sanctions, 5AMLD compliance
+- **Isle of Man**: IOMFSA AML/CFT Code 2019, source of wealth/funds requirements

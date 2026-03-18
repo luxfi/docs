@@ -1,21 +1,111 @@
 ---
 title: Smart Order Routing
-description: Fee-aware net-price optimization
+description: Fee-aware net-price optimization with VWAP order splitting
 icon: Route
 ---
 
-## Algorithm
+The Smart Order Router (SOR) finds the best execution venue for every order by polling all connected providers in parallel and ranking them by net execution price.
 
-1. Query all connected venues for quotes
-2. Calculate net price (price + fees + spread)
-3. Route to venue with best net execution
-4. Split large orders across venues (VWAP)
+## How It Works
 
-## Execution Strategies
+1. **Parallel venue polling** -- Query all registered providers simultaneously for the symbol's current quote (bid/ask/spread).
+2. **Net-price ranking** -- For each venue, calculate the effective price including taker fees: `net_price = ask_price * (1 + taker_fee_bps / 10000)` for buys, `net_price = bid_price * (1 - taker_fee_bps / 10000)` for sells. Lower score wins for buys; higher score wins for sells.
+3. **VWAP split algorithm** -- For large orders, the router distributes quantity across venues weighted inversely by score. Better-priced venues receive more volume. The last leg gets the remainder to avoid rounding issues.
 
-| Strategy | Description |
-|----------|-------------|
-| **Best Price** | Route to single best venue |
-| **VWAP** | Split across venues weighted by volume |
-| **TWAP** | Time-weighted execution over period |
-| **Iceberg** | Hide large order size |
+## Route Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/v1/route/{symbol}` | Best venues for a symbol, ranked by net price |
+| GET | `/v1/route/{symbol}/{quote}` | Best venues for a pair (e.g. BTC/USD) |
+| GET | `/v1/route/{symbol}/split` | VWAP split plan for a symbol |
+| GET | `/v1/route/{symbol}/{quote}/split` | VWAP split plan for a pair |
+| POST | `/v1/smart-order` | Execute order via best venue |
+| POST | `/v1/smart-order/split` | Execute split order across venues |
+
+## Route Result
+
+Each venue in the route response includes:
+
+```json
+{
+  "provider": "binance",
+  "symbol": "BTC/USD",
+  "bid_price": 42150.00,
+  "ask_price": 42155.00,
+  "spread": 5.00,
+  "spread_bps": 1.19,
+  "maker_fee_bps": 10,
+  "taker_fee_bps": 10,
+  "net_price": 42197.16,
+  "score": 42197.16
+}
+```
+
+## Split Plan Structure
+
+The split plan distributes volume across venues based on price quality:
+
+```json
+{
+  "symbol": "BTC/USD",
+  "side": "buy",
+  "total_qty": "10.00000000",
+  "algorithm": "split",
+  "legs": [
+    {
+      "provider": "binance",
+      "qty": "6.50000000",
+      "estimated_price": 42155.00,
+      "estimated_fee": 27.40,
+      "bid_price": 42150.00,
+      "ask_price": 42155.00
+    },
+    {
+      "provider": "kraken",
+      "qty": "3.50000000",
+      "estimated_price": 42160.00,
+      "estimated_fee": 38.35,
+      "bid_price": 42145.00,
+      "ask_price": 42160.00
+    }
+  ],
+  "estimated_vwap": 42156.75,
+  "estimated_fees": 65.75,
+  "estimated_net": 42163.33,
+  "savings_vs_single_venue": 2.15
+}
+```
+
+The `savings_vs_single_venue` field shows how many basis points the split saves compared to sending the entire order to the worst venue.
+
+## Execution Result
+
+After executing a split, the response includes per-leg fill details:
+
+```json
+{
+  "plan_id": "exec_1710000000000000000",
+  "symbol": "BTC/USD",
+  "side": "buy",
+  "algorithm": "split",
+  "total_qty": "10.00000000",
+  "filled_qty": "10.00000000",
+  "vwap": 42157.50,
+  "legs": [
+    {
+      "provider": "binance",
+      "order_id": "ord_abc123",
+      "qty": "6.50000000",
+      "filled_qty": "6.50000000",
+      "price": 42155.00,
+      "status": "filled",
+      "latency": "45ms"
+    }
+  ],
+  "status": "filled",
+  "latency": "120ms"
+}
+```
+
+Execution status is `filled` if all legs fill, `partial` if some legs fill, or `failed` if no legs fill. All legs execute in parallel for minimum latency.
