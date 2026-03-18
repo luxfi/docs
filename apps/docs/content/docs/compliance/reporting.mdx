@@ -1,70 +1,108 @@
 ---
 title: Regulatory Reporting
-description: FINRA OATS, CAT, ATS-N, MiFID II transaction reports, and SAR filing
+description: Multi-jurisdiction regulatory requirements for USA, UK, and Isle of Man
 icon: FileText
 ---
 
-The compliance stack generates regulatory reports required by US, EU, and UK financial authorities.
+The regulatory package (`pkg/regulatory`) implements a `Jurisdiction` interface with concrete implementations for each supported jurisdiction. Each defines requirements, application validation rules, and transaction limits.
 
-## US Reporting
+## Jurisdiction Interface
 
-| Report | Authority | Frequency | Description |
-|--------|-----------|-----------|-------------|
-| **OATS** | FINRA | Real-time | Order Audit Trail System -- every order event |
-| **CAT** | SEC/FINRA | T+1 | Consolidated Audit Trail -- all order lifecycle events |
-| **ATS-N** | SEC | Quarterly | Form ATS-N -- ATS operations and conflicts disclosure |
-| **CTR** | FinCEN | Per event | Currency Transaction Report for transactions over $10,000 |
-| **SAR** | FinCEN | Per event | Suspicious Activity Report within 30 days of detection |
-
-## EU/UK Reporting
-
-| Report | Authority | Frequency | Description |
-|--------|-----------|-----------|-------------|
-| **MiFID II Transaction** | ESMA/NCA | T+1 | Transaction reports for all executed orders |
-| **FCA Reports** | FCA | Periodic | UK regulatory returns under 5AMLD |
-
-## CTR Filing
-
-Currency Transaction Reports are triggered automatically when a single transaction or aggregate daily transactions exceed $10,000:
-
-```
-Transaction ──► Amount Check ──► Over $10,000?
-                                     │
-                              ┌──────┴──────┐
-                              ▼             ▼
-                           File CTR       No action
-                           (FinCEN)
+```go
+type Jurisdiction interface {
+    Name() string
+    Code() string
+    Requirements() []Requirement
+    ValidateApplication(app *ApplicationData) []Violation
+    TransactionLimits() []TransactionLimit
+}
 ```
 
-The `pkg/payments` package detects CTR threshold crossings for both single transactions and daily aggregates.
+Supported jurisdictions: `US` (United States), `UK` (United Kingdom), `IM` (Isle of Man).
 
-## SAR Filing
+## USA -- FinCEN, SEC, FINRA
 
-Suspicious Activity Reports are filed when the surveillance system escalates an alert:
+### FinCEN BSA Requirements
 
-- Filing deadline: 30 calendar days from detection
-- No notification to the subject (tipping off is prohibited)
-- Retention: 5 years from filing date
+| Requirement | Reference | Description |
+|-------------|-----------|-------------|
+| **CIP** | 31 CFR 1020.220 | Customer Identification Program: collect name, DOB, address, SSN/TIN |
+| **CTR** | 31 CFR 1010.311 | Currency Transaction Report for transactions over $10,000 |
+| **SAR** | 31 CFR 1020.320 | Suspicious Activity Report for suspicious transactions $5,000+ |
+| **OFAC** | 31 CFR Part 501 | Sanctions screening against SDN list |
+| **Recordkeeping** | 31 CFR 1010.410 | Maintain records of transactions $3,000+ for 5 years |
 
-## Travel Rule (FATF Rec 16)
+### SEC/FINRA Requirements
 
-For transfers exceeding $3,000, originator and beneficiary information must accompany the transaction:
+| Requirement | Reference | Description |
+|-------------|-----------|-------------|
+| **Accredited Investor** | SEC Rule 501(a), Reg D | Verification for Reg D offerings (conditional) |
+| **Suitability** | FINRA Rule 2111 | Investment objectives, financial status, risk tolerance |
+| **Pattern Day Trader** | FINRA Rule 4210 | $25,000 minimum equity for PDT accounts (conditional) |
+| **Disclosures** | FINRA Rule 3210 | Control person, affiliation, PEP status |
+| **Address** | 31 CFR 1020.220(a)(2) | US residential address verification |
 
-| Field | Required |
-|-------|----------|
-| Originator name | Yes |
-| Originator account | Yes |
-| Originator address or national ID | Yes |
-| Beneficiary name | Yes |
-| Beneficiary account | Yes |
+### State Requirements
+
+| Requirement | Reference | Description |
+|-------------|-----------|-------------|
+| **MTL** | State Money Transmission Laws | Money Transmitter License required per state |
+
+## UK -- FCA
+
+| Requirement | Description |
+|-------------|-------------|
+| **FCA Registration** | Registered with Financial Conduct Authority |
+| **5AMLD CDD** | Customer Due Diligence under 5th Anti-Money Laundering Directive |
+| **5AMLD EDD** | Enhanced Due Diligence for high-risk customers |
+| **HM Treasury Sanctions** | Screening against UK financial sanctions list |
+
+## Isle of Man -- IOMFSA
+
+| Requirement | Description |
+|-------------|-------------|
+| **Designated Business** | Registered as a Designated Business with IOMFSA |
+| **AML/CFT Code 2019** | Compliance with the AML/CFT Code of Practice 2019 |
+| **Source of Wealth** | Verification of source of wealth for all customers |
+| **Source of Funds** | Documentation of source of funds for transactions |
 
 ## Entity Types
 
 The `pkg/entity` package defines compliance requirements per regulated entity type:
 
-| Entity | Registration | Net Capital |
-|--------|-------------|-------------|
-| **ATS** | SEC Reg ATS, Form ATS-N | $250,000 |
-| **Broker-Dealer** | SEC/FINRA/SIPC, Rule 15c3-1 | $250,000 |
-| **Transfer Agent** | SEC Rule 17Ad, Form TA-1/TA-2 | -- |
-| **MSB** | FinCEN registration, state MTLs | Varies by state |
+| Entity | Registration | Net Capital | Key Rules |
+|--------|-------------|-------------|-----------|
+| **ATS** | SEC Reg ATS, Form ATS-N | $250,000 | Rules 300-303, quarterly ATS-N amendments |
+| **Broker-Dealer** | SEC/FINRA/SIPC | $250,000 | Rule 15c3-1 net capital |
+| **Transfer Agent** | SEC Rule 17Ad | $25,000 | Form TA-1 (initial), Form TA-2 (annual) |
+| **MSB** | FinCEN, state MTLs | Varies by state | CTR/SAR filing obligations |
+
+## Filing Obligations
+
+### CTR Filing
+
+Currency Transaction Reports are triggered when a single transaction or daily aggregate exceeds $10,000:
+
+- Filed with FinCEN
+- Due within 15 calendar days of the transaction
+- Includes customer identification and transaction details
+- The `pkg/payments` package detects CTR threshold crossings automatically
+
+### SAR Filing
+
+Suspicious Activity Reports are generated by the monitoring service:
+
+- Filed with FinCEN within 30 calendar days of detection
+- No notification to the subject (tipping off is prohibited)
+- Retention: 5 years from filing date
+- Auto-generated narrative from alert details and transaction history
+
+## API
+
+Query jurisdiction requirements:
+
+```bash
+curl http://localhost:8091/v1/regulatory/US -H "X-Api-Key: $API_KEY"
+```
+
+Returns the jurisdiction name, code, requirements array, and transaction limits.

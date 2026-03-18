@@ -1,0 +1,145 @@
+---
+title: Integration
+description: Go library, TypeScript SDK, and HTTP API integration
+icon: Puzzle
+---
+
+The compliance module can be consumed three ways: as a Go library, via the `@luxbank/compliance` TypeScript SDK, or through the `complianced` HTTP API.
+
+## Go Library
+
+Import packages directly. No external dependencies.
+
+```go
+import (
+    "github.com/luxfi/compliance/pkg/kyc"
+    "github.com/luxfi/compliance/pkg/idv"
+    "github.com/luxfi/compliance/pkg/aml"
+    "github.com/luxfi/compliance/pkg/payments"
+    "github.com/luxfi/compliance/pkg/regulatory"
+)
+
+// Initialize services
+kycService := kyc.NewService()
+appStore := kyc.NewStore()
+screening := aml.NewScreeningService(aml.DefaultScreeningConfig())
+monitoring := aml.NewMonitoringService()
+paymentEngine := payments.NewComplianceEngine(screening)
+
+// Register an IDV provider
+provider, err := idv.GetProvider("jumio", map[string]string{
+    "api_token":  os.Getenv("JUMIO_API_TOKEN"),
+    "api_secret": os.Getenv("JUMIO_API_SECRET"),
+})
+if err != nil {
+    log.Fatal(err)
+}
+kycService.RegisterProvider(provider)
+
+// Screen an applicant
+result, err := screening.Screen(ctx, &aml.ScreeningRequest{
+    Name:    "John Doe",
+    Country: "US",
+})
+
+// Validate a payment
+payResult, err := paymentEngine.ValidatePayin(ctx, &payments.PaymentRequest{
+    ID:       "pay-1",
+    Amount:   15000,
+    Currency: "USD",
+    Country:  "US",
+})
+```
+
+All services are thread-safe (`sync.RWMutex`). IDs are generated with `crypto/rand`.
+
+## TypeScript SDK
+
+The `@luxbank/compliance` TypeScript SDK lives in [luxfi/bank/pkg/compliance](https://github.com/luxfi/bank/tree/main/pkg/compliance). It wraps the HTTP API.
+
+### NestJS Module
+
+```typescript
+import { ComplianceModule, ComplianceService } from '@luxbank/compliance'
+
+// In app.module.ts
+@Module({
+  imports: [
+    ComplianceModule.forRoot({
+      baseUrl: process.env.COMPLIANCE_BASE_URL || 'http://compliance:8091',
+      apiKey: process.env.COMPLIANCE_API_KEY || '',
+    }),
+  ],
+})
+export class AppModule {}
+
+// In any service
+@Injectable()
+export class OnboardingService {
+  constructor(private readonly compliance: ComplianceService) {}
+
+  async onboard(applicationId: string) {
+    const result = await this.compliance.initiateKYC(applicationId, 'jumio')
+    return result.redirect_url
+  }
+
+  async screenApplicant(name: string, country: string) {
+    return this.compliance.screenAML({ name, country })
+  }
+}
+```
+
+## HTTP API
+
+Run the standalone server and call it from any language.
+
+```bash
+go build -o complianced ./cmd/complianced/
+COMPLIANCE_API_KEY=your-key JUMIO_API_TOKEN=... ./complianced
+```
+
+All endpoints (except `/healthz` and webhooks) require `X-Api-Key` header. See the [API Reference](/docs/compliance/api) for complete endpoint documentation.
+
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `COMPLIANCE_LISTEN` | `:8091` | HTTP listen address |
+| `COMPLIANCE_API_KEY` | -- | API key for authenticated endpoints |
+| `KYC_DEFAULT_PROVIDER` | first registered | Default IDV provider |
+| `JUMIO_API_TOKEN` | -- | Jumio Netverify API token |
+| `JUMIO_API_SECRET` | -- | Jumio API secret |
+| `JUMIO_WEBHOOK_SECRET` | -- | Jumio webhook HMAC secret |
+| `ONFIDO_API_TOKEN` | -- | Onfido v3.6 API token |
+| `ONFIDO_WEBHOOK_SECRET` | -- | Onfido webhook HMAC secret |
+| `PLAID_CLIENT_ID` | -- | Plaid client ID |
+| `PLAID_SECRET` | -- | Plaid API secret |
+| `PLAID_WEBHOOK_SECRET` | -- | Plaid webhook HMAC secret |
+
+## Docker
+
+```bash
+docker build --platform linux/amd64 -t ghcr.io/luxfi/compliance:latest .
+```
+
+### Compose
+
+```yaml
+services:
+  compliance:
+    image: ghcr.io/luxfi/compliance:latest
+    ports:
+      - "8091:8091"
+    environment:
+      COMPLIANCE_API_KEY: ${COMPLIANCE_API_KEY}
+      JUMIO_API_TOKEN: ${JUMIO_API_TOKEN}
+      JUMIO_API_SECRET: ${JUMIO_API_SECRET}
+      JUMIO_WEBHOOK_SECRET: ${JUMIO_WEBHOOK_SECRET}
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8091/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+```
+
+Image: `ghcr.io/luxfi/compliance` -- 6.8 MB, alpine-based, healthcheck on `/healthz`.

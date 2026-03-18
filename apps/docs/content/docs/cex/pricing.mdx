@@ -1,18 +1,34 @@
 ---
 title: Pricing
-description: CEX/ATS fee structure
+description: Trading fee structure and fee tiers
 icon: CreditCard
 ---
 
+The Lux CEX uses a maker-taker fee model. Makers (limit orders that add liquidity to the book) pay lower fees than takers (orders that remove liquidity). Fees are configurable per market and set at registration time.
+
 ## Trading Fees
 
-| Tier | Maker | Taker | Volume (30d) |
-|------|-------|-------|-------------|
-| Standard | 0.10% | 0.15% | &lt;$100K |
-| Active | 0.08% | 0.12% | $100K-$1M |
-| Professional | 0.05% | 0.08% | $1M-$10M |
+| Tier | Maker | Taker | 30-Day Volume |
+|------|-------|-------|---------------|
+| Standard | 0.10% | 0.20% | < $100K |
+| Active | 0.08% | 0.15% | $100K -- $1M |
+| Professional | 0.05% | 0.10% | $1M -- $10M |
 | Institutional | 0.02% | 0.05% | $10M+ |
-| Market Maker | 0% | 0.02% | By application |
+| Market Maker | 0.00% | 0.02% | By application |
+
+## Per-Asset-Class Defaults
+
+Default maker/taker fees set at market registration:
+
+| Asset Class | Maker | Taker |
+|------------|-------|-------|
+| US Equity | 0.02% | 0.05% |
+| Crypto | 0.10% | 0.20% |
+| Forex | 0.005% | 0.01% |
+| Precious Metals | 0.05% | 0.10% |
+| Commodities | 0.05% | 0.10% |
+| Fixed Income / Structured | Negotiated | Negotiated |
+| Stablecoins | 0.01% | 0.02% |
 
 ## Custody Fees
 
@@ -23,6 +39,29 @@ icon: CreditCard
 | Withdrawal (crypto) | Network fee only |
 | Withdrawal (fiat/wire) | $25 domestic, $50 international |
 
-## Compliance
+## How Fees Compare
 
-ATS registration, compliance infrastructure, and regulatory reporting included in all institutional tiers.
+The Lux CEX operates as a registered ATS, not a retail exchange. Fee levels are competitive with institutional ATS venues:
+
+| Venue Type | Typical Maker | Typical Taker |
+|-----------|--------------|---------------|
+| Retail crypto exchange | 0.10-0.50% | 0.15-0.60% |
+| Institutional crypto ATS | 0.02-0.10% | 0.05-0.15% |
+| US equity dark pool | 0.00-0.03% | 0.03-0.10% |
+| **Lux CEX (Institutional)** | **0.02%** | **0.05%** |
+
+## Fee Configuration
+
+Fees are set per-market via the `Market` struct at registration:
+
+```json
+{
+  "symbol": "BTC-USD",
+  "maker_fee": "0.001",
+  "taker_fee": "0.002"
+}
+```
+
+## Compliance Costs
+
+ATS registration, compliance infrastructure, and regulatory reporting are included in all institutional tiers. There are no separate compliance surcharges.

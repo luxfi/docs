@@ -1,22 +1,62 @@
 ---
-title: Pricing
-description: Broker fee structure
+title: Fee Structure
+description: Provider fee comparison and net-price routing
 icon: CreditCard
 ---
 
-## Commission
+The smart order router uses fee schedules to calculate net execution price. This ensures orders are routed to the cheapest venue after accounting for both spread and trading fees.
 
-| Asset Class | Rate |
-|-------------|------|
-| Crypto | 0.10% (passed through + markup) |
-| US Equities | $0 (commission-free via Alpaca) |
-| FX | 0.05% spread markup |
-| Options | $0.65/contract |
+## Provider Fee Schedule
 
-## Platform Fee
+Fees are configured in basis points (bps). 1 bps = 0.01%.
 
-| Tier | Monthly | Features |
-|------|---------|----------|
-| Standard | $0 | Basic SOR, 3 venues |
-| Professional | $199 | All venues, VWAP, TWAP |
-| Institutional | Custom | Dedicated, co-location |
+| Provider | Maker (bps) | Taker (bps) | Notes |
+|----------|-------------|-------------|-------|
+| Alpaca | 0 | 0 | Commission-free equities |
+| Tradier | 0 | 0 | Commission-free equities |
+| Binance | 10 | 10 | Flat rate, volume discounts available |
+| SFOX | 15 | 25 | Prime dealer |
+| Kraken | 16 | 26 | Volume-tiered |
+| Gemini | 20 | 40 | ActiveTrader pricing |
+| BitGo | 25 | 25 | Prime trading estimate |
+| Coinbase | 40 | 60 | Advanced Trade pricing |
+| FalconX | 5 | 10 | Institutional RFQ |
+| Interactive Brokers | 0.5 | 0.5 | Per-share, approximated to bps |
+| CurrencyCloud | 3 | 5 | Tight FX spreads |
+| LMAX | 2 | 3 | Institutional CLOB |
+| Fireblocks | 0 | 0 | Custody/transfer, no trading fees |
+| Circle | 0 | 0 | Stablecoin transfers |
+| Polygon.io | 0 | 0 | Market data only |
+| Finix | 0 | 0 | Payment processor |
+
+## Net-Price Routing
+
+The SOR calculates net execution price for each venue:
+
+```
+Buy:  net_price = ask_price * (1 + taker_fee_bps / 10000)
+Sell: net_price = bid_price * (1 - taker_fee_bps / 10000)
+```
+
+For a buy order, the venue with the lowest net price wins. For a sell, the venue with the highest net price wins. This means a venue with a slightly wider spread but lower fees can beat a tighter-spread venue with higher fees.
+
+## Example
+
+Buying 1 BTC when two venues quote:
+
+| Venue | Ask Price | Taker Fee | Net Price |
+|-------|-----------|-----------|-----------|
+| Binance | $42,155.00 | 10 bps | $42,197.16 |
+| Coinbase | $42,150.00 | 60 bps | $42,402.90 |
+
+Despite Coinbase having a lower ask price, Binance wins on net price due to lower fees. The difference is $205.74 per BTC -- over $2,000 on a 10 BTC order.
+
+## Split Fee Calculation
+
+When splitting an order across venues, each leg calculates its own fee:
+
+```
+leg_fee = leg_qty * estimated_price * (taker_fee_bps / 10000)
+```
+
+The split plan response includes `estimated_fees` (total across all legs) and `savings_vs_single_venue` (bps saved compared to sending everything to the worst venue).

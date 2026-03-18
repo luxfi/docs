@@ -1,27 +1,136 @@
 ---
 title: Architecture
-description: ATS system architecture
+description: System architecture, package structure, and data flow
 icon: GitBranch
 ---
 
-## Components
+The Lux CEX is a single Go binary (`cexd`) that runs multiple protocol servers, a matching engine, compliance pipeline, surveillance engine, and reporting service. It integrates with `luxfi/broker` for external venue execution and `luxfi/dex` for on-chain order book compatibility.
 
-| Component | Description |
-|-----------|-------------|
-| **Gateway** | Multi-protocol API (REST, FIX, WebSocket, ZAP) |
-| **Matching Engine** | Price-time priority CLOB |
-| **Risk Engine** | Pre-trade risk checks |
-| **Compliance** | Sanctions, PEP, jurisdiction gating |
-| **Surveillance** | Post-trade market abuse detection |
-| **Reporting** | FINRA OATS, ATS-N, CAT, MiFID II |
-| **Circuit Breakers** | Automated market halts |
+## Package Structure
 
-## Order Flow
+```
+github.com/luxfi/cex/
+  cmd/cexd/          # Main binary — wires everything together
+  pkg/
+    types/           # Canonical types: Order, Trade, Market, OrderBookSnapshot
+    engine/          # Matching engine with pre-trade and post-trade hooks
+    gateway/         # HTTP/REST gateway (chi router), JWT auth, CORS
+    protocol/
+      fix.go         # FIX 4.4 TCP server
+      websocket.go   # WebSocket server (gorilla/websocket)
+      jsonrpc.go     # JSON-RPC 2.0 handler
+      zap.go         # ZAP binary protocol (zero-copy, HFT)
+    compliance/      # Pre-trade compliance: sanctions, KYC, offering-type gating
+    surveillance/    # Post-trade: wash trading, structuring, velocity, price spikes
+    reporting/       # FINRA OATS, ATS-N, MiFID II, MAS, SFC reporting
+    execution/       # Broker SOR integration (luxfi/broker)
+    custody/         # Custody integration
+    store/           # Persistence layer
+  proto/
+    cex.proto        # gRPC service definition
+```
 
-1. Client submits order via Gateway
-2. Pre-trade compliance checks (sanctions, jurisdiction, offering type)
-3. Pre-trade risk checks (position limits, concentration, rate limits)
-4. Order enters matching engine
-5. Matched trades go to settlement
-6. Post-trade surveillance analyzes execution
-7. Regulatory reports generated automatically
+## Data Flow
+
+Every order follows this exact path:
+
+```
+1. Client submits order via any protocol
+       |
+2. Gateway normalizes to types.SubmitOrderRequest
+       |
+3. Engine.SubmitOrder()
+       |
+4. Market validation (exists, tradable, not halted)
+       |
+5. Pre-trade compliance checks (sequential):
+   a. Compliance.PreTradeCheck()
+      - Sanctions screening
+      - AML cleared check
+      - PEP + EDD verification
+      - Adverse media check
+      - FATF high-risk country check
+      - Per-jurisdiction KYC level check
+      - Order size + daily limit check
+   b. Compliance.OfferingPreTradeCheck()
+      - Jurisdiction access (allowed/blocked lists)
+      - Offering-type rules (Reg D, Reg S, Reg A+, Reg CF, MiFID, MAS, etc.)
+       |
+6. Matching engine (CLOB with price-time priority)
+   - Internal book match first
+   - Unfilled orders fall back to broker SOR (luxfi/broker)
+       |
+7. Post-trade hooks (parallel):
+   a. Reporting.PostTradeHook() — FINRA trade report
+   b. JurisdictionReporter.PostTradeHook() — MiFID/MAS/SFC
+   c. Surveillance.PostTradeHook() — abuse detection
+       |
+8. Response returned to client
+```
+
+## Broker Integration
+
+The `execution` package wraps `luxfi/broker`'s Smart Order Router. When the internal CLOB cannot fill an order, it routes to external venues:
+
+| Provider | Asset Classes |
+|----------|--------------|
+| Alpaca | US equities, crypto |
+| IBKR (Interactive Brokers) | US/intl equities, options, futures, forex |
+| BitGo | Crypto custody + trading |
+| Coinbase | Crypto |
+| Binance | Crypto |
+| Kraken | Crypto |
+| Gemini | Crypto |
+| FalconX | Crypto (institutional) |
+| SFOX | Crypto (aggregator) |
+| Finix | Payments/settlement |
+
+Markets are auto-discovered from configured providers at startup and registered on the engine.
+
+## Engine Architecture
+
+The `engine.Engine` is the orchestration layer. It holds:
+
+- **Markets registry** — symbol to `types.Market` map
+- **Orders store** — all orders by ID
+- **Trades store** — all executed trades
+- **MatchFunc** — pluggable matching function (CLOB or broker fallback)
+- **PreTradeChecks** — ordered slice of compliance checks
+- **PostTradeHooks** — slice of post-execution hooks
+
+The `engine.MatchEngine` is the high-performance CLOB with int64 price/qty for cache-line alignment. It exposes `GetSnapshot()` for orderbook queries across all protocols.
+
+## Multi-Tenant Isolation
+
+All data is scoped by organization:
+
+1. JWT `org_id` claim extracted by gateway auth middleware
+2. Passed through to `Engine.SubmitOrder()` as `orgID`
+3. Stored on every `Order` and available for query filtering
+4. Admin endpoints require the `admin` role in JWT claims
+
+## Protocol Server Topology
+
+```
+cexd process
+  |
+  +-- HTTP Server (:8091)
+  |     +-- /v1/*          REST API
+  |     +-- /rpc           JSON-RPC 2.0
+  |     +-- /ws            WebSocket upgrade
+  |     +-- /healthz       Health check
+  |
+  +-- ZAP Server (:8093)   Binary TCP (zero-copy)
+  |
+  +-- FIX Server (:8094)   FIX 4.4 TCP
+```
+
+All protocol servers share the same `engine.Engine` instance. Order submission from any protocol follows the identical compliance and matching pipeline.
+
+## Federated Entity Model
+
+The compliance package supports a federated network of regulated entities across jurisdictions. Each entity has a license type, jurisdiction, LEI, and capability set. The `FederatedRegistry` enables:
+
+- **Cross-entity routing** — find the best entity for a trade in a given jurisdiction
+- **KYC passporting** — EU/EEA passporting under MiFID II, IOM/UK Crown Dependency equivalence
+- **Counterparty agreements** — explicit cross-entity data sharing

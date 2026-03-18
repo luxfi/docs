@@ -1,16 +1,206 @@
 ---
 title: API Reference
-description: Broker REST API
+description: Complete REST API reference for the Lux Broker
 icon: FileCode
 ---
 
-## Endpoints
+Base URL: `http://localhost:8090/v1`
+
+## Authentication
+
+All endpoints except `/healthz` require authentication via one of:
+
+- `Authorization: Bearer <api-key>` header
+- `X-API-Key: <api-key>` header
+
+The health check endpoint `GET /healthz` requires no auth and returns the list of registered providers.
+
+## Accounts
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/v1/orders` | Submit order with SOR |
-| GET | `/v1/quotes` | Get multi-venue quotes |
-| GET | `/v1/orders/:id` | Order status |
-| GET | `/v1/executions` | Execution history |
-| GET | `/v1/venues` | Connected venues |
-| GET | `/v1/balances` | Cross-venue balances |
+| POST | `/v1/accounts` | Create account (with provider, identity, contact) |
+| GET | `/v1/accounts` | List all accounts across providers |
+| GET | `/v1/accounts/{provider}/{accountId}` | Get account detail |
+| GET | `/v1/accounts/{provider}/{accountId}/portfolio` | Portfolio snapshot |
+| PATCH | `/v1/accounts/{provider}/{accountId}` | Update account |
+| DELETE | `/v1/accounts/{provider}/{accountId}` | Close account |
+| GET | `/v1/accounts/{provider}/{accountId}/activities` | Account activity feed |
+
+## Orders
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/v1/accounts/{provider}/{accountId}/orders` | Place order |
+| GET | `/v1/accounts/{provider}/{accountId}/orders` | List orders |
+| GET | `/v1/accounts/{provider}/{accountId}/orders/{orderId}` | Get order |
+| PATCH | `/v1/accounts/{provider}/{accountId}/orders/{orderId}` | Replace/modify order |
+| DELETE | `/v1/accounts/{provider}/{accountId}/orders/{orderId}` | Cancel order |
+| DELETE | `/v1/accounts/{provider}/{accountId}/orders` | Cancel all orders |
+
+**Query parameters** for list orders: `?status=open|closed|all`
+
+## Positions
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/v1/accounts/{provider}/{accountId}/positions/{symbol}` | Get position |
+| DELETE | `/v1/accounts/{provider}/{accountId}/positions/{symbol}` | Close position |
+| DELETE | `/v1/accounts/{provider}/{accountId}/positions` | Close all positions |
+
+## Smart Order Routing
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/v1/route/{symbol}` | Best venues for symbol |
+| GET | `/v1/route/{symbol}/{quote}` | Best venues for pair (e.g. BTC/USD) |
+| GET | `/v1/route/{symbol}/split` | VWAP split plan |
+| GET | `/v1/route/{symbol}/{quote}/split` | VWAP split plan for pair |
+| POST | `/v1/smart-order` | Execute smart order (routes to best venue) |
+| POST | `/v1/smart-order/split` | Execute split across venues |
+| GET | `/v1/assets` | Aggregated assets across all providers |
+| GET | `/v1/assets/{provider}` | List assets for a provider |
+| GET | `/v1/assets/{provider}/{symbolOrId}` | Get single asset detail |
+
+## Market Data
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/v1/market/{provider}/snapshot/{symbol}` | Real-time price snapshot |
+| GET | `/v1/market/{provider}/snapshots` | Multiple snapshots |
+| GET | `/v1/market/{provider}/bars/{symbol}` | OHLCV bars |
+| GET | `/v1/market/{provider}/trades/latest` | Latest trades |
+| GET | `/v1/market/{provider}/quotes/latest` | Latest quotes |
+| GET | `/v1/market/{provider}/clock` | Market clock |
+| GET | `/v1/market/{provider}/calendar` | Market calendar |
+
+**Query parameters** for snapshots: `?symbols=AAPL,MSFT`
+
+**Query parameters** for bars: `?timeframe=1Day&start=2024-01-01&end=2024-01-31&limit=100`
+
+**Query parameters** for latest trades/quotes: `?symbols=AAPL,MSFT`
+
+### Crypto Market Data
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/v1/market/{provider}/crypto/bars` | Crypto OHLCV bars |
+| GET | `/v1/market/{provider}/crypto/quotes` | Crypto quotes |
+| GET | `/v1/market/{provider}/crypto/trades` | Crypto trades |
+| GET | `/v1/market/{provider}/crypto/snapshots` | Crypto snapshots |
+
+## Consolidated Data
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/v1/bbo/{symbol}` | Best bid/offer across all venues |
+| GET | `/v1/bbo/{symbol}/{quote}` | BBO for pair |
+| GET | `/v1/stream` | SSE stream (real-time consolidated tickers) |
+
+The BBO endpoint returns the best bid and best ask across all connected providers, including provider attribution for each side.
+
+## Transfers & Banking
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/v1/accounts/{provider}/{accountId}/transfers` | List transfers |
+| POST | `/v1/accounts/{provider}/{accountId}/transfers` | Create transfer (ACH/wire/crypto) |
+| DELETE | `/v1/accounts/{provider}/{accountId}/transfers/{transferId}` | Cancel transfer |
+| GET | `/v1/accounts/{provider}/{accountId}/bank-relationships` | List bank relationships |
+| POST | `/v1/accounts/{provider}/{accountId}/bank-relationships` | Create bank relationship |
+| DELETE | `/v1/accounts/{provider}/{accountId}/ach-relationships/{achId}` | Delete ACH relationship |
+| POST | `/v1/accounts/{provider}/{accountId}/recipient-banks` | Add wire recipient |
+| GET | `/v1/accounts/{provider}/{accountId}/recipient-banks` | List wire recipients |
+| DELETE | `/v1/accounts/{provider}/{accountId}/recipient-banks/{bankId}` | Remove wire recipient |
+
+## Journals (Inter-Account Transfers)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/v1/journals/{provider}` | Create journal (JNLC cash / JNLS security) |
+| GET | `/v1/journals/{provider}` | List journals |
+| GET | `/v1/journals/{provider}/{journalId}` | Get journal |
+| DELETE | `/v1/journals/{provider}/{journalId}` | Delete journal |
+| POST | `/v1/journals/{provider}/batch` | Batch journal |
+| POST | `/v1/journals/{provider}/reverse_batch` | Reverse batch |
+
+## Documents
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/v1/accounts/{provider}/{accountId}/documents` | Upload document |
+| GET | `/v1/accounts/{provider}/{accountId}/documents` | List documents |
+| GET | `/v1/accounts/{provider}/{accountId}/documents/{documentId}` | Get document |
+| GET | `/v1/accounts/{provider}/{accountId}/documents/{documentId}/download` | Download document |
+
+## Watchlists
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/v1/accounts/{provider}/{accountId}/watchlists` | Create watchlist |
+| GET | `/v1/accounts/{provider}/{accountId}/watchlists` | List watchlists |
+| GET | `/v1/accounts/{provider}/{accountId}/watchlists/{id}` | Get watchlist |
+| PUT | `/v1/accounts/{provider}/{accountId}/watchlists/{id}` | Update watchlist |
+| DELETE | `/v1/accounts/{provider}/{accountId}/watchlists/{id}` | Delete watchlist |
+| POST | `/v1/accounts/{provider}/{accountId}/watchlists/{id}/assets` | Add asset |
+| DELETE | `/v1/accounts/{provider}/{accountId}/watchlists/{id}/{symbol}` | Remove asset |
+
+## Portfolio History
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/v1/accounts/{provider}/{accountId}/portfolio/history` | Equity time series |
+
+**Query parameters**: `?period=1M&timeframe=1D`
+
+## Event Streaming (SSE)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/v1/events/{provider}/trades` | Trade events |
+| GET | `/v1/events/{provider}/accounts` | Account events |
+| GET | `/v1/events/{provider}/transfers` | Transfer events |
+| GET | `/v1/events/{provider}/journals` | Journal events |
+
+All event endpoints use Server-Sent Events (SSE). Connect with an `Accept: text/event-stream` header.
+
+## Risk & Audit
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/v1/risk/check` | Pre-trade risk check |
+| GET | `/v1/audit` | Query audit log |
+| GET | `/v1/audit/stats` | Audit statistics |
+| GET | `/v1/audit/export` | Export audit log (JSON download) |
+
+**Query parameters** for risk check: `?provider=alpaca&account_id=abc&symbol=AAPL&side=buy&qty=100&price=150&type=market`
+
+**Query parameters** for audit: `?action=order.create&provider=alpaca&account_id=abc&symbol=AAPL&since=2024-01-01T00:00:00Z&until=2024-12-31T23:59:59Z`
+
+## Funding
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/v1/fund/deposit` | Deposit via payment processor |
+| POST | `/v1/fund/withdraw` | Withdraw via payment processor |
+| POST | `/v1/fund/webhook/{processor}` | Payment processor webhook |
+| GET | `/v1/fund/processors` | List available processors |
+
+## Providers
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/v1/providers` | List registered providers |
+| GET | `/v1/providers/capabilities` | Provider capabilities (asset classes, fees, features) |
+
+## Response Format
+
+All responses are JSON. Successful responses return the resource directly. Errors return:
+
+```json
+{
+  "error": "description of what went wrong"
+}
+```
+
+HTTP status codes follow standard conventions: 200 for success, 201 for created, 400 for bad request, 401 for unauthorized, 404 for not found, 500 for internal errors.

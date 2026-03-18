@@ -1,64 +1,111 @@
 ---
 title: KYC Verification
-description: Three-tier KYC with multi-provider identity verification and ongoing monitoring
+description: Multi-provider identity verification with Jumio, Onfido, and Plaid
 icon: UserCheck
 ---
 
-The KYC service (`pkg/kyc`) orchestrates identity verification through multiple providers with a tiered verification model.
-
-## KYC Tiers
-
-| Tier | Requirements | Limits | Use Cases |
-|------|-------------|--------|-----------|
-| **L1 - Basic** | Name, email, phone | $1,000/day | Retail trading |
-| **L2 - Standard** | Government ID, selfie, address proof | $25,000/day | Standard accounts |
-| **L3 - Enhanced** | Source of funds, employment, financial profile | Unlimited | Institutional, high-value |
+The KYC service (`pkg/kyc`) orchestrates identity verification through multiple providers. The `pkg/idv` package provides a unified `Provider` interface with a factory-based registry.
 
 ## IDV Providers
 
-The `pkg/idv` package supports three identity verification providers through a unified `Provider` interface:
+| Provider | API Version | Capabilities | Signature Header |
+|----------|-------------|-------------|-----------------|
+| **Jumio** | Netverify v4 | ID + selfie, liveness detection, document verification | `X-Jumio-Signature` |
+| **Onfido** | v3.6 | Applicant + check creation, SDK token, watchlist screening | `X-SHA2-Signature` |
+| **Plaid** | Identity Verification | Session-based IDV, bank-linked identity, income verification | `Plaid-Verification` |
 
-| Provider | API Version | Capabilities |
-|----------|-------------|-------------|
-| **Jumio** | v4 | Document scan, liveness, AML |
-| **Onfido** | v3.6 | Applicant checks, SDK token |
-| **Plaid** | Identity Verification | Session-based verification |
+All providers implement the same interface:
 
-All providers implement `InitiateVerification()`, `CheckStatus()`, and `ParseWebhook()`.
+```go
+type Provider interface {
+    Name() string
+    InitiateVerification(ctx context.Context, req *VerificationRequest) (*VerificationResponse, error)
+    CheckStatus(ctx context.Context, verificationID string) (*VerificationStatusResult, error)
+    ParseWebhook(body []byte, headers map[string]string) (*WebhookEvent, error)
+}
+```
+
+Providers are registered at init via `idv.RegisterFactory()` and instantiated with `idv.GetProvider(name, config)`.
+
+### Jumio (Netverify v4)
+
+Jumio performs document verification with liveness detection. After calling `InitiateVerification`, the user is redirected to Jumio's hosted UI. Results arrive via webhook. The check includes document authenticity, facial similarity, and data extraction (name, DOB, address from the ID).
+
+### Onfido (v3.6)
+
+Onfido creates an applicant, then runs checks against it. An SDK token can be generated for client-side integration. Onfido also supports built-in watchlist screening as part of the check. Results arrive via webhook with individual check breakdowns (document, facial_similarity, watchlist).
+
+### Plaid (Identity Verification)
+
+Plaid uses session-based identity verification linked to bank account data. It creates an IDV session, the user completes it in the Plaid Link flow, and results arrive via webhook. Plaid can cross-reference identity data against bank account holder information.
 
 ## Application Lifecycle
 
 ```
-draft ──► pending ──► pending_kyc ──► approved
-                          │                │
-                          ▼                ▼
-                       rejected         ongoing monitoring
+draft --> pending --> pending_kyc --> approved
+                         |
+                         v
+                      rejected
 ```
 
-KYC status tracks separately: `not_started` then `pending` then `verified` or `failed`.
+Applications are created in `draft` status. Submitting transitions to `pending`. KYC initiation moves to `pending_kyc`. The final state is `approved` or `rejected` based on verification results and compliance review.
 
-## Webhook Handling
+## KYC Status Flow
 
-Each provider sends verification results via webhooks. The `pkg/webhook` package provides:
+```
+not_started --> pending --> verified
+                    |
+                    v
+                  failed
+```
 
-- **HMAC-SHA256 signature validation** per provider
+KYC status tracks independently from the application status. A verification starts as `pending` when initiated with a provider. The provider webhook updates it to `verified` or `failed`. Verification status values: `pending`, `approved`, `declined`, `expired`, `error`.
+
+## Webhook Flow
+
+```
+Provider --> POST /v1/kyc/webhook/{provider}
+                |
+                v
+         Signature Validation (HMAC-SHA256)
+                |
+                v
+         Idempotency Check (event dedup)
+                |
+                v
+         KYC Status Update
+```
+
+Webhooks require no API key authentication (providers cannot send it). Each provider uses a different HMAC-SHA256 signature header. The `pkg/webhook` handler provides:
+
+- **Signature validation** per provider using the configured secret
 - **Idempotency tracking** to deduplicate events
 - **Retry with configurable max attempts**
-- **Dead letter queue** for failed deliveries
+- **Dead letter queue** for failed webhook processing
 
-```
-Provider Webhook ──► Signature Validation ──► Idempotency Check
-                                                    │
-                                              KYC Status Update
-```
+## Provider Configuration
+
+| Variable | Provider | Description |
+|----------|----------|-------------|
+| `JUMIO_API_TOKEN` | Jumio | API token for Netverify |
+| `JUMIO_API_SECRET` | Jumio | API secret for request signing |
+| `JUMIO_WEBHOOK_SECRET` | Jumio | HMAC secret for webhook validation |
+| `ONFIDO_API_TOKEN` | Onfido | API token for Onfido v3.6 |
+| `ONFIDO_WEBHOOK_SECRET` | Onfido | HMAC secret for webhook validation |
+| `PLAID_CLIENT_ID` | Plaid | Client ID for Plaid API |
+| `PLAID_SECRET` | Plaid | Secret for Plaid API |
+| `PLAID_WEBHOOK_SECRET` | Plaid | HMAC secret for webhook validation |
+| `KYC_DEFAULT_PROVIDER` | All | Default provider if none specified (default: first registered) |
 
 ## Application Data Model
 
-L3 applications collect comprehensive information:
+Full applications collect comprehensive information for L3 (Enhanced) verification:
 
-- Identity (name, DOB, nationality, tax ID)
-- Address (residential, with proof of address)
-- Employment and financial profile
-- Disclosures (PEP status, legal history)
-- Account preferences (trading objectives, risk tolerance)
-- Documents (government ID, proof of address, source of funds)
+- **Identity**: given name, family name, DOB, nationality, tax ID (SSN/ITIN/EIN)
+- **Address**: street, city, state, postal code, country, proof of address
+- **Employment**: employer, occupation, income
+- **Financial profile**: net worth, investment objectives, risk tolerance
+- **Disclosures**: PEP status, control person, affiliations, legal history
+- **Account preferences**: trading objectives, account type
+- **Documents**: government ID, proof of address, source of funds
+- **Admin**: review notes, reviewer, timestamps

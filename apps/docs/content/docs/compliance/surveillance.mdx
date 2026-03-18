@@ -1,59 +1,116 @@
 ---
-title: Trade Surveillance
-description: Real-time detection of wash trading, spoofing, layering, and structuring
+title: Transaction Monitoring
+description: Real-time rules engine for structuring detection, velocity checks, and SAR generation
 icon: Eye
 ---
 
-The monitoring service (`pkg/aml.MonitoringService`) runs a rules engine for real-time transaction monitoring and market surveillance.
-
-## Detection Rules
-
-| Pattern | Description | Rule Type |
-|---------|-------------|-----------|
-| **Wash Trading** | Self-dealing or coordinated trades to inflate volume | Velocity + geographic |
-| **Spoofing** | Placing orders with intent to cancel before execution | Velocity |
-| **Layering** | Multiple orders at different prices to create false depth | Velocity + daily aggregate |
-| **Structuring** | Breaking transactions to avoid CTR threshold ($10,000) | Structuring |
-| **Front-Running** | Trading ahead of known pending orders | Velocity |
+The monitoring service (`pkg/aml.MonitoringService`) runs a configurable rules engine for real-time transaction monitoring. It detects suspicious patterns and generates alerts for compliance review.
 
 ## Rule Types
 
 The engine supports five rule categories:
 
-| Rule Type | Trigger |
-|-----------|---------|
-| `single_amount` | Single transaction exceeds threshold |
-| `daily_aggregate` | Cumulative daily amount exceeds threshold |
-| `velocity` | Transaction count within time window exceeds limit |
-| `geographic` | Transactions from high-risk jurisdictions |
-| `structuring` | Multiple transactions just below reporting threshold |
+| Rule Type | Constant | Trigger |
+|-----------|----------|---------|
+| **Single Amount** | `single_amount` | Single transaction exceeds threshold |
+| **Daily Aggregate** | `daily_aggregate` | Cumulative daily amount exceeds threshold |
+| **Velocity** | `velocity` | Transaction count within time window exceeds limit |
+| **Geographic** | `geographic` | Transaction involves a high-risk jurisdiction |
+| **Structuring** | `structuring` | Multiple transactions just below reporting threshold |
+
+## Default Rules
+
+The `complianced` server installs these rules at startup:
+
+| Rule ID | Type | Description |
+|---------|------|-------------|
+| `default_single_10k` | `single_amount` | Flag single transactions >= $10,000 (medium severity) |
+| `default_daily_25k` | `daily_aggregate` | Flag daily aggregate >= $25,000 (high severity) |
+| `default_structuring` | `structuring` | Detect structuring around $10,000 CTR threshold (critical severity) |
+| `default_velocity` | `velocity` | Flag accounts with 20+ transactions per hour (medium severity) |
+
+## Structuring Detection
+
+Structuring (also called smurfing) is the practice of breaking transactions into amounts below the $10,000 Currency Transaction Report threshold to avoid reporting.
+
+The structuring rule uses three parameters:
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `StructuringThreshold` | $10,000 | The reporting threshold being evaded |
+| `StructuringMargin` | $1,000 | How close to the threshold counts as suspicious |
+| `StructuringMinCount` | 3 | Minimum number of near-threshold transactions to trigger |
+
+Detection triggers when an account has 3+ transactions between $9,000 and $9,999 within the monitoring window. This covers:
+
+- Multiple deposits just below $10,000 within 24 hours
+- Transactions from the same originator across multiple accounts
+- Rapid sequential deposits just below threshold
 
 ## Alert Lifecycle
 
 ```
-Transaction ──► Rules Engine ──► Alert Generated
-                                       │
-                            ┌──────────┼──────────┐
-                            ▼          ▼          ▼
+Transaction --> Rules Engine --> Alert Generated (open)
+                                       |
+                            +----------+-----------+
+                            v          v           v
                           open    investigating  escalated
-                            │          │          │
-                            ▼          ▼          ▼
+                            |          |           |
+                            v          v           v
                          closed      closed     filed (SAR)
 ```
+
+Alert statuses:
+
+| Status | Description |
+|--------|-------------|
+| `open` | New alert, awaiting review |
+| `investigating` | Under compliance officer review |
+| `escalated` | Elevated to senior compliance |
+| `closed` | Reviewed and cleared, no action needed |
+| `filed` | SAR or other report filed with regulator |
 
 ## SAR Generation
 
 When an alert is escalated and confirmed, the system generates a Suspicious Activity Report:
 
 - **Filing entity**: MSB, broker-dealer, or ATS registration
-- **Subject information**: From KYC application data
-- **Narrative**: Auto-generated from alert details and transaction history
-- **Supporting documentation**: Transaction logs, screening results
+- **Subject information**: pulled from KYC application data
+- **Narrative**: auto-generated from alert details and transaction history
+- **Supporting documentation**: transaction logs, screening results
+- **Filing deadline**: 30 calendar days from detection
+- **Retention**: 5 years from filing date
+- **No tipping off**: the subject must not be notified
 
-## Structuring Detection
+## Configuration
 
-Structuring detection identifies attempts to break transactions into amounts below the $10,000 Currency Transaction Report threshold:
+Rules can be added programmatically:
 
-- Multiple transactions between $8,000 and $9,999 within 24 hours
-- Transactions from the same originator across multiple accounts
-- Rapid sequential deposits just below threshold
+```go
+monitoringService.AddRule(aml.Rule{
+    ID:              "custom_high_value",
+    Type:            aml.RuleSingleAmount,
+    Description:     "Flag wire transfers >= $50,000",
+    Enabled:         true,
+    ThresholdAmount: 50000,
+    Currency:        "USD",
+    Severity:        aml.SeverityHigh,
+})
+```
+
+## API
+
+Monitor a transaction:
+
+```bash
+curl -X POST http://localhost:8091/v1/aml/monitor \
+  -H "X-Api-Key: $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"account_id":"acct-1","amount":9500,"currency":"USD","country":"US"}'
+```
+
+List alerts:
+
+```bash
+curl http://localhost:8091/v1/aml/alerts?status=open -H "X-Api-Key: $API_KEY"
+```

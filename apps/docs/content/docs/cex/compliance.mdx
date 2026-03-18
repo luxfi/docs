@@ -1,27 +1,126 @@
 ---
 title: Compliance
-description: Pre-trade compliance and jurisdiction management
+description: Pre-trade compliance pipeline, jurisdiction rules, and offering-type gating
 icon: ShieldAlert
 ---
 
+Every order passes through two sequential pre-trade compliance checks before reaching the matching engine. If any check fails, the order is rejected with a specific error message and the order status is set to `rejected`.
+
+## Pre-Trade Compliance Pipeline
+
+The `compliance.Service.PreTradeCheck()` enforces these checks in order:
+
+| Step | Check | Rejection Reason |
+|------|-------|-----------------|
+| 1 | **Sanctions screening** | Account is on OFAC/UN/EU sanctions list |
+| 2 | **AML cleared** | Account has not passed AML screening |
+| 3 | **PEP screening** | PEP (direct/related) requires EDD review and verified source of funds |
+| 4 | **Adverse media** | Adverse media flag requires EDD review |
+| 5 | **FATF high-risk country** | High-risk jurisdiction requires enhanced KYC (level 3) |
+| 6 | **Per-jurisdiction KYC minimum** | KYC level insufficient for jurisdiction + asset class |
+| 7 | **Structured product eligibility** | Accredited/professional status required for complex products |
+| 8 | **Order size + daily limit** | Order exceeds per-account max order size or daily volume limit |
+
+## KYC Levels
+
+| Level | Name | Requirements |
+|-------|------|-------------|
+| 0 | None | No verification |
+| 1 | Basic | Email + phone verified |
+| 2 | Standard | Government ID verified |
+| 3 | Enhanced | Accredited investor verification |
+
+## PEP Classification
+
+| Status | Description | Trading Requirements |
+|--------|-------------|---------------------|
+| (none) | Not a PEP | Standard checks |
+| `direct` | Current/former senior political figure | EDD completed + source of funds verified |
+| `related` | Close family member or associate | EDD completed + source of funds verified |
+| `former` | Formerly PEP, cooling-off period | Standard checks (may require EDD per jurisdiction) |
+
 ## Jurisdiction Coverage
 
-30+ jurisdictions with configurable rules per market and participant type.
+The system enforces per-jurisdiction, per-asset-class KYC minimums across 30+ jurisdictions:
 
-## Pre-Trade Checks
+| Region | Jurisdictions | Regulator |
+|--------|--------------|-----------|
+| Americas | US, CA, BR, MX, KY, BM, BS | SEC/FINRA, CSA/IIROC, CVM, CNBV, CIMA, BMA, SCB |
+| Europe | UK, EU, CH, IM, GI, LI | FCA, ESMA/MiFID II, FINMA, IOM FSA, GFSC, FMA |
+| Asia-Pacific | SG, HK, JP, AU, KR, IN | MAS, SFC, JFSA, ASIC, FSC Korea, SEBI |
+| MENA | AE, SA, BH, QA, KW, OM, JO | DFSA/VARA/SCA, CMA, CBB, QFCRA, CMA, CMA, JSC |
+| Africa | ZA, NG, KE, MU | FSCA, SEC Nigeria, CMA Kenya, FSC Mauritius |
 
-| Check | Description |
-|-------|-------------|
-| **Sanctions** | OFAC, UN, EU consolidated sanctions lists |
-| **PEP** | Politically Exposed Persons screening |
-| **EDD** | Enhanced Due Diligence for high-risk participants |
-| **Accredited Investor** | Reg D offering-type gating |
-| **Jurisdiction** | Country/state-level restrictions |
-| **Offering Type** | Security classification checks |
+Most jurisdictions require KYC level 2 (Standard) for securities trading. Exceptions:
 
-## KYC/AML
+- **US crypto**: KYC level 1 (Basic) sufficient
+- **SG DPT (crypto)**: KYC level 1 sufficient
+- **CA crypto**: KYC level 1 sufficient
+- **Caribbean OFCs** (KY, BM, BS): KYC level 1 sufficient
+- **Mauritius**: KYC level 1 sufficient
 
-- Identity verification (L1/L2/L3 tiers)
-- Document verification
-- Beneficial ownership tracking
-- Ongoing monitoring and re-verification
+## Offering-Type Gating
+
+The `compliance.Service.OfferingPreTradeCheck()` enforces offering-specific rules. Securities are registered with an `OfferingType` that determines who can trade them.
+
+### US (SEC) Offerings
+
+| Type | Rule | Investor Requirement |
+|------|------|---------------------|
+| `reg_d_506c` | Reg D Section 506(c) | Accredited investors only |
+| `reg_d_506b` | Reg D Section 506(b) | Up to 35 non-accredited (KYC level 2+) |
+| `reg_a` | Reg A+ (Tier 1/2) | Non-accredited subject to investment limits |
+| `reg_cf` | Reg Crowdfunding | Annual investment limits based on income/net worth |
+| `reg_s` | Reg S (offshore) | Non-US persons only |
+| `public` | Registered/listed | Standard KYC |
+
+### Reg CF Annual Limits
+
+Per SEC Rule 227.100(a)(2), non-accredited investors have rolling 12-month limits:
+
+- If annual income **or** net worth < $124,000: greater of $2,500 or 5% of lesser of (income, net worth)
+- If both >= $124,000: 10% of lesser, capped at $124,000
+- Accredited investors: no limit
+
+### International Offerings
+
+| Type | Jurisdiction | Requirement |
+|------|-------------|-------------|
+| `uk_private` | UK (FCA s.86) | Professional/qualified investors only |
+| `uk_crowdfunding` | UK (FCA) | KYC level 1+, appropriateness assessment |
+| `eu_exempt` | EU (Prospectus Reg) | MiFID II professional clients only |
+| `mica` | EU (MiCA) | KYC level 1+ |
+| `sg_private` | SG (SFA s.272B) | MAS accredited or institutional |
+| `sg_small` | SG (SFA s.272A) | KYC level 1+ |
+| `sg_dpt` | SG (PS Act) | KYC level 1+ |
+| `hk_professional` | HK (SFO s.103) | SFC professional investors only |
+| `dfsa` / `vara` | UAE | KYC level 2+ |
+| `sa_cma` | Saudi Arabia | Qualified/institutional investors |
+| `im_fsa` | Isle of Man | KYC level 2+ |
+
+## Structured Product Eligibility
+
+Complex products have additional suitability requirements:
+
+| Asset Class | Requirement |
+|------------|-------------|
+| Structured credit (ABS/MBS/CDO/CLO) | Accredited or professional + KYC level 3 |
+| Private equity / venture | Accredited + KYC level 3 |
+| Private credit | Accredited or professional + KYC level 3 |
+| Real estate | KYC level 2+ |
+| Precious metals | KYC level 2+ |
+| Municipal bonds | KYC level 2+ |
+| CDPs (DeFi) | KYC level 1+ |
+| LP tokens (DeFi) | KYC level 1+ |
+
+## Client Types
+
+| Type | Description |
+|------|-------------|
+| `individual` | Retail investor |
+| `institutional` | QIB, fund, etc. |
+| `broker_dealer` | Registered B/D subscriber |
+
+## Account Registration
+
+Register an account via `POST /v1/accounts/{id}/register` with jurisdiction, KYC level, AML status, PEP classification, source of funds, and accreditation status. The compliance service stores this and enforces it on every subsequent order.

@@ -1,26 +1,178 @@
 ---
 title: API Reference
-description: CEX REST and FIX APIs
+description: Complete REST, WebSocket, JSON-RPC, gRPC, and FIX API documentation
 icon: FileCode
 ---
 
+All trading operations pass through the pre-trade compliance pipeline before reaching the matching engine. Authentication is via JWT Bearer tokens when `CEX_JWT_SECRET` is set; otherwise the gateway runs in dev mode (open access).
+
+## Authentication
+
+Set `CEX_JWT_SECRET` to enable JWT validation. Tokens must be signed with HMAC (HS256/HS384/HS512) and include:
+
+| Claim | Description |
+|-------|-------------|
+| `sub` | User ID |
+| `org_id` | Organization ID (multi-tenant isolation) |
+| `account_id` | Trading account ID |
+| `roles` | Array of roles (`["admin"]` for admin endpoints) |
+| `iss` | Must match `CEX_JWT_ISSUER` (default: `https://hanzo.id`) |
+
+```bash
+curl -H "Authorization: Bearer $TOKEN" https://cex.lux.network/v1/markets
+```
+
 ## REST Endpoints
+
+### Markets
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/v1/orders` | Submit order |
-| DELETE | `/v1/orders/:id` | Cancel order |
-| GET | `/v1/orders` | List orders |
-| GET | `/v1/trades` | Trade history |
-| GET | `/v1/markets` | Available markets |
-| GET | `/v1/orderbook/:symbol` | Order book |
-| GET | `/v1/account/balances` | Account balances |
+| `GET` | `/v1/markets` | List all active markets |
+| `GET` | `/v1/markets/{symbol}` | Market details (asset class, fees, tick/lot size) |
+| `GET` | `/v1/markets/{symbol}/book` | Order book snapshot (`?depth=20`) |
 
-## FIX Messages
+### Orders
 
-| Message | Tag | Description |
-|---------|-----|-------------|
-| NewOrderSingle | D | Submit new order |
-| OrderCancelRequest | F | Cancel order |
-| ExecutionReport | 8 | Order status/fill |
-| MarketDataRequest | V | Subscribe to market data |
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | `/v1/accounts/{accountId}/orders` | Submit order (compliance-gated) |
+| `GET` | `/v1/accounts/{accountId}/orders` | List orders for account |
+| `GET` | `/v1/accounts/{accountId}/orders/{orderId}` | Get order by ID |
+| `DELETE` | `/v1/accounts/{accountId}/orders/{orderId}` | Cancel open order |
+
+#### Submit Order Body
+
+```json
+{
+  "symbol": "BTC-USD",
+  "side": "buy",
+  "type": "limit",
+  "time_in_force": "gtc",
+  "qty": "0.5",
+  "limit_price": "45000.00"
+}
+```
+
+### Accounts
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | `/v1/accounts/{accountId}/register` | Register account with compliance service |
+| `GET` | `/v1/accounts/{accountId}/status` | Get compliance status (KYC level, limits) |
+
+### Trades
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/v1/accounts/{accountId}/trades` | List trades for account |
+
+### Admin (requires `admin` role)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/v1/admin/reports/finra` | List FINRA OATS trade reports |
+| `GET` | `/v1/admin/reports/ats` | Generate ATS-N quarterly report (`?quarter=2026-Q1`) |
+| `GET` | `/v1/admin/surveillance/alerts` | List surveillance alerts (`?status=open`) |
+| `POST` | `/v1/admin/markets/{symbol}/halt` | Halt trading (circuit breaker) |
+| `POST` | `/v1/admin/markets/{symbol}/resume` | Resume trading |
+
+## WebSocket API
+
+Connect to `/ws` on the HTTP listen address. Messages are JSON.
+
+### Client Messages
+
+| Type | Description | Auth Required |
+|------|-------------|---------------|
+| `auth` | Authenticate with `user_id`, `account_id`, `org_id` | No |
+| `ping` | Health check | No |
+| `subscribe` | Subscribe to channel + symbols | No |
+| `unsubscribe` | Unsubscribe from channel + symbols | No |
+| `place_order` | Submit order (compliance pipeline) | Yes |
+| `cancel_order` | Cancel open order | Yes |
+| `get_orders` | List account orders | Yes |
+| `get_trades` | List account trades | Yes |
+| `get_markets` | List all markets | No |
+| `get_orderbook` | Get orderbook snapshot | No |
+
+### Server Messages
+
+| Type | Description |
+|------|-------------|
+| `connected` | Connection established, includes `client_id` |
+| `auth_success` | Authentication confirmed |
+| `order_update` | Order status change |
+| `trade_update` | New trade on subscribed symbol |
+| `orderbook_update` | Orderbook snapshot (100ms broadcast interval) |
+| `subscribed` | Subscription confirmed |
+| `error` | Error response |
+
+```json
+{"type": "subscribe", "channel": "orderbook", "symbols": ["BTC-USD"], "request_id": "1"}
+```
+
+## JSON-RPC 2.0
+
+POST to `/rpc` on the HTTP listen address. Rate-limited to 100 requests/second per IP.
+
+| Method | Description |
+|--------|-------------|
+| `cex.ping` | Health check |
+| `cex.listMarkets` | List all markets |
+| `cex.getMarket` | Get market by symbol |
+| `cex.getOrderBook` | Get orderbook snapshot |
+| `cex.submitOrder` | Submit order (compliance pipeline) |
+| `cex.cancelOrder` | Cancel order |
+| `cex.getOrder` | Get order by ID |
+| `cex.listOrders` | List orders for account |
+| `cex.listTrades` | List trades for account |
+
+```json
+{"jsonrpc": "2.0", "method": "cex.submitOrder", "params": {"account_id": "acct1", "user_id": "user1", "symbol": "ETH-USD", "side": "buy", "type": "limit", "time_in_force": "gtc", "qty": "10", "limit_price": "3200"}, "id": 1}
+```
+
+## FIX 4.4
+
+TCP connection on the FIX listen port (default `:8094`). Session-level auth via Logon (A).
+
+| Message | Tag | Direction | Description |
+|---------|-----|-----------|-------------|
+| Logon | A | Both | Session authentication |
+| Logout | 5 | Both | Session termination |
+| Heartbeat | 0 | Both | Keep-alive |
+| TestRequest | 1 | C->S | Solicited heartbeat |
+| NewOrderSingle | D | C->S | Submit new order |
+| OrderCancelRequest | F | C->S | Cancel order |
+| ExecutionReport | 8 | S->C | Order status/fill/reject |
+| OrderCancelReject | 9 | S->C | Cancel rejected |
+| MarketDataRequest | V | C->S | Subscribe to market data |
+| MarketDataSnapshot | W | S->C | Full orderbook refresh |
+
+## gRPC
+
+Defined in `proto/cex.proto`. Service `CEXService` includes order management, market data (including streaming), account management, admin controls, and health check.
+
+### Streaming RPCs
+
+| RPC | Description |
+|-----|-------------|
+| `StreamOrderBook` | Server-streaming orderbook updates |
+| `StreamTrades` | Server-streaming trade feed |
+
+## Error Responses
+
+All REST errors return JSON with an `error` field:
+
+```json
+{"error": "pre-trade check failed: account is sanctioned -- trading prohibited"}
+```
+
+| HTTP Status | Meaning |
+|-------------|---------|
+| 400 | Invalid request body |
+| 401 | Missing or invalid JWT |
+| 403 | Admin role required |
+| 404 | Resource not found |
+| 422 | Compliance rejection or matching failure |
+| 429 | Rate limit exceeded (JSON-RPC) |

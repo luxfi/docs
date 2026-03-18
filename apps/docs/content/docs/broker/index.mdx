@@ -4,27 +4,88 @@ description: Institutional federated broker with smart order routing across 16 v
 icon: Building2
 ---
 
-The Lux Broker (`github.com/luxfi/broker`) provides institutional-grade smart order routing across 16+ trading venues spanning crypto, equities, FX, and custody.
+Multi-venue trading router with smart order routing, pre-trade risk, instant settlement, and real-time market data aggregation across 16 institutional providers.
 
-## Supported Venues
+## Architecture
 
-| Category | Venues |
-|----------|--------|
-| **Crypto** | Coinbase, Binance, Kraken, Gemini, SFOX, FalconX |
-| **Equities** | Alpaca, Interactive Brokers, Tradier |
-| **Custody** | Fireblocks, BitGo |
-| **Stablecoins** | Circle (USDC) |
-| **FX** | CurrencyCloud (35 pairs), LMAX |
-| **Market Data** | Polygon.io |
-| **Payments** | Finix |
+```
+                        ┌──────────────┐
+                        │   brokerd    │
+                        │   :8090      │
+                        └──────┬───────┘
+                               │
+              ┌────────────────┼────────────────┐
+              │                │                │
+       ┌──────┴──────┐  ┌─────┴──────┐  ┌──────┴──────┐
+       │ Smart Order │  │    Risk    │  │   Audit     │
+       │   Router    │  │   Engine   │  │    Log      │
+       └──────┬──────┘  └────────────┘  └─────────────┘
+              │
+    ┌────┬────┼────┬────┬────┬────┐
+    │    │    │    │    │    │    │
+   CEX  CEX  OTC  LP   FX  Data  Pay   (16 providers)
+```
+
+The **Smart Order Router** polls all venues in parallel, ranks by net price (spread + fees), and splits large orders across venues using VWAP. The **Risk Engine** enforces per-account and global limits before every order. The **Settlement Engine** manages a prefunding pool for instant crypto buys while ACH settles. The **Audit Log** is an immutable append-only trail of every order, fill, cancellation, and transfer.
+
+## Providers
+
+| Provider | Asset Classes | Type |
+|----------|-------------|------|
+| Alpaca | Equities, Crypto | Broker-dealer (SEC/FINRA) |
+| Interactive Brokers | Equities, Options, Futures, FX | Prime broker |
+| Tradier | Equities, Options | Broker-dealer |
+| Coinbase | Crypto | Exchange (Advanced Trade API) |
+| Binance | Crypto | Exchange |
+| Kraken | Crypto | Exchange |
+| Gemini | Crypto | Exchange |
+| SFOX | Crypto | Prime dealer / SOR |
+| FalconX | Crypto | Institutional RFQ |
+| Fireblocks | Crypto | Custody + OTC |
+| BitGo | Crypto | Custody + Prime |
+| Circle | USDC / Stablecoins | Stablecoin infrastructure |
+| CurrencyCloud | FX (35+ pairs) | Institutional FX (Visa) |
+| LMAX | FX, Crypto, Metals | Institutional CLOB |
+| Polygon.io | Equities, FX, Crypto | Market data |
+| Finix | Payments | Payment processing |
 
 ## Features
 
 | Feature | Description |
 |---------|-------------|
-| **Smart Order Routing** | Fee-aware net-price optimization |
-| **Order Splitting** | VWAP execution across venues |
-| **Pre-Trade Risk** | Position limits, rate limits, concentration |
-| **Best Execution** | FINRA Rule 5310 / MiFID II compliant |
-| **Multi-Asset** | Crypto, equities, FX, options, futures, metals |
-| **TWAP** | Time-weighted scheduling for large orders |
+| **Smart Order Routing** | Fee-aware net-price optimization across all venues |
+| **Order Splitting** | VWAP execution across multiple venues simultaneously |
+| **Pre-Trade Risk** | Position limits, daily volume caps, rate limits, symbol whitelists/blacklists |
+| **Consolidated BBO** | Best bid/offer aggregated across all providers in real time |
+| **Instant Settlement** | Prefunding pool enables instant crypto buys while ACH settles |
+| **Audit Trail** | Immutable log of every order, fill, and transfer with export support |
+| **Multi-Asset** | Crypto, equities, FX, options, futures, metals via unified API |
+| **SSE Streaming** | Real-time consolidated tickers and event feeds |
+
+## Quick Start
+
+```bash
+go build -o brokerd ./cmd/brokerd/
+ALPACA_API_KEY=pk_... ALPACA_API_SECRET=sk_... ./brokerd
+```
+
+## Docker
+
+```bash
+docker build --platform linux/amd64 -t ghcr.io/luxfi/broker:latest .
+docker run -p 8090:8090 \
+  -e ALPACA_API_KEY=pk_... \
+  -e ALPACA_API_SECRET=sk_... \
+  ghcr.io/luxfi/broker:latest
+```
+
+Image: `ghcr.io/luxfi/broker` -- 7.5 MB, alpine-based, healthcheck on `/healthz`.
+
+## Related Projects
+
+| Module | Purpose |
+|--------|---------|
+| [luxfi/compliance](https://github.com/luxfi/compliance) | KYC/AML, identity verification, regulatory frameworks |
+| [luxfi/bank](https://github.com/luxfi/bank) | Customer apps, payments, admin dashboard |
+| [hanzoai/commerce](https://github.com/hanzoai/commerce) | Payment processors (Plaid, Braintree, Stripe) |
+| [hanzoai/iam](https://github.com/hanzoai/iam) | Identity and access management (OAuth2/OIDC) |
