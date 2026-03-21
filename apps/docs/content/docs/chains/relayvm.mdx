@@ -1,21 +1,108 @@
 ---
 title: "Relay VM (R-Chain)"
-description: "Cross-chain message passing using Lux Warp protocol."
+description: "Cross-chain message passing with ordered and unordered channels via Lux Warp protocol."
 icon: Globe
 ---
 
-Cross-chain message passing using Lux Warp protocol.
+The Relay VM (R-Chain) provides cross-chain message passing between Lux subnets. It manages bidirectional communication channels between chains, handles message routing with Ed25519 signature verification, and supports both ordered and unordered delivery modes. Messages are verified using the Lux Warp protocol before delivery.
+
+## Architecture
+
+- **Channels**: Bidirectional communication channels between chain pairs
+- **Ordered/Unordered**: Choose between ordered (sequential) or unordered (parallel) delivery
+- **Confirmation Depth**: Configurable confirmation depth before relaying messages
+- **Signature Verification**: Ed25519 signature verification on all messages
+- **Trusted Relayers**: Configurable set of authorized relay operators
+- **Message States**: Pending, verified, delivered, or failed
 
 ## Configuration
 
-Refer to the [node documentation](/nodes) for running a node with this VM enabled.
+```json
+{
+  "maxMessageSize": 1048576,
+  "confirmationDepth": 6,
+  "relayTimeout": 300,
+  "trustedRelayers": [],
+  "supportedChains": []
+}
+```
+
+### Key Parameters
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `maxMessageSize` | 1 MB | Maximum message size |
+| `confirmationDepth` | 6 | Blocks to wait before relaying |
+| `relayTimeout` | 300s | Timeout for relay delivery |
+| `trustedRelayers` | (empty) | Authorized relay operator addresses |
+| `supportedChains` | (empty) | Chain IDs that can be relayed to/from |
 
 ## RPC API
 
-Standard JSON-RPC methods are available at:
+The R-Chain API uses the `relay` namespace. Endpoint:
 
 ```
-https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+https://api.lux.network/{network}/ext/bc/{blockchain-id}/rpc
+```
+
+### Channel Operations
+
+- **relay.openChannel** -- Open a communication channel between two chains
+- **relay.getChannel** -- Get channel details by ID
+- **relay.closeChannel** -- Close an active channel
+- **relay.listChannels** -- List all channels (filterable by chain)
+
+### Message Operations
+
+- **relay.sendMessage** -- Send a cross-chain message through a channel
+- **relay.getMessage** -- Get message details by ID
+- **relay.receiveMessage** -- Receive and acknowledge a message on the destination chain
+- **relay.getVerifiedMessage** -- Get a message with its Warp verification proof
+
+### Health
+
+- **relay.health** -- Health check
+
+## Message States
+
+| State | Description |
+|-------|-------------|
+| `pending` | Submitted, awaiting confirmations |
+| `verified` | Confirmed and verified via Warp |
+| `delivered` | Successfully delivered to destination chain |
+| `failed` | Delivery failed (timeout or rejection) |
+
+## Example: Open a Channel
+
+```bash
+curl -X POST --data '{
+  "jsonrpc": "2.0",
+  "method": "relay.openChannel",
+  "params": {
+    "sourceChain": "chain-id-1",
+    "destChain": "chain-id-2",
+    "ordering": "ordered",
+    "version": "1.0"
+  },
+  "id": 1
+}' -H "Content-Type: application/json" \
+  https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+```
+
+## Example: Send a Message
+
+```bash
+curl -X POST --data '{
+  "jsonrpc": "2.0",
+  "method": "relay.sendMessage",
+  "params": {
+    "channelId": "channel-id",
+    "payload": "base64-encoded-data",
+    "signature": "0x..."
+  },
+  "id": 1
+}' -H "Content-Type: application/json" \
+  https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
 ```
 
 ## Related LPs
