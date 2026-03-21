@@ -7,7 +7,9 @@ RUN pnpm install --frozen-lockfile
 COPY apps/docs apps/docs
 RUN pnpm --filter lux-docs build
 
-FROM nginx:alpine
-COPY --from=build /app/apps/docs/out /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+FROM node:22-alpine
+RUN npm install -g serve@14
+COPY --from=build /app/apps/docs/out /app
 EXPOSE 3000
+HEALTHCHECK --interval=10s --timeout=3s CMD wget -q --spider http://localhost:3000/ || exit 1
+CMD ["serve", "-s", "/app", "-l", "3000", "--no-clipboard"]
