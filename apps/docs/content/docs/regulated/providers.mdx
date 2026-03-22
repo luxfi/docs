@@ -1,0 +1,160 @@
+---
+title: Provider Integration
+description: Connect to 16+ trading venues via the broker provider interface
+icon: Plug
+---
+
+The `luxfi/broker` provider system abstracts trading venues behind a unified interface. Each provider implements the same `Provider` interface, and `envconfig.RegisterFromEnv()` automatically registers every provider that has credentials in the environment.
+
+## The Provider Interface
+
+Every broker backend implements this core interface:
+
+```go
+type Provider interface {
+    Name() string
+
+    // Accounts
+    CreateAccount(ctx context.Context, req *types.CreateAccountRequest) (*types.Account, error)
+    GetAccount(ctx context.Context, providerAccountID string) (*types.Account, error)
+    ListAccounts(ctx context.Context) ([]*types.Account, error)
+
+    // Portfolio
+    GetPortfolio(ctx context.Context, providerAccountID string) (*types.Portfolio, error)
+
+    // Orders
+    CreateOrder(ctx context.Context, providerAccountID string, req *types.CreateOrderRequest) (*types.Order, error)
+    ListOrders(ctx context.Context, providerAccountID string) ([]*types.Order, error)
+    GetOrder(ctx context.Context, providerAccountID, providerOrderID string) (*types.Order, error)
+    CancelOrder(ctx context.Context, providerAccountID, providerOrderID string) error
+
+    // Transfers
+    CreateTransfer(ctx context.Context, providerAccountID string, req *types.CreateTransferRequest) (*types.Transfer, error)
+    ListTransfers(ctx context.Context, providerAccountID string) ([]*types.Transfer, error)
+
+    // Banking
+    CreateBankRelationship(ctx context.Context, providerAccountID string, ownerName, accountType, accountNumber, routingNumber string) (*types.BankRelationship, error)
+    ListBankRelationships(ctx context.Context, providerAccountID string) ([]*types.BankRelationship, error)
+
+    // Assets & Market Data
+    ListAssets(ctx context.Context, class string) ([]*types.Asset, error)
+    GetAsset(ctx context.Context, symbolOrID string) (*types.Asset, error)
+    GetSnapshot(ctx context.Context, symbol string) (*types.MarketSnapshot, error)
+    GetSnapshots(ctx context.Context, symbols []string) (map[string]*types.MarketSnapshot, error)
+    GetBars(ctx context.Context, symbol, timeframe, start, end string, limit int) ([]*types.Bar, error)
+    GetLatestTrades(ctx context.Context, symbols []string) (map[string]*types.Trade, error)
+    GetLatestQuotes(ctx context.Context, symbols []string) (map[string]*types.Quote, error)
+    GetClock(ctx context.Context) (*types.MarketClock, error)
+    GetCalendar(ctx context.Context, start, end string) ([]*types.MarketCalendarDay, error)
+}
+```
+
+## Built-in Providers
+
+| Provider | Asset Classes | Type | Env Vars |
+|----------|-------------|------|----------|
+| Alpaca | Equities, Crypto | Broker-dealer (SEC/FINRA) | `ALPACA_API_KEY`, `ALPACA_API_SECRET` |
+| Interactive Brokers | Equities, Options, Futures, FX | Prime broker | `IBKR_ACCESS_TOKEN`, `IBKR_ACCOUNT_ID`, `IBKR_CONSUMER_KEY` |
+| Tradier | Equities, Options | Broker-dealer | `TRADIER_ACCESS_TOKEN`, `TRADIER_ACCOUNT_ID` |
+| Coinbase | Crypto | Exchange (Advanced Trade) | `COINBASE_API_KEY`, `COINBASE_API_SECRET` |
+| Binance | Crypto | Exchange | `BINANCE_API_KEY`, `BINANCE_API_SECRET` |
+| Kraken | Crypto | Exchange | `KRAKEN_API_KEY`, `KRAKEN_API_SECRET` |
+| Gemini | Crypto | Exchange | `GEMINI_API_KEY`, `GEMINI_API_SECRET` |
+| SFOX | Crypto | Prime dealer / SOR | `SFOX_API_KEY` |
+| FalconX | Crypto | Institutional RFQ | `FALCON_API_KEY`, `FALCON_API_SECRET`, `FALCON_PASSPHRASE` |
+| Fireblocks | Crypto | Custody + OTC | `FIREBLOCKS_API_KEY`, `FIREBLOCKS_PRIVATE_KEY` |
+| BitGo | Crypto | Custody + Prime | `BITGO_ACCESS_TOKEN`, `BITGO_ENTERPRISE` |
+| Circle | USDC / Stablecoins | Stablecoin infrastructure | `CIRCLE_API_KEY` |
+| CurrencyCloud | FX (35+ pairs) | Institutional FX (Visa) | `CURRENCYCLOUD_LOGIN_ID`, `CURRENCYCLOUD_API_KEY` |
+| LMAX | FX, Crypto, Metals | Institutional CLOB | `LMAX_API_KEY`, `LMAX_USERNAME`, `LMAX_PASSWORD` |
+| Polygon.io | Equities, FX, Crypto | Market data only | `POLYGON_API_KEY` |
+| Finix | Payments | Payment processing | `FINIX_USERNAME`, `FINIX_PASSWORD` |
+
+## Automatic Registration
+
+`envconfig.RegisterFromEnv()` checks environment variables for all 16 providers and registers whichever ones have credentials:
+
+```go
+import (
+    "github.com/luxfi/broker/pkg/provider"
+    "github.com/luxfi/broker/pkg/provider/envconfig"
+)
+
+registry := provider.NewRegistry()
+n := envconfig.RegisterFromEnv(registry)
+// n = number of providers successfully registered
+```
+
+Set `ALPACA_API_KEY` and `ALPACA_API_SECRET` in the environment, and Alpaca is registered. Set `COINBASE_API_KEY` and `COINBASE_API_SECRET`, and Coinbase is added. No code changes needed.
+
+Each provider also accepts an optional base URL override for sandbox/testing:
+
+| Provider | URL Override Var | Default |
+|----------|-----------------|---------|
+| Alpaca | `ALPACA_BASE_URL` | Sandbox |
+| IBKR | `IBKR_GATEWAY_URL` | Default gateway |
+| BitGo | `BITGO_BASE_URL` | Test |
+| FalconX | `FALCON_BASE_URL` | Sandbox |
+| Finix | `FINIX_BASE_URL` | Sandbox |
+| Circle | `CIRCLE_BASE_URL` | Sandbox |
+| Tradier | `TRADIER_BASE_URL` | Sandbox |
+| LMAX | `LMAX_BASE_URL` | Sandbox |
+| CurrencyCloud | `CURRENCYCLOUD_BASE_URL` | Demo |
+
+Production URLs are used by default for: Coinbase, Binance, Kraken, Gemini, SFOX, Fireblocks, Polygon.
+
+## Adding a Custom Provider
+
+Implement the `Provider` interface and register it on the registry:
+
+```go
+package myprovider
+
+import (
+    "context"
+    "github.com/luxfi/broker/pkg/provider"
+    "github.com/luxfi/broker/pkg/types"
+)
+
+type MyProvider struct {
+    apiKey string
+}
+
+func New(apiKey string) *MyProvider {
+    return &MyProvider{apiKey: apiKey}
+}
+
+func (p *MyProvider) Name() string { return "myprovider" }
+
+func (p *MyProvider) CreateAccount(ctx context.Context, req *types.CreateAccountRequest) (*types.Account, error) {
+    // Your implementation
+}
+
+// ... implement remaining Provider interface methods
+```
+
+Register manually:
+
+```go
+registry := provider.NewRegistry()
+envconfig.RegisterFromEnv(registry) // built-in providers
+registry.Register(myprovider.New(os.Getenv("MY_API_KEY"))) // custom provider
+```
+
+## Optional Capability Interfaces
+
+Providers can implement additional interfaces for extended functionality. The broker API detects these at runtime and exposes the additional endpoints only for providers that support them.
+
+| Interface | Methods | Used By |
+|-----------|---------|---------|
+| `TradingExtended` | ReplaceOrder, CancelAllOrders, GetPosition, ClosePosition, CloseAllPositions | Alpaca, IBKR, Tradier |
+| `AccountManager` | UpdateAccount, CloseAccount, GetAccountActivities | Alpaca, IBKR |
+| `DocumentManager` | UploadDocument, ListDocuments, GetDocument, DownloadDocument | Alpaca |
+| `JournalManager` | CreateJournal, ListJournals, BatchJournal, ReverseBatchJournal | Alpaca |
+| `TransferExtended` | CancelTransfer, DeleteACHRelationship, RecipientBanks | Alpaca, IBKR |
+| `CryptoDataProvider` | CryptoBars, CryptoQuotes, CryptoTrades, CryptoSnapshots | Coinbase, Binance, Kraken |
+| `EventStreamer` | StreamTradeEvents, StreamAccountEvents, StreamTransferEvents | Alpaca |
+| `PortfolioAnalyzer` | GetPortfolioHistory | Alpaca, IBKR |
+| `WatchlistManager` | CreateWatchlist, ListWatchlists, CRUD operations | Alpaca |
+
+You do not need to implement these. The base `Provider` interface is sufficient. Add optional interfaces only for capabilities your provider actually supports.
