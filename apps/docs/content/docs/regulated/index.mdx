@@ -1,0 +1,99 @@
+---
+title: Building Regulated Products
+description: Assemble ATS, Broker-Dealer, and Transfer Agent systems from Lux OSS components
+icon: Scale
+---
+
+The Lux regulated stack provides composable Go modules for building SEC/FINRA-registered financial products. Instead of building from scratch, you assemble proven components -- broker connectivity, matching engines, compliance pipelines, and custody integration -- into a product that meets specific regulatory requirements.
+
+## Product Types
+
+Three regulated product types can be built from the same set of modules:
+
+| Product | Registration | What It Does | Key Modules |
+|---------|-------------|--------------|-------------|
+| **ATS** | SEC Reg ATS, Form ATS-N | Operates an internal matching engine (CLOB) with multi-venue routing | broker + cex + compliance + mpc |
+| **Broker-Dealer** | SEC/FINRA, SIPC | Routes orders to external venues on behalf of customers | broker + compliance |
+| **Transfer Agent** | SEC Rule 17Ad, Form TA-1 | Maintains shareholder records, processes transfers, manages cap tables | compliance + settlement webhooks |
+
+## Architecture
+
+All three products compose from the same building blocks:
+
+```
+                    ┌─────────────────────────────────────┐
+                    │         Your Application            │
+                    │   (ATS, BD, or TA main.go)          │
+                    └──────────────┬──────────────────────┘
+                                   │
+            ┌──────────────────────┼──────────────────────┐
+            │                      │                      │
+   ┌────────┴────────┐   ┌────────┴────────┐   ┌────────┴────────┐
+   │  luxfi/broker   │   │   luxfi/cex     │   │ luxfi/compliance│
+   │  16 providers   │   │  matching engine │   │  KYC/AML/regs  │
+   │  SOR, risk,     │   │  order book,    │   │  IDV, sanctions │
+   │  settlement     │   │  markets        │   │  monitoring     │
+   └────────┬────────┘   └────────┬────────┘   └────────┬────────┘
+            │                      │                      │
+   ┌────────┴────────┐   ┌────────┴────────┐   ┌────────┴────────┐
+   │   luxfi/mpc     │   │  hanzoai/base   │   │   luxfi/kms     │
+   │  MPC custody    │   │  HTTP framework │   │  secret mgmt    │
+   └─────────────────┘   └─────────────────┘   └─────────────────┘
+```
+
+**luxfi/broker** -- Multi-venue trading router with 16 providers (Alpaca, IBKR, Coinbase, Binance, Kraken, etc.), smart order routing, pre-trade risk, settlement engine, and audit trail.
+
+**luxfi/cex** -- Central limit order book (CLOB) matching engine with market registration, fee schedules, and surveillance hooks. Used by ATS products that match orders internally.
+
+**luxfi/compliance** -- KYC identity verification (Jumio, Onfido, Plaid), AML sanctions screening (OFAC, EU, UK, PEP), transaction monitoring (CTR, structuring, velocity), and multi-jurisdiction regulatory frameworks (USA, UK, IOM).
+
+**luxfi/mpc** -- Multi-party computation custody for institutional key management. Threshold signatures without single points of failure.
+
+**hanzoai/base** -- HTTP server framework with middleware, health checks, structured logging, and graceful shutdown. All regulated products mount their handlers on a Base server.
+
+## How the Pieces Compose
+
+Every regulated product follows the same initialization pattern:
+
+1. Create a `hanzoai/base` server
+2. Create a `provider.Registry` and call `envconfig.RegisterFromEnv()` to wire up trading venues
+3. Optionally create a `cex/engine.Engine` and call `markets.RegisterFromProviders()` for internal matching
+4. Call `aml.InstallDefaultRules()` to install baseline FinCEN monitoring rules
+5. Optionally connect a Jube client for ML-based transaction scoring
+6. Mount HTTP handlers and start the server
+
+The difference between products is which steps you include and which regulatory obligations you satisfy.
+
+## Prerequisites
+
+- **Go 1.26+**
+- **Hanzo Base** (`go get github.com/hanzoai/base`)
+- At least one provider API key (see [Provider Integration](/docs/regulated/providers))
+- For compliance: at least one IDV provider credential (Jumio, Onfido, or Plaid)
+
+## Component Usage by Product
+
+| Component | ATS | BD | TA |
+|-----------|-----|----|----|
+| `luxfi/broker` provider registry | Yes | Yes | -- |
+| `luxfi/broker` smart order router | Yes | Yes | -- |
+| `luxfi/broker` risk engine | Yes | Yes | -- |
+| `luxfi/broker` settlement engine | Yes | Optional | -- |
+| `luxfi/cex` matching engine | Yes | -- | -- |
+| `luxfi/cex` market registration | Yes | -- | -- |
+| `luxfi/compliance` KYC/IDV | Yes | Yes | Yes |
+| `luxfi/compliance` AML screening | Yes | Yes | Yes |
+| `luxfi/compliance` transaction monitoring | Yes | Yes | Yes |
+| `luxfi/compliance` regulatory frameworks | Yes | Yes | Yes |
+| `luxfi/compliance` payment compliance | Yes | Yes | Yes |
+| `luxfi/mpc` custody | Yes | Optional | -- |
+| Settlement webhooks | -- | -- | Yes |
+| Cap table management | -- | -- | Yes |
+
+## Next Steps
+
+- [Alternative Trading System (ATS)](/docs/regulated/ats) -- Build an SEC-registered ATS with internal matching
+- [Broker-Dealer (BD)](/docs/regulated/bd) -- Build a FINRA-registered BD with multi-venue routing
+- [Transfer Agent (TA)](/docs/regulated/ta) -- Build an SEC-registered TA for securities records
+- [Provider Integration](/docs/regulated/providers) -- Connect to 16+ trading venues
+- [Compliance Integration](/docs/regulated/compliance-integration) -- KYC, AML, and regulatory frameworks

@@ -1,0 +1,245 @@
+---
+title: Transfer Agent (TA)
+description: Build an SEC-registered transfer agent for securities ownership records
+icon: FileCheck
+---
+
+A Transfer Agent (TA) is an SEC-registered entity that maintains the official record of securities ownership. It processes transfers between holders, issues and cancels certificates, handles lost/stolen certificates, and distributes dividends. A TA registers on Form TA-1 and operates under SEC Rules 17Ad-1 through 17Ad-17, with a minimum $25,000 net capital bond.
+
+The Lux stack provides compliance infrastructure and settlement webhook integration. Unlike an ATS or BD, a TA does not route orders or operate a matching engine -- it receives settlement notifications from trading venues and updates the ownership ledger.
+
+## Architecture
+
+A TA uses Compliance plus settlement webhooks and a cap table store:
+
+```
+                     ┌────────────────────┐
+                     │       tad          │
+                     │      :8080         │
+                     └─────────┬──────────┘
+                               │
+          ┌────────────────────┼────────────────┐
+          │                    │                │
+   ┌──────┴──────┐     ┌──────┴──────┐  ┌──────┴──────┐
+   │ Compliance  │     │ Settlement  │  │  Cap Table  │
+   │  KYC / AML  │     │  Webhooks   │  │   Ledger    │
+   └─────────────┘     └─────────────┘  └─────────────┘
+```
+
+- **Compliance** screens every shareholder (KYC) and every transfer (AML) before recording ownership changes
+- **Settlement Webhooks** receive trade completion notifications from ATSs and clearing houses
+- **Cap Table Ledger** is the authoritative record of who owns what
+
+## Step-by-Step Build
+
+### 1. Create Go project
+
+```bash
+mkdir tad && cd tad
+go mod init github.com/yourorg/tad
+go get github.com/hanzoai/base
+go get github.com/luxfi/compliance
+```
+
+A TA does not need `luxfi/broker` or `luxfi/cex` since it does not route or match orders.
+
+### 2. Set up compliance
+
+```go
+import (
+    "github.com/luxfi/compliance/pkg/aml"
+    "github.com/luxfi/compliance/pkg/kyc"
+    "github.com/luxfi/compliance/pkg/idv"
+)
+
+// KYC -- verify every shareholder identity
+kycSvc := kyc.NewService()
+kycSvc.RegisterProvider(idv.NewJumio(idv.JumioConfig{
+    APIToken:  os.Getenv("JUMIO_API_TOKEN"),
+    APISecret: os.Getenv("JUMIO_API_SECRET"),
+}))
+
+// AML -- screen transfers against sanctions
+monSvc := aml.NewMonitoringService()
+aml.InstallDefaultRules(monSvc)
+```
+
+### 3. Set up settlement webhook handler
+
+The TA receives webhook notifications when trades settle on an ATS or clearing house. Each notification contains the security, buyer, seller, quantity, and settlement timestamp.
+
+```go
+import "github.com/luxfi/compliance/pkg/webhook"
+
+webhookHandler := webhook.NewHandler(webhook.Config{
+    MaxRetries:      3,
+    DeduplicationTTL: 24 * time.Hour,
+})
+
+// Register settlement callback
+webhookHandler.OnSettlement(func(ctx context.Context, evt *SettlementEvent) error {
+    // 1. AML screen the transfer
+    result, err := monSvc.Monitor(ctx, aml.Transaction{
+        SenderID:   evt.SellerID,
+        ReceiverID: evt.BuyerID,
+        Amount:     evt.NotionalValue,
+        Currency:   "USD",
+    })
+    if err != nil || result.Blocked {
+        return fmt.Errorf("transfer blocked: %s", result.Reason)
+    }
+
+    // 2. Update cap table
+    return capTable.Transfer(ctx, evt.SecurityID, evt.SellerID, evt.BuyerID, evt.Quantity)
+})
+```
+
+### 4. Set up cap table ledger
+
+```go
+// Cap table is the authoritative ownership record
+capTable := captable.New(captable.Config{
+    DB: db, // PostgreSQL via hanzoai/sql
+})
+```
+
+The cap table tracks: holder ID, security ID, share quantity, acquisition date, cost basis, restriction status, and certificate number.
+
+### 5. Mount and serve
+
+```go
+import "github.com/hanzoai/base"
+
+srv := base.NewServer(base.Config{Addr: ":8080"})
+srv.Mount("/compliance", compSrv.Handler())
+srv.Mount("/webhooks", webhookHandler.Handler())
+srv.Mount("/captable", capTableAPI.Handler())
+
+slog.Info("TA starting", "addr", ":8080")
+srv.ListenAndServe()
+```
+
+## Minimal TA main.go
+
+```go
+package main
+
+import (
+    "log/slog"
+    "os"
+    "time"
+
+    "github.com/hanzoai/base"
+    "github.com/luxfi/compliance/pkg/aml"
+    compapi "github.com/luxfi/compliance/pkg/api"
+    "github.com/luxfi/compliance/pkg/webhook"
+)
+
+func main() {
+    // 1. Compliance
+    monSvc := aml.NewMonitoringService()
+    aml.InstallDefaultRules(monSvc)
+    compSrv := compapi.NewServer(compapi.Config{Monitoring: monSvc})
+
+    // 2. Settlement webhooks
+    wh := webhook.NewHandler(webhook.Config{
+        MaxRetries:       3,
+        DeduplicationTTL: 24 * time.Hour,
+    })
+
+    // 3. Cap table (your application logic)
+    // capTable := captable.New(...)
+    // capTableAPI := captableapi.New(capTable)
+
+    // 4. Serve
+    srv := base.NewServer(base.Config{Addr: ":8080"})
+    srv.Mount("/compliance", compSrv.Handler())
+    srv.Mount("/webhooks", wh.Handler())
+    // srv.Mount("/captable", capTableAPI.Handler())
+
+    slog.Info("TA starting", "addr", ":8080")
+    if err := srv.ListenAndServe(); err != nil {
+        slog.Error("server error", "error", err)
+        os.Exit(1)
+    }
+}
+```
+
+## Settlement Webhook Flow
+
+When an ATS or clearing house completes a trade, it sends a webhook to the TA:
+
+```
+ATS settles trade
+       │
+       ▼
+POST /webhooks/settlement
+       │
+       ├── HMAC-SHA256 signature validation
+       ├── Idempotency check (deduplication)
+       │
+       ▼
+AML screen transfer
+       │
+       ├── OFAC / sanctions check on buyer & seller
+       ├── CTR check on notional value
+       ├── Velocity check on both parties
+       │
+       ▼
+Update cap table
+       │
+       ├── Debit seller's position
+       ├── Credit buyer's position
+       ├── Record transfer with timestamp
+       └── Generate confirmation notices
+```
+
+## Compliance: KYC on Shareholders
+
+Every shareholder must be KYC-verified before appearing in the cap table. The TA verifies identity when:
+
+- A new shareholder acquires shares for the first time
+- A shareholder requests a certificate transfer
+- Regulatory re-verification is triggered (e.g., change of address, dormant account reactivation)
+
+## Record-Keeping: 17Ad-6/7 Requirements
+
+SEC Rules 17Ad-6 and 17Ad-7 require a TA to maintain:
+
+| Record | Retention | Description |
+|--------|-----------|-------------|
+| Transfer journal | 6 years | Every transfer with date, parties, quantity |
+| Shareholder list | Current + 2 years | Name, address, holdings for each holder |
+| Dividend records | 6 years | Payments, dates, amounts per holder |
+| Certificate log | 6 years | Issuance, cancellation, replacement |
+| Correspondence | 3 years | All written communications with holders |
+| Complaint log | 3 years | Every complaint and resolution |
+
+The cap table ledger with immutable audit trail satisfies the transfer journal and shareholder list requirements. Pair with the `luxfi/compliance` webhook handler's idempotency and dead letter queue for complete audit coverage.
+
+## Configuration
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `COMPLIANCE_API_KEY` | Yes | API key for compliance endpoints |
+| `JUMIO_API_TOKEN` | Recommended | Jumio IDV for shareholder KYC |
+| `JUMIO_API_SECRET` | Recommended | Jumio API secret |
+| `DATABASE_URL` | Yes | PostgreSQL connection string for cap table |
+| `SETTLEMENT_WEBHOOK_SECRET` | Yes | HMAC secret for validating ATS webhooks |
+
+## Docker Deployment
+
+```bash
+docker build --platform linux/amd64 -t ghcr.io/yourorg/tad:latest .
+docker run -p 8080:8080 \
+  -e COMPLIANCE_API_KEY=... \
+  -e JUMIO_API_TOKEN=... \
+  -e JUMIO_API_SECRET=... \
+  -e DATABASE_URL=postgres://... \
+  -e SETTLEMENT_WEBHOOK_SECRET=... \
+  ghcr.io/yourorg/tad:latest
+```
+
+## Reference
+
+See [equitytable-io/app](https://github.com/equitytable-io/app) for a working transfer agent implementation built on these components.

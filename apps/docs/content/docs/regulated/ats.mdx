@@ -1,0 +1,252 @@
+---
+title: Alternative Trading System (ATS)
+description: Build an SEC-registered ATS with CLOB matching, compliance, and multi-venue routing
+icon: Building2
+---
+
+An Alternative Trading System (ATS) is an SEC-registered trading venue that matches buyer and seller orders internally. Unlike a national securities exchange, an ATS operates under Regulation ATS (Rules 300-303) and files Form ATS-N. It must maintain at least $250,000 in net capital and comply with fair access, order display, and record-keeping obligations.
+
+The Lux stack provides every technical component needed to build and operate an ATS.
+
+## Architecture
+
+An ATS uses all four core modules:
+
+```
+                     ┌────────────────────┐
+                     │      atsd          │
+                     │     :8080          │
+                     └─────────┬──────────┘
+                               │
+          ┌────────────────────┼────────────────────┐
+          │                    │                    │
+   ┌──────┴──────┐     ┌──────┴──────┐     ┌──────┴──────┐
+   │   Broker    │     │  CEX Engine │     │ Compliance  │
+   │  Providers  │     │  CLOB Match │     │  KYC / AML  │
+   └──────┬──────┘     └──────┬──────┘     └─────────────┘
+          │                    │
+   16 external venues    Internal order book
+```
+
+- **Broker** provides external venue connectivity for routing unmatched orders and sourcing liquidity
+- **CEX Engine** runs the central limit order book that matches orders internally
+- **Compliance** screens every participant (KYC) and every transaction (AML) before execution
+
+## Step-by-Step Build
+
+### 1. Create Go project
+
+```bash
+mkdir atsd && cd atsd
+go mod init github.com/yourorg/atsd
+go get github.com/hanzoai/base
+go get github.com/luxfi/broker
+go get github.com/luxfi/cex
+go get github.com/luxfi/compliance
+```
+
+### 2. Register providers from environment
+
+```go
+import (
+    "github.com/luxfi/broker/pkg/provider"
+    "github.com/luxfi/broker/pkg/provider/envconfig"
+)
+
+registry := provider.NewRegistry()
+n := envconfig.RegisterFromEnv(registry)
+slog.Info("providers ready", "count", n)
+```
+
+`RegisterFromEnv` reads environment variables for all 16 providers and registers whichever ones have credentials set. See [Provider Integration](/docs/regulated/providers) for the full list.
+
+### 3. Create the broker server
+
+```go
+import "github.com/luxfi/broker/pkg/api"
+
+brokerSrv := api.NewServer(api.Config{
+    Registry:   registry,
+    ListenAddr: ":8090",
+})
+```
+
+### 4. Create the CEX matching engine
+
+```go
+import "github.com/luxfi/cex/pkg/engine"
+
+eng := engine.New(engine.Config{
+    EnableSurveillance: true,
+    EnableAudit:        true,
+})
+```
+
+### 5. Register markets
+
+```go
+import "github.com/luxfi/cex/pkg/markets"
+
+// Auto-discover tradable assets from all connected providers
+markets.RegisterFromProviders(ctx, registry, eng)
+
+// Add explicit default markets with custom fee schedules
+markets.RegisterDefaults(eng, []markets.DefaultMarket{
+    {Symbol: "BTC-USD", Base: "BTC", Quote: "USD", Class: types.AssetClassCrypto,
+     Tick: "0.01", Lot: "0.00001", MakerFee: "0.001", TakerFee: "0.002"},
+    {Symbol: "ETH-USD", Base: "ETH", Quote: "USD", Class: types.AssetClassCrypto,
+     Tick: "0.01", Lot: "0.0001", MakerFee: "0.001", TakerFee: "0.002"},
+})
+```
+
+`RegisterFromProviders` queries every registered provider for tradable assets and adds them to the matching engine. `RegisterDefaults` adds specific markets with explicit parameters (tick size, lot size, fees).
+
+### 6. Install compliance rules
+
+```go
+import (
+    "github.com/luxfi/compliance/pkg/aml"
+    "github.com/luxfi/compliance/pkg/jube"
+)
+
+// Install FinCEN-mandated baseline rules
+monitoringSvc := aml.NewMonitoringService()
+aml.InstallDefaultRules(monitoringSvc)
+
+// Optional: connect Jube for ML-based transaction scoring
+jubeClient := jube.NewClient(jube.Config{
+    BaseURL:  os.Getenv("JUBE_BASE_URL"),
+    ModelID:  os.Getenv("JUBE_MODEL_ID"),
+    FailOpen: false, // reject transactions when Jube is unreachable
+    Timeout:  5 * time.Second,
+})
+```
+
+`InstallDefaultRules` adds three mandatory FinCEN rules:
+- **CTR threshold**: flag transactions over $10,000 (31 CFR 1010.311)
+- **Structuring**: detect $9,000-$9,999 patterns (31 USC 5324)
+- **Velocity**: block if 24h volume exceeds $50,000 without enhanced KYC
+
+### 7. Mount and serve
+
+```go
+import "github.com/hanzoai/base"
+
+srv := base.NewServer(base.Config{
+    Addr: ":8080",
+})
+srv.Mount("/broker", brokerSrv.Handler())
+srv.Mount("/exchange", cexGateway.Handler())
+srv.Mount("/compliance", complianceSrv.Handler())
+srv.ListenAndServe()
+```
+
+## Minimal ATS main.go
+
+```go
+package main
+
+import (
+    "context"
+    "log/slog"
+    "os"
+    "time"
+
+    "github.com/hanzoai/base"
+    "github.com/luxfi/broker/pkg/api"
+    "github.com/luxfi/broker/pkg/provider"
+    "github.com/luxfi/broker/pkg/provider/envconfig"
+    "github.com/luxfi/cex/pkg/engine"
+    "github.com/luxfi/cex/pkg/gateway"
+    "github.com/luxfi/cex/pkg/markets"
+    "github.com/luxfi/compliance/pkg/aml"
+    "github.com/luxfi/compliance/pkg/jube"
+    compapi "github.com/luxfi/compliance/pkg/api"
+)
+
+func main() {
+    ctx := context.Background()
+
+    // 1. Providers
+    registry := provider.NewRegistry()
+    n := envconfig.RegisterFromEnv(registry)
+    slog.Info("providers registered", "count", n)
+
+    // 2. CEX matching engine
+    eng := engine.New(engine.Config{EnableSurveillance: true, EnableAudit: true})
+    markets.RegisterFromProviders(ctx, registry, eng)
+
+    // 3. Compliance
+    monSvc := aml.NewMonitoringService()
+    aml.InstallDefaultRules(monSvc)
+
+    if url := os.Getenv("JUBE_BASE_URL"); url != "" {
+        jc := jube.NewClient(jube.Config{
+            BaseURL: url, ModelID: os.Getenv("JUBE_MODEL_ID"),
+            FailOpen: false, Timeout: 5 * time.Second,
+        })
+        monSvc.SetExternalScorer(jc)
+    }
+
+    // 4. HTTP servers
+    brokerSrv := api.NewServer(api.Config{Registry: registry})
+    cexGw := gateway.New(gateway.Config{Engine: eng})
+    compSrv := compapi.NewServer(compapi.Config{Monitoring: monSvc})
+
+    // 5. Mount on base and serve
+    srv := base.NewServer(base.Config{Addr: ":8080"})
+    srv.Mount("/broker", brokerSrv.Handler())
+    srv.Mount("/exchange", cexGw.Handler())
+    srv.Mount("/compliance", compSrv.Handler())
+
+    slog.Info("ATS starting", "addr", ":8080", "providers", n)
+    if err := srv.ListenAndServe(); err != nil {
+        slog.Error("server error", "error", err)
+        os.Exit(1)
+    }
+}
+```
+
+## Configuration
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| At least one provider key pair | Yes | See [Provider Integration](/docs/regulated/providers) |
+| `JUBE_BASE_URL` | No | Jube transaction monitoring endpoint |
+| `JUBE_MODEL_ID` | No | Jube EntityAnalysisModel GUID |
+| `COMPLIANCE_API_KEY` | Yes | API key for compliance endpoints |
+| `JUMIO_API_TOKEN` | Recommended | Jumio IDV for subscriber KYC |
+| `BROKER_API_KEY` | Yes | API key for broker endpoints |
+
+## SEC Compliance Checklist
+
+An ATS operating under Regulation ATS must:
+
+- [ ] File Form ATS-N with the SEC before commencing operations
+- [ ] Register as a broker-dealer (Form BD) with FINRA
+- [ ] Maintain minimum $250,000 net capital (Rule 15c3-1)
+- [ ] Implement fair access policies (Rule 301(b)(5)) if volume exceeds 5%
+- [ ] Display best-priced orders (Rule 301(b)(3)) if volume exceeds 5%
+- [ ] Maintain records of all orders, executions, and cancellations
+- [ ] File quarterly reports on Form ATS-R
+- [ ] Implement and test business continuity / disaster recovery plans
+- [ ] Screen all subscribers via KYC/AML before granting access
+- [ ] Monitor all transactions for CTR, structuring, and suspicious activity
+- [ ] File SARs within 30 days of detection
+
+## Docker Deployment
+
+```bash
+docker build --platform linux/amd64 -t ghcr.io/yourorg/atsd:latest .
+docker run -p 8080:8080 \
+  -e ALPACA_API_KEY=pk_... \
+  -e ALPACA_API_SECRET=sk_... \
+  -e COMPLIANCE_API_KEY=... \
+  -e JUMIO_API_TOKEN=... \
+  -e JUMIO_API_SECRET=... \
+  ghcr.io/yourorg/atsd:latest
+```
+
+## Reference
+
+See [liquidityio/ats](https://github.com/liquidityio/ats) for a working ATS implementation built on these components.

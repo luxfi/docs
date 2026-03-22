@@ -1,0 +1,240 @@
+---
+title: Compliance Integration
+description: KYC, AML, sanctions screening, and regulatory frameworks
+icon: ShieldCheck
+---
+
+The `luxfi/compliance` module provides a complete regulated financial compliance stack: identity verification, KYC orchestration, AML/sanctions screening, transaction monitoring, payment compliance, and multi-jurisdiction regulatory frameworks. Zero external dependencies -- standard library only.
+
+## Overview
+
+```
+               ┌──────────────────┐
+               │   complianced    │
+               │     :8091        │
+               └────────┬─────────┘
+                         │
+        ┌────────────────┼────────────────┐
+        │                │                │
+  ┌─────┴─────┐   ┌─────┴─────┐   ┌─────┴─────┐
+  │    IDV    │   │    AML    │   │ Payments  │
+  │ Providers │   │ Screening │   │Compliance │
+  └─────┬─────┘   └─────┬─────┘   └─────┬─────┘
+        │                │                │
+   ┌────┼────┐      ┌───┼───┐       ┌───┼───┐
+   │    │    │      │   │   │       │   │   │
+ Jumio Onfido Plaid OFAC EU PEP  Travel CTR Stablecoin
+                     SDN HMT       Rule     Validation
+```
+
+## Identity Verification Providers
+
+Three IDV providers are supported out of the box. Each implements the same provider interface: initiate verification, check status, and parse webhooks.
+
+| Provider | API | Features | Env Vars |
+|----------|-----|----------|----------|
+| Jumio | Netverify v4 | ID + selfie, liveness, document verification | `JUMIO_API_TOKEN`, `JUMIO_API_SECRET`, `JUMIO_WEBHOOK_SECRET` |
+| Onfido | v3.6 | Applicant, check, SDK token, watchlist screening | `ONFIDO_API_TOKEN`, `ONFIDO_WEBHOOK_SECRET` |
+| Plaid | Identity Verification | Session-based IDV, bank-linked identity | `PLAID_CLIENT_ID`, `PLAID_SECRET`, `PLAID_WEBHOOK_SECRET` |
+
+All providers validate webhook signatures via HMAC-SHA256.
+
+```go
+import (
+    "github.com/luxfi/compliance/pkg/kyc"
+    "github.com/luxfi/compliance/pkg/idv"
+)
+
+svc := kyc.NewService()
+svc.RegisterProvider(idv.NewJumio(idv.JumioConfig{
+    APIToken:      os.Getenv("JUMIO_API_TOKEN"),
+    APISecret:     os.Getenv("JUMIO_API_SECRET"),
+    WebhookSecret: os.Getenv("JUMIO_WEBHOOK_SECRET"),
+}))
+```
+
+**Application status flow:**
+```
+draft -> pending -> pending_kyc -> approved
+                                -> rejected
+```
+
+**KYC status flow:**
+```
+not_started -> pending -> verified
+                       -> failed
+```
+
+## AML Screening
+
+### Sanctions & PEP Screening
+
+Screen individuals against global sanctions lists and politically exposed persons databases:
+
+- **OFAC SDN** -- US Treasury Office of Foreign Assets Control
+- **EU consolidated sanctions** -- European Union sanctions list
+- **UK HM Treasury** -- Her Majesty's Treasury sanctions list
+- **PEP databases** -- Politically Exposed Persons
+- **Adverse media** -- Negative news screening
+
+Match types: exact, fuzzy (Levenshtein distance), partial. Risk scoring: low, medium, high, critical.
+
+```go
+import "github.com/luxfi/compliance/pkg/aml"
+
+screeningSvc := aml.NewScreeningService()
+result, err := screeningSvc.Screen(ctx, aml.ScreenRequest{
+    FullName:    "John Doe",
+    DateOfBirth: "1985-03-15",
+    Country:     "US",
+})
+// result.Matches contains any sanctions/PEP hits with scores
+```
+
+### Transaction Monitoring
+
+The rules engine detects suspicious transaction patterns. `InstallDefaultRules` adds the three mandatory FinCEN baselines:
+
+```go
+monSvc := aml.NewMonitoringService()
+aml.InstallDefaultRules(monSvc)
+```
+
+This installs:
+
+| Rule | Type | Threshold | Regulation |
+|------|------|-----------|------------|
+| CTR threshold | Single amount | $10,000 | 31 CFR 1010.311 |
+| Structuring | Pattern detection | $9,000-$9,999 | 31 USC 5324 |
+| Velocity (24h) | Aggregate volume | $50,000 | Enhanced KYC trigger |
+
+Add custom rules:
+
+```go
+monSvc.AddRule(aml.Rule{
+    ID:              "high-value-crypto",
+    Type:            aml.RuleSingleAmount,
+    ThresholdAmount: 25000,
+    Currency:        "USD",
+    Enabled:         true,
+    Severity:        aml.SeverityHigh,
+    Description:     "Flag crypto transactions over $25,000",
+})
+```
+
+Alert lifecycle: `open -> investigating -> escalated -> closed/filed`.
+
+### Jube Integration
+
+For ML-based transaction scoring beyond static rules, connect the Jube client:
+
+```go
+import "github.com/luxfi/compliance/pkg/jube"
+
+client := jube.NewClient(jube.Config{
+    BaseURL:  "http://jube.svc.cluster.local:5001",
+    ModelID:  "your-model-guid",
+    FailOpen: false, // reject when Jube is unreachable
+    Timeout:  5 * time.Second,
+})
+```
+
+Jube scores transactions in real time against configurable ML models, returning activation alerts, sanctions matches, and response elevations. The `FailOpen` flag controls behavior when Jube is unavailable -- set to `false` for regulated products.
+
+## Regulatory Frameworks
+
+Multi-jurisdiction compliance rules are built in:
+
+| Jurisdiction | Regulator | Key Requirements |
+|-------------|-----------|------------------|
+| USA | FinCEN, SEC, FINRA | BSA (CIP, CTR $10k+, SAR), suitability, accredited investor |
+| UK | FCA | Registration, 5AMLD CDD/EDD, HM Treasury sanctions |
+| Isle of Man | IOMFSA | Designated Business, AML/CFT Code 2019, source of wealth/funds |
+
+Each jurisdiction defines: required identity fields, application validation rules, and transaction limits.
+
+```go
+import "github.com/luxfi/compliance/pkg/regulatory"
+
+jur := regulatory.Get("USA")
+err := jur.ValidateApplication(application)
+limits := jur.TransactionLimits()
+```
+
+## Payment Compliance
+
+### Travel Rule
+
+FATF Recommendation 16 requires originator and beneficiary information for transfers over $3,000:
+
+```go
+import "github.com/luxfi/compliance/pkg/payments"
+
+result := payments.ValidateTravelRule(payments.TransferInfo{
+    Amount:           5000,
+    OriginatorName:   "Alice",
+    BeneficiaryName:  "Bob",
+    OriginatorAddr:   "123 Main St",
+})
+// result.Compliant = true if all required fields present
+```
+
+### CTR Detection
+
+Flags transactions at or above $10,000 for Currency Transaction Report filing.
+
+### Stablecoin Validation
+
+Token allowlists, per-jurisdiction policies, and address risk scoring with chain analysis integration point.
+
+## Integration Methods
+
+### Go Library (import directly)
+
+The most common integration. Import packages and use them in your Go application:
+
+```go
+import (
+    "github.com/luxfi/compliance/pkg/kyc"
+    "github.com/luxfi/compliance/pkg/idv"
+    "github.com/luxfi/compliance/pkg/aml"
+    "github.com/luxfi/compliance/pkg/regulatory"
+    "github.com/luxfi/compliance/pkg/payments"
+)
+```
+
+### HTTP API (standalone server)
+
+Run `complianced` as a standalone service and call it over HTTP:
+
+```bash
+go build -o complianced ./cmd/complianced/
+JUMIO_API_TOKEN=... COMPLIANCE_API_KEY=... ./complianced
+```
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/v1/kyc/verify` | Initiate KYC verification |
+| GET | `/v1/kyc/status/{id}` | Check verification status |
+| POST | `/v1/aml/screen` | Screen against sanctions/PEP |
+| POST | `/v1/aml/monitor` | Monitor transaction |
+| GET | `/v1/aml/alerts` | List alerts |
+| POST | `/v1/payments/validate` | Validate payment compliance |
+| GET | `/v1/regulatory/{jurisdiction}` | Get jurisdiction requirements |
+
+Auth: `X-Api-Key` header. Health check at `/healthz` requires no auth.
+
+### TypeScript SDK
+
+The `@luxbank/compliance` SDK provides a TypeScript client for NestJS applications:
+
+```typescript
+import { ComplianceModule } from '@luxbank/compliance'
+
+ComplianceModule.forRoot({
+  baseUrl: process.env.COMPLIANCE_BASE_URL || 'http://compliance:8091',
+  apiKey: process.env.COMPLIANCE_API_KEY || '',
+})
+```
+
+The TypeScript SDK lives in [luxfi/bank/pkg/compliance](https://github.com/luxfi/bank/tree/main/pkg/compliance).

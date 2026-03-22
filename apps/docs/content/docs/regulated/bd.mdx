@@ -1,0 +1,214 @@
+---
+title: Broker-Dealer (BD)
+description: Build a FINRA-registered broker-dealer with multi-venue order routing
+icon: ArrowLeftRight
+---
+
+A Broker-Dealer (BD) is a firm registered with the SEC and FINRA that executes securities transactions on behalf of customers. Unlike an ATS, a BD does not operate an internal matching engine -- it routes customer orders to external venues (exchanges, ATSs, market makers) and earns commissions or markups. A BD must maintain at least $250,000 in net capital under Rule 15c3-1 and join SIPC for customer asset protection.
+
+The Lux stack provides broker connectivity, smart order routing, risk management, and compliance -- everything a BD needs except the internal matching engine.
+
+## Architecture
+
+A BD uses Broker and Compliance but not CEX:
+
+```
+                     ┌────────────────────┐
+                     │       bdd          │
+                     │      :8080         │
+                     └─────────┬──────────┘
+                               │
+          ┌────────────────────┼────────────────┐
+          │                    │                │
+   ┌──────┴──────┐     ┌──────┴──────┐  ┌──────┴──────┐
+   │   Broker    │     │    Risk     │  │ Compliance  │
+   │  16 Venues  │     │   Engine   │  │  KYC / AML  │
+   └──────┬──────┘     └────────────┘  └─────────────┘
+          │
+   ┌──────┴──────┐
+   │ Smart Order │
+   │   Router    │
+   └─────────────┘
+```
+
+The key difference from an ATS: orders always route to external venues. There is no internal order book. The Smart Order Router selects the best venue based on net price (spread + fees) and can split large orders across multiple venues using VWAP.
+
+## Step-by-Step Build
+
+### 1. Create Go project
+
+```bash
+mkdir bdd && cd bdd
+go mod init github.com/yourorg/bdd
+go get github.com/hanzoai/base
+go get github.com/luxfi/broker
+go get github.com/luxfi/compliance
+```
+
+### 2. Register providers
+
+```go
+import (
+    "github.com/luxfi/broker/pkg/provider"
+    "github.com/luxfi/broker/pkg/provider/envconfig"
+)
+
+registry := provider.NewRegistry()
+n := envconfig.RegisterFromEnv(registry)
+```
+
+A BD typically connects to multiple venues for best execution. At minimum, register one equities provider (Alpaca, IBKR, or Tradier) and one crypto provider if offering digital assets.
+
+### 3. Create broker with smart order routing
+
+```go
+import "github.com/luxfi/broker/pkg/api"
+
+brokerSrv := api.NewServer(api.Config{
+    Registry:         registry,
+    EnableSOR:        true,  // smart order routing
+    EnableRisk:       true,  // pre-trade risk checks
+    EnableSettlement: true,  // prefunding pool for instant buys
+    EnableAudit:      true,  // immutable audit trail
+})
+```
+
+### 4. Install compliance
+
+```go
+import (
+    "github.com/luxfi/compliance/pkg/aml"
+    "github.com/luxfi/compliance/pkg/kyc"
+    "github.com/luxfi/compliance/pkg/idv"
+)
+
+// KYC service with IDV provider
+kycSvc := kyc.NewService()
+kycSvc.RegisterProvider(idv.NewJumio(idv.JumioConfig{
+    APIToken:  os.Getenv("JUMIO_API_TOKEN"),
+    APISecret: os.Getenv("JUMIO_API_SECRET"),
+}))
+
+// AML monitoring with FinCEN defaults
+monSvc := aml.NewMonitoringService()
+aml.InstallDefaultRules(monSvc)
+```
+
+### 5. Mount and serve
+
+```go
+import "github.com/hanzoai/base"
+
+srv := base.NewServer(base.Config{Addr: ":8080"})
+srv.Mount("/broker", brokerSrv.Handler())
+srv.Mount("/compliance", compSrv.Handler())
+
+slog.Info("BD starting", "addr", ":8080", "providers", n)
+srv.ListenAndServe()
+```
+
+## Minimal BD main.go
+
+```go
+package main
+
+import (
+    "log/slog"
+    "os"
+
+    "github.com/hanzoai/base"
+    "github.com/luxfi/broker/pkg/api"
+    "github.com/luxfi/broker/pkg/provider"
+    "github.com/luxfi/broker/pkg/provider/envconfig"
+    "github.com/luxfi/compliance/pkg/aml"
+    compapi "github.com/luxfi/compliance/pkg/api"
+)
+
+func main() {
+    // 1. Providers
+    registry := provider.NewRegistry()
+    n := envconfig.RegisterFromEnv(registry)
+    slog.Info("providers registered", "count", n)
+
+    // 2. Broker (SOR, risk, audit -- no matching engine)
+    brokerSrv := api.NewServer(api.Config{
+        Registry:    registry,
+        EnableSOR:   true,
+        EnableRisk:  true,
+        EnableAudit: true,
+    })
+
+    // 3. Compliance
+    monSvc := aml.NewMonitoringService()
+    aml.InstallDefaultRules(monSvc)
+    compSrv := compapi.NewServer(compapi.Config{Monitoring: monSvc})
+
+    // 4. Serve
+    srv := base.NewServer(base.Config{Addr: ":8080"})
+    srv.Mount("/broker", brokerSrv.Handler())
+    srv.Mount("/compliance", compSrv.Handler())
+
+    slog.Info("BD starting", "addr", ":8080", "providers", n)
+    if err := srv.ListenAndServe(); err != nil {
+        slog.Error("server error", "error", err)
+        os.Exit(1)
+    }
+}
+```
+
+## Key Difference from ATS
+
+| Aspect | ATS | BD |
+|--------|-----|-----|
+| Internal matching | Yes (CLOB engine) | No |
+| Order routing | Internal first, then external | External only |
+| `luxfi/cex` dependency | Required | Not used |
+| Registration | Form ATS-N + Form BD | Form BD only |
+| Fair access rules | Yes (if >5% volume) | No |
+| Best execution | Rule 5310 | Rule 5310 |
+
+A BD has simpler technology requirements but the same compliance obligations for KYC, AML, and transaction monitoring.
+
+## FINRA Compliance
+
+A BD operating under SEC/FINRA rules must:
+
+- [ ] Register with SEC on Form BD and join FINRA
+- [ ] Join SIPC (Securities Investor Protection Corporation)
+- [ ] Maintain $250,000 minimum net capital (Rule 15c3-1)
+- [ ] Satisfy best execution obligations (Rule 5310) -- document venue selection rationale
+- [ ] Perform suitability analysis for customer recommendations (Rule 2111 / Reg BI)
+- [ ] Maintain books and records (Rule 17a-3, 17a-4)
+- [ ] File FOCUS reports quarterly
+- [ ] Screen all customers via KYC/AML before account opening
+- [ ] Monitor transactions for CTR, structuring, and suspicious activity
+- [ ] File SARs within 30 days of detection
+- [ ] Implement supervisory procedures (Rule 3110)
+- [ ] Designate a Chief Compliance Officer
+
+## Configuration
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| At least one provider key pair | Yes | See [Provider Integration](/docs/regulated/providers) |
+| `BROKER_API_KEY` | Yes | API key for broker endpoints |
+| `COMPLIANCE_API_KEY` | Yes | API key for compliance endpoints |
+| `JUMIO_API_TOKEN` | Recommended | Jumio IDV for customer KYC |
+| `JUMIO_API_SECRET` | Recommended | Jumio API secret |
+
+## Docker Deployment
+
+```bash
+docker build --platform linux/amd64 -t ghcr.io/yourorg/bdd:latest .
+docker run -p 8080:8080 \
+  -e ALPACA_API_KEY=pk_... \
+  -e ALPACA_API_SECRET=sk_... \
+  -e IBKR_ACCESS_TOKEN=... \
+  -e BROKER_API_KEY=... \
+  -e COMPLIANCE_API_KEY=... \
+  ghcr.io/yourorg/bdd:latest
+```
+
+## Reference
+
+See [liquidityio/bd](https://github.com/liquidityio/bd) for a working broker-dealer implementation built on these components.
