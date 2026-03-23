@@ -4,11 +4,71 @@ description: Security best practices and audit logging
 icon: ShieldAlert
 ---
 
+Security is the foundation of KMS. Every operation is authenticated, authorized, and audited.
+
 ## Rules
 
-1. **ALL passwords MUST come from KMS** — Never plaintext
-2. **Rotate keys regularly** via KMS key rotation
-3. **Audit all access** via KMS audit logs
-4. **Use the K8s operator** for automated secret sync
-5. **Enable MFA** for administrative access
-6. **IP allowlisting** for production environments
+1. **ALL passwords MUST come from KMS** -- Never store plaintext passwords anywhere
+2. **Rotate keys regularly** -- Use KMS automatic key rotation
+3. **Audit all access** -- KMS logs every read, write, and admin operation
+4. **Use the K8s operator** -- Automated secret sync to Kubernetes
+5. **Enable MFA** -- Required for administrative access
+6. **IP allowlisting** -- Restrict production access by source IP
+
+## Encryption Hierarchy
+
+| Layer | Algorithm | Protected By |
+|-------|-----------|-------------|
+| Root Key | AES-256-GCM | HSM (hardware-bound) |
+| Organization KEK | AES-256-GCM | Root Key |
+| Project KEK | AES-256-GCM | Organization KEK |
+| Data Keys | AES-256-GCM | Project KEK |
+| Secrets | AES-256-GCM | Data Keys |
+
+## Access Control
+
+KMS supports multiple access control models:
+
+| Model | Description |
+|-------|-------------|
+| RBAC | Role-based access: admin, member, viewer |
+| ABAC | Attribute-based policies for fine-grained control |
+| Machine Identity | Service account auth via OIDC, K8s, AWS IAM |
+| Temporary Access | Time-limited access grants with auto-revocation |
+| Approval Workflows | Require human approval for sensitive operations |
+
+## Audit Logging
+
+Every operation produces an audit log entry:
+
+```json
+{
+  "event": "secret.read",
+  "actor": "user:alice@example.com",
+  "resource": "/production/database/password",
+  "timestamp": "2026-03-22T10:15:30Z",
+  "sourceIp": "10.0.1.50",
+  "result": "success"
+}
+```
+
+## Secret Scanning
+
+KMS includes a CLI scanner to prevent secrets from leaking to git:
+
+```bash
+# Scan current directory
+lux kms scan .
+
+# Pre-commit hook
+lux kms scan --hook
+```
+
+## Compliance
+
+| Standard | Support |
+|----------|---------|
+| SOC 2 Type II | Audit log export |
+| PCI-DSS | Key rotation, access control |
+| HIPAA | Encryption at rest and in transit |
+| GDPR | Data isolation, audit trail |

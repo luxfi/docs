@@ -4,11 +4,62 @@ description: Threshold key management for MPC nodes
 icon: Users
 ---
 
-KMS provides key share storage and backup for MPC nodes.
+KMS provides key share storage, backup, and password management for MPC nodes. Each MPC node's ZapDB encryption password is derived from KMS -- never stored in plaintext.
 
-## Key Share Backup
+## Key Share Backup Flow
 
-1. Key shares exported from ZapDB
-2. Encrypted with scrypt + AES-256-GCM using KMS-derived backup key
-3. Stored to S3 with org-prefixed paths
-4. Can be restored to a new node
+1. Key shares are exported from ZapDB (encrypted at rest with ChaCha20-Poly1305)
+2. Backup is encrypted with scrypt + AES-256-GCM using a KMS-derived backup key
+3. Encrypted backup is stored to S3 with org-prefixed paths
+4. Backup can be restored to a new node with the same KMS-derived key
+
+## ZapDB Password Management
+
+MPC nodes use `--hsm-provider` to resolve their ZapDB encryption password:
+
+| Provider | Source | Use Case |
+|----------|--------|----------|
+| `env` | `MPC_DB_PASSWORD` env var | Development, backward compat |
+| `file` | Password file on disk | Container deployments |
+| `aws` | AWS KMS decrypt | AWS production |
+| `gcp` | GCP KMS decrypt | GCP production |
+| `azure` | Azure Key Vault | Azure production |
+
+## Backup Configuration
+
+```yaml
+backup:
+  provider: s3
+  bucket: lux-mpc-backups
+  prefix: "org-123/"
+  encryption:
+    kms_key_id: "arn:aws:kms:us-east-1:..."
+  schedule: "0 */6 * * *"  # Every 6 hours
+```
+
+## Restore Process
+
+```bash
+# List available backups
+lux mpc backup list --org org-123
+
+# Restore to a new node
+lux mpc backup restore \
+  --backup-id backup-2026-03-01 \
+  --data-dir /data/mpc/node0 \
+  --kms-key-id arn:aws:kms:...
+```
+
+## Multi-Tenant Key Isolation
+
+Each organization's MPC key shares are encrypted with a unique KMS-derived key. Even if the S3 bucket is shared, cross-org access is cryptographically prevented.
+
+## Audit Trail
+
+All backup and restore operations are logged in KMS audit:
+
+| Event | Data Logged |
+|-------|------------|
+| `mpc.backup.create` | Node ID, backup size, timestamp |
+| `mpc.backup.restore` | Node ID, backup source, timestamp |
+| `mpc.password.access` | Node ID, provider type, timestamp |

@@ -4,16 +4,82 @@ description: Hardware security module integration for MPC
 icon: ShieldCheck
 ---
 
-The MPC daemon uses HSM for intent co-signing, ZapDB password decryption, and threshold attestation. See the [HSM documentation](https://hsm.lux.network) for provider details.
+The MPC daemon uses HSM for three security functions: intent co-signing, ZapDB password management, and threshold attestation.
 
 ## Intent Co-signing
 
-Every approved transaction is co-signed by the HSM before threshold signing begins.
+Every approved transaction is co-signed by the HSM before threshold signing begins. This adds a hardware-bound authorization layer on top of the threshold scheme.
 
-## ZapDB Password
+```bash
+mpcd start --mode consensus \
+  --hsm-signer aws \
+  --hsm-signer-key-id arn:aws:kms:us-east-1:123:key/abc
+```
 
-The encryption password for the key share database is derived from cloud KMS — never stored in plaintext.
+The HSM signature is verified by all MPC nodes before they participate in the threshold signing round.
+
+## ZapDB Password Management
+
+The encryption password for the key share database is derived from cloud KMS -- never stored in plaintext.
+
+| Provider | Flag | Description |
+|----------|------|-------------|
+| `env` | `--hsm-provider=env` | Password from `MPC_DB_PASSWORD` env var |
+| `file` | `--hsm-provider=file` | Password from file at `--hsm-key-id` path |
+| `aws` | `--hsm-provider=aws` | Decrypt via AWS KMS |
+| `gcp` | `--hsm-provider=gcp` | Decrypt via Google Cloud KMS |
+| `azure` | `--hsm-provider=azure` | Decrypt via Azure Key Vault |
+
+Example with AWS KMS:
+
+```bash
+mpcd start --mode consensus \
+  --hsm-provider aws \
+  --hsm-key-id arn:aws:kms:us-east-1:123:key/db-key
+```
 
 ## Threshold Attestation
 
-When enabled (`--hsm-attest`), every signature share is co-signed by the HSM, binding it to specific hardware.
+When enabled with `--hsm-attest`, every signature share produced by a node is co-signed by the HSM. This binds each share to specific hardware, preventing share forgery.
+
+```bash
+mpcd start --mode consensus \
+  --hsm-attest \
+  --hsm-signer aws \
+  --hsm-signer-key-id arn:aws:kms:us-east-1:123:key/attest-key
+```
+
+## Security Properties
+
+| Feature | Without HSM | With HSM |
+|---------|------------|----------|
+| Key share storage | Software encryption | Hardware-derived password |
+| Intent authorization | Software signature | Hardware co-signature |
+| Share authenticity | Node identity only | Hardware attestation |
+| Key extraction risk | Software compromise | Physical access required |
+
+## Supported HSM Types
+
+| Type | Interface | Use Case |
+|------|-----------|----------|
+| AWS KMS | AWS SDK | Cloud production |
+| Google Cloud HSM | Cloud KMS API | GCP production |
+| Azure Managed HSM | REST API | Azure production |
+| Zymbit SCM | PKCS#11 | Edge/IoT deployments |
+
+## Kubernetes Configuration
+
+In Kubernetes, HSM credentials are mounted as secrets:
+
+```yaml
+env:
+  - name: AWS_REGION
+    value: us-east-1
+  - name: MPC_HSM_SIGNER
+    value: aws
+  - name: MPC_HSM_SIGNER_KEY_ID
+    valueFrom:
+      secretKeyRef:
+        name: mpc-hsm
+        key: signer-key-id
+```

@@ -4,6 +4,8 @@ description: MPC daemon REST API
 icon: FileCode
 ---
 
+The MPC daemon exposes a REST API on port 8081 (configurable via `--api-listen`) for key management and signing operations.
+
 ## Endpoints
 
 | Method | Path | Description |
@@ -13,5 +15,87 @@ icon: FileCode
 | GET | `/v1/keys` | List available keys |
 | GET | `/v1/keys/:id` | Get key metadata |
 | DELETE | `/v1/keys/:id` | Delete a key |
+| POST | `/v1/reshare` | Reshare key with new committee |
 | GET | `/v1/health` | Health check |
 | GET | `/v1/metrics` | Prometheus metrics |
+
+## Key Generation
+
+```bash
+curl -X POST http://localhost:8081/v1/keygen \
+  -H "Authorization: Bearer $MPC_TOKEN" \
+  -d '{
+    "walletId": "wallet-001",
+    "protocol": "cggmp21",
+    "threshold": 2,
+    "parties": 3
+  }'
+```
+
+Response:
+
+```json
+{
+  "walletId": "wallet-001",
+  "ecdsaPublicKey": "04abc123...",
+  "eddsaPublicKey": "ed25519:def456...",
+  "address": "0x9011E888251AB053B7bD1cdB598Db4f9DEd94714"
+}
+```
+
+## Threshold Signing
+
+```bash
+curl -X POST http://localhost:8081/v1/sign \
+  -H "Authorization: Bearer $MPC_TOKEN" \
+  -d '{
+    "walletId": "wallet-001",
+    "message": "0xdeadbeef...",
+    "protocol": "cggmp21",
+    "encoding": "hex"
+  }'
+```
+
+Response:
+
+```json
+{
+  "signature": "0x...",
+  "r": "0x...",
+  "s": "0x...",
+  "v": 27
+}
+```
+
+## List Keys
+
+```bash
+curl http://localhost:8081/v1/keys \
+  -H "Authorization: Bearer $MPC_TOKEN"
+```
+
+## Health Check
+
+```bash
+curl http://localhost:8081/v1/health
+```
+
+Response:
+
+```json
+{
+  "status": "healthy",
+  "nodeId": "node0",
+  "peers": 2,
+  "threshold": 2,
+  "mode": "consensus"
+}
+```
+
+## Authentication
+
+All endpoints except `/v1/health` and `/v1/metrics` require a JWT bearer token. Configure the JWT secret with `--jwt-secret` or `MPC_JWT_SECRET`.
+
+## Dashboard API
+
+When `MPC_API_DB` is set, the dashboard API provides additional endpoints for ORM-based entity management on port 8081.

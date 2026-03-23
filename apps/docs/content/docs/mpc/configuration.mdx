@@ -4,25 +4,68 @@ description: CLI flags and environment variables
 icon: Settings
 ---
 
+The MPC daemon (`mpcd`) supports two operation modes: consensus (recommended) and legacy (NATS/Consul).
+
+## Operation Modes
+
+| Mode | Transport | Dependencies | Recommended |
+|------|-----------|-------------|-------------|
+| `consensus` | ZAP wire protocol | None | Yes |
+| `legacy` | NATS + Consul | NATS, Consul | No (deprecated) |
+
 ## CLI Flags
 
 | Flag | Env Var | Description | Default |
 |------|---------|-------------|---------|
-| `--name` | `MPC_NAME` | Node name | — |
-| `--mode` | `MPC_MODE` | Operation mode | — |
-| `--node-id` | `MPC_NODE_ID` | Node identifier | — |
-| `--listen` | `MPC_LISTEN` | P2P listen address | — |
+| `--mode` | `MPC_MODE` | Operation mode (consensus/legacy) | consensus |
+| `--node-id` | `MPC_NODE_ID` | Node identifier | -- |
+| `--listen` | `MPC_LISTEN` | P2P listen address | `:9651` |
 | `--api` | `MPC_API` | Consensus API address | `:9800` |
 | `--api-listen` | `MPC_API_LISTEN` | Dashboard API address | `:8081` |
-| `--data` | `MPC_DATA` | Data directory | — |
-| `--keys` | `MPC_KEYS` | Keys directory | — |
-| `--threshold` | `MPC_THRESHOLD` | Signing threshold | — |
-| `--peer` | `MPC_PEER` | Peer addresses | — |
+| `--data` | `MPC_DATA` | ZapDB data directory | `/data/mpc` |
+| `--threshold` | `MPC_THRESHOLD` | Signing threshold (t-of-n) | -- |
+| `--peer` | `MPC_PEER` | Peer address (repeatable) | -- |
 | `--log-level` | `MPC_LOG_LEVEL` | Log verbosity | `info` |
-| `--hsm-signer` | `MPC_HSM_SIGNER` | Signer provider (aws/gcp/zymbit/mldsa/local) | `local` |
-| `--hsm-signer-key-id` | `MPC_HSM_SIGNER_KEY_ID` | Key ID for signing | — |
+| `--hsm-signer` | `MPC_HSM_SIGNER` | Signer provider | `local` |
+| `--hsm-signer-key-id` | `MPC_HSM_SIGNER_KEY_ID` | HSM key ID for signing | -- |
 | `--hsm-provider` | `MPC_HSM_PROVIDER` | Password provider type | `env` |
-| `--hsm-key-id` | `MPC_HSM_KEY_ID` | Key ID for password decryption | — |
+| `--hsm-key-id` | `MPC_HSM_KEY_ID` | Key ID for password decryption | -- |
 | `--hsm-attest` | `MPC_HSM_ATTEST` | Enable threshold attestation | `false` |
-| `--jwt-secret` | `MPC_JWT_SECRET` | JWT secret for API auth | — |
-| `--debug` | `MPC_DEBUG` | Enable debug mode | `false` |
+| `--jwt-secret` | `MPC_JWT_SECRET` | JWT secret for API auth | -- |
+
+## Consensus Mode Example
+
+```bash
+mpcd start --mode consensus \
+  --node-id node0 \
+  --listen :9651 \
+  --api :9800 \
+  --data /data/mpc/node0 \
+  --threshold 2 \
+  --peer node1@10.0.0.2:9652 \
+  --peer node2@10.0.0.3:9653
+```
+
+## HSM Signer Providers
+
+| Provider | Description |
+|----------|-------------|
+| `local` | Software-based Ed25519 signing |
+| `aws` | AWS KMS for intent co-signing |
+| `gcp` | Google Cloud KMS |
+| `zymbit` | Zymbit hardware security module |
+| `mldsa` | Post-quantum ML-DSA signatures |
+
+## HSM Password Providers
+
+| Provider | Source | Use Case |
+|----------|--------|----------|
+| `env` | `MPC_DB_PASSWORD` env var | Development |
+| `file` | Password file on disk | Containers |
+| `aws` | AWS KMS decrypt | AWS production |
+| `gcp` | GCP KMS decrypt | GCP production |
+| `azure` | Azure Key Vault | Azure production |
+
+## Storage
+
+Key shares are stored in ZapDB (encrypted BadgerDB) at the `--data` path. The database is encrypted with ChaCha20-Poly1305 using the password from the HSM provider.

@@ -4,14 +4,84 @@ description: Encrypt and decrypt data without managing keys
 icon: Shield
 ---
 
-The transit encryption engine provides encryption-as-a-service. Data is encrypted/decrypted via API without exposing keys.
+The transit encryption engine provides encryption-as-a-service. Applications encrypt and decrypt data via API without ever seeing the underlying keys.
 
 ## Algorithms
 
 | Algorithm | Key Size | Use Case |
 |-----------|----------|----------|
-| AES-256-GCM | 256-bit | General purpose |
-| ChaCha20-Poly1305 | 256-bit | High-performance |
-| RSA-OAEP | 2048/4096 | Key wrapping |
-| ECDSA P-256 | 256-bit | Signing |
-| HMAC-SHA256 | 256-bit | Authentication |
+| AES-256-GCM | 256-bit | General purpose, authenticated encryption |
+| ChaCha20-Poly1305 | 256-bit | High-performance, mobile/embedded |
+| RSA-OAEP | 2048/4096 | Asymmetric encryption, key wrapping |
+| ECDSA P-256 | 256-bit | Digital signatures |
+| HMAC-SHA256 | 256-bit | Message authentication codes |
+
+## Encrypt Data
+
+```bash
+curl -X POST https://kms.lux.network/api/v1/kms/keys/my-key/encrypt \
+  -H "Authorization: Bearer $KMS_TOKEN" \
+  -d '{
+    "plaintext": "aGVsbG8gd29ybGQ="
+  }'
+```
+
+Response:
+
+```json
+{
+  "ciphertext": "vault:v1:AbCdEf...",
+  "keyVersion": 3
+}
+```
+
+## Decrypt Data
+
+```bash
+curl -X POST https://kms.lux.network/api/v1/kms/keys/my-key/decrypt \
+  -H "Authorization: Bearer $KMS_TOKEN" \
+  -d '{
+    "ciphertext": "vault:v1:AbCdEf..."
+  }'
+```
+
+## Sign Data
+
+```bash
+curl -X POST https://kms.lux.network/api/v1/kms/keys/signing-key/sign \
+  -H "Authorization: Bearer $KMS_TOKEN" \
+  -d '{
+    "input": "aGVsbG8=",
+    "algorithm": "ecdsa-p256-sha256"
+  }'
+```
+
+## Key Rotation
+
+Transit keys support automatic versioning. When a key is rotated:
+
+- New data is encrypted with the latest version
+- Old ciphertext can still be decrypted
+- Rewrap API upgrades ciphertext to the latest key version without exposing plaintext
+
+```bash
+# Rotate key
+curl -X POST https://kms.lux.network/api/v1/kms/keys/my-key/rotate \
+  -H "Authorization: Bearer $KMS_TOKEN"
+
+# Rewrap old ciphertext with new key version
+curl -X POST https://kms.lux.network/api/v1/kms/keys/my-key/rewrap \
+  -H "Authorization: Bearer $KMS_TOKEN" \
+  -d '{"ciphertext": "vault:v1:AbCdEf..."}'
+```
+
+## Data Encryption Keys (DEK)
+
+Generate a data encryption key for client-side encryption:
+
+```bash
+curl -X POST https://kms.lux.network/api/v1/kms/keys/my-key/generate-data-key \
+  -H "Authorization: Bearer $KMS_TOKEN"
+```
+
+Returns both plaintext and wrapped versions of the DEK. Store the wrapped version; use plaintext for encryption, then discard it.

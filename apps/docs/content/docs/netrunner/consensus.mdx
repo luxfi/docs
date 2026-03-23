@@ -1,17 +1,85 @@
 ---
 title: Consensus Testing
-description: Verify consensus correctness
+description: Verify consensus correctness under adversarial conditions
 icon: CheckCircle
 ---
 
-## Liveness
+Netrunner provides tools for verifying consensus liveness and safety properties under various failure modes.
+
+## Liveness Testing
+
+Verify that the network continues to produce blocks and finalize transactions:
 
 ```bash
+# Run liveness test for 2 minutes
 netrunner test --liveness --duration 120s
+
+# With a specific block production target
+netrunner test --liveness --min-blocks 100 --duration 120s
 ```
 
-## Safety
+The liveness test verifies:
+- All chains produce blocks within expected intervals
+- Transactions are confirmed within timeout
+- No chain falls behind
+
+## Safety Testing
+
+Verify that the network does not produce conflicting finalized blocks:
 
 ```bash
+# Safety test with 1 faulty node
 netrunner test --safety --faults 1
+
+# Safety with network partitions
+netrunner test --safety --partition-duration 30s
+```
+
+The safety test verifies:
+- No two nodes finalize conflicting blocks
+- Chain state is consistent across all honest nodes
+- Block hashes match at the same height
+
+## Consensus Parameters
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| `consensus-sample-size` | 5 | Validators sampled per consensus round |
+| `consensus-quorum-size` | 4 | Required agreement for finality |
+| Maximum Byzantine faults | 1 | `floor((n-1)/3)` for n=5 |
+
+## Test Scenarios
+
+| Scenario | Command | Verifies |
+|----------|---------|----------|
+| Happy path | `test --liveness` | Normal block production |
+| Node crash | `test --safety --faults 1` | Consensus with minority failure |
+| Partition | `test --safety --partition-duration 30s` | Recovery after partition |
+| Slow node | `test --liveness --latency 500ms` | Tolerance for slow peers |
+| Full restart | `test --liveness --restart-all` | Bootstrap from saved state |
+
+## Chain-Specific Tests
+
+```bash
+# Test P-Chain consensus
+netrunner test --chain P --liveness
+
+# Test C-Chain consensus
+netrunner test --chain C --liveness --min-blocks 50
+
+# Test all chains
+netrunner test --all-chains --liveness
+```
+
+## CI/CD Integration
+
+```yaml
+# GitHub Actions example
+- name: Run consensus tests
+  run: |
+    netrunner server &
+    netrunner control start --number-of-nodes=5 --node-path=./luxd
+    netrunner test --liveness --duration 60s
+    netrunner test --safety --faults 1
+    netrunner control stop
 ```

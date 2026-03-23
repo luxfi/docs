@@ -1,18 +1,100 @@
 ---
 title: API Reference
-description: Programmatic usage
+description: gRPC and REST API for programmatic network control
 icon: FileCode
 ---
 
-## Go API
+Netrunner exposes a gRPC API (port 8080) with a REST gateway (port 8081) for programmatic network management.
+
+## Go Client
 
 ```go
-import "github.com/luxfi/netrunner"
+package main
 
-net, _ := netrunner.Start(netrunner.Config{
-    NumNodes: 5,
-    Duration: 60 * time.Second,
-})
-result := net.Benchmark()
-fmt.Println(result.TPS)
+import (
+    "context"
+    "fmt"
+    "time"
+
+    "github.com/luxfi/netrunner/client"
+)
+
+func main() {
+    cli, err := client.New(client.Config{
+        Endpoint:    "localhost:8080",
+        DialTimeout: 10 * time.Second,
+    })
+    if err != nil {
+        panic(err)
+    }
+    defer cli.Close()
+
+    ctx := context.Background()
+
+    // Start a network
+    resp, err := cli.Start(ctx, "/path/to/luxd",
+        client.WithNumNodes(5),
+    )
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println("Cluster info:", resp.ClusterInfo)
+
+    // Check health
+    health, _ := cli.Health(ctx)
+    fmt.Println("Healthy:", health.Healthy)
+
+    // Get status
+    status, _ := cli.Status(ctx)
+    for name, node := range status.ClusterInfo.NodeInfos {
+        fmt.Printf("  %s: %s\n", name, node.Uri)
+    }
+
+    // Save snapshot
+    cli.SaveSnapshot(ctx, "my-snapshot")
+
+    // Stop
+    cli.Stop(ctx)
+}
 ```
+
+## REST API
+
+The REST gateway mirrors the gRPC API:
+
+```bash
+# Start network
+curl -X POST http://localhost:8081/v1/control/start \
+  -d '{"numNodes": 5, "execPath": "/path/to/luxd"}'
+
+# Health check
+curl http://localhost:8081/v1/control/health
+
+# Status
+curl http://localhost:8081/v1/control/status
+
+# Save snapshot
+curl -X POST http://localhost:8081/v1/control/savesnapshot \
+  -d '{"snapshotName": "my-snapshot"}'
+
+# Load snapshot
+curl -X POST http://localhost:8081/v1/control/loadsnapshot \
+  -d '{"snapshotName": "my-snapshot"}'
+
+# Stop
+curl -X POST http://localhost:8081/v1/control/stop
+```
+
+## gRPC Methods
+
+| Method | Description |
+|--------|-------------|
+| `Start` | Start a new network |
+| `Stop` | Stop the running network |
+| `Health` | Check network health |
+| `Status` | Get network status and node info |
+| `SaveSnapshot` | Save network state |
+| `LoadSnapshot` | Restore from snapshot |
+| `SaveHotSnapshot` | Snapshot without stopping nodes |
+| `AddNode` | Add a node to the running network |
+| `RemoveNode` | Remove a node from the network |

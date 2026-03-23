@@ -4,11 +4,68 @@ description: Hardware security module backends
 icon: Cpu
 ---
 
+Lux KMS supports Hardware Security Modules (HSMs) for root key protection. The root key encrypts all organization and project KEKs, ensuring that key material is hardware-bound.
+
 ## Supported HSMs
 
-| HSM | Interface | Use Case |
-|-----|-----------|----------|
-| Zymbit SCM | PKCS#11 | Edge/IoT |
-| AWS CloudHSM | PKCS#11 | Cloud production |
-| Google Cloud HSM | Cloud KMS | Cloud production |
-| Azure Managed HSM | REST API | Cloud production |
+| HSM | Interface | Use Case | Status |
+|-----|-----------|----------|--------|
+| Zymbit SCM | PKCS#11 | Edge/IoT devices | Supported |
+| AWS CloudHSM | PKCS#11 | AWS cloud production | Supported |
+| Google Cloud HSM | Cloud KMS API | GCP production | Supported |
+| Azure Managed HSM | REST API | Azure production | Supported |
+| SoftHSM | PKCS#11 | Development/testing | Supported |
+
+## Architecture
+
+```
+Application
+  -> KMS API
+    -> Organization KEK (encrypted by Root Key)
+      -> Project KEK (encrypted by Org KEK)
+        -> Data Keys (encrypted by Project KEK)
+          -> Encrypted Secrets
+
+Root Key is stored in HSM -- never leaves hardware
+```
+
+## Configuration
+
+```bash
+# Environment variables for HSM
+HSM_ENABLED=true
+HSM_TYPE=pkcs11
+HSM_LIBRARY_PATH=/usr/lib/softhsm/libsofthsm2.so
+HSM_SLOT=0
+HSM_PIN=1234
+```
+
+## AWS CloudHSM Setup
+
+```bash
+# Configure AWS CloudHSM
+AWS_HSM_CLUSTER_ID=cluster-abc123
+AWS_HSM_IP=10.0.0.100
+AWS_HSM_USER=kms-user
+AWS_HSM_PASSWORD=<from-kms>
+```
+
+## PKCS#11 Operations
+
+KMS uses PKCS#11 for:
+
+| Operation | Description |
+|-----------|-------------|
+| Key wrapping | Wrap organization KEKs with root key |
+| Key unwrapping | Unwrap KEKs for secret access |
+| Signing | Sign audit log entries |
+| Random generation | Cryptographically secure random bytes |
+
+## Session Management
+
+HSM sessions are pooled for performance:
+
+- Connection pool size: configurable (default 5)
+- Session timeout: 30 minutes
+- Automatic reconnection on failure
+- Health checks every 60 seconds
