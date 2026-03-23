@@ -58,7 +58,7 @@ n := envconfig.RegisterFromEnv(registry)
 slog.Info("providers ready", "count", n)
 ```
 
-`RegisterFromEnv` reads environment variables for all 16 providers and registers whichever ones have credentials set. See [Provider Integration](/docs/regulated/providers) for the full list.
+`RegisterFromEnv` reads environment variables for all 16 providers and registers whichever ones have credentials set. See [Provider Integration](/regulated/providers) for the full list.
 
 ### 3. Create the broker server
 
@@ -211,7 +211,7 @@ func main() {
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| At least one provider key pair | Yes | See [Provider Integration](/docs/regulated/providers) |
+| At least one provider key pair | Yes | See [Provider Integration](/regulated/providers) |
 | `JUBE_BASE_URL` | No | Jube transaction monitoring endpoint |
 | `JUBE_MODEL_ID` | No | Jube EntityAnalysisModel GUID |
 | `COMPLIANCE_API_KEY` | Yes | API key for compliance endpoints |

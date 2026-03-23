@@ -1,13 +1,72 @@
 ---
-title: lux subnet
-description: Create and deploy subnets
+title: lux chain
+description: Create and deploy chains (subnets)
 ---
 
-## Usage
+The `chain` command (also aliased as `subnet`) manages the full lifecycle of Lux chains -- creation, deployment, import/export, and configuration.
+
+## Commands
 
 ```bash
-lux subnet create <name> --evm
-lux subnet deploy <name> --local|--testnet|--mainnet
-lux subnet join <name>
-lux subnet export <name>
+# Create a new chain configuration
+lux chain create <name>
+lux chain create <name> --evm-chain-id=12345
+lux chain create <name> --token-name=MYTOKEN --token-symbol=MTK
+lux chain create <name> --type=l1    # Sovereign L1
+lux chain create <name> --type=l3    # App-specific L3
+
+# Deploy to a network
+lux chain deploy <name> --devnet
+lux chain deploy <name> --testnet
+lux chain deploy <name> --mainnet
+
+# List configured chains
+lux chain list
+
+# Show chain details
+lux chain describe <name>
+
+# Import RLP blocks
+lux chain import --chain=c --path=/path/to/blocks.rlp
+lux chain import --chain=zoo --path=/path/to/zoo.rlp
+
+# Export chain configuration
+lux chain export <name>
 ```
+
+## Chain Types
+
+| Type | Flag | Description |
+|------|------|-------------|
+| L2 (default) | `--type=l2` | Subnet EVM chain validated by a subset of validators |
+| L1 | `--type=l1` | Sovereign chain with its own validator set |
+| L3 | `--type=l3` | Application-specific chain anchored to an L2 |
+
+## Chain Configuration
+
+Configurations are stored in `~/.lux/chains/<name>/`:
+
+```
+~/.lux/chains/<name>/
+  genesis.json      Chain genesis with allocations and config
+  sidecar.json      VM metadata and chain type
+  config.json       Runtime configuration (optional)
+```
+
+## Deployment
+
+When deploying, the CLI:
+
+1. Creates a subnet on the P-Chain
+2. Adds validators to the subnet
+3. Creates the blockchain with the genesis file
+4. Configures all nodes to track the new chain
+
+## Pre-deployed Subnet Chains
+
+| Chain | Mainnet Chain ID | Subnet ID |
+|-------|-----------------|-----------|
+| Zoo | 200200 | See blockchain-ids |
+| Hanzo | 36963 | See blockchain-ids |
+| SPC | 36911 | See blockchain-ids |
+| Pars | 494949 | See blockchain-ids |

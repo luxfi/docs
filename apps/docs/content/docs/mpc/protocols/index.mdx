@@ -5,4 +5,56 @@ index: true
 icon: Shield
 ---
 
-Lux MPC supports four threshold signing protocols, each optimized for different use cases and security requirements.
+Lux MPC supports four threshold signing protocols, each optimized for different use cases and security requirements. All protocols use a t-of-n threshold scheme where `t` nodes must participate to produce a valid signature.
+
+## Protocol Matrix
+
+| Protocol | Curve | Signature Type | Use Case |
+|----------|-------|---------------|----------|
+| CGGMP21 | secp256k1 | ECDSA | Bitcoin, Ethereum, EVM chains, XRPL |
+| FROST | secp256k1 | Schnorr/BIP-340 | Bitcoin Taproot |
+| FROST (Ed25519) | Ed25519 | EdDSA | Solana, Polkadot, Cardano |
+| LSS | secp256k1 | ECDSA | Dynamic resharing, committee changes |
+
+## Threshold Requirement
+
+The minimum threshold enforced is:
+
+```
+t >= floor(n/2) + 1
+```
+
+For a 3-node cluster, `t=2`: any 2 of 3 nodes can sign. No single compromised node can produce a valid signature.
+
+## CGGMP21 (Primary)
+
+The default protocol for ECDSA signatures. Used for all EVM-compatible chains and Bitcoin legacy/SegWit addresses.
+
+- **Keygen**: Distributed key generation producing secp256k1 key shares
+- **Signing**: Threshold ECDSA signature compatible with Ethereum `ecrecover`
+- **Refresh**: Same-committee key share rotation (same addresses)
+
+## FROST (Schnorr)
+
+Used for Bitcoin Taproot (BIP-340) and chains requiring Schnorr signatures.
+
+- **Keygen**: Produces FROST key configuration with Taproot-compatible public keys
+- **Signing**: BIP-340 compatible 64-byte signatures (R_x, s)
+- **Serialization**: CBOR (not JSON -- crypto types lack JSON marshalers)
+
+## LSS (Flexible)
+
+Supports dynamic resharing -- changing the threshold or committee membership without reconstructing the key.
+
+- **Keygen**: Standard distributed key generation
+- **Signing**: ECDSA-compatible output
+- **Reshare**: Change t-of-n parameters while preserving the same addresses
+- **Add/Remove**: Add or remove committee members
+
+## SR25519 (Ristretto255)
+
+For Polkadot/Kusama substrate chains using Schnorrkel signatures.
+
+- **Curve**: ristretto255 prime-order group
+- **Signing context**: Default "substrate", configurable per-session
+- **Format**: R (32 bytes) + z (32 bytes) = 64-byte signature

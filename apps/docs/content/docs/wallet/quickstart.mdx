@@ -4,11 +4,80 @@ description: Create a wallet and send a transaction
 icon: Zap
 ---
 
-## Create Wallet
+## Install
+
+```bash
+go get github.com/luxfi/sdk@latest
+```
+
+## Create a Wallet
 
 ```go
-import "github.com/luxfi/wallet"
+package main
 
-w, _ := wallet.New(wallet.WithMnemonic(mnemonic))
-addr := w.CChainAddress()
+import (
+    "context"
+    "fmt"
+
+    "github.com/luxfi/ids"
+    "github.com/luxfi/sdk/wallet"
+    "github.com/luxfi/sdk/crypto"
+)
+
+func main() {
+    // Create wallet for mainnet
+    w := wallet.New(1, ids.Empty)
+
+    // Generate a new key
+    addr, err := w.GenerateKey()
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println("Address:", addr)
+
+    // Check balance
+    balance := w.GetBalance(luxAssetID)
+    fmt.Println("Balance:", balance)
+}
 ```
+
+## Import an Existing Key
+
+```go
+import "github.com/luxfi/sdk/key"
+
+// From mnemonic
+mnemonic := []string{"word1", "word2", "..."}
+privKey, _ := key.DeriveKey(mnemonic, 0)
+addr, _ := w.ImportKey(privKey)
+```
+
+## Send a Transfer
+
+```go
+// Build transfer (X-Chain UTXO style)
+tx, err := w.CreateTransferTx(
+    recipientAddr,   // ids.ShortID
+    assetID,         // ids.ID
+    1000000,         // 1 LUX on X-Chain (6 decimals)
+    []byte("memo"),
+)
+if err != nil {
+    panic(err)
+}
+
+// Sign
+err = w.Sign(context.Background(), tx)
+if err != nil {
+    panic(err)
+}
+```
+
+## Web Wallet
+
+For browser-based access, visit [wallet.lux.network](https://wallet.lux.network):
+
+1. Create or import a wallet
+2. Select the target chain (P, X, or C)
+3. Enter recipient and amount
+4. Confirm the transaction

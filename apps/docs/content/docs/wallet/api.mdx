@@ -4,10 +4,71 @@ description: Wallet API reference
 icon: FileCode
 ---
 
+The wallet API is provided by the `github.com/luxfi/sdk/wallet` package.
+
 ## Core Types
 
 | Type | Description |
 |------|-------------|
-| Wallet | Main wallet instance |
-| KeyChain | Key management |
-| Signer | Transaction signing |
+| `Wallet` | Main wallet instance managing keys and UTXOs |
+| `UTXO` | Unspent transaction output (ID, AssetID, Amount, Owner) |
+| `TransferTx` | Transfer transaction with inputs and outputs |
+| `TransferInput` | Input referencing a UTXO |
+| `TransferOutput` | Output specifying recipient and amount |
+
+## Wallet Methods
+
+```go
+// Create a new wallet
+func New(networkID uint32, chainID ids.ID) *Wallet
+
+// Key management
+func (w *Wallet) ImportKey(privateKey crypto.PrivateKey) (ids.ShortID, error)
+func (w *Wallet) GenerateKey() (ids.ShortID, error)
+func (w *Wallet) GetAddress() (ids.ShortID, error)
+func (w *Wallet) GetAllAddresses() []ids.ShortID
+
+// Balance and UTXOs
+func (w *Wallet) GetBalance(assetID ids.ID) uint64
+func (w *Wallet) GetUTXOs(assetID ids.ID, amount uint64) ([]*UTXO, uint64, error)
+func (w *Wallet) AddUTXO(utxo *UTXO)
+func (w *Wallet) RemoveUTXO(utxoID ids.ID)
+
+// Transactions
+func (w *Wallet) CreateTransferTx(to ids.ShortID, assetID ids.ID, amount uint64, memo []byte) (*TransferTx, error)
+func (w *Wallet) Sign(ctx context.Context, tx chain.Transaction) error
+
+// BLS keys for validator operations
+func (w *Wallet) SetBLSKey(key *bls.SecretKey)
+func (w *Wallet) GetBLSKey() (*bls.SecretKey, error)
+```
+
+## Error Types
+
+| Error | Description |
+|-------|-------------|
+| `ErrInsufficientFunds` | Not enough balance for the transfer |
+| `ErrNoUTXOs` | No unspent outputs available |
+| `ErrInvalidAddress` | Address format is invalid |
+
+## Key Manager Methods
+
+```go
+// Key manager for persistent key storage
+func NewManager(keyDir string) (*Manager, error)
+
+// Key generation
+func (m *Manager) GenerateEd25519() (*Key, error)
+func (m *Manager) GenerateBLS() (*Key, *bls.SecretKey, error)
+func (m *Manager) GenerateKey(keyType string) (*Key, error)
+
+// Key import/export
+func (m *Manager) ImportKey(privateKey crypto.PrivateKey, keyType string) (*Key, error)
+func (m *Manager) ExportKey(keyID ids.ID) (string, error)
+
+// Key retrieval
+func (m *Manager) GetKey(keyID ids.ID) (*Key, error)
+func (m *Manager) GetByAddress(address ids.ShortID) (*Key, error)
+func (m *Manager) ListKeys() []*Key
+func (m *Manager) DeleteKey(keyID ids.ID) error
+```

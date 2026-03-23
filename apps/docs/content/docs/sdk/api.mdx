@@ -1,14 +1,71 @@
 ---
 title: API Reference
-description: Cross-language API reference
+description: Cross-language API reference for all chain types
 icon: FileCode
 ---
 
+All Lux chains expose JSON-RPC APIs. The SDK wraps these APIs with typed clients in each language.
+
 ## Chain APIs
 
-| API | Description |
-|-----|-------------|
-| P-Chain | Platform chain: validators, subnets, staking |
-| X-Chain | Exchange chain: UTXO operations, assets |
-| C-Chain | Contract chain: EVM, smart contracts |
-| Subnet EVM | Custom EVM subnet interaction |
+| API | Endpoint | Description |
+|-----|----------|-------------|
+| P-Chain | `/ext/bc/P` | Validators, subnets, staking, delegations |
+| X-Chain | `/ext/bc/X` | UTXO operations, asset creation and transfer |
+| C-Chain | `/ext/bc/C/rpc` | EVM JSON-RPC (eth, net, web3 namespaces) |
+| Subnet EVM | `/ext/bc/{name}/rpc` | Same as C-Chain, per-subnet endpoint |
+| Info | `/ext/info` | Node info, network ID, node ID |
+| Health | `/ext/health` | Node and chain health status |
+| Admin | `/ext/admin` | Node administration (whitelisted) |
+
+## P-Chain Methods
+
+| Method | Description |
+|--------|-------------|
+| `platform.getCurrentValidators` | List active validators with stake and uptime |
+| `platform.getPendingValidators` | Validators waiting to join |
+| `platform.getBlockchains` | All blockchains registered on the network |
+| `platform.getSubnets` | All subnets with validator membership |
+| `platform.getBalance` | P-Chain address balance |
+| `platform.getTx` | Transaction by ID |
+| `platform.getHeight` | Current P-Chain height |
+
+## X-Chain Methods
+
+| Method | Description |
+|--------|-------------|
+| `avm.getBalance` | Address balance for a specific asset |
+| `avm.getUTXOs` | Unspent transaction outputs |
+| `avm.send` | Send assets (requires unlocked keystore) |
+| `avm.getAssetDescription` | Asset metadata (name, symbol, denomination) |
+| `avm.getTx` | Transaction by ID |
+
+## C-Chain Methods
+
+Standard Ethereum JSON-RPC methods are supported:
+
+| Method | Description |
+|--------|-------------|
+| `eth_blockNumber` | Latest block number |
+| `eth_getBalance` | Account balance in wei |
+| `eth_sendRawTransaction` | Broadcast signed transaction |
+| `eth_call` | Read-only contract call |
+| `eth_getTransactionReceipt` | Transaction receipt with logs |
+| `eth_getLogs` | Filter event logs |
+| `eth_subscribe` | WebSocket subscriptions (newHeads, logs) |
+
+## Info Methods
+
+```bash
+curl -X POST http://127.0.0.1:9630/ext/info \
+  -H 'Content-Type: application/json' \
+  -d '{"jsonrpc":"2.0","method":"info.getNodeID","params":{},"id":1}'
+```
+
+| Method | Description |
+|--------|-------------|
+| `info.getNodeID` | Node's ID and BLS public key |
+| `info.getNetworkID` | Network ID (1=mainnet, 2=testnet) |
+| `info.getNetworkName` | Human-readable network name |
+| `info.getBlockchainID` | Blockchain ID for a given alias |
+| `info.peers` | Connected peers |

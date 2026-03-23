@@ -4,12 +4,60 @@ description: Install Lux Wallet
 icon: Download
 ---
 
-## Go
+## Go SDK
+
+Add the wallet package to your Go module:
 
 ```bash
-go get github.com/luxfi/wallet@latest
+go get github.com/luxfi/sdk@latest
 ```
 
-## Web
+The wallet is part of the unified SDK. Import it as:
 
-Visit [wallet.lux.network](https://wallet.lux.network)
+```go
+import "github.com/luxfi/sdk/wallet"
+import "github.com/luxfi/sdk/key"
+```
+
+## Build from Source
+
+```bash
+git clone https://github.com/luxfi/sdk.git
+cd sdk
+go build ./...
+go test ./...
+```
+
+## Web Wallet
+
+The web-based wallet requires no installation. Visit [wallet.lux.network](https://wallet.lux.network) in any modern browser.
+
+Supported browsers:
+
+| Browser | Version |
+|---------|---------|
+| Chrome | 90+ |
+| Firefox | 88+ |
+| Safari | 14+ |
+| Edge | 90+ |
+
+## Hardware Wallet
+
+For Ledger hardware wallet support, install the Lux app on your Ledger device via Ledger Live:
+
+1. Open Ledger Live
+2. Go to Manager
+3. Search for "Lux"
+4. Install the Lux app
+
+Connect the Ledger via USB and ensure the Lux app is open before using the wallet.
+
+## Dependencies
+
+The Go SDK wallet depends on:
+
+| Package | Purpose |
+|---------|---------|
+| `github.com/luxfi/crypto` | Cryptographic operations |
+| `github.com/luxfi/ids` | ID and address types |
+| `github.com/luxfi/crypto/bls` | BLS key generation |

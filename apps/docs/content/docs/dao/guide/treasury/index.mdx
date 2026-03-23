@@ -1,0 +1,55 @@
+---
+title: Treasury Management
+description: Manage and allocate community funds through DAO governance
+---
+
+# Treasury Management
+
+The DAO treasury holds community funds and is governed by token holders through proposals and voting.
+
+## Overview
+
+Treasury management includes:
+
+- **Deposits** - Receive funds from protocol revenue, donations, or token sales
+- **Allocations** - Fund grants, bounties, and operational costs via proposals
+- **Reporting** - Track balances, inflows, and outflows transparently on-chain
+- **Multi-asset** - Manage multiple tokens and assets in a single treasury
+
+## Accessing the Treasury
+
+1. Navigate to your DAO dashboard
+2. Click **Treasury** in the sidebar
+3. View current balances and transaction history
+
+## Creating a Treasury Proposal
+
+To request funds from the treasury, create a proposal with a transfer action:
+
+```yaml
+Title: "Fund Developer Grant - Q1 2026"
+Actions:
+  - type: transfer
+    recipient: 0x1234...
+    amount: 10000
+    token: USDC
+```
+
+See [Creating Proposals](/dao/guide/resolutions) for the full proposal workflow.
+
+## Security
+
+- All treasury actions require governance approval
+- Timelocked execution prevents unauthorized withdrawals
+- Multisig support for additional security layers
+
+## Next Steps
+
+<Cards>
+  <Card title="Payments" href="/dao/guide/payments" icon="send">
+    Send transfers, streams, and airdrops
+  </Card>
+  <Card title="Staking" href="/dao/guide/staking" icon="lock">
+    Stake tokens for governance rewards
+  </Card>
+</Cards>

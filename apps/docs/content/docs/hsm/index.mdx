@@ -5,7 +5,7 @@ index: true
 icon: ShieldCheck
 ---
 
-Lux HSM provides a single Go interface for signing and verification across six different backend providers — from cloud HSMs to post-quantum algorithms. All secrets are managed through [Lux KMS](/kms) — never stored as plaintext.
+Lux HSM provides a single Go interface for signing and verification across five different backend providers — from cloud HSMs to post-quantum algorithms. All secrets are managed through [Lux KMS](/kms) — never stored as plaintext.
 
 ## Core Interfaces
 
@@ -28,7 +28,7 @@ type PasswordProvider interface {
 | `aws` | ECDSA P-256 via KMS | Production cloud signing |
 | `gcp` | EC_SIGN_P256_SHA256 | Production cloud signing |
 | `azure` | ES256 via Key Vault | Production cloud signing |
-| `zymbit` | ECDSA P-256 via PKCS#11 | Edge/IoT hardware signing |
+| `zymbit` | ECDSA P-256 via Zymbit SCM | Edge/IoT hardware signing |
 | `mldsa` | ML-DSA-65 (FIPS 204) | Post-quantum signing |
 | `local` | ECDSA P-256 in-memory | Development and testing |
 

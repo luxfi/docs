@@ -3,10 +3,60 @@ title: lux wallet
 description: Transfer assets and check balances
 ---
 
-## Usage
+The `wallet` command provides direct asset transfer and balance queries across all Lux chain types.
+
+## Commands
 
 ```bash
-lux wallet transfer --to <addr> --amount <n>
+# Check balances across all chains
 lux wallet balance
-lux wallet fund --chain <name>
+lux wallet balance --chain C
+lux wallet balance --chain P
+
+# Transfer LUX between addresses
+lux wallet transfer --to <address> --amount <n>
+lux wallet transfer --to <address> --amount 1.5 --chain C
+
+# Fund a chain from another chain
+lux wallet fund --chain zoo --amount 10
+
+# Export assets from one chain
+lux wallet export --from C --to P --amount 100
+
+# Import assets to a chain
+lux wallet import --to P
+```
+
+## Wallet Access
+
+Keys are loaded in priority order:
+
+| Priority | Source | Example |
+|----------|--------|---------|
+| 1 | `--private-key` flag | `--private-key 0xac09...` |
+| 2 | `LUX_PRIVATE_KEY` env | `export LUX_PRIVATE_KEY=0x...` |
+| 3 | `LUX_MNEMONIC` env | `export LUX_MNEMONIC="word1 word2 ..."` |
+
+When using `LUX_MNEMONIC`, the key is derived at BIP-44 path `m/44'/60'/0'/0/0`.
+
+## Token Denominations
+
+| Chain | Decimals | Example |
+|-------|----------|---------|
+| P-Chain | 6 | `--amount 2000` = 2000 LUX |
+| X-Chain | 6 | `--amount 100` = 100 LUX |
+| C-Chain | 18 | `--amount 1.5` = 1.5 LUX (EVM decimals) |
+
+## Network Selection
+
+```bash
+# Default: uses running local network
+lux wallet balance
+
+# Specific network
+lux wallet balance --mainnet
+lux wallet balance --testnet
+
+# Custom RPC
+lux wallet balance --rpc http://127.0.0.1:9630/ext/bc/C/rpc
 ```

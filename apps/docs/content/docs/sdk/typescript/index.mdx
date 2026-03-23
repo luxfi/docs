@@ -1,8 +1,86 @@
 ---
 title: TypeScript SDK
-description: TypeScript/JavaScript client library
+description: TypeScript/JavaScript client library for Lux Network
 index: true
 icon: FileCode
 ---
 
-Overview of the TypeScript SDK for Lux Network.
+The TypeScript SDK (`@luxfi/sdk`) provides a fully typed interface for building applications on Lux Network. It supports all chain types with native TypeScript types and works in both Node.js and browser environments.
+
+## Installation
+
+```bash
+npm install @luxfi/sdk
+# or
+pnpm add @luxfi/sdk
+```
+
+## Quick Start
+
+```typescript
+import { LuxClient } from "@luxfi/sdk";
+
+const client = new LuxClient({
+  network: "mainnet",
+  endpoint: "https://api.lux.network/mainnet",
+});
+
+// Get C-Chain block number
+const block = await client.cChain.getBlockNumber();
+console.log("Latest block:", block);
+
+// Get balance
+const balance = await client.cChain.getBalance(
+  "0x9011E888251AB053B7bD1cdB598Db4f9DEd94714"
+);
+console.log("Balance:", balance, "wei");
+```
+
+## Core Packages
+
+| Package | Purpose |
+|---------|---------|
+| `@luxfi/sdk` | Top-level client for all chain operations |
+| `@luxfi/sdk/wallet` | HD wallet with BIP-44 derivation |
+| `@luxfi/sdk/rpc` | Typed JSON-RPC client |
+| `@luxfi/sdk/contracts` | Smart contract interaction helpers |
+| `@luxfi/sdk/types` | TypeScript type definitions |
+
+## Chain Support
+
+| Chain | RPC | Transactions | Contracts |
+|-------|-----|-------------|-----------|
+| P-Chain | Yes | Yes | N/A |
+| X-Chain | Yes | Yes | N/A |
+| C-Chain | Yes | Yes | Yes |
+| Subnet EVM | Yes | Yes | Yes |
+
+## Framework Integration
+
+The SDK works with popular Web3 libraries:
+
+```typescript
+import { createPublicClient, http } from "viem";
+
+const client = createPublicClient({
+  chain: {
+    id: 96369,
+    name: "Lux",
+    nativeCurrency: { name: "LUX", symbol: "LUX", decimals: 18 },
+    rpcUrls: {
+      default: {
+        http: ["https://api.lux.network/mainnet/ext/bc/C/rpc"],
+      },
+    },
+  },
+  transport: http(),
+});
+
+const blockNumber = await client.getBlockNumber();
+```
+
+## Related Pages
+
+- [RPC Operations](/docs/sdk/typescript/rpc) -- JSON-RPC calls from TypeScript
+- [Wallet](/docs/sdk/typescript/wallet) -- Key management and signing
+- [Transactions](/docs/sdk/typescript/transactions) -- Sending transactions

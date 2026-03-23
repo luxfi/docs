@@ -1,8 +1,76 @@
 ---
 title: Python SDK
-description: Python client library
+description: Python client library for Lux Network
 index: true
 icon: FileCode
 ---
 
-Overview of the Python SDK for Lux Network.
+The Python SDK (`luxfi-sdk`) provides a high-level interface for interacting with Lux Network from Python applications. It supports C-Chain and Subnet EVM chains via Web3.py, with convenience wrappers for common operations.
+
+## Installation
+
+```bash
+pip install luxfi-sdk
+```
+
+Or with `uv`:
+
+```bash
+uv pip install luxfi-sdk
+```
+
+## Quick Start
+
+```python
+from luxfi_sdk import LuxClient
+
+client = LuxClient("https://api.lux.network/mainnet")
+
+# Get C-Chain block number
+block = client.c_chain.block_number()
+print(f"Latest block: {block}")
+
+# Get balance
+balance = client.c_chain.get_balance(
+    "0x9011E888251AB053B7bD1cdB598Db4f9DEd94714"
+)
+print(f"Balance: {balance} wei")
+```
+
+## Core Modules
+
+| Module | Purpose |
+|--------|---------|
+| `luxfi_sdk.client` | Top-level client for all chain operations |
+| `luxfi_sdk.wallet` | Key management and transaction signing |
+| `luxfi_sdk.rpc` | Raw JSON-RPC calls to any chain endpoint |
+| `luxfi_sdk.contracts` | Smart contract interaction helpers |
+| `luxfi_sdk.types` | Typed request/response models |
+
+## Chain Support
+
+| Chain | RPC | Transactions | Contracts |
+|-------|-----|-------------|-----------|
+| C-Chain | Yes | Yes | Yes |
+| Subnet EVM (Zoo, Hanzo, SPC, Pars) | Yes | Yes | Yes |
+| P-Chain | Read-only | No | N/A |
+| X-Chain | Read-only | No | N/A |
+
+## Network Endpoints
+
+```python
+# Mainnet
+client = LuxClient("https://api.lux.network/mainnet")
+
+# Testnet
+client = LuxClient("https://api.lux.network/testnet")
+
+# Local development
+client = LuxClient("http://127.0.0.1:9630")
+```
+
+## Related Pages
+
+- [RPC Operations](/docs/sdk/python/rpc) -- JSON-RPC calls from Python
+- [Wallet](/docs/sdk/python/wallet) -- Key management and signing
+- [Transactions](/docs/sdk/python/transactions) -- Sending transactions

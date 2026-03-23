@@ -1,13 +1,80 @@
 ---
 title: Network Simulation
-description: Simulate multi-node networks
+description: Simulate multi-node networks with failure injection
 icon: Globe
 ---
 
-## Partition Testing
+Netrunner provides tools for simulating realistic network conditions including partitions, latency, and node failures.
+
+## Network Partitions
+
+Split the network into isolated groups to test consensus recovery:
 
 ```bash
+# Partition nodes into two groups: [0,1] and [2,3,4]
 netrunner sim --partition 2,3 --duration 30s
 ```
 
-Simulate network partitions to test consensus recovery.
+After the partition heals, consensus should resume within seconds.
+
+## Node Failures
+
+Simulate individual node crashes:
+
+```bash
+# Kill node-2 and observe network behavior
+netrunner sim --kill-node 2 --duration 60s
+
+# Kill and restart after 10s
+netrunner sim --kill-node 2 --restart-after 10s
+```
+
+## Latency Injection
+
+Add artificial latency between nodes:
+
+```bash
+# Add 100ms latency between all nodes
+netrunner sim --latency 100ms
+
+# Add latency to specific links
+netrunner sim --latency-from 0 --latency-to 2 --latency 200ms
+```
+
+## Byzantine Behavior
+
+Simulate a node that sends conflicting messages:
+
+```bash
+# Node-3 acts as a Byzantine validator
+netrunner sim --byzantine-node 3 --duration 120s
+```
+
+## Chaos Testing
+
+Run randomized failure scenarios:
+
+```bash
+# Random failures over 5 minutes
+netrunner sim --chaos --duration 5m --max-failures 3
+```
+
+## Topology Types
+
+| Topology | Description |
+|----------|-------------|
+| `mesh` | Every node connected to every other (default) |
+| `star` | All nodes connect through a central hub |
+| `ring` | Each node connects to its neighbors |
+| `hierarchical` | Tree structure with bootstrap at root |
+| `custom` | Defined via YAML topology file |
+
+## Monitoring During Simulation
+
+```bash
+# Watch consensus metrics
+netrunner control status --watch
+
+# Check if all chains are healthy
+netrunner control health
+```
