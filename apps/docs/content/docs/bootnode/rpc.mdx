@@ -4,14 +4,71 @@ description: Multi-chain JSON-RPC proxy
 icon: Server
 ---
 
+The RPC proxy provides a unified endpoint for all Lux chains with load balancing, automatic failover, and rate limiting.
+
 ## Endpoints
 
-All chains are accessible via:
+All chains are accessible via a single base URL:
 
 ```
 https://api.lux.cloud/v1/rpc/{chain}
 ```
 
+## Supported Chains
+
+| Chain | Path | Chain ID |
+|-------|------|----------|
+| Lux C-Chain | `/v1/rpc/lux` | 96369 |
+| Zoo | `/v1/rpc/zoo` | 200200 |
+| Hanzo | `/v1/rpc/hanzo` | 36963 |
+| SPC | `/v1/rpc/spc` | 36911 |
+| Pars | `/v1/rpc/pars` | 494949 |
+| Ethereum | `/v1/rpc/ethereum` | 1 |
+
+## Example
+
+```bash
+curl -X POST https://api.lux.cloud/v1/rpc/lux \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{
+    "jsonrpc": "2.0",
+    "method": "eth_blockNumber",
+    "params": [],
+    "id": 1
+  }'
+```
+
+## Supported Methods
+
+All standard Ethereum JSON-RPC methods are supported:
+
+| Category | Methods |
+|----------|---------|
+| Chain state | `eth_blockNumber`, `eth_getBalance`, `eth_getCode` |
+| Transactions | `eth_sendRawTransaction`, `eth_getTransactionReceipt` |
+| Calls | `eth_call`, `eth_estimateGas` |
+| Logs | `eth_getLogs` |
+| Subscriptions | `eth_subscribe` (via WebSocket only) |
+
 ## Load Balancing
 
-Requests are distributed across healthy nodes with automatic failover.
+Requests are distributed across healthy upstream nodes using round-robin with health checks:
+
+- Health checks every 10 seconds
+- Automatic failover on node failure
+- Sticky sessions for subscription connections
+- Request timeout: 30 seconds with 3 retries
+
+## Batch Requests
+
+Batch JSON-RPC is supported:
+
+```bash
+curl -X POST https://api.lux.cloud/v1/rpc/lux \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '[
+    {"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1},
+    {"jsonrpc":"2.0","method":"eth_gasPrice","params":[],"id":2}
+  ]'
+```

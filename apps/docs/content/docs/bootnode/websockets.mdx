@@ -4,14 +4,95 @@ description: Real-time blockchain subscriptions
 icon: Radio
 ---
 
+WebSocket connections provide real-time blockchain event streaming without polling.
+
 ## Connect
 
 ```javascript
-const ws = new WebSocket('wss://api.lux.cloud/v1/ws/lux');
+const ws = new WebSocket("wss://api.lux.cloud/v1/ws/lux");
+```
+
+Replace `lux` with any supported chain: `zoo`, `hanzo`, `spc`, `pars`, `ethereum`.
+
+## Subscribe to New Blocks
+
+```javascript
+ws.onopen = () => {
+  ws.send(JSON.stringify({
+    jsonrpc: "2.0",
+    method: "eth_subscribe",
+    params: ["newHeads"],
+    id: 1,
+  }));
+};
+
+ws.onmessage = (event) => {
+  const msg = JSON.parse(event.data);
+  if (msg.params) {
+    console.log("Block:", msg.params.result.number);
+  }
+};
+```
+
+## Subscribe to Logs
+
+Filter events by address and topics:
+
+```javascript
 ws.send(JSON.stringify({
-  jsonrpc: '2.0',
-  method: 'eth_subscribe',
-  params: ['newHeads'],
-  id: 1
+  jsonrpc: "2.0",
+  method: "eth_subscribe",
+  params: [
+    "logs",
+    {
+      address: "0xContractAddress...",
+      topics: [
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+      ],
+    },
+  ],
+  id: 2,
 }));
+```
+
+## Subscribe to Pending Transactions
+
+```javascript
+ws.send(JSON.stringify({
+  jsonrpc: "2.0",
+  method: "eth_subscribe",
+  params: ["newPendingTransactions"],
+  id: 3,
+}));
+```
+
+## Unsubscribe
+
+```javascript
+ws.send(JSON.stringify({
+  jsonrpc: "2.0",
+  method: "eth_unsubscribe",
+  params: ["0x1234..."],  // subscription ID from subscribe response
+  id: 4,
+}));
+```
+
+## Connection Limits
+
+| Plan | Max Connections | Messages/min |
+|------|----------------|-------------|
+| Free | 2 | 120 |
+| Pro | 10 | 600 |
+| Enterprise | Unlimited | Unlimited |
+
+## Reconnection
+
+WebSocket connections may drop due to network issues. Implement automatic reconnection with exponential backoff:
+
+```javascript
+function connect() {
+  const ws = new WebSocket("wss://api.lux.cloud/v1/ws/lux");
+  ws.onclose = () => setTimeout(connect, 1000);
+  return ws;
+}
 ```

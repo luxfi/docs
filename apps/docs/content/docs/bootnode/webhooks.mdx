@@ -1,12 +1,76 @@
 ---
 title: Webhooks
-description: Event-driven notifications
+description: Event-driven notifications for blockchain activity
 icon: Bell
 ---
 
-## Create Webhook
+Webhooks deliver real-time notifications when blockchain events occur. Configure a webhook URL to receive HTTP POST callbacks for transfers, contract events, and more.
+
+## Create a Webhook
 
 ```bash
 curl -X POST https://api.lux.cloud/v1/webhooks \
-  -d '{"url": "https://example.com/hook", "events": ["transfer"]}'
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://example.com/hook",
+    "events": ["transfer", "contract_event"],
+    "chain": "lux",
+    "filters": {
+      "address": "0x9011E888251AB053B7bD1cdB598Db4f9DEd94714"
+    }
+  }'
 ```
+
+## Event Types
+
+| Event | Description |
+|-------|-------------|
+| `transfer` | Native token transfer (LUX, ETH) |
+| `erc20_transfer` | ERC-20 token transfer |
+| `erc721_transfer` | NFT transfer |
+| `erc1155_transfer` | Multi-token transfer |
+| `contract_event` | Any contract event log |
+| `new_block` | New block produced |
+
+## Webhook Payload
+
+```json
+{
+  "id": "evt-abc123",
+  "event": "transfer",
+  "chain": "lux",
+  "blockNumber": 12345,
+  "txHash": "0xabc...",
+  "from": "0x...",
+  "to": "0x...",
+  "value": "1000000000000000000",
+  "timestamp": "2026-03-22T10:00:00Z"
+}
+```
+
+## Manage Webhooks
+
+```bash
+# List webhooks
+curl https://api.lux.cloud/v1/webhooks \
+  -H "Authorization: Bearer YOUR_API_KEY"
+
+# Delete a webhook
+curl -X DELETE https://api.lux.cloud/v1/webhooks/wh-abc123 \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Retry Policy
+
+Failed deliveries are retried with exponential backoff:
+
+| Attempt | Delay |
+|---------|-------|
+| 1 | Immediate |
+| 2 | 30 seconds |
+| 3 | 2 minutes |
+| 4 | 10 minutes |
+| 5 | 1 hour |
+
+After 5 failures, the webhook is disabled. Re-enable it via the API.
