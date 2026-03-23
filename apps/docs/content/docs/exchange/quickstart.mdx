@@ -1,14 +1,69 @@
 ---
 title: Quick Start
-description: Run the exchange locally
+description: Run the Lux Exchange locally
 icon: Zap
 ---
+
+## Prerequisites
+
+- Node.js 18+
+- pnpm 8+
+- PostgreSQL 15+ (for the backend)
+- A running Lux node or RPC endpoint
+
+## Clone and Install
 
 ```bash
 git clone https://github.com/luxfi/exchange
 cd exchange
 pnpm install
+```
+
+## Configure Environment
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` with your RPC endpoints:
+
+```bash
+LUX_RPC_URL=http://127.0.0.1:9630/ext/bc/C/rpc
+DATABASE_URL=postgres://exchange:pass@localhost:5432/exchange
+```
+
+## Run the Exchange
+
+```bash
 pnpm dev
 ```
 
-Open [localhost:3000](http://localhost:3000).
+Open [localhost:3000](http://localhost:3000) in your browser.
+
+## Features
+
+| Feature | Description |
+|---------|-------------|
+| Spot Trading | Buy and sell tokens with limit and market orders |
+| Liquidity Pools | Provide liquidity to AMM pools |
+| Charts | Real-time price charts with OHLCV candles |
+| Portfolio | Track your positions and balances |
+| Swap | Simple token swap interface |
+
+## Deployed Instances
+
+| Instance | URL | Network |
+|----------|-----|---------|
+| Mainnet | [exchange.lux.network](https://exchange.lux.network) | Lux Mainnet |
+| Markets | [markets.lux.network](https://markets.lux.network) | Market data |
+
+## AMM Contracts
+
+All networks use the same CREATE2-deployed contract addresses:
+
+| Contract | Address |
+|----------|---------|
+| V2 Factory | `0xD173926A10A0C4eCd3A51B1422270b65Df0551c1` |
+| V2 Router | `0xAe2cf1E403aAFE6C05A5b8Ef63EB19ba591d8511` |
+| V3 Factory | `0x80bBc7C4C7a59C899D1B37BC14539A22D5830a84` |
+| V3 Router | `0x939bC0Bca6F9B9c52E6e3AD8A3C590b5d9B9D10E` |

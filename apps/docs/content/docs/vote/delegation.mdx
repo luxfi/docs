@@ -1,15 +1,65 @@
 ---
 title: Delegation
-description: Delegate voting power
+description: Delegate voting power to representatives
 icon: Users
 ---
+
+Voting power in Lux governance comes from vLUX (vote-escrowed LUX). Before you can vote or have your tokens counted toward quorum, you must delegate your voting power -- either to yourself or to a representative.
 
 ## How to Delegate
 
 1. Go to [lux.vote/delegate](https://lux.vote/delegate)
-2. Enter the delegate address
-3. Confirm the transaction
+2. Connect your wallet
+3. Enter the delegate address (or your own address for self-delegation)
+4. Confirm the transaction
 
 ## Self-Delegation
 
-You must self-delegate to activate your own voting power. vLUX holders who haven't delegated cannot vote.
+You must self-delegate to activate your own voting power. vLUX holders who have not delegated cannot vote and their tokens are not counted toward quorum.
+
+```solidity
+// Self-delegate on-chain
+vLUX.delegate(myAddress);
+```
+
+## Delegate to a Representative
+
+If you do not want to vote on every proposal, delegate to a representative who votes on your behalf:
+
+```solidity
+// Delegate to a representative
+vLUX.delegate(representativeAddress);
+```
+
+Your delegate votes with the weight of your vLUX. You can change your delegate at any time.
+
+## Delegation Properties
+
+| Property | Behavior |
+|----------|----------|
+| Transfer | Delegation does not transfer tokens |
+| Revocable | Change delegate at any time |
+| Immediate | Takes effect in the next block |
+| Single delegate | Each address delegates to one representative |
+| Transitive | Delegation is not transitive (A delegates to B, B cannot re-delegate A's votes) |
+
+## Checking Delegation
+
+```bash
+# Check who an address delegates to
+curl -X POST https://api.lux.network/mainnet/ext/bc/C/rpc \
+  -d '{
+    "jsonrpc": "2.0",
+    "method": "eth_call",
+    "params": [{"to": "0xvLUX...", "data": "0x5c19a95c000..."}, "latest"],
+    "id": 1
+  }'
+```
+
+## Vote Weight
+
+Your vote weight is the sum of:
+- Your own vLUX balance (if self-delegated)
+- vLUX delegated to you by other addresses
+
+Vote weight is snapshotted at proposal creation time. Acquiring or delegating vLUX after a proposal is created does not affect that proposal's vote.
