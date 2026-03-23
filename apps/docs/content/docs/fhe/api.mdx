@@ -1,15 +1,88 @@
 ---
 title: FHE API Reference
-description: fhed daemon API
+description: fhed daemon API for fully homomorphic encryption
 icon: FileCode
 ---
+
+The FHE daemon (`fhed`) provides an API for encrypting, decrypting, and computing on encrypted data without exposing plaintext.
 
 ## Daemon Endpoints
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/v1/encrypt` | Encrypt plaintext |
-| POST | `/v1/decrypt` | Decrypt ciphertext (authorized) |
-| POST | `/v1/reencrypt` | Re-encrypt for new key |
-| GET | `/v1/publickey` | Get network public key |
+| POST | `/v1/encrypt` | Encrypt plaintext under the network public key |
+| POST | `/v1/decrypt` | Decrypt ciphertext (requires authorization) |
+| POST | `/v1/reencrypt` | Re-encrypt ciphertext for a different key |
+| POST | `/v1/compute` | Perform homomorphic computation on ciphertexts |
+| GET | `/v1/publickey` | Get the network FHE public key |
 | GET | `/v1/health` | Health check |
+| GET | `/v1/metrics` | Prometheus metrics |
+
+## Encrypt
+
+```bash
+curl -X POST http://localhost:8080/v1/encrypt \
+  -H "Content-Type: application/json" \
+  -d '{
+    "plaintext": "42",
+    "type": "uint8"
+  }'
+```
+
+Response:
+
+```json
+{
+  "ciphertext": "base64-encoded-ciphertext...",
+  "type": "euint8",
+  "publicKeyHash": "0xabc123..."
+}
+```
+
+## Decrypt (Threshold)
+
+Decryption requires threshold authorization from multiple FHE nodes:
+
+```bash
+curl -X POST http://localhost:8080/v1/decrypt \
+  -H "Authorization: Bearer $FHE_TOKEN" \
+  -d '{
+    "ciphertext": "base64-encoded-ciphertext...",
+    "proof": "decryption-authorization-proof"
+  }'
+```
+
+## Homomorphic Computation
+
+```bash
+curl -X POST http://localhost:8080/v1/compute \
+  -d '{
+    "operation": "add",
+    "operands": [
+      "ciphertext-a-base64...",
+      "ciphertext-b-base64..."
+    ]
+  }'
+```
+
+## Supported Operations
+
+| Operation | Description | Types |
+|-----------|-------------|-------|
+| `add` | Homomorphic addition | euint8, euint16, euint32, euint64 |
+| `sub` | Homomorphic subtraction | euint8, euint16, euint32, euint64 |
+| `mul` | Homomorphic multiplication | euint8, euint16, euint32, euint64 |
+| `and` | Bitwise AND | ebool, euint8 |
+| `or` | Bitwise OR | ebool, euint8 |
+| `eq` | Equality comparison | All types |
+| `lt` | Less than comparison | All numeric types |
+
+## Encrypted Types
+
+| Type | Plaintext | Size |
+|------|-----------|------|
+| `ebool` | boolean | 1 bit |
+| `euint8` | uint8 | 8 bits |
+| `euint16` | uint16 | 16 bits |
+| `euint32` | uint32 | 32 bits |
+| `euint64` | uint64 | 64 bits |

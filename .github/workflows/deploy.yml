@@ -8,6 +8,7 @@ on:
 permissions:
   contents: read
   packages: write
+  id-token: write
 
 concurrency:
   group: deploy-docs
@@ -15,7 +16,7 @@ concurrency:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: luxfi/docs
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build-and-push:
@@ -30,12 +31,22 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest
+            type=sha
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest,${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64
 
   deploy:
@@ -50,4 +61,4 @@ jobs:
           username: ${{ secrets.K8S_USER }}
           key: ${{ secrets.K8S_SSH_KEY }}
           script: |
-            kubectl rollout restart deployment/lux-docs -n lux-explorer
+            kubectl rollout restart deployment/lux-docs -n lux-ns

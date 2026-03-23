@@ -4,11 +4,85 @@ description: Bridge REST API
 icon: FileCode
 ---
 
+The Bridge API runs on port 3000 and provides endpoints for initiating and tracking cross-chain transfers.
+
 ## Endpoints
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/v1/transfer` | Initiate transfer |
-| GET | `/v1/transfer/:id` | Get transfer status |
-| GET | `/v1/transfers` | List transfers |
-| GET | `/v1/chains` | Supported chains |
+| POST | `/v1/transfer` | Initiate a cross-chain transfer |
+| GET | `/v1/transfer/:id` | Get transfer status by ID |
+| GET | `/v1/transfers` | List transfers (with pagination) |
+| GET | `/v1/chains` | List supported chains |
+| GET | `/v1/assets` | List supported assets |
+| GET | `/v1/fees` | Get current fee estimates |
+| GET | `/v1/health` | Health check |
+
+## Initiate Transfer
+
+```bash
+curl -X POST https://bridge-api.lux.network/v1/transfer \
+  -H "Content-Type: application/json" \
+  -d '{
+    "sourceChain": "ethereum",
+    "destinationChain": "lux-c",
+    "asset": "USDC",
+    "amount": "1000000000",
+    "recipient": "0x9011E888...",
+    "sourceTxHash": "0xabc..."
+  }'
+```
+
+Response:
+
+```json
+{
+  "id": "tx-abc123",
+  "status": "pending",
+  "sourceChain": "ethereum",
+  "destinationChain": "lux-c",
+  "asset": "USDC",
+  "amount": "1000000000",
+  "confirmationsRequired": 12,
+  "confirmationsCurrent": 0,
+  "createdAt": "2026-03-22T10:00:00Z"
+}
+```
+
+## Get Transfer Status
+
+```bash
+curl https://bridge-api.lux.network/v1/transfer/tx-abc123
+```
+
+## Transfer Statuses
+
+| Status | Description |
+|--------|-------------|
+| `pending` | Waiting for source chain confirmations |
+| `confirmed` | Source chain confirmed, waiting for MPC |
+| `signing` | MPC nodes are producing threshold signature |
+| `broadcasting` | Signed transaction being broadcast |
+| `completed` | Transfer complete on destination chain |
+| `failed` | Transfer failed (with error details) |
+
+## List Transfers
+
+```bash
+# List with pagination
+curl "https://bridge-api.lux.network/v1/transfers?page=1&limit=20"
+
+# Filter by address
+curl "https://bridge-api.lux.network/v1/transfers?address=0x..."
+
+# Filter by status
+curl "https://bridge-api.lux.network/v1/transfers?status=pending"
+```
+
+## Fee Estimates
+
+```bash
+curl https://bridge-api.lux.network/v1/fees
+```
+
+Returns estimated fees for each supported route.

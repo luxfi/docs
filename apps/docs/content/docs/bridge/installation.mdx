@@ -4,15 +4,76 @@ description: Set up the Lux Bridge
 icon: Download
 ---
 
+## Prerequisites
+
+- Node.js 18+
+- PostgreSQL 15+
+- MPC cluster (3 nodes) running
+
 ## Bridge UI
 
 ```bash
 git clone https://github.com/luxfi/bridge
-cd bridge/ui && npm install && npm run dev
+cd bridge/ui
+npm install
+npm run dev
 ```
+
+The UI runs at `http://localhost:3000`.
 
 ## Bridge API
 
 ```bash
-cd bridge/server && npm install && npm start
+cd bridge/server
+npm install
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your database and MPC URLs
+
+npm start
 ```
+
+## Environment Setup
+
+Minimum required environment variables:
+
+```bash
+# Database
+BRIDGE_DB_URL=postgres://bridge:pass@localhost:5432/bridge
+
+# MPC cluster
+MPC_URL=http://localhost:8081
+
+# Chain RPCs
+ETH_RPC_URL=https://eth.llamarpc.com
+LUX_RPC_URL=http://localhost:9630/ext/bc/C/rpc
+```
+
+## Docker Compose
+
+```bash
+cd bridge
+docker compose up -d
+```
+
+This starts the Bridge UI, API, PostgreSQL, and a local MPC cluster for development.
+
+## Kubernetes
+
+The bridge deploys to the `lux-bridge` namespace:
+
+```bash
+kubectl apply -k infra/k8s/lux-bridge/
+```
+
+## Production Checklist
+
+| Item | Requirement |
+|------|------------|
+| MPC cluster | 3 nodes in consensus mode with HSM |
+| PostgreSQL | High-availability with streaming replication |
+| TLS | Valid certificates on all endpoints |
+| Rate limiting | Configured per-address and global limits |
+| Monitoring | Prometheus metrics and alerting |
+| NODE_OPTIONS | `--max-old-space-size=1536` to prevent OOM |

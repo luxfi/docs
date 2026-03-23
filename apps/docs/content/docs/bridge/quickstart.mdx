@@ -4,8 +4,58 @@ description: Your first cross-chain transfer
 icon: Zap
 ---
 
+## Web Interface
+
+The fastest way to bridge assets is via the web interface:
+
 1. Open [bridge.lux.network](https://bridge.lux.network)
-2. Connect your wallet
-3. Select source and destination chains
-4. Enter amount and confirm
-5. MPC nodes sign the transfer
+2. Connect your wallet (MetaMask, WalletConnect, or Ledger)
+3. Select the source chain (e.g., Ethereum)
+4. Select the destination chain (e.g., Lux C-Chain)
+5. Enter the amount to transfer
+6. Approve the token spend (if ERC-20)
+7. Confirm the bridge transaction
+8. Wait for MPC nodes to sign (typically under 30 seconds)
+9. Assets appear on the destination chain
+
+## API Transfer
+
+For programmatic transfers, use the Bridge API:
+
+```bash
+curl -X POST https://bridge-api.lux.network/v1/transfer \
+  -H "Content-Type: application/json" \
+  -d '{
+    "sourceChain": "ethereum",
+    "destinationChain": "lux-c",
+    "asset": "USDC",
+    "amount": "1000000000",
+    "recipient": "0x9011E888251AB053B7bD1cdB598Db4f9DEd94714"
+  }'
+```
+
+## Track Transfer Status
+
+```bash
+curl https://bridge-api.lux.network/v1/transfer/tx-abc123
+```
+
+Response includes `status` field: `pending`, `signing`, `broadcasting`, `confirmed`, or `failed`.
+
+## Supported Assets
+
+| Asset | Source Chains | Destination |
+|-------|-------------|-------------|
+| LUX | Lux C-Chain | Zoo, Hanzo, SPC, Pars |
+| ETH | Ethereum | Lux C-Chain (as wETH) |
+| USDC | Ethereum | Lux C-Chain |
+| USDT | Ethereum | Lux C-Chain |
+| BTC | Bitcoin | Lux C-Chain (as wBTC) |
+
+## Transfer Times
+
+| Route | Estimated Time |
+|-------|---------------|
+| Lux to Subnet | 5-15 seconds |
+| Ethereum to Lux | 2-5 minutes (12 confirmations) |
+| Bitcoin to Lux | 30-60 minutes (3 confirmations) |

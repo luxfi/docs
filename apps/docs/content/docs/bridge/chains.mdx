@@ -4,10 +4,46 @@ description: Chains and asset support
 icon: Link
 ---
 
+The Lux Bridge supports transfers between Lux Network chains and external blockchains.
+
 ## Chain Matrix
 
-| Source | Destination | Assets |
-|--------|-------------|--------|
-| Lux C | Zoo/Hanzo/SPC/Pars | LUX, tokens |
-| Ethereum | Lux C | ETH, USDC, USDT |
-| Bitcoin | Lux C | BTC (wrapped) |
+| Source | Destination | Assets | Protocol |
+|--------|-------------|--------|----------|
+| Lux C-Chain | Zoo | LUX, ERC-20 tokens | Warp |
+| Lux C-Chain | Hanzo | LUX, ERC-20 tokens | Warp |
+| Lux C-Chain | SPC | LUX, ERC-20 tokens | Warp |
+| Lux C-Chain | Pars | LUX, ERC-20 tokens | Warp |
+| Ethereum | Lux C-Chain | ETH, USDC, USDT, WBTC | MPC |
+| Bitcoin | Lux C-Chain | BTC (wrapped) | MPC + FROST |
+| Lux C-Chain | Ethereum | LUX, tokens | MPC |
+
+## Chain IDs
+
+| Chain | Mainnet | Testnet |
+|-------|---------|---------|
+| Lux C-Chain | 96369 | 96368 |
+| Zoo | 200200 | 200201 |
+| Hanzo | 36963 | 36964 |
+| SPC | 36911 | 36910 |
+| Pars | 494949 | 494950 |
+| Ethereum | 1 | 11155111 (Sepolia) |
+
+## Intra-Lux Transfers (Warp)
+
+Transfers between Lux C-Chain and subnet chains use the native Warp messaging protocol. These are fast (sub-second) and do not require MPC signing.
+
+## External Chain Transfers (MPC)
+
+Transfers to and from external chains (Ethereum, Bitcoin) use MPC threshold signing. The bridge locks assets on the source chain and mints wrapped tokens on the destination.
+
+## Asset Contracts
+
+| Asset | C-Chain Address | Type |
+|-------|----------------|------|
+| wETH | Deployed via CREATE2 | ERC-20 wrapped |
+| USDC | Deployed via CREATE2 | ERC-20 bridged |
+| USDT | Deployed via CREATE2 | ERC-20 bridged |
+| wBTC | Deployed via CREATE2 | ERC-20 wrapped |
+
+All bridge token contracts use deterministic CREATE2 addresses, identical across all networks.

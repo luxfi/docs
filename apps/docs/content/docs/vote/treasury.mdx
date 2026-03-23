@@ -1,18 +1,70 @@
 ---
 title: Treasury
-description: DAO treasury management
+description: DAO treasury management and spending
 icon: Wallet
 ---
 
+The DAO treasury holds protocol-owned assets and is governed entirely through on-chain proposals.
+
 ## Treasury Governance
 
-The DAO treasury is managed through governance proposals. All fund movements require:
+All fund movements require:
 
-1. Formal proposal with detailed budget
-2. Community discussion period (3+ days)
-3. On-chain vote meeting quorum
+1. Formal proposal with detailed budget and justification
+2. Community discussion period (minimum 3 days)
+3. On-chain vote meeting the required quorum
 4. Timelock delay before execution
 
-## Multi-Sig
+## Spending Tiers
 
-Emergency operations use a 4/7 multi-sig council with transparent on-chain execution.
+| Amount | Proposal Type | Quorum | Timelock |
+|--------|--------------|--------|----------|
+| Under $10K | Treasury (small) | 2% | 1 day |
+| $10K - $100K | Treasury (standard) | 10% | 7 days |
+| Over $100K | Constitutional | 20% | 14 days |
+
+## Multi-Sig Council
+
+Emergency operations use a 4/7 multi-sig council:
+
+| Property | Value |
+|----------|-------|
+| Signers | 7 council members |
+| Threshold | 4 signatures required |
+| Execution | Transparent on-chain transactions |
+| Scope | Emergency pause, security fixes only |
+| Oversight | All actions logged and reviewable |
+
+The multi-sig cannot override governance votes. It exists solely for time-sensitive security responses.
+
+## Treasury Assets
+
+The treasury holds:
+
+| Asset | Description |
+|-------|-------------|
+| LUX | Native protocol token |
+| vLUX | Vote-escrowed governance token |
+| USDC | Stablecoin reserves |
+| LP tokens | Protocol-owned liquidity |
+
+## Reporting
+
+Treasury balances and spending history are publicly viewable at [lux.vote/treasury](https://lux.vote/treasury).
+
+Monthly reports include:
+- Opening and closing balances
+- All approved and executed proposals
+- Running total of grants and payments
+- Yield from protocol-owned liquidity
+
+## Smart Contract
+
+The treasury is implemented as a Timelock Controller with the Governor as the sole proposer:
+
+```
+Governor -> Timelock -> Treasury
+  (propose)   (queue + execute)  (holds funds)
+```
+
+Only proposals that pass governance can execute treasury transactions.

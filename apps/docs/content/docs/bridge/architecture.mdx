@@ -4,11 +4,70 @@ description: Bridge design and MPC integration
 icon: GitBranch
 ---
 
+The Lux Bridge is a cross-chain asset transfer system built on MPC threshold signing.
+
 ## Components
 
-| Component | Description |
-|-----------|-------------|
-| Bridge UI | Next.js frontend |
-| Bridge API | Node.js server |
-| MPC Nodes | Threshold signers |
-| Relay | Cross-chain message passing |
+| Component | Technology | Purpose |
+|-----------|-----------|---------|
+| Bridge UI | Next.js | User-facing web interface |
+| Bridge API | Node.js | Transfer management and chain monitoring |
+| MPC Cluster | Go (mpcd) | Threshold key generation and signing |
+| PostgreSQL | PostgreSQL | Transfer state and history |
+| Valkey | Redis-compatible | Cache and rate limiting |
+
+## System Architecture
+
+```
+User Browser
+  -> Bridge UI (bridge.lux.network)
+    -> Bridge API (bridge-api.lux.network:3000)
+      -> PostgreSQL (transfer state)
+      -> Valkey (cache)
+      -> MPC Cluster (3 nodes, consensus mode)
+        -> Source chain RPC (verify deposits)
+        -> Destination chain RPC (submit withdrawals)
+```
+
+## Transfer Flow
+
+### Deposit (External to Lux)
+
+1. User locks tokens in bridge contract on source chain
+2. Bridge API monitors source chain for deposit events
+3. After required confirmations, API creates signing request
+4. MPC nodes produce threshold signature for mint transaction
+5. Bridge API broadcasts mint transaction on destination chain
+
+### Withdrawal (Lux to External)
+
+1. User burns wrapped tokens on Lux chain
+2. Bridge API monitors Lux chain for burn events
+3. After confirmation, API creates signing request
+4. MPC nodes produce threshold signature for release transaction
+5. Bridge API broadcasts release transaction on destination chain
+
+## Kubernetes Deployment
+
+```
+lux-bridge namespace:
+  bridge-ui:3000      -> bridge.lux.network
+  bridge-api:3000     -> bridge-api.lux.network
+  bridge-postgres:5432
+  bridge-valkey:6379
+  mpc-node-{0,1,2}    -> consensus transport
+```
+
+## MPC Key Management
+
+- Keys are generated once via distributed key generation (DKG)
+- Each MPC node holds a key share, never the full key
+- Bridge contract addresses are derived from MPC public keys
+- Key rotation uses reshare protocol (addresses unchanged)
+
+## Failover
+
+- MPC: 2-of-3 threshold allows 1 node failure
+- Bridge API: Multiple replicas behind load balancer
+- PostgreSQL: Streaming replication
+- Valkey: Sentinel for automatic failover

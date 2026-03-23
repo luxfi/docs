@@ -1,12 +1,60 @@
 ---
 title: Security
-description: MPC security model
+description: MPC security model for the bridge
 icon: ShieldAlert
 ---
 
-## Security Model
+The Lux Bridge security model is built on threshold cryptography. No single party can authorize a transfer.
 
-- **MPC threshold** — t-of-n nodes must agree
-- **HSM attestation** — Hardware-bound signatures
-- **Intent verification** — Server-side co-sign
-- **Audit logging** — All operations logged
+## Security Layers
+
+| Layer | Protection |
+|-------|-----------|
+| MPC threshold | t-of-n nodes must agree to produce a signature |
+| HSM attestation | Hardware-bound signatures prevent key extraction |
+| Intent verification | Server-side co-sign validates transaction parameters |
+| Confirmation depth | Source chain transactions must reach finality |
+| Audit logging | Every operation is logged with timestamps and actors |
+| Rate limiting | Per-address and per-asset transfer limits |
+
+## Threshold Scheme
+
+The bridge uses a 2-of-3 MPC threshold:
+
+- 3 MPC nodes each hold a key share
+- Any 2 nodes can produce a valid signature
+- No single node compromise can steal funds
+- 1 node can be offline without affecting availability
+
+## HSM Binding
+
+When HSM attestation is enabled:
+
+1. Each MPC node's signing capability is bound to specific hardware
+2. Key shares cannot be extracted and used on unauthorized machines
+3. Every signature includes a hardware attestation proof
+
+## Confirmation Requirements
+
+| Source Chain | Confirmations | Approximate Time |
+|-------------|---------------|-----------------|
+| Ethereum | 12 blocks | ~2.4 minutes |
+| Bitcoin | 3 blocks | ~30 minutes |
+| Lux C-Chain | 1 block | ~2 seconds |
+| Subnet EVM | 1 block | ~2 seconds |
+
+## Incident Response
+
+- Emergency pause: 4/7 multi-sig council can pause the bridge
+- Fund recovery: Requires all 3 MPC nodes and HSM attestation
+- Key rotation: Reshare protocol rotates keys without changing addresses
+
+## Audit
+
+All bridge operations produce audit events:
+
+- Transfer initiation (user, amount, chains)
+- MPC signing requests and responses
+- Transaction broadcasts
+- Confirmation tracking
+- Error and failure events
