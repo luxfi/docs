@@ -1,16 +1,95 @@
 ---
 title: API Reference
-description: Programmatic CLI usage
+description: Programmatic CLI usage from Go
 icon: FileCode
 ---
 
-The CLI can be used programmatically via the Go SDK:
+The CLI packages can be imported directly into Go programs for programmatic network and chain management.
+
+## Network Management
 
 ```go
-import "github.com/luxfi/cli/pkg/network"
+package main
 
-net, _ := network.Start(network.Config{
-    NumNodes: 5,
-})
-defer net.Stop()
+import (
+    "fmt"
+
+    "github.com/luxfi/cli/pkg/application"
+    "github.com/luxfi/cli/pkg/network"
+)
+
+func main() {
+    app := application.New()
+
+    // Start a 5-node testnet
+    cfg := network.Config{
+        NumNodes:    5,
+        NetworkType: "testnet",
+        PortBase:    9640,
+    }
+    net, err := network.Start(cfg)
+    if err != nil {
+        panic(err)
+    }
+    defer net.Stop()
+
+    fmt.Println("Network started:", net.Endpoints())
+}
 ```
+
+## Key Management
+
+```go
+import "github.com/luxfi/cli/pkg/key"
+
+// Generate a new key set
+keySet, err := key.Generate("validator1")
+if err != nil {
+    return err
+}
+fmt.Println("Address:", keySet.CChainAddress())
+
+// List existing keys
+keys, err := key.List()
+for _, k := range keys {
+    fmt.Printf("  %s: %s\n", k.Name, k.Address)
+}
+```
+
+## Chain Management
+
+```go
+import "github.com/luxfi/cli/pkg/chain"
+
+// Create chain configuration
+cfg := chain.CreateConfig{
+    Name:       "mychain",
+    EVMChainID: 12345,
+    TokenName:  "MYT",
+}
+err := chain.Create(cfg)
+
+// Deploy to running network
+err = chain.Deploy("mychain", chain.DeployConfig{
+    Network: "testnet",
+})
+```
+
+## Constants
+
+| Constant | Value | Description |
+|----------|-------|-------------|
+| `DefaultNodeVersion` | `v1.23.23` | Default luxd binary version |
+| `MainnetPort` | 9630 | Mainnet HTTP base port |
+| `TestnetPort` | 9640 | Testnet HTTP base port |
+| `DevnetPort` | 9650 | Devnet HTTP base port |
+
+## Related Packages
+
+| Package | Purpose |
+|---------|---------|
+| `pkg/application` | CLI application context and configuration |
+| `pkg/network` | Network lifecycle management |
+| `pkg/key` | Key generation and storage |
+| `pkg/chain` | Chain creation and deployment |
+| `pkg/constants` | Default versions, ports, paths |

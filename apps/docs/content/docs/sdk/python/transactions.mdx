@@ -1,6 +1,102 @@
 ---
-title: Utransactions
-description: Utransactions operations with the python SDK
+title: Transactions
+description: Send transactions with the Python SDK
 ---
 
-Documentation for transactions operations using the python SDK.
+The Python SDK uses Web3.py for building and sending transactions on all EVM-compatible Lux chains.
+
+## Simple Transfer
+
+```python
+from web3 import Web3
+from eth_account import Account
+
+w3 = Web3(Web3.HTTPProvider(
+    "https://api.lux.network/mainnet/ext/bc/C/rpc"
+))
+
+account = Account.from_key("0x...")
+
+tx = {
+    "to": "0xRecipientAddress...",
+    "value": w3.to_wei(1, "ether"),
+    "gas": 21000,
+    "maxFeePerGas": w3.to_wei(50, "gwei"),
+    "maxPriorityFeePerGas": w3.to_wei(25, "gwei"),
+    "nonce": w3.eth.get_transaction_count(account.address),
+    "chainId": 96369,
+    "type": 2,
+}
+
+signed = account.sign_transaction(tx)
+tx_hash = w3.eth.send_raw_transaction(signed.raw_transaction)
+receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+print(f"Status: {'success' if receipt.status == 1 else 'failed'}")
+```
+
+## Contract Interaction
+
+```python
+# Deploy contract
+with open("MyContract.json") as f:
+    abi = json.load(f)["abi"]
+    bytecode = json.load(f)["bytecode"]
+
+contract = w3.eth.contract(abi=abi, bytecode=bytecode)
+tx = contract.constructor().build_transaction({
+    "from": account.address,
+    "nonce": w3.eth.get_transaction_count(account.address),
+    "chainId": 96369,
+})
+signed = account.sign_transaction(tx)
+tx_hash = w3.eth.send_raw_transaction(signed.raw_transaction)
+receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+
+# Call contract
+deployed = w3.eth.contract(
+    address=receipt.contractAddress, abi=abi
+)
+result = deployed.functions.myFunction().call()
+```
+
+## ERC-20 Token Transfer
+
+```python
+erc20_abi = [...]  # Standard ERC-20 ABI
+token = w3.eth.contract(
+    address="0xTokenAddress...", abi=erc20_abi
+)
+
+# Check balance
+balance = token.functions.balanceOf(account.address).call()
+
+# Transfer tokens
+tx = token.functions.transfer(
+    "0xRecipient...",
+    w3.to_wei(100, "ether"),
+).build_transaction({
+    "from": account.address,
+    "nonce": w3.eth.get_transaction_count(account.address),
+    "chainId": 96369,
+})
+
+signed = account.sign_transaction(tx)
+tx_hash = w3.eth.send_raw_transaction(signed.raw_transaction)
+```
+
+## Subnet Transactions
+
+Same patterns work on any Subnet EVM chain -- just change the provider URL and chain ID:
+
+```python
+# Zoo chain (chain ID 200200)
+w3 = Web3(Web3.HTTPProvider(
+    "https://api.lux.network/mainnet/ext/bc/zoo/rpc"
+))
+tx["chainId"] = 200200
+```
+
+## Related Pages
+
+- [Wallet](/docs/sdk/python/wallet) -- Key management
+- [RPC](/docs/sdk/python/rpc) -- Querying chain state

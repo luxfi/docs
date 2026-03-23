@@ -1,0 +1,56 @@
+---
+title: Roles and Access Control
+description: Create and manage roles with granular permissions in your DAO
+---
+
+# Roles and Access Control
+
+Roles define what members can do within the DAO. Each role has specific permissions governing proposal creation, treasury access, and administrative actions.
+
+## Default Roles
+
+| Role | Description | Permissions |
+|------|-------------|-------------|
+| **Member** | Any token holder | Vote on proposals |
+| **Contributor** | Active participant | Create proposals, vote |
+| **Lead** | Committee leader | Manage members, approve spending |
+| **Admin** | DAO administrator | Full access, settings changes |
+
+## Creating a Role
+
+1. Navigate to **Settings** in your DAO dashboard
+2. Select **Roles and Permissions**
+3. Click **Create Role**
+4. Define the role name and permissions
+5. Submit a governance proposal to approve the new role
+
+## Permissions
+
+Roles can be granted the following permissions:
+
+- **Propose** - Create governance proposals
+- **Vote** - Vote on active proposals
+- **Execute** - Execute passed proposals
+- **Manage Members** - Add or remove role assignments
+- **Treasury Access** - Initiate treasury transactions (with limits)
+- **Settings** - Modify DAO configuration
+
+## Assigning Roles
+
+Roles are assigned through governance proposals or by existing administrators:
+
+1. Go to **Members** in the sidebar
+2. Select the member address
+3. Click **Assign Role**
+4. Choose the role and confirm
+
+## Next Steps
+
+<Cards>
+  <Card title="Hierarchy" href="/dao/guide/hierarchy" icon="git-merge">
+    Organize Sub-DAOs and working groups
+  </Card>
+  <Card title="Settings" href="/dao/guide/settings" icon="settings">
+    Configure DAO parameters
+  </Card>
+</Cards>

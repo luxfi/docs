@@ -5,13 +5,55 @@ index: true
 icon: Wallet
 ---
 
-Hierarchical deterministic wallet for Lux Network with support for all chain types and hardware wallets.
+Hierarchical deterministic wallet for Lux Network with support for all chain types and hardware wallets. The wallet manages keys across P-Chain (staking), X-Chain (UTXO), and C-Chain (EVM), with a single mnemonic as the root of all key derivation.
 
 ## Features
 
 | Feature | Description |
 |---------|-------------|
-| HD Derivation | BIP-44 paths for P/X/C chains |
-| Multi-Chain | UTXO (X), Platform (P), EVM (C) |
-| Ledger | Hardware wallet signing |
-| Multi-Sig | Threshold wallets |
+| HD Derivation | BIP-44 paths for P/X/C chains from a single mnemonic |
+| Multi-Chain | UTXO (X-Chain), Platform (P-Chain), EVM (C-Chain, Subnets) |
+| Ledger | Hardware wallet signing via USB HID |
+| Multi-Sig | Threshold wallets with multiple signers |
+| BLS Keys | Validator consensus key generation |
+| Key Types | Ed25519, secp256k1, BLS12-381 |
+
+## Architecture
+
+```
+BIP-39 Mnemonic
+  -> BIP-32 Master Key
+    -> m/44'/60'/0'/0/i   (C-Chain / EVM)
+    -> m/44'/9000'/0'/0/i (P-Chain / X-Chain)
+    -> HKDF derivation    (BLS consensus keys)
+```
+
+## Quick Start
+
+```go
+import "github.com/luxfi/sdk/wallet"
+
+// Create from mnemonic
+w := wallet.New(1, chainID)
+privKey, _ := key.DeriveKey(mnemonic, 0)
+addr, _ := w.ImportKey(privKey)
+
+// Check balance
+balance := w.GetBalance(luxAssetID)
+
+// Send a transfer
+tx, _ := w.CreateTransferTx(recipient, luxAssetID, amount, nil)
+w.Sign(ctx, tx)
+```
+
+## Web Wallet
+
+The web-based wallet is available at [wallet.lux.network](https://wallet.lux.network). It supports all chain types with a browser-based interface and Ledger hardware wallet integration.
+
+## Related Pages
+
+- [Installation](/docs/wallet/installation) -- Set up the wallet
+- [Key Derivation](/docs/wallet/keys) -- BIP-44 derivation paths
+- [Transactions](/docs/wallet/transactions) -- Build and sign transactions
+- [Ledger](/docs/wallet/ledger) -- Hardware wallet setup
+- [Security](/docs/wallet/security) -- Key storage best practices

@@ -4,14 +4,68 @@ description: Launch your first test network
 icon: Zap
 ---
 
+## Start the Server
+
+Netrunner runs as a gRPC server that manages node processes:
+
+```bash
+netrunner server --port=":8080" --grpc-gateway-port=":8081"
+```
+
 ## Start a Network
 
-```bash
-netrunner start --nodes 5 --duration 60s
-```
-
-## Run Benchmarks
+In a separate terminal, start a 5-node network:
 
 ```bash
-netrunner bench --tps --nodes 5
+netrunner control start \
+  --number-of-nodes=5 \
+  --node-path=/path/to/luxd
 ```
+
+## Verify Health
+
+```bash
+netrunner control health
+```
+
+Expected output shows all nodes as healthy with bootstrapped chains.
+
+## Check Status
+
+```bash
+netrunner control status
+```
+
+Lists all running nodes with their endpoints, NodeIDs, and chain status.
+
+## Run a Quick Benchmark
+
+```bash
+netrunner bench --tps --tx-count 1000
+```
+
+## Save a Snapshot
+
+Save the current state for later restoration:
+
+```bash
+netrunner control save-snapshot my-first-snapshot
+```
+
+## Stop the Network
+
+```bash
+netrunner control stop
+```
+
+## Restore from Snapshot
+
+```bash
+netrunner control load-snapshot my-first-snapshot
+```
+
+## Next Steps
+
+- [Configuration](/docs/netrunner/configuration) -- Customize node and network settings
+- [Benchmarks](/docs/netrunner/benchmarks) -- Run performance tests
+- [Topology](/docs/netrunner/topology) -- Define custom network topologies

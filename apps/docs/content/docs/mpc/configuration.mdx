@@ -8,11 +8,21 @@ icon: Settings
 
 | Flag | Env Var | Description | Default |
 |------|---------|-------------|---------|
-| `--hsm-signer` | `MPC_HSM_SIGNER` | Signer provider (aws/gcp/azure/local) | local |
+| `--name` | `MPC_NAME` | Node name | — |
+| `--mode` | `MPC_MODE` | Operation mode | — |
+| `--node-id` | `MPC_NODE_ID` | Node identifier | — |
+| `--listen` | `MPC_LISTEN` | P2P listen address | — |
+| `--api` | `MPC_API` | Consensus API address | `:9800` |
+| `--api-listen` | `MPC_API_LISTEN` | Dashboard API address | `:8081` |
+| `--data` | `MPC_DATA` | Data directory | — |
+| `--keys` | `MPC_KEYS` | Keys directory | — |
+| `--threshold` | `MPC_THRESHOLD` | Signing threshold | — |
+| `--peer` | `MPC_PEER` | Peer addresses | — |
+| `--log-level` | `MPC_LOG_LEVEL` | Log verbosity | `info` |
+| `--hsm-signer` | `MPC_HSM_SIGNER` | Signer provider (aws/gcp/zymbit/mldsa/local) | `local` |
 | `--hsm-signer-key-id` | `MPC_HSM_SIGNER_KEY_ID` | Key ID for signing | — |
-| `--hsm-provider` | `MPC_HSM_PROVIDER` | Password provider type | env |
+| `--hsm-provider` | `MPC_HSM_PROVIDER` | Password provider type | `env` |
 | `--hsm-key-id` | `MPC_HSM_KEY_ID` | Key ID for password decryption | — |
-| `--hsm-attest` | `MPC_HSM_ATTEST` | Enable threshold attestation | false |
-| `--data-dir` | `MPC_DATA_DIR` | ZapDB data directory | /data/mpc |
-| `--port` | `MPC_PORT` | API listen port | 8080 |
-| `--metrics-port` | `MPC_METRICS_PORT` | Prometheus metrics port | 9090 |
+| `--hsm-attest` | `MPC_HSM_ATTEST` | Enable threshold attestation | `false` |
+| `--jwt-secret` | `MPC_JWT_SECRET` | JWT secret for API auth | — |
+| `--debug` | `MPC_DEBUG` | Enable debug mode | `false` |

@@ -5,7 +5,7 @@ index: true
 icon: Network
 ---
 
-Spin up multi-node Lux networks for testing, benchmarking, and CI/CD integration.
+Spin up multi-node Lux networks for testing, benchmarking, and CI/CD integration. Netrunner manages the full lifecycle of local blockchain networks with support for custom topologies, failure injection, and performance measurement.
 
 ## Features
 
@@ -14,4 +14,52 @@ Spin up multi-node Lux networks for testing, benchmarking, and CI/CD integration
 | Network Sim | Multi-node networks with custom topology |
 | Benchmarks | TPS measurement and latency profiling |
 | Consensus | Verify consensus under load and partitions |
+| Snapshots | Save and restore network state |
 | CI/CD | GitHub Actions and Jenkins integration |
+| Multi-Engine | Lux, Geth, Optimism support |
+
+## Architecture
+
+Netrunner runs as a gRPC server that manages node processes:
+
+```
+CLI / Go Client
+    -> gRPC Server (port 8080)
+        -> Network Manager
+            -> Node Process 1 (luxd, port 9630)
+            -> Node Process 2 (luxd, port 9632)
+            -> Node Process 3 (luxd, port 9634)
+            -> Node Process 4 (luxd, port 9636)
+            -> Node Process 5 (luxd, port 9638)
+```
+
+## Quick Start
+
+```bash
+# Install
+curl -sSfL https://raw.githubusercontent.com/luxfi/netrunner/main/scripts/install.sh | sh -s
+
+# Start the RPC server
+netrunner server --port=":8080" --grpc-gateway-port=":8081"
+
+# Start a 5-node network
+netrunner control start --number-of-nodes=5 \
+  --node-path=/path/to/luxd
+
+# Check health
+netrunner control health
+
+# Save snapshot
+netrunner control save-snapshot my-snapshot
+
+# Stop
+netrunner control stop
+```
+
+## Related Pages
+
+- [Installation](/docs/netrunner/installation) -- Install from binary or source
+- [Quick Start](/docs/netrunner/quickstart) -- Launch your first network
+- [Configuration](/docs/netrunner/configuration) -- Node and network settings
+- [Benchmarks](/docs/netrunner/benchmarks) -- Performance testing
+- [Consensus](/docs/netrunner/consensus) -- Consensus correctness testing
