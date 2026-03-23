@@ -4,10 +4,64 @@ description: Deploy Lux Cloud infrastructure
 icon: Server
 ---
 
+Lux Cloud runs on Kubernetes with Traefik as the ingress controller.
+
 ## Architecture
 
 ```
-Traefik LB → API Gateway → RPC Proxy → Lux Nodes
-                        → Token Indexer → PostgreSQL
-                        → WebSocket Hub → Redis
+Traefik LB (LoadBalancer)
+  -> API Gateway (rate limiting, auth)
+    -> RPC Proxy (multi-chain JSON-RPC)
+      -> Lux Nodes (luxd fleet)
+    -> Token Indexer
+      -> PostgreSQL (balances, transfers)
+    -> WebSocket Hub
+      -> Redis/Valkey (pub/sub state)
+    -> NFT Indexer
+      -> PostgreSQL (metadata, ownership)
 ```
+
+## Kubernetes Resources
+
+| Resource | Type | Replicas |
+|----------|------|----------|
+| API Gateway | Deployment | 3 |
+| RPC Proxy | Deployment | 3 |
+| Token Indexer | StatefulSet | 1 |
+| NFT Indexer | StatefulSet | 1 |
+| WebSocket Hub | Deployment | 2 |
+| PostgreSQL | StatefulSet | 1 (with replica) |
+| Redis/Valkey | StatefulSet | 1 |
+
+## Deploy
+
+```bash
+kubectl kustomize infra/k8s/cloud/ | kubectl apply -f -
+```
+
+## Image Tags
+
+| Service | Image |
+|---------|-------|
+| API Gateway | `ghcr.io/luxfi/cloud-gateway:latest` |
+| RPC Proxy | `ghcr.io/luxfi/cloud-rpc:latest` |
+| Indexer | `ghcr.io/luxfi/cloud-indexer:latest` |
+
+All images are built for `linux/amd64` via CI/CD.
+
+## Health Checks
+
+```bash
+# API health
+curl https://api.lux.cloud/v1/health
+
+# Node health (proxied)
+curl https://api.lux.cloud/v1/rpc/lux \
+  -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
+```
+
+## Monitoring
+
+- Prometheus metrics at `/metrics` on each service
+- Grafana dashboards for RPC latency, error rates, and throughput
+- Alerting on node health and indexer lag

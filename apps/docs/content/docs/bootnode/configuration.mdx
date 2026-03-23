@@ -1,15 +1,61 @@
 ---
 title: Configuration
-description: Environment variables
+description: Environment variables for Lux Cloud
 icon: Settings
 ---
 
-## Environment Variables
+All Lux Cloud services are configured via environment variables.
 
-| Variable | Description |
-|----------|-------------|
-| `API_KEY_SALT` | Salt for API key hashing |
-| `DATABASE_URL` | PostgreSQL connection |
-| `REDIS_URL` | Redis for WebSocket state |
-| `RPC_ENDPOINTS` | Upstream node endpoints |
-| `NEXT_PUBLIC_BRAND` | Brand (lux/hanzo/zoo/bootnode) |
+## Core Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `API_KEY_SALT` | Salt for API key hashing (must be secret) | -- |
+| `DATABASE_URL` | PostgreSQL connection string | -- |
+| `REDIS_URL` | Redis/Valkey for WebSocket state and caching | -- |
+| `RPC_ENDPOINTS` | Upstream luxd node endpoints (comma-separated) | -- |
+| `PORT` | API listen port | `3000` |
+
+## Branding Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `NEXT_PUBLIC_BRAND` | Brand identifier | `lux` |
+| `NEXT_PUBLIC_BRAND_NAME` | Display name | `Lux Cloud` |
+| `NEXT_PUBLIC_BRAND_URL` | Brand website | `https://lux.cloud` |
+
+## Rate Limiting
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `RATE_LIMIT_RPC` | RPC requests per minute | `600` |
+| `RATE_LIMIT_API` | REST API requests per minute | `300` |
+| `RATE_LIMIT_WS` | WebSocket messages per minute | `120` |
+
+## RPC Proxy
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `RPC_TIMEOUT` | Request timeout (ms) | `30000` |
+| `RPC_RETRY_COUNT` | Retries on failure | `3` |
+| `RPC_HEALTH_INTERVAL` | Health check interval (ms) | `10000` |
+
+## Indexer
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `INDEX_INTERVAL` | Block polling interval (ms) | `2000` |
+| `INDEX_BATCH_SIZE` | Blocks per batch | `100` |
+| `INDEX_START_BLOCK` | Starting block number | `0` |
+
+## Example Configuration
+
+```bash
+# Production
+API_KEY_SALT=<random-32-bytes>
+DATABASE_URL=postgres://cloud:pass@postgres:5432/cloud
+REDIS_URL=redis://valkey:6379
+RPC_ENDPOINTS=http://luxd-0:9630,http://luxd-1:9630
+NEXT_PUBLIC_BRAND=lux
+PORT=3000
+```

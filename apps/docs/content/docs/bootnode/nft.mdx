@@ -4,14 +4,71 @@ description: NFT collections, ownership, and media
 icon: Image
 ---
 
-## Get NFTs
+The NFT API provides endpoints for querying NFT ownership, collection metadata, and token media across all Lux chains.
+
+## Get NFTs by Owner
 
 ```bash
-curl https://api.lux.cloud/v1/nft/owner?address=0x...
+curl "https://api.lux.cloud/v1/nft/owner?address=0x...&chain=lux" \
+  -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
-## Collection Data
+Response:
+
+```json
+{
+  "nfts": [
+    {
+      "contract": "0xContractAddress...",
+      "tokenId": "42",
+      "name": "My NFT #42",
+      "image": "https://ipfs.io/ipfs/Qm...",
+      "standard": "ERC-721",
+      "chain": "lux"
+    }
+  ],
+  "totalCount": 15,
+  "page": 1
+}
+```
+
+## Get Collection Data
 
 ```bash
-curl https://api.lux.cloud/v1/nft/collection?contract=0x...
+curl "https://api.lux.cloud/v1/nft/collection?contract=0x...&chain=lux" \
+  -H "Authorization: Bearer YOUR_API_KEY"
 ```
+
+## Get Token Metadata
+
+```bash
+curl "https://api.lux.cloud/v1/nft/token?contract=0x...&tokenId=42" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/v1/nft/owner` | NFTs owned by an address |
+| GET | `/v1/nft/collection` | Collection metadata and stats |
+| GET | `/v1/nft/token` | Individual token metadata |
+| GET | `/v1/nft/transfers` | Recent transfer history |
+
+## Supported Standards
+
+| Standard | Features |
+|----------|----------|
+| ERC-721 | Ownership, metadata, media, transfer history |
+| ERC-1155 | Multi-token balances, batch queries |
+
+## Query Parameters
+
+| Parameter | Description |
+|-----------|-------------|
+| `address` | Wallet address to query |
+| `contract` | NFT contract address |
+| `tokenId` | Specific token ID |
+| `chain` | Chain to query (lux, zoo, hanzo, spc, pars) |
+| `page` | Page number (default: 1) |
+| `limit` | Results per page (default: 20, max: 100) |
