@@ -4,9 +4,51 @@ description: Key storage best practices
 icon: ShieldAlert
 ---
 
+Wallet security is critical. A compromised key means permanent loss of funds.
+
 ## Best Practices
 
-1. Never store mnemonics in plaintext
-2. Use hardware wallets for production
-3. Derive fresh addresses for each transaction
-4. Back up key material to KMS
+1. **Never store mnemonics in plaintext** -- Use encrypted storage or a hardware wallet
+2. **Use hardware wallets for production** -- Ledger devices keep keys offline
+3. **Derive fresh addresses for each transaction** -- Reduces exposure from address reuse
+4. **Back up key material to KMS** -- Use Lux KMS for encrypted backup
+5. **Set file permissions** -- Key files should be `0600` (owner read/write only)
+6. **Use environment variables carefully** -- `LUX_MNEMONIC` and `LUX_PRIVATE_KEY` are convenient but visible in process listings
+
+## Key Storage Hierarchy
+
+| Method | Security Level | Use Case |
+|--------|---------------|----------|
+| Hardware wallet (Ledger) | Highest | Production funds, validators |
+| KMS-encrypted storage | High | Server-side automation |
+| CLI key management (`lux key`) | Medium | Development, testing |
+| Environment variables | Low | CI/CD, scripts |
+| Plaintext files | Unacceptable | Never |
+
+## Mnemonic Security
+
+The BIP-39 mnemonic is the root of all derived keys. Losing or exposing it compromises everything:
+
+- Write it on paper and store in a safe
+- Never photograph or screenshot it
+- Never send it over network (email, chat, etc.)
+- Never commit it to git
+- Consider using Shamir Secret Sharing to split across multiple locations
+
+## Validator Key Security
+
+Validator staking keys have additional requirements:
+
+| Key | File | Protection |
+|-----|------|-----------|
+| TLS (staker.crt/key) | `~/.lux/keys/<name>/staking/` | Determines NodeID, cannot be changed |
+| BLS (signer.key) | `~/.lux/keys/<name>/bls/` | Consensus participation, must match genesis |
+| EC (secp256k1) | `~/.lux/keys/<name>/ec/` | Transaction signing |
+
+## Password Requirements
+
+When using the CLI's encrypted key storage:
+
+- Minimum 12 characters
+- Passwords are hashed with Argon2 before use as encryption keys
+- Key material is encrypted with AES-256-GCM at rest

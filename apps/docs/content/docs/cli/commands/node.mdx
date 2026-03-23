@@ -1,12 +1,62 @@
 ---
 title: lux node
-description: Validator operations and health
+description: Manage luxd nodes on Kubernetes
 ---
 
-## Usage
+The `node` command manages luxd nodes -- both local binary linking and Kubernetes deployments via Helm.
+
+## Local Commands
 
 ```bash
-lux node whitelist --subnet <id>
-lux node validate --subnet <id> --stake <n>
-lux node health
+# Symlink a luxd binary for the CLI to use
+lux node link --auto
+lux node link --path /path/to/luxd
 ```
+
+## Kubernetes Commands
+
+All K8s commands use the canonical Helm chart and require a network flag (`--mainnet`, `--testnet`, or `--devnet`).
+
+```bash
+# Deploy or update via Helm
+lux node deploy --mainnet
+lux node deploy --testnet --set image.tag=v1.23.23
+
+# Zero-downtime rolling upgrade (partition-based)
+lux node upgrade --mainnet --image ghcr.io/luxfi/node:v1.23.23
+
+# Check pod status, images, and health
+lux node status --mainnet
+
+# Stream logs from a specific pod
+lux node logs --mainnet luxd-0 -f
+
+# Rollback to previous StatefulSet revision
+lux node rollback --mainnet
+```
+
+## Helm Chart
+
+The `deploy` command uses `helm upgrade --install` with the chart at `~/work/lux/devops/charts/lux/`. Override the chart path with `--chart-path` or `$LUX_CHART_PATH`.
+
+## Flags
+
+| Flag | Description |
+|------|-------------|
+| `--mainnet` | Target lux-mainnet namespace |
+| `--testnet` | Target lux-testnet namespace |
+| `--devnet` | Target lux-devnet namespace |
+| `--namespace` | Custom namespace |
+| `--context` | Kubeconfig context |
+| `--set` | Helm value override |
+| `--dry-run` | Template only, do not apply |
+| `--chart-path` | Path to Helm chart |
+| `--image` | Container image for upgrades |
+
+## Image Format
+
+```
+ghcr.io/luxfi/node:<tag>
+```
+
+Always build for `--platform linux/amd64`. Images are built by CI/CD, never locally.

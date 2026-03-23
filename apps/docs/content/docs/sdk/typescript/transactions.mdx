@@ -1,6 +1,119 @@
 ---
-title: Utransactions
-description: Utransactions operations with the typescript SDK
+title: Transactions
+description: Send transactions with the TypeScript SDK
 ---
 
-Documentation for transactions operations using the typescript SDK.
+The TypeScript SDK supports sending transactions on all EVM-compatible Lux chains using `viem` or `ethers.js`.
+
+## Simple Transfer
+
+```typescript
+import {
+  createWalletClient, createPublicClient,
+  http, parseEther,
+} from "viem";
+import { privateKeyToAccount } from "viem/accounts";
+
+const account = privateKeyToAccount("0x...");
+
+const publicClient = createPublicClient({
+  transport: http(
+    "https://api.lux.network/mainnet/ext/bc/C/rpc"
+  ),
+});
+
+const walletClient = createWalletClient({
+  account,
+  transport: http(
+    "https://api.lux.network/mainnet/ext/bc/C/rpc"
+  ),
+});
+
+const hash = await walletClient.sendTransaction({
+  to: "0xRecipient...",
+  value: parseEther("1"), // 1 LUX
+  chain: { id: 96369 },
+});
+
+const receipt = await publicClient.waitForTransactionReceipt({
+  hash,
+});
+console.log("Status:", receipt.status);
+```
+
+## Contract Interaction
+
+```typescript
+import { getContract, parseAbi } from "viem";
+
+const abi = parseAbi([
+  "function balanceOf(address) view returns (uint256)",
+  "function transfer(address to, uint256 amount) returns (bool)",
+]);
+
+const contract = getContract({
+  address: "0xTokenAddress...",
+  abi,
+  client: { public: publicClient, wallet: walletClient },
+});
+
+// Read
+const balance = await contract.read.balanceOf([account.address]);
+
+// Write
+const hash = await contract.write.transfer([
+  "0xRecipient...",
+  parseEther("100"),
+]);
+```
+
+## ERC-20 Token Transfer
+
+```typescript
+const erc20Abi = parseAbi([
+  "function transfer(address, uint256) returns (bool)",
+  "function approve(address, uint256) returns (bool)",
+  "function balanceOf(address) view returns (uint256)",
+]);
+
+const token = getContract({
+  address: "0xTokenAddress...",
+  abi: erc20Abi,
+  client: { public: publicClient, wallet: walletClient },
+});
+
+// Approve spender
+await token.write.approve([
+  "0xSpender...", parseEther("1000"),
+]);
+
+// Transfer
+await token.write.transfer([
+  "0xRecipient...", parseEther("100"),
+]);
+```
+
+## Subnet Transactions
+
+Same API, different chain configuration:
+
+```typescript
+// Zoo chain (chain ID 200200)
+const zooWallet = createWalletClient({
+  account,
+  transport: http(
+    "https://api.lux.network/mainnet/ext/bc/zoo/rpc"
+  ),
+});
+
+await zooWallet.sendTransaction({
+  to: "0xRecipient...",
+  value: parseEther("1"),
+  chain: { id: 200200 },
+});
+```
+
+## Related Pages
+
+- [Wallet](/docs/sdk/typescript/wallet) -- Key management
+- [RPC](/docs/sdk/typescript/rpc) -- Querying chain state

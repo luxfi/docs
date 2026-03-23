@@ -4,9 +4,63 @@ description: Hardware wallet integration
 icon: Usb
 ---
 
-## Connect
+The Lux wallet supports Ledger hardware wallets for secure key storage and transaction signing. Private keys never leave the device.
+
+## Supported Devices
+
+| Device | Connection | Status |
+|--------|-----------|--------|
+| Ledger Nano S | USB | Supported |
+| Ledger Nano S Plus | USB | Supported |
+| Ledger Nano X | USB / Bluetooth | Supported |
+| Ledger Stax | USB / Bluetooth | Supported |
+
+## Setup
+
+1. Install the Lux app on your Ledger via Ledger Live
+2. Connect the Ledger device via USB
+3. Open the Lux app on the device
+
+## Usage (Go)
 
 ```go
-w, _ := wallet.New(wallet.WithLedger())
-addr := w.CChainAddress()
+import "github.com/luxfi/sdk/wallet"
+
+// Connect to Ledger
+w, err := wallet.New(wallet.WithLedger())
+if err != nil {
+    // Handle: device not connected or app not open
+    panic(err)
+}
+
+// Get addresses (derived on device)
+cAddr := w.CChainAddress()
+pAddr := w.PChainAddress()
+
+// Sign a transaction (requires on-device confirmation)
+err = w.Sign(ctx, tx)
 ```
+
+## Usage (Web)
+
+1. Visit [wallet.lux.network](https://wallet.lux.network)
+2. Click "Connect Ledger"
+3. Approve the connection on your device
+4. Your addresses appear automatically
+
+## Derivation Paths
+
+The Ledger app uses the same BIP-44 paths as the software wallet:
+
+| Chain | Path |
+|-------|------|
+| C-Chain | `m/44'/60'/0'/0/i` |
+| P-Chain | `m/44'/9000'/0'/0/i` |
+| X-Chain | `m/44'/9000'/0'/0/i` |
+
+## Security Notes
+
+- The Ledger device displays the transaction details before signing
+- Always verify the recipient address and amount on the device screen
+- Never share your recovery phrase -- it is the master key to all derived addresses
+- Firmware must be up to date for security patches

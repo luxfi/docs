@@ -1,6 +1,82 @@
 ---
-title: Urpc
-description: Urpc operations with the python SDK
+title: RPC Operations
+description: JSON-RPC calls to Lux nodes using the Python SDK
 ---
 
-Documentation for rpc operations using the python SDK.
+The Python SDK wraps Web3.py to provide typed access to all Lux node RPC endpoints.
+
+## C-Chain RPC
+
+```python
+from web3 import Web3
+
+w3 = Web3(Web3.HTTPProvider(
+    "https://api.lux.network/mainnet/ext/bc/C/rpc"
+))
+
+# Get latest block
+block = w3.eth.get_block("latest")
+print(f"Block {block.number}: {block.hash.hex()}")
+
+# Get balance
+balance = w3.eth.get_balance(
+    "0x9011E888251AB053B7bD1cdB598Db4f9DEd94714"
+)
+print(f"Balance: {w3.from_wei(balance, 'ether')} LUX")
+
+# Get gas price
+gas_price = w3.eth.gas_price
+print(f"Gas price: {gas_price} wei")
+```
+
+## Subnet EVM RPC
+
+Connect to any Subnet EVM chain by changing the endpoint:
+
+```python
+# Zoo chain
+zoo = Web3(Web3.HTTPProvider(
+    "https://api.lux.network/mainnet/ext/bc/zoo/rpc"
+))
+
+# Hanzo chain
+hanzo = Web3(Web3.HTTPProvider(
+    "https://api.lux.network/mainnet/ext/bc/hanzo/rpc"
+))
+```
+
+## P-Chain Info (Read-Only)
+
+```python
+import requests
+
+resp = requests.post(
+    "https://api.lux.network/mainnet/ext/bc/P",
+    json={
+        "jsonrpc": "2.0",
+        "method": "platform.getCurrentValidators",
+        "params": {},
+        "id": 1,
+    },
+)
+validators = resp.json()["result"]["validators"]
+print(f"Active validators: {len(validators)}")
+```
+
+## Network Endpoints
+
+| Network | C-Chain RPC URL |
+|---------|-----------------|
+| Mainnet | `https://api.lux.network/mainnet/ext/bc/C/rpc` |
+| Testnet | `https://api.lux.network/testnet/ext/bc/C/rpc` |
+| Local | `http://127.0.0.1:9630/ext/bc/C/rpc` |
+
+## Chain IDs
+
+| Chain | Mainnet | Testnet |
+|-------|---------|---------|
+| C-Chain | 96369 | 96368 |
+| Zoo | 200200 | 200201 |
+| Hanzo | 36963 | 36964 |
+| SPC | 36911 | 36910 |
+| Pars | 494949 | 494950 |

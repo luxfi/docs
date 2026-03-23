@@ -4,14 +4,77 @@ description: Performance benchmarking
 icon: BarChart
 ---
 
+Netrunner includes built-in benchmarking tools for measuring transaction throughput, block production rate, and network latency.
+
 ## TPS Measurement
 
+Measure transactions per second on a running network:
+
 ```bash
+# Send 10,000 transactions and measure throughput
 netrunner bench --tps --tx-count 10000
+
+# Sustained load for 60 seconds
+netrunner bench --tps --duration 60s --rate 500
 ```
 
 ## Latency Profiling
 
+Measure transaction confirmation latency at various percentiles:
+
 ```bash
+# Measure p50, p95, p99 latency
 netrunner bench --latency --percentiles 50,95,99
+
+# With specific transaction count
+netrunner bench --latency --tx-count 5000
 ```
+
+## Block Production Rate
+
+Measure block production and finality:
+
+```bash
+# Measure blocks per second
+netrunner bench --block-rate --duration 120s
+```
+
+## Resource Monitoring
+
+Track CPU, memory, and disk I/O during benchmarks:
+
+```bash
+# Enable resource monitoring
+netrunner bench --tps --monitor-resources --output results.csv
+```
+
+## Benchmark Parameters
+
+| Parameter | Flag | Default | Description |
+|-----------|------|---------|-------------|
+| Transaction count | `--tx-count` | 10000 | Total transactions to send |
+| Duration | `--duration` | 60s | Test duration |
+| Rate | `--rate` | unlimited | Transactions per second target |
+| Output format | `--output` | stdout | Output file (CSV or JSON) |
+| Warmup | `--warmup` | 5s | Warmup period before measurement |
+
+## Interpreting Results
+
+```
+TPS Report:
+  Total TX:        10000
+  Duration:        23.4s
+  Throughput:      427.3 tx/s
+  Avg Latency:     12.3ms
+  P50 Latency:     10.1ms
+  P95 Latency:     25.7ms
+  P99 Latency:     42.8ms
+  Failed TX:       0
+```
+
+## Optimization Tips
+
+- Use in-memory database for maximum throughput
+- Reduce consensus sample size for faster finality
+- Increase node count only when testing scalability
+- Disable logging during benchmarks (`--log-level=OFF`)

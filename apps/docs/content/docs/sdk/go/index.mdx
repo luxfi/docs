@@ -1,8 +1,71 @@
 ---
 title: Go SDK
-description: Go client library
+description: Go client library for Lux Network
 index: true
 icon: FileCode
 ---
 
-Overview of the Go SDK for Lux Network.
+The Go SDK (`github.com/luxfi/sdk`) provides native Go types and functions for interacting with all Lux chain types. It wraps the Lux node RPC APIs and provides wallet, key management, and transaction building utilities.
+
+## Installation
+
+```bash
+go get github.com/luxfi/sdk@latest
+```
+
+## Quick Start
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+
+    "github.com/luxfi/sdk"
+    "github.com/luxfi/sdk/config"
+)
+
+func main() {
+    cfg := config.Default()
+    cfg.Network.Endpoint = "https://api.lux.network/mainnet"
+
+    client, err := sdk.New(cfg)
+    if err != nil {
+        panic(err)
+    }
+
+    // Launch a local test network
+    net, err := client.LaunchNetwork(context.Background(), "local", 5)
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println("Network ID:", net.ID)
+}
+```
+
+## Core Packages
+
+| Package | Import | Purpose |
+|---------|--------|---------|
+| `sdk` | `github.com/luxfi/sdk` | Top-level client, network and blockchain operations |
+| `wallet` | `github.com/luxfi/sdk/wallet` | UTXO and EVM wallet with multi-chain signing |
+| `key` | `github.com/luxfi/sdk/key` | Ed25519, BLS, and secp256k1 key management |
+| `network` | `github.com/luxfi/sdk/network` | Network lifecycle (create, start, stop, delete) |
+| `blockchain` | `github.com/luxfi/sdk/blockchain` | Blockchain creation and deployment |
+| `config` | `github.com/luxfi/sdk/config` | SDK and network configuration |
+
+## Dependencies
+
+The SDK uses only `luxfi/*` packages for all blockchain operations:
+
+- `github.com/luxfi/crypto` -- Cryptographic primitives
+- `github.com/luxfi/ids` -- ID types (NodeID, BlockchainID, etc.)
+- `github.com/luxfi/geth` -- EVM interaction
+- `github.com/luxfi/warp` -- Cross-chain messaging
+
+## Related Pages
+
+- [RPC Operations](/docs/sdk/go/rpc) -- JSON-RPC calls to Lux nodes
+- [Wallet](/docs/sdk/go/wallet) -- Multi-chain wallet operations
+- [Transactions](/docs/sdk/go/transactions) -- Transaction building and signing

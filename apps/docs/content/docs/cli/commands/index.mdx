@@ -5,4 +5,51 @@ index: true
 icon: Terminal
 ---
 
-All available CLI commands organized by category.
+The Lux CLI provides commands for managing networks, chains, keys, nodes, and validators. All commands follow the pattern `lux <group> <action> [flags]`.
+
+## Command Groups
+
+| Group | Purpose | Key Commands |
+|-------|---------|-------------|
+| `network` | Local network lifecycle | `start`, `stop`, `status`, `clean` |
+| `node` | Kubernetes node management | `deploy`, `upgrade`, `status`, `logs` |
+| `chain` | Chain creation and deployment | `create`, `deploy`, `list`, `describe` |
+| `key` | Cryptographic key management | `create`, `list`, `show`, `export` |
+| `validator` | Validator operations | `balance`, `stake` |
+| `amm` | AMM/DEX trading | `balance`, `swap`, `pools`, `quote` |
+| `dex` | High-performance DEX | `market`, `order`, `pool`, `perp` |
+| `contract` | Smart contract tools | `deploy`, `verify` |
+| `warp` | Cross-chain messaging | `send`, `relay` |
+
+## Global Flags
+
+| Flag | Description |
+|------|-------------|
+| `--mainnet` | Target mainnet (network ID 1, port 9630) |
+| `--testnet` | Target testnet (network ID 2, port 9640) |
+| `--devnet` | Target devnet (network ID 3, port 9650) |
+| `--dev` | Single-node dev mode (chain ID 1337, port 8545) |
+| `--rpc` | Override RPC endpoint URL |
+
+## Installation
+
+```bash
+# Build from source
+cd ~/work/lux/cli && go build -o bin/lux ./main.go
+
+# Or install globally
+go install github.com/luxfi/cli@latest
+```
+
+## Data Location
+
+All CLI data is stored under `~/.lux/`:
+
+```
+~/.lux/
+  chains/       Chain configurations and genesis files
+  keys/         Cryptographic keys (EC, BLS, ML-DSA, Ringtail)
+  plugins/      EVM plugin binaries
+  runs/         Network run data
+  snapshots/    Network state snapshots
+```

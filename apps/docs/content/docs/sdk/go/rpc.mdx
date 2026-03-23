@@ -1,6 +1,105 @@
 ---
-title: Urpc
-description: Urpc operations with the go SDK
+title: RPC Operations
+description: JSON-RPC calls to Lux nodes using the Go SDK
 ---
 
-Documentation for rpc operations using the go SDK.
+The Go SDK provides typed wrappers around all Lux node JSON-RPC endpoints. Each chain type (P, X, C, Subnet EVM) has its own client.
+
+## C-Chain (EVM) RPC
+
+Use the standard `github.com/luxfi/geth/ethclient` package for EVM calls:
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+
+    "github.com/luxfi/geth/common"
+    "github.com/luxfi/geth/ethclient"
+)
+
+func main() {
+    client, err := ethclient.Dial(
+        "https://api.lux.network/mainnet/ext/bc/C/rpc",
+    )
+    if err != nil {
+        panic(err)
+    }
+
+    // Get latest block number
+    block, err := client.BlockNumber(context.Background())
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println("C-Chain block:", block)
+
+    // Get balance
+    addr := common.HexToAddress("0x9011E888251AB053B7bD1cdB598Db4f9DEd94714")
+    balance, err := client.BalanceAt(context.Background(), addr, nil)
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println("Balance (wei):", balance)
+}
+```
+
+## P-Chain RPC
+
+Platform chain operations use the `platformvm` client for validator and staking queries:
+
+```go
+import "github.com/luxfi/sdk/platformvm"
+
+client := platformvm.NewClient(
+    "https://api.lux.network/mainnet/ext/bc/P",
+)
+
+// Get current validators
+validators, err := client.GetCurrentValidators(
+    context.Background(), nil,
+)
+```
+
+## X-Chain RPC
+
+Exchange chain operations for UTXO-based asset management:
+
+```go
+import "github.com/luxfi/sdk/avm"
+
+client := avm.NewClient(
+    "https://api.lux.network/mainnet/ext/bc/X",
+)
+
+// Get asset description
+asset, err := client.GetAssetDescription(
+    context.Background(), "LUX",
+)
+```
+
+## Subnet EVM RPC
+
+Subnet EVM chains use the same `ethclient` interface with a different endpoint:
+
+```go
+// Zoo chain RPC
+zooClient, _ := ethclient.Dial(
+    "https://api.lux.network/mainnet/ext/bc/zoo/rpc",
+)
+
+// Hanzo chain RPC
+hanzoClient, _ := ethclient.Dial(
+    "https://api.lux.network/mainnet/ext/bc/hanzo/rpc",
+)
+```
+
+## Network Endpoints
+
+| Network | Base URL |
+|---------|----------|
+| Mainnet | `https://api.lux.network/mainnet/ext` |
+| Testnet | `https://api.lux.network/testnet/ext` |
+| Devnet | `https://api.lux.network/devnet/ext` |
+| Local | `http://127.0.0.1:9630/ext` |

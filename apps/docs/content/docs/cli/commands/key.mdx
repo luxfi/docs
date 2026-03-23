@@ -1,13 +1,65 @@
 ---
 title: lux key
-description: Manage keys and addresses
+description: Manage cryptographic keys and addresses
 ---
 
-## Usage
+The `key` command manages all cryptographic keys used in the Lux network. Keys are stored in `~/.lux/keys/<name>/` with separate subdirectories for each type.
+
+## Key Types
+
+| Type | Algorithm | Purpose |
+|------|-----------|---------|
+| EC | secp256k1 | Transaction signing, Ethereum compatibility |
+| BLS | BLS12-381 | Consensus participation, aggregated signatures |
+| Ringtail | Ring signatures | Privacy-preserving operations |
+| ML-DSA | NIST Level 3 | Post-quantum digital signatures |
+
+## Commands
 
 ```bash
+# Create a new key set from mnemonic
 lux key create <name>
+
+# Create from existing mnemonic
+lux key create <name> --mnemonic
+
+# Batch generate multiple key sets
+lux key generate -n 5
+lux key generate -n 10 -p validator
+
+# Derive keys from LUX_MNEMONIC env var
+lux key derive -n 5
+lux key derive -n 5 --show
+
+# List all key sets
 lux key list
+
+# Show public keys and addresses
+lux key show <name>
+
+# Export mnemonic (handle with care)
 lux key export <name>
+
+# Delete a key set
 lux key delete <name>
+
+# Lock/unlock keys in memory
+lux key lock <name>
+lux key lock --all
+lux key unlock <name>
+
+# Migrate plaintext keys to encrypted storage
+lux key migrate
 ```
+
+## Storage Layout
+
+```
+~/.lux/keys/<name>/
+  ec/       secp256k1 keys
+  bls/      BLS consensus keys
+  rt/       Ringtail ring signature keys
+  mldsa/    ML-DSA post-quantum keys
+```
+
+All keys are derived from a single BIP-39 mnemonic phrase using HKDF.

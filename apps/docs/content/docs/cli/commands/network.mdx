@@ -3,11 +3,69 @@ title: lux network
 description: Manage local and remote networks
 ---
 
-## Usage
+The `network` command manages the lifecycle of local Lux networks used for development and testing. It controls node processes and runtime state via the Netrunner gRPC server.
+
+## Commands
 
 ```bash
-lux network start [--num-nodes 5]
+# Start a local network
+lux network start --mainnet    # 5 validators, port 9630
+lux network start --testnet    # 5 validators, port 9640
+lux network start --devnet     # 5 validators, port 9650
+lux network start --dev        # 1 node, port 8545
+
+# Stop the running network
 lux network stop
+lux network stop --snapshot-name my-backup
+
+# Check network status and endpoints
 lux network status
+
+# Clean all runtime data (preserves chain configs)
 lux network clean
+
+# Manage snapshots
+lux network snapshot save <name>
+lux network snapshot restore <name>
+lux network snapshot list
 ```
+
+## Network Types
+
+| Type | Network ID | C-Chain ID | Base Port | Validators |
+|------|-----------|------------|-----------|-----------|
+| `--mainnet` | 1 | 96369 | 9630 | 5 |
+| `--testnet` | 2 | 96368 | 9640 | 5 |
+| `--devnet` | 3 | 96370 | 9650 | 5 |
+| `--dev` | 1337 | 1337 | 8545 | 1 |
+
+## Typical Workflow
+
+```bash
+# Start a development network
+lux network start --testnet
+
+# Deploy a chain
+lux chain create mychain --evm-chain-id=12345
+lux chain deploy mychain --testnet
+
+# Work with the chain...
+
+# Save state and stop
+lux network stop --snapshot-name checkpoint1
+
+# Resume later
+lux network start --testnet --snapshot-name checkpoint1
+```
+
+## Port Allocation
+
+Each 5-validator network uses 5 HTTP ports (base, +2, +4, +6, +8):
+
+| Node | Mainnet HTTP | Testnet HTTP |
+|------|-------------|-------------|
+| node-0 | 9630 | 9640 |
+| node-1 | 9632 | 9642 |
+| node-2 | 9634 | 9644 |
+| node-3 | 9636 | 9646 |
+| node-4 | 9638 | 9648 |

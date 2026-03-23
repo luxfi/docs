@@ -1,6 +1,96 @@
 ---
-title: Uwallet
-description: Uwallet operations with the python SDK
+title: Wallet
+description: Key management and signing with the Python SDK
 ---
 
-Documentation for wallet operations using the python SDK.
+The Python SDK provides wallet utilities for generating keys, deriving addresses, and signing EVM transactions on Lux chains.
+
+## Create a Wallet
+
+```python
+from eth_account import Account
+
+# Generate a new account
+account = Account.create()
+print(f"Address: {account.address}")
+print(f"Private key: {account.key.hex()}")
+
+# From existing private key
+account = Account.from_key(
+    "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+)
+```
+
+## HD Key Derivation
+
+Generate keys from a BIP-39 mnemonic using BIP-44 paths:
+
+```python
+from eth_account import Account
+from eth_account.hdaccount import generate_mnemonic, key_from_seed
+from eth_utils import to_hex
+
+# Generate mnemonic
+Account.enable_unaudited_hdwallet_features()
+mnemonic = "abandon ability able about above absent ..."
+
+# Derive C-Chain key (m/44'/60'/0'/0/0)
+account = Account.from_mnemonic(mnemonic)
+print(f"C-Chain address: {account.address}")
+
+# Derive additional addresses
+for i in range(5):
+    path = f"m/44'/60'/0'/0/{i}"
+    acct = Account.from_mnemonic(mnemonic, account_path=path)
+    print(f"  [{i}] {acct.address}")
+```
+
+## Sign Transactions
+
+```python
+from web3 import Web3
+
+w3 = Web3(Web3.HTTPProvider(
+    "https://api.lux.network/mainnet/ext/bc/C/rpc"
+))
+
+# Build transaction
+tx = {
+    "to": "0xRecipientAddress...",
+    "value": w3.to_wei(1, "ether"),  # 1 LUX
+    "gas": 21000,
+    "maxFeePerGas": w3.to_wei(50, "gwei"),
+    "maxPriorityFeePerGas": w3.to_wei(25, "gwei"),
+    "nonce": w3.eth.get_transaction_count(account.address),
+    "chainId": 96369,
+    "type": 2,  # EIP-1559
+}
+
+# Sign and send
+signed = account.sign_transaction(tx)
+tx_hash = w3.eth.send_raw_transaction(signed.raw_transaction)
+print(f"TX hash: {tx_hash.hex()}")
+```
+
+## Environment Variables
+
+The SDK supports loading keys from environment variables:
+
+```python
+import os
+from eth_account import Account
+
+# From LUX_PRIVATE_KEY
+key = os.environ.get("LUX_PRIVATE_KEY")
+account = Account.from_key(key)
+
+# From LUX_MNEMONIC
+mnemonic = os.environ.get("LUX_MNEMONIC")
+Account.enable_unaudited_hdwallet_features()
+account = Account.from_mnemonic(mnemonic)
+```
+
+## Related Pages
+
+- [Transactions](/docs/sdk/python/transactions) -- Sending transactions
+- [RPC](/docs/sdk/python/rpc) -- Querying chain state

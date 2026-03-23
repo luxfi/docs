@@ -12,7 +12,7 @@ The Lux CEX gateway accepts connections over five protocols. All protocols share
 |----------|-----------|-------------|---------|----------|
 | REST/HTTP | HTTP/1.1 | `:8091` | ~1ms | Web clients, admin, integrations |
 | JSON-RPC 2.0 | HTTP POST | `:8091` `/rpc` | ~1ms | Programmatic access, batch queries |
-| WebSocket | WS over HTTP | `:8091` `/ws` | ~10ms (broadcast) | Real-time streaming, interactive trading |
+| WebSocket | WS over HTTP | `:8091` `/ws` (also `:8092`) | ~10ms (broadcast) | Real-time streaming, interactive trading |
 | FIX 4.4 | TCP | `:8094` | &lt;1ms | Institutional connectivity |
 | ZAP | TCP (binary) | `:8093` | &lt;100us | Ultra-low-latency / HFT |
 

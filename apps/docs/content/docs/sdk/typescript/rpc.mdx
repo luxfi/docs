@@ -1,6 +1,107 @@
 ---
-title: Urpc
-description: Urpc operations with the typescript SDK
+title: RPC Operations
+description: JSON-RPC calls to Lux nodes using the TypeScript SDK
 ---
 
-Documentation for rpc operations using the typescript SDK.
+The TypeScript SDK provides typed access to all Lux node JSON-RPC endpoints. For EVM chains, it integrates with `viem` and `ethers.js`.
+
+## C-Chain RPC with viem
+
+```typescript
+import { createPublicClient, http, formatEther } from "viem";
+
+const client = createPublicClient({
+  transport: http(
+    "https://api.lux.network/mainnet/ext/bc/C/rpc"
+  ),
+});
+
+// Get latest block
+const block = await client.getBlock();
+console.log("Block:", block.number);
+
+// Get balance
+const balance = await client.getBalance({
+  address: "0x9011E888251AB053B7bD1cdB598Db4f9DEd94714",
+});
+console.log("Balance:", formatEther(balance), "LUX");
+
+// Get gas price
+const gasPrice = await client.getGasPrice();
+console.log("Gas price:", gasPrice);
+```
+
+## C-Chain RPC with ethers.js
+
+```typescript
+import { ethers } from "ethers";
+
+const provider = new ethers.JsonRpcProvider(
+  "https://api.lux.network/mainnet/ext/bc/C/rpc"
+);
+
+const block = await provider.getBlockNumber();
+const balance = await provider.getBalance(
+  "0x9011E888251AB053B7bD1cdB598Db4f9DEd94714"
+);
+console.log("Block:", block, "Balance:", ethers.formatEther(balance));
+```
+
+## P-Chain RPC
+
+```typescript
+const response = await fetch(
+  "https://api.lux.network/mainnet/ext/bc/P",
+  {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      method: "platform.getCurrentValidators",
+      params: {},
+      id: 1,
+    }),
+  }
+);
+
+const { result } = await response.json();
+console.log("Validators:", result.validators.length);
+```
+
+## Subnet EVM RPC
+
+All Subnet EVM chains use the same interface -- change the endpoint URL:
+
+```typescript
+// Zoo chain
+const zoo = createPublicClient({
+  transport: http(
+    "https://api.lux.network/mainnet/ext/bc/zoo/rpc"
+  ),
+});
+
+// Hanzo chain
+const hanzo = createPublicClient({
+  transport: http(
+    "https://api.lux.network/mainnet/ext/bc/hanzo/rpc"
+  ),
+});
+```
+
+## Network Endpoints
+
+| Network | C-Chain RPC URL |
+|---------|-----------------|
+| Mainnet | `https://api.lux.network/mainnet/ext/bc/C/rpc` |
+| Testnet | `https://api.lux.network/testnet/ext/bc/C/rpc` |
+| Local | `http://127.0.0.1:9630/ext/bc/C/rpc` |
+
+## Chain IDs
+
+| Chain | Mainnet | Testnet |
+|-------|---------|---------|
+| C-Chain | 96369 | 96368 |
+| Zoo | 200200 | 200201 |
+| Hanzo | 36963 | 36964 |
+| SPC | 36911 | 36910 |
+| Pars | 494949 | 494950 |

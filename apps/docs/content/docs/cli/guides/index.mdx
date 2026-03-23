@@ -1,8 +1,54 @@
 ---
 title: Guides
-description: Step-by-step tutorials
+description: Step-by-step tutorials for the Lux CLI
 index: true
 icon: BookOpen
 ---
 
-Practical guides for common Lux CLI workflows.
+Practical guides for common Lux CLI workflows. Each guide walks through a real-world scenario with copy-paste commands.
+
+## Getting Started
+
+Start a local development network and deploy your first chain:
+
+```bash
+# Start a 5-node testnet
+lux network start --testnet
+
+# Check that all nodes are healthy
+lux network status
+
+# Create a new Subnet EVM chain
+lux chain create mychain --evm-chain-id=12345
+
+# Deploy it to the running network
+lux chain deploy mychain --testnet
+```
+
+## Common Workflows
+
+| Workflow | Commands | Guide |
+|----------|----------|-------|
+| Local development | `network start`, `chain create`, `chain deploy` | Start a network and deploy a chain |
+| Key management | `key create`, `key list`, `key export` | Generate and manage validator keys |
+| Kubernetes deploy | `node deploy`, `node status`, `node logs` | Deploy to production Kubernetes |
+| Rolling upgrade | `node upgrade --image ...` | Zero-downtime binary upgrade |
+| Network snapshots | `network stop --snapshot-name`, `network start --snapshot-name` | Save and restore state |
+| AMM trading | `amm balance`, `amm swap`, `amm pools` | Interact with on-chain DEX |
+
+## Environment Variables
+
+| Variable | Purpose |
+|----------|---------|
+| `LUX_PRIVATE_KEY` | Hex-encoded private key for transactions |
+| `LUX_MNEMONIC` | BIP-39 mnemonic (derives key at `m/44'/60'/0'/0/0`) |
+| `LUX_CHART_PATH` | Path to Helm chart for `node deploy` |
+
+## Network Ports
+
+| Mode | Base Port | Validators |
+|------|-----------|-----------|
+| `--mainnet` | 9630 | 5 |
+| `--testnet` | 9640 | 5 |
+| `--devnet` | 9650 | 5 |
+| `--dev` | 8545 | 1 |

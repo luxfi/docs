@@ -1,6 +1,93 @@
 ---
-title: Utransactions
-description: Utransactions operations with the go SDK
+title: Transactions
+description: Build and sign transactions with the Go SDK
 ---
 
-Documentation for transactions operations using the go SDK.
+The Go SDK provides transaction builders for all Lux chain types. Transactions follow a build-sign-broadcast pattern.
+
+## C-Chain (EVM) Transactions
+
+For EVM transactions, use the standard `github.com/luxfi/geth` packages:
+
+```go
+package main
+
+import (
+    "context"
+    "math/big"
+
+    "github.com/luxfi/geth/core/types"
+    "github.com/luxfi/geth/ethclient"
+)
+
+func sendEVM() error {
+    client, _ := ethclient.Dial(
+        "http://127.0.0.1:9630/ext/bc/C/rpc",
+    )
+
+    // Build EIP-1559 transaction
+    tx := types.NewTx(&types.DynamicFeeTx{
+        ChainID:   big.NewInt(96369),
+        Nonce:     0,
+        GasTipCap: big.NewInt(25000000000),
+        GasFeeCap: big.NewInt(50000000000),
+        Gas:       21000,
+        To:        &recipientAddr,
+        Value:     big.NewInt(1e18), // 1 LUX
+    })
+
+    // Sign and send
+    signedTx, _ := types.SignTx(
+        tx,
+        types.LatestSignerForChainID(big.NewInt(96369)),
+        privateKey,
+    )
+    return client.SendTransaction(context.Background(), signedTx)
+}
+```
+
+## X-Chain (UTXO) Transfers
+
+UTXO transfers on the X-Chain use the wallet's `CreateTransferTx`:
+
+```go
+import (
+    "github.com/luxfi/ids"
+    "github.com/luxfi/sdk/wallet"
+)
+
+w := wallet.New(1, xChainID)
+w.ImportKey(privateKey)
+
+tx, err := w.CreateTransferTx(
+    recipientAddr, // ids.ShortID
+    luxAssetID,    // ids.ID for LUX
+    500000000,     // 0.5 LUX (6 decimal places on X-Chain)
+    nil,           // no memo
+)
+```
+
+## Cross-Chain Transfers
+
+Move assets between chains using export/import transactions:
+
+```go
+// Export from C-Chain to P-Chain
+exportTxID, _ := cChainWallet.Export(ctx, pChainID, amount, assetID)
+
+// Import on P-Chain
+importTxID, _ := pChainWallet.Import(ctx, cChainID)
+```
+
+## Token Denominations
+
+| Chain | Decimals | 1 LUX equals |
+|-------|----------|--------------|
+| P-Chain | 6 | 1,000,000 nLUX |
+| X-Chain | 6 | 1,000,000 nLUX |
+| C-Chain | 18 | 10^18 wei |
+
+## Related Pages
+
+- [Wallet](/docs/sdk/go/wallet) -- Wallet operations
+- [RPC](/docs/sdk/go/rpc) -- Calling RPC endpoints

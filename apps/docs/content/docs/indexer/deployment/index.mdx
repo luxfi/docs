@@ -5,4 +5,70 @@ index: true
 icon: Rocket
 ---
 
-The Lux Indexer runs as Docker containers on Kubernetes, managed by the Lux Operator.
+The Lux Indexer runs as Docker containers on Kubernetes, managed by the Lux Operator. It indexes all Lux chain types -- linear chains (P, C), DAG chains (X, A, B, Q, T, Z, K), and EVM chains (C, Zoo, Hanzo, SPC, Pars).
+
+## Docker Image
+
+```bash
+# Build the indexer binary
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -tags postgres ./cmd/indexer
+
+# Image
+ghcr.io/luxfi/indexer:v0.2.2
+```
+
+## Kubernetes Architecture
+
+```
+13 indexer pods (lux-explorer namespace)
+  indexer-cchain:4000    C-Chain EVM
+  indexer-pchain:4100    P-Chain linear
+  indexer-xchain:4200    X-Chain DAG
+  indexer-qchain:4300    Q-Chain DAG
+  indexer-zchain:4400    Z-Chain DAG
+  indexer-achain:4500    A-Chain DAG
+  indexer-bchain:4600    B-Chain DAG
+  indexer-tchain:4700    T-Chain DAG
+  indexer-kchain:4900    K-Chain DAG
+```
+
+## PostgreSQL
+
+All indexer instances share a single PostgreSQL instance:
+
+```
+indexer-postgres-0 (20Gi PVC)
+  Database: indexer
+  User: indexer
+  Port: 5432
+```
+
+## External API Endpoints
+
+| Chain | External URL |
+|-------|-------------|
+| C-Chain | `api-indexer.lux.network` |
+| P-Chain | `api-indexer-pchain.lux.network` |
+| X-Chain | `api-indexer-xchain.lux.network` |
+| Q-Chain | `api-indexer-qchain.lux.network` |
+| Z-Chain | `api-indexer-zchain.lux.network` |
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `LUX_RPC_URL` | luxd RPC endpoint |
+| `LUX_CHAIN_ID` | Chain ID for validation |
+| `INDEXER_CHAIN` | Chain type (evm, pchain, xchain, etc.) |
+| `INDEXER_PORT` | HTTP listen port |
+
+## Build Tags
+
+```bash
+# Default (SQLite)
+go build ./cmd/indexer
+
+# PostgreSQL (production)
+go build -tags postgres ./cmd/indexer
+```

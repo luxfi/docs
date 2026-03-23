@@ -5,12 +5,67 @@ index: true
 icon: Code
 ---
 
-Client libraries for interacting with all Lux chain types.
+Client libraries for interacting with all Lux chain types. Each SDK provides wallet creation, transaction building, and RPC access.
 
 ## Language Support
 
-| Language | Package | Chains |
-|----------|---------|--------|
-| Go | `github.com/luxfi/sdk` | P, X, C, Subnets |
-| TypeScript | `@luxfi/sdk` | P, X, C, Subnets |
-| Python | `luxfi-sdk` | C-Chain, Subnets |
+| Language | Package | Install | Chains |
+|----------|---------|---------|--------|
+| Go | `github.com/luxfi/sdk` | `go get github.com/luxfi/sdk@latest` | P, X, C, Subnets |
+| TypeScript | `@luxfi/sdk` | `npm install @luxfi/sdk` | P, X, C, Subnets |
+| Python | `luxfi-sdk` | `pip install luxfi-sdk` | C-Chain, Subnets |
+
+## Capabilities by Language
+
+| Feature | Go | TypeScript | Python |
+|---------|----|-----------:|-------:|
+| P-Chain transactions | Yes | Yes | Read-only |
+| X-Chain UTXO operations | Yes | Yes | Read-only |
+| C-Chain EVM | Yes | Yes | Yes |
+| Subnet EVM | Yes | Yes | Yes |
+| HD wallet (BIP-44) | Yes | Yes | Yes |
+| Key generation | Yes | Yes | Yes |
+| Network management | Yes | No | No |
+
+## Quick Examples
+
+### Go
+
+```go
+import "github.com/luxfi/sdk"
+
+client, _ := sdk.New(config.Default())
+net, _ := client.LaunchNetwork(ctx, "local", 5)
+```
+
+### TypeScript
+
+```typescript
+import { createPublicClient, http } from "viem";
+
+const client = createPublicClient({
+  transport: http(
+    "https://api.lux.network/mainnet/ext/bc/C/rpc"
+  ),
+});
+const block = await client.getBlockNumber();
+```
+
+### Python
+
+```python
+from web3 import Web3
+
+w3 = Web3(Web3.HTTPProvider(
+    "https://api.lux.network/mainnet/ext/bc/C/rpc"
+))
+block = w3.eth.block_number
+```
+
+## Network Endpoints
+
+| Network | Base URL |
+|---------|----------|
+| Mainnet | `https://api.lux.network/mainnet/ext` |
+| Testnet | `https://api.lux.network/testnet/ext` |
+| Local | `http://127.0.0.1:9630/ext` |

@@ -1,0 +1,55 @@
+---
+title: Token Sales
+description: Conduct governance token sales through your DAO
+---
+
+# Token Sales
+
+Token sales allow your DAO to raise funds by selling governance tokens to community members through a transparent, on-chain process.
+
+## Sale Types
+
+| Type | Description |
+|------|-------------|
+| **Fixed Price** | Tokens sold at a set price until supply runs out |
+| **Dutch Auction** | Price decreases over time until all tokens are sold |
+| **Bonding Curve** | Price increases with each purchase |
+
+## Setting Up a Token Sale
+
+1. Navigate to **Finance** in your DAO dashboard
+2. Select **Token Sales**
+3. Click **Create Sale**
+4. Configure the sale parameters:
+   - Token amount to sell
+   - Pricing model
+   - Start and end dates
+   - Contribution limits (min/max per address)
+   - Accepted payment tokens
+5. Submit as a governance proposal for approval
+
+## Sale Lifecycle
+
+```
+Configure --> Propose --> Approve --> Active --> Finalize
+                                        |
+                                   Contributors
+                                   purchase tokens
+```
+
+## After the Sale
+
+- Raised funds are deposited into the DAO treasury
+- Purchased tokens are distributed to buyers
+- Unsold tokens are returned to the treasury or burned (configurable)
+
+## Next Steps
+
+<Cards>
+  <Card title="Token Setup" href="/dao/guide/token-setup" icon="coins">
+    Configure your governance token
+  </Card>
+  <Card title="Treasury" href="/dao/guide/treasury" icon="vault">
+    Manage raised funds
+  </Card>
+</Cards>

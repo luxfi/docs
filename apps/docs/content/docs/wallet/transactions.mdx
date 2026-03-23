@@ -4,10 +4,97 @@ description: Build and sign transactions
 icon: Send
 ---
 
-## Build Transaction
+The wallet supports building and signing transactions for all Lux chain types.
+
+## UTXO Transfers (X-Chain)
 
 ```go
-tx, _ := w.BuildCChainTx(to, amount)
-signed, _ := w.Sign(tx)
-hash, _ := w.Broadcast(signed)
+import "github.com/luxfi/sdk/wallet"
+
+w := wallet.New(1, xChainID)
+w.ImportKey(privKey)
+
+// Build a transfer
+tx, err := w.CreateTransferTx(
+    recipientAddr,   // ids.ShortID
+    luxAssetID,      // ids.ID
+    500000000,       // 0.5 LUX (6 decimal places)
+    []byte("hello"), // optional memo
+)
+if err != nil {
+    return fmt.Errorf("build failed: %w", err)
+}
+
+// Sign with wallet keys
+err = w.Sign(ctx, tx)
+if err != nil {
+    return fmt.Errorf("sign failed: %w", err)
+}
 ```
+
+## EVM Transfers (C-Chain)
+
+```go
+import (
+    "github.com/luxfi/geth/core/types"
+    "github.com/luxfi/geth/ethclient"
+    "math/big"
+)
+
+client, _ := ethclient.Dial(
+    "http://127.0.0.1:9630/ext/bc/C/rpc",
+)
+
+tx := types.NewTx(&types.DynamicFeeTx{
+    ChainID:   big.NewInt(96369),
+    Nonce:     nonce,
+    GasTipCap: big.NewInt(25e9),  // 25 gwei
+    GasFeeCap: big.NewInt(50e9),  // 50 gwei
+    Gas:       21000,
+    To:        &recipient,
+    Value:     big.NewInt(1e18),  // 1 LUX
+})
+
+signed, _ := types.SignTx(
+    tx,
+    types.LatestSignerForChainID(big.NewInt(96369)),
+    privateKey,
+)
+client.SendTransaction(ctx, signed)
+```
+
+## Cross-Chain Transfers
+
+Moving assets between chains requires two steps:
+
+1. **Export** on the source chain
+2. **Import** on the destination chain
+
+```
+C-Chain -> P-Chain: export from C, import to P
+P-Chain -> X-Chain: export from P, import to X
+X-Chain -> C-Chain: export from X, import to C
+```
+
+## Transaction Fees
+
+| Chain | Fee Model | Typical Fee |
+|-------|-----------|-------------|
+| P-Chain | Fixed | 0.001 LUX |
+| X-Chain | Fixed | 0.001 LUX |
+| C-Chain | EIP-1559 dynamic | Variable (gas price * gas used) |
+| Subnet EVM | EIP-1559 dynamic | Variable |
+
+## Transaction Types
+
+| Type | Chain | Description |
+|------|-------|-------------|
+| Transfer | X | UTXO-based asset transfer |
+| Export | P/X/C | Export assets to another chain |
+| Import | P/X/C | Import assets from another chain |
+| AddValidator | P | Register a new validator |
+| AddDelegator | P | Delegate stake to a validator |
+| CreateSubnet | P | Create a new subnet |
+| CreateBlockchain | P | Create a new blockchain on a subnet |
+| EVM Transfer | C/Subnet | Standard EVM value transfer |
+| Contract Call | C/Subnet | Smart contract interaction |

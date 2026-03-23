@@ -4,11 +4,77 @@ description: Netrunner configuration options
 icon: Settings
 ---
 
+Netrunner supports configuration via CLI flags, environment variables, and configuration files. Settings follow a hierarchy: CLI flags override file settings, which override defaults.
+
 ## CLI Flags
 
 | Flag | Description | Default |
-|------|-------------|--------|
-| `--nodes` | Number of nodes | 5 |
-| `--duration` | Test duration | 60s |
-| `--topology` | Topology file | mesh |
-| `--output` | Results output | stdout |
+|------|-------------|---------|
+| `--number-of-nodes` | Number of validator nodes | 5 |
+| `--node-path` | Path to luxd binary | auto-detect |
+| `--port` | gRPC server port | `:8080` |
+| `--grpc-gateway-port` | REST gateway port | `:8081` |
+| `--log-level` | Log verbosity | `info` |
+| `--data-dir` | Network data directory | `/tmp/netrunner` |
+
+## Network Configuration
+
+```json
+{
+  "networkId": 1,
+  "numNodes": 5,
+  "binaryPath": "/path/to/luxd",
+  "logLevel": "INFO",
+  "httpPort": 9630,
+  "stakingPort": 9631,
+  "sybilProtectionEnabled": true,
+  "consensusSampleSize": 5,
+  "consensusQuorumSize": 4
+}
+```
+
+## Node Configuration
+
+Each node can have individual settings:
+
+```json
+{
+  "nodeId": "node-0",
+  "httpPort": 9630,
+  "stakingPort": 9631,
+  "logLevel": "DEBUG",
+  "trackChains": "all",
+  "pluginDir": "/path/to/plugins"
+}
+```
+
+## Chain Configuration
+
+Configure specific chains for each node:
+
+```json
+{
+  "chainId": "C",
+  "config": {
+    "admin-api-enabled": true,
+    "pruning-enabled": true
+  }
+}
+```
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `LUXD_PATH` | Default luxd binary path |
+| `NETRUNNER_DATA_DIR` | Default data directory |
+| `NETRUNNER_LOG_LEVEL` | Default log level |
+
+## Consensus Parameters
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `consensus-sample-size` | 5 | Number of validators sampled per round |
+| `consensus-quorum-size` | 4 | Agreement threshold for finality |
+| `network-id` | 1 | Network identifier |
+| `sybil-protection-enabled` | true | Require staking for validation |

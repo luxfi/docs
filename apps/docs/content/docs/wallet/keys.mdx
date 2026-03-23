@@ -4,10 +4,64 @@ description: BIP-44 HD key derivation paths
 icon: Key
 ---
 
+The Lux wallet uses hierarchical deterministic (HD) key derivation following BIP-32/BIP-44 standards. A single BIP-39 mnemonic generates all keys across all chain types.
+
 ## Derivation Paths
 
-| Chain | Path |
-|-------|------|
-| C-Chain | m/44'/60'/0'/0/i |
-| P-Chain | m/44'/9000'/0'/0/i |
-| X-Chain | m/44'/9000'/0'/0/i |
+| Chain | Path | Coin Type | Notes |
+|-------|------|-----------|-------|
+| C-Chain | `m/44'/60'/0'/0/i` | 60 (ETH) | Ethereum-compatible addresses |
+| P-Chain | `m/44'/9000'/0'/0/i` | 9000 (LUX) | Bech32 platform addresses |
+| X-Chain | `m/44'/9000'/0'/0/i` | 9000 (LUX) | Bech32 exchange addresses |
+
+## Key Types
+
+| Type | Algorithm | Derivation | Purpose |
+|------|-----------|-----------|---------|
+| EC | secp256k1 | BIP-44 | Transaction signing, EVM compatibility |
+| BLS | BLS12-381 | HKDF from mnemonic seed | Consensus signatures |
+| ML-DSA | NIST Level 3 | HKDF from mnemonic seed | Post-quantum signatures |
+| Ringtail | Ring signatures | HKDF from mnemonic seed | Privacy operations |
+
+## Mnemonic to Key Flow
+
+```
+BIP-39 Mnemonic (12 or 24 words)
+  -> PBKDF2 with passphrase -> 512-bit seed
+    -> BIP-32 master key
+      -> BIP-44 derivation (secp256k1 keys)
+    -> HKDF derivation
+      -> BLS keys
+      -> ML-DSA keys
+      -> Ringtail keys
+```
+
+## Address Formats
+
+| Chain | Format | Example |
+|-------|--------|---------|
+| C-Chain | EIP-55 checksummed hex | `0x9011E888251AB053B7bD1cdB598Db4f9DEd94714` |
+| P-Chain | Bech32 with `P-lux` prefix | `P-lux1e44zjaddy52vjqa40ws...` |
+| X-Chain | Bech32 with `X-lux` prefix | `X-lux1wst8jt3z3fm9ce0z6ak...` |
+
+## Index Convention
+
+- Index 0 is the default key
+- On P-Chain, index 0 may be locked if listed in `initialStakedFunds` in genesis
+- Use index 1+ for unlocked operational keys
+
+## Code Example
+
+```go
+import "github.com/luxfi/sdk/key"
+
+// Generate mnemonic
+mnemonic, _ := key.GenerateMnemonic(128) // 12 words
+
+// Derive keys at different indices
+for i := uint32(0); i < 5; i++ {
+    privKey, _ := key.DeriveKey(mnemonic, i)
+    addr := generateAddress(privKey.PublicKey())
+    fmt.Printf("[%d] %s\n", i, addr)
+}
+```

@@ -1,6 +1,103 @@
 ---
-title: Uwallet
-description: Uwallet operations with the typescript SDK
+title: Wallet
+description: Key management and signing with the TypeScript SDK
 ---
 
-Documentation for wallet operations using the typescript SDK.
+The TypeScript SDK provides wallet utilities for generating keys, deriving addresses, and signing EVM transactions on all Lux chains.
+
+## Create a Wallet
+
+```typescript
+import { createWalletClient, http } from "viem";
+import { privateKeyToAccount } from "viem/accounts";
+
+// From private key
+const account = privateKeyToAccount("0xac0974bec...");
+console.log("Address:", account.address);
+
+const wallet = createWalletClient({
+  account,
+  transport: http(
+    "https://api.lux.network/mainnet/ext/bc/C/rpc"
+  ),
+});
+```
+
+## HD Key Derivation
+
+Generate keys from a BIP-39 mnemonic:
+
+```typescript
+import { mnemonicToAccount } from "viem/accounts";
+
+const mnemonic = "abandon ability able ...";
+
+// Default path: m/44'/60'/0'/0/0
+const account = mnemonicToAccount(mnemonic);
+console.log("Address:", account.address);
+
+// Derive additional addresses
+for (let i = 0; i < 5; i++) {
+  const acct = mnemonicToAccount(mnemonic, {
+    addressIndex: i,
+  });
+  console.log(`[${i}] ${acct.address}`);
+}
+```
+
+## Sign and Send Transactions
+
+```typescript
+import { parseEther } from "viem";
+
+const hash = await wallet.sendTransaction({
+  to: "0xRecipient...",
+  value: parseEther("1"), // 1 LUX
+  chain: {
+    id: 96369,
+    name: "Lux",
+    nativeCurrency: {
+      name: "LUX", symbol: "LUX", decimals: 18,
+    },
+    rpcUrls: {
+      default: {
+        http: [
+          "https://api.lux.network/mainnet/ext/bc/C/rpc",
+        ],
+      },
+    },
+  },
+});
+
+console.log("TX hash:", hash);
+```
+
+## With ethers.js
+
+```typescript
+import { ethers } from "ethers";
+
+const provider = new ethers.JsonRpcProvider(
+  "https://api.lux.network/mainnet/ext/bc/C/rpc"
+);
+const signer = new ethers.Wallet("0xPrivateKey...", provider);
+
+const tx = await signer.sendTransaction({
+  to: "0xRecipient...",
+  value: ethers.parseEther("1"),
+});
+await tx.wait();
+```
+
+## Environment Variables
+
+```typescript
+// Load from environment
+const key = process.env.LUX_PRIVATE_KEY;
+const account = privateKeyToAccount(`0x${key}`);
+```
+
+## Related Pages
+
+- [Transactions](/docs/sdk/typescript/transactions) -- Transaction details
+- [RPC](/docs/sdk/typescript/rpc) -- Querying chain state

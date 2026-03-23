@@ -1,6 +1,97 @@
 ---
-title: Uwallet
-description: Uwallet operations with the go SDK
+title: Wallet
+description: Multi-chain wallet operations with the Go SDK
 ---
 
-Documentation for wallet operations using the go SDK.
+The Go SDK wallet (`github.com/luxfi/sdk/wallet`) manages keys and transactions across all Lux chain types. It supports UTXO-based chains (X-Chain), the Platform chain (P-Chain), and EVM chains (C-Chain, subnets).
+
+## Create a Wallet
+
+```go
+package main
+
+import (
+    "github.com/luxfi/ids"
+    "github.com/luxfi/sdk/wallet"
+    "github.com/luxfi/sdk/crypto"
+)
+
+func main() {
+    // Create wallet for mainnet C-Chain
+    w := wallet.New(1, ids.Empty) // networkID, chainID
+
+    // Import an existing private key
+    privKey, _ := crypto.GeneratePrivateKey()
+    addr, _ := w.ImportKey(privKey)
+
+    // Or generate a new key
+    addr, _ = w.GenerateKey()
+}
+```
+
+## Check Balance
+
+```go
+// Get balance for a specific asset
+balance := w.GetBalance(assetID)
+fmt.Printf("Balance: %d\n", balance)
+```
+
+## Build and Sign Transfers
+
+```go
+// Create a transfer transaction
+tx, err := w.CreateTransferTx(
+    recipientAddr,   // ids.ShortID
+    assetID,         // ids.ID
+    1000000,         // amount in smallest unit
+    []byte("memo"),  // optional memo
+)
+if err != nil {
+    return fmt.Errorf("failed to create transfer: %w", err)
+}
+
+// Sign the transaction
+err = w.Sign(ctx, tx)
+```
+
+## BLS Keys for Validators
+
+Validator operations require a BLS key for consensus participation:
+
+```go
+import "github.com/luxfi/crypto/bls"
+
+// Generate BLS key pair
+blsKey, _ := bls.NewSecretKey()
+w.SetBLSKey(blsKey)
+
+// Retrieve BLS key for staking registration
+key, _ := w.GetBLSKey()
+```
+
+## Key Types
+
+| Type | Curve | Use Case |
+|------|-------|----------|
+| Ed25519 | Curve25519 | General signing, address derivation |
+| BLS | BLS12-381 | Consensus signatures, aggregation |
+| secp256k1 | secp256k1 | EVM transaction signing |
+
+## UTXO Management
+
+The wallet automatically selects UTXOs when building transactions:
+
+```go
+// Get available UTXOs for an asset
+utxos, totalAmount, err := w.GetUTXOs(assetID, requiredAmount)
+if err == wallet.ErrInsufficientFunds {
+    fmt.Println("Not enough funds")
+}
+```
+
+## Related Pages
+
+- [Key Derivation](/docs/wallet/keys) -- BIP-44 HD derivation paths
+- [Transactions](/docs/sdk/go/transactions) -- Transaction building details
+- [Ledger](/docs/wallet/ledger) -- Hardware wallet integration

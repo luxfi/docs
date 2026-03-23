@@ -4,6 +4,38 @@ description: Install Lux Netrunner
 icon: Download
 ---
 
+## Install from Binary
+
+Download the latest release binary:
+
+```bash
+curl -sSfL https://raw.githubusercontent.com/luxfi/netrunner/main/scripts/install.sh | sh -s
+```
+
+Install a specific version:
+
+```bash
+curl -sSfL https://raw.githubusercontent.com/luxfi/netrunner/main/scripts/install.sh | sh -s v1.3.1
+```
+
+The binary installs to `~/bin`. Add it to your PATH:
+
+```bash
+export PATH=~/bin:$PATH
+```
+
+## Build from Source
+
+Requires Go 1.21 or later:
+
+```bash
+git clone https://github.com/luxfi/netrunner.git
+cd netrunner
+./scripts/build.sh
+```
+
+The binary is placed in `./bin/netrunner`.
+
 ## Go Install
 
 ```bash
@@ -14,4 +46,22 @@ go install github.com/luxfi/netrunner@latest
 
 ```bash
 docker pull ghcr.io/luxfi/netrunner:latest
+docker run -p 8080:8080 -p 8081:8081 ghcr.io/luxfi/netrunner:latest
 ```
+
+## Verify Installation
+
+```bash
+netrunner --version
+```
+
+## Dependencies
+
+Netrunner needs a `luxd` binary to run network nodes. Build it from source:
+
+```bash
+cd ~/work/lux/node
+go build -o build/luxd ./main.go
+```
+
+Or point to an existing binary using `--node-path` when starting the network.

@@ -4,6 +4,62 @@ description: Multi-chain wallet operations
 icon: Layers
 ---
 
+The Lux wallet supports all chain types in the Lux Network. Each chain type uses different address formats and transaction models.
+
 ## Supported Chains
 
-P-Chain (Platform), X-Chain (Exchange/UTXO), C-Chain (EVM), and all Subnet EVM chains.
+| Chain | Type | Address Format | TX Model | Decimals |
+|-------|------|---------------|----------|----------|
+| P-Chain | Platform | Bech32 (`P-lux1...`) | Custom | 6 |
+| X-Chain | Exchange | Bech32 (`X-lux1...`) | UTXO | 6 |
+| C-Chain | Contract | Hex (`0x...`) | EVM | 18 |
+| Zoo | Subnet EVM | Hex (`0x...`) | EVM | 18 |
+| Hanzo | Subnet EVM | Hex (`0x...`) | EVM | 18 |
+| SPC | Subnet EVM | Hex (`0x...`) | EVM | 18 |
+| Pars | Subnet EVM | Hex (`0x...`) | EVM | 18 |
+
+## P-Chain Operations
+
+The Platform chain manages staking and validator registration:
+
+- Add/remove validators
+- Delegate stake
+- Create subnets
+- Create blockchains
+
+P-Chain uses 6 decimal places: 1 LUX = 1,000,000 nLUX.
+
+## X-Chain Operations
+
+The Exchange chain handles UTXO-based asset transfers:
+
+- Create assets
+- Transfer assets (UTXO model)
+- Cross-chain exports/imports
+
+## C-Chain Operations
+
+The Contract chain is a full EVM with standard Ethereum tooling:
+
+- Smart contract deployment
+- ERC-20/721/1155 token operations
+- DeFi protocol interaction
+- Standard `eth_*` JSON-RPC methods
+
+C-Chain uses 18 decimal places (standard EVM wei).
+
+## Cross-Chain Transfers
+
+Assets can move between chains using export/import transactions:
+
+```
+C-Chain -> export -> P-Chain -> import
+P-Chain -> export -> X-Chain -> import
+X-Chain -> export -> C-Chain -> import
+```
+
+Each cross-chain transfer requires two transactions: an export on the source chain and an import on the destination chain.
+
+## Subnet EVM Chains
+
+All Subnet EVM chains (Zoo, Hanzo, SPC, Pars) use the same EVM interface as the C-Chain. The only difference is the RPC endpoint URL and chain ID.
