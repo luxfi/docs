@@ -1,16 +1,88 @@
 ---
 title: PKI / Certificates
-description: X.509 certificate authority
+description: X.509 certificate authority and management
 icon: FileCheck
 ---
 
+Lux KMS includes a full Public Key Infrastructure (PKI) for issuing, managing, and revoking X.509 certificates.
+
 ## Certificate Lifecycle
 
-1. **Create CA** — Root or intermediate certificate authority
-2. **Issue Certificates** — Sign CSRs with configurable profiles
-3. **Revoke** — CRL and OCSP support
-4. **Renew** — Automatic renewal before expiry
+1. **Create CA** -- Root or intermediate certificate authority
+2. **Configure Templates** -- Define certificate profiles for policy enforcement
+3. **Issue Certificates** -- Sign Certificate Signing Requests (CSRs)
+4. **Monitor** -- Track expiration with alerting
+5. **Revoke** -- CRL and OCSP support
+6. **Renew** -- Automatic renewal before expiry
+
+## Create a Certificate Authority
+
+```bash
+curl -X POST https://kms.lux.network/api/v1/pki/ca \
+  -H "Authorization: Bearer $KMS_TOKEN" \
+  -d '{
+    "commonName": "Lux Internal CA",
+    "organization": "Lux Network",
+    "keyAlgorithm": "EC-P256",
+    "validityDays": 3650,
+    "type": "root"
+  }'
+```
+
+## Issue a Certificate
+
+```bash
+curl -X POST https://kms.lux.network/api/v1/pki/certificates \
+  -H "Authorization: Bearer $KMS_TOKEN" \
+  -d '{
+    "caId": "ca-abc123",
+    "commonName": "api.internal.lux.network",
+    "sans": ["api.internal", "10.0.1.50"],
+    "validityDays": 365,
+    "template": "server-tls"
+  }'
+```
+
+## Certificate Templates
+
+| Template | Key Usage | Extended Key Usage |
+|----------|-----------|-------------------|
+| `server-tls` | Digital Signature, Key Encipherment | Server Auth |
+| `client-tls` | Digital Signature | Client Auth |
+| `code-signing` | Digital Signature | Code Signing |
+| `email` | Digital Signature, Key Encipherment | Email Protection |
 
 ## EST Protocol
 
-Full EST (RFC 7030) support for automated certificate enrollment.
+Full EST (RFC 7030) support for automated certificate enrollment:
+
+```bash
+# Simple enrollment
+curl https://kms.lux.network/.well-known/est/simpleenroll \
+  --cert client.pem --key client-key.pem \
+  -d @csr.pem -H "Content-Type: application/pkcs10"
+```
+
+## Kubernetes PKI Issuer
+
+The KMS PKI Issuer integrates with cert-manager for automatic TLS certificate provisioning:
+
+```yaml
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: lux-kms-issuer
+spec:
+  external:
+    endpoint: https://kms.lux.network/api/v1/pki
+```
+
+## Alerting
+
+Configure alerts for expiring certificates:
+
+| Alert | Trigger | Channel |
+|-------|---------|---------|
+| CA expiry warning | 90 days before | Email, Slack |
+| Certificate expiry | 30 days before | Email, Slack |
+| Certificate revoked | Immediately | Email, Slack, PagerDuty |

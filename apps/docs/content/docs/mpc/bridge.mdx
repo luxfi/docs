@@ -4,13 +4,69 @@ description: MPC signing for cross-chain bridge transfers
 icon: ArrowLeftRight
 ---
 
-The Lux Bridge uses MPC for threshold signing of cross-chain transfers. Each bridge transaction requires t-of-n MPC nodes to produce a valid signature.
+The Lux Bridge uses MPC for threshold signing of cross-chain transfers. Each bridge transaction requires t-of-n MPC nodes to produce a valid signature before assets are released on the destination chain.
 
-## Flow
+## Transfer Flow
 
-1. User initiates transfer via Bridge UI
-2. Bridge API validates and creates intent
-3. MPC nodes receive signing request via NATS
-4. Each node produces a threshold signature share
-5. Shares are aggregated into a valid signature
-6. Transaction is broadcast to the destination chain
+1. User initiates transfer via Bridge UI at [bridge.lux.network](https://bridge.lux.network)
+2. Bridge API validates the request and creates an intent document
+3. HSM co-signs the intent (if `--hsm-attest` is enabled)
+4. MPC nodes receive the signing request via the consensus transport
+5. Each participating node produces a threshold signature share
+6. Shares are aggregated into a valid ECDSA signature
+7. The bridge server broadcasts the signed transaction to the destination chain
+8. Bridge API updates the transfer status
+
+## Supported Protocols
+
+| Protocol | Curve | Chains |
+|----------|-------|--------|
+| CGGMP21 | secp256k1 | Ethereum, Lux, all EVM chains |
+| FROST | secp256k1 | Bitcoin (Taproot) |
+
+## Bridge Architecture
+
+```
+Bridge UI (Next.js)
+  -> Bridge API (Node.js, port 3000)
+    -> MPC Cluster (3 nodes, consensus mode)
+      -> node-0 (port 9651)
+      -> node-1 (port 9652)
+      -> node-2 (port 9653)
+    -> Destination chain RPC
+```
+
+## MPC Node Configuration for Bridge
+
+```bash
+mpcd start --mode consensus \
+  --node-id node0 \
+  --listen :9651 \
+  --api :9800 \
+  --data /data/mpc/node0 \
+  --threshold 2 \
+  --peer node1@10.0.0.2:9652 \
+  --peer node2@10.0.0.3:9653
+```
+
+## Security Properties
+
+| Property | Guarantee |
+|----------|-----------|
+| Key safety | Full private key never exists on any single node |
+| Fault tolerance | 1 node can be offline (2-of-3 threshold) |
+| Signing speed | Sub-second threshold signature generation |
+| Audit trail | Every signing request logged with intent hash |
+| HSM binding | Optional hardware attestation per signature share |
+
+## Kubernetes Deployment
+
+The bridge MPC nodes run in the `lux-bridge` namespace with separate PostgreSQL and Valkey instances from the main MPC cluster:
+
+```
+lux-bridge namespace:
+  mpc-node-0, mpc-node-1, mpc-node-2
+  bridge-postgres
+  bridge-api
+  bridge-ui
+```
