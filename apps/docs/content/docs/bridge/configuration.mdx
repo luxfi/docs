@@ -4,10 +4,66 @@ description: Environment variables and settings
 icon: Settings
 ---
 
-## Environment Variables
+The Bridge API and UI are configured via environment variables.
 
-| Variable | Description |
-|----------|-------------|
-| `MPC_URL` | MPC API endpoint |
-| `BRIDGE_DB_URL` | PostgreSQL connection |
-| `SUPPORTED_CHAINS` | Comma-separated chain IDs |
+## Bridge API Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `MPC_URL` | MPC API endpoint | `http://mpc-api:8081` |
+| `BRIDGE_DB_URL` | PostgreSQL connection string | -- |
+| `SUPPORTED_CHAINS` | Comma-separated chain IDs | `1,96369` |
+| `CONFIRMATION_DEPTH` | Source chain confirmation blocks | `12` |
+| `PORT` | API listen port | `3000` |
+| `NODE_OPTIONS` | Node.js options | `--max-old-space-size=1536` |
+
+## Bridge UI Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `NEXT_PUBLIC_API_URL` | Bridge API endpoint | `https://bridge-api.lux.network` |
+| `NEXT_PUBLIC_SUPPORTED_CHAINS` | Chains shown in UI | `ethereum,lux-c` |
+
+## MPC Connection
+
+The Bridge API connects to the MPC cluster for signing:
+
+```
+BRIDGE_API -> MPC API (:8081) -> MPC Nodes (consensus transport)
+```
+
+In Kubernetes, the MPC nodes are accessed via ExternalName services:
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mpc-node-0
+  namespace: lux-bridge
+spec:
+  type: ExternalName
+  externalName: hanzo-mpc.hanzo.svc.cluster.local
+```
+
+## Database
+
+The bridge uses PostgreSQL for transfer tracking:
+
+```
+BRIDGE_DB_URL=postgres://bridge:password@bridge-postgres:5432/bridge
+```
+
+## Rate Limits
+
+| Limit | Value | Scope |
+|-------|-------|-------|
+| Transfers per hour | 100 | Per address |
+| Max transfer amount | 1,000,000 USDC equivalent | Per transfer |
+| Daily volume | 10,000,000 USDC equivalent | Global |
+
+## Logging
+
+```
+LOG_LEVEL=info
+LOG_FORMAT=json
+```

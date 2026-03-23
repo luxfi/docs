@@ -4,15 +4,67 @@ description: Creating and voting on governance proposals
 icon: FileText
 ---
 
+Governance proposals are the mechanism for making decisions about the Lux protocol, treasury, and governance rules.
+
 ## Proposal Types
 
 | Type | Threshold | Quorum | Timelock |
 |------|-----------|--------|----------|
 | Standard | 1% of supply | 4% | 3 days |
-| Treasury (&lt;$10K) | 0.5% | 2% | 1 day |
-| Treasury (&gt;$10K) | 2% | 10% | 7 days |
+| Treasury (under $10K) | 0.5% | 2% | 1 day |
+| Treasury (over $10K) | 2% | 10% | 7 days |
 | Constitutional | 5% | 20% | 14 days |
+
+- **Threshold**: Minimum vLUX required to create the proposal
+- **Quorum**: Minimum participation for the vote to be valid
+- **Timelock**: Delay between vote success and execution
 
 ## Lifecycle
 
-Draft → Active → Succeeded/Defeated → Queued → Executed
+```
+Draft -> Active -> Succeeded/Defeated -> Queued -> Executed
+         (voting)   (vote ended)        (timelock)  (done)
+```
+
+| Phase | Duration | Description |
+|-------|----------|-------------|
+| Draft | 1 day | Proposal visible, no voting |
+| Active | 5 days | Voting period |
+| Succeeded | -- | Passed quorum and threshold |
+| Defeated | -- | Failed quorum or threshold |
+| Queued | Timelock period | Waiting for timelock to expire |
+| Executed | -- | Actions executed on-chain |
+
+## Create a Proposal
+
+1. Go to [lux.vote/create](https://lux.vote/create)
+2. Select proposal type
+3. Write title and description (Markdown supported)
+4. Add on-chain actions (contract calls)
+5. Submit (requires threshold vLUX)
+
+## Vote
+
+```bash
+# Vote FOR
+cast send $GOVERNOR "castVote(uint256,uint8)" $PROPOSAL_ID 1 --private-key $KEY
+
+# Vote AGAINST
+cast send $GOVERNOR "castVote(uint256,uint8)" $PROPOSAL_ID 0 --private-key $KEY
+
+# ABSTAIN
+cast send $GOVERNOR "castVote(uint256,uint8)" $PROPOSAL_ID 2 --private-key $KEY
+```
+
+## On-Chain Actions
+
+Proposals can execute arbitrary contract calls upon success:
+
+| Action | Example |
+|--------|---------|
+| Transfer funds | Send tokens from treasury |
+| Parameter change | Update protocol parameters |
+| Contract upgrade | Upgrade proxy implementations |
+| Role management | Grant or revoke admin roles |
+
+Each action specifies: target contract, function calldata, and value (ETH/LUX to send).
