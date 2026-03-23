@@ -1,19 +1,81 @@
 ---
 title: API Reference
-description: REST API endpoints
+description: Lux Cloud REST API endpoints
 icon: FileCode
 ---
 
+All Lux Cloud API requests require authentication via Bearer token.
+
 ## Authentication
 
-All requests require an API key via Bearer token.
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+  https://api.lux.cloud/v1/...
+```
 
 ## Endpoints
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/v1/rpc/{chain}` | JSON-RPC proxy |
-| GET | `/v1/tokens/balances` | Token balances |
-| GET | `/v1/nft/owner` | NFT ownership |
-| POST | `/v1/webhooks` | Create webhook |
-| GET | `/v1/health` | Health check |
+| POST | `/v1/rpc/{chain}` | JSON-RPC proxy to any chain |
+| GET | `/v1/tokens/balances` | ERC-20 token balances for an address |
+| GET | `/v1/tokens/transfers` | Token transfer history |
+| GET | `/v1/nft/owner` | NFTs owned by an address |
+| GET | `/v1/nft/collection` | Collection metadata |
+| GET | `/v1/nft/token` | Single token metadata |
+| POST | `/v1/webhooks` | Create a webhook subscription |
+| GET | `/v1/webhooks` | List active webhooks |
+| DELETE | `/v1/webhooks/:id` | Delete a webhook |
+| GET | `/v1/health` | Health check (no auth required) |
+
+## Token Balances
+
+```bash
+curl "https://api.lux.cloud/v1/tokens/balances?address=0x...&chain=lux" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+Response:
+
+```json
+{
+  "address": "0x...",
+  "chain": "lux",
+  "nativeBalance": "1500000000000000000",
+  "tokens": [
+    {
+      "contract": "0xToken...",
+      "symbol": "USDC",
+      "decimals": 6,
+      "balance": "1000000000"
+    }
+  ]
+}
+```
+
+## Error Responses
+
+| Code | Description |
+|------|-------------|
+| 401 | Missing or invalid API key |
+| 429 | Rate limit exceeded |
+| 500 | Internal server error |
+| 502 | Upstream node unavailable |
+
+## Rate Limits
+
+Rate limits are enforced per API key. Responses include rate limit headers:
+
+```
+X-RateLimit-Limit: 600
+X-RateLimit-Remaining: 599
+X-RateLimit-Reset: 1711094400
+```
+
+## Pagination
+
+List endpoints support cursor-based pagination:
+
+```bash
+curl "https://api.lux.cloud/v1/tokens/transfers?address=0x...&page=2&limit=50"
+```

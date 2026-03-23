@@ -4,16 +4,80 @@ description: ERC-20/721/1155 balances and metadata
 icon: Coins
 ---
 
+The Token API provides indexed access to token balances, transfer history, and metadata across all Lux chains.
+
 ## Get Balances
 
 ```bash
-curl https://api.lux.cloud/v1/tokens/balances?address=0x...
+curl "https://api.lux.cloud/v1/tokens/balances?address=0x...&chain=lux" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+Response:
+
+```json
+{
+  "address": "0x9011E888...",
+  "chain": "lux",
+  "nativeBalance": "1500000000000000000",
+  "tokens": [
+    {
+      "contract": "0xUSDC...",
+      "name": "USD Coin",
+      "symbol": "USDC",
+      "decimals": 6,
+      "balance": "1000000000",
+      "logo": "https://..."
+    }
+  ]
+}
+```
+
+## Get Transfer History
+
+```bash
+curl "https://api.lux.cloud/v1/tokens/transfers?address=0x...&chain=lux&limit=20" \
+  -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
 ## Supported Standards
 
 | Standard | Features |
 |----------|----------|
-| ERC-20 | Balance, transfers, metadata |
-| ERC-721 | Ownership, metadata, media |
-| ERC-1155 | Multi-token balances |
+| ERC-20 | Balance, transfers, metadata (name, symbol, decimals) |
+| ERC-721 | Ownership, transfer history, metadata URI |
+| ERC-1155 | Multi-token balances, batch transfers |
+
+## Query Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `address` | Wallet address (required) | -- |
+| `chain` | Chain identifier | `lux` |
+| `contract` | Filter by token contract | all tokens |
+| `page` | Page number | 1 |
+| `limit` | Results per page | 20 |
+
+## Token Metadata
+
+The API automatically resolves token metadata from on-chain data:
+
+| Field | Source |
+|-------|--------|
+| `name` | `ERC20.name()` |
+| `symbol` | `ERC20.symbol()` |
+| `decimals` | `ERC20.decimals()` |
+| `totalSupply` | `ERC20.totalSupply()` |
+| `logo` | Token list or IPFS metadata |
+
+## Multi-Chain Support
+
+Query balances across all Lux chains:
+
+| Chain | Identifier |
+|-------|-----------|
+| Lux C-Chain | `lux` |
+| Zoo | `zoo` |
+| Hanzo | `hanzo` |
+| SPC | `spc` |
+| Pars | `pars` |

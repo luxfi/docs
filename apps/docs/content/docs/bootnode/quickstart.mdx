@@ -1,14 +1,78 @@
 ---
 title: Quick Start
-description: Your first API call
+description: Your first Lux Cloud API call
 icon: Zap
 ---
+
+## Get an API Key
+
+Sign up at [lux.cloud](https://lux.cloud) to get an API key.
 
 ## Get Block Number
 
 ```bash
 curl -X POST https://api.lux.cloud/v1/rpc/lux \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
 ```
+
+## Get Balance
+
+```bash
+curl -X POST https://api.lux.cloud/v1/rpc/lux \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{
+    "jsonrpc":"2.0",
+    "method":"eth_getBalance",
+    "params":["0x9011E888251AB053B7bD1cdB598Db4f9DEd94714", "latest"],
+    "id":1
+  }'
+```
+
+## Get Token Balances
+
+```bash
+curl "https://api.lux.cloud/v1/tokens/balances?address=0x9011E888..." \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Subscribe to New Blocks (WebSocket)
+
+```javascript
+const ws = new WebSocket("wss://api.lux.cloud/v1/ws/lux");
+
+ws.onopen = () => {
+  ws.send(JSON.stringify({
+    jsonrpc: "2.0",
+    method: "eth_subscribe",
+    params: ["newHeads"],
+    id: 1,
+  }));
+};
+
+ws.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  console.log("New block:", data.params?.result?.number);
+};
+```
+
+## Supported Chains
+
+| Chain | RPC Path |
+|-------|----------|
+| Lux C-Chain | `/v1/rpc/lux` |
+| Zoo | `/v1/rpc/zoo` |
+| Hanzo | `/v1/rpc/hanzo` |
+| SPC | `/v1/rpc/spc` |
+| Pars | `/v1/rpc/pars` |
+| Ethereum | `/v1/rpc/ethereum` |
+
+## Rate Limits
+
+| Plan | Requests/sec | WebSocket connections |
+|------|-------------|----------------------|
+| Free | 10 | 2 |
+| Pro | 100 | 10 |
+| Enterprise | Unlimited | Unlimited |

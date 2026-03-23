@@ -4,15 +4,78 @@ description: Deploy Lux Cloud
 icon: Download
 ---
 
-## Docker
+Lux Cloud can be deployed via Docker Compose for development or Kubernetes for production.
+
+## Docker Compose (Development)
 
 ```bash
-docker pull ghcr.io/luxfi/cloud:latest
+git clone https://github.com/luxfi/cloud
+cd cloud
+
+# Configure
+cp .env.example .env
+# Edit .env with your settings
+
+# Start all services
 docker compose up -d
 ```
 
-## Kubernetes
+This starts the API gateway, RPC proxy, indexer, PostgreSQL, and Redis.
+
+## Docker (Standalone)
 
 ```bash
-helm install cloud luxfi/cloud --namespace cloud
+docker pull ghcr.io/luxfi/cloud:latest
+
+docker run -d \
+  -p 3000:3000 \
+  -e DATABASE_URL=postgres://... \
+  -e REDIS_URL=redis://... \
+  -e RPC_ENDPOINTS=http://luxd:9630 \
+  -e API_KEY_SALT=your-secret-salt \
+  ghcr.io/luxfi/cloud:latest
 ```
+
+## Kubernetes (Production)
+
+```bash
+# Using Helm
+helm install cloud luxfi/cloud \
+  --namespace cloud \
+  --create-namespace \
+  --set database.url=postgres://... \
+  --set redis.url=redis://... \
+  --set rpc.endpoints=http://luxd:9630
+
+# Using Kustomize
+kubectl kustomize infra/k8s/cloud/ | kubectl apply -f -
+```
+
+## Prerequisites
+
+| Service | Version | Purpose |
+|---------|---------|---------|
+| PostgreSQL | 15+ | Token and NFT indexer storage |
+| Redis/Valkey | 7+ | WebSocket state, caching, rate limiting |
+| luxd | latest | Blockchain node(s) for RPC |
+
+## Verify Installation
+
+```bash
+# Health check
+curl http://localhost:3000/v1/health
+
+# Test RPC
+curl -X POST http://localhost:3000/v1/rpc/lux \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
+```
+
+## Production Checklist
+
+- TLS certificates on all endpoints
+- API key salt configured (never use the default)
+- Rate limiting enabled
+- Database backups configured
+- Monitoring and alerting set up
+- Images pinned to specific tags (not `latest`)

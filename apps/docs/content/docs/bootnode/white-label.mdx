@@ -1,16 +1,66 @@
 ---
 title: White-Label
-description: Deploy under your own brand
+description: Deploy Lux Cloud under your own brand
 icon: Palette
 ---
 
-## Brands
+Lux Cloud supports white-label deployment. The same codebase serves multiple brands with different themes, logos, and domains.
 
-| Brand | Domain | Config |
-|-------|--------|--------|
-| Lux Cloud | lux.cloud | Default |
-| Hanzo Web3 | web3.hanzo.ai | `NEXT_PUBLIC_BRAND=hanzo` |
-| Zoo Labs | web3.zoo.ngo | `NEXT_PUBLIC_BRAND=zoo` |
-| Bootnode | bootno.de | `NEXT_PUBLIC_BRAND=bootnode` |
+## Supported Brands
 
-Brand is auto-detected from domain or set via environment variable.
+| Brand | Domain | Config | Theme |
+|-------|--------|--------|-------|
+| Lux Cloud | lux.cloud | Default | Blue |
+| Hanzo Web3 | web3.hanzo.ai | `NEXT_PUBLIC_BRAND=hanzo` | Purple |
+| Zoo Labs | web3.zoo.ngo | `NEXT_PUBLIC_BRAND=zoo` | Green |
+| Bootnode | bootno.de | `NEXT_PUBLIC_BRAND=bootnode` | Orange |
+
+## Auto-Detection
+
+The brand is auto-detected from the request's `Host` header. If no match is found, it falls back to the `NEXT_PUBLIC_BRAND` environment variable.
+
+## Custom Branding
+
+To deploy with your own brand:
+
+1. Set the environment variables:
+
+```bash
+NEXT_PUBLIC_BRAND=mybrand
+NEXT_PUBLIC_BRAND_NAME="My Cloud"
+NEXT_PUBLIC_BRAND_URL="https://mycloud.example.com"
+NEXT_PUBLIC_BRAND_LOGO="/logos/mycloud.svg"
+```
+
+2. Add your logo to the `public/logos/` directory
+
+3. Create a theme file at `themes/mybrand.ts`:
+
+```typescript
+export const mybrand = {
+  colors: {
+    primary: "#FF6600",
+    background: "#0A0A0A",
+    text: "#FFFFFF",
+  },
+  fonts: {
+    heading: "Inter",
+    body: "Inter",
+  },
+};
+```
+
+4. Deploy as normal -- the UI picks up the brand automatically
+
+## Per-Brand Features
+
+Each brand can enable or disable features:
+
+| Feature | Lux Cloud | Hanzo Web3 | Zoo Labs |
+|---------|-----------|------------|----------|
+| RPC Proxy | Yes | Yes | Yes |
+| Token API | Yes | Yes | Yes |
+| NFT API | Yes | Yes | Yes |
+| Webhooks | Yes | Yes | No |
+| WebSockets | Yes | Yes | Yes |
+| DEX API | No | Yes | No |
