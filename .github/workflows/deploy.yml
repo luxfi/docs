@@ -55,7 +55,6 @@ jobs:
     steps:
       - name: Deploy to cluster
         uses: appleboy/ssh-action@v1
-        continue-on-error: true
         with:
           host: ${{ secrets.K8S_HOST }}
           username: ${{ secrets.K8S_USER }}

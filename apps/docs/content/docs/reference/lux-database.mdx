@@ -247,7 +247,7 @@ go test ./memdb/ -v
 
 ## Key Design Decisions
 
-1. **Ethereum-compatible interface**: Matches go-ethereum's database API for seamless EVM integration
+1. **Ethereum-compatible interface**: Matches Lux Geth's database API for seamless EVM integration
 2. **Build-tag backends**: PebbleDB and LevelDB are compile-time optional to minimize binary size
 3. **ZapDB as default**: BadgerDB-based ZapDB is always available, registered in `init()`
 4. **Wrapper composition**: Encryption, metering, versioning are separate wrappers that can be composed
