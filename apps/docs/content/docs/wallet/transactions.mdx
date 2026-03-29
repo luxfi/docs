@@ -83,7 +83,7 @@ X-Chain -> C-Chain: export from X, import to C
 | P-Chain | Fixed | 0.001 LUX |
 | X-Chain | Fixed | 0.001 LUX |
 | C-Chain | EIP-1559 dynamic | Variable (gas price * gas used) |
-| Subnet EVM | EIP-1559 dynamic | Variable |
+| L2 EVM | EIP-1559 dynamic | Variable |
 
 ## Transaction Types
 
@@ -94,7 +94,7 @@ X-Chain -> C-Chain: export from X, import to C
 | Import | P/X/C | Import assets from another chain |
 | AddValidator | P | Register a new validator |
 | AddDelegator | P | Delegate stake to a validator |
-| CreateSubnet | P | Create a new subnet |
-| CreateBlockchain | P | Create a new blockchain on a subnet |
-| EVM Transfer | C/Subnet | Standard EVM value transfer |
-| Contract Call | C/Subnet | Smart contract interaction |
+| CreateSubnet | P | Create a new chain |
+| CreateBlockchain | P | Create a new blockchain on a chain |
+| EVM Transfer | C/Chain | Standard EVM value transfer |
+| Contract Call | C/Chain | Smart contract interaction |

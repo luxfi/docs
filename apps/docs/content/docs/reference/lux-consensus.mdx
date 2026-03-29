@@ -5,7 +5,7 @@ description: "Lux Quasar -- Post-Quantum Consensus Engine"
 
 ## Overview
 
-Lux Quasar is the consensus engine for the Lux network. It is a unified, leaderless, post-quantum protocol achieving sub-second 2-round finality with dual-certificate security (BLS12-381 aggregate signatures + Ringtail lattice-based threshold signatures). Quasar runs every chain in the Lux primary network -- Q, C, X, P -- and any dynamically registered subnet.
+Lux Quasar is the consensus engine for the Lux network. It is a unified, leaderless, post-quantum protocol achieving sub-second 2-round finality with dual-certificate security (BLS12-381 aggregate signatures + Ringtail lattice-based threshold signatures). Quasar runs every chain in the Lux primary network -- Q, C, X, P -- and any dynamically registered chain.
 
 **This is NOT Snow, Snowball, or Lux BFT.** Quasar is an original consensus protocol built from first principles around Photonic Selection.
 
@@ -245,7 +245,7 @@ Alpha enforced  &gt;= 0.68 (69% BFT threshold). Validation rejects lower values.
 | X-Chain | Vertex metadata references Q-block | Epoch sealed by quantum certificate |
 | P-Chain | Validator set changes trigger epoch rotation | BLS and Ringtail keys synchronized |
 | M-Chain | MPC rounds reference Q-block height | Custody requires PQ proof |
-| Any subnet | Auto-registered via `RegisterChain()` | Dynamically enters the event horizon |
+| Any chain | Auto-registered via `RegisterChain()` | Dynamically enters the event horizon |
 
 ## Sub-Protocol Architecture
 

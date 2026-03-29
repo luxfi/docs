@@ -1,9 +1,9 @@
 ---
 title: lux chain
-description: Create and deploy chains (subnets)
+description: Create and deploy chains (chains)
 ---
 
-The `chain` command (also aliased as `subnet`) manages the full lifecycle of Lux chains -- creation, deployment, import/export, and configuration.
+The `chain` command (also aliased as `chain`) manages the full lifecycle of Lux chains -- creation, deployment, import/export, and configuration.
 
 ## Commands
 
@@ -38,7 +38,7 @@ lux chain export <name>
 
 | Type | Flag | Description |
 |------|------|-------------|
-| L2 (default) | `--type=l2` | Subnet EVM chain validated by a subset of validators |
+| L2 (default) | `--type=l2` | L2 EVM chain validated by a subset of validators |
 | L1 | `--type=l1` | Sovereign chain with its own validator set |
 | L3 | `--type=l3` | Application-specific chain anchored to an L2 |
 
@@ -57,14 +57,14 @@ Configurations are stored in `~/.lux/chains/<name>/`:
 
 When deploying, the CLI:
 
-1. Creates a subnet on the P-Chain
-2. Adds validators to the subnet
+1. Creates a chain on the P-Chain
+2. Adds validators to the chain
 3. Creates the blockchain with the genesis file
 4. Configures all nodes to track the new chain
 
-## Pre-deployed Subnet Chains
+## Pre-deployed L2 Chains
 
-| Chain | Mainnet Chain ID | Subnet ID |
+| Chain | Mainnet Chain ID | Chain ID |
 |-------|-----------------|-----------|
 | Zoo | 200200 | See blockchain-ids |
 | Hanzo | 36963 | See blockchain-ids |

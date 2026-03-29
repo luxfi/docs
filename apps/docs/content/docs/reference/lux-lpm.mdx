@@ -5,14 +5,14 @@ description: "Status: Alpha."
 
 ## Overview
 
-LPM is a command-line tool for managing virtual machine binaries and subnet definitions for the Lux Network. It tracks plugin repositories (git-based), downloads and builds VM binaries, installs them to the Lux node plugin directory, and can join subnets by installing all required VMs. The default plugin source is `luxfi/plugins-core`, but users can add custom repositories.
+LPM is a command-line tool for managing virtual machine binaries and chain definitions for the Lux Network. It tracks plugin repositories (git-based), downloads and builds VM binaries, installs them to the Lux node plugin directory, and can join chains by installing all required VMs. The default plugin source is `luxfi/plugins-core`, but users can add custom repositories.
 
 **Status**: Alpha.
 
 ## When to use
 
 - Installing VM plugins for the Lux node
-- Joining subnets that require specific VM binaries
+- Joining chains that require specific VM binaries
 - Managing custom plugin repositories for VM distribution
 - Upgrading installed VM binaries to latest versions
 - Building and linking local VM source code to the plugin directory
@@ -53,7 +53,7 @@ luxfi/lpm/
     install_url.go         -- install-url (from arbitrary URL)
     install_source.go      -- install-source (build from local source)
     uninstall.go           -- uninstall-vm command
-    join_subnet.go         -- join-subnet command
+    join_subnet.go         -- join-chain command
     link.go                -- link command (symlink local binary)
     update.go              -- update command (fetch latest definitions)
     upgrade.go             -- upgrade command (rebuild/reinstall VMs)
@@ -94,7 +94,7 @@ luxfi/lpm/
 
 ```
 github.com/luxfi/codec    v1.1.3    -- Serialization
-github.com/luxfi/ids      v1.2.9    -- ID types (VM IDs, subnet IDs)
+github.com/luxfi/ids      v1.2.9    -- ID types (VM IDs, chain IDs)
 github.com/luxfi/sdk      v1.16.46  -- Lux SDK (admin API client)
 github.com/luxfi/crypto   v1.17.40  -- Crypto primitives (indirect)
 github.com/go-git/go-git  v5.16.4   -- Git repository operations
@@ -123,8 +123,8 @@ lpm install-gitlab --repo org/repo --release v1.0.0
 lpm install-url --url https://example.com/vm.tar.gz
 lpm install-source --path /path/to/source
 
-# Subnet operations
-lpm join-subnet --subnet spaces     # Install all VMs required by a subnet
+# Chain operations
+lpm join-chain --chain spaces     # Install all VMs required by a chain
 
 # Upgrade
 lpm upgrade                         # Upgrade all installed VMs

@@ -189,8 +189,8 @@ All contracts target Solidity 0.8.20 with OpenZeppelin 5.
 - Uses `ETHVault` for native ETH (1:1 share model)
 - Owned by Bridge contract
 
-**XChainVault.sol** (cross-subnet vault):
-- For Lux Warp Messenger (cross-subnet) bridging
+**XChainVault.sol** (cross-chain vault):
+- For Lux Warp Messenger (cross-chain) bridging
 - Supports ERC20, ERC721, ERC1155
 - Uses `IWarpMessenger` precompile at `0x0200000000000000000000000000000000000000`
 - `vaultERC20()`, `vaultERC721()`, `vaultERC1155()` with Warp message proof
@@ -297,7 +297,7 @@ github.com/luxfi/bridge/
       ZooVault.sol   ERC4626 vault manager for Zoo chain
       ETHVault.sol   Native ETH vault (1:1 shares)
       LERC4626.sol   ERC4626 wrapper
-      XChainVault.sol  Cross-subnet vault (Warp Messenger, ERC20/721/1155)
+      XChainVault.sol  Cross-chain vault (Warp Messenger, ERC20/721/1155)
       lux/           29 wrapped token contracts (LETH, LBTC, LSOL, ...)
       zoo/           34 wrapped token contracts (ZETH, ZBTC, ZSOL, ...)
       DAI.sol, USDC.sol, USDT.sol, WETH.sol  -- test stablecoins
@@ -380,8 +380,8 @@ Network policies isolate MPC nodes: only `bridge-server` pods can reach MPC HTTP
 
 - `lux/lux-mpc.md` -- MPC node binary, TSS protocols, key management
 - `lux/lux-threshold.md` -- T-Chain ThresholdVM SDK details
-- `lux/lux-warp.md` -- Warp Messenger for cross-subnet bridging
-- `lux/lux-teleport.md` -- Lux Teleporter for subnet-to-subnet transfers
+- `lux/lux-warp.md` -- Warp Messenger for cross-chain bridging
+- `lux/lux-teleport.md` -- Lux Teleporter for chain-to-chain transfers
 - `lux/lux-evm.md` -- C-Chain where bridge contracts execute
 - `lux/lux-wallet.md` -- Wallet integration for bridge users
 - `lux/lux-node.md` -- Validator nodes that bridge connects to

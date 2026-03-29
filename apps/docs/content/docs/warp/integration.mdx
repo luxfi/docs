@@ -1,12 +1,12 @@
 ---
 title: VM Integration
-description: Integrate Warp cross-chain messaging into a subnet VM
+description: Integrate Warp cross-chain messaging into a chain VM
 icon: Plug
 ---
 
 ## Overview
 
-To add Warp messaging to a subnet VM, you need to handle message creation on the source side and message verification on the destination side.
+To add Warp messaging to a chain VM, you need to handle message creation on the source side and message verification on the destination side.
 
 ## Source Chain: Sending Messages
 
@@ -72,7 +72,7 @@ addressedCall, err := payload.ParseAddressedCall(msg.UnsignedMessage.Payload)
 
 ## EVM Precompile
 
-For EVM-based subnets, Warp is accessible via a precompile at a fixed address. Smart contracts can send and receive Warp messages without custom VM modifications.
+For EVM-based chains, Warp is accessible via a precompile at a fixed address. Smart contracts can send and receive Warp messages without custom VM modifications.
 
 The precompile handles:
 

@@ -1,27 +1,27 @@
 ---
-title: Subnets
-description: Create and deploy custom subnets on Lux Network
+title: Chains
+description: Create and deploy custom chains on Lux Network
 ---
 
-# Subnets
+# Chains
 
-Subnets are sovereign networks within Lux that define their own rules for membership, consensus parameters, and virtual machine implementations. Every subnet is validated by a dynamic set of validators who also validate the Lux Primary Network.
+Chains are sovereign networks within Lux that define their own rules for membership, consensus parameters, and virtual machine implementations. Every chain is validated by a dynamic set of validators who also validate the Lux Primary Network.
 
-## What Are Subnets?
+## What Are Chains?
 
-A subnet is an independent network with its own:
+A chain is an independent network with its own:
 
 - **Validator set** - Choose which validators participate
 - **Consensus parameters** - Tune finality speed and throughput
-- **Virtual machine** - Run EVM, Subnet-EVM, or a fully custom VM
+- **Virtual machine** - Run EVM, L2 EVM, or a fully custom VM
 - **Gas token** - Use LUX or a custom native token
 - **Access control** - Public or permissioned networks
 
 <Callout>
-  Subnets do not share state or execution with other subnets. They are isolated environments that leverage the Lux Primary Network for validator coordination and security.
+  Chains do not share state or execution with other chains. They are isolated environments that leverage the Lux Primary Network for validator coordination and security.
 </Callout>
 
-## Create a Subnet
+## Create an L2
 
 ### Using the CLI
 
@@ -33,44 +33,44 @@ A subnet is an independent network with its own:
     ```
   </Step>
   <Step>
-    ### Create the Subnet Configuration
+    ### Create the Chain Configuration
     ```bash
-    lux subnet create my-subnet
+    lux chain create my-chain
     ```
 
     You will be prompted to select:
-    - **VM type**: Subnet-EVM (recommended), Custom
-    - **Chain ID**: A unique identifier for your subnet's chain
+    - **VM type**: L2 EVM (recommended), Custom
+    - **Chain ID**: A unique EVM chain identifier
     - **Gas configuration**: Fee structure and limits
     - **Airdrop**: Optional initial token distribution
   </Step>
   <Step>
     ### Deploy to Local Network
     ```bash
-    lux subnet deploy my-subnet --local
+    lux chain deploy my-chain --local
     ```
 
-    This starts a local multi-node network with your subnet for testing.
+    This starts a local multi-node network with your chain for testing.
   </Step>
   <Step>
     ### Deploy to Testnet
     ```bash
-    lux subnet deploy my-subnet --testnet
+    lux chain deploy my-chain --testnet
     ```
 
-    This creates the subnet on-chain and registers validators on the Lux testnet.
+    This creates the chain on-chain and registers validators on the Lux testnet.
   </Step>
   <Step>
     ### Deploy to Mainnet
     ```bash
-    lux subnet deploy my-subnet --mainnet
+    lux chain deploy my-chain --mainnet
     ```
   </Step>
 </Steps>
 
-## Subnet-EVM Configuration
+## L2 EVM Configuration
 
-Subnet-EVM is the most common VM for subnets. It is a configurable fork of the Lux C-Chain EVM.
+L2 EVM is the most common VM for chains. It is a configurable fork of the Lux C-Chain EVM.
 
 ### Genesis Configuration
 
@@ -113,7 +113,7 @@ Subnet-EVM is the most common VM for subnets. It is a configurable fork of the L
 
 ### Precompiles
 
-Enable optional precompiles in your subnet genesis:
+Enable optional precompiles in your chain genesis:
 
 ```json
 {
@@ -138,10 +138,10 @@ Enable optional precompiles in your subnet genesis:
 
 ### Adding Validators
 
-Each subnet validator must also be a Primary Network validator with at least 2,000 LUX staked.
+Each chain validator must also be a Primary Network validator with at least 2,000 LUX staked.
 
 ```bash
-lux subnet addValidator my-subnet \
+lux chain addValidator my-chain \
   --node-id=NodeID-... \
   --stake-amount=2000 \
   --start-time="2025-01-01T00:00:00Z" \
@@ -153,8 +153,8 @@ lux subnet addValidator my-subnet \
 | Requirement | Value |
 |-------------|-------|
 | Primary Network stake | Minimum 2,000 LUX |
-| Subnet stake | Defined by subnet creator |
-| Uptime | Subnet-specific (recommended 80%+) |
+| Chain stake | Defined by chain creator |
+| Uptime | Chain-specific (recommended 80%+) |
 | Duration | Must overlap with Primary Network validation period |
 
 ## Custom Virtual Machines
@@ -175,10 +175,10 @@ type ChainVM interface {
 ```
 
 <Callout>
-  Custom VMs are powerful but require careful design. For most applications, Subnet-EVM with custom precompiles provides sufficient flexibility without the complexity of a fully custom VM.
+  Custom VMs are powerful but require careful design. For most applications, L2 EVM with custom precompiles provides sufficient flexibility without the complexity of a fully custom VM.
 </Callout>
 
-## Subnet Architecture
+## Chain Architecture
 
 ```
 ┌──────────────────────────────────────────────┐
@@ -190,7 +190,7 @@ type ChainVM interface {
 └──────────────────────────────────────────────┘
            │                    │
     ┌──────┴──────┐     ┌──────┴──────┐
-    │  Subnet-1   │     │  Subnet-2   │
+    │  Chain-1   │     │  Chain-2   │
     │  EVM-based  │     │  Custom VM  │
     │  Validators:│     │  Validators:│
     │  {A, B, C}  │     │  {B, D, E}  │
@@ -201,21 +201,21 @@ type ChainVM interface {
 
 <Cards>
   <Card title="DeFi Chains">
-    High-throughput subnets optimized for decentralized finance with custom gas tokens and fee structures.
+    High-throughput chains optimized for decentralized finance with custom gas tokens and fee structures.
   </Card>
   <Card title="Gaming Networks">
-    Low-latency subnets with fast block times and permissioned validator sets for predictable performance.
+    Low-latency chains with fast block times and permissioned validator sets for predictable performance.
   </Card>
   <Card title="Enterprise Chains">
-    Permissioned subnets with transaction allow-lists and KYC-compliant validator sets.
+    Permissioned chains with transaction allow-lists and KYC-compliant validator sets.
   </Card>
   <Card title="AI Compute">
-    Specialized subnets for decentralized AI inference and training coordination.
+    Specialized chains for decentralized AI inference and training coordination.
   </Card>
 </Cards>
 
 ## Further Reading
 
-- [Architecture](/architecture) - How subnets fit into the Lux architecture
-- [Run a Validator](/nodes/validator) - Become a subnet validator
-- [Platform API](/api-reference/platform) - Programmatic subnet management
+- [Architecture](/architecture) - How chains fit into the Lux architecture
+- [Run a Validator](/nodes/validator) - Become a chain validator
+- [Platform API](/api-reference/platform) - Programmatic chain management

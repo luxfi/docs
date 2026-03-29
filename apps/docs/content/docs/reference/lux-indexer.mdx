@@ -5,7 +5,7 @@ description: "Multi-Chain Blockchain Data Indexing"
 
 ## Overview
 
-Lux Indexer is a **Go-based blockchain data indexing system** that covers all Lux native chains (DAG and linear), EVM chains across the Lux subnet ecosystem, and a universal multi-chain indexer supporting 100+ blockchains across EVM, Solana, Bitcoin, Cosmos, Move, and other runtimes. It works alongside Blockscout (which handles C-Chain EVM indexing) to provide complete data access for the Lux multi-chain architecture.
+Lux Indexer is a **Go-based blockchain data indexing system** that covers all Lux native chains (DAG and linear), EVM chains across the Lux chain ecosystem, and a universal multi-chain indexer supporting 100+ blockchains across EVM, Solana, Bitcoin, Cosmos, Move, and other runtimes. It works alongside Blockscout (which handles C-Chain EVM indexing) to provide complete data access for the Lux multi-chain architecture.
 
 **Repository**: `github.com/luxfi/indexer`
 **License**: MIT
@@ -35,7 +35,7 @@ The indexer ships three CLI binaries:
 | Binary | Source | Purpose |
 |--------|--------|---------|
 | `indexer` | `cmd/indexer/` | Single-chain indexer (native DAG, linear, or EVM) |
-| `evmchains` | `cmd/evmchains/` | Multi-EVM indexer (all 5 Lux subnets in one process) |
+| `evmchains` | `cmd/evmchains/` | Multi-EVM indexer (all 5 Lux chains in one process) |
 | `multichain` | `cmd/multichain/` | Universal indexer (100+ chains, all runtimes) |
 
 ### Chain Types
@@ -69,7 +69,7 @@ Uses `github.com/luxfi/indexer/evm` -- full EVM block/transaction indexing with 
 
 ### EVM Multi-Chain Process (`evmchains`)
 
-A single-process server that indexes all 5 Lux mainnet EVM subnet chains concurrently, sharing one PostgreSQL database with table prefixes. Configured via `configs/evmchains.yaml`.
+A single-process server that indexes all 5 Lux mainnet EVM L2 chains concurrently, sharing one PostgreSQL database with table prefixes. Configured via `configs/evmchains.yaml`.
 
 | Slug | Name | Chain ID | Port |
 |------|------|----------|------|
@@ -201,7 +201,7 @@ Rich EVM indexing with subpackages:
 
 ### DEX Module (`dex/`)
 
-DEX adapter for Uniswap-style protocol indexing on Lux subnets.
+DEX adapter for Uniswap-style protocol indexing on Lux chains.
 
 ### Testing
 
@@ -272,7 +272,7 @@ make dev-zchain         # Z-Chain DAG indexer on port 4400
 # Single native chain
 ./bin/indexer -chain xchain -rpc http://localhost:9630/ext/bc/X -port 4200
 
-# All Lux EVM subnets (single process)
+# All Lux EVM chains (single process)
 ./bin/evmchains -config configs/evmchains.yaml
 
 # Universal multi-chain
@@ -320,7 +320,7 @@ npm run deploy-lux      # Deploy to Lux Graph Node
 indexer/
   cmd/
     indexer/             # Single-chain CLI (DAG/linear/EVM)
-    evmchains/           # Multi-EVM subnet CLI
+    evmchains/           # Multi-EVM chain CLI
     multichain/          # Universal 100+ chain CLI
   dag/                   # DAG vertex/edge indexer library
   chain/                 # Linear block indexer library
@@ -330,7 +330,7 @@ indexer/
   storage/               # Unified storage (kv/, query/)
   achain/ bchain/ kchain/ pchain/ qchain/ tchain/ xchain/ zchain/  # Per-chain adapters
   config/chains.yaml     # Universal chain config (1450 lines, 100+ chains)
-  configs/evmchains.yaml # Lux EVM subnet config (5 chains)
+  configs/evmchains.yaml # Lux EVM chain config (5 chains)
   migrations/            # PostgreSQL schema (4 files)
   e2e/                   # End-to-end tests (cchain, xchain, pchain, node, client)
   Makefile               # Build, test, dev, Docker targets

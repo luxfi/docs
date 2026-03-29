@@ -5,7 +5,7 @@ description: "Documentation for Lux Genesis"
 
 ## Overview
 
-`github.com/luxfi/genesis` is a Go module that provides canonical genesis configurations for all Lux blockchain networks. It contains embedded genesis JSON for mainnet, testnet, devnet, and local/custom networks, along with CLI tools for generating, extracting, and validating genesis state. The package supports the primary C-Chain (EVM), P-Chain (Platform), X-Chain (Exchange), and subnet chains (Zoo, SPC, Hanzo, Pars).
+`github.com/luxfi/genesis` is a Go module that provides canonical genesis configurations for all Lux blockchain networks. It contains embedded genesis JSON for mainnet, testnet, devnet, and local/custom networks, along with CLI tools for generating, extracting, and validating genesis state. The package supports the primary C-Chain (EVM), P-Chain (Platform), X-Chain (Exchange), and L2 chains (Zoo, SPC, Hanzo, Pars).
 
 ## When to use
 
@@ -91,7 +91,7 @@ genesis -genesis-dir ./mainnet -output primary.json
 | Devnet | 3 | 96370 | Fast iteration dev network |
 | Local/Custom | 1337 | 1337 | Local development |
 
-### Subnet chains
+### L2 Chains
 
 | Chain | Mainnet ID | Testnet ID | Devnet ID | Treasury |
 |-------|-----------|-----------|-----------|----------|
@@ -125,13 +125,13 @@ genesis/
     testnet/             # C-Chain, genesis
     devnet/              # C-Chain
     local/               # C-Chain, genesis
-    zoo-mainnet/         # Zoo subnet genesis
-    spc-mainnet/         # SPC subnet genesis
-    hanzo-mainnet/       # Hanzo subnet genesis
-    pars-mainnet/        # Pars subnet genesis
-    ...                  # testnet/devnet variants for each subnet
+    zoo-mainnet/         # Zoo chain genesis
+    spc-mainnet/         # SPC chain genesis
+    hanzo-mainnet/       # Hanzo chain genesis
+    pars-mainnet/        # Pars chain genesis
+    ...                  # testnet/devnet variants for each chain
   builder/               # Genesis builder with tests
-  chains/                # Subnet chain definitions (ai, spc, zoo)
+  chains/                # L2 chain definitions (ai, spc, zoo)
   mainnet/               # Production genesis exports
   testnet/               # Test network genesis exports
   keys/mainnet/          # Mainnet key material

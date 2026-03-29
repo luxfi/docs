@@ -84,9 +84,9 @@ signed = account.sign_transaction(tx)
 tx_hash = w3.eth.send_raw_transaction(signed.raw_transaction)
 ```
 
-## Subnet Transactions
+## Chain Transactions
 
-Same patterns work on any Subnet EVM chain -- just change the provider URL and chain ID:
+Same patterns work on any L2 EVM chain -- just change the provider URL and chain ID:
 
 ```python
 # Zoo chain (chain ID 200200)

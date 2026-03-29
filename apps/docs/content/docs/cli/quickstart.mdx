@@ -1,6 +1,6 @@
 ---
 title: Cli Quick Start
-description: Deploy your first subnet in minutes
+description: Deploy your first chain in minutes
 icon: Zap
 ---
 
@@ -10,20 +10,20 @@ icon: Zap
 lux network start
 ```
 
-## Create a Subnet
+## Create an L2
 
 ```bash
-lux subnet create mysubnet --evm
+lux chain create mychain --evm
 ```
 
-## Deploy the Subnet
+## Deploy the Chain
 
 ```bash
-lux subnet deploy mysubnet --local
+lux chain deploy mychain --local
 ```
 
 ## Send a Transaction
 
 ```bash
-lux wallet transfer --to 0x... --amount 1 --chain mysubnet
+lux wallet transfer --to 0x... --amount 1 --chain mychain
 ```

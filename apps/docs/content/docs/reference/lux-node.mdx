@@ -65,7 +65,7 @@ Lux Node (`luxd`) is the core validator node for the Lux Network -- a multi-chai
 
 - Running a Lux mainnet/testnet/devnet validator
 - Building custom Virtual Machines (VMs) for the Lux ecosystem
-- Developing subnet/L1/L2/L3 chains on the Lux network
+- Developing chain/L1/L2/L3 chains on the Lux network
 - Cross-chain messaging via LP-118 Warp protocol
 - Post-quantum secure blockchain operations
 - AI compute attestation and decentralized inference
@@ -219,7 +219,7 @@ luxd (main/main.go)
 │   ├── dialer/       — Connection dialing
 │   └── tracker/      — Connection tracking
 ├── vms/              — Virtual Machine implementations
-│   ├── platformvm/   — P-Chain (staking, validators, subnet creation)
+│   ├── platformvm/   — P-Chain (staking, validators, chain creation)
 │   ├── exchangevm/   — X-Chain (UTXO-based asset transfers, DAG consensus)
 │   ├── evm/          — C-Chain support (LP-176/LP-226 precompiles; EVM runs as plugin)
 │   ├── quantumvm/    — Q-Chain (post-quantum crypto, Ringtail keys)
@@ -285,7 +285,7 @@ The Lux Network supports 14 built-in chain types across 3 tiers.
 
 | Chain | Letter | VM | Consensus | Purpose |
 |-------|--------|----|-----------|---------|
-| **P-Chain** | P | platformvm | Linear (Snowman) | Validator management, staking, subnet/L1 creation |
+| **P-Chain** | P | platformvm | Linear (Snowman) | Validator management, staking, chain/L1 creation |
 | **X-Chain** | X | exchangevm | DAG (Lux) | UTXO-based asset creation and transfers |
 | **C-Chain** | C | EVM plugin | Linear (Snowman) | EVM-compatible smart contracts (ChainID 96369) |
 
