@@ -1,13 +1,13 @@
 ---
-title: Deploy a Subnet
-description: Create and deploy a subnet EVM chain
+title: Deploy an L2
+description: Create and deploy an L2 EVM chain
 icon: Layers
 ---
 
 ## Create
 
 ```bash
-lux subnet create mychain --evm
+lux chain create mychain --evm
 ```
 
 Follow the prompts to configure gas, fees, and genesis allocations.
@@ -15,13 +15,13 @@ Follow the prompts to configure gas, fees, and genesis allocations.
 ## Deploy Locally
 
 ```bash
-lux subnet deploy mychain --local
+lux chain deploy mychain --local
 ```
 
 ## Deploy to Testnet
 
 ```bash
-lux subnet deploy mychain --testnet
+lux chain deploy mychain --testnet
 ```
 
 Requires funded keys on the P-Chain.

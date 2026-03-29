@@ -3,7 +3,7 @@ title: RPC Operations
 description: JSON-RPC calls to Lux nodes using the Go SDK
 ---
 
-The Go SDK provides typed wrappers around all Lux node JSON-RPC endpoints. Each chain type (P, X, C, Subnet EVM) has its own client.
+The Go SDK provides typed wrappers around all Lux node JSON-RPC endpoints. Each chain type (P, X, C, L2 EVM) has its own client.
 
 ## C-Chain (EVM) RPC
 
@@ -79,9 +79,9 @@ asset, err := client.GetAssetDescription(
 )
 ```
 
-## Subnet EVM RPC
+## L2 EVM RPC
 
-Subnet EVM chains use the same `ethclient` interface with a different endpoint:
+L2 EVM chains use the same `ethclient` interface with a different endpoint:
 
 ```go
 // Zoo chain RPC

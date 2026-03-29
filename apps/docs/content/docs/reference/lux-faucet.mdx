@@ -5,12 +5,12 @@ description: "Lux Faucet distributes testnet tokens for Lux Network development.
 
 ## Overview
 
-Lux Faucet distributes **testnet tokens** for Lux Network development. It is a TypeScript application with an Express API server backend and a Next.js frontend. Supports multiple EVM chains and subnets, rate limiting per chain, ReCaptcha verification, ERC-20 token drips, and concurrent transaction handling.
+Lux Faucet distributes **testnet tokens** for Lux Network development. It is a TypeScript application with an Express API server backend and a Next.js frontend. Supports multiple EVM chains and chains, rate limiting per chain, ReCaptcha verification, ERC-20 token drips, and concurrent transaction handling.
 
 ## When to use
 
-- Requesting testnet LUX or subnet tokens for development
-- Deploying a custom faucet for a Lux subnet or L1
+- Requesting testnet LUX or chain tokens for development
+- Deploying a custom faucet for a Lux chain or L1
 - Integrating a new EVM chain into the live faucet at faucet.lux.network
 
 ## Quick reference
@@ -91,18 +91,18 @@ pnpm dev:all
 }
 ```
 
-## Adding a new subnet
+## Adding a new chain
 
 Add chain configuration to the `evmchains` array in `config.json`:
 
 ```json
 {
-    "ID": "MY_SUBNET",
-    "NAME": "My Subnet Testnet",
+    "ID": "MY_CHAIN",
+    "NAME": "My Chain Testnet",
     "TOKEN": "MST",
-    "RPC": "https://rpc.my-subnet.example.com",
+    "RPC": "https://rpc.my-chain.example.com",
     "CHAINID": 12345,
-    "EXPLORER": "https://explorer.my-subnet.example.com",
+    "EXPLORER": "https://explorer.my-chain.example.com",
     "IMAGE": "https://example.com/logo.png",
     "MAX_PRIORITY_FEE": "2000000000",
     "MAX_FEE": "100000000000",
@@ -115,7 +115,7 @@ Add chain configuration to the `evmchains` array in `config.json`:
 }
 ```
 
-Provide a corresponding private key in `.env` as `MY_SUBNET="<key>"` or rely on the `PK` fallback.
+Provide a corresponding private key in `.env` as `MY_CHAIN="<key>"` or rely on the `PK` fallback.
 
 ## Preconfigured chains
 
@@ -182,4 +182,4 @@ The `REVERSE_PROXIES` setting in `GLOBAL_RL` controls how many trusted proxies t
 
 - `lux/lux-cli.md` -- CLI for network management
 - `lux/lux-node.md` -- Validator nodes (provide RPC endpoints)
-- `lux/lux-evm.md` -- C-Chain and subnet EVM execution
+- `lux/lux-evm.md` -- C-Chain and L2 EVM execution

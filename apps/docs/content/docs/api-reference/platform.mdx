@@ -1,11 +1,11 @@
 ---
 title: Platform API
-description: P-Chain Platform API reference for staking, validators, and subnets
+description: P-Chain Platform API reference for staking, validators, and chains
 ---
 
 # Platform API
 
-The Platform API provides access to the P-Chain, which manages validators, staking, and subnets. All Platform API methods are accessed at the `/ext/P` endpoint (or equivalently `/ext/bc/P`).
+The Platform API provides access to the P-Chain, which manages validators, staking, and chains. All Platform API methods are accessed at the `/ext/P` endpoint (or equivalently `/ext/bc/P`).
 
 ## Endpoint
 
@@ -29,13 +29,13 @@ curl -s -X POST --data '{
 
 ### platform.getCurrentValidators
 
-Returns the current validator set for a subnet.
+Returns the current validator set for a chain.
 
 **Parameters:**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `subnetID` | string | Subnet ID (omit for Primary Network) |
+| `subnetID` | string | Chain ID (omit for Primary Network) |
 | `nodeIDs` | []string | Filter by node IDs (optional) |
 
 ```bash
@@ -211,17 +211,17 @@ curl -s -X POST --data '{
 }' -H 'content-type:application/json' https://api.lux.network/ext/P
 ```
 
-## Subnet Methods
+## Chain Methods
 
 ### platform.createSubnet
 
-Creates a new subnet.
+Creates a new chain.
 
 **Parameters:**
 
 | Name | Type | Description |
 |------|------|-------------|
-| `controlKeys` | []string | Addresses that can add validators to the subnet |
+| `controlKeys` | []string | Addresses that can add validators to the chain |
 | `threshold` | int | Number of control keys required for a signature |
 | `from` | []string | Funding addresses |
 | `username` | string | Keystore username |
@@ -255,11 +255,11 @@ curl -s -X POST --data '{
 }
 ```
 
-The `txID` is also the new subnet's ID.
+The `txID` is also the new chain's ID.
 
 ### platform.getSubnets
 
-Lists all subnets or a specific subnet.
+Lists all chains or a specific chain.
 
 ```bash
 curl -s -X POST --data '{
@@ -272,7 +272,7 @@ curl -s -X POST --data '{
 
 ### platform.addSubnetValidator
 
-Adds a validator to a subnet. The validator must already be a Primary Network validator.
+Adds a validator to a chain. The validator must already be a Primary Network validator.
 
 ```bash
 curl -s -X POST --data '{
@@ -309,7 +309,7 @@ curl -s -X POST --data '{
 
 ### platform.getStakingAssetID
 
-Returns the asset ID used for staking on a subnet.
+Returns the asset ID used for staking on a chain.
 
 ```bash
 curl -s -X POST --data '{
@@ -369,5 +369,5 @@ Possible statuses: `Processing`, `Committed`, `Aborted`, `Dropped`, `Unknown`.
 ## Further Reading
 
 - [Run a Validator](/nodes/validator) - Set up and manage a validator
-- [Subnets](/cloud/subnets) - Create and configure subnets
+- [Chains](/cloud/chains) - Create and configure chains
 - [Tokenomics](/tokenomics) - Staking economics
