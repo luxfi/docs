@@ -10,10 +10,10 @@ Lux Network employs a multi-layer architecture designed for scalability, securit
 ## Network Layers
 
 ### P-Chain (Platform Chain)
-The Platform Chain coordinates validators, tracks active subnets, and enables the creation of new subnets.
+The Platform Chain coordinates validators, tracks active chains, and enables the creation of new chains.
 
 - Validator management and staking
-- Subnet creation and configuration
+- Chain creation and configuration
 - Cross-chain messaging coordination
 
 ### X-Chain (Exchange Chain)
@@ -30,9 +30,9 @@ The Contract Chain is an EVM-compatible chain for smart contracts.
 - Ethereum tooling compatibility
 - Sub-second finality
 
-## Subnet Architecture
+## Chain Architecture
 
-Subnets are sovereign networks that define their own:
+Chains are sovereign networks that define their own:
 - Validator requirements
 - Consensus parameters
 - Virtual machine implementations
@@ -46,7 +46,7 @@ Subnets are sovereign networks that define their own:
 └─────────────────────────────────────────┘
         │           │           │
    ┌────┴───┐  ┌────┴───┐  ┌────┴───┐
-   │Subnet A│  │Subnet B│  │Subnet C│
+   │Chain A│  │Chain B│  │Chain C│
    └────────┘  └────────┘  └────────┘
 ```
 
@@ -57,5 +57,5 @@ Lux supports multiple virtual machine implementations:
 | VM | Description | Use Case |
 |----|-------------|----------|
 | EVM | Ethereum Virtual Machine | Smart contracts |
-| Subnet-EVM | Customizable EVM | Enterprise apps |
+| L2 EVM | Customizable EVM | Enterprise apps |
 | Custom VMs | Purpose-built VMs | Specialized workloads |

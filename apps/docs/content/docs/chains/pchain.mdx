@@ -1,16 +1,16 @@
 ---
 title: "P-Chain (Platform)"
-description: "The P-Chain manages validators, staking, and subnet creation."
+description: "The P-Chain manages validators, staking, and chain creation."
 icon: Server
 ---
 
-The P-Chain (Platform Chain) is the metadata chain of the Lux network. It coordinates validators, manages staking, handles subnet creation, and tracks all blockchains deployed across the network. The P-Chain runs PlatformVM and uses linear chain consensus.
+The P-Chain (Platform Chain) is the metadata chain of the Lux network. It coordinates validators, manages staking, handles chain creation, and tracks all blockchains deployed across the network. The P-Chain runs PlatformVM and uses linear chain consensus.
 
 ## Purpose
 
-- **Validator Management**: Adding and removing validators from the primary network and subnets
+- **Validator Management**: Adding and removing validators from the primary network and chains
 - **Staking**: Delegating LUX to validators and distributing staking rewards
-- **Subnet Creation**: Creating new subnets and deploying blockchains on them
+- **Chain Creation**: Creating new chains and deploying blockchains on them
 - **L1 Validator Management**: Managing L1-style validator sets via Warp messaging
 
 ## RPC Endpoint
@@ -46,32 +46,32 @@ PlatformVM is configured via JSON. Default values:
 |-----------|---------------|
 | Base transaction | 1,000 (1 milliLUX) |
 | Create asset | 1,000 (1 milliLUX) |
-| Create subnet | 1,000,000 (1 LUX) |
+| Create chain | 1,000,000 (1 LUX) |
 | Create blockchain | 1,000,000 (1 LUX) |
-| Add subnet validator | 0 |
-| Add subnet delegator | 0 |
+| Add chain validator | 0 |
+| Add chain delegator | 0 |
 
 ## RPC Methods
 
 ### Validator Operations
 
-- **platform.getCurrentValidators** -- Returns current validators for a subnet
+- **platform.getCurrentValidators** -- Returns current validators for a chain
 - **platform.getL1Validator** -- Returns a specific L1 validator
-- **platform.sampleValidators** -- Samples validators from a subnet
+- **platform.sampleValidators** -- Samples validators from a chain
 - **platform.getMinStake** -- Returns minimum stake amounts
-- **platform.getTotalStake** -- Returns total staked amount for a subnet
+- **platform.getTotalStake** -- Returns total staked amount for a chain
 - **platform.getStake** -- Returns staked amount for given addresses
 - **platform.getAllValidatorsAt** -- Returns all validators at a specific P-chain height
 - **platform.getValidatorsAt** -- Returns validators at a specific timestamp
 
-### Blockchain and Subnet Operations
+### Blockchain and Chain Operations
 
 - **platform.getBlockchains** -- Lists all blockchains
 - **platform.getBlockchainStatus** -- Returns bootstrap status of a blockchain
-- **platform.getNets** -- Lists subnets
-- **platform.getNet** -- Returns subnet details
-- **platform.validates** -- Lists blockchains validated by a subnet
-- **platform.validatedBy** -- Returns subnet that validates a blockchain
+- **platform.getNets** -- Lists chains
+- **platform.getNet** -- Returns chain details
+- **platform.validates** -- Lists blockchains validated by a chain
+- **platform.validatedBy** -- Returns chain that validates a blockchain
 
 ### Block and Transaction Operations
 

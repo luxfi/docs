@@ -5,7 +5,7 @@ index: true
 icon: Layers
 ---
 
-Lux Network supports multiple chain types through its virtual machine architecture. Each VM is purpose-built for specific workloads and runs as a subnet on the Lux primary network.
+Lux Network supports multiple chain types through its virtual machine architecture. Each VM is purpose-built for specific workloads and runs as a chain on the Lux primary network.
 
 ## Primary Chains
 
@@ -14,12 +14,12 @@ Every Lux node validates these three chains. They form the backbone of the netwo
 | Chain | VM | Chain ID | Consensus | Purpose |
 |-------|-----|----------|-----------|---------|
 | **C-Chain** | EVM | 96369 | Chain (linear) | Smart contracts, DeFi, EVM compatibility |
-| **P-Chain** | PlatformVM | -- | Chain (linear) | Validators, staking, subnet management |
+| **P-Chain** | PlatformVM | -- | Chain (linear) | Validators, staking, chain management |
 | **X-Chain** | ExchangeVM | -- | DAG | UTXO-based asset creation and transfers |
 
-## Subnet EVM Chains
+## L2 EVM Chains
 
-Custom EVM chains deployed as subnets with configurable gas, fees, and precompiles.
+Custom EVM chains deployed as chains with configurable gas, fees, and precompiles.
 
 | Chain | Chain ID (Mainnet) | Chain ID (Testnet) | Chain ID (Devnet) | Purpose |
 |-------|-------------------|-------------------|-------------------|---------|
@@ -30,7 +30,7 @@ Custom EVM chains deployed as subnets with configurable gas, fees, and precompil
 
 ## Specialized VMs
 
-These VMs run as subnets and provide domain-specific functionality beyond general-purpose smart contracts.
+These VMs run as chains and provide domain-specific functionality beyond general-purpose smart contracts.
 
 | VM | Chain | Consensus | Purpose |
 |----|-------|-----------|---------|
@@ -58,10 +58,10 @@ Where `network` is `mainnet`, `testnet`, or `devnet`, and `chain` is the chain a
 
 ## Node Configuration
 
-To track a subnet chain, pass the **subnet ID** (not blockchain ID) to your node:
+To track an L2 chain, pass the **chain ID** (not blockchain ID) to your node:
 
 ```bash
-luxd --track-chains=<subnet-id-1>,<subnet-id-2>
+luxd --track-chains=<chain-id-1>,<chain-id-2>
 ```
 
 To track all chains on a testnet or devnet node:

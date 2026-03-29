@@ -10,10 +10,10 @@ All Lux chains expose JSON-RPC APIs. The SDK wraps these APIs with typed clients
 
 | API | Endpoint | Description |
 |-----|----------|-------------|
-| P-Chain | `/ext/bc/P` | Validators, subnets, staking, delegations |
+| P-Chain | `/ext/bc/P` | Validators, chains, staking, delegations |
 | X-Chain | `/ext/bc/X` | UTXO operations, asset creation and transfer |
 | C-Chain | `/ext/bc/C/rpc` | EVM JSON-RPC (eth, net, web3 namespaces) |
-| Subnet EVM | `/ext/bc/{name}/rpc` | Same as C-Chain, per-subnet endpoint |
+| L2 EVM | `/ext/bc/{name}/rpc` | Same as C-Chain, per-chain endpoint |
 | Info | `/ext/info` | Node info, network ID, node ID |
 | Health | `/ext/health` | Node and chain health status |
 | Admin | `/ext/admin` | Node administration (whitelisted) |
@@ -25,7 +25,7 @@ All Lux chains expose JSON-RPC APIs. The SDK wraps these APIs with typed clients
 | `platform.getCurrentValidators` | List active validators with stake and uptime |
 | `platform.getPendingValidators` | Validators waiting to join |
 | `platform.getBlockchains` | All blockchains registered on the network |
-| `platform.getSubnets` | All subnets with validator membership |
+| `platform.getSubnets` | All chains with validator membership |
 | `platform.getBalance` | P-Chain address balance |
 | `platform.getTx` | Transaction by ID |
 | `platform.getHeight` | Current P-Chain height |

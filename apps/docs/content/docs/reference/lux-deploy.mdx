@@ -5,7 +5,7 @@ description: "Blockchain Network Deployment System"
 
 ## Overview
 
-Lux Deploy (`github.com/luxfi/deploy`) is the production deployment system for Lux blockchain networks. It provides two layers: (1) a comprehensive Makefile-based orchestration system for local and dev network lifecycle management (5-node validator bootstrap, multi-chain deployment, RLP block import, snapshots), and (2) a Go tool (`deploy-subnets`) that programmatically creates subnets and blockchains on remote Lux nodes via P-chain wallet transactions. Supports mainnet and testnet configurations for five chains: C-Chain, Zoo, Hanzo, SPC, and Pars.
+Lux Deploy (`github.com/luxfi/deploy`) is the production deployment system for Lux blockchain networks. It provides two layers: (1) a comprehensive Makefile-based orchestration system for local and dev network lifecycle management (5-node validator bootstrap, multi-chain deployment, RLP block import, snapshots), and (2) a Go tool (`deploy-chains`) that programmatically creates chains and blockchains on remote Lux nodes via P-chain wallet transactions. Supports mainnet and testnet configurations for five chains: C-Chain, Zoo, Hanzo, SPC, and Pars.
 
 ## Repository
 
@@ -13,7 +13,7 @@ Lux Deploy (`github.com/luxfi/deploy`) is the production deployment system for L
 |------|-------|
 | Repo | `github.com/luxfi/deploy` |
 | Local | `~/work/lux/deploy/` |
-| Go Module | `github.com/luxfi/deploy-subnets` (Go 1.26.1) |
+| Go Module | `github.com/luxfi/deploy-chains` (Go 1.26.1) |
 | Dependencies | `github.com/luxfi/sdk`, `github.com/luxfi/crypto`, `github.com/luxfi/ids` |
 | License | See LICENSE |
 
@@ -26,11 +26,11 @@ Lux Deploy (`github.com/luxfi/deploy`) is the production deployment system for L
   README.md              # Usage documentation
 
   cmd/
-    deploy-subnets/
-      main.go            # Go tool for P-chain subnet/blockchain creation
-      go.mod             # Module: github.com/luxfi/deploy-subnets
+    deploy-chains/
+      main.go            # Go tool for P-L2 chain/blockchain creation
+      go.mod             # Module: github.com/luxfi/deploy-chains
       go.sum
-      deploy-subnets     # Compiled binary
+      deploy-chains     # Compiled binary
 
   config/
     networks/
@@ -59,7 +59,7 @@ Lux Deploy (`github.com/luxfi/deploy`) is the production deployment system for L
 1. **Configuration Layer** -- Environment variables, network/chain configs
 2. **Plugin Layer** -- EVM plugin installation and VMID mapping
 3. **Network Layer** -- 5-node validator bootstrap, port management, health monitoring
-4. **Chain Layer** -- Subnet/L2 deployment, genesis configuration
+4. **Chain Layer** -- Chain/L2 deployment, genesis configuration
 5. **Data Layer** -- RLP block import, progress monitoring, state verification
 6. **Persistence Layer** -- Snapshot creation, restoration, archival
 
@@ -80,7 +80,7 @@ Lux Deploy (`github.com/luxfi/deploy`) is the production deployment system for L
 | Zoo | 200200 | 200201 | Zoo ecosystem chain |
 | Hanzo | 36963 | 36962 | Hanzo AI chain |
 | SPC | 36911 | -- | Mainnet only |
-| Pars | 494949 | -- | Via deploy-subnets tool |
+| Pars | 494949 | -- | Via deploy-chains tool |
 
 ### EVM Plugin
 
@@ -169,14 +169,14 @@ make build-evm                 # Build EVM plugin from source
   evm/build/evm          # Built EVM plugin
 ```
 
-## deploy-subnets Go Tool
+## deploy-chains Go Tool
 
-Programmatically deploys subnets and blockchains to remote Lux nodes via P-chain transactions.
+Programmatically deploys chains and blockchains to remote Lux nodes via P-chain transactions.
 
 ### Usage
 
 ```bash
-LUX_MNEMONIC="word1 word2 ..." ./deploy-subnets \
+LUX_MNEMONIC="word1 word2 ..." ./deploy-chains \
   --endpoint http://24.199.78.71:9650 \
   --chains zoo-mainnet,hanzo-mainnet,spc-mainnet \
   --state-dir ~/work/lux/state \
@@ -207,9 +207,9 @@ LUX_MNEMONIC="word1 word2 ..." ./deploy-subnets \
 3. Creates P-chain wallet via `github.com/luxfi/sdk/wallet/primary`
 4. For each chain:
    - Reads genesis JSON from state directory
-   - Issues `CreateNetworkTx` (creates subnet with owner key)
-   - Issues `CreateChainTx` (creates blockchain on subnet with EVM VMID)
-5. Reports subnet IDs, blockchain IDs, and RPC endpoints
+   - Issues `CreateNetworkTx` (creates chain with owner key)
+   - Issues `CreateChainTx` (creates blockchain on chain with EVM VMID)
+5. Reports chain IDs, blockchain IDs, and RPC endpoints
 
 ### Go Dependencies
 
@@ -225,9 +225,9 @@ LUX_MNEMONIC="word1 word2 ..." ./deploy-subnets \
 | `github.com/luxfi/consensus` | v1.22.62 | Consensus types (indirect) |
 | `github.com/luxfi/geth` | v1.16.73 | Ethereum types (indirect) |
 
-### Subnet EVM VMID
+### L2 EVM VMID
 
-`ag3GReYPNuSR17rUP8acMdZipQBikdXNRKDyFszAysmy3vDXE` (used for all subnet chains)
+`ag3GReYPNuSR17rUP8acMdZipQBikdXNRKDyFszAysmy3vDXE` (used for all L2 chains)
 
 ## Shell Library (lib/)
 

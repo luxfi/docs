@@ -1,11 +1,11 @@
 ---
 title: "Lux Plugins Core"
-description: "VM & Subnet Plugin Registry"
+description: "VM & Chain Plugin Registry"
 ---
 
 ## Overview
 
-Lux Plugins Core is the **official plugin repository** for the Lux Plugin Manager (LPM). It ships with LPM as the default repository and contains YAML definitions for virtual machines and subnets. LPM uses these definitions to download, install, verify, and manage VM binaries on Lux nodes. Community-driven -- anyone can submit a new VM or subnet via pull request.
+Lux Plugins Core is the **official plugin repository** for the Lux Plugin Manager (LPM). It ships with LPM as the default repository and contains YAML definitions for virtual machines and chains. LPM uses these definitions to download, install, verify, and manage VM binaries on Lux nodes. Community-driven -- anyone can submit a new VM or chain via pull request.
 
 ## Quick Reference
 
@@ -26,13 +26,13 @@ plugins-core/
   vms/                   -- VM definitions (one YAML per VM)
     blobvm.yaml              Content-addressable KV store VM
     spacesvm.yaml            Hierarchical storage VM
-    subnet-evm.yaml          Subnet EVM (Solidity smart contracts)
-  subnets/               -- Subnet definitions (one YAML per subnet)
-    spaces.yaml              Spaces Subnet Demo (SpacesVM)
+    L2 EVM.yaml          L2 EVM (Solidity smart contracts)
+  chains/               -- Chain definitions (one YAML per chain)
+    spaces.yaml              Spaces Chain Demo (SpacesVM)
     wagmi.yaml               Zoo EVM Demo (high-throughput testbed)
   examples/              -- Template files for contributors
     vm.yaml                  VM definition template
-    subnet.yaml              Subnet definition template
+    chain.yaml              Chain definition template
   README.md              -- Contributing guide
   LICENSE
 ```
@@ -63,38 +63,38 @@ BlobVM provides a content-addressable key-value store chain. Keys are derived fr
 | VM ID | `sqja3uK17MJxfC7AN8nGadBw9JK5BcrsNwNynsqP5Gih8M5Bm` |
 | Version | 0.0.3 |
 | Homepage | `https://tryspaces.xyz` |
-| Description | Virtual machine that processes the Spaces subnet |
+| Description | Virtual machine that processes the Spaces chain |
 | Install Script | `scripts/build.sh` |
 | Binary Path | `build/sqja3uK17MJxfC7AN8nGadBw9JK5BcrsNwNynsqP5Gih8M5Bm` |
 | Release URL | `https://github.com/luxdefi/spacesvm/archive/refs/tags/v0.0.3.tar.gz` |
 | SHA256 | `1ac250f6c40472f22eaf0616fc8c886078a4eaa9b2b85fbb4fb7783a1db6af3f` |
 
-SpacesVM provides authenticated, hierarchical key-value storage using any EIP-712 compatible wallet. It powers the Spaces subnet where users can claim hierarchical namespaces (like DNS) and store arbitrary key/value data under them.
+SpacesVM provides authenticated, hierarchical key-value storage using any EIP-712 compatible wallet. It powers the Spaces chain where users can claim hierarchical namespaces (like DNS) and store arbitrary key/value data under them.
 
-### Subnet EVM
+### L2 EVM
 
 | Field | Value |
 |-------|-------|
-| Alias | `subnet-evm` |
+| Alias | `L2 EVM` |
 | VM ID | `srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy` |
 | Version | 0.2.7 |
-| Homepage | `https://github.com/luxdefi/subnet-evm` |
-| Description | Subnet EVM -- simplified Coreth VM for Subnet Contract Chains with full Ethereum Virtual Machine and Solidity smart contract support |
+| Homepage | `https://github.com/luxdefi/L2 EVM` |
+| Description | L2 EVM -- simplified Coreth VM for Chain Contract Chains with full Ethereum Virtual Machine and Solidity smart contract support |
 | Install Script | `scripts/build.sh build/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy` |
 | Binary Path | `build/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy` |
-| Release URL | `https://github.com/luxdefi/subnet-evm/archive/refs/tags/v0.2.7.tar.gz` |
+| Release URL | `https://github.com/luxdefi/L2 EVM/archive/refs/tags/v0.2.7.tar.gz` |
 | SHA256 | `c0d63b56031820007cce5fa8ea635628b8b9a5897111290a78b60538838509f8` |
 
-Subnet EVM is the primary VM for creating new EVM-compatible blockchains on Lux. It is a simplified version of Coreth (C-Chain VM), parameterizable for different throughput and gas configurations.
+L2 EVM is the primary VM for creating new EVM-compatible blockchains on Lux. It is a simplified version of Coreth (C-Chain VM), parameterizable for different throughput and gas configurations.
 
-## Registered Subnets
+## Registered Chains
 
-### Spaces Subnet
+### Spaces Chain
 
 | Field | Value |
 |-------|-------|
 | Alias | `spaces` |
-| Subnet ID | `Ai42MkKqk8yjXFCpoHXw7rdTWSHiKEMqh5h8gbxwjgkCUfkrk` |
+| Chain ID | `Ai42MkKqk8yjXFCpoHXw7rdTWSHiKEMqh5h8gbxwjgkCUfkrk` |
 | Homepage | `https://tryspaces.xyz` |
 | VM | `spacesvm` |
 | Description | Authenticated, hierarchical storage of arbitrary keys/values using any EIP-712 compatible wallet |
@@ -119,9 +119,9 @@ validatorOnly: false             -- Open to non-validators
 | Field | Value |
 |-------|-------|
 | Alias | `wagmi` |
-| Subnet ID | `28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY` |
+| Chain ID | `28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY` |
 | Homepage | `https://github.com/luxfi/evm` |
-| VM | `evm` (Coreth/Subnet-EVM) |
+| VM | `evm` (Coreth/L2 EVM) |
 | Description | High-throughput testbed for EVM optimizations, parameterized to run at higher capacity than mainnet C-Chain |
 | Maintainer | `z@zoolabs.io` |
 
@@ -170,13 +170,13 @@ vm:
     patch: 6
 ```
 
-## Subnet Definition Format
+## Chain Definition Format
 
-Complete YAML schema for a subnet definition (`subnets/<name>.yaml`):
+Complete YAML schema for a chain definition (`chains/<name>.yaml`):
 
 ```yaml
-subnet:
-  # Required: Base58-encoded Subnet ID (from P-Chain)
+chain:
+  # Required: Base58-encoded Chain ID (from P-Chain)
   id: "Ai42MkKqk8yjXFCpoHXw7rdTWSHiKEMqh5h8gbxwjgkCUfkrk"
 
   # Required: Unique human-readable alias
@@ -197,11 +197,11 @@ subnet:
   # Optional: Install script (empty if no additional setup needed)
   installScript: ""
 
-  # Required: List of VM aliases this subnet uses
+  # Required: List of VM aliases this chain uses
   vms:
     - "spacesvm"
 
-  # Optional: Subnet-specific configuration
+  # Optional: Chain-specific configuration
   config:
     # Gossip settings
     gossipAcceptedFrontierValidatorSize: 0
@@ -249,7 +249,7 @@ VM binaries must be named with their base58-encoded VM ID. The Lux node discover
 ```
 ~/.lux/plugins/kM6h4LYe3AcEU1MB2UNg6ubzAiDAALZzpVrbX8zn3hXF6Avd8   # BlobVM
 ~/.lux/plugins/sqja3uK17MJxfC7AN8nGadBw9JK5BcrsNwNynsqP5Gih8M5Bm   # SpacesVM
-~/.lux/plugins/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy   # Subnet EVM
+~/.lux/plugins/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy   # L2 EVM
 ```
 
 ## Usage with LPM
@@ -264,13 +264,13 @@ lpm list-vms
 # Install a VM by alias
 lpm install --vm blobvm
 lpm install --vm spacesvm
-lpm install --vm subnet-evm
+lpm install --vm L2 EVM
 
 # Update a VM to latest version
-lpm update --vm subnet-evm
+lpm update --vm L2 EVM
 
-# Install a subnet (installs all referenced VMs)
-lpm install --subnet spaces
+# Install a chain (installs all referenced VMs)
+lpm install --chain spaces
 
 # List installed VMs
 lpm list-installed
@@ -297,18 +297,18 @@ Required fields checklist:
 - `sha256`: Checksum of tarball
 - `version`: Semantic version (major/minor/patch)
 
-## Adding a New Subnet
+## Adding a New Chain
 
-1. **Create subnet on P-Chain**: Deploy via `lux subnet create` CLI command
-2. **Note Subnet ID**: Base58-encoded ID from the P-Chain transaction
-3. **List VM dependencies**: Which VMs the subnet uses (by alias)
+1. **Create chain on P-Chain**: Deploy via `lux chain create` CLI command
+2. **Note Chain ID**: Base58-encoded ID from the P-Chain transaction
+3. **List VM dependencies**: Which VMs the chain uses (by alias)
 4. **Configure consensus**: Set Snow consensus parameters appropriate for your use case
-5. **Write YAML**: Create `subnets/<alias>.yaml` following the format above
+5. **Write YAML**: Create `chains/<alias>.yaml` following the format above
 6. **Submit PR**: Open a pull request
 
 ## Consensus Parameter Reference
 
-These parameters control Snow consensus behavior for subnets:
+These parameters control Snow consensus behavior for chains:
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
@@ -327,6 +327,6 @@ These parameters control Snow consensus behavior for subnets:
 ## Related Skills
 
 - `lux/lux-node.md` -- Core node that loads and runs VM plugins
-- `lux/lux-evm.md` -- Subnet EVM execution engine
+- `lux/lux-evm.md` -- L2 EVM execution engine
 - `lux/lux-spacesvm.md` -- SpacesVM storage chain
-- `lux/lux-cli.md` -- CLI for subnet creation and management
+- `lux/lux-cli.md` -- CLI for chain creation and management

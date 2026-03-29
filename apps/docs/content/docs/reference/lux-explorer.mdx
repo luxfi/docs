@@ -100,7 +100,7 @@ Backend, DB, frontend, NFT media handler, Nginx, Redis, sig-provider, smart-cont
 
 ### RPC Integration
 
-The `EthereumJSONRPC` app connects to Lux nodes via SubnetEVM-compatible endpoints:
+The `EthereumJSONRPC` app connects to Lux nodes via L2 EVM-compatible endpoints:
 
 ```
 ETHEREUM_JSONRPC_HTTP_URL = http://<luxd>:9650/ext/bc/<blockchain-id>/rpc
@@ -108,7 +108,7 @@ ETHEREUM_JSONRPC_WS_URL   = ws://<luxd>:9650/ext/bc/<blockchain-id>/ws
 ETHEREUM_JSONRPC_VARIANT  = geth
 ```
 
-Each Lux subnet chain has a unique blockchain ID (e.g., `dnmzhuf6poM6PUNQCe7MWWfBdTJEnddhHRNXz2x7H6qSmyBEJ` for LUX mainnet C-Chain).
+Each Lux L2 chain has a unique blockchain ID (e.g., `dnmzhuf6poM6PUNQCe7MWWfBdTJEnddhHRNXz2x7H6qSmyBEJ` for LUX mainnet C-Chain).
 
 ### Branding
 
@@ -152,7 +152,7 @@ Dependencies: `gorilla/mux` 1.8.1, `gorilla/websocket` 1.5.4, `lib/pq` 1.11.2.
 - Elixir 1.19+, Erlang/OTP 27+
 - PostgreSQL 14+
 - Node.js 16+ (for frontend)
-- Running Lux node (luxd) with SubnetEVM
+- Running Lux node (luxd) with L2 EVM
 
 ### Build
 

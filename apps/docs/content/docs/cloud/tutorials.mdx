@@ -297,9 +297,9 @@ Create a vault contract that accepts LUX deposits and tracks shares.
 
 ---
 
-## Create a Custom Subnet
+## Create a Custom Chain
 
-Deploy your own subnet with a custom gas token and fee structure.
+Deploy your own chain with a custom gas token and fee structure.
 
 <Steps>
   <Step>
@@ -309,13 +309,13 @@ Deploy your own subnet with a custom gas token and fee structure.
     ```
   </Step>
   <Step>
-    ### Create the Subnet
+    ### Create the Chain
     ```bash
-    lux subnet create game-chain
+    lux chain create game-chain
     ```
 
     When prompted, configure:
-    - **VM**: Subnet-EVM
+    - **VM**: L2 EVM
     - **Chain ID**: 99999 (or any unique ID)
     - **Gas token symbol**: GAME
     - **Initial supply**: 1,000,000 GAME
@@ -324,25 +324,25 @@ Deploy your own subnet with a custom gas token and fee structure.
   <Step>
     ### Deploy Locally
     ```bash
-    lux subnet deploy game-chain --local
+    lux chain deploy game-chain --local
     ```
 
-    The CLI will output your subnet's RPC URL and chain ID.
+    The CLI will output your chain's RPC URL and chain ID.
   </Step>
   <Step>
     ### Connect with MetaMask
 
     Add the custom network to MetaMask:
-    - **RPC URL**: Provided by `lux subnet deploy` output
+    - **RPC URL**: Provided by `lux chain deploy` output
     - **Chain ID**: 99999
     - **Symbol**: GAME
   </Step>
   <Step>
-    ### Deploy Contracts to Your Subnet
-    Update your Hardhat config with the local subnet RPC and deploy as usual:
+    ### Deploy Contracts to Your Chain
+    Update your Hardhat config with the local chain RPC and deploy as usual:
 
     ```bash
-    npx hardhat run scripts/deploy.js --network localSubnet
+    npx hardhat run scripts/deploy.js --network localChain
     ```
   </Step>
 </Steps>
@@ -388,4 +388,4 @@ Move LUX between the X-Chain, P-Chain, and C-Chain.
 
 - [Smart Contracts](/cloud/contracts) - Contract development reference
 - [SDKs](/cloud/sdks) - Interact with contracts programmatically
-- [Subnets](/cloud/subnets) - Full subnet configuration reference
+- [Chains](/cloud/chains) - Full chain configuration reference
