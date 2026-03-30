@@ -1,12 +1,102 @@
 ---
-title: Dex API Reference
-description: DEX REST and WebSocket APIs
+title: DEX API Reference
+description: Trading API, WebSocket feeds, and market data
 icon: FileCode
 ---
 
-## REST API
+## Trading API
 
-Base URL: `https://dex.lux.network/v1`
+The Trading API provides unified swap routing across on-chain V4 pools (Liquid DEX precompile) and off-chain broker venues.
+
+Base URL: `https://dex.lux.network`
+
+### Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | `/v1/trade/quote` | Get best-price quote across all venues |
+| `POST` | `/v1/trade/swap` | Build unsigned transaction calldata |
+| `POST` | `/v1/trade/order` | Submit order for off-chain routing |
+| `GET` | `/v1/trade/swaps/{txHash}` | Get on-chain swap status |
+| `GET` | `/v1/trade/orders/{orderId}` | Get order status |
+| `POST` | `/v1/trade/check-approval` | Check ERC-20 token approval |
+| `GET` | `/v1/trade/venues` | List available liquidity venues |
+
+### Get Quote
+
+```bash
+curl -X POST https://dex.lux.network/v1/trade/quote \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tokenIn": "0xc65ea8882020Af7CDa7854d590C6Fcd34BF364ec",
+    "tokenOut": "0x1234567890abcdef1234567890abcdef12345678",
+    "amount": "1000000000000000000",
+    "type": "EXACT_INPUT",
+    "chainId": 8675311,
+    "swapper": "0x9011E888251AB053B7bD1cdB598Db4f9DEd94714",
+    "slippageTolerance": 0.5
+  }'
+```
+
+Response includes best quote, all venue quotes sorted by price, routing info, gas estimate, and price impact.
+
+### Build Swap Transaction
+
+```bash
+curl -X POST https://dex.lux.network/v1/trade/swap \
+  -H "Content-Type: application/json" \
+  -d '{"quote": <quote_from_above>, "swapper": "0x..."}'
+```
+
+Returns unsigned transaction calldata targeting the LXRouter (V4), V2 Router, or V3 SwapRouter depending on the best venue.
+
+### Submit Order
+
+```bash
+curl -X POST https://dex.lux.network/v1/trade/order \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tokenIn": "0x...",
+    "tokenOut": "0x...",
+    "amount": "1000000000000000000",
+    "type": "EXACT_INPUT",
+    "side": "BUY",
+    "orderType": "MARKET",
+    "swapper": "0x...",
+    "chainId": 8675311
+  }'
+```
+
+### Venues
+
+The DEX routes across multiple venue types:
+
+| Venue | Type | Description |
+|-------|------|-------------|
+| `v4_native` | On-chain | Liquid DEX V4 precompile (LP-9012) |
+| `uniswap_v2` | On-chain | Any V2-compatible Router02 |
+| `uniswap_v3` | On-chain | Any V3-compatible SwapRouter |
+| `alpaca` | Off-chain | Alpaca Markets (via Lux Broker) |
+| `binance` | Off-chain | Binance (via Lux Broker) |
+
+### Chain IDs
+
+| Network | Chain ID |
+|---------|----------|
+| Devnet | `8675311` |
+| Testnet | `8675310` |
+| Mainnet | `8675309` |
+
+### Precompile Addresses
+
+| Contract | Address |
+|----------|---------|
+| PoolManager | `0x0000000000000000000000000000000000009010` |
+| LXRouter | `0x0000000000000000000000000000000000009012` |
+
+Full OpenAPI spec: [`api/openapi.yaml`](https://github.com/luxfi/dex/blob/main/api/openapi.yaml)
+
+---
 
 ## WebSocket
 
