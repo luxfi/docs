@@ -74,7 +74,7 @@ Lux Node (`luxd`) is the core validator node for the Lux Network -- a multi-chai
 ## Hard requirements
 
 1. **ALWAYS** use `github.com/luxfi/*` packages -- **NEVER** `go-ethereum` or `luxfi`
-2. **NEVER** use EWOQ keys -- generate fresh keys for every deployment
+2. **NEVER** use well-known test keys -- generate fresh keys for every deployment
 3. **NEVER** `pkill luxd` -- use `lux cli` or send SIGINT/SIGTERM for graceful shutdown
 4. **NEVER** bump Go packages above v1.x.x (except `luxfi/lattice/v7` and `luxfi/zapdb/v4` which are already >v1)
 5. Go version must be **1.26.1** or higher

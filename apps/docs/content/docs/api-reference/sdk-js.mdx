@@ -121,7 +121,8 @@ const seed = mnemonic.mnemonicToSeedSync(phrase);
 
 ```typescript
 const keychain = xchain.keyChain();
-keychain.importKey("PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN");
+// Use a key derived from LUX_MNEMONIC -- never use well-known test keys
+keychain.importKey(myPrivateKey);
 
 const addresses = keychain.getAddressStrings();
 console.log("Addresses:", addresses);
