@@ -61,7 +61,7 @@ Lux Standard is the canonical contract library for building on Lux C-Chain and L
 - Remapping: `@luxfi/contracts/=contracts/` in foundry.toml
 - FHE contracts require T-Chain (ThresholdVM) -- will not work on plain C-Chain
 - Post-quantum precompiles (ML-DSA, FROST, etc.) require Lux-specific EVM precompile addresses
-- Never use EWOQ keys
+- Never use well-known test keys -- derive keys from `LUX_MNEMONIC`
 - Private keys via `.env` file (never committed), loaded via `dotenv`
 
 ## Quick reference
