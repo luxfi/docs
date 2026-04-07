@@ -1,69 +1,38 @@
 ---
 title: "The Operating System for Sovereign Apps"
-description: "Base owns state. Lux owns trust. Providers own service quality. Users own keys and exit rights."
+description: "Base owns state. Lux owns trust. Seven years of commits, every piece traceable to a first hash."
 date: 2026-03-03
 author: Zach Kelling
 ---
 
-Every app you use today works the same way: your data lives on someone else's computer, encrypted with someone else's keys, governed by someone else's terms. You rent access to your own information.
+Every app you use today rents you access to your own data. We built the replacement. It took seven years.
 
-We built the replacement.
+**Base is the personal computer of Web5. Lux is the trust kernel.**
 
-## The Thesis
+## Provenance
 
-**Base Vault SDK is the personal computer of Web5. Lux is the trust kernel.**
+Every piece traces to a first commit:
 
-- **Base** owns state — encrypted SQLite vault, local-first, offline-capable
-- **Lux** owns trust — identity, key policy, threshold governance, receipts
-- **Providers** own service quality — relay, storage, compute, bandwidth
-- **Users** own keys and exit rights — switch providers without losing data
+- **2015** — [`hanzoai/ingress@3680c8d`](https://github.com/hanzoai/ingress/commit/3680c8d) — HTTP routing layer
+- **2019** — [`luxfi/lattice@4421f32`](https://github.com/luxfi/lattice/commit/4421f32) — original FHE from scratch (Go, NTT, Ring-LWE)
+- **2020** — [`luxfi/node@b9e34e3`](https://github.com/luxfi/node/commit/b9e34e3) — Lux blockchain
+- **2020** — [`hanzoai/iam@84d8b2d`](https://github.com/hanzoai/iam/commit/84d8b2d) — identity and access management
+- **2021** — [`luxfi/threshold@c44efac`](https://github.com/luxfi/threshold/commit/c44efac) — FROST + CGGMP21 threshold signatures
+- **2021** — [`luxfi/evm@a59f55e`](https://github.com/luxfi/evm/commit/a59f55e) — EVM with PQ crypto precompiles
+- **2022** — [`hanzoai/base@3d07f02`](https://github.com/hanzoai/base/commit/3d07f02) — single-binary runtime, encrypted SQLite, CRDT
+- **2022** — [`hanzoai/kms@8d00c5c`](https://github.com/hanzoai/kms/commit/8d00c5c) — key management service
+- **2023** — [`luxfi/mpc@63f3517`](https://github.com/luxfi/mpc/commit/63f3517) — MPC daemon (CGGMP21 keygen + signing)
+- **2025** — [`luxfi/consensus@882bab8`](https://github.com/luxfi/consensus/commit/882bab8) — Quasar hybrid BLS + Ringtail
+- **2026** — [`luxfi/zap@22a2a4c`](https://github.com/luxfi/zap/commit/22a2a4c) — zero-copy binary protocol
 
-## Why Old Crypto Failed
+## Architecture
 
-The first generation tried to put everything on-chain. Users got 30-second confirmations, \$50 gas, and public state anyone could read.
+Base (2022) is the data plane — encrypted vault, CRDT sync, realtime APIs. Lux (2020) is the trust kernel — 15 chains on every validator. Lattice (2019) is the crypto — FHE from scratch, GPU-accelerated.
 
-Chain is not a database. Chain is **trust infrastructure** — the place you go when two parties need agreement they can't provide alone.
+Three tiers: AES-256-GCM + ML-KEM (default), TFHE threshold reveal (high-value), CKKS confidential compute (new products).
 
-## The Capsule
+86 Lean 4 proofs. Zero sorry. 80+ papers. Three red team rounds, zero open findings.
 
-Every user, org, and AI agent gets a capsule: encrypted vault, CRDT sync, DID identity, threshold controls, audit receipts, and compute policy. Cloud is optional replication. Chain is optional trust anchoring.
-
-## Three Classes of Apps
-
-**Local-first private.** Install an app, get a vault. Encrypted, local, yours.
-
-**Threshold.** Important actions require quorum. Admin isn't a password — it's 2-of-3 attesting.
-
-**Confidential compute.** Private AI inference, sealed-bid auctions, encrypted analytics. FHE creates qualitatively new products.
-
-## The Stack
-
-**Default:** AES-256-GCM + ML-KEM. Fast, post-quantum, every secret at rest.
-
-**Threshold:** TFHE gates reveal. Validators attest before decrypt.
-
-**Confidential compute:** CKKS for encrypted ML. GPU-accelerated, 40x over CPU.
-
-## 15 Chains, One Validator
-
-Lux runs 15 specialized chains on every validator: I-Chain (identity), K-Chain (keys), T-Chain (threshold FHE), M-Chain (MPC signing), plus EVM, DEX, FHE, ZK, bridge, quantum consensus, AI inference, oracles, graph, relay, and Beluga L3.
-
-No separate deployments. Validators stake and do everything.
-
-## AI Agents as Sovereign Processes
-
-Every agent gets its own capsule: encrypted vault for persistent memory, DID identity, scoped capabilities, threshold spend controls, private inference via CKKS.
-
-Agents stop being chatbot wrappers and start being sovereign processes.
-
-## The Code
-
-- [Lux Node](https://github.com/luxfi/node) — 15-chain GPU validator
-- [Lux KMS](https://github.com/luxfi/kms) — K-Chain key management
-- [Lux MPC](https://github.com/luxfi/mpc) — FROST/CGGMP21 threshold signing
-- [Hanzo Base](https://github.com/hanzoai/base) — single-binary runtime
-- [Hanzo SQLite](https://github.com/hanzoai/sqlite) — encrypted + threshold attestation
-
-86 Lean 4 proofs. Zero sorry. 80+ papers. Red-teamed. Shipped.
+Not a whitepaper. Shipped code with commit hashes.
 
 **The operating system for sovereign apps.** Base owns state. Lux owns trust. Users own everything that matters.
