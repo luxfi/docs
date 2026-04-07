@@ -1,0 +1,69 @@
+---
+title: "The Operating System for Sovereign Apps"
+description: "Base owns state. Lux owns trust. Providers own service quality. Users own keys and exit rights."
+date: 2026-04-07
+author: Zach Kelling
+---
+
+Every app you use today works the same way: your data lives on someone else's computer, encrypted with someone else's keys, governed by someone else's terms. You rent access to your own information.
+
+We built the replacement.
+
+## The Thesis
+
+**Base Vault SDK is the personal computer of Web5. Lux is the trust kernel.**
+
+- **Base** owns state — encrypted SQLite vault, local-first, offline-capable
+- **Lux** owns trust — identity, key policy, threshold governance, receipts
+- **Providers** own service quality — relay, storage, compute, bandwidth
+- **Users** own keys and exit rights — switch providers without losing data
+
+## Why Old Crypto Failed
+
+The first generation tried to put everything on-chain. Users got 30-second confirmations, \$50 gas, and public state anyone could read.
+
+Chain is not a database. Chain is **trust infrastructure** — the place you go when two parties need agreement they can't provide alone.
+
+## The Capsule
+
+Every user, org, and AI agent gets a capsule: encrypted vault, CRDT sync, DID identity, threshold controls, audit receipts, and compute policy. Cloud is optional replication. Chain is optional trust anchoring.
+
+## Three Classes of Apps
+
+**Local-first private.** Install an app, get a vault. Encrypted, local, yours.
+
+**Threshold.** Important actions require quorum. Admin isn't a password — it's 2-of-3 attesting.
+
+**Confidential compute.** Private AI inference, sealed-bid auctions, encrypted analytics. FHE creates qualitatively new products.
+
+## The Stack
+
+**Default:** AES-256-GCM + ML-KEM. Fast, post-quantum, every secret at rest.
+
+**Threshold:** TFHE gates reveal. Validators attest before decrypt.
+
+**Confidential compute:** CKKS for encrypted ML. GPU-accelerated, 40x over CPU.
+
+## 15 Chains, One Validator
+
+Lux runs 15 specialized chains on every validator: I-Chain (identity), K-Chain (keys), T-Chain (threshold FHE), M-Chain (MPC signing), plus EVM, DEX, FHE, ZK, bridge, quantum consensus, AI inference, oracles, graph, relay, and Beluga L3.
+
+No separate deployments. Validators stake and do everything.
+
+## AI Agents as Sovereign Processes
+
+Every agent gets its own capsule: encrypted vault for persistent memory, DID identity, scoped capabilities, threshold spend controls, private inference via CKKS.
+
+Agents stop being chatbot wrappers and start being sovereign processes.
+
+## The Code
+
+- [Lux Node](https://github.com/luxfi/node) — 15-chain GPU validator
+- [Lux KMS](https://github.com/luxfi/kms) — K-Chain key management
+- [Lux MPC](https://github.com/luxfi/mpc) — FROST/CGGMP21 threshold signing
+- [Hanzo Base](https://github.com/hanzoai/base) — single-binary runtime
+- [Hanzo SQLite](https://github.com/hanzoai/sqlite) — encrypted + threshold attestation
+
+86 Lean 4 proofs. Zero sorry. 80+ papers. Red-teamed. Shipped.
+
+**The operating system for sovereign apps.** Base owns state. Lux owns trust. Users own everything that matters.
