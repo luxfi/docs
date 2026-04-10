@@ -50,7 +50,7 @@ type Config struct {
     Validators    validators.Manager
 
     // SequencerIDForChain returns the validator-set identity that sequences chainID
-    // Examples: C-Chain -> PrimaryNetworkID, Zoo L2 -> ZooChainID
+    // Examples: C-Chain -> PrimaryNetworkID, Zoo L1 -> ZooChainID
     SequencerIDForChain func(chainID ids.ID) ids.ID
 
     GenesisBytes         []byte

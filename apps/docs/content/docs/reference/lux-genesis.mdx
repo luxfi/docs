@@ -5,7 +5,7 @@ description: "Documentation for Lux Genesis"
 
 ## Overview
 
-`github.com/luxfi/genesis` is a Go module that provides canonical genesis configurations for all Lux blockchain networks. It contains embedded genesis JSON for mainnet, testnet, devnet, and local/custom networks, along with CLI tools for generating, extracting, and validating genesis state. The package supports the primary C-Chain (EVM), P-Chain (Platform), X-Chain (Exchange), and L2 chains (Zoo, SPC, Hanzo, Pars).
+`github.com/luxfi/genesis` is a Go module that provides canonical genesis configurations for all Lux blockchain networks. It contains embedded genesis JSON for mainnet, testnet, devnet, and local/custom networks, along with CLI tools for generating, extracting, and validating genesis state. The package supports the primary C-Chain (EVM), P-Chain (Platform), X-Chain (Exchange), and sovereign L1 chains (Zoo, SPC, Hanzo, Pars).
 
 ## When to use
 
@@ -91,7 +91,7 @@ genesis -genesis-dir ./mainnet -output primary.json
 | Devnet | 3 | 96370 | Fast iteration dev network |
 | Local/Custom | 1337 | 1337 | Local development |
 
-### L2 Chains
+### Sovereign L1 Chains
 
 | Chain | Mainnet ID | Testnet ID | Devnet ID | Treasury |
 |-------|-----------|-----------|-----------|----------|
@@ -131,7 +131,7 @@ genesis/
     pars-mainnet/        # Pars chain genesis
     ...                  # testnet/devnet variants for each chain
   builder/               # Genesis builder with tests
-  chains/                # L2 chain definitions (ai, spc, zoo)
+  chains/                # Sovereign L1 chain definitions (ai, spc, zoo)
   mainnet/               # Production genesis exports
   testnet/               # Test network genesis exports
   keys/mainnet/          # Mainnet key material
