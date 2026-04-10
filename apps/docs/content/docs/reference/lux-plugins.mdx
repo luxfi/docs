@@ -26,7 +26,7 @@ plugins-core/
   vms/                   -- VM definitions (one YAML per VM)
     blobvm.yaml              Content-addressable KV store VM
     spacesvm.yaml            Hierarchical storage VM
-    L2 EVM.yaml          L2 EVM (Solidity smart contracts)
+    subnet-evm.yaml          Sovereign L1 EVM (Solidity smart contracts)
   chains/               -- Chain definitions (one YAML per chain)
     spaces.yaml              Spaces Chain Demo (SpacesVM)
     wagmi.yaml               Zoo EVM Demo (high-throughput testbed)
@@ -71,21 +71,21 @@ BlobVM provides a content-addressable key-value store chain. Keys are derived fr
 
 SpacesVM provides authenticated, hierarchical key-value storage using any EIP-712 compatible wallet. It powers the Spaces chain where users can claim hierarchical namespaces (like DNS) and store arbitrary key/value data under them.
 
-### L2 EVM
+### Sovereign L1 EVM (subnet-evm)
 
 | Field | Value |
 |-------|-------|
-| Alias | `L2 EVM` |
+| Alias | `subnet-evm` |
 | VM ID | `srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy` |
 | Version | 0.2.7 |
-| Homepage | `https://github.com/luxdefi/L2 EVM` |
-| Description | L2 EVM -- simplified Coreth VM for Chain Contract Chains with full Ethereum Virtual Machine and Solidity smart contract support |
+| Homepage | `https://github.com/luxfi/evm` |
+| Description | Sovereign L1 EVM -- simplified Coreth VM for sovereign L1 chains with full Ethereum Virtual Machine and Solidity smart contract support |
 | Install Script | `scripts/build.sh build/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy` |
 | Binary Path | `build/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy` |
-| Release URL | `https://github.com/luxdefi/L2 EVM/archive/refs/tags/v0.2.7.tar.gz` |
+| Release URL | `https://github.com/luxfi/evm/archive/refs/tags/v0.2.7.tar.gz` |
 | SHA256 | `c0d63b56031820007cce5fa8ea635628b8b9a5897111290a78b60538838509f8` |
 
-L2 EVM is the primary VM for creating new EVM-compatible blockchains on Lux. It is a simplified version of Coreth (C-Chain VM), parameterizable for different throughput and gas configurations.
+Sovereign L1 EVM is the primary VM for creating new EVM-compatible blockchains on Lux. It is a simplified version of Coreth (C-Chain VM), parameterizable for different throughput and gas configurations.
 
 ## Registered Chains
 
@@ -121,7 +121,7 @@ validatorOnly: false             -- Open to non-validators
 | Alias | `wagmi` |
 | Chain ID | `28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY` |
 | Homepage | `https://github.com/luxfi/evm` |
-| VM | `evm` (Coreth/L2 EVM) |
+| VM | `evm` (Coreth/Sovereign L1 EVM) |
 | Description | High-throughput testbed for EVM optimizations, parameterized to run at higher capacity than mainnet C-Chain |
 | Maintainer | `z@zoolabs.io` |
 
@@ -249,7 +249,7 @@ VM binaries must be named with their base58-encoded VM ID. The Lux node discover
 ```
 ~/.lux/plugins/kM6h4LYe3AcEU1MB2UNg6ubzAiDAALZzpVrbX8zn3hXF6Avd8   # BlobVM
 ~/.lux/plugins/sqja3uK17MJxfC7AN8nGadBw9JK5BcrsNwNynsqP5Gih8M5Bm   # SpacesVM
-~/.lux/plugins/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy   # L2 EVM
+~/.lux/plugins/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy   # Sovereign L1 EVM
 ```
 
 ## Usage with LPM
@@ -264,10 +264,10 @@ lpm list-vms
 # Install a VM by alias
 lpm install --vm blobvm
 lpm install --vm spacesvm
-lpm install --vm L2 EVM
+lpm install --vm subnet-evm
 
 # Update a VM to latest version
-lpm update --vm L2 EVM
+lpm update --vm subnet-evm
 
 # Install a chain (installs all referenced VMs)
 lpm install --chain spaces
@@ -327,6 +327,6 @@ These parameters control Snow consensus behavior for chains:
 ## Related Skills
 
 - `lux/lux-node.md` -- Core node that loads and runs VM plugins
-- `lux/lux-evm.md` -- L2 EVM execution engine
+- `lux/lux-evm.md` -- Sovereign L1 EVM execution engine
 - `lux/lux-spacesvm.md` -- SpacesVM storage chain
 - `lux/lux-cli.md` -- CLI for chain creation and management

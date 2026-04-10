@@ -28,34 +28,45 @@ Classical public-key cryptography (RSA, ECDSA, Ed25519) relies on the hardness o
 
 Lux Network aligns with the NIST Post-Quantum Cryptography standardization process, adopting algorithms from the finalized standard set.
 
-### CRYSTALS-Dilithium (ML-DSA)
+### ML-DSA-65 (FIPS 204)
 
-Dilithium is a **lattice-based** digital signature scheme selected as the primary NIST standard for post-quantum signatures (FIPS 204).
+ML-DSA-65 (formerly CRYSTALS-Dilithium) is a **lattice-based** digital signature scheme standardized by NIST as the primary post-quantum signature algorithm.
 
 - **Security basis**: Module Learning With Errors (MLWE) problem
-- **Signature size**: ~2.4 KB (Dilithium2), ~3.3 KB (Dilithium3)
-- **Public key size**: ~1.3 KB (Dilithium2)
+- **Security level**: NIST Level 3 (192-bit)
+- **Signature size**: ~3.3 KB
+- **Public key size**: ~1.95 KB
 - **Performance**: Fast signing and verification, suitable for blockchain throughput requirements
-- **Use in Lux**: Primary signature scheme for transaction signing and validator authentication
+- **Use in Lux**: Default signature scheme for new validator keys and transaction signing
 
-### SPHINCS+ (SLH-DSA)
+### SLH-DSA (FIPS 205)
 
-SPHINCS+ is a **hash-based** signature scheme selected by NIST as a conservative alternative (FIPS 205).
+SLH-DSA (formerly SPHINCS+) is a **hash-based** signature scheme standardized by NIST as a conservative alternative.
 
 - **Security basis**: Security of the underlying hash function only
-- **Signature size**: ~7.8 KB (SPHINCS+-128f) to ~49 KB (SPHINCS+-256s)
+- **Signature size**: ~7.8 KB (SLH-DSA-128f) to ~49 KB (SLH-DSA-256s)
 - **Public key size**: 32-64 bytes
 - **Performance**: Slower signing but very fast verification
 - **Use in Lux**: Available as a fallback signature scheme for maximum conservatism
 
+### ML-KEM-768 (FIPS 203)
+
+ML-KEM-768 (formerly CRYSTALS-Kyber) is a **lattice-based** key encapsulation mechanism standardized by NIST for post-quantum key exchange.
+
+- **Security basis**: Module Learning With Errors (MLWE) problem
+- **Security level**: NIST Level 3 (192-bit)
+- **Ciphertext size**: ~1.09 KB
+- **Public key size**: ~1.18 KB
+- **Use in Lux**: TLS key exchange via X25519MLKEM768 hybrid, inter-node communication
+
 ### Comparison
 
-| Property | CRYSTALS-Dilithium | SPHINCS+ | ECDSA (classical) |
-|----------|-------------------|----------|-------------------|
+| Property | ML-DSA-65 (FIPS 204) | SLH-DSA (FIPS 205) | ECDSA (classical) |
+|----------|---------------------|---------------------|-------------------|
 | Security assumption | Lattice (MLWE) | Hash function | Elliptic curve DLP |
 | Quantum resistant | Yes | Yes | No |
-| Signature size | ~2.4 KB | ~8-49 KB | 64 bytes |
-| Public key size | ~1.3 KB | 32-64 bytes | 33 bytes |
+| Signature size | ~3.3 KB | ~8-49 KB | 64 bytes |
+| Public key size | ~1.95 KB | 32-64 bytes | 33 bytes |
 | Sign speed | Fast | Slow | Fast |
 | Verify speed | Fast | Fast | Moderate |
 
@@ -65,16 +76,16 @@ Lux uses a **hybrid classical + post-quantum** strategy during the transition pe
 
 <Steps>
   <Step>
-    ### Phase 1: Hybrid Mode (Current)
-    Both classical (Ed25519) and post-quantum (Dilithium) signatures are supported. Validators verify both when present. This provides backward compatibility while enabling early PQ adoption.
+    ### Phase 1: Hybrid Mode -- Deployed
+    Both classical (Ed25519) and post-quantum (ML-DSA-65) signatures are supported. Validators verify both when present. This provides backward compatibility while enabling PQ adoption.
   </Step>
   <Step>
-    ### Phase 2: PQ Preferred
-    Post-quantum signatures become the default for new accounts. Classical signatures remain valid for existing accounts. Wallet software generates PQ keys by default.
+    ### Phase 2: PQ Preferred -- Deployed
+    ML-DSA-65 is the default for new validator keys. Backup keys use `age1pq` (age with ML-KEM). TLS between nodes uses X25519MLKEM768 hybrid key exchange. Classical signatures remain valid for existing accounts.
   </Step>
   <Step>
-    ### Phase 3: PQ Required
-    A governance-approved network upgrade requires all new transactions to use post-quantum signatures. Legacy accounts are given a migration window.
+    ### Phase 3: PQ Required -- In Governance Review
+    A governance-approved network upgrade will require all new transactions to use post-quantum signatures. Legacy accounts will be given a migration window. Requires network upgrade vote via LP governance.
   </Step>
 </Steps>
 
@@ -100,7 +111,7 @@ PQ keys require different handling:
 
 ```
 Classical key:    32 bytes private + 33 bytes public  = ~65 bytes
-Dilithium key:   2.5 KB private  + 1.3 KB public     = ~3.8 KB
+ML-DSA-65 key:   4.0 KB private  + 1.95 KB public    = ~5.95 KB
 ```
 
 Lux wallets store PQ keys alongside classical keys, with the same HD derivation structure extended to support lattice-based key generation.
@@ -110,8 +121,8 @@ Lux wallets store PQ keys alongside classical keys, with the same HD derivation 
 Lux uses a PQ-aware address format that encodes the key type:
 
 ```
-lux1qpq...    # Post-quantum address (Dilithium)
-lux1qph...    # Post-quantum address (SPHINCS+)
+lux1qpq...    # Post-quantum address (ML-DSA-65)
+lux1qph...    # Post-quantum address (SLH-DSA)
 lux1c...      # Classical address (Ed25519)
 ```
 
@@ -133,6 +144,43 @@ For existing users and applications:
     Updated SDKs handle PQ key generation, signing, and verification. Use the same high-level API with an optional key type parameter.
   </Card>
 </Cards>
+
+## Quasar Consensus
+
+Lux's Quasar consensus uses a **triple hybrid signature scheme** combining three independent cryptographic families:
+
+| Scheme | Family | Purpose |
+|--------|--------|---------|
+| BLS (BLS12-381) | Pairing-based | Aggregatable validator signatures for efficient block finalization |
+| Ringtail | Lattice-based | Post-quantum ring signatures for anonymous validator voting |
+| ML-DSA-65 | Lattice-based (FIPS 204) | Post-quantum identity binding for validator authentication |
+
+An attacker must break all three schemes simultaneously to forge a consensus vote. BLS provides efficient aggregation (reducing bandwidth), Ringtail provides voter privacy (preventing targeted attacks on specific validators), and ML-DSA-65 provides quantum-resistant identity authentication.
+
+## Smart Account PQ Signing
+
+EVM smart accounts (ERC-4337 / Safe) can verify post-quantum signatures on-chain via precompiles:
+
+| Precompile | Address | Purpose |
+|-----------|---------|---------|
+| `ML-DSA Verify` | `0x0b14` | Verify ML-DSA-65 signatures in Solidity |
+| `SLH-DSA Verify` | `0x0b15` | Verify SLH-DSA signatures in Solidity |
+| `Ringtail Verify` | `0x0b16` | Verify Ringtail ring signatures in Solidity |
+
+The `SafeMLDSASigner` module implements ERC-1271 signature verification using ML-DSA-65, allowing Safe multisig wallets to authorize transactions with post-quantum keys. This works on the C-Chain and all sovereign L1 EVM chains with PQ precompiles enabled.
+
+```solidity
+// Safe module: verify ML-DSA-65 via precompile
+function isValidSignature(bytes32 hash, bytes memory signature)
+    external view returns (bytes4)
+{
+    (bool ok, bytes memory result) = ML_DSA_PRECOMPILE.staticcall(
+        abi.encode(ownerPQKey, hash, signature)
+    );
+    require(ok && abi.decode(result, (bool)), "PQ sig invalid");
+    return 0x1626ba7e; // ERC-1271 magic value
+}
+```
 
 ## Further Reading
 

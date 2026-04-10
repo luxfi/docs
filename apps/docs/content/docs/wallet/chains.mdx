@@ -13,10 +13,10 @@ The Lux wallet supports all chain types in the Lux Network. Each chain type uses
 | P-Chain | Platform | Bech32 (`P-lux1...`) | Custom | 6 |
 | X-Chain | Exchange | Bech32 (`X-lux1...`) | UTXO | 6 |
 | C-Chain | Contract | Hex (`0x...`) | EVM | 18 |
-| Zoo | L2 EVM | Hex (`0x...`) | EVM | 18 |
-| Hanzo | L2 EVM | Hex (`0x...`) | EVM | 18 |
-| SPC | L2 EVM | Hex (`0x...`) | EVM | 18 |
-| Pars | L2 EVM | Hex (`0x...`) | EVM | 18 |
+| Zoo | Sovereign L1 EVM | Hex (`0x...`) | EVM | 18 |
+| Hanzo | Sovereign L1 EVM | Hex (`0x...`) | EVM | 18 |
+| SPC | Sovereign L1 EVM | Hex (`0x...`) | EVM | 18 |
+| Pars | Sovereign L1 EVM | Hex (`0x...`) | EVM | 18 |
 
 ## P-Chain Operations
 
@@ -60,6 +60,6 @@ X-Chain -> export -> C-Chain -> import
 
 Each cross-chain transfer requires two transactions: an export on the source chain and an import on the destination chain.
 
-## L2 EVM Chains
+## Sovereign L1 EVM Chains
 
-All L2 EVM chains (Zoo, Hanzo, SPC, Pars) use the same EVM interface as the C-Chain. The only difference is the RPC endpoint URL and chain ID.
+All sovereign L1 EVM chains (Zoo, Hanzo, SPC, Pars) use the same EVM interface as the C-Chain. The only difference is the RPC endpoint URL and chain ID.

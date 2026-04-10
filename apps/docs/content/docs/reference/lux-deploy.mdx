@@ -27,7 +27,7 @@ Lux Deploy (`github.com/luxfi/deploy`) is the production deployment system for L
 
   cmd/
     deploy-chains/
-      main.go            # Go tool for P-L2 chain/blockchain creation
+      main.go            # Go tool for P-Chain chain/blockchain creation
       go.mod             # Module: github.com/luxfi/deploy-chains
       go.sum
       deploy-chains     # Compiled binary
@@ -59,7 +59,7 @@ Lux Deploy (`github.com/luxfi/deploy`) is the production deployment system for L
 1. **Configuration Layer** -- Environment variables, network/chain configs
 2. **Plugin Layer** -- EVM plugin installation and VMID mapping
 3. **Network Layer** -- 5-node validator bootstrap, port management, health monitoring
-4. **Chain Layer** -- Chain/L2 deployment, genesis configuration
+4. **Chain Layer** -- Sovereign L1 deployment, genesis configuration
 5. **Data Layer** -- RLP block import, progress monitoring, state verification
 6. **Persistence Layer** -- Snapshot creation, restoration, archival
 
@@ -225,9 +225,9 @@ LUX_MNEMONIC="word1 word2 ..." ./deploy-chains \
 | `github.com/luxfi/consensus` | v1.22.62 | Consensus types (indirect) |
 | `github.com/luxfi/geth` | v1.16.73 | Ethereum types (indirect) |
 
-### L2 EVM VMID
+### Sovereign L1 EVM VMID
 
-`ag3GReYPNuSR17rUP8acMdZipQBikdXNRKDyFszAysmy3vDXE` (used for all L2 chains)
+`ag3GReYPNuSR17rUP8acMdZipQBikdXNRKDyFszAysmy3vDXE` (used for all sovereign L1 chains)
 
 ## Shell Library (lib/)
 

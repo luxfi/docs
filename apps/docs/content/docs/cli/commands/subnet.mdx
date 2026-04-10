@@ -38,9 +38,8 @@ lux chain export <name>
 
 | Type | Flag | Description |
 |------|------|-------------|
-| L2 (default) | `--type=l2` | L2 EVM chain validated by a subset of validators |
-| L1 | `--type=l1` | Sovereign chain with its own validator set |
-| L3 | `--type=l3` | Application-specific chain anchored to an L2 |
+| L1 (default) | `--type=l1` | Sovereign L1 chain with its own validator set |
+| L3 | `--type=l3` | Application-specific chain anchored to an L1 |
 
 ## Chain Configuration
 
@@ -62,7 +61,7 @@ When deploying, the CLI:
 3. Creates the blockchain with the genesis file
 4. Configures all nodes to track the new chain
 
-## Pre-deployed L2 Chains
+## Pre-deployed Chains
 
 | Chain | Mainnet Chain ID | Chain ID |
 |-------|-----------------|-----------|

@@ -17,9 +17,9 @@ Every Lux node validates these three chains. They form the backbone of the netwo
 | **P-Chain** | PlatformVM | -- | Chain (linear) | Validators, staking, chain management |
 | **X-Chain** | ExchangeVM | -- | DAG | UTXO-based asset creation and transfers |
 
-## L2 EVM Chains
+## Sovereign L1 EVM Chains
 
-Custom EVM chains deployed as chains with configurable gas, fees, and precompiles.
+Sovereign L1 EVM chains with their own validator sets, configurable gas, fees, and precompiles.
 
 | Chain | Chain ID (Mainnet) | Chain ID (Testnet) | Chain ID (Devnet) | Purpose |
 |-------|-------------------|-------------------|-------------------|---------|
@@ -58,7 +58,7 @@ Where `network` is `mainnet`, `testnet`, or `devnet`, and `chain` is the chain a
 
 ## Node Configuration
 
-To track an L2 chain, pass the **chain ID** (not blockchain ID) to your node:
+To track a chain, pass the **chain ID** (not blockchain ID) to your node:
 
 ```bash
 luxd --track-chains=<chain-id-1>,<chain-id-2>
