@@ -5,7 +5,7 @@ description: "Unified Go EVM Execution Engine"
 
 ## Overview
 
-Lux EVM (`github.com/luxfi/evm`) is the unified Go-based EVM execution engine for the Lux Network. It powers both the C-Chain (the primary EVM-compatible chain on the Lux primary network) and all Chain/L1/L2 EVM chains. The former `coreth` codebase was **merged into this repo** -- `github.com/luxfi/coreth` is deprecated and no longer maintained separately.
+Lux EVM (`github.com/luxfi/evm`) is the unified Go-based EVM execution engine for the Lux Network. It powers both the C-Chain (the primary EVM-compatible chain on the Lux primary network) and all sovereign L1 EVM chains. The former `coreth` codebase was **merged into this repo** -- `github.com/luxfi/coreth` is deprecated and no longer maintained separately.
 
 The EVM runs as a **plugin binary** loaded by `luxd` (the Lux node). The binary is built from `plugin/main.go` and communicates with the node via the `rpcchainvm` gRPC interface. It is not a standalone process -- it requires `luxd` to operate.
 
@@ -29,7 +29,7 @@ The EVM runs as a **plugin binary** loaded by `luxd` (the Lux node). The binary 
 - Building custom stateful precompiles for EVM chains
 - Integrating with C-Chain via JSON-RPC or WebSocket
 - Cross-chain messaging between EVM chains using Warp
-- Running a custom L2 EVM with configurable fees, gas limits, and precompiles
+- Running a custom sovereign L1 EVM with configurable fees, gas limits, and precompiles
 - Migrating from `coreth` to the unified EVM module
 
 ### Hard Requirements
@@ -84,9 +84,9 @@ The default mode when running as part of the Lux primary network:
 - **Chain ID**: 96369 (mainnet), 96368 (testnet), 96370 (devnet)
 - **Warp address**: Legacy `0x0200000000000000000000000000000000000005` (also accessible at `0x16201`)
 
-### L2 EVM Mode (L1/L2 Chains)
+### Sovereign L1 EVM Mode
 
-When deployed as a chain/L1/L2 chain:
+When deployed as a sovereign L1 chain:
 
 - **Configurable fees** via FeeManager precompile or genesis JSON
 - **Configurable gas limits** and block gas costs

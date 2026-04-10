@@ -5,11 +5,11 @@ description: "Documentation for Lux Migrate - Blockchain Data Migration Framewor
 
 ## Overview
 
-Lux Migrate is a **generic blockchain data migration framework** for importing and exporting block data, state, and accounts between Lux VM implementations. It defines Exporter, Importer, and Migrator interfaces with implementations for L2 EVM (PebbleDB), C-Chain (BadgerDB + RPC), and other Lux chain types. JSONL is the canonical intermediate format.
+Lux Migrate is a **generic blockchain data migration framework** for importing and exporting block data, state, and accounts between Lux VM implementations. It defines Exporter, Importer, and Migrator interfaces with implementations for Sovereign L1 EVM (PebbleDB), C-Chain (BadgerDB + RPC), and other Lux chain types. JSONL is the canonical intermediate format.
 
 ## When to use
 
-- Migrating blockchain data between L2 EVM and C-Chain
+- Migrating blockchain data between Sovereign L1 EVM and C-Chain
 - Exporting blocks or state from PebbleDB/BadgerDB/LevelDB
 - Importing blocks via the `migrate_importBlocks` RPC API
 - Converting genesis files to JSONL for block import
@@ -41,7 +41,7 @@ migrate/
   pchain/             # Platform chain support (stub)
   xchain/             # Exchange chain support (stub)
   qchain/             # Quantum chain support (stub)
-  zool2/              # Zoo L2 chain support (stub)
+  zool1/              # Zoo L1 chain support (stub)
   jsonl/              # JSONL streaming format (reader/writer)
   rpcapi/             # RPC API type definitions
   cmd/                # CLI tools (20 commands)
@@ -79,12 +79,12 @@ type Migrator interface {
 
 | VM Type | Export | Import | Database |
 |---------|--------|--------|----------|
-| `L2 EVM` | Implemented | Stub | PebbleDB |
+| `subnet-evm` | Implemented | Stub | PebbleDB |
 | `c-chain` | Stub | Implemented | BadgerDB + RPC |
 | `p-chain` | Stub | Stub | - |
 | `x-chain` | Stub | Stub | - |
 | `q-chain` | Stub | Stub | - |
-| `zoo-l2` | Stub | Stub | - |
+| `zoo-l1` | Stub | Stub | - |
 
 ## CLI tools
 
@@ -121,7 +121,7 @@ cd migrate
 go build -o bin/export ./cmd/export/
 go build -o bin/import-rpc ./cmd/import-rpc/
 
-# Export from L2 EVM PebbleDB
+# Export from Sovereign L1 EVM PebbleDB
 ./bin/export \
   -db /path/to/pebbledb \
   -output blocks.jsonl \
@@ -178,5 +178,5 @@ go build -o bin/import-jsonl ./cmd/import-jsonl/
 ## Related Skills
 
 - `lux/lux-node.md` -- Node that hosts the migrate_importBlocks API
-- `lux/lux-evm.md` -- L2 EVM with MigrateAPI endpoint
+- `lux/lux-evm.md` -- EVM with MigrateAPI endpoint
 - `lux/lux-cli.md` -- CLI integration for `lux network export/import data`

@@ -1,12 +1,12 @@
 ---
-title: "L2 EVM"
-description: "Custom EVM chains with configurable gas, fees, and precompiles. Used by Zoo, Hanzo, SPC, Pars."
+title: "EVM Chains"
+description: "Sovereign L1 EVM chains with configurable gas, fees, and precompiles. Used by Zoo, Hanzo, SPC, Pars."
 icon: Code
 ---
 
-L2 EVM allows deploying custom EVM-compatible blockchains as Lux chains. Each L2 chain has its own gas configuration, fee structure, precompiles, and genesis state while sharing the security of the Lux validator set.
+Each sovereign L1 EVM chain has its own validator set, gas configuration, fee structure, precompiles, and genesis state while participating in the Lux Network for cross-chain messaging and shared security.
 
-## Deployed L2 Chains
+## Deployed Chains
 
 | Chain | Chain ID (Mainnet) | Chain ID (Testnet) | Chain ID (Devnet) | Explorer |
 |-------|-------------------|-------------------|-------------------|---------|
@@ -17,7 +17,7 @@ L2 EVM allows deploying custom EVM-compatible blockchains as Lux chains. Each L2
 
 ## RPC Endpoints
 
-L2 chain RPCs are accessible via the gateway using their blockchain ID:
+Chain RPCs are accessible via the gateway using their blockchain ID:
 
 ```
 https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
@@ -34,7 +34,7 @@ https://api.lux.network/mainnet/ext/bc/pars/rpc
 
 ## Genesis Configuration
 
-A L2 EVM genesis defines the initial state, fee parameters, and precompile configuration. Key fields:
+An EVM chain genesis defines the initial state, fee parameters, and precompile configuration. Key fields:
 
 ```json
 {
@@ -74,7 +74,7 @@ A L2 EVM genesis defines the initial state, fee parameters, and precompile confi
 | `minBlockGasCost` | 0 | Minimum gas cost charged to the block producer |
 | `maxBlockGasCost` | 1,000,000 | Maximum gas cost charged to the block producer |
 
-## Deploying a New L2 EVM Chain
+## Deploying a New EVM Chain
 
 1. Create the genesis JSON with your desired chain ID, allocations, and fee config.
 
@@ -95,11 +95,11 @@ luxd --track-chains=<chain-id>
 
 ## Standard Contract Deployments
 
-All L2 chains include a standard set of 20 deployed contracts: WLUX, bridged tokens, AMM (router, factory, pairs), governance, identity (DIDRegistry), treasury, LSSVM, and DeFi utilities. Contract addresses are identical across all L2 chains (deployed from nonce 0).
+All chains include a standard set of 20 deployed contracts: WLUX, bridged tokens, AMM (router, factory, pairs), governance, identity (DIDRegistry), treasury, LSSVM, and DeFi utilities. Contract addresses are identical across all chains (deployed from nonce 0).
 
 ## RPC API
 
-L2 EVM chains expose the full Ethereum JSON-RPC API, identical to the C-Chain. All `eth_*`, `net_*`, `web3_*`, and `debug_*` methods are supported.
+EVM chains expose the full Ethereum JSON-RPC API, identical to the C-Chain. All `eth_*`, `net_*`, `web3_*`, and `debug_*` methods are supported.
 
 ## Related LPs
 

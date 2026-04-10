@@ -13,7 +13,7 @@ A chain is an independent network with its own:
 
 - **Validator set** - Choose which validators participate
 - **Consensus parameters** - Tune finality speed and throughput
-- **Virtual machine** - Run EVM, L2 EVM, or a fully custom VM
+- **Virtual machine** - Run EVM, Sovereign L1 EVM, or a fully custom VM
 - **Gas token** - Use LUX or a custom native token
 - **Access control** - Public or permissioned networks
 
@@ -21,7 +21,7 @@ A chain is an independent network with its own:
   Chains do not share state or execution with other chains. They are isolated environments that leverage the Lux Primary Network for validator coordination and security.
 </Callout>
 
-## Create an L2
+## Create a Chain
 
 ### Using the CLI
 
@@ -39,7 +39,7 @@ A chain is an independent network with its own:
     ```
 
     You will be prompted to select:
-    - **VM type**: L2 EVM (recommended), Custom
+    - **VM type**: Sovereign L1 EVM (recommended), Custom
     - **Chain ID**: A unique EVM chain identifier
     - **Gas configuration**: Fee structure and limits
     - **Airdrop**: Optional initial token distribution
@@ -68,9 +68,9 @@ A chain is an independent network with its own:
   </Step>
 </Steps>
 
-## L2 EVM Configuration
+## Sovereign L1 EVM Configuration
 
-L2 EVM is the most common VM for chains. It is a configurable fork of the Lux C-Chain EVM.
+Sovereign L1 EVM is the most common VM for chains. It is a configurable fork of the Lux C-Chain EVM.
 
 ### Genesis Configuration
 
@@ -175,7 +175,7 @@ type ChainVM interface {
 ```
 
 <Callout>
-  Custom VMs are powerful but require careful design. For most applications, L2 EVM with custom precompiles provides sufficient flexibility without the complexity of a fully custom VM.
+  Custom VMs are powerful but require careful design. For most applications, Sovereign L1 EVM with custom precompiles provides sufficient flexibility without the complexity of a fully custom VM.
 </Callout>
 
 ## Chain Architecture
