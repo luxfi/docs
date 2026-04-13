@@ -4,7 +4,7 @@ description: "The X-Chain handles UTXO-based asset transfers using DAG consensus
 icon: ArrowLeftRight
 ---
 
-The X-Chain (Exchange Chain) is the asset creation and transfer platform on Lux Network. It uses a UTXO model (similar to Bitcoin) with DAG-based consensus for high-throughput parallel transaction processing. The X-Chain is powered by the ExchangeVM.
+The X-Chain (UTXO Chain) is the asset creation and transfer platform on Lux Network. It uses a UTXO model (similar to Bitcoin) with DAG-based consensus for high-throughput parallel transaction processing. The X-Chain is powered by the XVM.
 
 ## Purpose
 
@@ -19,7 +19,7 @@ The X-Chain (Exchange Chain) is the asset creation and transfer platform on Lux 
 https://api.lux.network/{network}/ext/bc/X
 ```
 
-The X-Chain API uses the `avm` namespace with Lux-style JSON-RPC.
+The X-Chain API uses the `xvm` namespace with Lux-style JSON-RPC.
 
 ## Configuration
 
@@ -43,51 +43,51 @@ The X-Chain API uses the `avm` namespace with Lux-style JSON-RPC.
 
 ### Asset Operations
 
-- **avm.createAsset** -- Create a new fungible asset with initial holders and minters
-- **avm.createFixedCapAsset** -- Create a fixed-supply fungible asset
-- **avm.createVariableCapAsset** -- Create a variable-supply fungible asset
-- **avm.createNFTAsset** -- Create a new NFT collection
-- **avm.getAssetDescription** -- Get name, symbol, and denomination of an asset
-- **avm.mint** -- Mint additional units of a variable-cap asset
-- **avm.mintNFT** -- Mint a new NFT in an existing collection
+- **xvm.createAsset** -- Create a new fungible asset with initial holders and minters
+- **xvm.createFixedCapAsset** -- Create a fixed-supply fungible asset
+- **xvm.createVariableCapAsset** -- Create a variable-supply fungible asset
+- **xvm.createNFTAsset** -- Create a new NFT collection
+- **xvm.getAssetDescription** -- Get name, symbol, and denomination of an asset
+- **xvm.mint** -- Mint additional units of a variable-cap asset
+- **xvm.mintNFT** -- Mint a new NFT in an existing collection
 
 ### Transfer Operations
 
-- **avm.send** -- Send a single asset to an address
-- **avm.sendMultiple** -- Send multiple assets in a single transaction
-- **avm.sendNFT** -- Send an NFT to an address
-- **avm.import** -- Import assets from another chain (P-Chain or C-Chain)
-- **avm.export** -- Export assets to another chain
+- **xvm.send** -- Send a single asset to an address
+- **xvm.sendMultiple** -- Send multiple assets in a single transaction
+- **xvm.sendNFT** -- Send an NFT to an address
+- **xvm.import** -- Import assets from another chain (P-Chain or C-Chain)
+- **xvm.export** -- Export assets to another chain
 
 ### Query Operations
 
-- **avm.getBalance** -- Get balance of a specific asset for an address
-- **avm.getAllBalances** -- Get all asset balances for an address
-- **avm.getUTXOs** -- Get UTXOs for given addresses (paginated, max 1024 addresses)
-- **avm.getTx** -- Get a transaction by ID
-- **avm.getTxStatus** -- Get the status of a transaction
-- **avm.getAddressTxs** -- Get transactions associated with an address
-- **avm.getBlock** -- Get a block by ID
-- **avm.getBlockByHeight** -- Get a block by height
-- **avm.getHeight** -- Get the current chain height
+- **xvm.getBalance** -- Get balance of a specific asset for an address
+- **xvm.getAllBalances** -- Get all asset balances for an address
+- **xvm.getUTXOs** -- Get UTXOs for given addresses (paginated, max 1024 addresses)
+- **xvm.getTx** -- Get a transaction by ID
+- **xvm.getTxStatus** -- Get the status of a transaction
+- **xvm.getAddressTxs** -- Get transactions associated with an address
+- **xvm.getBlock** -- Get a block by ID
+- **xvm.getBlockByHeight** -- Get a block by height
+- **xvm.getHeight** -- Get the current chain height
 
 ### Key Management
 
-- **avm.createAddress** -- Create a new address controlled by the given user
-- **avm.listAddresses** -- List addresses controlled by the given user
-- **avm.exportKey** -- Export a private key
-- **avm.importKey** -- Import a private key
+- **xvm.createAddress** -- Create a new address controlled by the given user
+- **xvm.listAddresses** -- List addresses controlled by the given user
+- **xvm.exportKey** -- Export a private key
+- **xvm.importKey** -- Import a private key
 
 ### Transaction Submission
 
-- **avm.issueTx** -- Issue a signed transaction to the network
+- **xvm.issueTx** -- Issue a signed transaction to the network
 
 ## Example: Get All Balances
 
 ```bash
 curl -X POST --data '{
   "jsonrpc": "2.0",
-  "method": "avm.getAllBalances",
+  "method": "xvm.getAllBalances",
   "params": {
     "address": "X-lux1..."
   },
@@ -101,7 +101,7 @@ curl -X POST --data '{
 ```bash
 curl -X POST --data '{
   "jsonrpc": "2.0",
-  "method": "avm.createFixedCapAsset",
+  "method": "xvm.createFixedCapAsset",
   "params": {
     "name": "MyToken",
     "symbol": "MTK",
