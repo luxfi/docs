@@ -7,19 +7,5 @@ RUN pnpm install --frozen-lockfile
 COPY apps/docs apps/docs
 RUN pnpm --filter lux-docs build
 
-FROM --platform=$BUILDPLATFORM golang:1.26-alpine AS server
-WORKDIR /src
-COPY go.mod go.sum ./
-RUN go mod download
-COPY serve.go .
-ARG TARGETOS=linux
-ARG TARGETARCH=amd64
-RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -ldflags="-w -s" -o /serve .
-
-FROM alpine:3.23
-RUN apk add --no-cache ca-certificates
-COPY --from=server /serve /serve
-COPY --from=build /app/apps/docs/out /app
-EXPOSE 3000
-HEALTHCHECK --interval=10s --timeout=3s CMD wget -q --spider http://localhost:3000/health || exit 1
-CMD ["/serve"]
+FROM ghcr.io/hanzoai/spa
+COPY --from=build /app/apps/docs/out /public
