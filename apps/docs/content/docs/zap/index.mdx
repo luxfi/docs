@@ -53,6 +53,21 @@ Data Segment (variable)
 | Hash | 32 | EVM hash |
 | Signature | 65 | EVM signature |
 
+## TLS Support
+
+ZAP supports optional TLS via `NodeConfig.TLS`. When running on Go 1.26+, TLS connections default to **PQ-TLS 1.3** with ML-KEM-768 + X25519 hybrid key exchange -- no additional configuration required.
+
+```go
+node := zap.NewNode(zap.NodeConfig{
+    NodeID:      "node-1",
+    ServiceType: "_luxd._tcp",
+    Port:        9651,
+    TLS:         tlsConfig, // *tls.Config; Go 1.26 defaults to ML-KEM-768
+})
+```
+
+Zero-copy semantics are preserved under TLS. The TLS layer operates on the same buffer without additional heap allocations.
+
 ## Use Cases
 
 - **AI Agent Orchestration**: 20-tool orchestrator runs at 150K ops/sec vs 10K with JSON-RPC

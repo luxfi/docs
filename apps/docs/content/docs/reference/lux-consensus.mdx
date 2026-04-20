@@ -5,7 +5,7 @@ description: "Lux Quasar -- Post-Quantum Consensus Engine"
 
 ## Overview
 
-Lux Quasar is the consensus engine for the Lux network. It is a unified, leaderless, post-quantum protocol achieving sub-second 2-round finality with dual-certificate security (BLS12-381 aggregate signatures + Ringtail lattice-based threshold signatures). Quasar runs every chain in the Lux primary network -- Q, C, X, P -- and any dynamically registered chain.
+Lux Quasar is the consensus engine for the Lux network. It is a unified, leaderless, post-quantum protocol achieving sub-second 2-round finality with triple-certificate security (BLS12-381 aggregate signatures + Ringtail lattice-based threshold signatures + ML-DSA-65 identity signatures). All three paths run in parallel via `TripleSignRound1`. Quasar runs every chain in the Lux primary network -- Q, C, X, P -- and any dynamically registered chain.
 
 **This is NOT Snow, Snowball, or Lux BFT.** Quasar is an original consensus protocol built from first principles around Photonic Selection.
 
@@ -29,7 +29,7 @@ There are two code locations:
 
 | Engine | Type | Location | Purpose | Status |
 |--------|------|----------|---------|--------|
-| **Quasar** | Hybrid PQ | `protocol/quasar/` + `node/consensus/quasar/` | Primary consensus for all chains. Dual BLS+Ringtail signatures run in parallel. 2-round finality. | Production |
+| **Quasar** | Triple PQ | `protocol/quasar/` + `node/consensus/quasar/` | Primary consensus for all chains. Triple BLS+Ringtail+ML-DSA signatures run in parallel via `TripleSignRound1`. 2-round finality. | Production |
 | **Nova** | Linear chain | `protocol/nova/` | Linear blockchain consensus mode. Wraps the Ray driver with Wave voting. Used for C-Chain and P-Chain style linear progression. | Production |
 | **Wave** | Threshold voting | `protocol/wave/` | Core voting mechanism. Samples K peers, collects votes, checks alpha threshold, builds beta confidence. Supports FPC (Fast Probabilistic Consensus) for dynamic thresholds. | Production |
 | **Ray** | Linear driver | `protocol/ray/` | Low-level engine that drives Wave voting for linearly-ordered items. Source/Sink pattern. Nova wraps this. | Production |
@@ -42,7 +42,7 @@ There are two code locations:
 
 ## Quasar Algorithm -- Detailed Steps
 
-Quasar achieves hybrid quantum finality through parallel execution of classical and post-quantum signature paths. The full algorithm:
+Quasar achieves triple quantum finality through parallel execution of classical and post-quantum signature paths (BLS + Ringtail + ML-DSA). The full algorithm:
 
 ### Phase 0: Photonic Selection (Committee Formation)
 
@@ -61,9 +61,9 @@ Quasar achieves hybrid quantum finality through parallel execution of classical 
 4. **FPC mode** (optional): Instead of fixed alpha, threshold theta is selected per-phase using a PRF over `[theta_min=0.5, theta_max=0.8]`, making the protocol more resistant to adaptive adversaries.
 5. Classical finality typically completes in 600-700ms.
 
-### Phase 2: Dual Certificate Generation (Quantum Finality)
+### Phase 2: QuasarCert Generation (Quantum Finality)
 
-Both paths execute **in parallel** immediately after classical decision:
+All three paths execute **in parallel** immediately after classical decision (via `TripleSignRound1`):
 
 **BLS Path (fast, classical):**
 1. Each validator signs the finality message (blockID + height + timestamp, 48 bytes) with their BLS12-381 key share.
@@ -78,11 +78,16 @@ Both paths execute **in parallel** immediately after classical decision:
 4. Requires t-of-n threshold (typically 2/3+1).
 5. Ringtail adds approximately 200-300ms for quantum finality.
 
-**Block is final ONLY when both certificates are valid:**
+**ML-DSA Path (quantum-safe, identity proof):**
+1. Each validator signs the finality message with their ML-DSA-65 key (FIPS 204).
+2. ML-DSA signatures provide per-validator post-quantum identity binding.
+3. Aggregated alongside Ringtail into the PQ proof field of QuasarCert.
+
+**Block is final ONLY when all three certificates are valid:**
 ```go
 type CertBundle struct {
     BLSAgg []byte  // 96B BLS aggregate signature
-    PQCert []byte  // ~KB Ringtail threshold signature
+    PQCert []byte  // Aggregated Ringtail + ML-DSA proof
 }
 
 isFinal := verifyBLS(blsAgg, quorum) && verifyPQ(pqCert, quorum)
@@ -129,11 +134,11 @@ For large validator sets, `GroupedEpochManager` splits validators into groups (d
 | Security Model | Guarantee |
 |----------------|-----------|
 | **Pre-quantum** | Attacker must corrupt  &gt;= 1/3 stake to fork. Alpha threshold 69% ensures BFT safety. |
-| **Q-day (BLS broken)** | Attacker can forge BLS but NOT Ringtail lattice signatures. Block fails quantum check. Consensus halts rather than accepting unsafe fork. |
-| **Post-quantum** | Security rests on lattice SVP hardness (2^160 operations). Ringtail threshold signatures remain secure. |
+| **Q-day (BLS broken)** | Attacker can forge BLS but NOT Ringtail or ML-DSA lattice signatures. Block fails quantum check. Consensus halts rather than accepting unsafe fork. |
+| **Post-quantum** | Security rests on lattice SVP hardness (2^160 operations). Both Ringtail threshold and ML-DSA identity signatures remain secure. |
 | **Attack window** |  &lt;= PQ round time ( &lt;=50ms on mainnet). |
 
-Both BLS and Ringtail proofs are **REQUIRED** for Q-Chain validators. No fallback mode. The `Verify` method enforces strict dual-proof validation.
+All three proofs (BLS, Ringtail, ML-DSA) are **REQUIRED** for Q-Chain validators in triple mode. `IsTripleMode()` returns true when all three are configured. The `Verify` method enforces strict triple-proof validation.
 
 ## Validator Selection and Identity
 
@@ -156,6 +161,7 @@ Performance-based weighting: successful consensus participation increases bright
 | Node-ID | ed25519 | P2P transport authentication | `$HOME/.lux/node.key` |
 | Validator-BLS | BLS12-381 | Fast finality votes (classical) | `$HOME/.lux/bls.key` |
 | Validator-PQ | Ringtail (Ring-LWE) | Post-quantum threshold shares | `$HOME/.lux/rt.key` |
+| Validator-MLDSA | ML-DSA-65 (FIPS 204) | Post-quantum identity signatures | `$HOME/.lux/mldsa.key` |
 | Wallet (EVM) | secp256k1 or Lamport-XMSS | User transaction signatures | In wallet |
 | Wallet (X-Chain) | secp256k1 or Dilithium | UTXO locking | In wallet |
 
@@ -202,7 +208,7 @@ Quasar includes a Verkle witness system for hyper-efficient state verification:
 |------|-----------|-------|
 | `PQSignatureTypeMLDSA65` | NIST FIPS 204 ML-DSA-65 | Per-validator signatures (1952-byte public key) |
 | `PQSignatureTypeRingtail` | Ring-LWE threshold | Quasar consensus threshold signatures |
-| `PQSignatureTypeHybrid` | Classical + PQ combined | Full Quasar hybrid proofs |
+| `PQSignatureTypeHybrid` | Classical + PQ combined | Full Quasar triple proofs (BLS + Ringtail + ML-DSA) |
 
 ## Configuration Parameters
 
@@ -264,7 +270,7 @@ consensus/
     nebula/         State sync protocol
     field/          Nebula field operations
     quasar/         Post-quantum finality engine
-      quasar.go     Signer (BLS+Ringtail dual threshold)
+      quasar.go     Signer (BLS+Ringtail+ML-DSA triple threshold)
       core.go       Quasar core (multi-chain block aggregator)
       engine.go     Engine interface implementation
       epoch.go      Epoch-based Ringtail key management
@@ -272,7 +278,7 @@ consensus/
       grouped_threshold.go  Grouped signing for 10K+ validators
       bls.go        DAG event horizon with BLS commitments
       witness.go    Verkle witness for hyper-efficient verification
-      types.go      Block, BlockCert, Engine interface
+      types.go      Block, QuasarCert, Engine interface
       config.go     QThreshold, QuasarTimeout
       metrics.go    Prometheus metrics
   engine/
@@ -290,7 +296,7 @@ node/consensus/
   acceptor.go       Acceptor callback interface
   engine/chain/     Vote message types (wire: Chits)
   quasar/           Node-level Quasar integration
-    quasar.go       Binds P-Chain + Q-Chain into hybrid finality
+    quasar.go       Binds P-Chain + Q-Chain into triple finality
     types.go        Signature interfaces, RingtailCoordinator
   zap/              ZAP agentic consensus bridge
     bridge.go       Query/Response/Vote consensus
@@ -378,7 +384,7 @@ ZAP (Zero-copy Agent Protocol) provides consensus for AI agent operations:
 2. **SubmitResponse**: Other agents provide responses with DIDs.
 3. **Vote**: Validators vote for responses (one vote per validator, enforced by DID).
 4. **Consensus check**: When total votes  &gt;= `MinVotes` and a response has ` &gt;= ConsensusThreshold` fraction, the query is finalized.
-5. **Finality proof**: Signed with Quasar hybrid signatures (BLS + Ringtail).
+5. **Finality proof**: Signed with Quasar dual signatures (BLS + Ringtail).
 
 ### ZAP Bridge Config
 
@@ -403,17 +409,20 @@ ZAP includes a `StakeRegistry` interface for stake-weighted voting:
 |----------|----------|-----------|
 | Classical adversary (< 1/3 stake) | Safe | BFT alpha=0.69 threshold prevents fork |
 | Classical adversary ( &gt;= 1/3 stake) | Unsafe | Same as any BFT system |
-| Quantum adversary (BLS breakable) | Safe | Ringtail lattice certificates prevent acceptance |
-| Quantum adversary (both breakable) | Unsafe | Requires both lattice + BLS to be broken simultaneously |
+| Quantum adversary (BLS breakable) | Safe | Ringtail + ML-DSA lattice certificates prevent acceptance |
+| Quantum adversary (all three breakable) | Unsafe | Requires ECDL + Module-LWE + Module-SIS to be broken simultaneously |
 | Adaptive adversary | Safe | FPC dynamic thresholds prevent threshold manipulation |
 
-### QZMQ Transport Security
+### Consensus Transport
 
-All consensus messages use QZMQ (Quantum-Secure ZeroMQ):
-- **Dilithium signatures** (post-quantum message authentication)
-- **Kyber encryption** (quantum-resistant key encapsulation)
+Consensus messages are transported via **ZAP** (`github.com/luxfi/zap`), the zero-copy binary protocol. ZAP provides 17x faster serialization than JSON-RPC with zero heap allocations on the parse path.
+
+Node-to-node connections use **PQ-TLS 1.3** for transport encryption:
+- **ML-KEM-768 + X25519** hybrid key exchange (Go 1.26 default via `crypto/tls`)
+- **ML-DSA-65** post-quantum message authentication
 - Forward secrecy via ephemeral keys
 - Replay protection via session IDs
+- Zero-copy semantics are preserved under TLS -- the TLS layer operates on the same buffer without additional allocations
 
 ## Account-Level PQ Options
 
@@ -467,7 +476,7 @@ for block := range engine.Finalized() {
 }
 ```
 
-### Node: Quasar with Hybrid Finality
+### Node: Quasar with Triple Finality
 
 ```go
 
@@ -477,9 +486,9 @@ q.ConnectQuantumFallback(quantumSigner)
 q.InitializeRingtail(validatorNodeIDs)
 q.Start(ctx)
 
-// Listen for hybrid finality events
+// Listen for dual finality events
 for finality := range q.Subscribe() {
-    log.Printf("Hybrid finality: block=%s BLS=%dms RT=%dms",
+    log.Printf("Dual finality: block=%s BLS=%dms RT=%dms",
         finality.BlockID, finality.BLSLatency.Milliseconds(), finality.RingtailLatency.Milliseconds())
 }
 ```

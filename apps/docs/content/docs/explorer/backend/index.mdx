@@ -1,40 +1,41 @@
 ---
 title: Backend
-description: Blockscout-based Elixir/Erlang backend
+description: Go single-binary explorer backend
 index: true
 icon: Server
 ---
 
-The explorer backend is a Blockscout fork built with Elixir/Erlang OTP. It handles blockchain data indexing, storage, and API serving.
+The explorer backend is a single Go binary that handles blockchain indexing, storage, and API serving. The legacy Blockscout Elixir fork is archived at `github.com/luxfi/explorer-v1`.
 
-## OTP Umbrella Apps
+## Components
 
-| App | Purpose |
-|-----|---------|
-| `block_scout_web` | Phoenix web API and endpoints |
-| `explorer` | Core chain data and business logic |
-| `ethereum_jsonrpc` | JSON-RPC client interface |
-| `indexer` | Blockchain data fetcher and indexer |
-| `utils` | Shared utilities |
-| `nft_media_handler` | NFT media processing |
+| Component | Purpose |
+|-----------|---------|
+| Indexer goroutines | Per-chain data fetching |
+| API server | REST, GraphQL, WebSocket endpoints |
+| Storage layer | SQLite (query) + BadgerDB (KV) |
+| Replication | PQ encrypted WAL streaming to S3 |
 
 ## Technology Stack
 
-- **Runtime**: Elixir 1.19.4 + Erlang 27.3.4.6
-- **Web**: Phoenix 1.7 + Plug
-- **Database**: Ecto + PostgreSQL 14+
-- **Cache**: Redis
-- **GraphQL**: Absinthe + Relay pagination
-- **Crypto**: ex_keccak, ex_secp256k1, ex_eth_bls
-- **Docker**: Multi-stage Alpine build
+- **Language**: Go 1.26.1
+- **Query storage**: SQLite WAL mode (per-chain isolation)
+- **KV storage**: BadgerDB v4
+- **API**: `/v1/explorer/*` REST + GraphQL + WebSocket
+- **Backup**: ML-KEM-768 + X25519 encrypted streaming
+- **Docker**: Alpine multi-stage build
 
-## Docker Image
+## Build
 
 ```bash
-docker build -t blockscout:latest \
-  --build-arg MIX_ENV=prod \
-  --build-arg RELEASE_VERSION=10.0.1 \
-  -f docker/Dockerfile .
+cd explorer
+go build -o explorer ./cmd/explorer
 ```
 
-Production image: `ghcr.io/luxfi/blockscout-lux`
+## Run
+
+```bash
+./explorer --rpc=http://localhost:9650/ext/bc/C/rpc
+```
+
+Production image: `ghcr.io/luxfi/explorer`

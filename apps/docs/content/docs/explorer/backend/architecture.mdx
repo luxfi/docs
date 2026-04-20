@@ -1,50 +1,53 @@
 ---
 title: Architecture
-description: Elixir OTP umbrella application structure
+description: Single-binary Go explorer architecture
 ---
 
-## Mix Umbrella
+## Overview
 
-The backend is a Mix umbrella project with six OTP applications:
+The explorer is a single statically-linked Go binary with three concurrent subsystems:
 
 ```
-explorer/
-├── apps/
-│   ├── block_scout_web/    # Web API (Phoenix)
-│   ├── explorer/           # Core data layer (Ecto)
-│   ├── ethereum_jsonrpc/   # RPC client
-│   ├── indexer/            # Data fetcher
-│   ├── utils/              # Shared utilities
-│   └── nft_media_handler/  # NFT media
-├── config/                 # Configuration
-├── docker/                 # Docker files
-└── mix.exs                 # Root project
+explorer binary
+├── Indexer goroutines (one per chain)
+│   └── Writes to per-chain SQLite + BadgerDB
+├── API server (HTTP)
+│   └── Reads from all chain databases
+│   └── Serves /v1/explorer/{chain}/* endpoints
+└── Replicator (optional)
+    └── Streams WAL to S3 with PQ encryption
 ```
 
-## Dependencies
+## Per-Chain Storage
 
-Key Elixir packages:
+```
+{data_dir}/{chain_slug}/
+  query/indexer.db    # SQLite: blocks, txs, tokens, contracts
+  kv/                 # BadgerDB: hash->data, height->block
+```
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `phoenix` | 1.7.x | Web framework |
-| `absinthe` | 1.5.x | GraphQL |
-| `ecto` | 3.x | Database ORM |
-| `postgrex` | — | PostgreSQL driver |
-| `httpoison` | 2.0 | HTTP client |
-| `jason` | — | JSON codec |
-| `prometheus` | — | Metrics |
+Each chain is isolated. No shared database. Zero write contention.
+
+## Key Packages
+
+| Package | Purpose |
+|---------|---------|
+| `cmd/explorer/` | CLI entrypoint |
+| `evm/` | Full EVM indexer (blocks, txs, tokens, traces, contracts) |
+| `evm/api/` | REST API server |
+| `evm/api/repository.go` | Database query layer |
+| `storage/` | Dual-layer SQLite + BadgerDB |
+| `{x,a,b,q,t,z,k}chain/` | Native DAG chain adapters |
+| `multichain/` | 100+ external chain indexer |
 
 ## Build Process
 
 ```bash
 # Development
-mix deps.get
-mix compile
-mix phx.server
+go run ./cmd/explorer --rpc=...
 
 # Production release
-MIX_ENV=prod mix release blockscout
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o explorer ./cmd/explorer
 ```
 
-The production release creates an OTP release at `/opt/release/blockscout/` that can run without Elixir/Erlang installed (ERTS is bundled).
+The binary is fully self-contained. No external runtime, no Redis, no PostgreSQL required.

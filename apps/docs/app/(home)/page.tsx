@@ -68,7 +68,7 @@ const sections: Section[] = [
       { name: 'Operator',    desc: 'Kubernetes operator for Lux blockchain infrastructure',              href: '/operator' },
       { name: 'Wallet',      desc: 'HD wallet with multi-chain, Ledger, and multi-sig support',          href: '/wallet' },
       { name: 'Safe',        desc: 'Multi-signature wallet for the Lux Network',                         href: '/safe' },
-      { name: 'Explorer',    desc: 'Blockscout blockchain explorer for all Lux chains',                  href: '/explorer' },
+      { name: 'Explorer',    desc: 'Single-binary omni-chain block explorer for all Lux chains',        href: '/explorer' },
       { name: 'Indexer',     desc: 'High-performance Go blockchain indexer',                              href: '/indexer' },
       { name: 'Bootnode',    desc: 'Lux Cloud — RPC, WebSocket, Token, and NFT APIs',                    href: '/bootnode' },
       { name: 'Oracle',      desc: 'Optimistic oracle for assertions, disputes, and truth verification', href: '/oracle' },

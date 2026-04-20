@@ -5,21 +5,16 @@ index: true
 icon: Search
 ---
 
-The Lux Explorer is a Blockscout-based blockchain explorer with a modern Next.js frontend, customized for the Lux Network ecosystem.
+The Lux Explorer is a single-binary omni-chain block explorer with a Next.js frontend, purpose-built for the Lux Network ecosystem. It replaces the legacy Blockscout stack with a unified Go backend.
 
 ## Architecture
 
 ```
 ┌──────────────────────────┐     ┌──────────────────────────┐
-│   Frontend (Next.js 15)  │     │   Backend (Blockscout)   │
-│   React 19, Chakra UI v3 │────►│   Elixir/Erlang OTP      │
-│   explore.lux.network    │     │   Phoenix + Absinthe      │
+│   Frontend (Next.js 15)  │     │   Backend (Go)            │
+│   React 19, Chakra UI v3 │────►│   Single binary indexer   │
+│   explore.lux.network    │     │   SQLite + BadgerDB        │
 └──────────────────────────┘     └────────────┬─────────────┘
-                                              │
-                                 ┌────────────▼─────────────┐
-                                 │      PostgreSQL           │
-                                 │  + Redis Cache            │
-                                 └────────────┬─────────────┘
                                               │
                                  ┌────────────▼─────────────┐
                                  │   luxd (JSON-RPC)         │
@@ -41,16 +36,16 @@ The Lux Explorer is a Blockscout-based blockchain explorer with a modern Next.js
 
 | Component | Repository | Technology |
 |-----------|-----------|------------|
-| Backend | `github.com/luxfi/explorer` | Elixir 1.19, Erlang 27, PostgreSQL |
+| Explorer | `github.com/luxfi/explorer` | Go 1.26, SQLite, BadgerDB |
 | Frontend | `github.com/luxfi/explore` | Next.js 15, React 19, Chakra UI v3 |
-| Indexer | `github.com/luxfi/indexer` | Go 1.26, PostgreSQL, BadgerDB |
+| Legacy (archived) | `github.com/luxfi/explorer-v1` | Elixir/Erlang (Blockscout fork) |
 
 ## Key Features
 
 - Real-time block and transaction indexing
 - Smart contract verification (Solidity)
 - Token tracking (ERC20, ERC721, ERC1155)
-- REST API v2 + GraphQL + WebSocket subscriptions
+- REST API `/v1/explorer/*` + GraphQL + WebSocket subscriptions
 - Multi-chain support (5 explorers from one codebase)
 - Dark mode default with monochrome theme
 - OIDC authentication via hanzo.id

@@ -5,7 +5,7 @@ description: "Multi-Chain Blockchain Data Indexing"
 
 ## Overview
 
-Lux Indexer is a **Go-based blockchain data indexing system** that covers all Lux native chains (DAG and linear), EVM chains across the Lux chain ecosystem, and a universal multi-chain indexer supporting 100+ blockchains across EVM, Solana, Bitcoin, Cosmos, Move, and other runtimes. It works alongside Blockscout (which handles C-Chain EVM indexing) to provide complete data access for the Lux multi-chain architecture.
+Lux Indexer is a **Go-based blockchain data indexing system** that covers all Lux native chains (DAG and linear), EVM chains across the Lux chain ecosystem, and a universal multi-chain indexer supporting 100+ blockchains across EVM, Solana, Bitcoin, Cosmos, Move, and other runtimes. It provides complete data access for the Lux multi-chain architecture via the `/v1/explorer/*` API.
 
 **Repository**: `github.com/luxfi/indexer`
 **License**: MIT
@@ -46,7 +46,7 @@ Uses `github.com/luxfi/indexer/dag` -- multiple parents per vertex for fast cons
 | Chain | Port | Database | RPC Method | Description |
 |-------|------|----------|-----------|-------------|
 | X-Chain | 4200 | explorer_xchain | `xvm` | Asset exchange, UTXOs |
-| A-Chain | 4500 | explorer_achain | `avm` | AI compute, attestations |
+| A-Chain | 4500 | explorer_achain | `xvm` | AI compute, attestations |
 | B-Chain | 4600 | explorer_bchain | `bvm` | Cross-chain bridge |
 | Q-Chain | 4300 | explorer_qchain | `qvm` | Quantum finality proofs |
 | T-Chain | 4700 | explorer_tchain | `tvm` | MPC threshold signatures |
@@ -61,11 +61,11 @@ Uses `github.com/luxfi/indexer/chain` -- single parent per block for strict orde
 | P-Chain | 4100 | explorer_pchain | `pvm` | Platform, validators, staking |
 
 #### EVM Chains
-Uses `github.com/luxfi/indexer/evm` -- full EVM block/transaction indexing with Blockscout-compatible API.
+Uses `github.com/luxfi/indexer/evm` -- full EVM block/transaction indexing with `/v1/explorer/*` API.
 
 | Chain | Port | Database | Description |
 |-------|------|----------|-------------|
-| C-Chain (Go) | 4000 | explorer_cchain | Smart contracts (lightweight Go alternative to Blockscout) |
+| C-Chain (Go) | 4000 | explorer_cchain | Smart contracts, full EVM indexing |
 
 ### EVM Multi-Chain Process (`evmchains`)
 
@@ -170,13 +170,13 @@ For linear native chains:
 
 ### API Compatibility
 
-All indexers expose **Blockscout-compatible `/api/v2/` endpoints**:
+All indexers expose `/v1/explorer/*` endpoints:
 
-**DAG chains**: `/api/v2/stats`, `/api/v2/vertices`, `/api/v2/vertices/:id`, `/api/v2/edges`, `WS /api/v2/dag/subscribe`
+**DAG chains**: `/v1/explorer/stats`, `/v1/explorer/vertices`, `/v1/explorer/vertices/:id`, `/v1/explorer/edges`, `WS /v1/explorer/dag/subscribe`
 
-**Linear chains**: `/api/v2/stats`, `/api/v2/blocks`, `/api/v2/blocks/:id`, `/api/v2/blocks/height/:height`, `WS /api/v2/blocks/subscribe`
+**Linear chains**: `/v1/explorer/stats`, `/v1/explorer/blocks`, `/v1/explorer/blocks/:id`, `/v1/explorer/blocks/height/:height`, `WS /v1/explorer/blocks/subscribe`
 
-**EVM chains**: Full Blockscout API v2 compatibility (blocks, transactions, addresses, tokens, stats, search).
+**EVM chains**: Full explorer API (blocks, transactions, addresses, tokens, stats, search).
 
 ### EVM Module (`evm/`)
 
@@ -184,7 +184,7 @@ Rich EVM indexing with subpackages:
 
 | Package | Purpose |
 |---------|---------|
-| `evm/api/` | Blockscout-compatible REST API server |
+| `evm/api/` | REST API server (`/v1/explorer/*`) |
 | `evm/account/` | Account balance tracking |
 | `evm/contracts/` | Contract verification and ABI decoding |
 | `evm/defi/` | DeFi protocol indexing |

@@ -57,7 +57,7 @@ ML-KEM-768 (formerly CRYSTALS-Kyber) is a **lattice-based** key encapsulation me
 - **Security level**: NIST Level 3 (192-bit)
 - **Ciphertext size**: ~1.09 KB
 - **Public key size**: ~1.18 KB
-- **Use in Lux**: TLS key exchange via X25519MLKEM768 hybrid, inter-node communication
+- **Use in Lux**: PQ-TLS 1.3 key exchange via X25519MLKEM768 hybrid, inter-node communication. Go 1.26 defaults to ML-KEM-768 for TLS key exchange -- no additional configuration required
 
 ### Comparison
 
@@ -147,15 +147,15 @@ For existing users and applications:
 
 ## Quasar Consensus
 
-Lux's Quasar consensus uses a **triple hybrid signature scheme** combining three independent cryptographic families:
+Lux's Quasar consensus uses a **triple consensus** signature scheme combining three independent cryptographic families -- classical (BLS) and two post-quantum (Ringtail + ML-DSA):
 
 | Scheme | Family | Purpose |
 |--------|--------|---------|
-| BLS (BLS12-381) | Pairing-based | Aggregatable validator signatures for efficient block finalization |
-| Ringtail | Lattice-based | Post-quantum ring signatures for anonymous validator voting |
-| ML-DSA-65 | Lattice-based (FIPS 204) | Post-quantum identity binding for validator authentication |
+| BLS (BLS12-381) | Pairing-based (classical) | Aggregatable validator signatures for efficient block finalization |
+| Ringtail | Ring-LWE (post-quantum) | Threshold consensus signatures with lattice-based security |
+| ML-DSA-65 | FIPS 204 (post-quantum) | Per-validator identity signatures with Module-LWE security |
 
-An attacker must break all three schemes simultaneously to forge a consensus vote. BLS provides efficient aggregation (reducing bandwidth), Ringtail provides voter privacy (preventing targeted attacks on specific validators), and ML-DSA-65 provides quantum-resistant identity authentication.
+All three paths run in parallel via `TripleSignRound1`. A **QuasarCert** is the finality certificate containing a BLS aggregate signature and aggregated PQ proof (Ringtail + ML-DSA). Blocks are final only when all three certificates verify. An attacker must break ECDL (BLS), Module-LWE (ML-DSA), and Module-SIS (Ringtail) simultaneously to forge a consensus vote.
 
 ## Smart Account PQ Signing
 

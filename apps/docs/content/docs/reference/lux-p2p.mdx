@@ -14,6 +14,19 @@ The Lux P2P layer handles all node-to-node communication across the Lux consensu
 | `github.com/luxfi/node/network` | 1.26.1 | `luxfi/consensus`, `luxfi/crypto/bls`, `luxfi/ids`, `luxfi/warp`, `luxfi/node/message`, `luxfi/validators`, `luxfi/compress` |
 | `github.com/luxfi/p2p` | 1.26.1 | `luxfi/codec@v1.1.2`, `luxfi/consensus@v1.22.51`, `luxfi/crypto@v1.17.37`, `luxfi/ids@v1.2.8`, `luxfi/metric@v1.4.9`, `luxfi/node@v1.22.81`, `luxfi/warp@v1.18.2`, `luxfi/tls@v1.0.0`, `google.golang.org/protobuf@v1.36.11` |
 
+## ZAP Consensus Transport
+
+**ZAP** (`github.com/luxfi/zap`) is the primary transport for consensus messages between validators. ZAP provides zero-copy binary serialization (17x faster than JSON-RPC, 2.9 ns parse time, 0 allocations) over TCP with optional TLS.
+
+### PQ-TLS 1.3
+
+All node-to-node connections use PQ-TLS 1.3 for transport security. Go 1.26 defaults to **ML-KEM-768 + X25519** hybrid key exchange in `crypto/tls`, so PQ-TLS is enabled without additional configuration. Key properties:
+
+- **Key exchange**: X25519MLKEM768 hybrid (NIST Level 3 + classical ECDH)
+- **Configuration**: `NodeConfig.TLS` field on the ZAP node
+- **Zero-copy preserved**: TLS does not break ZAP zero-copy semantics -- the TLS layer operates on the same buffer without additional heap allocations
+- **Mutual auth**: Validators authenticate via TLS client certificates (node staking cert)
+
 ## Node Network Layer (luxfi/node/network)
 
 ### Network Config

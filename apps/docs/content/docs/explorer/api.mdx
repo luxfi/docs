@@ -4,60 +4,60 @@ description: REST, GraphQL, and WebSocket APIs
 icon: FileCode
 ---
 
-## REST API v2
+## REST API
 
-Base URL: `https://api-explore.lux.network/api/v2`
+Base URL: `https://api-explore.lux.network/v1/explorer`
 
 ### Blocks
 
 ```
-GET /api/v2/blocks                    # List blocks
-GET /api/v2/blocks/:number_or_hash    # Get block
+GET /v1/explorer/blocks                    # List blocks
+GET /v1/explorer/blocks/:number_or_hash    # Get block
 ```
 
 ### Transactions
 
 ```
-GET /api/v2/transactions              # List transactions
-GET /api/v2/transactions/:hash        # Get transaction
-GET /api/v2/transactions/:hash/logs   # Transaction logs
+GET /v1/explorer/transactions              # List transactions
+GET /v1/explorer/transactions/:hash        # Get transaction
+GET /v1/explorer/transactions/:hash/logs   # Transaction logs
 ```
 
 ### Addresses
 
 ```
-GET /api/v2/addresses/:hash                  # Address details
-GET /api/v2/addresses/:hash/transactions     # Address transactions
-GET /api/v2/addresses/:hash/token-transfers  # Token transfers
-GET /api/v2/addresses/:hash/tokens           # Held tokens
+GET /v1/explorer/addresses/:hash                  # Address details
+GET /v1/explorer/addresses/:hash/transactions     # Address transactions
+GET /v1/explorer/addresses/:hash/token-transfers  # Token transfers
+GET /v1/explorer/addresses/:hash/tokens           # Held tokens
 ```
 
 ### Tokens
 
 ```
-GET /api/v2/tokens                    # List tokens
-GET /api/v2/tokens/:address           # Token details
-GET /api/v2/tokens/:address/transfers # Token transfers
+GET /v1/explorer/tokens                    # List tokens
+GET /v1/explorer/tokens/:address           # Token details
+GET /v1/explorer/tokens/:address/transfers # Token transfers
 ```
 
 ### Smart Contracts
 
 ```
-GET /api/v2/smart-contracts/:address  # Contract details + ABI
-POST /api/v2/smart-contracts/:address/verification  # Verify contract
+GET /v1/explorer/smart-contracts/:address  # Contract details + ABI
+POST /v1/explorer/smart-contracts/:address/verification  # Verify contract
 ```
 
 ### Search
 
 ```
-GET /api/v2/search?q=...             # Search blocks, txs, addresses, tokens
+GET /v1/explorer/search?q=...             # Search blocks, txs, addresses, tokens
 ```
 
 ### Stats
 
 ```
-GET /api/v2/stats                    # Network statistics
-GET /api/v2/stats/charts/market      # Market chart data
+GET /v1/explorer/stats                    # Network statistics
+GET /v1/explorer/stats/charts/market      # Market chart data
 ```
 
 ## GraphQL
@@ -71,7 +71,7 @@ Available at the GraphQL playground: `GET /graphql`
 ## WebSocket
 
 ```
-WS /api/v2/ws
+WS /v1/explorer/ws
 ```
 
 Subscribe to:
@@ -85,4 +85,11 @@ Subscribe to:
 ```
 POST /api?module=account&action=txlist&address=0x...
 POST /api?module=contract&action=getabi&address=0x...
+```
+
+## Health
+
+```
+GET /health
+GET /metrics
 ```

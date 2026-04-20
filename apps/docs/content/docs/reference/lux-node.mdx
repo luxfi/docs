@@ -5,12 +5,12 @@ description: "Documentation for Lux Node - Core Validator Implementation"
 
 ## Overview
 
-Lux Node (`luxd`) is the core validator node for the Lux Network -- a multi-chain, multi-consensus blockchain with post-quantum hybrid finality (Quasar), 14 chain types, custom VM support, and W3C DID-based validator identity. Written in Go. The binary name is `luxd`, the module path is `github.com/luxfi/node`.
+Lux Node (`luxd`) is the core validator node for the Lux Network -- a multi-chain, multi-consensus blockchain with post-quantum dual finality (Quasar), 14 chain types, custom VM support, and W3C DID-based validator identity. Written in Go. The binary name is `luxd`, the module path is `github.com/luxfi/node`.
 
 ### Tech Stack
 
 - **Language**: Go 1.26.1 (CGO enabled by default)
-- **Consensus**: Quasar hybrid finality (BLS + Ringtail post-quantum threshold)
+- **Consensus**: Quasar dual finality (BLS + Ringtail post-quantum threshold)
 - **Crypto**: BLS aggregate signatures, ML-DSA-65 (post-quantum), ML-KEM, Ringtail threshold, Falcon, secp256k1
 - **Database**: LevelDB/PebbleDB (via `github.com/luxfi/database`)
 - **Networking**: Custom TCP P2P with TLS mutual auth, PROXY protocol support, Zstd compression
@@ -172,7 +172,7 @@ curl -X POST http://localhost:9630/ext/bc/C/rpc \
 
 # X-Chain: asset balance
 curl -X POST http://localhost:9630/ext/bc/X \
-  -d '{"jsonrpc":"2.0","id":1,"method":"avm.getBalance","params":{"address":"X-lux1...","assetID":"LUX"}}'
+  -d '{"jsonrpc":"2.0","id":1,"method":"xvm.getBalance","params":{"address":"X-lux1...","assetID":"LUX"}}'
 ```
 
 ### Go SDK client
@@ -211,7 +211,7 @@ luxd (main/main.go)
 │   └── rpc/          — Inter-chain RPC communication
 ├── consensus/        — Consensus infrastructure
 │   ├── engine/chain/ — Linear chain consensus engine (vote messages)
-│   ├── quasar/       — Hybrid quantum-safe finality (BLS + Ringtail)
+│   ├── quasar/       — Dual quantum-safe finality (BLS + Ringtail)
 │   └── zap/          — ZAP bridge (W3C DID identity, agentic consensus)
 ├── network/          — P2P networking, peer management, IP tracking
 │   ├── peer/         — Peer connections, handshake
@@ -265,7 +265,7 @@ luxd (main/main.go)
 ├── cache/            — Caching utilities (LRU)
 ├── gas/              — Gas pricing
 ├── nat/              — NAT traversal (UPnP, NAT-PMP)
-├── pubsub/           — Pub/sub event system
+├── pubsub/           — Pub/sub event system (durable messaging via hanzoai/pubsub)
 ├── router/           — Message routing
 ├── utils/            — General utilities
 ├── wallet/           — Wallet implementation
@@ -293,7 +293,7 @@ The Lux Network supports 14 built-in chain types across 3 tiers.
 
 | Chain | Letter | VM | Purpose |
 |-------|--------|----|---------|
-| **Q-Chain** | Q | quantumvm | Post-quantum cryptography, Ringtail keys, quantum stamps |
+| **Q-Chain** | Q | quantumvm | Post-quantum cryptography, Ringtail keys, QuasarCert finality certificates |
 | **A-Chain** | A | aivm | AI/ML compute attestation, TEE verification (SGX/SEV-SNP/TDX/nvtrust) |
 | **B-Chain** | B | bridgevm | Cross-chain bridge with MPC threshold signing |
 | **T-Chain** | T | thresholdvm | MPC-as-a-service (CMP/LSS protocols) |
@@ -320,7 +320,7 @@ Lux Node implements a multi-consensus architecture:
 
 2. **DAG (Lux/Lux)**: For directed acyclic graph chains (X-Chain). Vertices can have multiple parents. Uses `DAGVertex` interface. Enables higher throughput via parallel transaction processing.
 
-3. **Quasar**: The hybrid quantum-safe finality engine. Runs on top of linear consensus. Produces **hybrid finality proofs** requiring both:
+3. **Quasar**: The dual quantum-safe finality engine. Runs on top of linear consensus. Produces **dual finality proofs** (QuasarCert) requiring both:
    - **BLS Path**: Aggregate BLS signatures from 2/3+ validator weight (96-byte proof, fast)
    - **Ringtail Path**: Post-quantum threshold signatures (t-of-n, 2-round protocol)
    - Both paths execute **in parallel**; blocks achieve quantum finality only when both complete
@@ -332,7 +332,7 @@ Lux Node implements a multi-consensus architecture:
 ```
 SignatureTypeBLS      = 0  // Classical BLS aggregate
 SignatureTypeRingtail = 1  // Post-quantum threshold
-SignatureTypeQuasar   = 2  // Hybrid BLS + Ringtail
+SignatureTypeQuasar   = 2  // Dual BLS + Ringtail
 SignatureTypeMLDSA    = 3  // ML-DSA fallback
 ```
 
@@ -356,7 +356,7 @@ Staking port is always API port + 1 (e.g., 9631 for mainnet).
 
 - **TLS Certificates**: Self-signed ECDSA certs for P2P mutual auth (`staking/tls.go`)
 - **BLS Keys**: For aggregate signature consensus
-- **ML-DSA Keys**: Post-quantum key pairs for hybrid staking (`staking/pq.go`, uses `github.com/luxfi/crypto/mldsa`)
+- **ML-DSA Keys**: Post-quantum key pairs for dual staking (`staking/pq.go`, uses `github.com/luxfi/crypto/mldsa`)
 - **Ringtail Keys**: Post-quantum threshold signature shares
 - **W3C DIDs**: Validator identity via did:lux method (ZAP bridge)
 

@@ -1,43 +1,43 @@
 ---
 title: Indexer Integration
-description: Using the Lux Indexer as an alternative backend
+description: Using the Lux Indexer as the explorer backend
 icon: Database
 ---
 
-The [Lux Indexer](https://indexer.lux.network) (`github.com/luxfi/indexer`) is a high-performance Go alternative to the Blockscout Elixir backend.
+The [Lux Explorer](https://github.com/luxfi/explorer) is a Go single-binary indexer that replaced the legacy Blockscout Elixir backend (now archived at `github.com/luxfi/explorer-v1`).
 
-## API Compatibility
+## API Endpoints
 
-The indexer provides Blockscout API v2 compatible endpoints, so the explorer frontend can use either backend:
+The explorer serves `/v1/explorer/*` endpoints:
 
-| Endpoint | Blockscout | Lux Indexer |
-|----------|-----------|-------------|
-| `/api/v2/blocks` | Yes | Yes |
-| `/api/v2/transactions` | Yes | Yes |
-| `/api/v2/addresses/:hash` | Yes | Yes |
-| `/api/v2/tokens` | Yes | Yes |
-| `/api/v2/stats` | Yes | Yes |
-| GraphQL | Yes | Yes |
-| WebSocket | Yes | Yes |
+| Endpoint | Supported |
+|----------|-----------|
+| `/v1/explorer/blocks` | Yes |
+| `/v1/explorer/transactions` | Yes |
+| `/v1/explorer/addresses/:hash` | Yes |
+| `/v1/explorer/tokens` | Yes |
+| `/v1/explorer/stats` | Yes |
+| GraphQL | Yes |
+| WebSocket | Yes |
 
-## Switching Backends
+## Frontend Configuration
 
-To use the Lux Indexer instead of Blockscout:
+Point the explore frontend to the explorer backend:
 
 ```bash
-# Frontend .env
-NEXT_PUBLIC_API_HOST=http://indexer-api.lux.network
+NEXT_PUBLIC_API_HOST=http://api-explore.lux.network
 ```
 
 No frontend code changes required.
 
-## When to Use Each
+## Capabilities
 
-| Use Case | Recommendation |
-|----------|---------------|
-| Standard EVM explorer | Blockscout (battle-tested) |
-| High-performance indexing | Lux Indexer |
-| DAG chain indexing (X, A, B, Q, T, Z, K) | Lux Indexer (exclusive) |
-| P-Chain indexing | Lux Indexer (exclusive) |
-| Multi-chain (100+) | Lux Indexer (exclusive) |
-| DeFi protocol indexing | Lux Indexer |
+| Capability | Supported |
+|------------|-----------|
+| EVM indexing (C, Zoo, Hanzo, SPC, Pars) | Yes |
+| DAG chain indexing (X, A, B, Q, T, Z, K) | Yes |
+| P-Chain indexing | Yes |
+| Multi-chain (100+) | Yes |
+| DeFi protocol indexing | Yes |
+| PQ encrypted backups | Yes |
+| White-label | Yes |

@@ -6,20 +6,19 @@ icon: Zap
 
 ## Prerequisites
 
-- Docker and Docker Compose
+- Go 1.26+ (for backend development)
 - Node.js 22+ and pnpm 10+ (for frontend development)
-- Elixir 1.19+ and Erlang 27+ (for backend development)
 - A running luxd node with JSON-RPC access
 
-## Docker Compose (Fastest)
+## Single Binary (Fastest)
 
 ```bash
-git clone https://github.com/luxfi/explore.git
-cd explore
-docker compose up -d
+git clone https://github.com/luxfi/explorer.git
+cd explorer
+go run ./cmd/explorer --rpc=http://localhost:9650/ext/bc/C/rpc
 ```
 
-This starts PostgreSQL, Redis, Blockscout backend, and the Next.js frontend. Open http://localhost:3000.
+Open http://localhost:4000. The embedded frontend and SQLite storage start automatically.
 
 ## Frontend Only
 
@@ -39,32 +38,32 @@ pnpm dev
 
 Open http://localhost:3000.
 
-## Backend Only
+## Docker
 
 ```bash
-git clone https://github.com/luxfi/explorer.git
-cd explorer
-mix deps.get
-mix compile
-
-# Set environment
-export DATABASE_URL="postgresql://blockscout:blockscout@localhost:5432/explorer"
-export ETHEREUM_JSONRPC_HTTP_URL="http://localhost:9650/ext/bc/C/rpc"
-export CHAIN_ID=96369
-export COIN=LUX
-export NETWORK="LUX Network"
-
-mix phx.server
+docker run -it \
+  -e RPC_ENDPOINT=http://host.docker.internal:9650/ext/bc/C/rpc \
+  -p 4000:4000 \
+  ghcr.io/luxfi/explorer:latest
 ```
-
-Backend API available at http://localhost:4000.
 
 ## Verify Indexing
 
 ```bash
 # Check health
-curl http://localhost:4000/api/v2/stats
+curl http://localhost:4000/health
 
 # Check latest blocks
-curl http://localhost:4000/api/v2/blocks
+curl http://localhost:4000/v1/explorer/blocks
+
+# Check stats
+curl http://localhost:4000/v1/explorer/stats
 ```
+
+## Multi-Chain (All Lux Chains)
+
+```bash
+go run ./cmd/explorer --config=chains.yaml
+```
+
+See the [Configuration](/explorer/configuration) page for `chains.yaml` format.
