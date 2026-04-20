@@ -5,17 +5,17 @@ index: true
 icon: Rocket
 ---
 
-The Lux Explorer runs on Kubernetes with Docker containers. Five explorer instances serve different chains from the same codebase, each with its own PostgreSQL database and chain-specific branding.
+The Lux Explorer runs on Kubernetes with Docker containers. Five explorer instances serve different chains from the same binary, each with its own SQLite database and chain-specific branding.
 
 ## Architecture
 
 ```
 Traefik Ingress
-  explore.lux.network       -> blockscout-mainnet:4000
-  explore-zoo.lux.network   -> blockscout-zoo:4000
-  explore-hanzo.lux.network -> blockscout-hanzo:4000
-  explore-spc.lux.network   -> blockscout-spc:4000
-  explore-pars.lux.network  -> blockscout-pars:4000
+  explore.lux.network       -> explorer-mainnet:4000
+  explore-zoo.lux.network   -> explorer-zoo:4000
+  explore-hanzo.lux.network -> explorer-hanzo:4000
+  explore-spc.lux.network   -> explorer-spc:4000
+  explore-pars.lux.network  -> explorer-pars:4000
 ```
 
 ## Explorer Instances
@@ -32,25 +32,12 @@ Traefik Ingress
 
 | Component | Image |
 |-----------|-------|
-| Backend (Elixir) | `ghcr.io/luxfi/blockscout-lux` |
+| Explorer (Go) | `ghcr.io/luxfi/explorer` |
 | Frontend (Next.js) | `ghcr.io/luxfi/explore` |
-
-## Memory Optimization
-
-For small chains, set these environment variables to prevent OOM crashes:
-
-```
-INDEXER_DISABLE_COIN_BALANCE_FETCHER=true
-INDEXER_DISABLE_BLOCK_REWARD_FETCHER=true
-INDEXER_DISABLE_EMPTY_BLOCKS_SANITIZER=true
-POOL_SIZE=3
-POOL_SIZE_API=2
-INDEXER_MEMORY_LIMIT=1gb
-```
 
 ## Kubernetes Requirements
 
-- Container memory limit: 8Gi per instance
-- Deployment strategy: `Recreate` (not `RollingUpdate`)
-- PostgreSQL with chain-specific `chain` label on Service selector
+- Container memory limit: 2Gi per instance (single Go binary, no PostgreSQL needed)
+- Deployment strategy: `RollingUpdate`
+- PVC for SQLite data persistence
 - TLS via Traefik certResolver with letsencrypt

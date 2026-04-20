@@ -129,9 +129,9 @@ docker compose --profile bank up -d           # Add Lux Bank (lux.financial)
 
 | Explorer | Chain | Chain ID | Port | Image |
 |----------|-------|----------|------|-------|
-| LUX Explorer | C-Chain | 96369 | 4010 | Blockscout |
-| Zoo Explorer | Zoo Network | 200200 | 4011 | Blockscout |
-| Hanzo Explorer | AI Chain | 36963 | 4012 | Blockscout |
+| LUX Explorer | C-Chain | 96369 | 4010 | `ghcr.io/luxfi/explorer` |
+| Zoo Explorer | Zoo Network | 200200 | 4011 | `ghcr.io/luxfi/explorer` |
+| Hanzo Explorer | AI Chain | 36963 | 4012 | `ghcr.io/luxfi/explorer` |
 | Explorer Frontend | C-Chain | 96369 | 3100 | `ghcr.io/luxfi/explore` |
 
 All explorers use shared PostgreSQL with separate databases (`explorer_lux`, `explorer_zoo`, `explorer_hanzo`).
