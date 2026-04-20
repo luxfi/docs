@@ -3,16 +3,16 @@ title: Docker
 description: Building and running Docker images
 ---
 
-## Backend Image
+## Explorer Image
 
 ```bash
 cd explorer
-docker build -t ghcr.io/luxfi/blockscout-lux:latest \
-  --build-arg MIX_ENV=prod \
-  -f docker/Dockerfile .
+docker build -t ghcr.io/luxfi/explorer:latest \
+  --build-arg VERSION=$(git describe --tags) \
+  -f Dockerfile .
 ```
 
-Multi-stage build: Elixir compilation → OTP release → Alpine runtime.
+Single-stage build: Go compilation -> Alpine runtime. No Elixir, no Redis, no PostgreSQL.
 
 ## Frontend Image
 
@@ -23,20 +23,20 @@ docker build -t ghcr.io/luxfi/explore:latest \
   -f Dockerfile .
 ```
 
-Three-stage build: deps → builder → runner (Node.js Alpine).
+Three-stage build: deps -> builder -> runner (Node.js Alpine).
 
 ## Docker Compose
 
 ```bash
-cd explore
+cd explorer
 docker compose up -d
 ```
 
 Services:
-- `redis` — Cache (redis:alpine)
-- `postgres` — Database (ghcr.io/hanzoai/sql)
-- `backend` — Blockscout (port 4000)
-- `frontend` — Next.js (port 3000)
+- `explorer` -- Go backend (port 4000)
+- `frontend` -- Next.js (port 3000)
+
+No Redis or PostgreSQL containers needed. SQLite is embedded.
 
 ## Production Compose
 

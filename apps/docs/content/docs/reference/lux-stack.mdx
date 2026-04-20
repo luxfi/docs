@@ -40,7 +40,7 @@ Lux Stack is a **Docker Compose-based white-label L1 blockchain ecosystem**. Dep
 
 | Service | Image | Port | Purpose |
 |---------|-------|------|---------|
-| `explorer` | `ghcr.io/blockscout/blockscout:latest` | 4000 | Block explorer (Blockscout) |
+| `explorer` | `ghcr.io/luxfi/explorer:latest` | 4000 | Block explorer |
 | `exchange` | `ghcr.io/luxfi/exchange:latest` | 3000 | DEX / Token exchange |
 | `exchange-api` | `ghcr.io/luxfi/exchange-api:latest` | 3010 | Exchange backend API |
 | `marketplace` | `ghcr.io/luxfi/marketplace:latest` | 3001 | NFT marketplace |
@@ -119,7 +119,7 @@ Health checks are configured on all critical services (node, redis, all database
 
 ## Explorer Configuration
 
-The Blockscout explorer connects to the C-Chain:
+The explorer connects to the C-Chain:
 
 ```
 RPC:       http://node:9650/ext/bc/C/rpc
@@ -191,7 +191,7 @@ make health      # Check all health endpoints
 |----------|-----------|
 | Docker Compose | Simple orchestration, easy to customize |
 | Separate databases | Service isolation, independent scaling |
-| Blockscout | Most complete open-source EVM explorer |
+| Lux Explorer | Single-binary Go explorer, replaces legacy Blockscout |
 | The Graph | Standard subgraph indexing for DApps |
 | `ghcr.io/hanzoai/sql` | Hanzo PostgreSQL image (consistent infra) |
 | `ghcr.io/hanzoai/kv` | Hanzo Redis/Valkey image (consistent infra) |

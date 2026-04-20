@@ -6,9 +6,9 @@ icon: Search
 
 The Lux Indexer provides the data layer for the [Lux Explorer](https://explore.lux.network) frontend.
 
-## API Compatibility
+## API
 
-The indexer implements the Blockscout API v2 specification, so the explorer frontend can use it as a drop-in replacement for the Blockscout Elixir backend.
+The indexer serves `/v1/explorer/*` REST endpoints, GraphQL, and WebSocket subscriptions. The explorer frontend connects to these endpoints directly.
 
 ## Switching the Frontend
 
@@ -20,19 +20,14 @@ NEXT_PUBLIC_API_HOST=http://api-indexer.lux.network
 
 No frontend code changes needed.
 
-## Advantages Over Blockscout
+## Capabilities
 
-| Feature | Blockscout (Elixir) | Lux Indexer (Go) |
-|---------|-------------------|------------------|
-| DAG chain support | No | Yes (7 chains) |
-| P-Chain support | No | Yes |
-| Multi-chain (100+) | No | Yes |
-| DeFi protocol indexing | No | Yes (20+ protocols) |
-| Memory usage | Higher | Lower |
-| Build time | Slower | Faster |
-
-## When to Use Blockscout
-
-- You need the full Blockscout microservices stack (stats, sig-provider, visualizer)
-- You need the admin panel
-- You're already running Blockscout infrastructure
+| Feature | Supported |
+|---------|-----------|
+| EVM indexing (5 chains) | Yes |
+| DAG chain support (7 chains) | Yes |
+| P-Chain support | Yes |
+| Multi-chain (100+) | Yes |
+| DeFi protocol indexing (20+ protocols) | Yes |
+| PQ encrypted backups | Yes |
+| White-label | Yes |

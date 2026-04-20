@@ -5,7 +5,7 @@ description: "Documentation for Lux Explore - Blockchain Explorer Frontend"
 
 ## Overview
 
-Lux Explore is the **Next.js frontend** for the Lux Network block explorer, a fork of [Blockscout Frontend](https://github.com/blockscout/frontend). It provides the web UI for browsing transactions, contracts, tokens, and network activity at `explore.lux.network`.
+Lux Explore is the **Next.js frontend** for the Lux Network block explorer. Originally a fork of the Blockscout frontend (now archived at `github.com/luxfi/explorer-v1`), it provides the web UI for browsing transactions, contracts, tokens, and network activity at `explore.lux.network`.
 
 ## Quick Reference
 
@@ -18,7 +18,7 @@ Lux Explore is the **Next.js frontend** for the Lux Network block explorer, a fo
 | UI library | Chakra UI v3 |
 | Package manager | pnpm 10.11.0 |
 | Node |  &gt;= 22.14.0 |
-| Upstream | `blockscout/frontend` |
+| Upstream | `blockscout/frontend` (diverged) |
 | License | GPL v3.0 |
 
 ## Architecture
@@ -112,7 +112,7 @@ typescript@5.9          # Language
 
 ## Lux Branding Customizations
 
-Key areas where Lux branding diverges from upstream Blockscout:
+Key areas where Lux branding diverges from the upstream fork:
 - `ui/snippets/networkLogo/` -- Lux logo component
 - `toolkit/theme/foundations/` -- Lux color palette
 - `public/logos/` -- Lux brand assets
@@ -129,6 +129,6 @@ Key areas where Lux branding diverges from upstream Blockscout:
 
 ## Related Skills
 
-- `lux/lux-explorer.md` -- Blockscout backend (Elixir)
+- `lux/lux-explorer.md` -- Explorer backend (Go)
 - `lux/lux-node.md` -- RPC node the explorer queries
 - `lux/lux-indexer.md` -- Data indexing layer

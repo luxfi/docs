@@ -5,7 +5,7 @@ index: true
 icon: Database
 ---
 
-The Lux Indexer is a Go-based blockchain data indexer supporting all 9 Lux native chain types and 100+ external blockchains with Blockscout API v2 compatibility.
+The Lux Indexer is a Go-based blockchain data indexer supporting all 9 Lux native chain types and 100+ external blockchains.
 
 ## Three Binaries
 
@@ -27,6 +27,6 @@ The Lux Indexer is a Go-based blockchain data indexer supporting all 9 Lux nativ
 
 - **Language**: Go 1.26.1
 - **Storage**: PostgreSQL (production) + SQLite (dev) + BadgerDB (KV)
-- **API**: Blockscout v2 compatible REST + GraphQL + WebSocket
+- **API**: `/v1/explorer/*` REST + GraphQL + WebSocket
 - **DeFi**: Native protocol indexing (AMMs, lending, perps, NFTs, bridges)
 - **Image**: `ghcr.io/luxfi/indexer:v0.2.2`
