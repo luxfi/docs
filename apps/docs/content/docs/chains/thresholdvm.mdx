@@ -1,10 +1,10 @@
 ---
-title: "Threshold VM (T-Chain)"
-description: "MPC-as-a-service: threshold signing, key generation, and secure multi-party computation."
+title: "Threshold VM (M-Chain MPC + F-Chain FHE per LP-134)"
+description: "MPC-as-a-service: threshold signing, key generation, and secure multi-party computation. Per LP-134 the ThresholdVM substrate powers M-Chain (MPC ceremonies for bridge custody of external wallets) and F-Chain (FHE compute). Legacy: T-Chain."
 icon: ShieldCheck
 ---
 
-The Threshold VM (T-Chain) provides Multi-Party Computation (MPC) as a service for all Lux chains. It manages threshold key generation, distributed signing, and key lifecycle operations using the LSS (Lux Secret Sharing) protocol. Any authorized chain can request cryptographic operations from the T-Chain via Warp messaging.
+The Threshold VM substrate powers **M-Chain** (MPC ceremonies for bridge custody of external wallets — CGGMP21, FROST, Pulsar-general) and **F-Chain** (FHE compute + TFHE bootstrap-key generation) per **LP-134**. It manages threshold key generation, distributed signing, and key lifecycle operations using the LSS (Lux Secret Sharing) protocol. Any authorized chain can request cryptographic operations from M-Chain via Warp messaging. The legacy name "T-Chain" is retained ONLY for `teleportvm` (LP-6332). New work targets M-Chain (MPC) or F-Chain (FHE).
 
 ## Architecture
 
