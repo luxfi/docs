@@ -1,139 +1,138 @@
 ---
 title: Consensus
-description: Lux consensus mechanism - leaderless, metastable, and sub-second finality
+description: Quasar — Lux's leaderless, post-quantum, sub-second finality consensus
 ---
 
 # Lux Consensus
 
-Lux Network uses a novel family of leaderless consensus protocols that achieve sub-second finality without a designated block proposer. This approach combines the best properties of classical and Nakamoto consensus while avoiding their limitations.
+Lux runs **Quasar**, a leaderless DAG-native consensus engine with hybrid
+classical + post-quantum finality. Each round produces a `QuasarCert`
+that combines BLS12-381 aggregate signatures with two independent
+post-quantum proof paths (Corona threshold + ML-DSA identity), so a
+break of any single cryptographic primitive does not break finality.
 
-## The Snow Protocol Family
+## Quasar Sub-Protocols
 
-Lux consensus is built on the **Snow** family of protocols, which achieve agreement through repeated random sub-sampling of the network.
+Each component owns one concern. They compose into two engine modes
+(linear chains and DAG chains).
 
-### How It Works
+| Component | Role |
+|-----------|------|
+| **Photon** | K-of-N committee selection by Fisher–Yates sampling weighted by `Luminance` (validator reputation) |
+| **Wave** | Per-round threshold voting with FPC (Fast Probabilistic Consensus) tie-breaking |
+| **Focus** | Confidence accumulation: `β` consecutive supermajority rounds yields local finality |
+| **Prism** | DAG geometry: cuts, frontiers, uniform peer sampling |
+| **Horizon** | DAG order theory: reachability, lowest-common-ancestor, transitive closure, skip lists |
+| **Flare** | DAG cert / skip classification via 2f+1 quorum |
+| **Ray** | Linear-chain finality driver (Wave + Focus + Sink) |
+| **Field** | DAG finality driver (Wave + safe-prefix commit) |
+| **Nova** | Linear-chain consensus mode — wraps Ray |
+| **Nebula** | DAG consensus mode — wraps Field |
+| **Quasar** | Threshold signing + epoch management (BLS + Corona + ML-DSA) |
 
-<Steps>
-  <Step>
-    ### Query Phase
-    A node receives a transaction and selects a small random subset of validators (typically k=20) to query.
-  </Step>
-  <Step>
-    ### Response Phase
-    Each queried validator responds with its current preference for the transaction (accept or reject).
-  </Step>
-  <Step>
-    ### Confidence Accumulation
-    If a supermajority (alpha threshold, e.g. 14 out of 20) agree, the node increases its confidence in that outcome. This process repeats with new random samples.
-  </Step>
-  <Step>
-    ### Finalization
-    After sufficient consecutive rounds of supermajority agreement (the beta threshold), the decision is finalized and irreversible.
-  </Step>
-</Steps>
+### Round flow
 
-## Protocol Variants
+**Linear (Nova):** Photon → Wave → Focus → Ray → Sink
 
-### Snowball
+**DAG (Nebula):** Photon → Wave (per frontier vertex) → Flare → Horizon (safe prefix) → Field → Committer
 
-Snowball is the core binary consensus protocol. Each node maintains a confidence counter for each preference and flips its preference when the opposing side accumulates more confidence.
+## QuasarCert: Hybrid Finality
 
-- Maintains running confidence counters
-- Flips preference based on accumulated evidence
-- Probabilistic safety guarantees grow exponentially with rounds
+Each finalized round emits a `QuasarCert`:
 
-### Snowflake
-
-Snowflake is a simplified variant that tracks only consecutive successes rather than cumulative confidence. It is simpler but slightly less robust than Snowball.
-
-- Uses a consecutive success counter
-- Resets counter on any conflicting supermajority
-- Faster convergence in low-contention scenarios
-
-### Lux (DAG-based)
-
-The Lux protocol extends Snowball to operate over a directed acyclic graph (DAG) of transactions. This is used on the X-Chain for high-throughput asset transfers.
-
-- Transactions form a DAG with parent-child dependencies
-- Confidence flows transitively through the DAG
-- A parent transaction's acceptance reinforces its children
-- Enables massive parallelism: non-conflicting transactions finalize concurrently
-
-```
-       ┌────┐     ┌────┐
-       │ T1 │     │ T2 │    Independent transactions
-       └──┬─┘     └─┬──┘    finalize in parallel
-          │         │
-       ┌──┴─────────┴──┐
-       │      T3        │    T3 depends on T1 and T2
-       └───────┬────────┘
-               │
-       ┌───────┴────────┐
-       │      T4        │    DAG grows as transactions arrive
-       └────────────────┘
+```go
+type QuasarCert struct {
+    BLS        []byte    // BLS12-381 aggregate (~48 B classical fast path)
+    Corona   []byte    // Pulsar/Ring-LWE 2-round threshold proof (~33 KB PQ)
+    MLDSAProof []byte    // Z-Chain Groth16 rollup of N × ML-DSA identity sigs (~192 B)
+    Epoch      uint64
+    Finality   time.Time
+    Validators int
+}
 ```
 
-### Snowman (Linear Chain)
+| Layer | Hardness | Role | Size |
+|-------|----------|------|------|
+| BLS12-381 aggregate | Classical co-CDH | Fast path | 48 B |
+| Pulsar (Ring-LWE) | Module-LWE | PQ threshold | ~33 KB |
+| ML-DSA-65 → Groth16 | Module-LWE + MSIS | PQ identity rollup | ~192 B |
 
-Snowman adapts the Snow consensus to linear chains where blocks must be totally ordered. This is used on the P-Chain and C-Chain.
+A QuasarCert verifies if **and only if** the configured layers all
+verify. Each layer is independently toggleable:
 
-- Builds a single chain of blocks (not a DAG)
-- Each block has exactly one parent
-- Well-suited for smart contract execution where state must be sequential
-- Preserves the leaderless and rapid finality properties of Snow
+| Mode | Composition | Use case |
+|------|-------------|----------|
+| `BLSOnly` | BLS only | Classical fast path |
+| `BLSPlusMLDSA` | BLS + per-validator ML-DSA | Identity-bound PQ |
+| `BLSPlusCorona` | BLS + Pulsar threshold | Threshold-only PQ |
+| `BLSPlusGroth16` | BLS + Z-Chain Groth16 rollup | Compact PQ identity |
+| `TripleQuantum` | All three layers in parallel | Full Quasar |
 
-## Consensus Parameters
+Selectable at runtime via the `LUX_CONSENSUS_PQ_MODE` env var or
+`config.PQMode` field.
 
-| Parameter | Description | Typical Value |
-|-----------|-------------|---------------|
-| **k** (sample size) | Number of validators queried per round | 20 |
-| **alpha** (quorum) | Supermajority threshold | 14 (70%) |
-| **beta** (decision threshold) | Consecutive successes to finalize | 20 |
-| **max rounds** | Maximum query rounds before timeout | 30 |
+## Pulsar (Threshold Layer)
 
-## Finality
+The Corona layer is implemented by **Pulsar**
+(`github.com/luxfi/pulsar/threshold`) — Lux's variant with DKG2 and the
+Pulsar-SHA3 hash suite (KMAC over cSHAKE256, NIST SP 800-185).
 
-Lux consensus provides **probabilistic finality** that becomes overwhelming within milliseconds.
+| Parameter | Value | Meaning |
+|-----------|-------|---------|
+| `M` | 8 | Module rank |
+| `N` | 7 | Min signers (threshold = 6 of 8) |
+| `LogN` | 8 | Ring degree = 256 |
+| `Q` | 0x1000000004A01 | 48-bit NTT-friendly prime |
+| Security (classical / quantum) | 2^142 / 2^130 | BDGL sieving + Grover |
 
-<Callout>
-  Lux achieves finality in under 1 second for most transactions. The probability of reversal decreases exponentially with each round, reaching negligible levels (less than 10^-9) well before the beta threshold.
-</Callout>
+## Measured performance (Apple M1 Max, single round)
 
-### Finality Comparison
+| Mode | Sign | Aggregate | Verify | Cert | 10K certs |
+|------|------|-----------|--------|------|-----------|
+| BLS-only | 312 µs | 8.6 ms | 714 µs | 123 B | 1.17 MB |
+| BLS + ML-DSA | 369 µs | 8.5 ms | 3.4 ms | 69 KB | 665 MB |
+| BLS + Pulsar | 39 ms | 3.3 s | 1.6 ms | 33 KB | 318 MB |
+| Triple Quantum | 40 ms | 3.3 s | 4.3 ms | 102 KB | 981 MB |
 
-| Consensus | Finality Time | Finality Type | Leader Required |
-|-----------|---------------|---------------|-----------------|
-| **Lux (Snow)** | **< 1 second** | **Probabilistic (overwhelming)** | **No** |
-| Bitcoin (PoW) | ~60 minutes | Probabilistic | Yes (miner) |
-| Ethereum (PoS) | ~15 minutes | Economic | Yes (proposer) |
-| Tendermint (BFT) | ~6 seconds | Absolute | Yes (proposer) |
-
-## Chain-Specific Consensus
-
-Each chain in the Lux Primary Network uses the consensus variant best suited to its workload.
-
-| Chain | Protocol | Reason |
-|-------|----------|--------|
-| **X-Chain** | Lux (DAG) | High-throughput parallel asset transfers |
-| **C-Chain** | Snowman (Linear) | Sequential smart contract execution |
-| **P-Chain** | Snowman (Linear) | Ordered validator set changes and staking |
+ZAP wire protocol (zero-copy, replaces JSON-RPC for inter-node messages):
+single-conn 114K TPS, 50 conns + batch 1000 = 20.26M TPS.
 
 ## Properties
 
-### Liveness
+**Liveness.** Round driver makes progress whenever a 2f+1 fraction of
+the network is reachable. No single leader.
 
-The protocol guarantees progress as long as a sufficient fraction of the network is reachable. There is no single leader whose failure can stall the chain.
+**Safety.** Holds whenever fewer than f Byzantine validators participate
+(committee size 3f+1). The classical layer (BLS) and post-quantum
+layers (Pulsar / ML-DSA) sign the same payload, so an adversary that
+breaks one primitive still has to defeat the other layers.
 
-### Safety
+**PQ safety.** Even an attacker with full quantum capability cannot
+forge a triple-mode cert without breaking *both* Ring-LWE (Pulsar) and
+ML-DSA simultaneously — see [LP-105 §7](https://github.com/luxfi/lps/blob/main/LPs/lp-0110-quasar-consensus.md)
+and `~/work/lux/proofs/quasar-cert-soundness.tex` App. E for the
+parameter-tightness argument.
 
-Safety holds as long as the fraction of Byzantine (malicious) nodes remains below the parameterized threshold. With typical parameters, the protocol tolerates up to ~20% Byzantine validators while maintaining safety with overwhelming probability.
+**Scalability.** Per-node communication is O(k) per round (committee
+size, not validator-set size). Quasar scales to thousands of validators
+without degrading finality.
 
-### Scalability
+## Chain assignments
 
-Because each node only queries a small fixed-size sample per round (not the entire validator set), the per-node communication overhead is O(k) per round regardless of total network size. This allows Lux to scale to thousands of validators without degrading finality speed.
+| Chain | Engine | Why |
+|-------|--------|-----|
+| C-Chain (EVM) | Nova (linear) | Sequential smart-contract execution |
+| P-Chain (platform) | Nova (linear) | Ordered validator-set + staking transitions |
+| X-Chain (UTXO) | Nebula (DAG) | High-throughput parallel asset transfers |
+| Q-Chain | Pulsar 2-round threshold | PQ consensus signing for Quasar |
+| M-Chain | CGGMP21 / FROST / Pulsar-general MPC | Bridge custody for external wallets, threshold signing ceremonies |
+| F-Chain | TFHE bootstrap-key generation, FHE compute | Encrypted EVM, encrypted ML inference |
+| Z-Chain | Groth16 over BLS12-381 | Roll N × ML-DSA-65 sigs into 192-byte proof |
 
-## Further Reading
+## Further reading
 
-- [Architecture](/architecture) - How consensus integrates with the multi-chain design
-- [Tokenomics](/tokenomics) - Staking requirements for validators participating in consensus
-- [Run a Validator](/nodes/validator) - Participate in consensus by running a validator node
+- [LP-110 Quasar Consensus](https://github.com/luxfi/lps/blob/main/LPs/lp-0110-quasar-consensus.md)
+- [LP-113 Wave Voting](https://github.com/luxfi/lps/blob/main/LPs/lp-0113-wave-voting.md)
+- [LP-115 Horizon Finality](https://github.com/luxfi/lps/blob/main/LPs/lp-0115-horizon-finality.md)
+- [`github.com/luxfi/consensus`](https://github.com/luxfi/consensus) — the implementation
+- [Run a validator](/nodes/validator)
