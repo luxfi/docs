@@ -285,9 +285,9 @@ The Lux Network supports 14 built-in chain types across 3 tiers.
 
 | Chain | Letter | VM | Consensus | Purpose |
 |-------|--------|----|-----------|---------|
-| **P-Chain** | P | platformvm | Linear (Snowman) | Validator management, staking, chain/L1 creation |
-| **X-Chain** | X | exchangevm | DAG (Lux) | UTXO-based asset creation and transfers |
-| **C-Chain** | C | EVM plugin | Linear (Snowman) | EVM-compatible smart contracts (ChainID 96369) |
+| **P-Chain** | P | platformvm | Linear (Nova) | Validator management, staking, chain/L1 creation |
+| **X-Chain** | X | exchangevm | DAG (Nebula) | UTXO-based asset creation and transfers |
+| **C-Chain** | C | EVM plugin | Linear (Nova) | EVM-compatible smart contracts (ChainID 96369) |
 
 #### Extended Chains (allvms build tag)
 
@@ -316,9 +316,9 @@ Lux Node implements a multi-consensus architecture:
 
 #### Consensus Engines
 
-1. **Linear (Snowman)**: For linear chains (P-Chain, C-Chain, Q-Chain, etc.). Blocks form a single chain. Uses `ChainVM` interface. Wrapped by **ProposerVM (Linear++)** for congestion control via soft leader election.
+1. **Linear (Nova)**: For linear chains (P-Chain, C-Chain, Q-Chain, etc.). Blocks form a single chain. Uses `ChainVM` interface. Wrapped by **ProposerVM (Linear++)** for congestion control via soft leader election.
 
-2. **DAG (Lux/Lux)**: For directed acyclic graph chains (X-Chain). Vertices can have multiple parents. Uses `DAGVertex` interface. Enables higher throughput via parallel transaction processing.
+2. **DAG (Nebula)**: For directed acyclic graph chains (X-Chain). Vertices can have multiple parents. Uses `DAGVertex` interface. Enables higher throughput via parallel transaction processing.
 
 3. **Quasar**: The dual quantum-safe finality engine. Runs on top of linear consensus. Produces **dual finality proofs** (QuasarCert) requiring both:
    - **BLS Path**: Aggregate BLS signatures from 2/3+ validator weight (96-byte proof, fast)

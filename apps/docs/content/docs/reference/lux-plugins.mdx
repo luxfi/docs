@@ -79,13 +79,13 @@ SpacesVM provides authenticated, hierarchical key-value storage using any EIP-71
 | VM ID | `srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy` |
 | Version | 0.2.7 |
 | Homepage | `https://github.com/luxfi/evm` |
-| Description | Sovereign L1 EVM -- simplified Coreth VM for sovereign L1 chains with full Ethereum Virtual Machine and Solidity smart contract support |
+| Description | Sovereign L1 EVM -- simplified Lux EVM for sovereign L1 chains with full Ethereum Virtual Machine and Solidity smart contract support |
 | Install Script | `scripts/build.sh build/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy` |
 | Binary Path | `build/srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy` |
 | Release URL | `https://github.com/luxfi/evm/archive/refs/tags/v0.2.7.tar.gz` |
 | SHA256 | `c0d63b56031820007cce5fa8ea635628b8b9a5897111290a78b60538838509f8` |
 
-Sovereign L1 EVM is the primary VM for creating new EVM-compatible blockchains on Lux. It is a simplified version of Coreth (C-Chain VM), parameterizable for different throughput and gas configurations.
+Sovereign L1 EVM is the primary VM for creating new EVM-compatible blockchains on Lux. It is a simplified version of the Lux C-Chain EVM, parameterizable for different throughput and gas configurations.
 
 ## Registered Chains
 
@@ -121,11 +121,11 @@ validatorOnly: false             -- Open to non-validators
 | Alias | `wagmi` |
 | Chain ID | `28nrH5T2BMvNrWecFcV3mfccjs6axM1TVyqe79MCv2Mhs8kxiY` |
 | Homepage | `https://github.com/luxfi/evm` |
-| VM | `evm` (Coreth/Sovereign L1 EVM) |
+| VM | `evm` (Lux EVM / Sovereign L1 EVM) |
 | Description | High-throughput testbed for EVM optimizations, parameterized to run at higher capacity than mainnet C-Chain |
 | Maintainer | `z@zoolabs.io` |
 
-Used to experiment with EVM release candidates before they ship as official Coreth releases.
+Used to experiment with EVM release candidates before they ship as official Lux EVM releases.
 
 ## VM Definition Format
 
@@ -302,13 +302,13 @@ Required fields checklist:
 1. **Create chain on P-Chain**: Deploy via `lux chain create` CLI command
 2. **Note Chain ID**: Base58-encoded ID from the P-Chain transaction
 3. **List VM dependencies**: Which VMs the chain uses (by alias)
-4. **Configure consensus**: Set Snow consensus parameters appropriate for your use case
+4. **Configure consensus**: Set Quasar/Wave consensus parameters appropriate for your use case
 5. **Write YAML**: Create `chains/<alias>.yaml` following the format above
 6. **Submit PR**: Open a pull request
 
 ## Consensus Parameter Reference
 
-These parameters control Snow consensus behavior for chains:
+These parameters control Wave voting / Nova consensus behavior for chains:
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
