@@ -20,7 +20,7 @@ Lux SDK is the **official Go SDK** for building and managing Lux networks. It pr
 
 | Dependency | Version | Purpose |
 |------------|---------|---------|
-| `github.com/luxfi/consensus` | v1.22.63 | Snow consensus engine |
+| `github.com/luxfi/consensus` | v1.22.63 | Quasar consensus engine |
 | `github.com/luxfi/evm` | v0.8.35 | C-Chain EVM |
 | `github.com/luxfi/node` | v1.23.4 | Lux node implementation |
 | `github.com/luxfi/netrunner` | v1.15.11 | Network testing orchestrator |
