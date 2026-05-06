@@ -1,4 +1,5 @@
 name: Docker
+
 on:
   workflow_dispatch:
   push:
@@ -9,9 +10,64 @@ permissions:
   contents: read
   packages: write
 
+# Per-brand fan-out. Each entry maps to a distinct GHCR image so :latest
+# never collides between brands. Add new brands by appending to the matrix
+# and creating .env.example.<brand>.
+#
+# Per-org GHCR push policy (from ~/.claude/CLAUDE.md):
+#   Lux   → ghcr.io/luxfi/*
+#   Hanzo → ghcr.io/hanzoai/*
+#   Zoo   → ghcr.io/zooai/*
+# NEVER mix orgs. Cross-org push needs a token with `write:packages` scope on
+# the target org. The reusable workflow `secrets: inherit` so the repo's
+# GHCR_PAT must be configured at the org level for luxfi/, hanzoai/, zooai/.
+# Confirm with: gh secret list -R luxfi/docs
 jobs:
   docker:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - brand: lux
+            image: ghcr.io/luxfi/docs
+            site_name: "Lux Docs"
+            site_url: "https://docs.lux.network"
+            network_name: "Lux"
+            network_short_name: "LUX"
+            chain_id: "96369"
+            github_url: "https://github.com/luxfi"
+          - brand: hanzo
+            image: ghcr.io/hanzoai/docs
+            site_name: "Hanzo Docs"
+            site_url: "https://docs.hanzo.ai"
+            network_name: "Hanzo"
+            network_short_name: "AI"
+            chain_id: "36963"
+            github_url: "https://github.com/hanzoai"
+          - brand: zoo
+            image: ghcr.io/zooai/docs
+            site_name: "Zoo Docs"
+            site_url: "https://zoo.ngo/docs"
+            network_name: "Zoo"
+            network_short_name: "ZOO"
+            chain_id: "200200"
+            github_url: "https://github.com/zooai"
+          - brand: pars
+            image: ghcr.io/luxfi/docs-pars
+            site_name: "Pars Docs"
+            site_url: "https://docs.pars.network"
+            network_name: "Pars"
+            network_short_name: "PARS"
+            chain_id: "494949"
+            github_url: "https://github.com/pars"
     uses: hanzoai/.github/.github/workflows/docker-build.yml@main
     with:
-      image: ghcr.io/luxfi/docs
+      image: ${{ matrix.image }}
+      build-args: |
+        NEXT_PUBLIC_SITE_NAME=${{ matrix.site_name }}
+        NEXT_PUBLIC_SITE_URL=${{ matrix.site_url }}
+        NEXT_PUBLIC_NETWORK_NAME=${{ matrix.network_name }}
+        NEXT_PUBLIC_NETWORK_SHORT_NAME=${{ matrix.network_short_name }}
+        NEXT_PUBLIC_CHAIN_ID=${{ matrix.chain_id }}
+        NEXT_PUBLIC_GITHUB_URL=${{ matrix.github_url }}
     secrets: inherit
