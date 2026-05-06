@@ -21,7 +21,7 @@ The Lux wallet uses hierarchical deterministic (HD) key derivation following BIP
 | EC | secp256k1 | BIP-44 | Transaction signing, EVM compatibility |
 | BLS | BLS12-381 | HKDF from mnemonic seed | Consensus signatures |
 | ML-DSA | NIST Level 3 | HKDF from mnemonic seed | Post-quantum signatures |
-| Corona | Ring signatures | HKDF from mnemonic seed | Privacy operations |
+| Pulsar | Ring signatures | HKDF from mnemonic seed | Privacy operations |
 
 ## Mnemonic to Key Flow
 
@@ -33,7 +33,7 @@ BIP-39 Mnemonic (12 or 24 words)
     -> HKDF derivation
       -> BLS keys
       -> ML-DSA keys
-      -> Corona keys
+      -> Pulsar keys
 ```
 
 ## Address Formats

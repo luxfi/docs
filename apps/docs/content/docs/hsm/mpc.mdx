@@ -137,7 +137,7 @@ import (
     "github.com/luxfi/crypto/threshold"
 )
 
-// Create inner threshold signer (BLS, FROST, CGGMP21, or Corona)
+// Create inner threshold signer (BLS, FROST, CGGMP21, or Pulsar)
 inner, _ := scheme.NewSigner(keyShare)
 
 // Wrap with HSM attestation
@@ -179,7 +179,7 @@ The threshold adapter works with any scheme registered via `threshold.RegisterSc
 | BLS | Non-interactive | Attestation + vault | 1-round signing |
 | FROST | 2-round | Attestation + vault | Nonce gen delegated |
 | CGGMP21 | Multi-round | Attestation + vault | ECDSA threshold |
-| Corona | 2-round lattice | Attestation + vault | Post-quantum |
+| Pulsar | 2-round lattice | Attestation + vault | Post-quantum |
 
 ## Kubernetes Deployment
 

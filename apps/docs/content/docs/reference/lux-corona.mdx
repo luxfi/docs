@@ -1,13 +1,13 @@
 ---
-title: "Lux Corona - Post-Quantum Threshold Signatures"
-description: "Corona is the post-quantum signature primitive for Lux consensus. It enables t-of-n threshold signing without relying on classical assumptions R..."
+title: "Lux Pulsar - Post-Quantum Threshold Signatures"
+description: "Pulsar is the post-quantum signature primitive for Lux consensus. It enables t-of-n threshold signing without relying on classical assumptions R..."
 ---
 
 ## Overview
 
-Corona is a pure Go implementation of the Corona post-quantum threshold signature scheme from [eprint.iacr.org/2024/1113](https://eprint.iacr.org/2024/1113). It provides practical two-round lattice-based threshold signatures from standard LWE (Learning With Errors) assumptions, built on the `github.com/luxfi/lattice/v7` ring polynomial library.
+Pulsar is a pure Go implementation of the Pulsar post-quantum threshold signature scheme from [eprint.iacr.org/2024/1113](https://eprint.iacr.org/2024/1113). It provides practical two-round lattice-based threshold signatures from standard LWE (Learning With Errors) assumptions, built on the `github.com/luxfi/lattice/v7` ring polynomial library.
 
-Corona is the post-quantum signature primitive for Lux consensus. It enables t-of-n threshold signing without relying on classical assumptions (RSA, ECDSA) that are vulnerable to quantum computers.
+Pulsar is the post-quantum signature primitive for Lux consensus. It enables t-of-n threshold signing without relying on classical assumptions (RSA, ECDSA) that are vulnerable to quantum computers.
 
 ## When to use
 
@@ -155,7 +155,7 @@ make ci             # fmt, vet, lint, test-race, coverage, build
 
 - `lux/lux-lattice.md` -- Ring polynomial library (RLWE, NTT, sampling)
 - `lux/lux-crypto.md` -- Classical crypto primitives (BLS, secp256k1)
-- `lux/lux-consensus.md` -- Quasar consensus (consumes Corona for PQ certificates)
+- `lux/lux-consensus.md` -- Quasar consensus (consumes Pulsar for PQ certificates)
 - `lux/lux-threshold.md` -- Threshold cryptography abstractions
 - `lux/lux-fhe.md` -- Homomorphic encryption (shares lattice foundations)
 

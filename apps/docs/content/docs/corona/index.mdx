@@ -1,10 +1,10 @@
 ---
-title: Corona
+title: Pulsar
 description: Post-quantum threshold signatures from Module-LWE with 2-round signing
 icon: Shield
 ---
 
-Corona (`github.com/luxfi/corona`) implements a practical post-quantum threshold signature scheme based on the Module Learning-With-Errors (Module-LWE) problem. It is described in [eprint.iacr.org/2024/1113](https://eprint.iacr.org/2024/1113).
+Pulsar (`github.com/luxfi/corona`) implements a practical post-quantum threshold signature scheme based on the Module Learning-With-Errors (Module-LWE) problem. It is described in [eprint.iacr.org/2024/1113](https://eprint.iacr.org/2024/1113).
 
 ## Security Properties
 
@@ -20,12 +20,12 @@ Corona (`github.com/luxfi/corona`) implements a practical post-quantum threshold
 
 | Scheme | Quantum-safe | Rounds | Aggregatable | Basis |
 |--------|-------------|--------|--------------|-------|
-| Corona | Yes | 2 | No | Module-LWE |
+| Pulsar | Yes | 2 | No | Module-LWE |
 | FROST | No | 2 | No | Discrete log |
 | BLS | No | 1 | Yes | Bilinear pairing |
 | CGGMP21 | No | Multi | No | ECDSA |
 
-Corona is the only post-quantum option. It provides comparable round complexity to FROST while offering security against quantum adversaries.
+Pulsar is the only post-quantum option. It provides comparable round complexity to FROST while offering security against quantum adversaries.
 
 ## Architecture
 
@@ -41,7 +41,7 @@ corona/
 
 ## Parameters
 
-Corona uses a 48-bit NTT-friendly prime and discrete Gaussian sampling:
+Pulsar uses a 48-bit NTT-friendly prime and discrete Gaussian sampling:
 
 | Parameter | Value | Description |
 |-----------|-------|-------------|
@@ -54,12 +54,12 @@ Corona uses a 48-bit NTT-friendly prime and discrete Gaussian sampling:
 
 ## Use in Lux
 
-Corona is used alongside BLS in Lux Quasar consensus. BLS provides fast 1-round classical signatures for block finality at 500ms intervals. Corona provides post-quantum security via 3-second quantum bundles that anchor groups of BLS-signed blocks with lattice-based threshold signatures.
+Pulsar is used alongside BLS in Lux Quasar consensus. BLS provides fast 1-round classical signatures for block finality at 500ms intervals. Pulsar provides post-quantum security via 3-second quantum bundles that anchor groups of BLS-signed blocks with lattice-based threshold signatures.
 
 ```
 BLS:      [B1]--[B2]--[B3]--[B4]--[B5]--[B6]--...
            500ms finality per block
 
-Corona: [─────────QB1: Merkle(B1..B6)─────────]
+Pulsar: [─────────QB1: Merkle(B1..B6)─────────]
            3-second quantum bundle, async 2-round signing
 ```

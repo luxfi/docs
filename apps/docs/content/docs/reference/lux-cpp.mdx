@@ -11,7 +11,7 @@ LuxCPP is a **modular C++ library suite** providing GPU-accelerated cryptography
 
 - **Multi-backend GPU**: Metal (Apple Silicon), CUDA (NVIDIA), WebGPU (Dawn), CPU (SIMD) — compile-time or runtime backend selection
 - **Full FHE stack**: TFHE/CKKS/BGV via OpenFHE integration with GPU-accelerated NTT
-- **Post-quantum crypto**: BLS12-381 pairings, ML-DSA (Dilithium), lattice-based NTT
+- **Post-quantum crypto**: BLS12-381 pairings, ML-DSA, lattice-based NTT
 - **DEX engine**: C++ CLOB matching engine for sub-microsecond order processing
 - **Zero-copy FFI**: C API boundary (`lux/gpu.h`) for Go, Rust, Python, WASM bindings
 

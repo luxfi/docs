@@ -22,17 +22,17 @@ Lux Crypto (`github.com/luxfi/crypto`) is the core cryptographic library for the
 
 ## Consensus Cryptography (Quasar)
 
-Lux consensus uses a hybrid BLS + Corona signing scheme:
+Lux consensus uses a hybrid BLS + Pulsar signing scheme:
 
 ```
 Classical Layer:   BLS12-381 (aggregatable, 1-round)
                           +
-Post-Quantum Layer: Corona (lattice threshold, 2-round)
+Post-Quantum Layer: Pulsar (lattice threshold, 2-round)
 ```
 
 | Package | Role | Notes |
 |---------|------|-------|
-| `signer/` | Hybrid BLS + Corona | Production consensus signing |
+| `signer/` | Hybrid BLS + Pulsar | Production consensus signing |
 | `bls/` | Classical aggregatable signatures | Fast single-round aggregation |
 
 ## Key Packages

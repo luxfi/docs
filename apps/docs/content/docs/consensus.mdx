@@ -8,7 +8,7 @@ description: Quasar — Lux's leaderless, post-quantum, sub-second finality cons
 Lux runs **Quasar**, a leaderless DAG-native consensus engine with hybrid
 classical + post-quantum finality. Each round produces a `QuasarCert`
 that combines BLS12-381 aggregate signatures with two independent
-post-quantum proof paths (Corona threshold + ML-DSA identity), so a
+post-quantum proof paths (Pulsar threshold + ML-DSA identity), so a
 break of any single cryptographic primitive does not break finality.
 
 ## Quasar Sub-Protocols
@@ -28,7 +28,7 @@ Each component owns one concern. They compose into two engine modes
 | **Field** | DAG finality driver (Wave + safe-prefix commit) |
 | **Nova** | Linear-chain consensus mode — wraps Ray |
 | **Nebula** | DAG consensus mode — wraps Field |
-| **Quasar** | Threshold signing + epoch management (BLS + Corona + ML-DSA) |
+| **Quasar** | Threshold signing + epoch management (BLS + Pulsar + ML-DSA) |
 
 ### Round flow
 
@@ -43,7 +43,7 @@ Each finalized round emits a `QuasarCert`:
 ```go
 type QuasarCert struct {
     BLS        []byte    // BLS12-381 aggregate (~48 B classical fast path)
-    Corona   []byte    // Pulsar/Ring-LWE 2-round threshold proof (~33 KB PQ)
+    Pulsar   []byte    // Pulsar/Ring-LWE 2-round threshold proof (~33 KB PQ)
     MLDSAProof []byte    // Z-Chain Groth16 rollup of N × ML-DSA identity sigs (~192 B)
     Epoch      uint64
     Finality   time.Time
@@ -73,7 +73,7 @@ Selectable at runtime via the `LUX_CONSENSUS_PQ_MODE` env var or
 
 ## Pulsar (Threshold Layer)
 
-The Corona layer is implemented by **Pulsar**
+The Pulsar layer is implemented by **Pulsar**
 (`github.com/luxfi/pulsar/threshold`) — Lux's variant with DKG2 and the
 Pulsar-SHA3 hash suite (KMAC over cSHAKE256, NIST SP 800-185).
 

@@ -1,6 +1,6 @@
 ---
 title: Supported Schemes
-description: CGGMP21, FROST, BLS, and Corona threshold signature scheme comparison
+description: CGGMP21, FROST, BLS, and Pulsar threshold signature scheme comparison
 icon: Layers
 ---
 
@@ -19,7 +19,7 @@ const (
 
 ## Comparison
 
-| Property | CGGMP21 | FROST | BLS | Corona |
+| Property | CGGMP21 | FROST | BLS | Pulsar |
 |----------|---------|-------|-----|----------|
 | Signature type | ECDSA | Schnorr | BLS12-381 | Lattice |
 | Post-quantum | No | No | No | Yes |
@@ -41,7 +41,7 @@ Flexible Round-Optimized Schnorr Threshold signatures. 2-round protocol producin
 
 BLS12-381 threshold signatures with non-interactive aggregation. Shares can be combined without additional communication rounds. Built into `crypto/threshold/bls`. Used for Lux consensus block signing.
 
-## Corona (SchemeCorona)
+## Pulsar (SchemeCorona)
 
 Lattice-based threshold signatures using Module-LWE. The only post-quantum scheme. 2-round signing protocol with trusted dealer key generation. Implemented natively in the `corona` repository.
 
@@ -62,4 +62,4 @@ func schemeForChain(chain string) (threshold.Scheme, error) {
 }
 ```
 
-Corona is used alongside BLS in Lux Quasar consensus for post-quantum security bundles, not as a standalone chain signing scheme.
+Pulsar is used alongside BLS in Lux Quasar consensus for post-quantum security bundles, not as a standalone chain signing scheme.
