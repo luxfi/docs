@@ -4,15 +4,15 @@ description: HSM-backed signing for Lux consensus protocols
 icon: Shield
 ---
 
-The `github.com/luxfi/hsm` package provides HSM integration for Lux consensus threshold signing, supporting BLS, FROST, CGGMP21, and Corona (lattice-based post-quantum) protocols.
+The `github.com/luxfi/hsm` package provides HSM integration for Lux consensus threshold signing, supporting BLS, FROST, CGGMP21, and Pulsar (lattice-based post-quantum) protocols.
 
 ## Architecture
 
 Lux uses dual-threshold consensus (Quasar):
 - **BLS** (1 round) — classical aggregatable signatures for fast finality
-- **Corona** (2 rounds) — lattice-based threshold for post-quantum security
+- **Pulsar** (2 rounds) — lattice-based threshold for post-quantum security
 
-Both run in parallel. BLS provides 500ms block finality; Corona creates quantum-safe bundles every 3 seconds.
+Both run in parallel. BLS provides 500ms block finality; Pulsar creates quantum-safe bundles every 3 seconds.
 
 ```
 Validator Node
@@ -20,7 +20,7 @@ Validator Node
 │                                                 │
 │  KeyShareVault (AES-256-GCM encrypted)          │
 │  ├── BLS key share                              │
-│  ├── Corona key share                         │
+│  ├── Pulsar key share                         │
 │  └── FROST key share (for EdDSA chains)         │
 │       │                                         │
 │       ▼                                         │
@@ -44,7 +44,7 @@ import (
     "github.com/luxfi/crypto/threshold"
     _ "github.com/luxfi/crypto/threshold/bls"     // Register BLS
     _ "github.com/luxfi/mpc/pkg/threshold"        // Register CGGMP21/FROST
-    _ "github.com/luxfi/corona/threshold"        // Register Corona
+    _ "github.com/luxfi/corona/threshold"        // Register Pulsar
 )
 
 // Create HSM signer for attestation
@@ -85,7 +85,7 @@ vault.Store(ctx, "bls-validator-0", blsShare.Bytes(), hsm.KeyShareMeta{
     GroupKey:     blsShare.GroupKey().Bytes(),
 })
 
-// Store Corona key share (post-quantum)
+// Store Pulsar key share (post-quantum)
 vault.Store(ctx, "rt-validator-0", rtShareBytes, hsm.KeyShareMeta{
     SchemeID:     threshold.SchemeCorona,
     Index:        0,
@@ -110,7 +110,7 @@ mgr, _ := hsm.NewThresholdManager(hsm.ThresholdConfig{
     AttestKeyID:      "arn:aws:kms:...:key/attest-key",
 })
 
-// Store both BLS and Corona shares
+// Store both BLS and Pulsar shares
 mgr.StoreKeyShare(ctx, "bls-0", blsKeyShare)
 mgr.StoreKeyShare(ctx, "rt-0", coronaKeyShare)
 
@@ -153,7 +153,7 @@ Cloud KMS (AWS, GCP, Azure) do not implement `ThresholdHSM` — they provide att
 | Scheme | Rounds | Post-Quantum | Use Case |
 |--------|--------|-------------|----------|
 | BLS | 1 (non-interactive) | No | Lux consensus blocks |
-| Corona | 2 | Yes | Quantum-safe bundles |
+| Pulsar | 2 | Yes | Quantum-safe bundles |
 | FROST | 2 | No | EdDSA chains (Solana, Sui) |
 | CGGMP21 | Multi | No | ECDSA chains (Ethereum, Bitcoin) |
 
@@ -185,4 +185,4 @@ parsed, _ := hsm.ParseAttestedShare(marshaled, scheme)
 | Share forgery prevention | Attacker needs both key share and HSM |
 | Key share rotation | Vault supports overwrite + delete |
 | Multi-scheme support | Single vault stores any scheme's shares |
-| Post-quantum readiness | Corona shares in same vault |
+| Post-quantum readiness | Pulsar shares in same vault |

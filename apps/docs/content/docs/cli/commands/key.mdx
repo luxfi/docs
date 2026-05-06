@@ -11,7 +11,7 @@ The `key` command manages all cryptographic keys used in the Lux network. Keys a
 |------|-----------|---------|
 | EC | secp256k1 | Transaction signing, Ethereum compatibility |
 | BLS | BLS12-381 | Consensus participation, aggregated signatures |
-| Corona | Ring signatures | Privacy-preserving operations |
+| Pulsar | Ring signatures | Privacy-preserving operations |
 | ML-DSA | NIST Level 3 | Post-quantum digital signatures |
 
 ## Commands
@@ -58,7 +58,7 @@ lux key migrate
 ~/.lux/keys/<name>/
   ec/       secp256k1 keys
   bls/      BLS consensus keys
-  rt/       Corona ring signature keys
+  rt/       Pulsar ring signature keys
   mldsa/    ML-DSA post-quantum keys
 ```
 

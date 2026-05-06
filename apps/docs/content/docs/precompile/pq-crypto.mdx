@@ -10,9 +10,9 @@ Post-quantum precompiles provide NIST-standardized cryptographic operations at n
 
 | Address | Name | Standard | Gas | Description |
 |---------|------|----------|-----|-------------|
-| `0x0600` | ML_DSA | FIPS 204 | 50,000 | ML-DSA signature verification (Dilithium) |
-| `0x0601` | ML_KEM | FIPS 203 | 25,000 | ML-KEM key encapsulation (Kyber) |
-| `0x0602` | SLH_DSA | FIPS 205 | 75,000 | SLH-DSA hash-based signatures (SPHINCS+) |
+| `0x0600` | ML_DSA | FIPS 204 | 50,000 | ML-DSA signature verification (ML-DSA) |
+| `0x0601` | ML_KEM | FIPS 203 | 25,000 | ML-KEM key encapsulation (ML-KEM) |
+| `0x0602` | SLH_DSA | FIPS 205 | 75,000 | SLH-DSA hash-based signatures (SLH-DSA (FIPS 205, formerly SPHINCS+)) |
 | `0x0603` | PQ_CRYPTO | -- | 30,000 | Multi-PQ operations |
 | `0x0604` | QUASAR | -- | 100,000 | Quantum consensus verification |
 
@@ -54,8 +54,8 @@ Combine classical and post-quantum signatures for defense in depth:
 
 | Address | Scheme | Classical | Post-Quantum |
 |---------|--------|-----------|-------------|
-| `0x0610` | Hybrid BLS+Corona | BLS12-381 | Corona lattice |
+| `0x0610` | Hybrid BLS+Pulsar | BLS12-381 | Pulsar lattice |
 | `0x0611` | Hybrid ECDSA+ML-DSA | secp256k1 | ML-DSA-65 |
-| `0x0612` | Hybrid Schnorr+Corona | Ed25519 | Corona lattice |
+| `0x0612` | Hybrid Schnorr+Pulsar | Ed25519 | Pulsar lattice |
 
 Both signatures must verify for the hybrid to pass. Graceful degradation is not supported -- this is intentional for maximum security.

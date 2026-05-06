@@ -5,7 +5,7 @@ description: "Cryptographic Primitives"
 
 ## Overview
 
-Lux Crypto provides the **complete cryptographic foundation** for the Lux Network. It covers classical (secp256k1, ECDSA, BLS12-381), post-quantum (ML-DSA, SLH-DSA, ML-KEM, Lamport), hybrid key encapsulation, ring signatures, threshold signature schemes (FROST, CMP, BLS, Corona), MPC protocols, HPKE, ECIES, KZG polynomial commitments, and EVM crypto precompiles. All post-quantum algorithms use Cloudflare CIRCL under the hood.
+Lux Crypto provides the **complete cryptographic foundation** for the Lux Network. It covers classical (secp256k1, ECDSA, BLS12-381), post-quantum (ML-DSA, SLH-DSA, ML-KEM, Lamport), hybrid key encapsulation, ring signatures, threshold signature schemes (FROST, CMP, BLS, Pulsar), MPC protocols, HPKE, ECIES, KZG polynomial commitments, and EVM crypto precompiles. All post-quantum algorithms use Cloudflare CIRCL under the hood.
 
 ## Quick Reference
 
@@ -51,7 +51,7 @@ Lux Crypto provides the **complete cryptographic foundation** for the Lux Networ
 | Package | Import | Modes | Sizes |
 |---------|--------|-------|-------|
 | `mldsa/` | `.../mldsa` | **ML-DSA-44** (128-bit, NIST L2), **ML-DSA-65** (192-bit, NIST L3), **ML-DSA-87** (256-bit, NIST L5) | PK: 1312/1952/2592, SK: 2560/4032/4896, Sig: 2420/3309/4627 bytes |
-| `slhdsa/` | `.../slhdsa` | **SLH-DSA** (FIPS 205, SPHINCS+): 12 modes -- SHA2/SHAKE x 128s/128f/192s/192f/256s/256f | PK: 32/48/64, Sig: 7856-49856 bytes (small vs fast variants) |
+| `slhdsa/` | `.../slhdsa` | **SLH-DSA** (FIPS 205, SLH-DSA (FIPS 205, formerly SPHINCS+)): 12 modes -- SHA2/SHAKE x 128s/128f/192s/192f/256s/256f | PK: 32/48/64, Sig: 7856-49856 bytes (small vs fast variants) |
 
 ML-DSA API: `GenerateKey(rand, mode)`, `PrivateKey.Sign(rand, msg, opts)`, `PublicKey.Verify(msg, sig, opts)`, `PublicKey.VerifySignature(msg, sig)`, `PrivateKeyFromBytes(mode, data)`, `PublicKeyFromBytes(data, mode)`.
 
@@ -91,7 +91,7 @@ Threshold schemes:
 | `SchemeFROST` | FROST | Schnorr threshold (Ed25519-compatible) | No | No |
 | `SchemeCMP` | CMP/CGGMP21 | Threshold ECDSA | No | No |
 | `SchemeBLS` | BLS | BLS threshold | No | Yes |
-| `SchemeCorona` | Corona | Lattice-based threshold | Yes | No |
+| `SchemeCorona` | Pulsar | Lattice-based threshold | Yes | No |
 
 DKG protocol: up to 3 rounds (`Round1` -> broadcast -> `Round2` -> broadcast -> `Round3` -> `KeyShare`). Also supports `TrustedDealer` for centralized setup.
 

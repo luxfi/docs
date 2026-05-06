@@ -30,7 +30,7 @@ Lux Network aligns with the NIST Post-Quantum Cryptography standardization proce
 
 ### ML-DSA-65 (FIPS 204)
 
-ML-DSA-65 (formerly CRYSTALS-Dilithium) is a **lattice-based** digital signature scheme standardized by NIST as the primary post-quantum signature algorithm.
+ML-DSA-65 (formerly ML-DSA (FIPS 204, formerly CRYSTALS-Dilithium)) is a **lattice-based** digital signature scheme standardized by NIST as the primary post-quantum signature algorithm.
 
 - **Security basis**: Module Learning With Errors (MLWE) problem
 - **Security level**: NIST Level 3 (192-bit)
@@ -41,7 +41,7 @@ ML-DSA-65 (formerly CRYSTALS-Dilithium) is a **lattice-based** digital signature
 
 ### SLH-DSA (FIPS 205)
 
-SLH-DSA (formerly SPHINCS+) is a **hash-based** signature scheme standardized by NIST as a conservative alternative.
+SLH-DSA (FIPS 205, formerly SPHINCS+) is a **hash-based** signature scheme standardized by NIST as a conservative alternative.
 
 - **Security basis**: Security of the underlying hash function only
 - **Signature size**: ~7.8 KB (SLH-DSA-128f) to ~49 KB (SLH-DSA-256s)
@@ -51,7 +51,7 @@ SLH-DSA (formerly SPHINCS+) is a **hash-based** signature scheme standardized by
 
 ### ML-KEM-768 (FIPS 203)
 
-ML-KEM-768 (formerly CRYSTALS-Kyber) is a **lattice-based** key encapsulation mechanism standardized by NIST for post-quantum key exchange.
+ML-KEM-768 (formerly ML-KEM (FIPS 203, formerly CRYSTALS-Kyber)) is a **lattice-based** key encapsulation mechanism standardized by NIST for post-quantum key exchange.
 
 - **Security basis**: Module Learning With Errors (MLWE) problem
 - **Security level**: NIST Level 3 (192-bit)
@@ -147,15 +147,15 @@ For existing users and applications:
 
 ## Quasar Consensus
 
-Lux's Quasar consensus uses a **triple consensus** signature scheme combining three independent cryptographic families -- classical (BLS) and two post-quantum (Corona + ML-DSA):
+Lux's Quasar consensus uses a **triple consensus** signature scheme combining three independent cryptographic families -- classical (BLS) and two post-quantum (Pulsar + ML-DSA):
 
 | Scheme | Family | Purpose |
 |--------|--------|---------|
 | BLS (BLS12-381) | Pairing-based (classical) | Aggregatable validator signatures for efficient block finalization |
-| Corona | Ring-LWE (post-quantum) | Threshold consensus signatures with lattice-based security |
+| Pulsar | Ring-LWE (post-quantum) | Threshold consensus signatures with lattice-based security |
 | ML-DSA-65 | FIPS 204 (post-quantum) | Per-validator identity signatures with Module-LWE security |
 
-All three paths run in parallel via `TripleSignRound1`. A **QuasarCert** is the finality certificate containing a BLS aggregate signature and aggregated PQ proof (Corona + ML-DSA). Blocks are final only when all three certificates verify. An attacker must break ECDL (BLS), Module-LWE (ML-DSA), and Module-SIS (Corona) simultaneously to forge a consensus vote.
+All three paths run in parallel via `TripleSignRound1`. A **QuasarCert** is the finality certificate containing a BLS aggregate signature and aggregated PQ proof (Pulsar + ML-DSA). Blocks are final only when all three certificates verify. An attacker must break ECDL (BLS), Module-LWE (ML-DSA), and Module-SIS (Pulsar) simultaneously to forge a consensus vote.
 
 ## Smart Account PQ Signing
 
@@ -165,7 +165,7 @@ EVM smart accounts (ERC-4337 / Safe) can verify post-quantum signatures on-chain
 |-----------|---------|---------|
 | `ML-DSA Verify` | `0x0b14` | Verify ML-DSA-65 signatures in Solidity |
 | `SLH-DSA Verify` | `0x0b15` | Verify SLH-DSA signatures in Solidity |
-| `Corona Verify` | `0x0b16` | Verify Corona ring signatures in Solidity |
+| `Pulsar Verify` | `0x0b16` | Verify Pulsar ring signatures in Solidity |
 
 The `SafeMLDSASigner` module implements ERC-1271 signature verification using ML-DSA-65, allowing Safe multisig wallets to authorize transactions with post-quantum keys. This works on the C-Chain and all sovereign L1 EVM chains with PQ precompiles enabled.
 

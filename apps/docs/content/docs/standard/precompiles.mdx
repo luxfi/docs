@@ -22,10 +22,10 @@ Lux EVM includes 39 custom precompiles accessible as native Solidity calls. Inte
 | Address | Name | Interface | Purpose |
 |---------|------|-----------|---------|
 | `0x0200...0007` | ML-DSA | `IMLDSA.sol` | FIPS 204 post-quantum signatures |
-| `0x0200...0008` | SLH-DSA | `ISLHDSA.sol` | Hash-based PQ signatures (SPHINCS+) |
+| `0x0200...0008` | SLH-DSA | `ISLHDSA.sol` | Hash-based PQ signatures (SLH-DSA (FIPS 205, formerly SPHINCS+)) |
 | `0x0200...0009` | PQCrypto | `IPQCrypto.sol` | Multi-PQ operations |
 | `0x0200...000A` | Quasar | `IQuasar.sol` | Quantum consensus operations |
-| `0x0200...000B` | Corona | `ICoronaThreshold.sol` | Post-quantum threshold signatures |
+| `0x0200...000B` | Pulsar | `ICoronaThreshold.sol` | Post-quantum threshold signatures |
 | `0x0200...000C` | FROST | `IFROST.sol` | Schnorr threshold (BIP-340 Taproot) |
 | `0x0200...000D` | CGGMP21 | `ICGGMP21.sol` | ECDSA threshold (MPC custody) |
 
@@ -115,6 +115,6 @@ Tokens sent to dead addresses are split: 50% burned (deflationary) and 50% sent 
 |------------|-------------|----------------|
 | FROST | 75,000 | 64 bytes |
 | CGGMP21 | 125,000 | 65 bytes |
-| Corona | 200,000 | ~4 KB |
+| Pulsar | 200,000 | ~4 KB |
 | ML-DSA | 100,000 | 3,309 bytes |
 | BLS (Warp) | 120,000 | 96 bytes |

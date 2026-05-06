@@ -26,7 +26,7 @@ Schemes register themselves via `init()` functions. Consumers look up schemes at
 import (
     "github.com/luxfi/crypto/threshold"
     _ "github.com/luxfi/crypto/threshold/bls"  // Register BLS
-    _ "github.com/luxfi/corona/threshold"    // Register Corona
+    _ "github.com/luxfi/corona/threshold"    // Register Pulsar
 )
 
 scheme, err := threshold.GetScheme(threshold.SchemeBLS)

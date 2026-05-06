@@ -5,7 +5,7 @@ description: Implementation and usage of NIST-standardized post-quantum cryptogr
 
 # NIST Post-Quantum Algorithms
 
-Comprehensive guide to NIST-standardized post-quantum cryptographic algorithms implemented in Lattice, including ML-DSA (Dilithium), ML-KEM (Kyber), and SLH-DSA (SPHINCS+).
+Comprehensive guide to NIST-standardized post-quantum cryptographic algorithms implemented in Lattice, including ML-DSA, ML-KEM, and SLH-DSA (FIPS 205, formerly SPHINCS+).
 
 ## Overview
 
@@ -15,15 +15,15 @@ The National Institute of Standards and Technology (NIST) has standardized three
 
 | Algorithm | FIPS | Type | Based On | Security Levels |
 |-----------|------|------|----------|----------------|
-| **ML-DSA** | FIPS 204 | Digital Signature | Dilithium (Lattice) | 2, 3, 5 |
-| **ML-KEM** | FIPS 203 | Key Encapsulation | Kyber (Lattice) | 1, 3, 5 |
-| **SLH-DSA** | FIPS 205 | Digital Signature | SPHINCS+ (Hash) | 1, 3, 5 |
+| **ML-DSA** | FIPS 204 | Digital Signature | ML-DSA (Lattice) | 2, 3, 5 |
+| **ML-KEM** | FIPS 203 | Key Encapsulation | ML-KEM (Lattice) | 1, 3, 5 |
+| **SLH-DSA** | FIPS 205 | Digital Signature | SLH-DSA (Hash) | 1, 3, 5 |
 
 ## ML-DSA (Module-Lattice Digital Signature Algorithm)
 
 ### Overview
 
-ML-DSA, based on Dilithium, provides quantum-resistant digital signatures using the hardness of lattice problems, specifically the Module Learning With Errors (MLWE) and Module Short Integer Solution (MSIS) problems.
+ML-DSA, based on ML-DSA, provides quantum-resistant digital signatures using the hardness of lattice problems, specifically the Module Learning With Errors (MLWE) and Module Short Integer Solution (MSIS) problems.
 
 ### Security Parameters
 
@@ -194,7 +194,7 @@ func Verify(pk *PublicKey, message []byte, sig *Signature, params MLDSAParams) b
 
 ### Overview
 
-ML-KEM, based on Kyber, provides quantum-resistant key encapsulation using the Module Learning With Errors (MLWE) problem. It enables secure key exchange between parties.
+ML-KEM, based on ML-KEM, provides quantum-resistant key encapsulation using the Module Learning With Errors (MLWE) problem. It enables secure key exchange between parties.
 
 ### Security Parameters
 
@@ -366,7 +366,7 @@ func PKEEncrypt(pk []byte, m []byte, r []byte, params MLKEMParams) []byte {
 
 ### Overview
 
-SLH-DSA, based on SPHINCS+, provides quantum-resistant signatures using only hash functions. It offers stateless operation and smaller key sizes but larger signatures.
+SLH-DSA, based on SLH-DSA, provides quantum-resistant signatures using only hash functions. It offers stateless operation and smaller key sizes but larger signatures.
 
 ### Security Parameters
 
@@ -398,7 +398,7 @@ var (
 ```go
 package slhdsa
 
-// SPHINCS+ Key Pair
+// SLH-DSA Key Pair
 type SPHINCSKeyPair struct {
     PublicKey  SPHINCSPublicKey
     SecretKey  SPHINCSSecretKey
