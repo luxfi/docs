@@ -26,7 +26,7 @@ plugins-core/
   vms/                   -- VM definitions (one YAML per VM)
     blobvm.yaml              Content-addressable KV store VM
     spacesvm.yaml            Hierarchical storage VM
-    subnet-evm.yaml          Sovereign L1 EVM (Solidity smart contracts)
+    evm.yaml          Sovereign L1 EVM (Solidity smart contracts)
   chains/               -- Chain definitions (one YAML per chain)
     spaces.yaml              Spaces Chain Demo (SpacesVM)
     wagmi.yaml               Zoo EVM Demo (high-throughput testbed)
@@ -71,11 +71,11 @@ BlobVM provides a content-addressable key-value store chain. Keys are derived fr
 
 SpacesVM provides authenticated, hierarchical key-value storage using any EIP-712 compatible wallet. It powers the Spaces chain where users can claim hierarchical namespaces (like DNS) and store arbitrary key/value data under them.
 
-### Sovereign L1 EVM (Lux EVM, legacy alias `subnet-evm`)
+### Sovereign L1 EVM (Lux EVM, legacy alias `evm`)
 
 | Field | Value |
 |-------|-------|
-| Alias | `subnet-evm` (legacy upstream alias; canonical: Lux EVM) |
+| Alias | `evm` (legacy upstream alias; canonical: Lux EVM) |
 | VM ID | `mgj786NP7uDwBCcq6YwThhaN8FLyybkCa4zBWTQbNgmK6k9A6` |
 | Version | 0.2.7 |
 | Homepage | `https://github.com/luxfi/evm` |
@@ -264,10 +264,10 @@ lpm list-vms
 # Install a VM by alias
 lpm install --vm blobvm
 lpm install --vm spacesvm
-lpm install --vm subnet-evm
+lpm install --vm evm
 
 # Update a VM to latest version
-lpm update --vm subnet-evm
+lpm update --vm evm
 
 # Install a chain (installs all referenced VMs)
 lpm install --chain spaces
