@@ -84,7 +84,7 @@ Lux Deploy (`github.com/luxfi/deploy`) is the production deployment system for L
 
 ### EVM Plugin
 
-- VMID: `srEXiWaHuhNyGwPUi444Tu47ZEDwxTWrbQiuD7FmgSAQ6X7Dy`
+- VMID: `mgj786NP7uDwBCcq6YwThhaN8FLyybkCa4zBWTQbNgmK6k9A6`
 - Installed to `~/.lux/plugins/`
 - Built from `~/work/lux/evm/` if not present
 
