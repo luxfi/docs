@@ -165,7 +165,7 @@ A Lux VM implements the `block.ChainVM` interface:
 
 ```go
 type ChainVM interface {
-    Initialize(ctx *snow.Context, db database.Database, genesisBytes []byte, ...) error
+    Initialize(ctx *consensus.Context, db database.Database, genesisBytes []byte, ...) error
     BuildBlock() (Block, error)
     ParseBlock([]byte) (Block, error)
     GetBlock(ids.ID) (Block, error)
