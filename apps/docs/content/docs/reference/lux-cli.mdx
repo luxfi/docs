@@ -27,7 +27,7 @@ description: "Developer Toolchain for Blockchain Development"
 | `luxfi/sdk` | v1.16.46 | Lux SDK (wallet, API, tx building) |
 | `luxfi/node` | v1.23.21 | Node binary management |
 | `luxfi/evm` | v0.8.35 | EVM/Sovereign L1 EVM configuration |
-| `luxfi/coreth` | v1.21.48 | C-Chain coreth dependency |
+| `luxfi/evm` | v0.8.35 | C-Chain EVM (Lux EVM module, supersedes coreth) |
 | `luxfi/netrunner` | v1.15.7 | Local network runner |
 | `luxfi/genesis` | v1.6.1 | Genesis configuration |
 | `luxfi/warp` | v1.18.5 | Cross-chain Warp messaging |
@@ -75,7 +75,7 @@ lux
     send         C-Chain send convenience
 
   key            Manage cryptographic keys
-    create       Generate new key set from mnemonic (EC, BLS, Corona, ML-DSA)
+    create       Generate new key set from mnemonic (EC, BLS, Pulsar, ML-DSA)
     list         List all key sets
     show         Show key set details and addresses
     delete       Delete a key set
@@ -210,7 +210,7 @@ Keys are stored in `~/.lux/keys/<name>/` with subdirectories per type:
 |------|-----------|---------|
 | EC | secp256k1 | Transaction signing, Ethereum compatibility |
 | BLS | BLS12-381 | Consensus participation, aggregated signatures |
-| Corona | Lattice-based ring | Ring signatures for privacy |
+| Pulsar | Lattice-based ring | Ring signatures for privacy |
 | ML-DSA | NIST Level 3 | Post-quantum digital signatures |
 
 All key types derived from a single BIP39 mnemonic using HKDF. Keys can be locked/unlocked for session management. Backend system supports multiple storage providers (keychain, file, K-Chain distributed).
@@ -302,7 +302,7 @@ Uses canonical Helm chart at `~/work/lux/devops/charts/lux/` (configurable via `
 lux gpu status
 ```
 
-Reports availability for: NTT operations (Corona consensus), FHE operations (ThresholdVM), lattice cryptography. Builds with CGO for GPU support (`cgo_enabled.go` / `cgo_disabled.go`).
+Reports availability for: NTT operations (Pulsar consensus), FHE operations (ThresholdVM), lattice cryptography. Builds with CGO for GPU support (`cgo_enabled.go` / `cgo_disabled.go`).
 
 ## Configuration
 
