@@ -309,10 +309,10 @@ Reports availability for: NTT operations (Pulsar consensus), FHE operations (Thr
 Config file: `$HOME/.lux/cli.json` (JSON format).
 
 Environment variables:
-- `LUX_NODE_PATH` -- path to luxd binary
-- `LUX_NETRUNNER_PATH` -- path to netrunner binary
-- `LUX_EVM_PATH` -- path to EVM binary
-- `LUX_PLUGINS_DIR` -- plugins directory
+- `NODE_PATH` -- path to luxd binary
+- `NETRUNNER_PATH` -- path to netrunner binary
+- `EVM_PATH` -- path to EVM binary
+- `PLUGINS_DIR` -- plugins directory
 - `LUX_NON_INTERACTIVE=1` -- disable prompts
 - `CI=1` -- also disables prompts
 - `LUX_MNEMONIC` -- mnemonic for key derivation
