@@ -104,6 +104,14 @@ const sections: Section[] = [
       { name: 'Faucet', desc: 'Get test LUX tokens for development on Lux testnets',            href: '/faucet' },
     ],
   },
+  {
+    title: 'Strategy',
+    subtitle: 'IP, licensing, and the open-core enterprise edition.',
+    items: [
+      { name: 'Licensing', desc: 'Three-tier IP strategy — BSD-3 commodity, Eco patent-protected, private moat', href: '/licensing' },
+      { name: 'Open Core', desc: 'How Lux ships proprietary enterprise bits on top of an open-source core',      href: '/open-core' },
+    ],
+  },
 ];
 
 const chains = [
