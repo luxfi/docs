@@ -29,6 +29,31 @@ and "Commercial Use" are the ones in the **Lux Ecosystem License v1.2**
 text — see any Eco-tier repo's `LICENSE` for the binding language. Where
 this page and the `LICENSE` disagree, the `LICENSE` wins.
 
+## Runtime gate vs license tier
+
+A common point of confusion: **every Lux artifact is licensed**. The
+question is not "is there a license" — it is "which license, and is
+there a runtime token check on top of it". The table below separates
+those two concerns.
+
+| Layer | Code license | Runtime token? | Enforcement model |
+|-------|--------------|----------------|-------------------|
+| BSD-3-Clause commodity | BSD 3-Clause (or inherited Apache-2.0 / MIT / GPL / LGPL / MPL / BSL where vendored) | None | Permissive open source; commercial use and forks unrestricted under the named license. |
+| Patent-protected source-visible (Eco) | Lux Ecosystem License v1.2, Lux Research with Patent Reservation, or Lux Genesis License | None | Contract-only — source is visible so prior art is fixed and Authorized Networks can fork; commercial use outside Authorized Networks legally requires a signed paid license (Confluent Server / MongoDB SSPL pattern). |
+| Closed performance moat | Commercial License Only (`lux-private/*`, not on public GitHub) | **`luxfi/license` token verified at startup** | Fail-closed runtime check (HashiCorp Vault EE / NVIDIA cuDNN pattern) — token signed by Lux Industries Inc., verified offline against an embedded public key. No phone-home. |
+
+Two things this table makes explicit:
+
+1. **The public CPU binary is not "unlicensed"**. It ships under
+   BSD-3-Clause (or, for vendored upstreams, the inherited Apache /
+   MIT / GPL / LGPL / MPL / BSL). What it lacks is a runtime token
+   check, because there is nothing in that binary to gate.
+2. **The runtime token gate at `cevm v0.50.0` and later only fires on
+   tier-3 GPU/FPGA backends**. CPU paths run unmodified under their
+   actual public licenses. Removing or bypassing the token does not
+   make the closed code free — the closed code never shipped in the
+   public binary in the first place (two-binary distribution).
+
 ## What this strategy is and is not
 
 | | |
