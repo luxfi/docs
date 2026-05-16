@@ -47,10 +47,23 @@ the highest-performance moat, **license key file** for runtime feature
 gating of that moat, and **contract-only** for the patent-protected
 source-visible Eco tier.
 
+> **Runtime gate vs license tier** — every Lux artifact is licensed.
+> The question is which license, and whether a runtime token check is
+> layered on top. Tiers 1 and 2 have no runtime token check; tier 3
+> does. Removing the token does not make the closed code free — the
+> closed code never shipped in the public binary in the first place.
+> The detailed table lives in
+> [IP and Licensing Strategy → Runtime gate vs license tier](/licensing#runtime-gate-vs-license-tier).
+
 ### Tier 1 — BSD-3 commodity code
 
-Pattern: none required. Pure BSD-3-Clause. Free for any purpose including
-commercial. No license key, no entitlement check, no contract.
+Pattern: none required at runtime. The code itself ships under the
+BSD-3-Clause license (or, for vendored upstreams, the inherited
+Apache-2.0 / MIT / GPL / LGPL / MPL / BSL license that already governs
+that codebase). Use is governed by that license. No additional
+commercial-license token at runtime; no entitlement check; no separate
+contract with Lux Industries Inc. needed for commercial use beyond
+honoring the named open-source license.
 
 These are the building blocks: codecs, container types, networking glue,
 keychain abstractions, SDK stubs, CLI plumbing. See the
