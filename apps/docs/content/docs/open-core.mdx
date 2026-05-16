@@ -1,0 +1,302 @@
+---
+title: Open-Core Enterprise Edition
+description: How Lux ships proprietary enterprise bits on top of an open-source core — industry patterns, where Lux lands, and the build / runtime mechanics.
+icon: Layers
+---
+
+> This page mirrors the canonical Open-Core EE strategy at
+> [github.com/luxfi/.github/profile/OPEN-CORE-EE.md](https://github.com/luxfi/.github/blob/main/profile/OPEN-CORE-EE.md).
+> The [IP and Licensing Strategy](/licensing) page states the contract; this
+> page explains the mechanism. Where this page and any repo `LICENSE`
+> disagree, the `LICENSE` wins.
+
+How Lux ships proprietary enterprise bits on top of an open-source core, what
+patterns the rest of the industry uses, and where Lux sits on that map.
+
+This page is the operational companion to the
+[IP and Licensing Strategy](/licensing) page. That page states the contract;
+this page explains the mechanism.
+
+---
+
+## 1. Industry Patterns for Open-Core Enterprise Editions
+
+Open-core vendors all face the same problem: a freely-distributed code base
+plus a paid enterprise feature set, with some technical or legal barrier
+between the two. The industry has converged on five primitives. Most vendors
+combine two or three.
+
+| Pattern | Used by | Mechanism | Trade-off |
+|---------|---------|-----------|-----------|
+| **License key file** | HashiCorp Vault Enterprise, GitLab EE, Elastic EE, Sysdig, Grafana Enterprise | Signed token (often JWT or HashiCorp's signed JSON), embedded vendor public key, offline verification at startup or first feature use | Customer-friendly: works air-gapped. Enforcement is technical (refuse to start / refuse the feature) plus contractual. Token theft is bounded by signed expiry + revocation list. |
+| **Two-binary distribution** | NVIDIA CUDA Toolkit + cuDNN/TensorRT, Apple SDK + private frameworks, Intel oneAPI + closed kernels, Anthropic SDK + closed model weights | Open source code is BSD/Apache; closed binary blobs (kernels, weights, accelerators) ship under EULA. Public build links against headers and stub libs and runs CPU-only; commercial build links against the closed objects. | Cleanest separation — no DRM in the open code, no source leak from the closed code. Customer manages two distributions. |
+| **Phone-home telemetry** | (Largely abandoned. MongoDB Enterprise older versions, some early Atlassian) | Runtime check pings vendor API for entitlement | Privacy and ops concerns kill it for serious enterprise. Mostly historical; modern equivalents are anonymized usage telemetry, not entitlement checks. |
+| **Cloud-gated** | GitHub Enterprise Cloud, Elastic Cloud, MongoDB Atlas, Confluent Cloud, Databricks | Enterprise features only ship in vendor-hosted SaaS. Self-host gets a stripped feature set or nothing. | Vendor controls value capture and ops complexity. Customer trades self-hosting freedom for a managed surface. |
+| **Contract-only** | Confluent Server, MongoDB Server, Redis (post-RSAL), Elastic (post-SSPL), CockroachDB CCL | Source is visible. Commercial use legally requires a paid license. No runtime check. | Pure trust + legal enforcement. Cheapest to implement; relies on enterprise customers actually procuring the license. |
+
+A sixth pattern — **dual licensing** (e.g. MySQL AB's GPL + commercial, Qt's
+LGPL + commercial) — is technically a special case of "contract-only": the
+runtime is identical between tiers, only the legal regime differs.
+
+---
+
+## 2. Where Lux Lands
+
+Lux is a hybrid of three of these patterns: **two-binary distribution** for
+the highest-performance moat, **license key file** for runtime feature
+gating of that moat, and **contract-only** for the patent-protected
+source-visible Eco tier.
+
+### Tier 1 — BSD-3 commodity code
+
+Pattern: none required. Pure BSD-3-Clause. Free for any purpose including
+commercial. No license key, no entitlement check, no contract.
+
+These are the building blocks: codecs, container types, networking glue,
+keychain abstractions, SDK stubs, CLI plumbing. See the
+[Repository classification table](/licensing#repository-classification);
+they are the rows tagged "BSD-3-Clause".
+
+### Tier 2 — Eco / Patent-protected source-visible code
+
+Pattern: **contract-only**. The source is on GitHub. The license file in
+each repo (`Lux Ecosystem License v1.2` or `Lux Research with Patent
+Reservation`) makes commercial use outside Authorized Networks legally
+require a paid license. There is no runtime check today. A `luxfi/license`
+gate could be added later if required by a specific commercial deal; the
+default posture is trust + legal enforcement.
+
+This is the same model Confluent Server, MongoDB Server (pre-cloud),
+Cockroach CCL, and Elastic (post-SSPL) use. It optimizes for prior-art
+disclosure and contributor visibility. Researchers and Authorized Networks
+get it free. A sovereign L1 fork that wants to embed Eco code commercially
+talks to `licensing@lux.network` first.
+
+### Tier 3 — Closed private moat
+
+Pattern: **two-binary distribution** plus **license key file**.
+
+The high-performance C++/CUDA/MLX/FPGA implementations live in
+`lux-private/*` (separate org, not on public GitHub). The public Lux build
+never depends on these repos. CMake gates the GPU/FPGA paths with
+`if(TARGET lux::gpu-kernels)` style conditionals; missing private code
+takes the CPU-only path, never fails the build.
+
+Commercial customers receive:
+
+1. GHCR pull credentials for the `ghcr.io/lux-private/*` images that have
+   the private code linked in.
+2. A signed `license.jwt` issued by Lux Industries.
+3. The standard public source repos (unchanged).
+
+The commercial binary calls `lux::license::require_feature_or_die("gpu")`
+at startup or first feature use. The token is verified against the embedded
+Lux Industries public key. No phone-home. Air-gapped deployments work
+unchanged. The token is signed JWT with expiry + JWKS-style key rotation —
+see the `luxfi/license` library for the binding API.
+
+---
+
+## 3. Three-Tier Map
+
+This expands the table in the [IP and Licensing Strategy](/licensing) page
+with the build/runtime mechanics for each tier.
+
+| Tier | Source | Build behavior | Runtime gate |
+|------|--------|----------------|--------------|
+| 1: BSD-3 commodity | Public (`github.com/luxfi/*`) | Always builds. No optional dependencies. | None. |
+| 2: Eco / Research+Patent | Public (`github.com/luxfi/*`) | Always builds. | Contract enforcement. A `luxfi/license` gate could be added later if a specific deal requires it. |
+| 3: Closed private moat | Private (`github.com/lux-private/*`, not on public GitHub) | Optional. CMake uses `find_package(lux-gpu-kernels CONFIG QUIET)` style probes. Public build proceeds CPU-only when private code is absent. | `luxfi/license` token check at startup or first feature use. Commercial features hard-fail without a valid token. |
+
+---
+
+## 4. Build Patterns
+
+### Public CI (any contributor, any fork)
+
+- Default build is CPU-only. No private dependencies.
+- CMake / Cargo / `go build` produce a working node binary that passes the
+  full public test suite using software fall-backs for everything the
+  commercial build accelerates.
+- A `find_package(... CONFIG QUIET)` (CMake) or `cfg(feature = "...")`
+  (Rust) or build tag (Go) decides whether the accelerated path is
+  compiled in. The accelerated path is wrapped in an `if(TARGET
+  lux::gpu-kernels) ... else ... cpu-only ... endif()` — the CPU branch is
+  the default.
+- Build NEVER fails because private code is absent. That is the contract.
+
+### Commercial CI (Lux Industries runners)
+
+- Separate workflow authenticates against the `lux-private` GitHub org via
+  `gh auth` with a machine token.
+- Pulls `lux-private/gpu-kernels`, `lux-private/dex`, `lux-private/fpga` as
+  needed.
+- Builds with the accelerated paths enabled.
+- Pushes to a private GHCR namespace tagged for the entitled customer or
+  to a shared `ghcr.io/lux-private/*` namespace gated by GHCR pull
+  permissions.
+- The resulting binary embeds the Lux Industries public key for
+  `luxfi/license` token verification.
+
+### What about reproducible public builds?
+
+The CPU-only public binary is fully reproducible from the public source
+tree. The commercial binary is reproducible from public source + private
+source for any party who has access to both. There is no third "stripped"
+build — the public build is a real production node, just slower.
+
+---
+
+## 5. Distribution Channels
+
+| Tier | Channel | Auth |
+|------|---------|------|
+| Public CPU binary | `github.com/luxfi/<repo>/releases` and `ghcr.io/luxfi/*` | None — anonymous pull |
+| Commercial GPU/FPGA binary | `ghcr.io/lux-private/*` (private images), or per-licensee GHCR namespace | License key plus GHCR pull token issued at sale |
+| Source-only Eco commercial use | `github.com/luxfi/<eco-repo>` public source plus signed commercial license | Anonymous source clone; signed commercial agreement to use commercially outside an Authorized Network |
+
+The [IP and Licensing Strategy](/licensing#commercial-licensing) contacts
+apply: `licensing@lux.network` for Ecosystem v1.2 and the private moat;
+`oss@lux.network` for the Research-with-Patent-Reservation tier.
+
+---
+
+## 6. Customer Journey — Three Concrete Scenarios
+
+### Scenario A: Researcher or academic
+
+- Clones any `luxfi/*` repo, builds locally, runs a node.
+- Falls under the Eco license's "Research Use" clause for any
+  patent-protected code touched.
+- No license key. No contract. No payment.
+- Publishes findings normally; cites the relevant Lux paper.
+
+### Scenario B: Commercial L1 built on a Descending Chain
+
+- Authorized Network status is automatic (the Descending Chain inherits
+  it).
+- Free use of every `luxfi/*` repo, including Eco-tier patent-protected
+  code, while operating as part of that Authorized Network.
+- May optionally contract with Lux Industries for `lux-private/*` GPU,
+  DEX, or FPGA acceleration. The base Authorized-Network use stays free;
+  the contract only buys the closed-moat performance.
+
+### Scenario C: Sovereign commercial L1 or hosted commercial product
+
+- Signs a commercial license covering whichever Eco-tier repos are
+  embedded.
+- Receives `ghcr.io/lux-private/*` pull credentials for any closed-moat
+  components contracted for.
+- Receives a signed `license.jwt` from Lux Industries listing the entitled
+  features and an expiry.
+- Deploys the commercial binary in production. Binary verifies the token
+  against the embedded Lux Industries public key on startup; the
+  contracted GPU / FPGA / DEX features unlock. Without a valid token, the
+  commercial features hard-fail and the binary refuses to run them.
+
+---
+
+## 7. License API Reference
+
+The `luxfi/license` library (BSD-3-Clause; offline-verifiable signed tokens
+with key rotation, scoped feature lists, and optional expiry) is the one
+and only runtime gate for the closed moat. C++ integration:
+
+```cpp
+#include <lux/license.hpp>
+
+int main() {
+    lux::license::require_feature_or_die("gpu");
+    // ... rest of program ...
+}
+```
+
+Same surface in Go (`license.RequireFeatureOrDie("gpu")`) and Rust
+(`license::require_feature_or_die("gpu")`). All bindings verify offline
+against an embedded vendor public key.
+
+The library's source, full API, and token format live in
+[`luxfi/license`](https://github.com/luxfi/license). This page documents
+only the integration story — the binding contract is the library's README
+and the customer's executed commercial license.
+
+---
+
+## 8. Comparison Table — Lux vs Other Open-Core Vendors
+
+| Property | Lux | HashiCorp Vault EE | NVIDIA CUDA + cuDNN | GitLab CE / EE |
+|----------|-----|--------------------|---------------------|----------------|
+| Open-source core source-visible | Yes (BSD-3 + Eco) | Yes (MPL-2.0, until BSL-1.1 in 2023) | Partial — driver shim is open; runtime is closed | Yes (MIT) |
+| Enterprise tier source-visible | Yes (Eco patent-protected on GitHub); No (private moat) | No — EE source is closed | No — cuDNN / TensorRT closed | Yes — EE source visible under proprietary license |
+| Distribution model | Two-binary (CPU vs GPU/FPGA) plus shared open source | Single binary; license key unlocks features | Two binary (driver vs cuDNN) | Single binary; license key unlocks features |
+| Runtime entitlement check | Closed moat: signed JWT, offline | Signed license file, offline | Closed-binary EULA only; no JWT | Signed license file, online check optional |
+| Phone-home required | No | No | No | Optional (telemetry) |
+| Air-gap friendly | Yes | Yes | Yes (closed binaries shipped offline) | Yes |
+| Contract-only tier (no runtime check) | Yes (Eco source-visible) | No | No | No |
+| Free for research / academia | Yes — explicit "Research Use" clause | Limited — open core only, no EE | Yes — closed binaries free for non-commercial dev use | Yes — open-source CE |
+
+---
+
+## 9. FAQ
+
+**Why offer source-visible Eco code at all instead of putting everything
+non-BSD into the private moat?**
+Three reasons. First, prior-art disclosure: publishing the inventions
+fixes the priority date and protects against external patent claims.
+Second, contributor and auditor visibility: serious commercial users want
+to read and audit the consensus and crypto code before they bet on it.
+Third, Authorized Network ergonomics: ecosystem participants get the
+fast-path source for free without a contract.
+
+**Can I run Lux GPU code without a license for development?**
+Not from the closed binary — `luxfi/license` will refuse the feature.
+But the public CPU build runs the full functional surface; you can
+develop, test, and benchmark against it. When you ship to production with
+the GPU acceleration, you contract for a license.
+
+**What happens if my license expires?**
+The commercial features stop. The binary continues to run in CPU-only
+mode where applicable; features that have no CPU fall-back hard-fail with
+a clear "license expired" log line. Renewal is a token swap, no rebuild,
+no restart contract — drop the new `license.jwt` in place and signal the
+process.
+
+**How do I rotate keys or revoke licenses?**
+The `luxfi/license` token format supports a key ID (`kid`) field and a
+JWKS-style verification key set embedded in the binary. Lux Industries
+rotates the signing key on the standard schedule documented in
+`luxfi/license`; revocation is enforced via short-lived tokens plus a
+signed revocation list checked at token-load time.
+
+**Can a contracted customer extract the GPU code from the
+`lux-private/*` repos and redistribute it?**
+No. The commercial license forbids redistribution of `lux-private/*`
+source or binaries outside the contracting entity. This is exactly the
+NVIDIA cuDNN model: source-restricted, binary distribution under EULA.
+GHCR pull credentials are scoped per licensee; a leaked credential is a
+contract breach plus a revocable token.
+
+**Why not just go pure cloud-gated like Atlas or GitHub EE Cloud?**
+Sovereign-network customers — and the regulated entities Lux supplies
+infrastructure to — need to run on-prem and air-gapped. Cloud-only would
+exclude them. Lux ships a self-host story by design.
+
+**Why not pure contract-only across the board?**
+The closed moat (GPU kernels, FPGA bitstreams, DEX matching engine) is
+both the highest-performance and the lowest-tolerance-for-leak surface.
+A signed-token gate stops the casual case where a license expires or is
+deployed beyond its scope; the legal contract handles the deliberate-bad-
+actor case. The Eco tier doesn't need the runtime gate because the
+performance moat isn't in that source — it's in the closed binary that
+calls it.
+
+---
+
+## See also
+
+- [IP and Licensing Strategy](/licensing) — parent document, with the
+  binding tier classification and contact addresses
+- [`luxfi/license`](https://github.com/luxfi/license) — runtime license
+  library, token format, key rotation, and binding API
+- The `LICENSE` file in any individual `luxfi/*` repository — the binding
+  legal text for that repository
