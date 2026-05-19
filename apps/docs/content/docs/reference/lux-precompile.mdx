@@ -167,7 +167,7 @@ The AllowList abstraction (`precompile/allowlist/`) provides role-based access c
 | `NoRole` | 0 | No access |
 | `EnabledRole` | 1 | Can call the precompile |
 | `AdminRole` | 2 | Can modify the allowlist AND call |
-| `ManagerRole` | 3 | Can add/remove Enabled only (Durango+) |
+| `ManagerRole` | 3 | Can add/remove Enabled only |
 
 ABI methods: `setAdmin(address)`, `setManager(address)`, `setEnabled(address)`, `setNone(address)`, `readAllowList(address)`.
 
@@ -176,7 +176,7 @@ Role modification rules:
 - Manager can only toggle between Enabled and NoRole
 - Enabled and NoRole cannot modify the list
 
-Events are emitted on role changes (Durango+) with gas cost `AllowListEventGasCost`.
+Events are emitted on role changes with gas cost `AllowListEventGasCost`.
 
 ### Contract Deployer AllowList
 

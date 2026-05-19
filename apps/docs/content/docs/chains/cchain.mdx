@@ -26,7 +26,11 @@ The C-Chain uses standard EVM 18-decimal Wei denomination, matching Ethereum con
 
 ## Configuration
 
-The C-Chain is configured via the EVM genesis embedded in the network genesis. Key parameters include EVM fork activation timestamps. For established chains, fork overrides can be applied via an `upgrade.json` file placed in the chain data directory:
+The C-Chain is configured via the EVM genesis embedded in the network
+genesis. Lux activates all C-Chain features at genesis
+(activate-all-implicitly). The legacy `networkUpgradeOverrides`
+timestamp fields exist for header-schema compatibility with migrated
+chain-EVM state (LP-3641) and are pinned to genesis (timestamp `0`):
 
 ```json
 {
@@ -39,7 +43,8 @@ The C-Chain is configured via the EVM genesis embedded in the network genesis. K
 }
 ```
 
-The C-Chain supports the Cancun blob schedule:
+EVM opcode hardfork gates (Shanghai, Cancun) are kept because they
+gate bytecode behavior; the C-Chain supports the Cancun blob schedule:
 
 ```json
 {

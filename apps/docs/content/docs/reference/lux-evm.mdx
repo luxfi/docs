@@ -80,7 +80,7 @@ The default mode when running as part of the Lux primary network:
 
 - **Atomic transactions** for cross-chain transfers between X-Chain and C-Chain via shared memory
 - **Integrated validator set** from P-Chain -- no separate staking
-- **Network-defined hard forks** (EVM, Durango, Etna, Fortuna, Granite)
+- **Activate-all-implicitly**: every Lux feature is live at genesis. Ethereum hardfork gates (Shanghai/Cancun) still control opcode behavior; Lux network features are not separately gated.
 - **Chain ID**: 96369 (mainnet), 96368 (testnet), 96370 (devnet)
 - **Warp address**: Legacy `0x0200000000000000000000000000000000000005` (also accessible at `0x16201`)
 
@@ -220,7 +220,7 @@ github.com/luxfi/evm
 │   ├── config.go        -- ChainConfig (EVM forks, chain IDs)
 │   └── extras/          -- Lux-specific extensions
 │       ├── config.go          -- FeeConfig, NetworkUpgrades, GenesisPrecompiles
-│       ├── network_upgrades.go -- EVM/Durango/Etna/Fortuna/Granite timestamps
+│       ├── network_upgrades.go -- Legacy header-schema timestamps (all set to genesis on Lux)
 │       ├── precompiles.go     -- Precompile configuration
 │       ├── rules.go           -- Chain rules per block
 │       └── state_upgrade.go   -- State upgrade definitions
@@ -273,16 +273,22 @@ Key interfaces defined in `consensus/consensus.go`:
 - `ChainReader`: Extends header reader with full block access
 - `Engine`: Author, VerifyHeader, VerifyUncles, Prepare, Finalize, FinalizeAndAssemble, CalcDifficulty, Close
 
-### Network Upgrades (Fork Order)
+### Feature Activation
 
-Timestamp-based fork activation in `params/extras/network_upgrades.go`:
+Lux runs the full feature set at genesis. The Ethereum hardfork gates
+that control EVM opcode behavior (Shanghai, Cancun) stay — they are
+bytecode-level rules. Lux-specific network features have no separate
+timestamp gate.
 
-| Fork | Eth Equivalent | Notes |
-|------|---------------|-------|
-| **EVM** | Pre-Shanghai | Always active at genesis (timestamp 0) |
-| **Durango** | Shanghai | Warp messaging, EIP-3651/3855/3860/6049 (EIP-4895 excluded) |
-| **Etna** | Cancun | EIP-4844 blob schedule configuration required |
-| **Fortuna** | -- | Lux-specific, no direct EVM effect |
+| EVM gate | Effect |
+|----------|--------|
+| **Shanghai** | EIP-3651/3855/3860/6049 (EIP-4895 excluded — Lux has no PoS withdrawals) |
+| **Cancun** | EIP-4844 blob schedule configuration required |
+
+The legacy `params/extras/network_upgrades.go` timestamp fields exist
+for header-byte compatibility with migrated chain-EVM state (LP-3641).
+On Lux all of these fields are set to genesis (`InitiallyActiveTime`)
+so every block sees the full ruleset.
 
 ### Built-in Stateful Precompiles
 
