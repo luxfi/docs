@@ -1,16 +1,21 @@
 ---
-title: "Lux Quasar — PQ Consensus Umbrella"
-description: "Umbrella spec + profile registry + cross-primitive composition proofs for Lux post-quantum consensus. Defines QuasarCert wire format and Pulsar / Aurora / Polaris cert profiles."
+title: "Lux Quasar"
+description: "The supermassive black hole at the center of the Lux post-quantum finality universe — pulls Pulsar (M-LWE) + Corona (R-LWE) + Magnetar (SLH-DSA) + BLS + Z-Chain Groth16 / P3Q into per-round finality certs. Defines QuasarCert wire format and Pulsar / Aurora / Polaris cert profiles."
 ---
 
 ## Overview
 
-**Quasar** is the Lux **PQ consensus suite umbrella** — it owns the
-`QuasarCert` wire format and the cert-profile registry that composes
-the underlying PQ primitives into per-round finality certificates.
+**Quasar** is the supermassive black hole at the center of the Lux
+post-quantum finality universe. Every consensus event in every Lux
+primary-network chain is pulled into a per-round `QuasarCert` — a
+PQ-finality certificate composed from the underlying threshold
+primitives (Pulsar M-LWE, Corona R-LWE, Magnetar SLH-DSA), the
+classical BLS aggregate fast-path, and the Z-Chain Groth16 / P3Q
+on-chain verifier roll-up. Nothing escapes Quasar's event horizon
+without going through PQ finality.
 
 - **Repo**: [github.com/luxfi/quasar](https://github.com/luxfi/quasar)
-- **Role**: Brand-level spec + profile registry + composition proofs
+- **Role**: Spec + profile registry + composition proofs
 - **Not an implementation** — the consensus-engine binding lives at
   [`luxfi/consensus/protocol/quasar/`](https://github.com/luxfi/consensus/tree/main/protocol/quasar)
 
