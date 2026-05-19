@@ -1,0 +1,53 @@
+---
+title: "Lux Proto — Primary Network Protocol Definitions"
+description: "P-Chain, X-Chain, and shared chain types + Fx plugins for the Lux primary network. Renamed from luxfi/protocol in 2026-05 to decomplect from the consensus/protocol/ subprotocol namespace."
+---
+
+## Overview
+
+**`luxfi/proto`** is the **Lux primary-network protocol definitions**
+module — chain types (P-Chain, X-Chain UTXO), transaction codecs,
+block types, RPC API types, RPC database adapter, and Fx plugins
+(secp256k1fx, mldsafx, slhdsafx, ed25519fx, secp256r1fx).
+
+- **Repo**: <https://github.com/luxfi/proto>
+- **Module path**: `github.com/luxfi/proto`
+- **Latest tag**: `v1.0.0`
+
+### Naming history
+
+Renamed from `luxfi/protocol` → `luxfi/proto` on 2026-05-18 to
+decomplect from the `consensus/protocol/` sub-protocols subdir
+(photon / wave / focus / prism / horizon / flare / ray / field /
+nova / nebula / chain / quasar / auth). The two were word-colliding
+but lived in different layers; the rename ends the namespace overlap.
+
+GitHub auto-redirects `luxfi/protocol` fetches to `luxfi/proto` for
+the grace window. All 11 Lux consumer repos (evmgpu, cli, vm, sdk,
+evm, keys, coreth, node, chains, genesis, netrunner) cascade-migrated
+to the new module path in the same window.
+
+## What's in the repo
+
+| Subdir | Content |
+|---|---|
+| `p/` | P-Chain types (validators, blocks, txs, warp, signer, stakeable, fx, fee) |
+| `x/` | X-Chain UTXO types (block, builder, executor, state, txs, metrics) |
+| `txs/` | Shared transaction codecs (mempool) |
+| `fx/` | Fx plugins for UTXO verification (secp256k1, mldsa, slhdsa, ed25519, secp256r1) |
+| `rpcdb/` | RPC database adapter |
+| `api/` | RPC API types |
+
+## Consumed by (11 repos)
+
+- `luxfi/node` — luxd runtime
+- `luxfi/chains` — VM implementations
+- `luxfi/evm`, `luxfi/coreth`, `luxfi/evmgpu` — EVM stack
+- `luxfi/sdk`, `luxfi/cli`, `luxfi/netrunner` — tooling
+- `luxfi/genesis`, `luxfi/keys`, `luxfi/vm` — supporting infra
+
+## Cross-references
+
+- [`luxfi/consensus`](https://github.com/luxfi/consensus) — consensus engine (uses proto for chain types)
+- [`luxfi/node`](https://github.com/luxfi/node) — luxd runtime (primary consumer)
+- [`lps/RENAME-PROTOCOL-TO-PROTO.md`](https://github.com/luxfi/LPs/blob/main/RENAME-PROTOCOL-TO-PROTO.md) — rename cascade record

@@ -1,0 +1,84 @@
+---
+title: "Lux Pulsar — Threshold ML-DSA-65 (FIPS 204)"
+description: "Production threshold post-quantum signature primitive for Lux Quasar consensus. NIST MPTC submission Class N1 + N4. Single canonical home for impl + spec + EC/Lean proofs + Jasmin + KAT + cut tool."
+---
+
+## Overview
+
+**Pulsar** is the Lux production **threshold ML-DSA-65** library — a
+2-round threshold signing + DKG system whose generated signatures are
+verifiable by **unmodified FIPS 204 ML-DSA-65 verification**.
+Targeting NIST MPTC Class **N1** (single-party-compatible threshold
+signing) + Class **N4** (multi-party key generation with public-key
+preservation across resharing).
+
+- **Repo**: <https://github.com/luxfi/pulsar>
+- **Module path**: `github.com/luxfi/pulsar`
+- **Latest tag**: `v1.0.9`
+- **Cryptographer sign-off**: APPROVED WITH GATES (`CRYPTOGRAPHER-SIGN-OFF.md`)
+- **Status**: Production for Lux Quasar consensus; NIST MPTC v0.1 submission-ready (cut deadline 2026-11-16)
+
+### Headline claim
+
+> Every signature produced by a Pulsar threshold ceremony
+> (DKG → Round-1 → Round-2 → Combine) is **bit-identical** to a
+> signature produced by single-party FIPS 204 ML-DSA-65 on the same
+> message and group public key.
+
+A FIPS-validated ML-DSA verifier (BoringSSL FIPS, AWS-LC, OpenSSL 3.0
+PQ provider, cloudflare/circl) accepts a Pulsar signature without
+modification.
+
+## What's in the repo
+
+| Artifact | Path | Status |
+|---|---|---|
+| Cover sheet | `SUBMISSION.md` | v0.1 ready |
+| One-page exec summary | `NIST-SUBMISSION.md` | v0.1 ready |
+| Standalone spec | `SPEC.md` + `spec/pulsar.tex` | drafted |
+| Patent grant | `PATENTS.md` | royalty-free |
+| Trust accounting | `AXIOM-INVENTORY.md` + `PROOF-CLAIMS.md` + `TRUSTED-COMPUTING-BASE.md` | v0.1 |
+| Op → FIPS 204 § map | `FIPS-TRACEABILITY.md` | v0.1 |
+| Per-version proof log | `CHANGELOG.md` | through v1.0.9 |
+| Deployment runbook | `DEPLOYMENT-RUNBOOK.md` | operator-facing |
+| Cryptographer sign-off | `CRYPTOGRAPHER-SIGN-OFF.md` | APPROVED WITH GATES |
+| Reference implementation | `ref/go/pkg/pulsar/` | Go, 89.7% coverage, race-clean |
+| KAT vectors | `vectors/` | deterministic round-trip |
+| EasyCrypt theories | `proofs/easycrypt/` | 13/13 compile, 0/0 admits |
+| Lean ↔ EC bridge | `proofs/lean-easycrypt-bridge.md` | 5/5 bridges, CI-guarded |
+| Jasmin constant-time | `jasmin/{lib,ml-dsa-65,threshold}/` | 3/3 CI green |
+| Class N1 interop | `test/interoperability/n1_class_test.go` | 19/19 subtests vs cloudflare/circl |
+| Constant-time analysis | `ct/dudect/` | arm64 + x86_64 harness; nightly 10⁹-sample gate |
+| IETF Internet-Draft | `docs/ietf-draft-skeleton.md` | drafted |
+| Cut tool | `scripts/cut-submission.sh` | tarball-from-tag pipeline |
+
+## Audit-response closures (since v1.0.6 / v1.0.7)
+
+| ID | Issue | Status |
+|---|---|---|
+| **CR-6** | DKG round-1 commit was vacuous | **CLOSED** — commitments bound to long-term identity public key + DKG session-id |
+| **CR-7** | Threshold-sign session keys were absent | **CLOSED** — per-pair ephemeral session keys derived from authenticated ML-KEM-768 + HKDF |
+| **CR-8** | DKG / reshare envelopes shipped in plaintext | **CLOSED** — KEM-wrapped + ML-DSA-65 authenticated under long-term identity |
+
+All three closures apply to **both** the small-committee (n ≤ 256,
+GF(257)) and large-committee (n > 256, GF(q)) paths as of v1.0.7;
+`legacyDeriveMACKeyLarge` removed.
+
+## Consumed by
+
+- [`luxfi/consensus`](https://github.com/luxfi/consensus) — Quasar
+  consensus engine binds Pulsar via `protocol/quasar/wave_signer.go`
+- [`luxfi/quasar`](https://github.com/luxfi/quasar) — umbrella spec
+  registers Pulsar as the M-LWE threshold primitive feeding the
+  Pulsar / Aurora / Polaris cert profiles
+- [`luxfi/node`](https://github.com/luxfi/node) — luxd runtime; pulls
+  Pulsar transitively via consensus
+
+## Cross-references
+
+- [LP-073](https://github.com/luxfi/LPs/blob/main/LP-073-pulsar.md) — production library LP
+- [LP-171](https://github.com/luxfi/LPs/blob/main/LP-171-pulsar-dkg.md) — DKG protocol LP
+- [LP-180](https://github.com/luxfi/LPs/blob/main/LP-180-nist-mptc-submission.md) — NIST MPTC submission LP
+- [`lps/CRYPTO-CANONICAL.md`](https://github.com/luxfi/LPs/blob/main/CRYPTO-CANONICAL.md) — canonical crypto wiring
+- [`lps/HANZO-CRYPTO-SUITE.md`](https://github.com/luxfi/LPs/blob/main/HANZO-CRYPTO-SUITE.md) — broader crypto inventory
+- [`lps/ROADMAP-CRYPTO-STACK.md`](https://github.com/luxfi/LPs/blob/main/ROADMAP-CRYPTO-STACK.md) — multi-year roadmap

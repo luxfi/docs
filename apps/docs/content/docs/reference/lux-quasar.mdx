@@ -1,0 +1,72 @@
+---
+title: "Lux Quasar — PQ Consensus Umbrella"
+description: "Umbrella spec + profile registry + cross-primitive composition proofs for Lux post-quantum consensus. Defines QuasarCert wire format and Pulsar / Aurora / Polaris cert profiles."
+---
+
+## Overview
+
+**Quasar** is the Lux **PQ consensus suite umbrella** — it owns the
+`QuasarCert` wire format and the cert-profile registry that composes
+the underlying PQ primitives into per-round finality certificates.
+
+- **Repo**: <https://github.com/luxfi/quasar>
+- **Role**: Brand-level spec + profile registry + composition proofs
+- **Not an implementation** — the consensus-engine binding lives at
+  [`luxfi/consensus/protocol/quasar/`](https://github.com/luxfi/consensus/tree/main/protocol/quasar)
+
+## Cert Profiles
+
+| Profile | Composition | Cert size (n=21) | Use case |
+|---|---|---|---|
+| **Pulsar** | BLS ‖ Pulsar | ~3.5 KB | PQ floor — single PQ kernel, smallest cert |
+| **Aurora** | BLS ‖ Pulsar ‖ Corona | ~37 KB | Intra-lattice diversity — two lattice constructions per cert |
+| **Polaris** | BLS ‖ Pulsar ‖ Corona ‖ Magnetar | ~53 KB | Maximum-assurance cross-family — lattice + hash-based |
+
+Each cert profile is independently selectable per-chain via
+`FinalitySchemeID` in `consensus/config/pq_mode.go`.
+
+## Primitives
+
+| Primitive | Repo | Role | Pinned tag |
+|---|---|---|---|
+| Pulsar | [`luxfi/pulsar`](https://github.com/luxfi/pulsar) | Threshold ML-DSA-65 (M-LWE) | v1.0.9 |
+| Corona | [`luxfi/corona`](https://github.com/luxfi/corona) | Threshold R-LWE sibling | v0.4.0 |
+| Magnetar | [`luxfi/magnetar`](https://github.com/luxfi/magnetar) | Threshold SLH-DSA (research) | research |
+| BLS | [`luxfi/crypto/bls`](https://github.com/luxfi/crypto/tree/main/bls) | BLS12-381 aggregate classical fast-path | tracks crypto v1.19.x |
+| Z-Chain Groth16 | [`luxfi/chains/quantumvm`](https://github.com/luxfi/chains/tree/main/quantumvm) | Per-validator MLDSA Groth16 roll-up | v1.2.3+ |
+
+## QuasarCert wire format
+
+```go
+type QuasarCert struct {
+    BLS        []byte  // BLS12-381 aggregate, 48 B classical fast path
+    Pulsar     []byte  // Threshold ML-DSA-65 (always populated)
+    Corona     []byte  // Threshold R-LWE (Aurora / Polaris)
+    Magnetar   []byte  // Threshold SLH-DSA (Polaris only)
+    MLDSAProof []byte  // Z-Chain Groth16, ~192 B
+    Epoch      uint64
+    Finality   time.Time
+    Validators int
+}
+```
+
+A valid cert MUST satisfy:
+1. Every populated leg verifies under its primitive's verifier
+2. The populated-leg set matches the profile selector exactly
+3. Validators equals the validator-set size at Epoch
+4. Domain separation enforced via context strings per leg
+
+Full spec at `luxfi/quasar/SPEC.md`.
+
+## Naming canon
+
+- Profiles: **Pulsar / Aurora / Polaris** (no "Syzygy")
+- Primitives: **Pulsar / Corona / Magnetar** (no "Comet", no "Corona")
+
+## Cross-references
+
+- [`luxfi/quasar/SPEC.md`](https://github.com/luxfi/quasar/blob/main/SPEC.md) — cert wire format
+- [`luxfi/quasar/PROFILES.md`](https://github.com/luxfi/quasar/blob/main/PROFILES.md) — profile registry
+- [`luxfi/quasar/PRIMITIVES.md`](https://github.com/luxfi/quasar/blob/main/PRIMITIVES.md) — primitive registry
+- [LP-020](https://github.com/luxfi/LPs/blob/main/LP-020-quasar-consensus.md) — Quasar consensus LP
+- [LP-105](https://github.com/luxfi/LPs/blob/main/LP-105-lux-stack-lexicon.md) — Lux stack lexicon

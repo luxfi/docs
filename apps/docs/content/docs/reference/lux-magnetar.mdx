@@ -1,0 +1,50 @@
+---
+title: "Lux Magnetar — Threshold SLH-DSA (Research)"
+description: "Research-stage threshold hash-based PQ signature primitive over FIPS 205 SLH-DSA. Feeds the Polaris cert profile in Quasar consensus for cross-family PQ diversity."
+---
+
+## Overview
+
+**Magnetar** is the Lux **research-stage threshold SLH-DSA** primitive
+— hash-based post-quantum signatures over FIPS 205 SLH-DSA, intended
+as the cross-family diversity leg of the Polaris cert profile.
+
+- **Repo**: <https://github.com/luxfi/magnetar>
+- **Status**: **Research-stage**. No production implementation.
+  Not part of any current NIST submission.
+- **Standard**: FIPS 205 SLH-DSA (single-party)
+- **Cert-profile role**: Polaris in [`luxfi/quasar`](https://github.com/luxfi/quasar)
+
+### Naming notes
+
+Supersedes the earlier working name "Comet". "Magnetar" is both the
+primitive name and the protocol family name. The Polaris cert
+profile (maximum-assurance cross-family) is the production migration
+target for when Magnetar matures.
+
+## Why hash-based threshold matters
+
+SLH-DSA's security rests on collision / preimage resistance of the
+underlying hash (SHA-2 or SHAKE), with **no lattice assumption**.
+A threshold profile of SLH-DSA gives cross-family defense in depth:
+even if a future cryptanalytic break hits the entire lattice family
+(both M-LWE and R-LWE), Magnetar's hash-based threshold leg keeps
+the Polaris cert sound.
+
+## Why it's hard
+
+SLH-DSA does not decompose into a linear-aggregation identity the
+way ML-DSA does, so the FROST-style aggregation pattern that powers
+Pulsar / Corona does not transfer. Threshold SLH-DSA in the literature
+requires MPC over hash computations + per-signature MPC ceremony,
+which dominates deployment economics.
+
+See `luxfi/magnetar/DESIGN.md` for the research-direction details.
+
+## Cross-references
+
+- [`luxfi/magnetar/README.md`](https://github.com/luxfi/magnetar/blob/main/README.md) — status + scope
+- [`luxfi/magnetar/DESIGN.md`](https://github.com/luxfi/magnetar/blob/main/DESIGN.md) — research direction
+- [`luxfi/quasar/PROFILES.md`](https://github.com/luxfi/quasar/blob/main/PROFILES.md) — Polaris profile composition
+- [`luxfi/pulsar`](https://github.com/luxfi/pulsar) — sibling M-LWE primitive (production)
+- [`luxfi/corona`](https://github.com/luxfi/corona) — sibling R-LWE primitive (production)
