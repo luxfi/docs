@@ -23,7 +23,7 @@ This is the Go-native coprocessor. The Rust-based coprocessor lives in `github.c
 ## Hard requirements
 
 1. Go 1.26.1
-2. `github.com/luxfi/fhe` v1.7.5 -- the TFHE library. NEVER use Zama tfhe-rs or any other FHE library for the Go coprocessor.
+2. `github.com/luxfi/fhe` v1.7.5 -- the TFHE library. Lux-native FHE; the coprocessor uses it directly with no external library wrapping.
 3. `github.com/luxfi/lattice/v7` v7.0.0 (indirect, via luxfi/fhe) -- NEVER use raw Lattigo.
 4. Redis 7+ for the job queue and optional ciphertext storage.
 5. NATS (optional) -- the queue package implements both Redis and NATS JetStream backends.
@@ -176,7 +176,7 @@ make stop               # Kill all local services
 ## Related Skills
 
 - `lux/lux-fhe.md` -- Core Go FHE library (`github.com/luxfi/fhe`) that powers the worker's TFHE operations
-- `lux/lux-fhevm.md` -- Rust-based FHEVM coprocessor (alternative architecture using Zama tfhe crate)
+- `lux/lux-fhevm.md` -- FHEVM specification (Go primary, with C++ / GPU (Metal+CUDA) / FPGA accel paths)
 - `lux/lux-evm.md` -- EVM with FHE precompiles that emit the events this coprocessor consumes
 - `lux/lux-lattice.md` -- Underlying lattice cryptography primitives
 

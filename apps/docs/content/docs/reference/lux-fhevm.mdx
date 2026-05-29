@@ -5,7 +5,7 @@ description: "Documentation for Lux FHEVM - Fully Homomorphic Encryption Virtual
 
 ## Overview
 
-FHEVM is a **full-stack framework for confidential smart contracts** on EVM-compatible blockchains. It integrates Fully Homomorphic Encryption (FHE) so that encrypted data can be processed directly onchain -- transactions, state, and computations remain encrypted end-to-end. Fork of Zama's fhevm.
+FHEVM is a **full-stack framework for confidential smart contracts** on EVM-compatible blockchains. It integrates Fully Homomorphic Encryption (FHE) so that encrypted data can be processed directly onchain -- transactions, state, and computations remain encrypted end-to-end. Built on Lux-native FHE primitives.
 
 ## Quick reference
 
@@ -14,10 +14,10 @@ FHEVM is a **full-stack framework for confidential smart contracts** on EVM-comp
 | Repo | `github.com/luxfi/fhevm` |
 | Branch | `main` |
 | License | BSD-3-Clause-Clear |
-| Upstream | `zama-ai/fhevm` |
-| Languages | Rust (coprocessor), Solidity (contracts), TypeScript (SDK/tests) |
-| Rust toolchain | 1.87.0 |
-| FHE library | `tfhe` crate v1.1.2 |
+| Languages | Go (coprocessor), C++ (acceleration), Solidity (contracts), TypeScript (SDK/tests) |
+| Go toolchain | 1.26.3 |
+| Acceleration | GPU (Metal + CUDA), FPGA |
+| FHE library | `luxfi/fhe` + `luxfi/lattice` (RLWE/RGSW/blind rotation) |
 
 ## Architecture
 
