@@ -70,4 +70,7 @@ jobs:
         NEXT_PUBLIC_NETWORK_SHORT_NAME=${{ matrix.network_short_name }}
         NEXT_PUBLIC_CHAIN_ID=${{ matrix.chain_id }}
         NEXT_PUBLIC_GITHUB_URL=${{ matrix.github_url }}
+      runner-amd64: luxfi-amd64
+      runner-arm64: luxfi-arm64
+      runner-deploy: lux-deploy-linux-amd64
     secrets: inherit
