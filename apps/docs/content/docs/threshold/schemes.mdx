@@ -27,7 +27,7 @@ const (
 | DKG rounds | Multi | 2 | 2 | Trusted dealer |
 | Aggregatable | No | No | Yes | No |
 | Chain compatibility | Bitcoin, Ethereum | Solana, Sui | Lux consensus | All (PQ bundles) |
-| Implementation | `mpc/pkg/threshold` | `mpc/pkg/threshold` | `crypto/threshold/bls` | `corona/threshold` |
+| Implementation | `mpc/pkg/threshold` | `mpc/pkg/threshold` | `crypto/threshold/bls` | `Corona/threshold` |
 
 ## CGGMP21 (SchemeCMP)
 
@@ -43,7 +43,7 @@ BLS12-381 threshold signatures with non-interactive aggregation. Shares can be c
 
 ## Pulsar (SchemeCorona)
 
-Lattice-based threshold signatures using Module-LWE. The only post-quantum scheme. 2-round signing protocol with trusted dealer key generation. Implemented natively in the `corona` repository.
+Lattice-based threshold signatures using Module-LWE. The only post-quantum scheme. 2-round signing protocol with trusted dealer key generation. Implemented natively in the `Corona` repository.
 
 ## Selecting a Scheme
 
