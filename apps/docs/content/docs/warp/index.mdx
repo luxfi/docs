@@ -8,12 +8,12 @@ Lux Warp (`github.com/luxfi/warp`) is the cross-chain messaging protocol for Lux
 
 ## How It Works
 
-Warp uses BLS multi-signatures from source chain validators to authenticate cross-chain messages.
+Warp uses BLS multi-signatures from the source network's validators to authenticate cross-chain messages. (Recall: validators validate networks; chains live on networks and inherit the network's validator set.)
 
 1. A VM on the source chain emits a Warp message containing a payload
-2. Validators on the source chain sign the message with their BLS keys
+2. Validators on the source network sign the message with their BLS keys
 3. Signatures are aggregated into a single `BitSetSignature` (a signer bitmap plus a 96-byte BLS aggregate signature)
-4. The destination chain verifies the aggregate signature against the source chain's validator set
+4. The destination chain verifies the aggregate signature against the source network's validator set
 5. If the signed weight meets the quorum threshold (typically 67%), the message is accepted
 
 ```
@@ -38,7 +38,7 @@ Source Chain                          Destination Chain
 | Quorum default | 67% of stake weight |
 | Max message size | 256 KiB |
 | Signature size | 96 bytes + signer bitmap |
-| Trust model | Source chain validator set |
+| Trust model | Source network's validator set |
 
 ## Architecture
 

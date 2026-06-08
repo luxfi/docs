@@ -6,12 +6,24 @@ icon: Server
 
 The P-Chain (Platform Chain) is the metadata chain of the Lux network. It coordinates validators, manages staking, handles chain creation, and tracks all blockchains deployed across the network. The P-Chain runs PlatformVM and uses linear chain consensus.
 
+## Networks, Chains, and Validators
+
+Lux uses one consistent model end-to-end:
+
+- A **network** has validators. Validators validate networks.
+- A **chain** lives on a network. Chains are registered by `CreateChainTx`. A chain is `(VM + genesis)` and runs under the network's validator set — chains do not have their own validator set.
+- An **L2** is a chain that lives on someone else's primary network. It has no separate validator set; it is validated by that primary network.
+- An **L1** is a network with its own validators. New validators are added with `AddValidatorTx` issued against that L1's own primary network's P-Chain. An L1 may convert to a sovereign L1 via `ConvertNetworkToL1Tx`; after conversion the L1 picks its own validator-management model (PoA committee, native PoS, on-chain Solidity staking contract, etc.).
+- **`AddValidatorTx`** is the universal "add a validator to a network" transaction. The wire shape is the same whether the target network is the Lux primary network (networkID 1/2/3/1337) or a downstream sovereign L1's own primary network. The SDK wallet figures out which network to target from its connection context.
+
+`AddChainValidatorTx` is legacy. It is retained for one release cycle of wire compatibility only; new code uses `AddValidatorTx` only.
+
 ## Purpose
 
-- **Validator Management**: Adding and removing validators from the primary network and chains
+- **Validator Management**: Adding and removing validators from networks (the primary network or any L1)
 - **Staking**: Delegating LUX to validators and distributing staking rewards
-- **Chain Creation**: Creating new chains and deploying blockchains on them
-- **L1 Validator Management**: Managing L1-style validator sets via Warp messaging
+- **Chain Creation**: Registering new chains under a network via `CreateChainTx`
+- **L1 Validator Management**: Managing sovereign-L1 validator sets via Warp messaging after `ConvertNetworkToL1Tx`
 
 ## RPC Endpoint
 
@@ -48,8 +60,8 @@ PlatformVM is configured via JSON. Default values:
 | Create asset | 1,000 (1 milliLUX) |
 | Create chain | 1,000,000 (1 LUX) |
 | Create blockchain | 1,000,000 (1 LUX) |
-| Add chain validator | 0 |
-| Add chain delegator | 0 |
+| Add network validator | 0 |
+| Add network delegator | 0 |
 
 ## RPC Methods
 

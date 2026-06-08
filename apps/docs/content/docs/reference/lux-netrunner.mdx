@@ -75,8 +75,8 @@ Not just a test runner -- Netrunner orchestrates full L1/L3 stacks with cross-ch
 | `CreateBlockchains` | `POST /v1/control/createblockchains` | Deploy custom VM chains |
 | `CreateChains` | `POST /v1/control/createchains` | Create participant groups |
 | `TransformElasticChains` | `POST /v1/control/transformelasticchains` | Transform to elastic chains |
-| `AddPermissionlessValidator` | `POST /v1/control/addpermissionlessvalidator` | Add elastic chain validator |
-| `RemoveChainValidator` | `POST /v1/control/removechainvalidator` | Remove chain validator |
+| `AddPermissionlessValidator` | `POST /v1/control/addpermissionlessvalidator` | Add a validator to an elastic network |
+| `RemoveChainValidator` | `POST /v1/control/removechainvalidator` | Remove a validator (legacy — superseded by `AddValidator`-based flow) |
 | `AttachPeer` | `POST /v1/control/attachpeer` | Attach test peer to node |
 | `SendOutboundMessage` | `POST /v1/control/sendoutboundmessage` | Send P2P message via peer |
 | `SaveSnapshot` | `POST /v1/control/savesnapshot` | Save network snapshot |

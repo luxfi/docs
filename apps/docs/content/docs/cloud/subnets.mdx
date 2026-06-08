@@ -138,10 +138,10 @@ Enable optional precompiles in your chain genesis:
 
 ### Adding Validators
 
-Each chain validator must also be a Primary Network validator with at least 2,000 LUX staked.
+Validators validate **networks**, not chains. Chains live on a network and inherit the network's validator set. To add a validator to a network — whether the Lux primary network or your own sovereign L1's primary network — use `AddValidatorTx` (the universal "add validator to a network" transaction). The CLI helper:
 
 ```bash
-lux chain addValidator my-chain \
+lux network addValidator my-network \
   --node-id=NodeID-... \
   --stake-amount=2000 \
   --start-time="2025-01-01T00:00:00Z" \
@@ -153,8 +153,8 @@ lux chain addValidator my-chain \
 | Requirement | Value |
 |-------------|-------|
 | Primary Network stake | Minimum 2,000 LUX |
-| Chain stake | Defined by chain creator |
-| Uptime | Chain-specific (recommended 80%+) |
+| Network stake | Defined by network creator |
+| Uptime | Network-specific (recommended 80%+) |
 | Duration | Must overlap with Primary Network validation period |
 
 ## Custom Virtual Machines
@@ -217,5 +217,5 @@ type ChainVM interface {
 ## Further Reading
 
 - [Architecture](/architecture) - How chains fit into the Lux architecture
-- [Run a Validator](/nodes/validator) - Become a chain validator
+- [Run a Validator](/nodes/validator) - Become a network validator
 - [Platform API](/api-reference/platform) - Programmatic chain management
