@@ -6,7 +6,7 @@ icon: FileCode
 
 ## Trading API
 
-The Trading API provides unified swap routing across on-chain V4 pools (Partner DEX precompile) and off-chain broker venues.
+The Trading API provides unified swap routing across on-chain V4 pools (Lux DEX precompile) and off-chain broker venues.
 
 Base URL: `https://dex.lux.network`
 
@@ -32,7 +32,7 @@ curl -X POST https://dex.lux.network/v1/trade/quote \
     "tokenOut": "0x1234567890abcdef1234567890abcdef12345678",
     "amount": "1000000000000000000",
     "type": "EXACT_INPUT",
-    "chainId": 8675311,
+    "chainId": 96369,
     "swapper": "0x9011E888251AB053B7bD1cdB598Db4f9DEd94714",
     "slippageTolerance": 0.5
   }'
@@ -63,7 +63,7 @@ curl -X POST https://dex.lux.network/v1/trade/order \
     "side": "BUY",
     "orderType": "MARKET",
     "swapper": "0x...",
-    "chainId": 8675311
+    "chainId": 96369
   }'
 ```
 
@@ -73,7 +73,7 @@ The DEX routes across multiple venue types:
 
 | Venue | Type | Description |
 |-------|------|-------------|
-| `v4_native` | On-chain | Partner DEX V4 precompile (LP-9012) |
+| `v4_native` | On-chain | Lux DEX V4 precompile (LP-9012) |
 | `uniswap_v2` | On-chain | Any V2-compatible Router02 |
 | `uniswap_v3` | On-chain | Any V3-compatible SwapRouter |
 | `alpaca` | Off-chain | Alpaca Markets (via Lux Broker) |
@@ -83,9 +83,9 @@ The DEX routes across multiple venue types:
 
 | Network | Chain ID |
 |---------|----------|
-| Devnet | `8675311` |
-| Testnet | `8675310` |
-| Mainnet | `8675309` |
+| Devnet | `96370` |
+| Testnet | `96368` |
+| Mainnet | `96369` |
 
 ### Precompile Addresses
 
