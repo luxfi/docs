@@ -70,7 +70,7 @@ jobs:
         NEXT_PUBLIC_NETWORK_SHORT_NAME=${{ matrix.network_short_name }}
         NEXT_PUBLIC_CHAIN_ID=${{ matrix.chain_id }}
         NEXT_PUBLIC_GITHUB_URL=${{ matrix.github_url }}
-      runner-amd64: evo
-      runner-arm64: spark
-      runner-deploy: evo
+      runner-amd64: '["self-hosted","linux","amd64"]'
+      runner-arm64: '["self-hosted","linux","arm64"]'
+      runner-deploy: '["self-hosted","linux","amd64"]'
     secrets: inherit
