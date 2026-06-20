@@ -14,7 +14,22 @@ Price-time priority CLOB with:
 
 ## Settlement
 
-On-chain settlement via the DEX VM (D-Chain) with atomic execution.
+On-chain settlement follows a strict **D matches · C settles** split:
+
+- The **D-Chain** (DEX VM) matches the order, emits a `DFillReceipt`, and a
+  D-validator quorum BLS-signs the receipt root.
+- The **C-Chain** receipt-settlement precompile `0x9999` (Uniswap-V4
+  `PoolManager` ABI — receipt-settlement, **not** a matcher) verifies that
+  certificate **inline** (BLS verify is deterministic → fork-safe), debits/credits
+  balances, and marks the receipt consumed. Settlement is Block-STM-parallel with
+  fine-grained per-account/asset/receipt keys (no global hot slots); the verify
+  path never calls a live matcher.
+
+The certificate kind (`certType`: BLS day-1 → Q / PQ / ZK) upgrades via an
+on-chain verifier registry with no ABI change. `0x9010` is deprecated (aliases to
+`0x9999`, same namespace).
+
+> Normative spec: [LP-9999](https://github.com/luxfi/lps/blob/main/LPs/lp-9999-dex-v4-receipt-settlement-precompile.md).
 
 ## Market Data
 
