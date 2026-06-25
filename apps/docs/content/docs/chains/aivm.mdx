@@ -6,6 +6,12 @@ icon: Sparkles
 
 The AI VM (A-Chain) handles AI compute task orchestration on the Lux network. Compute providers register their GPU resources, tasks are submitted and assigned to providers, and results are verified via Trusted Execution Environment (TEE) attestation. Rewards are distributed per epoch and state is periodically anchored to the Q-Chain via merkle roots.
 
+> **VM/engine boundary.** This VM is a pure `block.ChainVM` state machine: it parses, verifies, and applies blocks deterministically — attestation verification and reward accounting happen at block `Verify`. The single [Quasar](/consensus) engine owns all consensus, gossip, and propagation — this VM ships none of its own. State is replayed from block bytes only; no wall-clock, no floating-point non-determinism, no per-node modes. See the [Go-Live Standard](/go-live).
+
+## Status
+
+Go-live target for the Lux primary network (D + A + Z + B).
+
 ## Architecture
 
 - **Provider Registry**: GPU compute providers register with attestation proof

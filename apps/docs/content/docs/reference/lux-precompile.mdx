@@ -44,11 +44,11 @@ II = Item/function (8 bits)
 
 | C | Chain | C | Chain |
 |---|-------|---|-------|
-| 0 | P-Chain | 6 | Z-Chain |
-| 1 | X-Chain | 7 | M-Chain (reserved) |
-| 2 | C-Chain (main EVM) | 8 | Zoo |
-| 3 | Q-Chain (quantum) | 9 | Hanzo |
-| 4 | A-Chain (AI) | A | SPC |
+| 0 | P-Chain (platform) | 6 | Z-Chain (zk-rollup/privacy) |
+| 1 | X-Chain (avm) | 7 | Q-Chain (PQ consensus signing) |
+| 2 | C-Chain (main EVM) | 8 | Zoo (sovereign L1 EVM) |
+| 3 | D-Chain (DEX/CLOB) | 9 | Hanzo (sovereign L1 EVM) |
+| 4 | A-Chain (AI/attestation) | A | SPC (sovereign L1 EVM) |
 | 5 | B-Chain (bridge) | | |
 
 Helper functions: `PrecompileAddress(p, c, ii)`, `ChainSlot(name)`, `FamilyPage(name)`.

@@ -6,6 +6,12 @@ icon: EyeOff
 
 The ZK VM (Z-Chain) is a privacy-focused virtual machine that implements zero-knowledge proofs for confidential transactions. It uses a UTXO model with nullifiers to prevent double-spending while keeping transaction details private. The Z-Chain supports multiple proof systems (Groth16, PLONK), shielded addresses, and optional FHE for encrypted computation.
 
+> **VM/engine boundary.** This VM is a pure `block.ChainVM` state machine: it parses, verifies, and applies blocks deterministically — proof verification and nullifier checks happen at block `Verify`. The single [Quasar](/consensus) engine owns all consensus, gossip, and propagation — this VM ships none of its own. State is replayed from block bytes only; no wall-clock, no floating-point non-determinism, no per-node modes. See the [Go-Live Standard](/go-live).
+
+## Status
+
+Go-live target for the Lux primary network (D + A + Z + B).
+
 ## Architecture
 
 - **Shielded UTXO Model**: Privacy-preserving UTXO transactions with nullifier tracking

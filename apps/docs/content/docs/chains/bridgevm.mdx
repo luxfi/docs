@@ -6,6 +6,12 @@ icon: Link
 
 The Bridge VM (B-Chain) manages cross-chain bridge operations using MPC threshold signing. Validators opt in as bridge signers by posting a slashable bond. The signer set uses a 2/3 threshold for signing bridge transactions. The B-Chain implements LP-333 for signer set management: the first 100 validators join without reshare, and reshare only occurs when a signer is replaced.
 
+> **VM/engine boundary.** This VM is a pure `block.ChainVM` state machine: it parses, verifies, and applies blocks deterministically — signer-set transitions and bridge-message verification happen at block `Verify`. The single [Quasar](/consensus) engine owns all consensus, gossip, and propagation — this VM ships none of its own. State is replayed from block bytes only; no wall-clock, no floating-point non-determinism, no per-node modes. See the [Go-Live Standard](/go-live).
+
+## Status
+
+Go-live target for the Lux primary network (D + A + Z + B).
+
 ## Architecture
 
 - **MPC Threshold Signing**: t-of-n signatures using the CMP protocol from `luxfi/threshold`

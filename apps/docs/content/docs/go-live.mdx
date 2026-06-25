@@ -1,0 +1,227 @@
+---
+title: Go-Live Standard
+description: The single canonical spec for what the Lux primary network ships — chains, VMs, precompile slot map, two-tier finality, and the one VM/engine boundary. Verified against shipping code.
+icon: Rocket
+---
+
+This is the one page to read before building on Lux. It states what the
+network launches and the rules every chain, VM, and precompile obeys.
+Every fact here is verified against shipping code; the formal version is
+[LP-0121](https://github.com/luxfi/lps).
+
+Three rules govern the whole system:
+
+1. **One engine.** Every VM is a pure state machine. The single
+   [Quasar](/consensus) engine owns all consensus, gossip, and
+   propagation. A VM never ships its own.
+2. **One slot map.** Every native precompile has exactly one address, set
+   by one constant in `luxfi/precompile`. Docs describe that constant;
+   they never redefine it.
+3. **One place for value.** A unit of value lives on exactly one chain at
+   a time. Cross-chain motion is an atomic conserving move. The bridge is
+   the only external on/off ramp.
+
+## What ships
+
+The go-live target is **D (DEX) + A (AI) + Z (zk) + B (bridge) working**
+on top of the already-live P / X / C / Q / T / K / I / O / R. The
+authoritative chain set is the `Registry` in
+`node/genesis/builder/registry.go` — one table the whole node derives
+from.
+
+| Letter | VM | Role | Go-live |
+|---|---|---|---|
+| **P** | platformvm | Staking, validators, epochs, slashing | Live |
+| **X** | avm | UTXO asset ledger | Live |
+| **C** | evm | General EVM smart contracts, DeFi | Live |
+| **D** | dexvm | Native CLOB + AMM — the trading product chain | **Target** |
+| **Q** | quantumvm | Pulsar threshold ceremony for PQ consensus signing | Live |
+| **A** | aivm | Proof-of-AI, TEE/GPU attestation, provenance | **Target** |
+| **B** | bridgevm | MPC-secured cross-ecosystem bridge + custody | **Target** |
+| **T** | thresholdvm | MPC-as-a-service (CGGMP21, FROST, Pulsar-general) | Live |
+| **Z** | zkvm | zk-rollup, shielded UTXO, privacy | **Target** |
+| **G** | graphvm | GraphQL data layer, cross-chain queries | Experimental |
+| **K** | keyvm | ML-KEM/ML-DSA key management | Live |
+| **I** | identityvm | DIDs, verifiable credentials | Live |
+| **O** | oraclevm | Decentralized data feeds | Live |
+| **R** | relayvm | Cross-chain messaging (Warp) | Live |
+
+The letter is the value's name; the VM directory is where the code lives.
+They differ by design in three cases (`X→avm`, `C→evm`, `A→aivm`). The
+registry is the binding — do not rename a VM directory to match its
+letter.
+
+## The VM / engine boundary
+
+The single most important invariant, and the one most often violated.
+
+**A VM is a pure `block.ChainVM`.** It parses bytes into blocks, verifies
+a block against its parent, and applies a verified block to its state.
+That is all — a deterministic state machine where the same parent state
+plus the same block bytes yields the same child state on every validator,
+forever.
+
+**The engine owns everything else.** The single Quasar engine drives the
+poll committee, collects the weighted quorum, assembles the certificate,
+and runs all block/vote gossip and propagation. There is **no per-VM
+consensus and no per-VM gossip**. When the engine sees a vote for a block
+it has not yet seen, it fetches that block through its own path — a VM
+never reaches onto the wire to repair its own view.
+
+A VM that grows a private gossip path forks consensus, because validators
+then disagree on inputs the engine never certified. The fix is always the
+same: delete the private path, let the engine carry it, replay state from
+block bytes only.
+
+The DEX VM has two forms that must not be confused: the **native** VM
+(`luxfi/dex/pkg/dchain`) runs the matcher at block `Verify` over its own
+state — this is the canonical go-live target where matching *is* the
+deterministic state transition; the **proxy** (`luxfi/chains/dexvm`, which
+`node/vms/dexvm` re-exports) is a stateless atomic proxy that relays fills
+from an external venue into blocks. Both honor the boundary — the engine
+owns gossip and finality, and every validator reaches the same state from
+the same block bytes — but only the native form matches at `Verify`.
+
+What a VM author must honor:
+
+- **No wall-clock reads** in `Verify`/`Accept`. Block time comes from the
+  block.
+- **No floating-point non-determinism** in state transitions.
+- **No per-node "modes."** Profile selection (below) is config read
+  identically by every validator, never a per-node behavior switch.
+- **GPU only when byte-identical** to the pure-Go result (KAT-gated).
+
+## Two-tier finality
+
+Finality has two tiers that run **in parallel** — not in
+sequence-with-deprecation.
+
+**Tier 1 — BLS fast path (stays).** A network-wide BLS12-381 aggregate
+signature gives low-latency, provisional, edge-fast finality. BLS is the
+`PQ-off` leg and is **not deprecated**.
+
+**Tier 2 — native PQ, in parallel.** The native PQ precompiles
+(Pulsar `0x012204`, Corona `0x012206`, Magnetar `0x012207`, ML-DSA
+`0x012202`) produce additional post-quantum finality legs over the same
+round, so a break of the classical BLS leg does not break finality.
+
+On family hardness: Pulsar and Corona are **both lattice** (Corona is
+Module-LWE rank-1, which is Ring-LWE), so stacking them is
+defense-in-depth but **not** family-disjoint. True cross-family PQ
+diversity arrives only with a non-lattice leg — hash-based **Magnetar**
+(`0x012207`) on signatures or code-based **HQC** (`0x012208`) on KEM. So
+`PQ-strict` (BLS + Pulsar + Corona) is two lattice legs plus a classical
+leg; genuine family-disjoint defense is a `PQ-heavy` property.
+
+The two tiers compose through the certificate **profile**
+([cert modes](/consensus)), an operator knob `quasar.cert_mode`. It is
+**additive and monotone** — each step adds exactly one independent leg:
+
+```
+PQ-off  ⊂  PQ-fast        ⊂  PQ-strict             ⊂  PQ-heavy
+BLS        BLS + Pulsar      BLS + Pulsar + Corona     BLS + Corona + Pulsar + Magnetar
+```
+
+Pure-PQ variants drop BLS for chains with no classical-bridge dependency
+(`strict-PQ-fast`, `strict-PQ-strict`, `strict-PQ-heavy`).
+
+`certType` / the `VerifierRegistry` are **profile selection**, not a
+primitive swap: adding a PQ leg never removes BLS and never changes the
+cert wire format. **Default for the network: `PQ-strict`.**
+
+### Rollup-commit tier
+
+A distinct concern with distinct verifiers — do not conflate with the
+consensus PQ legs:
+
+- **P3Q (`0x012205`)** is the **rollup-commit verifier only**. A rollup
+  sequencer PQ-threshold-signs `(prev_root, new_root, batch_hash)`,
+  submits a `RollupBatchTx` to **Z-Chain**, and Z-Chain validators verify
+  it via P3Q in normal block validation. P3Q dispatches to the PQ family
+  by a leading **kind byte** (`0x01` Pulsar / `0x02` Corona / `0x03`
+  Magnetar). Its core *is* the ML-DSA verifier — there is no P3Q-specific
+  crypto. P3Q is **not** a STARK and **not** the general consensus PQ.
+- **STARK-FRI (`0x012220`)** is the **trustless** rollup verifier: a
+  strict-PQ STARK over Goldilocks with FRI low-degree testing and
+  cSHAKE256 commitments, no classical-curve surface. The integrity path
+  for ZK rollups whose execution must be proven, not merely signed.
+
+## Precompile slot map
+
+These are the **registered constants** in `luxfi/precompile` — the only
+source of truth. The native PQ precompiles are separate primitives at
+separate slots; P3Q is one consumer that dispatches *to* them.
+
+### Unified PQ crypto block (`0x0122xx`)
+
+| Address | Primitive |
+|---|---|
+| `0x012201` | ML-KEM (Module-LWE KEM, FIPS 203) |
+| `0x012202` | ML-DSA (single-sig, FIPS 204) |
+| `0x012203` | SLH-DSA (hash-based, FIPS 205) |
+| `0x012204` | **Pulsar** (Module-LWE threshold, FIPS 204 byte-equal) |
+| `0x012205` | **P3Q** (rollup-commit PQ verifier; kind-byte dispatch) |
+| `0x012206` | **Corona** (Ring-LWE threshold) |
+| `0x012207` | **Magnetar** (SLH-DSA threshold, FIPS 205 byte-equal) |
+| `0x012208` | HQC (code-based KEM, family-disjoint backup) |
+| `0x012220` | **STARK-FRI** (strict-PQ STARK / FRI / SHAKE) |
+
+### Threshold / ZK / classical
+
+| Address | Primitive |
+|---|---|
+| `0x0800…0002` / `0x0800…0003` | FROST / CGGMP21 (threshold sig) |
+| `0x0900…0001`–`0004` | Groth16 / PLONK / fflonk / Halo2 |
+| `0x0900…0020`–`0023` | PrivacyPool / Nullifier / Commitment / RangeProof |
+| `0x0900…0030`–`0032` | RollupVerify / StateRoot / BatchProof |
+| `0x000b`–`0x0011` | BLS12-381 (EIP-2537) |
+| `0x0100` | secp256r1 / P256 (EIP-7212) |
+| `0x0700…0000`–`0003` | FHE (compute / ACL / input-verifier / gateway) |
+| `0x0300…0000`–`0010` | AI (ai / attestation / modelregistry / aivmbridge / compute) |
+| `0x0400…0050` / `0x0400…0060` | math / stableswap (legacy leading-byte) |
+| `0x0500…0004`/`0007`/`0008` | blake3 / babyjubjub / pasta |
+
+Full reference: [Precompiled Contracts](/reference/lux-precompile) and
+[PQ Precompiles](/precompile/pq-crypto).
+
+## GPU / C++ boundary
+
+The public Go OSS is **pure-Go plus cgo glue only** — no GPU/C++ kernel
+source ships in the public repos. Kernels live in `luxcpp`, reached
+through a device adapter. The Go side calls the adapter; the adapter
+dispatches to a kernel only if one is present **and KAT-clean**, else
+falls back to pure-Go.
+
+**The gate is byte-identity.** A GPU kernel enters a consensus-relevant
+path **only** after a Known-Answer-Test proves byte-identical output
+versus the pure-Go reference on the full vector set. A wrong kernel that
+"mostly works" is worse than no kernel — it stays out until fixed and
+re-KAT'd. Block-STM device-resident parallel block building is the
+sanctioned use: parallel across markets/accounts, deterministic per
+batch, GPU state root **equal to** CPU state root.
+
+## Value conservation
+
+A unit of value lives on exactly one chain at a time, drawn from
+`{P, X, C, D, Z}`:
+
+- **Conserving move** — a cross-chain transfer atomically destroys the
+  value on the source and creates it on the destination. The sum across
+  all chains is invariant; nothing mints on the destination without
+  burning on the source.
+- **B is the only external ramp** — assets enter or leave the Lux value
+  set exclusively through the bridge (MPC custody). Internal moves never
+  touch B.
+- **Shielded via Z** — privacy is a property of *where* value sits
+  (Z-Chain shielded UTXO), reached by the same conserving move.
+- **PQ throughout** — the signatures authorizing moves follow the same
+  profile; a strict-PQ chain never drops to a classical-only primitive on
+  the wire.
+
+## See also
+
+- [Consensus](/consensus) — Quasar engine, weighted quorum, cert profiles
+- [Chains & VMs](/chains) — per-VM detail
+- [PQ Precompiles](/precompile/pq-crypto) — the crypto block
+- [Post-Quantum](/post-quantum) — the threat model and migration
+- [LP-0121](https://github.com/luxfi/lps) — the formal standard

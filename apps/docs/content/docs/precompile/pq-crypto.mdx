@@ -1,6 +1,6 @@
 ---
 title: Post-Quantum Precompiles
-description: ML-DSA, ML-KEM, SLH-DSA, and Quasar consensus verification
+description: ML-KEM, ML-DSA, SLH-DSA, threshold lattice, and PQ rollup verification
 icon: Atom
 ---
 
@@ -8,13 +8,21 @@ Post-quantum precompiles provide NIST-standardized cryptographic operations at n
 
 ## Precompile Addresses
 
-| Address | Name | Standard | Gas | Description |
-|---------|------|----------|-----|-------------|
-| `0x0600` | ML_DSA | FIPS 204 | 50,000 | ML-DSA signature verification (ML-DSA) |
-| `0x0601` | ML_KEM | FIPS 203 | 25,000 | ML-KEM key encapsulation (ML-KEM) |
-| `0x0602` | SLH_DSA | FIPS 205 | 75,000 | SLH-DSA hash-based signatures (SLH-DSA (FIPS 205, formerly SPHINCS+)) |
-| `0x0603` | PQ_CRYPTO | -- | 30,000 | Multi-PQ operations |
-| `0x0604` | QUASAR | -- | 100,000 | Quantum consensus verification |
+The authoritative PQ block is the LP-4200 `0x012200` range. (The earlier `0x0300`/`0x0600` quasar stubs were retired in favor of this block.)
+
+| Address | Name | Standard | Description |
+|---------|------|----------|-------------|
+| `0x012201` | ML-KEM | FIPS 203 | Module-LWE key encapsulation |
+| `0x012202` | ML-DSA | FIPS 204 | Single-party lattice signature |
+| `0x012203` | SLH-DSA | FIPS 205 | Hash-based (stateless) signature |
+| `0x012204` | Pulsar | FIPS 204 byte-equal | Module-LWE threshold signature |
+| `0x012205` | P3Q | -- | Rollup-commit PQ verifier; kind-byte dispatch to Pulsar/Corona/Magnetar (NOT a STARK, NOT general consensus PQ) |
+| `0x012206` | Corona | -- | Ring-LWE threshold signature |
+| `0x012207` | Magnetar | FIPS 205 byte-equal | SLH-DSA threshold signature |
+| `0x012208` | HQC | -- | Code-based KEM (family-disjoint backup) |
+| `0x012220` | STARK-FRI | -- | Strict-PQ STARK / FRI / SHAKE verifier |
+
+P3Q (`0x012205`) is the rollup-commit verifier — see [/go-live](/go-live); STARK-FRI (`0x012220`) is the trustless STARK verifier.
 
 ## ML-DSA (FIPS 204)
 
@@ -48,14 +56,13 @@ Stateless hash-based signatures. Conservative choice -- security relies only on 
 | SLH-DSA-SHA2-192f | NIST Level 3 | 35,664 bytes |
 | SLH-DSA-SHA2-256f | NIST Level 5 | 49,856 bytes |
 
-## Hybrid Signatures (0x0610-0x0612)
+## Hybrid (PQ Identity page, 0x2220-0x2221)
 
-Combine classical and post-quantum signatures for defense in depth:
+Classical+post-quantum hybrids live on the PQ-identity page, NOT at `0x0610`. The hybrid-KEM precompile is at `0x...2221` (X25519+Kyber, LP-2221); hybrid signing is described conceptually on the `0x2220` PQ-identity page.
 
-| Address | Scheme | Classical | Post-Quantum |
-|---------|--------|-----------|-------------|
-| `0x0610` | Hybrid BLS+Pulsar | BLS12-381 | Pulsar lattice |
-| `0x0611` | Hybrid ECDSA+ML-DSA | secp256k1 | ML-DSA-65 |
-| `0x0612` | Hybrid Schnorr+Pulsar | Ed25519 | Pulsar lattice |
+| Slot | Scheme | Classical | Post-Quantum |
+|------|--------|-----------|-------------|
+| `0x...2220` | Hybrid ECDSA+ML-DSA (PQ identity) | secp256k1 | ML-DSA |
+| `0x...2221` | Hybrid KEM (LP-2221) | X25519 | ML-KEM (Kyber) |
 
-Both signatures must verify for the hybrid to pass. Graceful degradation is not supported -- this is intentional for maximum security.
+Both halves must verify for the hybrid to pass. Graceful degradation is not supported -- this is intentional for maximum security.
