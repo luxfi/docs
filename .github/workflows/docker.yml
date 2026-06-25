@@ -1,76 +1,79 @@
 name: Docker
 
+# Build + push the Lux docs image on the luxfi self-hosted ARC pool
+# (lux-build, in-cluster on lux-k8s with a DinD sidecar). GitHub-hosted
+# runners are billing-blocked for the luxfi org, so `runs-on: lux-build`
+# is mandatory — ARC matches on the scale-set name, not the classic
+# [self-hosted,linux,amd64] labels.
+#
+# Image name is ghcr.io/luxfi/lux-docs — the exact name the live
+# deployment (lux-ns/lux-docs, imagePullPolicy: Always) pulls as :latest.
+# Single-arch amd64: the base image ghcr.io/hanzoai/spa is amd64-only
+# (hanzo ARC arm64 runners paused on DOKS), same constraint as the
+# lux-apps marketing sites.
+#
+# The Dockerfile is self-contained (node:22-alpine build of apps/docs →
+# static export → ghcr.io/hanzoai/spa). @hanzo/docs resolves from public
+# npm, so the default GITHUB_TOKEN is enough — no cross-repo PAT needed.
+
 on:
   workflow_dispatch:
   push:
-    branches: [main, dev, test]
+    branches: [main]
     tags: ['v*']
 
 permissions:
   contents: read
   packages: write
 
-# Per-brand fan-out. Each entry maps to a distinct GHCR image so :latest
-# never collides between brands. Add new brands by appending to the matrix
-# and creating .env.example.<brand>.
-#
-# Per-org GHCR push policy (from ~/.claude/CLAUDE.md):
-#   Lux   → ghcr.io/luxfi/*
-#   Hanzo → ghcr.io/hanzoai/*
-#   Zoo   → ghcr.io/zooai/*
-# NEVER mix orgs. Cross-org push needs a token with `write:packages` scope on
-# the target org. The reusable workflow `secrets: inherit` so the repo's
-# GHCR_PAT must be configured at the org level for luxfi/, hanzoai/, zooai/.
-# Confirm with: gh secret list -R luxfi/docs
+concurrency:
+  group: docker-docs
+  cancel-in-progress: true
+
 jobs:
-  docker:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - brand: lux
-            image: ghcr.io/luxfi/docs
-            site_name: "Lux Docs"
-            site_url: "https://docs.lux.network"
-            network_name: "Lux"
-            network_short_name: "LUX"
-            chain_id: "96369"
-            github_url: "https://github.com/luxfi"
-          - brand: hanzo
-            image: ghcr.io/hanzoai/docs
-            site_name: "Hanzo Docs"
-            site_url: "https://docs.hanzo.ai"
-            network_name: "Hanzo"
-            network_short_name: "AI"
-            chain_id: "36963"
-            github_url: "https://github.com/hanzoai"
-          - brand: zoo
-            image: ghcr.io/zooai/docs
-            site_name: "Zoo Docs"
-            site_url: "https://zoo.ngo/docs"
-            network_name: "Zoo"
-            network_short_name: "ZOO"
-            chain_id: "200200"
-            github_url: "https://github.com/zooai"
-          - brand: pars
-            image: ghcr.io/luxfi/docs-pars
-            site_name: "Pars Docs"
-            site_url: "https://docs.pars.network"
-            network_name: "Pars"
-            network_short_name: "PARS"
-            chain_id: "494949"
-            github_url: "https://github.com/pars"
-    uses: hanzoai/.github/.github/workflows/docker-build.yml@main
-    with:
-      image: ${{ matrix.image }}
-      build-args: |
-        NEXT_PUBLIC_SITE_NAME=${{ matrix.site_name }}
-        NEXT_PUBLIC_SITE_URL=${{ matrix.site_url }}
-        NEXT_PUBLIC_NETWORK_NAME=${{ matrix.network_name }}
-        NEXT_PUBLIC_NETWORK_SHORT_NAME=${{ matrix.network_short_name }}
-        NEXT_PUBLIC_CHAIN_ID=${{ matrix.chain_id }}
-        NEXT_PUBLIC_GITHUB_URL=${{ matrix.github_url }}
-      runner-amd64: '["self-hosted","linux","amd64"]'
-      runner-arm64: '["self-hosted","linux","arm64"]'
-      runner-deploy: '["self-hosted","linux","amd64"]'
-    secrets: inherit
+  build:
+    runs-on: lux-build
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker-container
+          driver-opts: |
+            network=host
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/luxfi/lux-docs
+          # :latest tracks main (the deployment pins :latest), plus an
+          # immutable :sha-<sha7> for traceability and a :{{version}} tag
+          # on v* releases.
+          flavor: |
+            latest=true
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=sha,prefix=sha-
+
+      - name: Build & push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          provenance: false
+          cache-from: type=gha,scope=lux-docs
+          cache-to: type=gha,scope=lux-docs,mode=max
