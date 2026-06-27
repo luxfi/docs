@@ -15,6 +15,35 @@ The Threshold VM substrate powers **M-Chain** (MPC ceremonies for bridge custody
 - **Multi-Protocol**: Supports multiple threshold protocols via a protocol registry
 - **Quota Management**: Per-chain daily signing limits
 
+## Threshold Signature Families
+
+Two distinct concerns share the word "threshold" and must not be conflated:
+
+**M-Chain MPC custody (external-wallet bridge signing).** For signing on
+external chains (Bitcoin, Ethereum, etc.) the bridge needs classical curve
+signatures, produced by classical MPC:
+
+| Protocol | Curve / scheme | Use |
+|----------|----------------|-----|
+| **CGGMP21** | secp256k1 ECDSA | Ethereum-compatible + Bitcoin bridge custody |
+| **FROST** | Schnorr / EdDSA (ed25519) | Schnorr-curve custody |
+
+These come from [`luxfi/mpc`](https://github.com/luxfi/mpc) (v1.16.0). They are
+**not** post-quantum — they exist to sign for chains whose validators expect
+classical signatures.
+
+**Consensus PQ threshold legs.** Lux's own [Quasar finality](/consensus) is
+sealed by two **post-quantum** lattice threshold kernels, each emitting one O(1)
+group signature:
+
+| Kernel | Library | Lattice family | Dealerless | FIPS posture |
+|--------|---------|----------------|------------|--------------|
+| **Pulsar (TALUS)** | [`luxfi/pulsar`](https://github.com/luxfi/pulsar) v1.2.0 | Module-LWE (ML-DSA-65) | keygen via committee/ceremony (Pulsar-MPC / Pulsar-TEE) | byte-equal to stock FIPS-204 |
+| **Corona (Ringtail)** | [`luxfi/corona`](https://github.com/luxfi/corona) v0.8.0 | Ring-LWE | natively dealerless (Pedersen DKG) | not FIPS |
+
+Corona's dealerless Pedersen DKG carries the permissionless-public guarantee; see
+[Post-Quantum Security](/post-quantum) for the full TALUS / Ringtail treatment.
+
 ## Configuration
 
 ```json

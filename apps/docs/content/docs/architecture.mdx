@@ -59,3 +59,47 @@ Lux supports multiple virtual machine implementations:
 | EVM | Ethereum Virtual Machine | Smart contracts |
 | Sovereign L1 EVM | Customizable EVM | Enterprise apps |
 | Custom VMs | Purpose-built VMs | Specialized workloads |
+
+## Post-Quantum Security Architecture
+
+Lux's security model is **decomplected** — one dealerless post-quantum threshold
+core, with custody capabilities added as orthogonal, optional extensions. The
+core depends on **none** of the extensions.
+
+```
+                  ┌──────────────────────────────────────────┐
+                  │   Dealerless PQ-threshold consensus core  │
+                  │   luxfi/consensus · pulsar · corona       │
+                  │   (Quasar compact-cert finality)          │
+                  └──────────────────────────────────────────┘
+                       ▲                 ▲                ▲
+        optional ──────┘        optional ┘       depends on (one-way)
+   ┌─────────────────┐   ┌─────────────────┐   ┌────────────────────────┐
+   │   luxfi/mpc     │   │   luxfi/tee     │   │   luxfi/cc (attest)    │
+   │  MPC custody    │   │  TEE custody    │   │  one attestation       │
+   │  (CGGMP21/FROST)│   │  (attested      │   │  verifier, orthogonal  │
+   │                 │   │   enclave)      │   │  hardware Kinds        │
+   └─────────────────┘   └─────────────────┘   └────────────────────────┘
+```
+
+### One core, optional extensions
+
+- **Consensus core** — Quasar finality is a compact-certificate envelope built on
+  two dealerless-capable PQ threshold kernels: **Pulsar** (Module-LWE, FIPS-204
+  ML-DSA) and **Corona** (Ring-LWE, Ringtail). Corona's natively-dealerless
+  Pedersen DKG carries the permissionless-public guarantee. The core needs no
+  TEE and no external MPC vendor. See [Consensus](/consensus).
+- **`luxfi/mpc`** (v1.16.0) — optional MPC custody for bridge/institutional
+  signing (CGGMP21 for ECDSA, FROST for Schnorr/EdDSA). The consensus core does
+  not depend on it. See [MPC](/mpc) and [Wallet Security](/wallet/security).
+- **`luxfi/tee`** (v0.1.0) — optional TEE-backed threshold-signing *custody*
+  extension. Explicitly **not** required by the threshold core and **not** used on
+  the permissionless/dealerless production signing path; the dependency direction
+  is one-way (`tee → pulsar/corona/mpc`, never the reverse).
+- **`luxfi/cc`** (v0.1.0) — one attestation verifier, with orthogonal hardware
+  `Kind`s, shared by MPC custody, TEE custody, and confidential AI. It depends on
+  none of them. See [Confidential Compute](/confidential-compute).
+
+This is the seam: the permissionless chain runs on the dealerless PQ core alone;
+TEE and external-MPC custody are accelerators an operator opts into, never trust
+assumptions baked into the open validator set.

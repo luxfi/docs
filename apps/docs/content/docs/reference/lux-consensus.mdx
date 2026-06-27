@@ -5,7 +5,7 @@ description: "Lux Quasar -- Post-Quantum Consensus Engine"
 
 ## Overview
 
-Lux Quasar is the consensus engine for the Lux network. It is a unified, leaderless, post-quantum protocol achieving sub-second 2-round finality with triple-certificate security (BLS12-381 aggregate signatures + Pulsar lattice-based threshold signatures + ML-DSA-65 identity signatures). All three paths run in parallel via `TripleSignRound1`. Quasar runs every chain in the Lux primary network -- Q, C, X, P -- and any dynamically registered chain.
+Lux Quasar is the consensus engine for the Lux network. It is a unified, leaderless, post-quantum protocol achieving sub-second finality. Finality is sealed by a **typed compact-certificate envelope** (`ConsensusCert`) that binds one or more cryptographic evidence legs — **Beam** (BLS12-381 classical aggregate), **Pulsar** (Module-LWE / FIPS-204 ML-DSA threshold), **Corona** (Ring-LWE / Ringtail threshold), and **P3Q** (rollup fallback) — to one canonical, domain-separated finality message under one P-Chain-pinned key-era. Quasar runs every chain in the Lux primary network -- C, X, P -- and any dynamically registered chain. See the [Quasar reference](/reference/lux-quasar) for the envelope, suites, and postures.
 
 **This is an original consensus protocol** built from first principles around Photonic Selection -- not derived from earlier metastable voting schemes.
 
@@ -29,7 +29,7 @@ There are two code locations:
 
 | Engine | Type | Location | Purpose | Status |
 |--------|------|----------|---------|--------|
-| **Quasar** | Triple PQ | `protocol/quasar/` + `node/consensus/quasar/` | Primary consensus for all chains. Triple BLS+Pulsar+ML-DSA signatures run in parallel via `TripleSignRound1`. 2-round finality. | Production |
+| **Quasar** | Compact-cert PQ | `protocol/quasar/` + `node/consensus/quasar/` | Primary finality for all chains. Compact-certificate envelope binding Beam (BLS) + Pulsar (M-LWE) + Corona (R-LWE) + P3Q legs to one message. Sub-second finality. | Production |
 | **Nova** | Linear chain | `protocol/nova/` | Linear blockchain consensus mode. Wraps the Ray driver with Wave voting. Used for C-Chain and P-Chain style linear progression. | Production |
 | **Wave** | Threshold voting | `protocol/wave/` | Core voting mechanism. Samples K peers, collects votes, checks alpha threshold, builds beta confidence. Supports FPC (Fast Probabilistic Consensus) for dynamic thresholds. | Production |
 | **Ray** | Linear driver | `protocol/ray/` | Low-level engine that drives Wave voting for linearly-ordered items. Source/Sink pattern. Nova wraps this. | Production |
@@ -42,7 +42,7 @@ There are two code locations:
 
 ## Quasar Algorithm -- Detailed Steps
 
-Quasar achieves triple quantum finality through parallel execution of classical and post-quantum signature paths (BLS + Pulsar + ML-DSA). The full algorithm:
+Quasar reaches a leaderless decision through photonic committee selection and Wave voting, then seals it with the compact-certificate envelope (Beam ∧ Pulsar ∧ Corona under `STRICT_QUASAR`). The full algorithm:
 
 ### Phase 0: Photonic Selection (Committee Formation)
 
@@ -61,37 +61,42 @@ Quasar achieves triple quantum finality through parallel execution of classical 
 4. **FPC mode** (optional): Instead of fixed alpha, threshold theta is selected per-phase using a PRF over `[theta_min=0.5, theta_max=0.8]`, making the protocol more resistant to adaptive adversaries.
 5. Classical finality typically completes in 600-700ms.
 
-### Phase 2: QuasarCert Generation (Quantum Finality)
+### Phase 2: Compact-Certificate Finality
 
-All three paths execute **in parallel** immediately after classical decision (via `TripleSignRound1`):
+After the classical decision, finality is sealed by a `ConsensusCert` envelope.
+**Policy** declares the required cryptographic legs; certificate bytes carry the
+per-leg evidence; every leg proves the same weighted-quorum predicate over the
+same domain-separated finality message `M`. The chain stores **one compact typed
+evidence per lane**, never N raw per-validator signatures:
 
-**BLS Path (fast, classical):**
-1. Each validator signs the finality message (blockID + height + timestamp, 48 bytes) with their BLS12-381 key share.
-2. Signature shares are aggregated into a single 96-byte aggregate signature.
-3. Verification: reconstruct aggregate public key from signer bitset, verify aggregate signature.
-4. Requires 2/3+ validator weight.
+| Evidence kind | Family | Shape |
+|---------------|--------|-------|
+| **Beam** | BLS12-381 (classical) | one aggregate |
+| **Pulsar** | Module-LWE ML-DSA (TALUS) | one threshold signature |
+| **Corona** | Ring-LWE (Ringtail), dealerless | one threshold signature |
+| **P3Q** | rollup over independent ML-DSA certs | root/proof over a cert set (fallback) |
 
-**Pulsar Path (quantum-safe, 2-round):**
-1. **Round 1**: Each participating validator generates commitments (D matrix + MACs) using their Pulsar key share. Broadcast `Round1Data` to all other signers.
-2. **Round 2**: Each validator computes partial signatures using collected Round 1 data. Broadcast `Round2Data`.
-3. **Finalize**: Any validator aggregates Round 2 data into a threshold signature. Verify against the group public key.
-4. Requires t-of-n threshold (typically 2/3+1).
-5. Pulsar adds approximately 200-300ms for quantum finality.
+The operator selects a finality posture per chain. Each posture pins required
+leg **kinds** (committed into the cert's required-legs root) and permitted
+**modes** (in the policy allow-table):
 
-**ML-DSA Path (quantum-safe, identity proof):**
-1. Each validator signs the finality message with their ML-DSA-65 key (FIPS 204).
-2. ML-DSA signatures provide per-validator post-quantum identity binding.
-3. Aggregated alongside Pulsar into the PQ proof field of QuasarCert.
+| Posture | Requires |
+|---------|----------|
+| `BLS_FAST` | Beam |
+| `HYBRID_PQ_CHECKPOINT` | Beam ∧ (Pulsar **or** P3Q) |
+| `STRICT_QUASAR` | Beam ∧ Pulsar ∧ Corona (AND-mode) |
+| `RECOVERY_MODE` | Beam ∧ P3Q |
 
-**Block is final ONLY when all three certificates are valid:**
 ```go
-type CertBundle struct {
-    BLSAgg []byte  // 96B BLS aggregate signature
-    PQCert []byte  // Aggregated Pulsar + ML-DSA proof
-}
-
-isFinal := verifyBLS(blsAgg, quorum) && verifyPQ(pqCert, quorum)
+// A block is final iff every leg REQUIRED BY POLICY verifies over the same M.
+// Required legs come from policy ONLY, never from the certificate bytes.
+err := quasar.VerifyConsensusCert(cert, policy, validators, M)
+isFinal := err == nil
 ```
+
+Threshold legs (Pulsar, Corona) are O(1) in committee size — one group signature
+under one `KeyEra` group key regardless of validator count. A classical-only
+certificate is rejected under any posture that requires a PQ leg.
 
 ### Quantum Bundle Architecture (Async PQ Anchoring)
 
@@ -138,7 +143,7 @@ For large validator sets, `GroupedEpochManager` splits validators into groups (d
 | **Post-quantum** | Security rests on lattice SVP hardness (2^160 operations). Both Pulsar threshold and ML-DSA identity signatures remain secure. |
 | **Attack window** |  &lt;= PQ round time ( &lt;=50ms on mainnet). |
 
-All three proofs (BLS, Pulsar, ML-DSA) are **REQUIRED** for Q-Chain validators in triple mode. `IsTripleMode()` returns true when all three are configured. The `Verify` method enforces strict triple-proof validation.
+Under the `STRICT_QUASAR` posture, the Beam, Pulsar, and Corona legs are all **REQUIRED** and verified over one canonical message `M`. Required legs come from policy only; the `VerifyConsensusCert` envelope rejects a certificate that is missing any required leg, or that offers classical evidence in place of a required PQ leg.
 
 ## Validator Selection and Identity
 
@@ -160,7 +165,7 @@ Performance-based weighting: successful consensus participation increases bright
 |-------|----------|---------|---------|
 | Node-ID | ed25519 | P2P transport authentication | `$HOME/.lux/node.key` |
 | Validator-BLS | BLS12-381 | Fast finality votes (classical) | `$HOME/.lux/bls.key` |
-| Validator-PQ | Pulsar (Ring-LWE) | Post-quantum threshold shares | `$HOME/.lux/rt.key` |
+| Validator-PQ | Pulsar (Module-LWE) / Corona (Ring-LWE) | Post-quantum threshold shares | `$HOME/.lux/rt.key` |
 | Validator-MLDSA | ML-DSA-65 (FIPS 204) | Post-quantum identity signatures | `$HOME/.lux/mldsa.key` |
 | Wallet (EVM) | secp256k1 or Lamport-XMSS | User transaction signatures | In wallet |
 | Wallet (X-Chain) | secp256k1 or ML-DSA | UTXO locking | In wallet |
@@ -181,16 +186,28 @@ DIDs generate full W3C DID Documents with verification methods, authentication, 
 
 ## Post-Quantum Cryptography
 
-### Pulsar Threshold Signatures
+### Two PQ threshold kernels — Pulsar (M-LWE) and Corona (R-LWE)
 
-- **Basis**: Ring-LWE (Ring Learning With Errors)
-- **Protocol**: Native 2-round threshold signing
-- **Library**: `github.com/luxfi/corona` v0.2.0
-- **Round 1**: Generate D matrix + MACs, broadcast commitments
-- **Round 2**: Compute partial signatures using collected Round 1 data
-- **Finalize**: Aggregate partial signatures into threshold signature
+Quasar's post-quantum strength rests on **two independent lattice families**,
+each emitting one O(1) group signature. They are independent libraries with no
+import line between them; Quasar consumes them as parallel kernels.
+
+**Pulsar (TALUS)** — [`github.com/luxfi/pulsar`](https://github.com/luxfi/pulsar) v1.2.0
+
+- **Basis**: Module-LWE (ML-DSA-65, FIPS 204)
+- **Output**: threshold signature **byte-identical to a single-party FIPS-204
+  ML-DSA signature** — verifies under an unmodified ML-DSA verifier
+- **Construction**: dealerless Shamir nonce DKG + distributed `w1` (CEF) + real
+  CSCP secure-comparison (the W-LEAK is closed — no node forms `w0`/`w` in clear)
+- **Keygen profiles**: Pulsar-MPC (honest-majority N ≥ 2T−1) / Pulsar-TEE
+- **Verification**: `pulsarwire.VerifyBytes`
+
+**Corona (Ringtail)** — [`github.com/luxfi/corona`](https://github.com/luxfi/corona) v0.8.0
+
+- **Basis**: Ring-LWE (Ringtail; BKLMTT, ePrint 2024/1113)
+- **Dealerless**: native Pedersen DKG over `R_q` + proactive resharing — carries
+  the permissionless-public PQ guarantee (not FIPS)
 - **Verification**: `coronaThreshold.Verify(groupKey, message, signature)`
-- **NTT acceleration**: GPU-accelerated Number Theoretic Transform (optional, via `ntt_c.go`)
 
 ### Verkle Witness Optimization
 
@@ -207,8 +224,9 @@ Quasar includes a Verkle witness system for hyper-efficient state verification:
 | Type | Algorithm | Usage |
 |------|-----------|-------|
 | `PQSignatureTypeMLDSA65` | NIST FIPS 204 ML-DSA-65 | Per-validator signatures (1952-byte public key) |
-| `PQSignatureTypeCorona` | Ring-LWE threshold | Quasar consensus threshold signatures |
-| `PQSignatureTypeHybrid` | Classical + PQ combined | Full Quasar triple proofs (BLS + Pulsar + ML-DSA) |
+| Pulsar threshold | Module-LWE threshold ML-DSA (TALUS) | Compact Pulsar finality leg (byte-equal to FIPS 204) |
+| Corona threshold | Ring-LWE threshold (Ringtail) | Compact Corona finality leg (dealerless) |
+| Hybrid | Classical + PQ combined | `STRICT_QUASAR` posture: Beam ∧ Pulsar ∧ Corona over one message |
 
 ## Configuration Parameters
 
@@ -270,7 +288,7 @@ consensus/
     nebula/         State sync protocol
     field/          Nebula field operations
     quasar/         Post-quantum finality engine
-      quasar.go     Signer (BLS+Pulsar+ML-DSA triple threshold)
+      quasar.go     Compact-cert envelope (Beam+Pulsar+Corona+P3Q legs)
       core.go       Quasar core (multi-chain block aggregator)
       engine.go     Engine interface implementation
       epoch.go      Epoch-based Pulsar key management
@@ -296,7 +314,7 @@ node/consensus/
   acceptor.go       Acceptor callback interface
   engine/chain/     Vote message types (wire: Chits)
   quasar/           Node-level Quasar integration
-    quasar.go       Binds P-Chain + Q-Chain into triple finality
+    quasar.go       Binds P-Chain signer-set eras into compact-cert finality
     types.go        Signature interfaces, CoronaCoordinator
   zap/              ZAP agentic consensus bridge
     bridge.go       Query/Response/Vote consensus
@@ -308,8 +326,11 @@ node/consensus/
 
 | Package | Version | Purpose |
 |---------|---------|---------|
-| `github.com/luxfi/crypto` | v1.17.40 | BLS12-381, threshold signatures, IPA/banderwagon |
-| `github.com/luxfi/corona` | v0.2.0 | Ring-LWE post-quantum threshold signatures |
+| `github.com/luxfi/crypto` | v1.19.26 | BLS12-381, threshold signatures, IPA/banderwagon |
+| `github.com/luxfi/pulsar` | v1.1.5 | Module-LWE (ML-DSA) threshold — Pulsar / TALUS kernel |
+| `github.com/luxfi/corona` | v0.7.9 | Ring-LWE post-quantum threshold signatures (Ringtail) |
+| `github.com/luxfi/magnetar` | v1.2.3 | SLH-DSA (FIPS 205) threshold kernel |
+| `github.com/luxfi/threshold` | v1.9.9 | Threshold protocol primitives |
 | `github.com/luxfi/database` | v1.17.42 | State storage |
 | `github.com/luxfi/ids` | v1.2.9 | Block/node/chain identifiers |
 | `github.com/luxfi/p2p` | v1.18.9 | Peer-to-peer networking |
@@ -476,7 +497,7 @@ for block := range engine.Finalized() {
 }
 ```
 
-### Node: Quasar with Triple Finality
+### Node: Quasar with PQ Finality
 
 ```go
 

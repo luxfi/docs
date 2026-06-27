@@ -31,8 +31,9 @@ Lux HSM (`github.com/luxfi/hsm`) is a **unified Go library** for hardware securi
 | Go | 1.26.1 |
 | License | Apache 2.0 |
 | Package Type | Library (no binary) |
-| Only Dependency | `github.com/luxfi/crypto@v1.17.40` |
+| Core Dependency | `github.com/luxfi/crypto@v1.19.0` |
 | Transitive | `github.com/cloudflare/circl@v1.6.3` (ML-DSA) |
+| Released tag | v1.1.4 |
 
 ## Core Concepts
 
@@ -54,14 +55,32 @@ type PasswordProvider interface {
 
 ### Signer Providers
 
-| Provider | Type | Algorithm | File |
-|----------|------|-----------|------|
-| `aws` | AWS KMS | ECDSA_SHA_256 | `signer_aws.go` |
+All registered in `factory.go` via one `NewSigner(provider, config)` entry point.
+
+| Provider | Type | Algorithm / notes | File |
+|----------|------|-------------------|------|
+| `aws` | AWS KMS / CloudHSM | ECDSA_SHA_256 (SigV4, no SDK) | `signer_aws.go` |
 | `gcp` | Google Cloud KMS | EC_SIGN_P256_SHA256 | `signer_gcp.go` |
-| `azure` | Azure Key Vault | ECDSA P-256 | `signer_azure.go` |
-| `zymbit` | Zymbit SCM | ECDSA P-256 (PKCS#11, port 6789) | `signer_zymbit.go` |
+| `azure` | Azure Key Vault / Managed HSM | ECDSA P-256 | `signer_azure.go` |
+| `kmip` | KMIP 1.x HSM | KMIP `Sign` (requires cgo) | `signer_kmip.go` |
+| `pkcs11` | PKCS#11 token (Luna, SoftHSM) | universal HSM standard (requires cgo) | `signer_pkcs11.go` |
+| `yubihsm` (`yubico`, `yubi`) | YubiHSM 2 | EC / Ed25519 | `signer_yubihsm.go` |
+| `nitrokey` | Nitrokey HSM | OpenPGP / PKCS#11 secure element | `signer_nitrokey.go` |
+| `zymbit` | Zymbit SCM | ECDSA P-256; native threshold | `signer_zymbit.go` |
+| `ledger` | Ledger | hardware-wallet secure element | `signer_ledger.go` |
+| `trezor` | Trezor | hardware-wallet secure element | `signer_trezor.go` |
+| `coldcard` | Coldcard | air-gappable hardware wallet | `signer_coldcard.go` |
+| `keystone` | Keystone | air-gap QR hardware wallet | `signer_keystone.go` |
+| `gridplus` / `lattice` | GridPlus Lattice1 | SafeCard (Connect-API partial) | `signer_gridplus.go` |
+| `ngrave` | NGRAVE ZERO | air-gap hardware wallet | `signer_ngrave.go` |
+| `foundation` | Foundation Passport | air-gap hardware wallet | `signer_foundation.go` |
 | `mldsa` / `pq` / `post-quantum` | Post-Quantum | ML-DSA-44/65/87 (FIPS 204) | `signer_mldsa.go` |
+| `tr31` | Banking key block | ANSI X9.143 / TR-31 key wrapping | `signer_tr31.go` |
 | `local` / `""` | In-Memory | ECDSA P-256 (dev only) | `signer_local.go` |
+
+**FIPS subset.** `RequireFIPSProvider` admits only `aws`, `gcp`, `azure`,
+`yubihsm`, `pkcs11`, `kmip` — wire it before constructing a signer to fail
+closed on a non-FIPS provider.
 
 ### Password Providers
 
@@ -208,7 +227,8 @@ Tests cover:
 | Attestation invalid | Wrong HSM key | Verify attestation key ID matches signing key |
 | GCP metadata 404 | Not on GCE/GKE | Use env/file provider locally, GCP only in cloud |
 | Azure MSI fail | No managed identity | Assign system or user-assigned managed identity |
-| `unknown signer provider` | Typo in provider name | Supported: aws, gcp, azure, zymbit, mldsa, pq, post-quantum, local |
+| `unknown signer provider` | Typo in provider name | Supported: aws, gcp, azure, kmip, pkcs11, yubihsm, nitrokey, zymbit, ledger, trezor, coldcard, keystone, gridplus/lattice, ngrave, foundation, mldsa/pq/post-quantum, tr31, local |
+| `pkcs11`/`kmip` always refuses | Built without cgo | Rebuild with `CGO_ENABLED=1`; the no-cgo build links a refuse-only stub |
 
 ## Related Skills
 

@@ -1,0 +1,162 @@
+---
+title: Confidential Compute
+description: One attestation verifier, orthogonal hardware Kinds — TEE/GPU remote attestation for custody and confidential AI on Lux
+icon: ShieldCheck
+---
+
+# Confidential Compute & Attestation
+
+Lux runs a single attestation primitive — **`luxfi/cc`** (`github.com/luxfi/cc`,
+package `attest`) — that verifies hardware-rooted remote attestation evidence
+from CPUs and GPUs. One `Verifier`, a set of orthogonal hardware **Kinds**.
+Everything that needs to prove "this code ran inside genuine, measured
+confidential hardware" goes through it: the MPC custody release gate, the
+optional TEE custody extension, and the confidential-AI / proof-of-AI control
+plane.
+
+<Callout>
+  Attestation is its own orthogonal concern. `luxfi/cc` depends on **none** of
+  its consumers — not `luxfi/mpc`, not `luxfi/tee`, not the AI stack. They
+  depend on it. This is the decomplected seam: one verifier, many callers.
+</Callout>
+
+## One Verifier, Orthogonal Kinds
+
+A `Kind` tags the evidence framing the verifier dispatches to. The caller
+supplies the `Kind` out-of-band (e.g. from an envelope's framing field), so the
+verifier never guesses from byte heuristics.
+
+```go
+// github.com/luxfi/cc/attest
+type Verifier interface {
+    Verify(ctx context.Context, evidence []byte, opts ...Option) (*VerifiedReport, error)
+}
+
+// Dispatch routes evidence to the verifier registered for kind.
+func Dispatch(ctx context.Context, kind Kind, evidence []byte, opts ...Option) (*VerifiedReport, error)
+```
+
+`Verify` means all of: the bytes parse as the claimed `Kind`, the signing key
+chains to the pinned vendor root, the report signature is cryptographically
+valid, and any caller-supplied policy options pass. On any failure the error is
+non-nil and the report pointer is nil — **callers must refuse the originating
+request**. A failed verify never falls back to "best effort".
+
+## Hardware Vendor Matrix
+
+The verifier is a multi-`Kind` framework. The vendors below are the set wired in
+the released `luxfi/cc` v0.1.0 — verified against `attest/verifier.go` and
+`attest/doc.go`.
+
+| Kind | Vendor | Hardware | Status | What is verified |
+|------|--------|----------|--------|------------------|
+| `KindSEVSNP` | `amd.sev.snp` | AMD SEV-SNP CPU | **Production** | Live VCEK fetch from AMD KDS; full ARK → ASK → VCEK chain + report-signature verify (via `google/go-sev-guest`) |
+| `KindNVTrust` | `nvidia.nras.v1` | NVIDIA GPU confidential compute | **Production** (local-RIM, cloud-free) | Parse GPU evidence envelope; verify NVIDIA-signed Reference Integrity Manifest (RIM) against the operator-pinned key; match every reported measurement to its signed golden value |
+| `KindTDX` | `intel.tdx` | Intel TDX CPU | **Landing** (tracked, returns `ErrNotImplemented`) | TDREPORT / quote via `go-tdx-guest` + Intel PCS |
+
+<Callout type="warn">
+  Honest status: AMD SEV-SNP and NVIDIA nvtrust are production verifiers today.
+  Intel TDX is a tracked stub — it returns `ErrNotImplemented` and refuses
+  loudly so a not-yet-implemented verifier can never silently pass. The
+  `Kind` framework is extensible; additional vendors are added by registering a
+  new `Kind` + verifier, not by changing any caller.
+</Callout>
+
+For NVIDIA there are two surfaces: the **local RIM-match** verifier (production,
+no cloud dependency — the operator pins the NVIDIA RIM signing key) and the
+remote `attest/nvidia.NRASClient` primitive that talks to NVIDIA's Remote
+Attestation Service. Device-certificate SPDM chaining is the remote NRAS path;
+the local path covers RIM-signature + measurement integrity.
+
+## The Verified Report
+
+Every successful verify yields a kind-agnostic `VerifiedReport`. The integrity
+anchor is `CompositeHash = sha256(Kind || canonical-verified-bytes)` — a release
+gate, scheduler, or indexer logs this as the attestation root, and two evidences
+with the same composite hash produced byte-identical verifier output.
+
+| Field | Meaning |
+|-------|---------|
+| `Kind` | The verifier that produced the report |
+| `Vendor` | Canonical issuer (`amd.sev.snp`, `intel.tdx`, `nvidia.nras.v1`) |
+| `Measurement` | The launch-measurement the hardware attests to (SEV-SNP 48-byte LD digest; TDX MRTD; NVIDIA per-driver+VBIOS digest) |
+| `ReportData` | The 64-byte caller-supplied challenge field — the caller proved freshness by binding their nonce here **before** attestation |
+| `ChipID` | Silicon identity (SEV-SNP VCEK `CHIP_ID`; TDX PCK descriptor; per-GPU UUID) |
+| `CompositeHash` | `sha256(Kind ‖ canonical bytes)` — the logged attestation root |
+
+## Policy Binding
+
+Verification policy is bound per-call with composable options. The caller binds
+the nonce it issued so the quote cannot be replayed, and pins a known-good
+launch measurement:
+
+```go
+report, err := attest.Dispatch(ctx, attest.KindSEVSNP, evidence,
+    attest.WithExpectedReportData(myNonce),        // refuse if the quote didn't bind my nonce
+    attest.WithExpectedMeasurement(goldenDigest),  // pin a known-good launch digest
+)
+if err != nil {
+    return fmt.Errorf("attestation refused: %w", err) // do NOT release, do NOT fall back
+}
+```
+
+For NVIDIA GPU evidence the operator supplies the signed RIM and the trust roots
+that may sign it; an **empty trust-root set is refused** — there is no insecure
+mode:
+
+```go
+report, err := attest.Dispatch(ctx, attest.KindNVTrust, evidence,
+    attest.WithNVTrustRIM(signedRIM),
+    attest.WithNVTrustTrustRoots(operatorPinnedKeys), // empty set → refuse
+)
+```
+
+### Trust anchors are pinned, never trusted from the evidence
+
+- AMD ARK/ASK ship embedded with `go-sev-guest`; the chain is validated to the
+  AMD root, never to a key carried in the evidence.
+- The NVIDIA RIM signing key is operator-supplied via `WithNVTrustTrustRoots` —
+  no insecure default.
+- Tests never hit the network: AMD KDS responses are pre-fetched and replayed.
+
+## Two Use Cases, One Verifier
+
+The same verifier serves two orthogonal control planes.
+
+<Cards>
+  <Card title="Custody — attested TEE signing">
+    The MPC custody release gate (`luxfi/mpc`) and the optional TEE custody
+    extension (`luxfi/tee`) verify a CPU attestation (`KindSEVSNP` /
+    `KindTDX`) before a signing key share is released into an enclave. The
+    composite hash is the audit root the release decision is logged against.
+  </Card>
+  <Card title="Confidential AI — proof of AI">
+    The confidential-AI control plane verifies a GPU attestation
+    (`KindNVTrust`) to prove an inference or training job ran on a genuine,
+    measured NVIDIA confidential-compute GPU with a known-good driver/VBIOS —
+    the hardware root under proof-of-AI.
+  </Card>
+</Cards>
+
+Neither use case is wired into the permissionless consensus core. Consensus
+finality (see [Consensus](/consensus)) is dealerless and PQ-threshold; TEE is an
+**optional accelerator** for custody, never a trust assumption in the open
+validator set.
+
+## Where It Sits
+
+```
+caller (KMS release gate · scheduler · AI trust-tier policy · indexer)
+  └── cc/attest.Verifier.Verify(ctx, evidence, opts...)      ◄── luxfi/cc
+        ├── SEV-SNP    → google/go-sev-guest + AMD KDS        (production)
+        ├── Intel TDX  → google/go-tdx-guest + Intel PCS      (landing)
+        └── NVIDIA GPU → attest/nvidia RIM-match (local)      (production)
+                         attest/nvidia.NRASClient (remote)    (primitive)
+```
+
+## Further Reading
+
+- [Architecture](/architecture) — the decomplected core + optional custody extensions
+- [Wallet Security](/wallet/security) — MPC custody and the TEE extension model
+- [MPC](/mpc) — CGGMP21 / FROST threshold custody
+- [Post-Quantum](/post-quantum) — why the consensus core needs no TEE

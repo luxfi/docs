@@ -5,7 +5,12 @@ index: true
 icon: ShieldCheck
 ---
 
-Lux HSM provides a single Go interface for signing and verification across five different backend providers — from cloud HSMs to post-quantum algorithms. All secrets are managed through [Lux KMS](/kms) — never stored as plaintext.
+Lux HSM (`github.com/luxfi/hsm`) provides a single Go interface (`Signer`) for
+signing and verification across **sixteen** backend providers — cloud KMS/HSM,
+networked and USB HSMs, hardware-wallet secure elements, air-gapped devices,
+banking key-blocks, and post-quantum ML-DSA. One factory, one interface, many
+backends. All secrets are managed through [Lux KMS](/kms) — never stored as
+plaintext.
 
 ## Core Interfaces
 
@@ -23,14 +28,58 @@ type PasswordProvider interface {
 
 ## Signing Providers
 
-| Provider | Algorithm | Use Case |
-|----------|-----------|----------|
-| `aws` | ECDSA P-256 via KMS | Production cloud signing |
-| `gcp` | EC_SIGN_P256_SHA256 | Production cloud signing |
-| `azure` | ES256 via Key Vault | Production cloud signing |
-| `zymbit` | ECDSA P-256 via Zymbit SCM | Edge/IoT hardware signing |
-| `mldsa` | ML-DSA-65 (FIPS 204) | Post-quantum signing |
-| `local` | ECDSA P-256 in-memory | Development and testing |
+All sixteen are registered in one factory — `hsm.NewSigner(provider, config)`.
+
+### Cloud KMS / HSM
+
+| Provider | Backend | Algorithm |
+|----------|---------|-----------|
+| `aws` | AWS KMS / CloudHSM | ECDSA P-256 (SigV4, no SDK) |
+| `gcp` | Google Cloud KMS | EC_SIGN_P256_SHA256 |
+| `azure` | Azure Key Vault / Managed HSM | ES256 |
+| `kmip` | Any KMIP 1.x HSM (Thales, Entrust, …) | KMIP `Sign` (requires cgo) |
+
+### Networked / USB HSM
+
+| Provider | Backend | Notes |
+|----------|---------|-------|
+| `pkcs11` | Any PKCS#11 token (Thales Luna, SoftHSM, …) | Universal HSM standard (requires cgo) |
+| `yubihsm` | YubiHSM 2 | aliases `yubico`, `yubi` |
+| `nitrokey` | Nitrokey HSM | OpenPGP/PKCS#11 secure element |
+| `zymbit` | Zymbit SCM / HSM6 | Edge/IoT; native threshold (`ThresholdHSM`) |
+
+### Hardware-wallet secure elements
+
+| Provider | Device |
+|----------|--------|
+| `ledger` | Ledger (Nano S/X/Stax) |
+| `trezor` | Trezor |
+| `coldcard` | Coldcard |
+| `keystone` | Keystone (air-gap QR) |
+| `gridplus` / `lattice` | GridPlus Lattice1 (SafeCard) |
+| `ngrave` | NGRAVE ZERO |
+| `foundation` | Foundation Passport |
+
+### Software, banking & post-quantum
+
+| Provider | Algorithm | Use |
+|----------|-----------|-----|
+| `mldsa` / `pq` / `post-quantum` | ML-DSA-44 / 65 / 87 (FIPS 204) | Post-quantum signing |
+| `tr31` | ANSI X9.143 / TR-31 key blocks | Banking / payments key wrapping |
+| `local` / `""` | ECDSA P-256 in-memory | Development and testing only |
+
+<Callout type="warn">
+  **FIPS posture.** `hsm.RequireFIPSProvider` admits only the FIPS-validated
+  backends: `aws`, `gcp`, `azure`, `yubihsm`, `pkcs11`, `kmip`. Wire it before
+  constructing a signer to fail closed on a non-FIPS provider. `local` is
+  development only — never production.
+</Callout>
+
+<Callout>
+  Build notes: `pkcs11` and `kmip` link a native library and require **cgo** (a
+  no-cgo build falls back to a stub that refuses to sign). The GridPlus Lattice1
+  Connect-API path is partial — track its status before production use.
+</Callout>
 
 ## Password Providers
 
@@ -82,13 +131,13 @@ func main() {
 │           │                     │            │
 │  ┌────────▼─────────────────────▼─────────┐ │
 │  │         Factory (NewSigner / etc)       │ │
-│  └────┬────┬────┬────┬────┬────┬──────────┘ │
-│       │    │    │    │    │    │             │
-│      AWS  GCP Azure Zymbit MLDSA Local      │
+│  └────┬───────────┬───────────┬───────────┘ │
+│       │           │           │              │
+│   Cloud KMS   Networked/    Hardware-wallet  │
+│   AWS·GCP·    USB HSM       secure elements  │
+│   Azure·KMIP  PKCS11·Yubi·  Ledger·Trezor·   │
+│               Nitro·Zymbit  Coldcard·...     │
+│                                              │
+│            + mldsa (PQ) · tr31 · local       │
 └─────────────────────────────────────────────┘
-         │    │    │    │
-    ┌────▼────▼────▼────▼────┐
-    │   Cloud / Hardware /    │
-    │   Software Backends     │
-    └─────────────────────────┘
 ```

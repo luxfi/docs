@@ -52,3 +52,31 @@ When using the CLI's encrypted key storage:
 - Minimum 12 characters
 - Passwords are hashed with Argon2 before use as encryption keys
 - Key material is encrypted with AES-256-GCM at rest
+
+## MPC & Threshold Custody
+
+For institutional and bridge custody, a key need never exist in one place. Lux
+custody is **decomplected**: one optional MPC custody module, plus an optional
+TEE custody extension, composed over a shared attestation verifier.
+
+| Module | Tag | Role |
+|--------|-----|------|
+| [`luxfi/mpc`](https://github.com/luxfi/mpc) | v1.16.0 | Threshold MPC custody — **CGGMP21** (secp256k1 ECDSA) and **FROST** (Schnorr / ed25519). t-of-n signing, DKG, resharing, refresh, and a policy engine. |
+| [`luxfi/tee`](https://github.com/luxfi/tee) | v0.1.0 | **Optional** TEE-backed threshold-signing custody extension (attested enclave). One-way dependency on the signing kernels; **not** required by the threshold core. |
+| [`luxfi/cc`](https://github.com/luxfi/cc) | v0.1.0 | One attestation verifier the custody modules call before releasing a key share into hardware. See [Confidential Compute](/confidential-compute). |
+
+<Callout>
+  The optional extension model: `luxfi/mpc` (MPC custody) and `luxfi/tee` (TEE
+  custody) are **add-ons**. The post-quantum consensus core depends on neither —
+  the permissionless chain runs dealerless without a TEE. Operators opt into MPC
+  or TEE custody for institutional key management; it is never a trust assumption
+  baked into the open validator set.
+</Callout>
+
+### Policy engine
+
+`luxfi/mpc` ships a Fireblocks/Utila-style policy engine for MPC wallets —
+per-transaction rules (amount caps, allow-lists, approval quorums) gate every
+signing request before the threshold ceremony runs. This is the in-house custody
+policy layer; external custodian co-signing (Utila / Fireblocks / regulated
+custodians) layers on top via the [bridge cosigner](/bridge) flow.

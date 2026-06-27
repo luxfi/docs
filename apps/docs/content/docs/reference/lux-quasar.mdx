@@ -1,77 +1,145 @@
 ---
 title: "Lux Quasar"
-description: "The supermassive black hole at the center of the Lux post-quantum finality universe — pulls Pulsar (M-LWE) + Corona (R-LWE) + Magnetar (SLH-DSA) + BLS + Z-Chain Groth16 / P3Q into per-round finality certs. Defines QuasarCert wire format and Pulsar / Aurora / Polaris cert profiles."
+description: "Quasar finality — a typed compact-certificate envelope binding four evidence kinds (Beam · Pulsar · Corona · P3Q) to one canonical message under one P-Chain-pinned KeyEra. Defines the ConsensusCert envelope, the suite registry, and the four operator postures."
 ---
 
 ## Overview
 
-**Quasar** is the supermassive black hole at the center of the Lux
-post-quantum finality universe. Every consensus event in every Lux
-primary-network chain is pulled into a per-round `QuasarCert` — a
-PQ-finality certificate composed from the underlying threshold
-primitives (Pulsar M-LWE, Corona R-LWE, Magnetar SLH-DSA), the
-classical BLS aggregate fast-path, and the Z-Chain Groth16 / P3Q
-on-chain verifier roll-up. Nothing escapes Quasar's event horizon
-without going through PQ finality.
+**Quasar** is the post-quantum finality layer at the center of every Lux chain.
+A finalized round is sealed by a **`ConsensusCert`** — a policy-gated aggregate
+quorum certificate. Policy declares which cryptographic *legs* are required;
+certificate bytes carry the per-leg evidence; every leg proves the **same**
+weighted-quorum predicate over the **same** domain-separated finality message.
 
-- **Repo**: [github.com/luxfi/quasar](https://github.com/luxfi/quasar)
-- **Role**: Spec + profile registry + composition proofs
-- **Not an implementation** — the consensus-engine binding lives at
-  [`luxfi/consensus/protocol/quasar/`](https://github.com/luxfi/consensus/tree/main/protocol/quasar)
+- **Implementation**: [`luxfi/consensus`](https://github.com/luxfi/consensus) `protocol/quasar/` (released **v1.26.0**)
+- **Threshold kernels**: [`luxfi/pulsar`](https://github.com/luxfi/pulsar) v1.2.0 (Module-LWE) · [`luxfi/corona`](https://github.com/luxfi/corona) v0.8.0 (Ring-LWE)
 
-## Cert Profiles
+## Four evidence kinds
 
-| Profile | Composition | Cert size (n=21) | Use case |
-|---|---|---|---|
-| **Pulsar** | BLS ‖ Pulsar | ~3.5 KB | PQ floor — single PQ kernel, smallest cert |
-| **Aurora** | BLS ‖ Pulsar ‖ Corona | ~37 KB | Intra-lattice diversity — two lattice constructions per cert |
-| **Polaris** | BLS ‖ Pulsar ‖ Corona ‖ Magnetar | ~53 KB | Maximum-assurance cross-family — lattice + hash-based |
+The chain stores **one compact typed evidence per lane**, never N raw
+per-validator signatures. These four names are the value-level vocabulary; the
+suite registry maps each concrete suite to its orthogonal axes.
 
-Each cert profile is independently selectable per-chain via
-`FinalitySchemeID` in `consensus/config/pq_mode.go`.
+| Evidence kind | Wire id | Family | Shape | Role |
+|---------------|---------|--------|-------|------|
+| **Beam** | `beam-bls` | BLS12-381 (classical) | one aggregate | Fast classical aggregate |
+| **Pulsar** | `pulsar-threshold-mldsa` | Module-LWE, FIPS-204 ML-DSA (TALUS) | one threshold sig | Compact PQ threshold leg |
+| **Corona** | `corona-ringtail` | Ring-LWE (Ringtail), dealerless | one threshold sig | Independent second PQ lattice leg |
+| **P3Q** | `p3q-mldsa-rollup` | rollup over independent ML-DSA certs | root/proof over a cert set | Fallback: migration / recovery / bridge / audit |
 
-## Primitives
+Beam, Pulsar, and Corona are **O(1) in committee size**. P3Q compresses a set of
+independent per-validator ML-DSA certs (the `MLDSACertSet`) — the always-
+available audit/challenge object, never the primary finality object when a
+compact Pulsar leg is live.
 
-| Primitive | Repo | Role | Pinned tag |
-|---|---|---|---|
-| Pulsar | [`luxfi/pulsar`](https://github.com/luxfi/pulsar) | Threshold ML-DSA-65 (M-LWE) | v1.0.9 |
-| Corona | [`luxfi/corona`](https://github.com/luxfi/corona) | Threshold R-LWE sibling | v0.4.0 |
-| Magnetar | [`luxfi/magnetar`](https://github.com/luxfi/magnetar) | Threshold SLH-DSA (research) | research |
-| BLS | [`luxfi/crypto/bls`](https://github.com/luxfi/crypto/tree/main/bls) | BLS12-381 aggregate classical fast-path | tracks crypto v1.19.x |
-| Z-Chain Groth16 | [`luxfi/chains/quantumvm`](https://github.com/luxfi/chains/tree/main/quantumvm) | Per-validator MLDSA Groth16 roll-up | v1.2.3+ |
+## Two orthogonal axes
 
-## QuasarCert wire format
+A leg's **kind** (what it satisfies) and **mode** (how it is proven) are
+orthogonal and never braided:
+
+| Evidence kind | `LegKind` (what) | `EvidenceMode` (how) |
+|---------------|------------------|----------------------|
+| Beam | `LegClassical` | `ClassicalAggregate` |
+| Pulsar | `LegPulsarMLDSA` | `ThresholdSig` |
+| Corona | `LegCoronaLattice` | `ThresholdSig` |
+| P3Q | `LegPulsarMLDSA` | `P3QRollup` |
+
+Pulsar and P3Q satisfy the **same** leg kind by **different** mechanisms — the
+policy "OR" (`Beam ∧ (Pulsar OR P3Q)`) is expressed at the mode level on a single
+required leg kind, never as an alternative leg.
+
+## Suite registry
+
+A *suite id* is a wire-stable string naming one concrete, parameterised scheme.
+The registry is the single authority mapping a suite id to its
+`(EvidenceKind, LegKind, EvidenceMode, param-set)` — verifiers resolve suites
+**only** through it, so no suite string can dispatch to the wrong verifier and an
+unknown suite is a hard reject.
+
+| Suite id | Kind | Param set |
+|----------|------|-----------|
+| `Lux-Beam-BLS12381-v1` | Beam | BLS12-381 |
+| `Lux-Pulsar-TALUS-MLDSA44` / `65` / `87` | Pulsar | ML-DSA-44 / 65 / 87 |
+| `Lux-Corona-Ringtail-L1` / `L3` / `L5-v1` | Corona | ML-DSA-44 / 65 / 87 security-level byte |
+| `Lux-P3Q-MLDSA{44,65,87}-Direct-v1` | P3Q | direct (raw set, PQ-safe, O(N), always verifiable) |
+| `Lux-P3Q-MLDSA65-STARK-v1` | P3Q | succinct, hash-based (PQ-safe, audit-gated) |
+| `Lux-P3Q-MLDSA65-Groth16-v1` | P3Q | succinct, classical assumption (audit-gated + policy opt-in) |
+
+## KeyEra — one group key per era
+
+A threshold leg for a 1000-validator committee is **one** signature under **one
+group public key**. A `KeyEra` pins that single group key to one validator-set
+era:
 
 ```go
-type QuasarCert struct {
-    BLS        []byte  // BLS12-381 aggregate, 48 B classical fast path
-    Pulsar     []byte  // Threshold ML-DSA-65 (always populated)
-    Corona     []byte  // Threshold R-LWE (Aurora / Polaris)
-    Magnetar   []byte  // Threshold SLH-DSA (Polaris only)
-    MLDSAProof []byte  // Z-Chain Groth16, ~192 B
-    Epoch      uint64
-    Finality   time.Time
-    Validators int
+type KeyEra struct {
+    ChainID      uint32   // matches ConsensusCert.ChainID
+    SignerSetID  [48]byte // P-Chain-pinned validator-set identity
+    KeyEraID     uint64   // advances on signer-set rotation
+    Generation   uint64   // advances on within-era key refresh / reshare
+    PChainHeight uint64   // height the signer set was pinned at
+    GroupPubKey  []byte   // the compact threshold GROUP key (scheme-interpreted)
+    SchemeID     string   // e.g. "Lux-Pulsar-TALUS-MLDSA65" | "Lux-Corona-Ringtail-L3-v1"
+    KeygenMode   string   // AUDIT only: "talus-mpc" | "ceremony" | "tee" | "p3q-rollup-fallback"
+    // ...
 }
 ```
 
-A valid cert MUST satisfy:
-1. Every populated leg verifies under its primitive's verifier
-2. The populated-leg set matches the profile selector exactly
-3. Validators equals the validator-set size at Epoch
-4. Domain separation enforced via context strings per leg
+`KeyEra` is a *value qualified by its scheme*, not a place: **one** type and
+**one** boring verifier (`VerifyThresholdLeg`) serve **every** threshold lane —
+Pulsar (FIPS-204 ML-DSA group sig, via `pulsarwire.VerifyBytes`) and Corona
+(Ringtail, via `coronaThreshold.Verify`). The chain does not care *how* the group
+key was produced; `KeygenMode` records that for audit and is orthogonal to
+verification.
 
-Full spec at `luxfi/quasar/SPEC.md`.
+## The four postures (policy table)
 
-## Naming canon
+The operator selects a finality posture per chain. The required leg **kinds** are
+committed into the cert's required-legs root; the permitted **modes** live in the
+policy's allow-table.
 
-- Profiles: **Pulsar / Aurora / Polaris** (no "Syzygy")
-- Primitives: **Pulsar / Corona / Magnetar** (no "Comet", no "Corona")
+| Posture | Requires | Use case |
+|---------|----------|----------|
+| `BLS_FAST` | Beam | Mempool / fast local block acceptance |
+| `HYBRID_PQ_CHECKPOINT` | Beam ∧ (Pulsar **or** P3Q) | Checkpoints |
+| `STRICT_QUASAR` | Beam ∧ Pulsar ∧ Corona | Full dual-lattice AND-mode strict finality |
+| `RECOVERY_MODE` | Beam ∧ P3Q | Recovery / migration / bridge (no Pulsar key) |
+
+`HYBRID_PQ_CHECKPOINT` and `RECOVERY_MODE` share the same required leg kinds
+(hence the same required-legs root); they are distinguished by their evidence-
+policy id (bound into the message) and their allow-table — the requirement
+commits the *kinds*, the policy id + allow-table commit the *modes*.
+
+## Verifier invariants
+
+The `ConsensusCert` verifier (`VerifyConsensusCert`) enforces, among others:
+
+- **Required legs come from policy only.** The cert's required-legs root is
+  recomputed from policy and checked; the cert may not assert its own required
+  set.
+- **The signed message binds the full consensus tuple** (chain id, epoch,
+  height, round, block hash, validator-set root, policy id, required-legs root,
+  signer root, cert profile) — never the block hash alone; cross-domain replay is
+  closed.
+- **Every required leg must appear exactly once;** a missing leg is a hard reject.
+- **Classical evidence can satisfy only a classical leg** — never a required PQ
+  leg; a classical-only cert is rejected under any posture requiring a PQ leg.
+- **SLH-DSA is never threshold-signed in production** (a Magnetar threshold-sig
+  leg is a hard reject).
+- **Threshold legs require signer accountability** (signer root, aggregate
+  weight, policy, session binding) or are rejected.
+- **Malformed bytes yield a typed error, never a panic and never unbounded work.**
+
+## Compactness
+
+ML-DSA-65 signatures are ~3.3 KB. A naive per-validator certificate is
+`48 + N × 3309` bytes; the compact threshold leg replaces the `N × 3309` term
+with a single group signature, so a 1000-validator cert is the same size as a
+4-validator cert — roughly three orders of magnitude smaller at N=1000.
 
 ## Cross-references
 
-- [`luxfi/quasar/SPEC.md`](https://github.com/luxfi/quasar/blob/main/SPEC.md) — cert wire format
-- [`luxfi/quasar/PROFILES.md`](https://github.com/luxfi/quasar/blob/main/PROFILES.md) — profile registry
-- [`luxfi/quasar/PRIMITIVES.md`](https://github.com/luxfi/quasar/blob/main/PRIMITIVES.md) — primitive registry
-- [LP-020](https://github.com/luxfi/LPs/blob/main/LP-020-quasar-consensus.md) — Quasar consensus LP
-- [LP-105](https://github.com/luxfi/LPs/blob/main/LP-105-lux-stack-lexicon.md) — Lux stack lexicon
+- [Consensus](/consensus) — the engine and sub-protocols
+- [Post-Quantum](/post-quantum) — Pulsar (TALUS) and Corona (Ringtail) in depth
+- [`luxfi/consensus` `protocol/quasar/`](https://github.com/luxfi/consensus/tree/main/protocol/quasar)
+- [LPs](https://lps.lux.network) — the governing Lux Proposals

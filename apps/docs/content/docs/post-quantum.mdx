@@ -145,17 +145,61 @@ For existing users and applications:
   </Card>
 </Cards>
 
-## Quasar Consensus
+## Parallel Post-Quantum: Pulsar ∥ Corona
 
-Lux's Quasar consensus uses a **triple consensus** signature scheme combining three independent cryptographic families -- classical (BLS) and two post-quantum (Pulsar + ML-DSA):
+Quasar finality (see [Consensus](/consensus)) is sealed by a compact-certificate
+envelope whose post-quantum strength rests on **two independent lattice
+families**, each contributing one O(1) threshold signature:
 
-| Scheme | Family | Purpose |
-|--------|--------|---------|
-| BLS (BLS12-381) | Pairing-based (classical) | Aggregatable validator signatures for efficient block finalization |
-| Pulsar | Ring-LWE (post-quantum) | Threshold consensus signatures with lattice-based security |
-| ML-DSA-65 | FIPS 204 (post-quantum) | Per-validator identity signatures with Module-LWE security |
+| Leg | Library | Lattice family | Dealerless? | FIPS posture |
+|-----|---------|----------------|-------------|--------------|
+| **Pulsar** | [`luxfi/pulsar`](https://github.com/luxfi/pulsar) v1.2.0 | Module-LWE (ML-DSA-65) | keygen via committee / ceremony | **stock FIPS-204** — verifies under an unmodified ML-DSA verifier |
+| **Corona** | [`luxfi/corona`](https://github.com/luxfi/corona) v0.8.0 | Ring-LWE (Ringtail) | **natively dealerless** (Pedersen DKG) | not FIPS — a distinct lattice construction |
 
-All three paths run in parallel via `TripleSignRound1`. A **QuasarCert** is the finality certificate containing a BLS aggregate signature and aggregated PQ proof (Pulsar + ML-DSA). Blocks are final only when all three certificates verify. An attacker must break ECDL (BLS), Module-LWE (ML-DSA), and Module-SIS (Pulsar) simultaneously to forge a consensus vote.
+Under the `STRICT_QUASAR` posture both legs sign **one** canonical finality
+message under **one** P-Chain-pinned key-era (AND-mode), alongside the classical
+BLS aggregate. Forging finality means breaking **both** Module-LWE and Ring-LWE
+simultaneously — two unrelated lattice problems, not one.
+
+### Pulsar = TALUS threshold ML-DSA
+
+Pulsar's TALUS construction produces a threshold ML-DSA-65 signature that is
+**byte-identical to a single-party FIPS-204 signature** on the same message and
+public key — so a verifier needs no special threshold logic. It is built from a
+dealerless Shamir nonce DKG, a distributed `w1` derivation (CEF), and a real
+secure-comparison circuit (**CSCP**).
+
+<Callout>
+  **W-LEAK closed.** Earlier threshold-ML-DSA sketches leaked the rejection-
+  sampling boundary because a node had to form the `w0`/`w` decomposition in the
+  clear. Pulsar v1.2.0 replaces that with a real CSCP secure-comparison circuit:
+  no single node forms `w0`/`w`, and a mandatory verify-before-release step
+  prevents both forgery and leakage. CSCP is semi-honest — a malicious deviation
+  costs liveness only, never key material.
+</Callout>
+
+**The honest framing.** The known impossibility is *FROST-style additive*
+threshold ML-DSA, not threshold ML-DSA in general — TALUS routes around it with
+binding-commit (BCC) + CEF rather than additive nonce sharing. But a fully
+*dealerless key DKG* for ML-DSA is genuinely unreachable: an additive sum of
+FIPS secrets breaks the `S_η` norm bound (proven), so Pulsar key generation is a
+committee/ceremony step. Pulsar ships two custody profiles for that step —
+**Pulsar-MPC** (honest-majority N ≥ 2T−1) and **Pulsar-TEE** (attested enclave).
+Because Pulsar keygen is not dealerless, **Corona carries the dealerless,
+permissionless-public PQ guarantee**: Ringtail's Pedersen DKG needs no trusted
+dealer, which is what makes it sound for an open validator set.
+
+### Hybrid identity & transport
+
+Post-quantum strength is layered on classical primitives, never a clean
+replacement:
+
+- **Transport.** Node-to-node PQ-TLS 1.3 uses the **X-Wing** hybrid KEM
+  (X25519 + ML-KEM-768, negotiated as `X25519MLKEM768`) — Go 1.26's default.
+  Breaking it requires breaking both X25519 and ML-KEM-768.
+- **Identity.** Validator and account identity bind a classical key with
+  **ML-DSA-65** (hybrid signatures), so an identity forgery requires breaking
+  both the classical and the lattice scheme.
 
 ## Smart Account PQ Signing
 
@@ -163,11 +207,16 @@ EVM smart accounts (ERC-4337 / Safe) can verify post-quantum signatures on-chain
 
 | Precompile | Address | Purpose |
 |-----------|---------|---------|
-| `ML-DSA Verify` | `0x0b14` | Verify ML-DSA-65 signatures in Solidity |
-| `SLH-DSA Verify` | `0x0b15` | Verify SLH-DSA signatures in Solidity |
-| `Pulsar Verify` | `0x0b16` | Verify Pulsar ring signatures in Solidity |
+| `ML-DSA Verify` | `0x012202` | Verify single-party ML-DSA-65 (FIPS 204) signatures in Solidity |
+| `SLH-DSA Verify` | `0x012203` | Verify SLH-DSA (FIPS 205) signatures in Solidity |
+| `Pulsar Verify` | `0x012204` | Verify a Pulsar Module-LWE threshold signature (byte-equal to FIPS 204) |
+| `P3Q Verify` | `0x012205` | Rollup-commit verifier; kind-byte dispatch to Pulsar / Corona / Magnetar |
 
-The `SafeMLDSASigner` module implements ERC-1271 signature verification using ML-DSA-65, allowing Safe multisig wallets to authorize transactions with post-quantum keys. This works on the C-Chain and all sovereign L1 EVM chains with PQ precompiles enabled.
+See [PQ Crypto Precompiles](/precompile/pq-crypto) for the full slot map and gas
+schedule. The `SafeMLDSASigner` module implements ERC-1271 signature
+verification using ML-DSA-65, allowing Safe multisig wallets to authorize
+transactions with post-quantum keys. This works on the C-Chain and all sovereign
+L1 EVM chains with PQ precompiles enabled.
 
 ```solidity
 // Safe module: verify ML-DSA-65 via precompile

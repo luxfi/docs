@@ -32,6 +32,7 @@
     "hsm",
     "kms",
     "mpc",
+    "confidential-compute",
     "fhe",
     "lattice",
     "---Smart Contracts---",

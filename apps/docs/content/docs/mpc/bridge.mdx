@@ -24,6 +24,41 @@ The Lux Bridge uses MPC for threshold signing of cross-chain transfers. Each bri
 | CGGMP21 | secp256k1 | Ethereum, Lux, all EVM chains |
 | FROST | secp256k1 | Bitcoin (Taproot) |
 
+The native MPC threshold signature is the **complete, permissionless** signing
+path — it is sufficient on its own and requires no external custodian.
+
+## Layered External-Custodian Cosigning (optional, institutional)
+
+Regulated and institutional flows can require an **external custodian** to
+co-sign on top of the native MPC signature. This is opt-in compatibility for
+tenants who must keep a regulated custodian (e.g. Utila or Fireblocks) in the
+approval path; it is **not** part of the public permissionless bridge.
+
+| Vendor | Auth | Role |
+|--------|------|------|
+| **Utila** | service-account PEM | external approval workflow |
+| **Fireblocks** | RS256 JWT (API key + signed PEM) | external RAW-sign approval |
+
+How it composes, per swap:
+
+1. The SDK declares the required cosigners by **public identifier only**
+   (`org_id`, `api_key`, vault ids) — secret material **never crosses the wire**.
+2. The native MPC network produces its threshold signature first.
+3. Each declared custodian independently attests to the **same** transaction hash.
+4. **All listed must approve** — any rejection fails the swap.
+
+The custodian secret (Utila PEM, Fireblocks signing key) is fetched at dispatch
+time from **KMS**, keyed by the public identifier — never stored in the swap
+record and never sent by the client. The vendor set is an extensible family
+(adding one is a new `Kind` + dispatcher branch).
+
+<Callout>
+  Scope: external-custodian cosigning targets regulated/institutional custody.
+  The permissionless bridge runs on native MPC alone. The cosigner orchestration
+  is being decomplected into a standalone module so the permissionless bridge
+  carries none of it — see the architecture note on `luxfi/cosigner`.
+</Callout>
+
 ## Bridge Architecture
 
 ```

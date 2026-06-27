@@ -1,20 +1,23 @@
 ---
 title: Consensus
-description: Quasar — Lux's leaderless, post-quantum, sub-second finality consensus
+description: Quasar — Lux's leaderless, post-quantum, compact-certificate finality
 ---
 
 # Lux Consensus
 
 Lux runs **Quasar**, a leaderless DAG-native consensus engine with hybrid
-classical + post-quantum finality. Each round produces a `QuasarCert`
-that combines BLS12-381 aggregate signatures with two independent
-post-quantum proof paths (Pulsar threshold + ML-DSA identity), so a
-break of any single cryptographic primitive does not break finality.
+classical + post-quantum finality. Voting and DAG ordering produce a decision;
+finality is then sealed by a **typed compact-certificate envelope** that binds
+one or more cryptographic *evidence legs* to a single canonical finality
+message. A break of any single primitive does not break finality.
+
+Implementation: [`github.com/luxfi/consensus`](https://github.com/luxfi/consensus)
+`protocol/quasar/` (released **v1.26.0**).
 
 ## Quasar Sub-Protocols
 
-Each component owns one concern. They compose into two engine modes
-(linear chains and DAG chains).
+Each component owns one concern. They compose into two engine modes (linear
+chains and DAG chains).
 
 | Component | Role |
 |-----------|------|
@@ -22,13 +25,13 @@ Each component owns one concern. They compose into two engine modes
 | **Wave** | Per-round threshold voting with FPC (Fast Probabilistic Consensus) tie-breaking |
 | **Focus** | Confidence accumulation: `β` consecutive supermajority rounds yields local finality |
 | **Prism** | DAG geometry: cuts, frontiers, uniform peer sampling |
-| **Horizon** | DAG order theory: reachability, lowest-common-ancestor, transitive closure, skip lists |
+| **Horizon** | DAG order theory: reachability, lowest-common-ancestor, transitive closure |
 | **Flare** | DAG cert / skip classification via 2f+1 quorum |
 | **Ray** | Linear-chain finality driver (Wave + Focus + Sink) |
 | **Field** | DAG finality driver (Wave + safe-prefix commit) |
 | **Nova** | Linear-chain consensus mode — wraps Ray |
 | **Nebula** | DAG consensus mode — wraps Field |
-| **Quasar** | Threshold signing + epoch management (BLS + Pulsar + ML-DSA) |
+| **Quasar** | Compact-certificate finality: evidence legs + KeyEra + policy postures |
 
 ### Round flow
 
@@ -36,103 +39,130 @@ Each component owns one concern. They compose into two engine modes
 
 **DAG (Nebula):** Photon → Wave (per frontier vertex) → Flare → Horizon (safe prefix) → Field → Committer
 
-## QuasarCert: Hybrid Finality
+## Finality: the Compact-Certificate Envelope
 
-Each finalized round emits a `QuasarCert`:
+Finality is a `ConsensusCert` — a policy-gated aggregate quorum certificate.
+**Policy** declares which cryptographic legs are required; **certificate bytes**
+carry per-leg evidence; every leg proves the *same* weighted-quorum predicate
+over the *same* domain-separated finality message `M`.
 
-```go
-type QuasarCert struct {
-    BLS        []byte    // BLS12-381 aggregate (~48 B classical fast path)
-    Pulsar   []byte    // Pulsar/Ring-LWE 2-round threshold proof (~33 KB PQ)
-    MLDSAProof []byte    // Z-Chain Groth16 rollup of N × ML-DSA identity sigs (~192 B)
-    Epoch      uint64
-    Finality   time.Time
-    Validators int
-}
+The signed message `M` binds the full consensus tuple — chain id, epoch, height,
+round, block hash, validator-set root, policy id, required-legs root, signer
+root, cert profile — never the block hash alone. Required legs come from policy
+**only**, never from the certificate's own bytes; the cert's required-legs root
+is recomputed from policy and any mismatch is a hard reject.
+
+### Four evidence kinds
+
+The chain stores **one compact typed evidence per lane**, never N raw
+per-validator signatures.
+
+| Evidence kind | Family | Shape | Role |
+|---------------|--------|-------|------|
+| **Beam** | BLS12-381 (classical) | one aggregate | Fast classical aggregate |
+| **Pulsar** | Module-LWE, FIPS-204 ML-DSA (TALUS) | one threshold signature | Compact PQ threshold leg |
+| **Corona** | Ring-LWE (Ringtail), dealerless | one threshold signature | Second, independent PQ lattice leg |
+| **P3Q** | rollup over independent ML-DSA certs | root/proof over a cert set | Fallback (migration / recovery / bridge / audit) |
+
+Beam, Pulsar, and Corona are **O(1) in committee size** — one signature each.
+P3Q is the only O(N)-class object and is a fallback, never the normal finality
+object when a compact Pulsar leg is available.
+
+### Two orthogonal axes (decomplected)
+
+A leg's **kind** (what requirement it satisfies) and its **mode** (how that
+requirement is proven) are orthogonal and never braided:
+
+| Evidence kind | Leg kind (what) | Evidence mode (how) |
+|---------------|-----------------|---------------------|
+| Beam | `LegClassical` | `ClassicalAggregate` |
+| Pulsar | `LegPulsarMLDSA` | `ThresholdSig` |
+| Corona | `LegCoronaLattice` | `ThresholdSig` |
+| P3Q | `LegPulsarMLDSA` | `P3QRollup` |
+
+Pulsar and P3Q satisfy the **same** leg kind (the Module-LWE ML-DSA PQ-finality
+requirement) by **different** mechanisms — that is exactly the policy "OR":
+one required leg kind, two permitted modes.
+
+### KeyEra — one group key per era
+
+A threshold leg for a 1000-validator committee is **one** signature under **one
+group public key**, not 1000 per-validator signatures. A `KeyEra` is the
+registry record that pins that single group key to one validator-set era: which
+chain, which P-Chain-pinned signer set, which key-era id + generation, which
+scheme/parameter set.
+
+`KeyEra` is a *value qualified by its scheme*, not a place: **one** type and
+**one** boring verifier (`VerifyThresholdLeg`) serve **every** threshold lane —
+Pulsar (FIPS-204 ML-DSA group signature) and Corona (Ringtail). The chain does
+not care *how* the group signature was produced (TALUS MPC, an HSM ceremony, a
+TEE, or P3Q fallback); that is recorded in the era's `KeygenMode` for audit and
+is orthogonal to verification. The verifier stays in its lane: group sig, group
+key, `M`.
+
+### Compactness
+
+ML-DSA-65 signatures are ~3.3 KB each. A naive per-validator certificate is
+`48 + N × 3309` bytes — linear in validator count. The compact threshold leg
+replaces the `N × 3309` term with a **single** group signature, so the
+certificate for 1000 validators is the same size as for 4 — roughly **three
+orders of magnitude smaller** at 1000 validators.
+
+```
+naive O(N) cert  @ N=1000:  48 + 1000 × 3309  ≈ 3.3 MB
+compact O(1) cert:          one ML-DSA-65 group sig (~3.3 KB) + envelope header
 ```
 
-| Layer | Hardness | Role | Size |
-|-------|----------|------|------|
-| BLS12-381 aggregate | Classical co-CDH | Fast path | 48 B |
-| Pulsar (Ring-LWE) | Module-LWE | PQ threshold | ~33 KB |
-| ML-DSA-65 → Groth16 | Module-LWE + MSIS | PQ identity rollup | ~192 B |
+## Finality Postures (Policy Table)
 
-A QuasarCert verifies if **and only if** the configured layers all
-verify. Each layer is independently toggleable:
+The operator selects a finality posture per chain. Each posture is a concrete
+policy the envelope verifies under; the required leg **kinds** are committed into
+the cert's required-legs root, and the permitted **modes** live in the policy's
+allow-table.
 
-| Mode | Composition | Use case |
-|------|-------------|----------|
-| `BLSOnly` | BLS only | Classical fast path |
-| `BLSPlusMLDSA` | BLS + per-validator ML-DSA | Identity-bound PQ |
-| `BLSPlusCorona` | BLS + Pulsar threshold | Threshold-only PQ |
-| `BLSPlusGroth16` | BLS + Z-Chain Groth16 rollup | Compact PQ identity |
-| `TripleQuantum` | All three layers in parallel | Full Quasar |
+| Posture | Requires | Use case |
+|---------|----------|----------|
+| `BLS_FAST` | Beam only | Mempool / fast local block acceptance |
+| `HYBRID_PQ_CHECKPOINT` | Beam ∧ (Pulsar **or** P3Q) | Checkpoints: a compact Pulsar leg, or the P3Q fallback |
+| `STRICT_QUASAR` | Beam ∧ Pulsar ∧ Corona | Full dual-lattice **AND-mode** strict finality |
+| `RECOVERY_MODE` | Beam ∧ P3Q | Recovery / migration / bridge: independent ML-DSA certs, no Pulsar key |
 
-Selectable at runtime via the `CONSENSUS_PQ_MODE` env var or
-`config.PQMode` field.
-
-## Pulsar (Threshold Layer)
-
-The Pulsar layer is implemented by **Pulsar**
-(`github.com/luxfi/pulsar/threshold`) — Lux's variant with DKG2 and the
-Pulsar-SHA3 hash suite (KMAC over cSHAKE256, NIST SP 800-185).
-
-| Parameter | Value | Meaning |
-|-----------|-------|---------|
-| `M` | 8 | Module rank |
-| `N` | 7 | Min signers (threshold = 6 of 8) |
-| `LogN` | 8 | Ring degree = 256 |
-| `Q` | 0x1000000004A01 | 48-bit NTT-friendly prime |
-| Security (classical / quantum) | 2^142 / 2^130 | BDGL sieving + Grover |
-
-## Measured performance (Apple M1 Max, single round)
-
-| Mode | Sign | Aggregate | Verify | Cert | 10K certs |
-|------|------|-----------|--------|------|-----------|
-| BLS-only | 312 µs | 8.6 ms | 714 µs | 123 B | 1.17 MB |
-| BLS + ML-DSA | 369 µs | 8.5 ms | 3.4 ms | 69 KB | 665 MB |
-| BLS + Pulsar | 39 ms | 3.3 s | 1.6 ms | 33 KB | 318 MB |
-| Triple Quantum | 40 ms | 3.3 s | 4.3 ms | 102 KB | 981 MB |
-
-ZAP wire protocol (zero-copy, replaces JSON-RPC for inter-node messages):
-single-conn 114K TPS, 50 conns + batch 1000 = 20.26M TPS.
+In `STRICT_QUASAR`, Beam, Pulsar, and Corona all sign **one** canonical message
+`M` under **one** P-Chain-pinned era (AND-mode). A classical-only certificate is
+rejected under any posture that requires a PQ leg; classical evidence can satisfy
+only the classical leg and can never stand in for a required PQ leg.
 
 ## Properties
 
-**Liveness.** Round driver makes progress whenever a 2f+1 fraction of
-the network is reachable. No single leader.
+**Liveness.** The round driver makes progress whenever a 2f+1 fraction of the
+network is reachable. No single leader.
 
 **Safety.** Holds whenever fewer than f Byzantine validators participate
-(committee size 3f+1). The classical layer (BLS) and post-quantum
-layers (Pulsar / ML-DSA) sign the same payload, so an adversary that
-breaks one primitive still has to defeat the other layers.
+(committee size 3f+1). Every required leg signs the same domain-separated `M`,
+so an adversary that breaks one primitive still has to defeat the others.
 
-**PQ safety.** Even an attacker with full quantum capability cannot
-forge a triple-mode cert without breaking *both* Ring-LWE (Pulsar) and
-ML-DSA simultaneously — see [LP-105 §7](https://github.com/luxfi/lps/blob/main/LPs/lp-0110-quasar-consensus.md)
-and `~/work/lux/proofs/quasar-cert-soundness.tex` App. E for the
-parameter-tightness argument.
+**PQ safety.** Under `STRICT_QUASAR`, forging a certificate requires breaking
+**both** Module-LWE (Pulsar / ML-DSA) **and** Ring-LWE (Corona) simultaneously,
+in addition to BLS — two independent lattice families plus the classical leg.
 
-**Scalability.** Per-node communication is O(k) per round (committee
-size, not validator-set size). Quasar scales to thousands of validators
-without degrading finality.
+**Scalability.** Threshold legs are O(1) in committee size; the certificate does
+not grow with the validator set. Quasar scales to thousands of validators
+without degrading finality or cert size.
 
 ## Chain assignments
 
 | Chain | Engine | Why |
 |-------|--------|-----|
 | C-Chain (EVM) | Nova (linear) | Sequential smart-contract execution |
-| P-Chain (platform) | Nova (linear) | Ordered validator-set + staking transitions |
+| P-Chain (platform) | Nova (linear) | Ordered validator-set + staking transitions; pins signer-set eras |
 | X-Chain (UTXO) | Nebula (DAG) | High-throughput parallel asset transfers |
-| Q-Chain | Pulsar 2-round threshold | PQ consensus signing for Quasar |
-| M-Chain | CGGMP21 / FROST / Pulsar-general MPC | Bridge custody for external wallets, threshold signing ceremonies |
-| F-Chain | TFHE bootstrap-key generation, FHE compute | Encrypted EVM, encrypted ML inference |
-| Z-Chain | Groth16 over BLS12-381 | Roll N × ML-DSA-65 sigs into 192-byte proof |
+| M-Chain | MPC ceremonies (CGGMP21 / FROST) | Bridge custody for external wallets (per LP-134) |
+| F-Chain | FHE compute + TFHE bootstrap-key generation | Encrypted EVM, encrypted ML inference (per LP-134) |
 
 ## Further reading
 
-- [LP-110 Quasar Consensus](https://github.com/luxfi/lps/blob/main/LPs/lp-0110-quasar-consensus.md)
-- [LP-113 Wave Voting](https://github.com/luxfi/lps/blob/main/LPs/lp-0113-wave-voting.md)
-- [LP-115 Horizon Finality](https://github.com/luxfi/lps/blob/main/LPs/lp-0115-horizon-finality.md)
+- [Post-Quantum Security](/post-quantum) — Pulsar (TALUS) and Corona (Ringtail) in depth
+- [Lux Quasar reference](/reference/lux-quasar) — the cert envelope, suites, and verifier
+- [Threshold VM](/chains/thresholdvm) — M-Chain MPC and F-Chain FHE
 - [`github.com/luxfi/consensus`](https://github.com/luxfi/consensus) — the implementation
-- [Run a validator](/nodes/validator)
+- [Run a validator](/nodes)
