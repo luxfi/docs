@@ -1,9 +1,12 @@
 name: Docker
 
-# Build + push the Lux docs image on the luxfi self-hosted ARC pool
-# (lux-build, in-cluster on lux-k8s with a DinD sidecar). GitHub-hosted
-# runners are billing-blocked for the luxfi org, so `runs-on: lux-build`
-# is mandatory — ARC matches on the scale-set name, not the classic
+# Build + push the Lux docs image on the lux-apps self-hosted ARC pool
+# (lux-apps-build, in-cluster on lux-k8s with a DinD sidecar). This repo
+# lives under the lux-apps org, so the scale set bound to
+# github.com/lux-apps serves it; the luxfi-bound `lux-build` pool does
+# NOT (ARC routes by org, not labels). GitHub-hosted runners are
+# billing-blocked, so `runs-on: lux-apps-build` is mandatory — ARC
+# matches on the scale-set name, not the classic
 # [self-hosted,linux,amd64] labels.
 #
 # Image name is ghcr.io/luxfi/lux-docs — the exact name the live
@@ -32,7 +35,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: lux-build
+    runs-on: lux-apps-build
     steps:
       - uses: actions/checkout@v4
 
