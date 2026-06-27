@@ -17,7 +17,12 @@ name: Docker
 #
 # The Dockerfile is self-contained (node:22-alpine build of apps/docs →
 # static export → ghcr.io/hanzoai/spa). @hanzo/docs resolves from public
-# npm, so the default GITHUB_TOKEN is enough — no cross-repo PAT needed.
+# npm. Pushing to ghcr.io/luxfi/lux-docs is cross-org — this repo lives in
+# lux-apps, so the lux-apps GITHUB_TOKEN cannot write the luxfi-owned
+# package (GitHub: "permission_denied: installation does not exist"). The
+# GHCR login therefore uses GHCR_LUXFI_TOKEN, a luxfi write:packages token
+# (user hanzo-dev, KMS-sourced from kms-build/ghcr-luxfi-push), set as a
+# repo Actions secret on lux-apps/docs.
 
 on:
   workflow_dispatch:
@@ -50,8 +55,8 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: hanzo-dev
+          password: ${{ secrets.GHCR_LUXFI_TOKEN }}
 
       - name: Image metadata
         id: meta
