@@ -94,7 +94,7 @@ with the same composite hash produced byte-identical verifier output.
 | Field | Meaning |
 |-------|---------|
 | `Kind` | The verifier that produced the report |
-| `Vendor` | Canonical issuer (`amd.sev.snp`, `intel.tdx`, `intel.sgx.dcap`, `nvidia.nvtrust.local`/`.nras`, `arm.cca`, `aws.nitro`) |
+| `Vendor` | Canonical issuer (`amd.sev.snp`, `intel.tdx`, `intel.sgx.dcap`, `nvidia.nvtrust.local`/`.nras`, `arm.cca`, `aws.nitro.enclaves`) |
 | `Measurement` | The launch-measurement the hardware attests to (SEV-SNP 48-byte LD digest; TDX SHA-384(MRTD‖RTMR0..3); SGX `MRENCLAVE`; NVIDIA per-driver+VBIOS RIM digest; ARM CCA RIM; Nitro PCR0) |
 | `ReportData` | The 64-byte caller-supplied challenge field — the caller proved freshness by binding their nonce here **before** attestation |
 | `ChipID` | Silicon identity (SEV-SNP VCEK `CHIP_ID`; TDX/SGX PCK descriptor; per-GPU UUID; Nitro/CCA platform instance id) |

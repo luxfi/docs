@@ -63,7 +63,7 @@ TEE custody extension, composed over a shared attestation verifier.
 |--------|-----|------|
 | [`luxfi/mpc`](https://github.com/luxfi/mpc) | v1.16.0 | Threshold MPC custody — **CGGMP21** (secp256k1 ECDSA) and **FROST** (Schnorr / ed25519). t-of-n signing, DKG, resharing, refresh, and a policy engine. |
 | [`luxfi/tee`](https://github.com/luxfi/tee) | v0.1.0 | **Optional** TEE-backed threshold-signing custody extension (attested enclave). One-way dependency on the signing kernels; **not** required by the threshold core. |
-| [`luxfi/cc`](https://github.com/luxfi/cc) | v0.1.0 | One attestation verifier the custody modules call before releasing a key share into hardware. See [Confidential Compute](/confidential-compute). |
+| [`luxfi/cc`](https://github.com/luxfi/cc) | v0.2.0 | One attestation verifier (six production CPU/GPU vendors: AMD SEV-SNP, Intel TDX, Intel SGX, NVIDIA nvtrust, AWS Nitro, ARM CCA) the custody modules call before releasing a key share into hardware. See [Confidential Compute](/confidential-compute). |
 
 <Callout>
   The optional extension model: `luxfi/mpc` (MPC custody) and `luxfi/tee` (TEE

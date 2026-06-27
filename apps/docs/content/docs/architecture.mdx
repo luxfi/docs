@@ -96,9 +96,10 @@ core depends on **none** of the extensions.
   extension. Explicitly **not** required by the threshold core and **not** used on
   the permissionless/dealerless production signing path; the dependency direction
   is one-way (`tee → pulsar/corona/mpc`, never the reverse).
-- **`luxfi/cc`** (v0.1.0) — one attestation verifier, with orthogonal hardware
-  `Kind`s, shared by MPC custody, TEE custody, and confidential AI. It depends on
-  none of them. See [Confidential Compute](/confidential-compute).
+- **`luxfi/cc`** (v0.2.0) — one attestation verifier with orthogonal hardware
+  `Kind`s, six production CPU/GPU vendors (AMD SEV-SNP, Intel TDX, Intel SGX,
+  NVIDIA nvtrust, AWS Nitro, ARM CCA), shared by MPC custody, TEE custody, and
+  confidential AI. It depends on none of them. See [Confidential Compute](/confidential-compute).
 
 This is the seam: the permissionless chain runs on the dealerless PQ core alone;
 TEE and external-MPC custody are accelerators an operator opts into, never trust
