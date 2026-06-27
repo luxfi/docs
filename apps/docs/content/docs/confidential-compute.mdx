@@ -44,22 +44,38 @@ request**. A failed verify never falls back to "best effort".
 
 ## Hardware Vendor Matrix
 
-The verifier is a multi-`Kind` framework. The vendors below are the set wired in
-the released `luxfi/cc` v0.1.0 — verified against `attest/verifier.go` and
-`attest/doc.go`.
+The verifier is a multi-`Kind` framework. The six vendors below are the full set
+wired in released **`luxfi/cc` v0.2.0** — every one a real verifier (no stubs),
+verified against `attest/{sev,tdx,sgx,nvtrust,nitro,armcca}.go` with `go test
+-race` green.
 
-| Kind | Vendor | Hardware | Status | What is verified |
+| Kind (`kind` string) | Vendor | Hardware | Status | What is verified |
 |------|--------|----------|--------|------------------|
-| `KindSEVSNP` | `amd.sev.snp` | AMD SEV-SNP CPU | **Production** | Live VCEK fetch from AMD KDS; full ARK → ASK → VCEK chain + report-signature verify (via `google/go-sev-guest`) |
-| `KindNVTrust` | `nvidia.nras.v1` | NVIDIA GPU confidential compute | **Production** (local-RIM, cloud-free) | Parse GPU evidence envelope; verify NVIDIA-signed Reference Integrity Manifest (RIM) against the operator-pinned key; match every reported measurement to its signed golden value |
-| `KindTDX` | `intel.tdx` | Intel TDX CPU | **Landing** (tracked, returns `ErrNotImplemented`) | TDREPORT / quote via `go-tdx-guest` + Intel PCS |
+| `KindSEVSNP` (`sev_snp`) | AMD | SEV-SNP CPU | **Production** | Live VCEK fetch from AMD KDS; full ARK → ASK → VCEK chain + report-signature verify (`google/go-sev-guest`); 48-byte launch digest |
+| `KindTDX` (`tdx`) | Intel | TDX CPU | **Production** | DCAP v4 quote via `google/go-tdx-guest` + Intel PCS; TCB + revocation enforced; measurement = SHA-384(MRTD ‖ RTMR0..3) |
+| `KindSGX` (`sgx`) | Intel | SGX enclave | **Production** | Pure-Go DCAP ECDSA Quote v3; chains to the pinned genuine Intel SGX Root CA; `MRENCLAVE` |
+| `KindNVTrust` (`nvtrust`) | NVIDIA | Confidential GPU | **Production** | SPDM device-cert chain to the pinned NVIDIA root + NVIDIA-signed RIM measurement match (local, cloud-free); EAT/NRAS remote path |
+| `KindARMCCA` (`arm_cca`) | ARM | CCA Realms | **Production** | RATS CMW(tag-907)/EAT(tag-399) CBOR + COSE_Sign1; platform(CPAK) → realm(RAK) binding; RIM measurement |
+| `KindNitro` (`nitro`) | AWS | Nitro Enclave | **Production** | COSE_Sign1 attestation doc; leaf P-384 → pinned AWS Nitro Root G1; PCR0 measurement |
+
+<Callout>
+  All six are real verifiers as of **v0.2.0**. (At v0.1.0 only SEV-SNP and
+  nvtrust were live and TDX was a fail-loud stub; v0.2.0 made all six genuine.)
+  Dispatch is **one registry**: each Kind self-registers via `func init()` into a
+  single map, and `Dispatch` is a registry lookup (`RegisteredVerifier`) that
+  returns `ErrUnsupportedKind` for an unregistered Kind — there is no per-Kind
+  `switch`. Adding a vendor is one new file that registers a new `Kind`; no
+  caller changes.
+</Callout>
 
 <Callout type="warn">
-  Honest status: AMD SEV-SNP and NVIDIA nvtrust are production verifiers today.
-  Intel TDX is a tracked stub — it returns `ErrNotImplemented` and refuses
-  loudly so a not-yet-implemented verifier can never silently pass. The
-  `Kind` framework is extensible; additional vendors are added by registering a
-  new `Kind` + verifier, not by changing any caller.
+  Trust anchors are pinned, never read from the evidence — and some vendors need
+  out-of-band collateral. ARM CCA has **no universal embedded root**: the CPAK is
+  provisioned per-SoC by the silicon vendor and must be pinned via
+  `ARMCCA.TrustAnchors` (a CCA endorsement / CoRIM). AMD's ARK ships embedded;
+  NVIDIA's RIM key and AWS's Nitro Root G1 are pinned by the verifier. Tests
+  replay real vendor collateral (AMD KDS, Intel PCS, genuine CCA/Nitro tokens) —
+  never live network calls.
 </Callout>
 
 For NVIDIA there are two surfaces: the **local RIM-match** verifier (production,
@@ -78,10 +94,10 @@ with the same composite hash produced byte-identical verifier output.
 | Field | Meaning |
 |-------|---------|
 | `Kind` | The verifier that produced the report |
-| `Vendor` | Canonical issuer (`amd.sev.snp`, `intel.tdx`, `nvidia.nras.v1`) |
-| `Measurement` | The launch-measurement the hardware attests to (SEV-SNP 48-byte LD digest; TDX MRTD; NVIDIA per-driver+VBIOS digest) |
+| `Vendor` | Canonical issuer (`amd.sev.snp`, `intel.tdx`, `intel.sgx.dcap`, `nvidia.nvtrust.local`/`.nras`, `arm.cca`, `aws.nitro`) |
+| `Measurement` | The launch-measurement the hardware attests to (SEV-SNP 48-byte LD digest; TDX SHA-384(MRTD‖RTMR0..3); SGX `MRENCLAVE`; NVIDIA per-driver+VBIOS RIM digest; ARM CCA RIM; Nitro PCR0) |
 | `ReportData` | The 64-byte caller-supplied challenge field — the caller proved freshness by binding their nonce here **before** attestation |
-| `ChipID` | Silicon identity (SEV-SNP VCEK `CHIP_ID`; TDX PCK descriptor; per-GPU UUID) |
+| `ChipID` | Silicon identity (SEV-SNP VCEK `CHIP_ID`; TDX/SGX PCK descriptor; per-GPU UUID; Nitro/CCA platform instance id) |
 | `CompositeHash` | `sha256(Kind ‖ canonical bytes)` — the logged attestation root |
 
 ## Policy Binding
@@ -126,9 +142,10 @@ The same verifier serves two orthogonal control planes.
 <Cards>
   <Card title="Custody — attested TEE signing">
     The MPC custody release gate (`luxfi/mpc`) and the optional TEE custody
-    extension (`luxfi/tee`) verify a CPU attestation (`KindSEVSNP` /
-    `KindTDX`) before a signing key share is released into an enclave. The
-    composite hash is the audit root the release decision is logged against.
+    extension (`luxfi/tee`) verify a CPU/enclave attestation (`KindSEVSNP`,
+    `KindTDX`, `KindSGX`, or `KindNitro`) before a signing key share is released
+    into an enclave. The composite hash is the audit root the release decision is
+    logged against.
   </Card>
   <Card title="Confidential AI — proof of AI">
     The confidential-AI control plane verifies a GPU attestation
@@ -147,11 +164,15 @@ validator set.
 
 ```
 caller (KMS release gate · scheduler · AI trust-tier policy · indexer)
-  └── cc/attest.Verifier.Verify(ctx, evidence, opts...)      ◄── luxfi/cc
-        ├── SEV-SNP    → google/go-sev-guest + AMD KDS        (production)
-        ├── Intel TDX  → google/go-tdx-guest + Intel PCS      (landing)
-        └── NVIDIA GPU → attest/nvidia RIM-match (local)      (production)
-                         attest/nvidia.NRASClient (remote)    (primitive)
+  └── cc/attest.Dispatch(ctx, kind, evidence, opts...)       ◄── luxfi/cc
+        │   (one registry — every Kind self-registers via init())
+        ├── KindSEVSNP → google/go-sev-guest + AMD KDS        (production)
+        ├── KindTDX    → google/go-tdx-guest + Intel PCS      (production)
+        ├── KindSGX    → pure-Go DCAP + Intel SGX Root CA     (production)
+        ├── KindNVTrust→ attest/nvidia SPDM + RIM-match local (production)
+        │                attest/nvidia NRAS/EAT (remote)      (production)
+        ├── KindARMCCA → veraison/go-cose + CBOR, CPAK→RAK    (production)
+        └── KindNitro  → COSE_Sign1 + AWS Nitro Root G1, PCR0 (production)
 ```
 
 ## Further Reading
