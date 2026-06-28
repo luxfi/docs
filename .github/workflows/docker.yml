@@ -19,8 +19,8 @@ name: Docker
 # static export → ghcr.io/hanzoai/spa). @hanzo/docs resolves from public
 # npm. Because the image and this repo share the lux-apps org, the GHCR
 # login uses the workflow's native GITHUB_TOKEN (packages: write, granted
-# below) — no cross-org PAT. The package is public — mirroring the old
-# luxfi/lux-docs — so the cluster pulls it without a registry credential.
+# below) — no cross-org PAT. The package is private; the cluster pulls it
+# with the lux-ns `ghcr-secret` imagePullSecret already on the Deployment.
 
 on:
   workflow_dispatch:
