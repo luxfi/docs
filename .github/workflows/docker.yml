@@ -1,26 +1,25 @@
 name: Docker
 
-# Build + push the Lux docs image on the lux-apps self-hosted ARC pool
-# (lux-apps-build, in-cluster on lux-k8s with a DinD sidecar). This repo
-# lives under the lux-apps org, so the scale set bound to
-# github.com/lux-apps serves it; the luxfi-bound `lux-build` pool does
-# NOT (ARC routes by org, not labels). GitHub-hosted runners are
-# billing-blocked, so `runs-on: lux-apps-build` is mandatory — ARC
-# matches on the scale-set name, not the classic
-# [self-hosted,linux,amd64] labels.
+# Build + push the Lux docs image on the lux-docs self-hosted ARC pool
+# (lux-docs-build, in-cluster on lux-k8s with a DinD sidecar). This repo
+# lives under the lux-docs org, so the org-level scale set bound to
+# github.com/lux-docs serves it — and every other lux-docs repo, with no
+# per-repo CI work. ARC routes by org / scale-set name, not by the classic
+# [self-hosted,linux,amd64] labels, and GitHub-hosted runners are
+# billing-blocked, so `runs-on: lux-docs-build` is mandatory.
 #
-# Image name is ghcr.io/lux-apps/lux-docs — it matches this repo's path
-# (lux-apps/lux-docs), so the live deployment (lux-ns/lux-docs,
+# Image name is ghcr.io/lux-docs/network — it matches this repo's path
+# (lux-docs/network), so the live deployment (lux-ns/lux-docs,
 # imagePullPolicy: Always) pulls it as :latest. Single-arch amd64: the
 # base image ghcr.io/hanzoai/spa is amd64-only (hanzo ARC arm64 runners
-# paused on DOKS), same constraint as the lux-apps marketing sites.
+# paused on DOKS).
 #
 # The Dockerfile is self-contained (node:22-alpine build of apps/docs →
 # static export → ghcr.io/hanzoai/spa). @hanzo/docs resolves from public
-# npm. Because the image and this repo share the lux-apps org, the GHCR
-# login uses the workflow's native GITHUB_TOKEN (packages: write, granted
-# below) — no cross-org PAT. The package is private; the cluster pulls it
-# with the lux-ns `ghcr-secret` imagePullSecret already on the Deployment.
+# npm. Because the image and this repo now share the lux-docs org, the
+# GHCR login uses the workflow's native GITHUB_TOKEN (packages: write,
+# granted below) — no cross-org PAT. The published package is public (the
+# docs site is public content), so lux-ns pulls it anonymously.
 
 on:
   workflow_dispatch:
@@ -38,7 +37,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: lux-apps-build
+    runs-on: lux-docs-build
     steps:
       - uses: actions/checkout@v4
 
@@ -60,7 +59,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/lux-apps/lux-docs
+          images: ghcr.io/lux-docs/network
           # :latest tracks main (the deployment pins :latest), plus an
           # immutable :sha-<sha7> for traceability and a :{{version}} tag
           # on v* releases.
