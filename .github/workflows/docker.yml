@@ -9,20 +9,18 @@ name: Docker
 # matches on the scale-set name, not the classic
 # [self-hosted,linux,amd64] labels.
 #
-# Image name is ghcr.io/luxfi/lux-docs — the exact name the live
-# deployment (lux-ns/lux-docs, imagePullPolicy: Always) pulls as :latest.
-# Single-arch amd64: the base image ghcr.io/hanzoai/spa is amd64-only
-# (hanzo ARC arm64 runners paused on DOKS), same constraint as the
-# lux-apps marketing sites.
+# Image name is ghcr.io/lux-apps/lux-docs — it matches this repo's path
+# (lux-apps/lux-docs), so the live deployment (lux-ns/lux-docs,
+# imagePullPolicy: Always) pulls it as :latest. Single-arch amd64: the
+# base image ghcr.io/hanzoai/spa is amd64-only (hanzo ARC arm64 runners
+# paused on DOKS), same constraint as the lux-apps marketing sites.
 #
 # The Dockerfile is self-contained (node:22-alpine build of apps/docs →
 # static export → ghcr.io/hanzoai/spa). @hanzo/docs resolves from public
-# npm. Pushing to ghcr.io/luxfi/lux-docs is cross-org — this repo lives in
-# lux-apps, so the lux-apps GITHUB_TOKEN cannot write the luxfi-owned
-# package (GitHub: "permission_denied: installation does not exist"). The
-# GHCR login therefore uses GHCR_LUXFI_TOKEN, a luxfi write:packages token
-# (user hanzo-dev, KMS-sourced from kms-build/ghcr-luxfi-push), set as a
-# repo Actions secret on lux-apps/docs.
+# npm. Because the image and this repo share the lux-apps org, the GHCR
+# login uses the workflow's native GITHUB_TOKEN (packages: write, granted
+# below) — no cross-org PAT. The package is public — mirroring the old
+# luxfi/lux-docs — so the cluster pulls it without a registry credential.
 
 on:
   workflow_dispatch:
@@ -55,14 +53,14 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: hanzo-dev
-          password: ${{ secrets.GHCR_LUXFI_TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Image metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/luxfi/lux-docs
+          images: ghcr.io/lux-apps/lux-docs
           # :latest tracks main (the deployment pins :latest), plus an
           # immutable :sha-<sha7> for traceability and a :{{version}} tag
           # on v* releases.
