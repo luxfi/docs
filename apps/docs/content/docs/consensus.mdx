@@ -5,11 +5,19 @@ description: Quasar — Lux's leaderless, post-quantum, compact-certificate fina
 
 # Lux Consensus
 
-Lux runs **Quasar**, a leaderless DAG-native consensus engine with hybrid
-classical + post-quantum finality. Voting and DAG ordering produce a decision;
-finality is then sealed by a **typed compact-certificate envelope** that binds
-one or more cryptographic *evidence legs* to a single canonical finality
-message. A break of any single primitive does not break finality.
+Lux runs the **Quasar** consensus stack, which cleanly separates two concerns: a
+**leaderless metastable sampler decides**, and a **post-quantum compact
+certificate attests**. The decider is **Nova** (linear chains) / **Nebula** (DAG):
+Photon → Wave → Focus sampling accrues `β`-confidence on one block per height and
+calls `VM.Accept` — **acceptance is finality**, leaderless, and depends on no
+certificate. A **typed compact-certificate envelope** (the `ConsensusCert`) then
+binds one or more cryptographic *evidence legs* to the canonical finality message
+as a **post-accept attestation** for external verifiers (bridges, the `0x9999`
+DEX settlement receipt): it **authorizes export, never gates chain progress**, and
+a break of any single primitive does not break it. This decide-then-attest
+separation — not a certificate-as-finality-trigger — is the canonical model of
+record; the normative spec is **LP-305 (Nova · Quasar · Block-STM)**, with the
+cross-system comparison in LP-306.
 
 Implementation: [`github.com/luxfi/consensus`](https://github.com/luxfi/consensus)
 `protocol/quasar/` (released **v1.26.0**).
@@ -41,7 +49,11 @@ chains and DAG chains).
 
 ## Finality: the Compact-Certificate Envelope
 
-Finality is a `ConsensusCert` — a policy-gated aggregate quorum certificate.
+**Export** finality is a `ConsensusCert` — a policy-gated aggregate quorum
+certificate. (Local finality is Nova's `VM.Accept` at `β`-confidence, above; the
+certificate trails it and authorizes *export* — bridges, cross-chain, the `0x9999`
+DEX receipt — per LP-305's two-tier accept/export separation. It never gates
+acceptance or chain progress.)
 **Policy** declares which cryptographic legs are required; **certificate bytes**
 carry per-leg evidence; every leg proves the *same* weighted-quorum predicate
 over the *same* domain-separated finality message `M`.
