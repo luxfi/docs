@@ -14,7 +14,7 @@ Lux Node (`luxd`) is the core validator node for the Lux Network -- a multi-chai
 - **Crypto**: BLS aggregate signatures, ML-DSA-65 (post-quantum), ML-KEM, Pulsar threshold, Falcon, secp256k1
 - **Database**: LevelDB/PebbleDB (via `github.com/luxfi/database`)
 - **Networking**: Custom TCP P2P with TLS mutual auth, PROXY protocol support, Zstd compression
-- **Serialization**: Protocol Buffers (buf v1.31.0, protoc-gen-go v1.33.0)
+- **Serialization**: ZAP zero-copy wire (`github.com/luxfi/zap`) — every transaction, block, and VM↔node message is the buffer itself (struct = wire, no reflection codec). Protocol Buffers retained only for build-time codegen tooling.
 - **Build**: Make, shell scripts (`scripts/build.sh`), Docker multi-stage
 - **Observability**: OpenTelemetry (OTLP traces), Prometheus metrics, structured logging (zap)
 - **FIPS**: FIPS 140-3 always enabled (`GOFIPS140=latest`)
@@ -43,7 +43,7 @@ Lux Node (`luxd`) is the core validator node for the Lux Network -- a multi-chai
 | `github.com/luxfi/staking` | v1.1.0 | Staking certificate management |
 | `github.com/luxfi/version` | v1.0.1 | Version utilities |
 | `github.com/luxfi/concurrent` | v0.0.3 | Concurrency primitives |
-| `github.com/luxfi/codec` | v1.1.4 | Binary codec and serialization |
+| `github.com/luxfi/codec` | v1.1.5 | Byte-packer primitives (`codec/wrappers`) for peer-handshake framing + Warp message codec — NOT the tx/block wire, which is native ZAP |
 | `github.com/luxfi/address` | v1.0.1 | Address formatting (bech32) |
 | `github.com/luxfi/formatting` | v1.0.1 | Display formatting utilities |
 | `github.com/luxfi/utxo` | v0.2.4 | UTXO model types |
