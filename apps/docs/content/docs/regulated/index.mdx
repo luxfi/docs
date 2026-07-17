@@ -59,7 +59,7 @@ Every regulated product follows the same initialization pattern:
 2. Create a `provider.Registry` and call `envconfig.RegisterFromEnv()` to wire up trading venues
 3. Optionally create a `cex/engine.Engine` and call `markets.RegisterFromProviders()` for internal matching
 4. Call `aml.InstallDefaultRules()` to install baseline FinCEN monitoring rules
-5. Optionally connect a Jube client for ML-based transaction scoring
+5. Optionally delegate real-time scored monitoring to the [Lux AML engine](/compliance/aml) (`luxfi/aml`)
 6. Mount HTTP handlers and start the server
 
 The difference between products is which steps you include and which regulatory obligations you satisfy.

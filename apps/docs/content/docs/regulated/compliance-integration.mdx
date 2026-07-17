@@ -124,22 +124,28 @@ monSvc.AddRule(aml.Rule{
 
 Alert lifecycle: `open -> investigating -> escalated -> closed/filed`.
 
-### Jube Integration
+### Real-Time AML Engine
 
-For ML-based transaction scoring beyond static rules, connect the Jube client:
+For real-time scored monitoring beyond in-process static rules, delegate to the
+[Lux AML engine](/compliance/aml) (`github.com/luxfi/aml`, the `amld` service) — a
+native, single-binary AML/CFT monitoring engine. It evaluates every transaction
+against a configurable rules DSL and a weight-of-evidence scoring model, returning
+an action, a risk score, activation alerts, and sanctions matches. Screen a
+transaction over its versioned HTTP API:
 
 ```go
-import "github.com/luxfi/compliance/pkg/jube"
-
-client := jube.NewClient(jube.Config{
-    BaseURL:  "http://jube.svc.cluster.local:5001",
-    ModelID:  "your-model-guid",
-    FailOpen: false, // reject when Jube is unreachable
-    Timeout:  5 * time.Second,
-})
+// POST /v1/aml/transactions on the Lux AML engine (amld :8090)
+req, _ := http.NewRequest("POST", amlEngineURL+"/v1/aml/transactions", body)
+req.Header.Set("X-Org-Id", orgID) // set by the gateway from the JWT owner claim
+resp, err := http.DefaultClient.Do(req)
+// -> { "action": "allow|review|flag|block|report", "score": 0.0-1.0,
+//      "alert_ids": [...], "case_id": "..." }
 ```
 
-Jube scores transactions in real time against configurable ML models, returning activation alerts, sanctions matches, and response elevations. The `FailOpen` flag controls behavior when Jube is unavailable -- set to `false` for regulated products.
+Set `AML_ENGINE_URL` to the engine address and treat an unreachable engine as
+fail-closed (reject) for regulated products. The engine auto-opens a case on any
+`block` or `report` action. See the [Lux AML engine reference](/compliance/aml)
+for the rules DSL, the 20 starter typologies, scoring, and the admin UI.
 
 ## Regulatory Frameworks
 

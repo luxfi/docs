@@ -104,22 +104,16 @@ markets.RegisterDefaults(eng, []markets.DefaultMarket{
 ### 6. Install compliance rules
 
 ```go
-import (
-    "github.com/luxfi/compliance/pkg/aml"
-    "github.com/luxfi/compliance/pkg/jube"
-)
+import "github.com/luxfi/compliance/pkg/aml"
 
-// Install FinCEN-mandated baseline rules
+// Install FinCEN-mandated baseline rules (in-process)
 monitoringSvc := aml.NewMonitoringService()
 aml.InstallDefaultRules(monitoringSvc)
 
-// Optional: connect Jube for ML-based transaction scoring
-jubeClient := jube.NewClient(jube.Config{
-    BaseURL:  os.Getenv("JUBE_BASE_URL"),
-    ModelID:  os.Getenv("JUBE_MODEL_ID"),
-    FailOpen: false, // reject transactions when Jube is unreachable
-    Timeout:  5 * time.Second,
-})
+// Optional: delegate real-time scored monitoring to the Lux AML engine
+// (luxfi/aml, amld). Point AML_ENGINE_URL at the engine and screen each
+// transaction via POST /v1/aml/transactions. See /compliance/aml.
+amlEngineURL := os.Getenv("AML_ENGINE_URL") // e.g. http://amld.svc.cluster.local:8090
 ```
 
 `InstallDefaultRules` adds three mandatory FinCEN rules:
@@ -160,7 +154,6 @@ import (
     "github.com/luxfi/cex/pkg/gateway"
     "github.com/luxfi/cex/pkg/markets"
     "github.com/luxfi/compliance/pkg/aml"
-    "github.com/luxfi/compliance/pkg/jube"
     compapi "github.com/luxfi/compliance/pkg/api"
 )
 
@@ -176,17 +169,14 @@ func main() {
     eng := engine.New(engine.Config{EnableSurveillance: true, EnableAudit: true})
     markets.RegisterFromProviders(ctx, registry, eng)
 
-    // 3. Compliance
+    // 3. Compliance — in-process baseline rules
     monSvc := aml.NewMonitoringService()
     aml.InstallDefaultRules(monSvc)
 
-    if url := os.Getenv("JUBE_BASE_URL"); url != "" {
-        jc := jube.NewClient(jube.Config{
-            BaseURL: url, ModelID: os.Getenv("JUBE_MODEL_ID"),
-            FailOpen: false, Timeout: 5 * time.Second,
-        })
-        monSvc.SetExternalScorer(jc)
-    }
+    // Optional: delegate real-time scored monitoring to the Lux AML engine
+    // (luxfi/aml, amld). Screen transactions via POST /v1/aml/transactions.
+    amlEngineURL := os.Getenv("AML_ENGINE_URL") // e.g. http://amld.svc.cluster.local:8090
+    _ = amlEngineURL // see /compliance/aml
 
     // 4. HTTP servers
     brokerSrv := api.NewServer(api.Config{Registry: registry})
@@ -212,8 +202,7 @@ func main() {
 | Variable | Required | Description |
 |----------|----------|-------------|
 | At least one provider key pair | Yes | See [Provider Integration](/regulated/providers) |
-| `JUBE_BASE_URL` | No | Jube transaction monitoring endpoint |
-| `JUBE_MODEL_ID` | No | Jube EntityAnalysisModel GUID |
+| `AML_ENGINE_URL` | No | [Lux AML engine](/compliance/aml) endpoint for real-time scored monitoring (`amld`, `/v1/aml/*`) |
 | `COMPLIANCE_API_KEY` | Yes | API key for compliance endpoints |
 | `JUMIO_API_TOKEN` | Recommended | Jumio IDV for subscriber KYC |
 | `BROKER_API_KEY` | Yes | API key for broker endpoints |

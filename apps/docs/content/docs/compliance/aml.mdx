@@ -1,0 +1,200 @@
+---
+title: AML Engine
+description: Real-time AML/CFT transaction monitoring — configurable rules DSL, weight-of-evidence scoring, sanctions screening, and case management in a single Go binary
+icon: Radar
+---
+
+The **Lux AML engine** (`github.com/luxfi/aml`, the `amld` service) is a real-time
+AML/CFT transaction-monitoring engine. It evaluates every transaction synchronously
+against a configurable rules DSL and a weight-of-evidence scoring model, screens
+parties against sanctions and PEP lists, opens cases for human review, and emits
+signed webhooks to downstream systems.
+
+It is pure Go, ships as a single binary with an embedded admin UI, and persists
+rules, alerts, and cases through a [Hanzo Base](https://github.com/hanzoai/base)–backed
+SQLite store (per-org). No external services, no message broker, no ML runtime
+required to run.
+
+## Architecture
+
+```
+   POST /v1/aml/transactions
+            |
+   +--------v---------+     rules DSL (expr-lang)      +-------------+
+   |  Rule evaluator  +-------------------------------->  20 starter |
+   |  (per-tx, sync)  |                                 |  typologies |
+   +--------+---------+                                 +-------------+
+            |
+   +--------v---------+     weight-of-evidence [0,1]
+   |     Scorer       |     (pure Go; ScorerPlugin
+   |                  |      interface for Zen ML)
+   +--------+---------+
+            |
+   +--------v---------+     highest-severity action wins
+   | resolveAction()  +--> allow | review | flag | block | report
+   +--------+---------+
+            |
+     block/report  -->  auto-create Case  -->  signed webhook (HMAC-SHA256)
+```
+
+| Concern | Package | Notes |
+|---------|---------|-------|
+| Domain types | `pkg/types` | `Transaction`, `Entity`, `Rule`, `Alert`, `Case` |
+| Engine | `pkg/engine` | evaluate → alerts + score + action |
+| Rules DSL | `pkg/engine/evaluator.go` | [expr-lang](https://github.com/expr-lang/expr) compiler + helpers |
+| Scoring | `pkg/engine/scoring.go` | weight-of-evidence; `ScorerPlugin` interface |
+| Rule library | `pkg/rules` | 20 starter typologies |
+| Sanctions | `pkg/sanctions` | Jaro-Winkler + token fuzzy match; OFAC SDN XML ingest |
+| Cases | `pkg/cases` | create, assign, status, events, resolve |
+| Webhooks | `pkg/webhook` | signed delivery + retry + dead-letter |
+| HTTP API | `pkg/api` | `/v1/aml/*` |
+
+## Transaction Ingest Flow
+
+Every transaction is evaluated synchronously; the response carries the decision.
+
+```
+POST /v1/aml/transactions
+  -> Parse + validate
+  -> Resolve entity from user_id
+  -> EvalAll(rules, {tx, entity})
+       -> filter by jurisdiction, asset_class, enabled
+       -> compile + run each rule DSL via expr-lang
+  -> Score(hits) -> weight-of-evidence in [0,1]
+  -> resolveAction(alerts) -> highest-severity action wins
+  -> if block/report: auto-create Case
+  -> return { action, score, alert_ids, case_id? }
+```
+
+```bash
+curl -X POST http://localhost:8090/v1/aml/transactions \
+  -H "X-Org-Id: $ORG_ID" \
+  -H "Content-Type: application/json" \
+  -d '{"user_id":"u_123","notional":12500,"currency":"USD","asset_class":"fiat"}'
+# -> {"action":"report","score":0.82,"alert_ids":["al_..."],"case_id":"case_..."}
+```
+
+All endpoints require the `X-Org-Id` header, which the gateway sets from the JWT
+`owner` claim.
+
+## Rules DSL
+
+Rules are expressions compiled and evaluated with
+[expr-lang](https://github.com/expr-lang/expr) against the transaction and its
+resolved entity. Each rule declares a jurisdiction/asset-class filter, a severity,
+and an action. Test any expression before enabling it:
+
+```bash
+curl -X POST http://localhost:8090/v1/aml/rules/test \
+  -H "X-Org-Id: $ORG_ID" \
+  -d '{"expr":"notional > 10000 && currency == \"USD\"","tx":{"notional":12500,"currency":"USD"}}'
+# -> {"matched":true}
+```
+
+### Starter Typologies
+
+`amld` ships with 20 baseline rules covering the standard AML typologies:
+
+| # | Rule | Pattern | Action |
+|---|------|---------|--------|
+| 1 | CTR Threshold | `notional > 10000 && USD` | report |
+| 2 | Structuring | `notional in [9000, 10000)` | flag |
+| 3 | Velocity (daily) | `sum_last_24h > 50000` | review |
+| 4 | Velocity (monthly) | `sum_last_30d > 500000` | review |
+| 5 | First-Time Large | `first_tx && notional > 25000` | review |
+| 6 | Round-Trip | `is_round_trip 24h` | flag |
+| 7 | Sanctioned Jurisdiction | `jurisdiction in sanctioned` | block |
+| 8 | PEP Large | `PEP && notional > 10000` | review |
+| 9 | Unusual Hour | `hour in [2,3,4]` | flag |
+| 10 | New Counterparty Large | `first_counterparty && notional > 5000` | review |
+| 11 | Dormant Reactivation | `last_tx > 180d && notional > 10000` | review |
+| 12 | Crypto Mixer | `is_mixer_address` | block |
+| 13 | Darknet Market | `is_darknet_market` | block |
+| 14 | IP/Geo Mismatch | `!geo_match` | flag |
+| 15 | Layering | `layering_score > 0.8` | review |
+| 16 | Smurfing | `smurfing_detected 7d` | review |
+| 17 | Wash Trading | `wash_trade_detected 1h` | flag |
+| 18 | Sanctions (direct) | `sanctions_hit(entity)` | block |
+| 19 | Sanctions (counterparty) | `sanctions_hit(counterparty)` | block |
+| 20 | Travel Rule | `notional > travel_rule_threshold` | report |
+
+## Scoring
+
+Rule hits feed a **weight-of-evidence** model that produces a risk score in `[0,1]`
+(pure Go math — no external ML runtime). The `ScorerPlugin` interface lets you swap
+in a model served by the [Hanzo Zen gateway](https://docs.hanzo.ai) without changing
+the engine. The final action is the highest-severity action among all matched rules.
+
+| Action | Meaning |
+|--------|---------|
+| `allow` | No material risk; proceed |
+| `review` | Manual review queued |
+| `flag` | Recorded for periodic review |
+| `block` | Reject the transaction; case opened |
+| `report` | Reject + file (e.g. CTR/SAR); case opened |
+
+## Sanctions Screening
+
+Names are screened against configurable lists (OFAC SDN, UN, EU, HMT) using
+**Jaro-Winkler** similarity plus token-based fuzzy matching to catch transliteration
+and spelling variants. The OFAC SDN XML feed is parsed and fetched natively.
+
+```bash
+curl -X POST http://localhost:8090/v1/aml/sanctions/search \
+  -H "X-Org-Id: $ORG_ID" \
+  -d '{"name":"Vladimir Ivanov"}'
+# -> {"matches":[{"list":"ofac_sdn","score":0.94,"ref_id":"..."}]}
+```
+
+## Cases & Alerts
+
+Any `block` or `report` action auto-opens a **case**. Alerts and cases follow the
+lifecycle `open -> investigating -> escalated -> closed/filed`. Cases carry an event
+log (notes, status changes, assignment) for the audit trail.
+
+```bash
+curl http://localhost:8090/v1/aml/cases?status=open -H "X-Org-Id: $ORG_ID"
+curl -X POST http://localhost:8090/v1/aml/cases/$CASE_ID/events \
+  -H "X-Org-Id: $ORG_ID" \
+  -d '{"type":"note","body":"Escalated to compliance officer"}'
+```
+
+## API
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/v1/aml/transactions` | Ingest a transaction; sync rule eval; returns action |
+| GET | `/v1/aml/transactions/{id}/alerts` | Alerts for a transaction |
+| GET | `/v1/aml/cases` | List cases (filter by status) |
+| POST | `/v1/aml/cases/{id}/events` | Add a case event (note, status change) |
+| GET | `/v1/aml/rules` | List all rules |
+| POST | `/v1/aml/rules/test` | Dry-run a DSL expression |
+| POST | `/v1/aml/sanctions/search` | Search sanctions lists by name |
+| GET | `/v1/aml/health` | Health check |
+
+## Webhooks
+
+Downstream systems subscribe to signed (HMAC-SHA256) webhook deliveries with retry
+and dead-letter handling. Events: `aml.flagged`, `aml.cleared`, `kyc.approved`,
+`trade.executed`.
+
+## Admin UI
+
+A dark-themed admin dashboard is embedded in the binary (via `go:embed`) at `/_/aml/`
+— Dashboard, Cases, Rules, Alerts, and Sanctions search, served with a hash router so
+no server rewrites are needed.
+
+## Deployment
+
+```bash
+amld serve --http=0.0.0.0:8090        # single binary
+```
+
+- Image: `ghcr.io/luxfi/aml:{env}`
+- K8s: `Deployment`, `replicas=1` (SQLite single-writer), PVC for `/data`
+- Replication: [`hanzoai/replicate`](https://github.com/hanzoai/replicate) sidecar
+  streams the age-encrypted WAL to S3
+
+The engine is consumed in-process by [`luxfi/compliance`](/compliance) and over HTTP
+by regulated products such as an [ATS](/regulated/ats) — set `AML_ENGINE_URL` to the
+`amld` address and treat an unreachable engine as fail-closed for regulated flows.
