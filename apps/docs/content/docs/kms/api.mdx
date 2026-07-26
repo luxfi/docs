@@ -4,19 +4,104 @@ description: REST API endpoints
 icon: FileCode
 ---
 
+Every path is `/v1/kms/*`. There is no `/api` prefix and no `v2` — the surface
+below is the whole HTTP API.
+
+## Hosts
+
+One KMS per org. The env (`dev` / `test` / `main` / `default`) is a **field on
+each secret**, not a hostname — there are no `kms.dev.*` / `kms.test.*` hosts.
+
+| Org | Host |
+|-----|------|
+| Lux | `https://kms.lux.network` |
+| Hanzo, Zoo, Pars | `https://kms.hanzo.ai` |
+| any (aggregate) | `https://api.hanzo.ai` |
+
 ## Authentication
 
-All API requests require a Bearer token or Universal Auth credentials.
+Machine identity, exchanged for a short-lived bearer:
 
-## Endpoints
+```bash
+curl -X POST https://kms.lux.network/v1/kms/auth/login \
+  -H 'Content-Type: application/json' \
+  -d '{"clientId": "...", "clientSecret": "..."}'
+# -> {"accessToken": "...", "expiresIn": 3600}
+```
+
+Send it as `Authorization: Bearer $TOKEN` on every request below. The token is
+org-scoped: it reaches `/v1/kms/orgs/<its own org>/*` and nothing else.
+
+## Secrets
+
+A secret is addressed by `(org, path, name, env)`. In the URL, `path` and `name`
+form one trailing segment list that the server splits **at its last slash** — so
+`gateway/routes` means path `gateway`, name `routes`. Escape each segment
+individually; escaping the joined string encodes the separators away and the
+server reads one long name.
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v3/secrets` | List secrets |
-| POST | `/api/v3/secrets` | Create secret |
-| PATCH | `/api/v3/secrets/:id` | Update secret |
-| DELETE | `/api/v3/secrets/:id` | Delete secret |
-| POST | `/api/v3/transit/encrypt` | Encrypt data |
-| POST | `/api/v3/transit/decrypt` | Decrypt data |
-| GET | `/api/v3/pki/ca` | List CAs |
-| POST | `/api/v3/pki/certificates` | Issue certificate |
+| GET | `/v1/kms/orgs/{org}/secrets?path=&env=` | List secret names under a path |
+| GET | `/v1/kms/orgs/{org}/secrets/{path}/{name}?env=` | Read one value |
+| POST | `/v1/kms/orgs/{org}/secrets` | Create or replace |
+| DELETE | `/v1/kms/orgs/{org}/secrets/{path}/{name}?env=` | Delete |
+
+`env` defaults to `default` when omitted.
+
+Create and replace are the **same call** — one upsert, not a separate create and
+update:
+
+```json
+{"path": "gateway", "name": "routes", "env": "main", "value": "..."}
+```
+
+Responses:
+
+```json
+{"names": ["routes", "upstreams"]}   // list
+{"secret": {"value": "..."}}         // read
+```
+
+## Health
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/healthz`, `/health` | Liveness |
+| GET | `/v1/kms/healthz`, `/v1/kms/health` | Same, under the versioned prefix |
+
+Returns `{"service":"kms","status":"ok"}`. `status` is `degraded` when MPC is
+configured but unreachable — still HTTP 200, so a working secrets surface is not
+flapped out of rotation.
+
+## Keys (MPC-backed)
+
+`/v1/kms/keys/*` is registered **only when the deployment is configured with
+MPC**. On a secrets-only KMS these paths return 404; when MPC is configured but
+unreachable they return 503 with `{"error":"mpc unreachable","mode":"secrets-only"}`.
+KMS never holds private key material — signing is t-of-n in the MPC cluster.
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/v1/kms/keys/generate` | Generate a validator key set (MPC DKG) |
+| GET | `/v1/kms/keys` | List key sets |
+| GET | `/v1/kms/keys/{id}` | Get one key set |
+| POST | `/v1/kms/keys/{id}/sign` | Threshold sign |
+| POST | `/v1/kms/keys/{id}/rotate` | Reshare |
+| GET | `/v1/kms/status` | KMS + MPC cluster status |
+
+## Errors
+
+The service answers in JSON and **never in HTML** — including 404s, redirects
+and internal errors. An unmatched path returns:
+
+```json
+{"message": "not found", "path": "/whatever/you/asked/for"}
+```
+
+That matters more than it looks. Earlier builds embedded a console SPA under a
+root catch-all and answered every unmatched path with `200 text/html`, so a
+wrong URL read as a decode failure rather than a missing route — and several
+clients were written against paths this service has never served, one of them
+documenting the wrong path as *verified*. If a `/v1/` path hands you HTML, you
+are not talking to this service.

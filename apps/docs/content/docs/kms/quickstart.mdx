@@ -4,18 +4,77 @@ description: Create your first secret
 icon: Zap
 ---
 
-## Create a Project
+## Get a token
+
+Machine identity in, short-lived bearer out.
 
 ```bash
-curl -X POST https://kms.lux.network/api/v3/workspaces \
-  -H 'Authorization: Bearer $TOKEN' \
-  -d '{"name": "my-project"}'
+TOKEN=$(curl -s -X POST https://kms.lux.network/v1/kms/auth/login \
+  -H 'Content-Type: application/json' \
+  -d '{"clientId": "'"$KMS_CLIENT_ID"'", "clientSecret": "'"$KMS_CLIENT_SECRET"'"}' \
+  | jq -r .accessToken)
 ```
 
-## Store a Secret
+There is no project or workspace to create first. A secret is addressed by
+`(org, path, name, env)`, and `path` is just a string you choose — writing to it
+brings it into being.
+
+## Store a secret
 
 ```bash
-curl -X POST https://kms.lux.network/api/v3/secrets \
-  -H 'Authorization: Bearer $TOKEN' \
-  -d '{"key": "DATABASE_URL", "value": "postgres://...", "type": "shared"}'
+curl -X POST https://kms.lux.network/v1/kms/orgs/lux/secrets \
+  -H "Authorization: Bearer $TOKEN" \
+  -H 'Content-Type: application/json' \
+  -d '{"path": "myapp", "name": "DATABASE_URL", "env": "main", "value": "postgres://..."}'
 ```
+
+The same call replaces an existing secret — there is one upsert, not a separate
+create and update.
+
+## Read it back
+
+```bash
+curl -H "Authorization: Bearer $TOKEN" \
+  "https://kms.lux.network/v1/kms/orgs/lux/secrets/myapp/DATABASE_URL?env=main"
+# -> {"secret":{"value":"postgres://..."}}
+```
+
+## List what is there
+
+```bash
+curl -H "Authorization: Bearer $TOKEN" \
+  "https://kms.lux.network/v1/kms/orgs/lux/secrets?path=myapp&env=main"
+# -> {"names":["DATABASE_URL"]}
+```
+
+## From Go
+
+The client wraps all of the above; one line at process start populates the
+environment.
+
+```go
+import "github.com/luxfi/kms"
+
+func main() {
+    kms.LoadEnv()
+    db := os.Getenv("DATABASE_URL")
+    run(db)
+}
+```
+
+Or fetch explicitly:
+
+```go
+v, err   := kms.Get(ctx, "DATABASE_URL")
+all, err := kms.GetSecrets(ctx)
+```
+
+## Notes that save time
+
+- **Every path is `/v1/kms/*`.** No `/api` prefix, no `v2`.
+- **`env` is a field, not a hostname.** One host per org; `dev` / `test` /
+  `main` are values you pass, not `kms.dev.*` subdomains.
+- **The URL splits at the last slash.** `.../secrets/a/b/C` is path `a/b`, name
+  `C`. Escape segments individually.
+- **Responses are always JSON.** If a `/v1/` path returns HTML, you are not
+  talking to this service.
