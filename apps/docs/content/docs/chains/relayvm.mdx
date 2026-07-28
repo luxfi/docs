@@ -42,7 +42,7 @@ The Relay VM (R-Chain) provides cross-chain message passing between Lux chains. 
 The R-Chain API uses the `relay` namespace. Endpoint:
 
 ```
-https://api.lux.network/{network}/ext/bc/{blockchain-id}/rpc
+https://api.lux.network/v1/bc/{blockchain-id}/rpc
 ```
 
 ### Channel Operations
@@ -86,7 +86,7 @@ curl -X POST --data '{
   },
   "id": 1
 }' -H "Content-Type: application/json" \
-  https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+  https://api.lux.network/v1/bc/{blockchain-id}/rpc
 ```
 
 ## Example: Send a Message
@@ -102,7 +102,7 @@ curl -X POST --data '{
   },
   "id": 1
 }' -H "Content-Type: application/json" \
-  https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+  https://api.lux.network/v1/bc/{blockchain-id}/rpc
 ```
 
 ## Related LPs

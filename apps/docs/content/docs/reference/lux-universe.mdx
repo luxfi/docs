@@ -123,7 +123,7 @@ docker compose --profile bank up -d           # Add Lux Bank (lux.financial)
 - Bootstrap: Node 1 (172.30.0.10) is the bootstrap node
 - Keys: Mounted from `~/.lux/keys/node\{0-4\}/`
 - Genesis: Mounted from `~/work/lux/genesis/configs/mainnet/`
-- Health checks: `curl http://localhost:9630/ext/health` every 30s
+- Health checks: `curl http://localhost:9630/v1/health` every 30s
 
 ## Blockchain Explorers
 
@@ -259,9 +259,9 @@ make lint           # Run go vet
 
 | Endpoint | URL |
 |----------|-----|
-| Mainnet C-Chain RPC | `http://127.0.0.1:9630/ext/bc/C/rpc` |
-| Testnet C-Chain RPC | `http://127.0.0.1:9640/ext/bc/C/rpc` |
-| Devnet C-Chain RPC | `http://127.0.0.1:9650/ext/bc/C/rpc` |
+| Mainnet C-Chain RPC | `http://127.0.0.1:9630/v1/bc/C/rpc` |
+| Testnet C-Chain RPC | `http://127.0.0.1:9640/v1/bc/C/rpc` |
+| Devnet C-Chain RPC | `http://127.0.0.1:9650/v1/bc/C/rpc` |
 | LUX Explorer | `http://127.0.0.1:4010` |
 | Zoo Explorer | `http://127.0.0.1:4011` |
 | Graph Node | `http://127.0.0.1:8000` |

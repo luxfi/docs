@@ -48,7 +48,7 @@ The Oracle VM (O-Chain) provides decentralized oracle services for external data
 The O-Chain API uses the `oracle` namespace. Endpoint:
 
 ```
-https://api.lux.network/{network}/ext/bc/{blockchain-id}/rpc
+https://api.lux.network/v1/bc/{blockchain-id}/rpc
 ```
 
 ### Feed Operations
@@ -77,7 +77,7 @@ curl -X POST --data '{
   },
   "id": 1
 }' -H "Content-Type: application/json" \
-  https://api.lux.network/mainnet/ext/bc/{blockchain-id}/rpc
+  https://api.lux.network/v1/bc/{blockchain-id}/rpc
 ```
 
 ## Related LPs

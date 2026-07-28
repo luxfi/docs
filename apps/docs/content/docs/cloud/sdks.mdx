@@ -46,7 +46,7 @@ console.log("Address:", keypair.getAddressString());
 import { ethers } from "ethers";
 
 const provider = new ethers.JsonRpcProvider(
-  "https://api.lux.network/ext/bc/C/rpc"
+  "https://api.lux.network/v1/bc/C/rpc"
 );
 const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
@@ -153,7 +153,7 @@ import (
 )
 
 func main() {
-    client, err := ethclient.Dial("https://api.lux.network/ext/bc/C/rpc")
+    client, err := ethclient.Dial("https://api.lux.network/v1/bc/C/rpc")
     if err != nil {
         log.Fatal(err)
     }
@@ -224,7 +224,7 @@ print(f"Node version: {info}")
 # Query C-Chain balance
 from web3 import Web3
 
-w3 = Web3(Web3.HTTPProvider("https://api.lux.network/ext/bc/C/rpc"))
+w3 = Web3(Web3.HTTPProvider("https://api.lux.network/v1/bc/C/rpc"))
 balance = w3.eth.get_balance("0xYourAddress")
 print(f"Balance: {Web3.from_wei(balance, 'ether')} LUX")
 ```

@@ -26,7 +26,7 @@ Transitions are evaluated every 60 seconds during reconciliation.
 
 The operator performs two levels of health checking on each validator pod:
 
-**Liveness** -- HTTP GET to `/ext/health/liveness` expecting status 200.
+**Liveness** -- HTTP GET to `/v1/health/liveness` expecting status 200.
 
 **Readiness** -- JSON-RPC call to `health.health` checking `result.healthy` is true.
 

@@ -50,7 +50,7 @@ func main() {
     c := client.New("https://api.lux.network", 443)
 
     // Testnet
-    // c := client.New("https://api.testnet.lux.network", 443)
+    // c := client.New("https://api.lux-test.network", 443)
 
     // Local
     // c := client.New("http://localhost", 9650)
@@ -193,7 +193,7 @@ import (
 )
 
 func main() {
-    client, err := ethclient.Dial("https://api.lux.network/ext/bc/C/rpc")
+    client, err := ethclient.Dial("https://api.lux.network/v1/bc/C/rpc")
     if err != nil {
         log.Fatal(err)
     }
@@ -246,7 +246,7 @@ import (
 )
 
 func main() {
-    client, err := ethclient.Dial("https://api.lux.network/ext/bc/C/rpc")
+    client, err := ethclient.Dial("https://api.lux.network/v1/bc/C/rpc")
     if err != nil {
         log.Fatal(err)
     }
@@ -308,7 +308,7 @@ import (
 )
 
 func main() {
-    client, err := ethclient.Dial("https://api.lux.network/ext/bc/C/rpc")
+    client, err := ethclient.Dial("https://api.lux.network/v1/bc/C/rpc")
     if err != nil {
         log.Fatal(err)
     }

@@ -16,7 +16,7 @@ The X-Chain (UTXO Chain) is the asset creation and transfer platform on Lux Netw
 ## RPC Endpoint
 
 ```
-https://api.lux.network/{network}/ext/bc/X
+https://api.lux.network/v1/bc/X
 ```
 
 The X-Chain API uses the `xvm` namespace with Lux-style JSON-RPC.
@@ -93,7 +93,7 @@ curl -X POST --data '{
   },
   "id": 1
 }' -H "Content-Type: application/json" \
-  https://api.lux.network/mainnet/ext/bc/X
+  https://api.lux.network/v1/bc/X
 ```
 
 ## Example: Create a Fixed-Cap Asset
@@ -118,7 +118,7 @@ curl -X POST --data '{
   },
   "id": 1
 }' -H "Content-Type: application/json" \
-  https://api.lux.network/mainnet/ext/bc/X
+  https://api.lux.network/v1/bc/X
 ```
 
 ## Related LPs

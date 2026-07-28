@@ -10,9 +10,9 @@ The C-Chain (Contract Chain) is the primary smart contract platform on Lux Netwo
 
 | Network | Chain ID | Currency | RPC Endpoint |
 |---------|----------|----------|-------------|
-| Mainnet | 96369 | LUX | `https://api.lux.network/mainnet/ext/bc/C/rpc` |
-| Testnet | 96368 | LUX | `https://api.lux.network/testnet/ext/bc/C/rpc` |
-| Devnet | 96370 | LUX | `https://api.lux.network/devnet/ext/bc/C/rpc` |
+| Mainnet | 96369 | LUX | `https://api.lux.network/v1/bc/C/rpc` |
+| Testnet | 96368 | LUX | `https://api.lux-test.network/v1/bc/C/rpc` |
+| Devnet | 96370 | LUX | `https://api.lux-dev.network/v1/bc/C/rpc` |
 
 ## Token Denomination
 
@@ -60,7 +60,7 @@ gate bytecode behavior; the C-Chain supports the Cancun blob schedule:
 
 ## RPC API
 
-The C-Chain exposes the standard Ethereum JSON-RPC API. All methods are available at the `/ext/bc/C/rpc` endpoint.
+The C-Chain exposes the standard Ethereum JSON-RPC API. All methods are available at the `/v1/bc/C/rpc` endpoint.
 
 ### Common Methods
 
@@ -68,29 +68,29 @@ The C-Chain exposes the standard Ethereum JSON-RPC API. All methods are availabl
 # Get chain ID
 curl -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":1}' \
-  https://api.lux.network/mainnet/ext/bc/C/rpc
+  https://api.lux.network/v1/bc/C/rpc
 
 # Get latest block number
 curl -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-  https://api.lux.network/mainnet/ext/bc/C/rpc
+  https://api.lux.network/v1/bc/C/rpc
 
 # Get balance
 curl -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0x...","latest"],"id":1}' \
-  https://api.lux.network/mainnet/ext/bc/C/rpc
+  https://api.lux.network/v1/bc/C/rpc
 ```
 
 ### WebSocket
 
-WebSocket connections are available at `/ext/bc/C/ws` for real-time event subscriptions.
+WebSocket connections are available at `/v1/bc/C/ws` for real-time event subscriptions.
 
 ## Connecting with MetaMask
 
 Add Lux Mainnet to MetaMask with these settings:
 
 - **Network Name**: Lux Mainnet
-- **RPC URL**: `https://api.lux.network/mainnet/ext/bc/C/rpc`
+- **RPC URL**: `https://api.lux.network/v1/bc/C/rpc`
 - **Chain ID**: 96369
 - **Currency Symbol**: LUX
 - **Explorer**: `https://explore.lux.network`
@@ -100,7 +100,7 @@ Add Lux Mainnet to MetaMask with these settings:
 Use any standard EVM tooling. Example with Foundry:
 
 ```bash
-forge create --rpc-url https://api.lux.network/mainnet/ext/bc/C/rpc \
+forge create --rpc-url https://api.lux.network/v1/bc/C/rpc \
   --private-key $PRIVATE_KEY \
   src/MyContract.sol:MyContract
 ```

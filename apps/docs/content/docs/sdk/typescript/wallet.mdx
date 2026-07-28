@@ -18,7 +18,7 @@ console.log("Address:", account.address);
 const wallet = createWalletClient({
   account,
   transport: http(
-    "https://api.lux.network/mainnet/ext/bc/C/rpc"
+    "https://api.lux.network/v1/bc/C/rpc"
   ),
 });
 ```
@@ -62,7 +62,7 @@ const hash = await wallet.sendTransaction({
     rpcUrls: {
       default: {
         http: [
-          "https://api.lux.network/mainnet/ext/bc/C/rpc",
+          "https://api.lux.network/v1/bc/C/rpc",
         ],
       },
     },
@@ -78,7 +78,7 @@ console.log("TX hash:", hash);
 import { ethers } from "ethers";
 
 const provider = new ethers.JsonRpcProvider(
-  "https://api.lux.network/mainnet/ext/bc/C/rpc"
+  "https://api.lux.network/v1/bc/C/rpc"
 );
 const signer = new ethers.Wallet("0xPrivateKey...", provider);
 

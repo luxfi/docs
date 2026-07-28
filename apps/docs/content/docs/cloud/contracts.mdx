@@ -15,7 +15,7 @@ Add Lux to your development environment:
   <Tab value="Mainnet">
     ```
     Network Name: Lux Mainnet C-Chain
-    RPC URL:      https://api.lux.network/ext/bc/C/rpc
+    RPC URL:      https://api.lux.network/v1/bc/C/rpc
     Chain ID:     96369
     Symbol:       LUX
     Explorer:     https://explorer.lux.network
@@ -24,7 +24,7 @@ Add Lux to your development environment:
   <Tab value="Testnet">
     ```
     Network Name: Lux Testnet C-Chain
-    RPC URL:      https://api.testnet.lux.network/ext/bc/C/rpc
+    RPC URL:      https://api.lux-test.network/v1/bc/C/rpc
     Chain ID:     96368
     Symbol:       LUX
     Explorer:     https://explorer.testnet.lux.network
@@ -56,12 +56,12 @@ Add Lux to your development environment:
       solidity: "0.8.24",
       networks: {
         lux: {
-          url: "https://api.lux.network/ext/bc/C/rpc",
+          url: "https://api.lux.network/v1/bc/C/rpc",
           chainId: 96369,
           accounts: [process.env.PRIVATE_KEY],
         },
         luxTestnet: {
-          url: "https://api.testnet.lux.network/ext/bc/C/rpc",
+          url: "https://api.lux-test.network/v1/bc/C/rpc",
           chainId: 96368,
           accounts: [process.env.PRIVATE_KEY],
         },
@@ -174,7 +174,7 @@ Foundry provides faster compilation and testing with Forge.
   <Step>
     ### Deploy with Forge
     ```bash
-    forge create --rpc-url https://api.testnet.lux.network/ext/bc/C/rpc \
+    forge create --rpc-url https://api.lux-test.network/v1/bc/C/rpc \
       --private-key $PRIVATE_KEY \
       src/Counter.sol:Counter
     ```

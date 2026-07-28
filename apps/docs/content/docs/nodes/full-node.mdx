@@ -134,7 +134,7 @@ When first started, the node must sync with the network. This involves downloadi
 Monitor sync progress via the Health API:
 
 ```bash
-curl -s http://localhost:9650/ext/health | jq .
+curl -s http://localhost:9650/v1/health | jq .
 ```
 
 Or check if bootstrapping is complete:
@@ -147,7 +147,7 @@ curl -s -X POST --data '{
   "params": {
     "chain": "C"
   }
-}' -H 'content-type:application/json' http://localhost:9650/ext/info
+}' -H 'content-type:application/json' http://localhost:9650/v1/info
 ```
 
 Response when fully synced:
@@ -194,7 +194,7 @@ sudo ufw allow 9651/tcp
 The node exposes Prometheus metrics at:
 
 ```
-http://localhost:9650/ext/metrics
+http://localhost:9650/v1/metrics
 ```
 
 ### Key Metrics to Watch
@@ -238,7 +238,7 @@ A community Grafana dashboard is available for monitoring Lux nodes. Import it b
       "jsonrpc": "2.0",
       "id": 1,
       "method": "info.getNodeVersion"
-    }' -H 'content-type:application/json' http://localhost:9650/ext/info
+    }' -H 'content-type:application/json' http://localhost:9650/v1/info
     ```
   </Step>
 </Steps>

@@ -101,7 +101,7 @@ Additional Grafana plugins installed: `grafana-piechart-panel`, `grafana-worldma
 |------|------|-----|
 | Prometheus | `prometheus` | `http://prometheus:9090` (default, POST method) |
 | Loki | `loki` | `http://loki:3100` (max 5000 lines) |
-| Lux Node | `prometheus` | `http://host.docker.internal:9650/ext/metrics` |
+| Lux Node | `prometheus` | `http://host.docker.internal:9650/v1/metrics` |
 | PostgreSQL | `postgres` | `lux-postgres:5432`, database `explorer_luxnet` |
 
 ### Dashboard Provider (`grafana/provisioning/dashboards/dashboards.yml`)
@@ -118,12 +118,12 @@ Global scrape interval: **15s**. Evaluation interval: **15s**.
 |----------|-------------|--------|----------------|
 | `prometheus` | `/metrics` | `localhost:9090` | -- |
 | `node` | `/metrics` | `node-exporter:9100` | -- |
-| `luxd` | `/ext/metrics` | `luxd:9630`, `host.docker.internal:9630` | `lux-mainnet` |
-| `c-chain` | `/ext/bc/C/metrics` | `luxd:9630` | `c-chain-mainnet` |
-| `c-chain-rpc` | `/ext/bc/C/rpc` | `luxd:9630` | `c-chain-rpc` |
-| `x-chain` | `/ext/bc/X/metrics` | `luxd:9630` | `x-chain-mainnet` |
-| `p-chain` | `/ext/bc/P/metrics` | `luxd:9630` | `p-chain-mainnet` |
-| `lux-health` | `/ext/health` | `luxd:9630` | `lux-health` |
+| `luxd` | `/v1/metrics` | `luxd:9630`, `host.docker.internal:9630` | `lux-mainnet` |
+| `c-chain` | `/v1/bc/C/metrics` | `luxd:9630` | `c-chain-mainnet` |
+| `c-chain-rpc` | `/v1/bc/C/rpc` | `luxd:9630` | `c-chain-rpc` |
+| `x-chain` | `/v1/bc/X/metrics` | `luxd:9630` | `x-chain-mainnet` |
+| `p-chain` | `/v1/bc/P/metrics` | `luxd:9630` | `p-chain-mainnet` |
+| `lux-health` | `/v1/health` | `luxd:9630` | `lux-health` |
 | `blockscout-lux` | `/metrics` | `host.docker.internal:4000` | `blockscout-lux-mainnet` |
 | `postgres` | `/metrics` | `postgres-exporter:9187` | -- |
 | `grafana` | `/metrics` | `grafana:3000` | -- |
@@ -266,5 +266,5 @@ docker compose -f compose.luxnet.yml -f compose.dex.yml up -d
 
 ## Related Skills
 
-- `lux/lux-node.md` -- Node that exports metrics at `/ext/metrics`
+- `lux/lux-node.md` -- Node that exports metrics at `/v1/metrics`
 - `lux/lux-universe.md` -- Production K8s infrastructure

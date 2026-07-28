@@ -150,28 +150,28 @@ make run-testnet    # Network ID 96368
 
 ```bash
 # Node info
-curl -X POST http://localhost:9630/ext/info \
+curl -X POST http://localhost:9630/v1/info \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","id":1,"method":"info.getNodeID"}'
 
 # Health check
-curl -X POST http://localhost:9630/ext/health \
+curl -X POST http://localhost:9630/v1/health \
   -d '{"jsonrpc":"2.0","id":1,"method":"health.health"}'
 
 # Bootstrap status
-curl -X POST http://localhost:9630/ext/info \
+curl -X POST http://localhost:9630/v1/info \
   -d '{"jsonrpc":"2.0","id":1,"method":"info.isBootstrapped","params":{}}'
 
 # P-Chain: current validators
-curl -X POST http://localhost:9630/ext/bc/P \
+curl -X POST http://localhost:9630/v1/bc/P \
   -d '{"jsonrpc":"2.0","id":1,"method":"platform.getCurrentValidators","params":{}}'
 
 # C-Chain: EVM JSON-RPC
-curl -X POST http://localhost:9630/ext/bc/C/rpc \
+curl -X POST http://localhost:9630/v1/bc/C/rpc \
   -d '{"jsonrpc":"2.0","id":1,"method":"eth_blockNumber","params":[]}'
 
 # X-Chain: asset balance
-curl -X POST http://localhost:9630/ext/bc/X \
+curl -X POST http://localhost:9630/v1/bc/X \
   -d '{"jsonrpc":"2.0","id":1,"method":"xvm.getBalance","params":{"address":"X-lux1...","assetID":"LUX"}}'
 ```
 

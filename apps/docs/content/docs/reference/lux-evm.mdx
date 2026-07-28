@@ -47,8 +47,8 @@ The EVM runs as a **plugin binary** loaded by `luxd` (the Lux node). The binary 
 |------|-------|
 | Module | `github.com/luxfi/evm` |
 | Go version | 1.26.1 |
-| C-Chain RPC | `http://<node>:9630/ext/bc/C/rpc` |
-| C-Chain WebSocket | `ws://<node>:9630/ext/bc/C/ws` |
+| C-Chain RPC | `http://<node>:9630/v1/bc/C/rpc` |
+| C-Chain WebSocket | `ws://<node>:9630/v1/bc/C/ws` |
 | C-Chain ID (mainnet) | 96369 |
 | C-Chain ID (testnet) | 96368 |
 | C-Chain ID (devnet) | 96370 |
@@ -101,24 +101,24 @@ When deployed as a sovereign L1 chain:
 
 ```bash
 # Get latest block number
-curl -X POST http://localhost:9630/ext/bc/C/rpc \
+curl -X POST http://localhost:9630/v1/bc/C/rpc \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","id":1,"method":"eth_blockNumber","params":[]}'
 
 # Get account balance
-curl -X POST http://localhost:9630/ext/bc/C/rpc \
+curl -X POST http://localhost:9630/v1/bc/C/rpc \
   -d '{"jsonrpc":"2.0","id":1,"method":"eth_getBalance","params":["0x...","latest"]}'
 
 # Send raw transaction
-curl -X POST http://localhost:9630/ext/bc/C/rpc \
+curl -X POST http://localhost:9630/v1/bc/C/rpc \
   -d '{"jsonrpc":"2.0","id":1,"method":"eth_sendRawTransaction","params":["0x..."]}'
 
 # Get chain ID
-curl -X POST http://localhost:9630/ext/bc/C/rpc \
+curl -X POST http://localhost:9630/v1/bc/C/rpc \
   -d '{"jsonrpc":"2.0","id":1,"method":"eth_chainId","params":[]}'
 
 # Get fee config (Lux-specific)
-curl -X POST http://localhost:9630/ext/bc/C/rpc \
+curl -X POST http://localhost:9630/v1/bc/C/rpc \
   -d '{"jsonrpc":"2.0","id":1,"method":"eth_feeConfig","params":[]}'
 ```
 
@@ -126,7 +126,7 @@ curl -X POST http://localhost:9630/ext/bc/C/rpc \
 
 ```go
 
-client, err := ethclient.Dial("http://localhost:9630/ext/bc/C/rpc")
+client, err := ethclient.Dial("http://localhost:9630/v1/bc/C/rpc")
 if err != nil {
     return err
 }
@@ -450,10 +450,10 @@ Cross-chain communication via LP-118 Warp protocol (`warp/`):
 ### Lux-Specific API Endpoints
 
 ```
-POST /ext/bc/C/rpc          -- Standard EVM JSON-RPC
-WS   /ext/bc/C/ws           -- WebSocket subscriptions
-POST /ext/bc/C/lux          -- Lux-specific APIs (validators)
-POST /ext/bc/C/admin        -- Admin APIs (import/export, profiling)
+POST /v1/bc/C/rpc          -- Standard EVM JSON-RPC
+WS   /v1/bc/C/ws           -- WebSocket subscriptions
+POST /v1/bc/C/lux          -- Lux-specific APIs (validators)
+POST /v1/bc/C/admin        -- Admin APIs (import/export, profiling)
 ```
 
 ## Key Dependencies (go.mod verified)

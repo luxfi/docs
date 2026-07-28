@@ -84,7 +84,7 @@ go build -o explorer ./cmd/explorer
 
 ```bash
 # Single chain
-./explorer --rpc=http://localhost:9650/ext/bc/C/rpc
+./explorer --rpc=http://localhost:9650/v1/bc/C/rpc
 
 # Multi-chain
 ./explorer --config=chains.yaml
@@ -111,7 +111,7 @@ chains:
   - slug: cchain
     name: "C-Chain"
     chain_id: 96369
-    rpc: "http://luxd:9630/ext/bc/C/rpc"
+    rpc: "http://luxd:9630/v1/bc/C/rpc"
     logo: "/logos/lux.svg"
     color: "#1a1a2e"
 ```

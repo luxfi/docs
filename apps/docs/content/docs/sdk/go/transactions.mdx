@@ -22,7 +22,7 @@ import (
 
 func sendEVM() error {
     client, _ := ethclient.Dial(
-        "http://127.0.0.1:9630/ext/bc/C/rpc",
+        "http://127.0.0.1:9630/v1/bc/C/rpc",
     )
 
     // Build EIP-1559 transaction

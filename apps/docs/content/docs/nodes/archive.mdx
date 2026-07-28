@@ -122,7 +122,7 @@ curl -s -X POST --data '{
   "id": 1,
   "method": "info.isBootstrapped",
   "params": {"chain": "C"}
-}' -H 'content-type:application/json' http://localhost:9650/ext/info
+}' -H 'content-type:application/json' http://localhost:9650/v1/info
 
 # Check current block number (compare with explorer)
 curl -s -X POST --data '{
@@ -130,7 +130,7 @@ curl -s -X POST --data '{
   "id": 1,
   "method": "eth_blockNumber",
   "params": []
-}' -H 'content-type:application/json' http://localhost:9650/ext/bc/C/rpc
+}' -H 'content-type:application/json' http://localhost:9650/v1/bc/C/rpc
 ```
 
 ## Querying Historical State
@@ -146,7 +146,7 @@ curl -s -X POST --data '{
   "id": 1,
   "method": "eth_getBalance",
   "params": ["0xYourAddress", "0x7A120"]
-}' -H 'content-type:application/json' http://localhost:9650/ext/bc/C/rpc
+}' -H 'content-type:application/json' http://localhost:9650/v1/bc/C/rpc
 ```
 
 The second parameter is the block number in hex. A full node would return an error for old blocks; an archive node returns the actual historical balance.
@@ -160,7 +160,7 @@ curl -s -X POST --data '{
   "id": 1,
   "method": "debug_traceTransaction",
   "params": ["0xTransactionHash", {"tracer": "callTracer"}]
-}' -H 'content-type:application/json' http://localhost:9650/ext/bc/C/rpc
+}' -H 'content-type:application/json' http://localhost:9650/v1/bc/C/rpc
 ```
 
 ### Historical Contract Storage
@@ -172,7 +172,7 @@ curl -s -X POST --data '{
   "id": 1,
   "method": "eth_getStorageAt",
   "params": ["0xContractAddress", "0x0", "0x7A120"]
-}' -H 'content-type:application/json' http://localhost:9650/ext/bc/C/rpc
+}' -H 'content-type:application/json' http://localhost:9650/v1/bc/C/rpc
 ```
 
 ## Storage Management

@@ -5,13 +5,13 @@ description: P-Chain Platform API reference for staking, validators, and chains
 
 # Platform API
 
-The Platform API provides access to the P-Chain, which manages validators, staking, and chains. All Platform API methods are accessed at the `/ext/P` endpoint (or equivalently `/ext/bc/P`).
+The Platform API provides access to the P-Chain, which manages validators, staking, and chains. All Platform API methods are accessed at the `/v1/P` endpoint (or equivalently `/v1/bc/P`).
 
 ## Endpoint
 
 ```
-POST https://api.lux.network/ext/P
-POST http://localhost:9650/ext/P
+POST https://api.lux.network/v1/P
+POST http://localhost:9650/v1/P
 ```
 
 All requests use the standard JSON-RPC format:
@@ -22,7 +22,7 @@ curl -s -X POST --data '{
   "id": 1,
   "method": "platform.methodName",
   "params": {}
-}' -H 'content-type:application/json' https://api.lux.network/ext/P
+}' -H 'content-type:application/json' https://api.lux.network/v1/P
 ```
 
 ## Validator Methods
@@ -44,7 +44,7 @@ curl -s -X POST --data '{
   "id": 1,
   "method": "platform.getCurrentValidators",
   "params": {}
-}' -H 'content-type:application/json' https://api.lux.network/ext/P
+}' -H 'content-type:application/json' https://api.lux.network/v1/P
 ```
 
 **Response:**
@@ -84,7 +84,7 @@ curl -s -X POST --data '{
   "id": 1,
   "method": "platform.getPendingValidators",
   "params": {}
-}' -H 'content-type:application/json' https://api.lux.network/ext/P
+}' -H 'content-type:application/json' https://api.lux.network/v1/P
 ```
 
 ### platform.addValidator
@@ -121,7 +121,7 @@ curl -s -X POST --data '{
     "username": "myuser",
     "password": "mypassword"
   }
-}' -H 'content-type:application/json' http://localhost:9650/ext/P
+}' -H 'content-type:application/json' http://localhost:9650/v1/P
 ```
 
 <Callout>
@@ -157,7 +157,7 @@ curl -s -X POST --data '{
     "username": "myuser",
     "password": "mypassword"
   }
-}' -H 'content-type:application/json' http://localhost:9650/ext/P
+}' -H 'content-type:application/json' http://localhost:9650/v1/P
 ```
 
 ## Balance and UTXO Methods
@@ -174,7 +174,7 @@ curl -s -X POST --data '{
   "params": {
     "address": "P-lux1..."
   }
-}' -H 'content-type:application/json' https://api.lux.network/ext/P
+}' -H 'content-type:application/json' https://api.lux.network/v1/P
 ```
 
 **Response:**
@@ -208,7 +208,7 @@ curl -s -X POST --data '{
     "addresses": ["P-lux1..."],
     "limit": 100
   }
-}' -H 'content-type:application/json' https://api.lux.network/ext/P
+}' -H 'content-type:application/json' https://api.lux.network/v1/P
 ```
 
 ## Chain Methods
@@ -239,7 +239,7 @@ curl -s -X POST --data '{
     "username": "myuser",
     "password": "mypassword"
   }
-}' -H 'content-type:application/json' http://localhost:9650/ext/P
+}' -H 'content-type:application/json' http://localhost:9650/v1/P
 ```
 
 **Response:**
@@ -267,7 +267,7 @@ curl -s -X POST --data '{
   "id": 1,
   "method": "platform.getSubnets",
   "params": {}
-}' -H 'content-type:application/json' https://api.lux.network/ext/P
+}' -H 'content-type:application/json' https://api.lux.network/v1/P
 ```
 
 ### platform.addSubnetValidator
@@ -289,7 +289,7 @@ curl -s -X POST --data '{
     "username": "myuser",
     "password": "mypassword"
   }
-}' -H 'content-type:application/json' http://localhost:9650/ext/P
+}' -H 'content-type:application/json' http://localhost:9650/v1/P
 ```
 
 ## Chain Methods
@@ -304,7 +304,7 @@ curl -s -X POST --data '{
   "id": 1,
   "method": "platform.getBlockchains",
   "params": {}
-}' -H 'content-type:application/json' https://api.lux.network/ext/P
+}' -H 'content-type:application/json' https://api.lux.network/v1/P
 ```
 
 ### platform.getStakingAssetID
@@ -317,7 +317,7 @@ curl -s -X POST --data '{
   "id": 1,
   "method": "platform.getStakingAssetID",
   "params": {}
-}' -H 'content-type:application/json' https://api.lux.network/ext/P
+}' -H 'content-type:application/json' https://api.lux.network/v1/P
 ```
 
 ## Transaction Methods
@@ -334,7 +334,7 @@ curl -s -X POST --data '{
   "params": {
     "tx": "0x...signed_tx_bytes"
   }
-}' -H 'content-type:application/json' https://api.lux.network/ext/P
+}' -H 'content-type:application/json' https://api.lux.network/v1/P
 ```
 
 ### platform.getTxStatus
@@ -349,7 +349,7 @@ curl -s -X POST --data '{
   "params": {
     "txID": "..."
   }
-}' -H 'content-type:application/json' https://api.lux.network/ext/P
+}' -H 'content-type:application/json' https://api.lux.network/v1/P
 ```
 
 **Response:**

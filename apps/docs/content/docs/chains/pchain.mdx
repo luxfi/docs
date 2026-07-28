@@ -28,7 +28,7 @@ Lux uses one consistent model end-to-end:
 ## RPC Endpoint
 
 ```
-https://api.lux.network/{network}/ext/bc/P
+https://api.lux.network/v1/bc/P
 ```
 
 The P-Chain API uses the `platform` namespace with Lux-style JSON-RPC (not Ethereum JSON-RPC).
@@ -123,7 +123,7 @@ curl -X POST --data '{
   "params": {},
   "id": 1
 }' -H "Content-Type: application/json" \
-  https://api.lux.network/mainnet/ext/bc/P
+  https://api.lux.network/v1/bc/P
 ```
 
 ## Related LPs

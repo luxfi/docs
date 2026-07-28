@@ -10,13 +10,13 @@ All Lux chains expose JSON-RPC APIs. The SDK wraps these APIs with typed clients
 
 | API | Endpoint | Description |
 |-----|----------|-------------|
-| P-Chain | `/ext/bc/P` | Validators, chains, staking, delegations |
-| X-Chain | `/ext/bc/X` | UTXO operations, asset creation and transfer |
-| C-Chain | `/ext/bc/C/rpc` | EVM JSON-RPC (eth, net, web3 namespaces) |
-| Sovereign L1 EVM | `/ext/bc/{name}/rpc` | Same as C-Chain, per-chain endpoint |
-| Info | `/ext/info` | Node info, network ID, node ID |
-| Health | `/ext/health` | Node and chain health status |
-| Admin | `/ext/admin` | Node administration (whitelisted) |
+| P-Chain | `/v1/bc/P` | Validators, chains, staking, delegations |
+| X-Chain | `/v1/bc/X` | UTXO operations, asset creation and transfer |
+| C-Chain | `/v1/bc/C/rpc` | EVM JSON-RPC (eth, net, web3 namespaces) |
+| Sovereign L1 EVM | `/v1/bc/{name}/rpc` | Same as C-Chain, per-chain endpoint |
+| Info | `/v1/info` | Node info, network ID, node ID |
+| Health | `/v1/health` | Node and chain health status |
+| Admin | `/v1/admin` | Node administration (whitelisted) |
 
 ## P-Chain Methods
 
@@ -57,7 +57,7 @@ Standard Ethereum JSON-RPC methods are supported:
 ## Info Methods
 
 ```bash
-curl -X POST http://127.0.0.1:9630/ext/info \
+curl -X POST http://127.0.0.1:9630/v1/info \
   -H 'Content-Type: application/json' \
   -d '{"jsonrpc":"2.0","method":"info.getNodeID","params":{},"id":1}'
 ```

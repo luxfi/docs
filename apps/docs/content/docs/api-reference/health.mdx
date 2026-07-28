@@ -13,26 +13,26 @@ The Health API is available at two endpoints:
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/ext/health` | GET or POST | Full health check with details |
-| `/ext/health/liveness` | GET | Simple liveness probe (200 = alive) |
-| `/ext/health/readiness` | GET | Readiness probe (200 = ready to serve) |
+| `/v1/health` | GET or POST | Full health check with details |
+| `/v1/health/liveness` | GET | Simple liveness probe (200 = alive) |
+| `/v1/health/readiness` | GET | Readiness probe (200 = ready to serve) |
 
 ## Full Health Check
 
-### GET /ext/health
+### GET /v1/health
 
 ```bash
-curl -s http://localhost:9650/ext/health | jq .
+curl -s http://localhost:9650/v1/health | jq .
 ```
 
-### POST /ext/health
+### POST /v1/health
 
 ```bash
 curl -s -X POST --data '{
   "jsonrpc": "2.0",
   "id": 1,
   "method": "health.health"
-}' -H 'content-type:application/json' http://localhost:9650/ext/health
+}' -H 'content-type:application/json' http://localhost:9650/v1/health
 ```
 
 **Response:**
@@ -124,7 +124,7 @@ curl -s -X POST --data '{
 The liveness endpoint returns HTTP 200 if the node process is running and responsive. It does **not** check whether the node is fully synced.
 
 ```bash
-curl -s -o /dev/null -w "%{http_code}" http://localhost:9650/ext/health/liveness
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9650/v1/health/liveness
 # Returns: 200 (alive) or no response (dead)
 ```
 
@@ -134,7 +134,7 @@ Use this for Kubernetes liveness probes or process monitors:
 # Kubernetes liveness probe
 livenessProbe:
   httpGet:
-    path: /ext/health/liveness
+    path: /v1/health/liveness
     port: 9650
   initialDelaySeconds: 30
   periodSeconds: 10
@@ -145,7 +145,7 @@ livenessProbe:
 The readiness endpoint returns HTTP 200 only when the node is fully bootstrapped and ready to serve API requests. During initial sync, it returns 503.
 
 ```bash
-curl -s -o /dev/null -w "%{http_code}" http://localhost:9650/ext/health/readiness
+curl -s -o /dev/null -w "%{http_code}" http://localhost:9650/v1/health/readiness
 # Returns: 200 (ready) or 503 (not ready)
 ```
 
@@ -155,7 +155,7 @@ Use this for load balancers and Kubernetes readiness probes:
 # Kubernetes readiness probe
 readinessProbe:
   httpGet:
-    path: /ext/health/readiness
+    path: /v1/health/readiness
     port: 9650
   initialDelaySeconds: 60
   periodSeconds: 15
@@ -192,7 +192,7 @@ A healthy node has:
 
 ### Prometheus
 
-The health status is also available as a Prometheus metric at `/ext/metrics`:
+The health status is also available as a Prometheus metric at `/v1/metrics`:
 
 ```
 # HELP lux_health_checks_failing Number of failing health checks
@@ -204,7 +204,7 @@ lux_health_checks_failing 0
 
 ```bash
 #!/bin/bash
-STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9650/ext/health)
+STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9650/v1/health)
 
 if [ "$STATUS" != "200" ]; then
   echo "ALERT: Node health check failed (HTTP $STATUS)"

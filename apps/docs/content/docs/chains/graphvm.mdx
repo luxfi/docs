@@ -48,14 +48,14 @@ The Graph VM (G-Chain) provides a GraphQL-based data layer for the Lux network. 
 The G-Chain exposes a GraphQL endpoint:
 
 ```
-https://api.lux.network/{network}/ext/bc/{blockchain-id}/graphql
+https://api.lux.network/v1/bc/{blockchain-id}/graphql
 ```
 
 ### Query Format
 
 ```bash
 curl -X POST \
-  https://api.lux.network/mainnet/ext/bc/{blockchain-id}/graphql \
+  https://api.lux.network/v1/bc/{blockchain-id}/graphql \
   -H "Content-Type: application/json" \
   -d '{
     "query": "{ blocks(limit: 10) { height timestamp txCount } }",

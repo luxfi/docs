@@ -5,13 +5,13 @@ description: Node information API reference for Lux Network
 
 # Info API
 
-The Info API provides information about the node's identity, version, network status, and peer connections. All methods are available at the `/ext/info` endpoint.
+The Info API provides information about the node's identity, version, network status, and peer connections. All methods are available at the `/v1/info` endpoint.
 
 ## Endpoint
 
 ```
-POST https://api.lux.network/ext/info
-POST http://localhost:9650/ext/info
+POST https://api.lux.network/v1/info
+POST http://localhost:9650/v1/info
 ```
 
 ## Methods
@@ -25,7 +25,7 @@ curl -s -X POST --data '{
   "jsonrpc": "2.0",
   "id": 1,
   "method": "info.getNodeID"
-}' -H 'content-type:application/json' http://localhost:9650/ext/info
+}' -H 'content-type:application/json' http://localhost:9650/v1/info
 ```
 
 **Response:**
@@ -55,7 +55,7 @@ curl -s -X POST --data '{
   "jsonrpc": "2.0",
   "id": 1,
   "method": "info.getNodeVersion"
-}' -H 'content-type:application/json' http://localhost:9650/ext/info
+}' -H 'content-type:application/json' http://localhost:9650/v1/info
 ```
 
 **Response:**
@@ -87,7 +87,7 @@ curl -s -X POST --data '{
   "jsonrpc": "2.0",
   "id": 1,
   "method": "info.getNodeIP"
-}' -H 'content-type:application/json' http://localhost:9650/ext/info
+}' -H 'content-type:application/json' http://localhost:9650/v1/info
 ```
 
 **Response:**
@@ -111,7 +111,7 @@ curl -s -X POST --data '{
   "jsonrpc": "2.0",
   "id": 1,
   "method": "info.getNetworkID"
-}' -H 'content-type:application/json' http://localhost:9650/ext/info
+}' -H 'content-type:application/json' http://localhost:9650/v1/info
 ```
 
 **Response:**
@@ -141,7 +141,7 @@ curl -s -X POST --data '{
   "jsonrpc": "2.0",
   "id": 1,
   "method": "info.getNetworkName"
-}' -H 'content-type:application/json' http://localhost:9650/ext/info
+}' -H 'content-type:application/json' http://localhost:9650/v1/info
 ```
 
 **Response:**
@@ -174,7 +174,7 @@ curl -s -X POST --data '{
   "params": {
     "chain": "C"
   }
-}' -H 'content-type:application/json' http://localhost:9650/ext/info
+}' -H 'content-type:application/json' http://localhost:9650/v1/info
 ```
 
 **Response:**
@@ -208,7 +208,7 @@ curl -s -X POST --data '{
   "jsonrpc": "2.0",
   "id": 1,
   "method": "info.peers"
-}' -H 'content-type:application/json' http://localhost:9650/ext/info
+}' -H 'content-type:application/json' http://localhost:9650/v1/info
 ```
 
 **Response:**
@@ -254,7 +254,7 @@ curl -s -X POST --data '{
   "params": {
     "alias": "C"
   }
-}' -H 'content-type:application/json' http://localhost:9650/ext/info
+}' -H 'content-type:application/json' http://localhost:9650/v1/info
 ```
 
 **Response:**
@@ -278,7 +278,7 @@ curl -s -X POST --data '{
   "jsonrpc": "2.0",
   "id": 1,
   "method": "info.uptime"
-}' -H 'content-type:application/json' http://localhost:9650/ext/info
+}' -H 'content-type:application/json' http://localhost:9650/v1/info
 ```
 
 **Response:**

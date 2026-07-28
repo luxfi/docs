@@ -270,7 +270,7 @@ make dev-zchain         # Z-Chain DAG indexer on port 4400
 
 ```bash
 # Single native chain
-./bin/indexer -chain xchain -rpc http://localhost:9630/ext/bc/X -port 4200
+./bin/indexer -chain xchain -rpc http://localhost:9630/v1/bc/X -port 4200
 
 # All Lux EVM chains (single process)
 ./bin/evmchains -config configs/evmchains.yaml

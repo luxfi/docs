@@ -54,11 +54,11 @@ chains:
 database: postgresql://indexer:pass@localhost:5432/indexer
 chains:
   - name: cchain
-    rpc: http://luxd:9630/ext/bc/C/rpc
+    rpc: http://luxd:9630/v1/bc/C/rpc
     chain_id: 96369
     port: 4000
   - name: zoo
-    rpc: http://luxd:9630/ext/bc/BLOCKCHAIN_ID/rpc
+    rpc: http://luxd:9630/v1/bc/BLOCKCHAIN_ID/rpc
     chain_id: 200200
     port: 4001
 ```

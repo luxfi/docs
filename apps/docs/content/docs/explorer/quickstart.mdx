@@ -15,7 +15,7 @@ icon: Zap
 ```bash
 git clone https://github.com/luxfi/explorer.git
 cd explorer
-go run ./cmd/explorer --rpc=http://localhost:9650/ext/bc/C/rpc
+go run ./cmd/explorer --rpc=http://localhost:9650/v1/bc/C/rpc
 ```
 
 Open http://localhost:4000. The embedded frontend and SQLite storage start automatically.
@@ -42,7 +42,7 @@ Open http://localhost:3000.
 
 ```bash
 docker run -it \
-  -e RPC_ENDPOINT=http://host.docker.internal:9650/ext/bc/C/rpc \
+  -e RPC_ENDPOINT=http://host.docker.internal:9650/v1/bc/C/rpc \
   -p 4000:4000 \
   ghcr.io/luxfi/explorer:latest
 ```

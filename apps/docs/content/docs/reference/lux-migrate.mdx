@@ -130,7 +130,7 @@ go build -o bin/import-rpc ./cmd/import-rpc/
 # Import to C-Chain via RPC
 ./bin/import-rpc \
   -jsonl blocks.jsonl \
-  -rpc http://127.0.0.1:9630/ext/bc/C/rpc \
+  -rpc http://127.0.0.1:9630/v1/bc/C/rpc \
   -batch 100 -start 1 -reload 10000
 ```
 

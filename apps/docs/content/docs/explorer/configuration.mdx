@@ -21,7 +21,7 @@ explore-pars.lux.network  → CHAIN_ID=494949 (Pars)
 The luxd configmap maps chain names to blockchain IDs. Each chain explorer uses the actual blockchain ID in its RPC URL:
 
 ```
-luxd-1.luxd-headless.lux-mainnet.svc:9630/ext/bc/{blockchain_id}/rpc
+luxd-1.luxd-headless.lux-mainnet.svc:9630/v1/bc/{blockchain_id}/rpc
 ```
 
 > Do NOT alias chain names to C-chain. This was a bug that caused chain explorers to index C-chain data instead of the actual chain.
