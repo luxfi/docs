@@ -119,7 +119,7 @@ login/
 1. User clicks "Sign in with Lux ID"
 2. `getOAuthAuthorizeUrl()` constructs URL:
    ```
-   https://lux.id/oauth/authorize?client_id=...&response_type=code&redirect_uri=.../callback&scope=openid+profile+email&state=<uuid>
+   https://lux.id/v1/iam/oauth/authorize?client_id=...&response_type=code&redirect_uri=.../callback&scope=openid+profile+email&state=<uuid>
    ```
 3. User authenticates on IAM
 4. IAM redirects back to `/callback?code=<code>`
@@ -146,8 +146,8 @@ login/
 | Variable | Default | Purpose |
 |----------|---------|---------|
 | `NEXT_PUBLIC_IAM_CLIENT_ID` | `lux-cloud-client-id` | OAuth2 client ID |
-| `NEXT_PUBLIC_IAM_AUTHORIZE_URL` | `https://lux.id/oauth/authorize` | OAuth2 authorize endpoint |
-| `NEXT_PUBLIC_IAM_TOKEN_URL` | `https://lux.id/oauth/token` | OAuth2 token endpoint |
+| `NEXT_PUBLIC_IAM_AUTHORIZE_URL` | `https://lux.id/v1/iam/oauth/authorize` | OAuth2 authorize endpoint |
+| `NEXT_PUBLIC_IAM_TOKEN_URL` | `https://lux.id/v1/iam/oauth/token` | OAuth2 token endpoint |
 | `NEXT_PUBLIC_REDIRECT_URL` | `https://cloud.lux.network` | Post-auth redirect target |
 | `NEXT_PUBLIC_IAM_ORG` | `lux` | Casdoor organization name |
 

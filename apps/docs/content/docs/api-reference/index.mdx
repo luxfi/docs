@@ -50,6 +50,21 @@ Hosts that no longer resolve or no longer hold a valid certificate —
 `api.testnet.lux.network`, `testnet-api.lux.network`, `node.lux.network`,
 `api.spc.network` — are not endpoints. Do not publish them.
 
+### Identity endpoints
+
+IAM lives under the same prefix: `/v1/iam/oauth/{authorize,token,userinfo}`
+and `/v1/iam/.well-known/jwks`.
+
+Never hand-build these URLs. Read them from
+`https://lux.id/.well-known/openid-configuration`, which is the one location
+RFC 8414 fixes at the root and which returns the `/v1/iam/...` values above.
+A hand-built `https://lux.id/oauth/authorize` — or `/login/oauth/authorize`,
+or a root `/.well-known/jwks` — does **not** 404. It returns `200 text/html`:
+the single-page-app shell. The login or the signature check then fails for a
+reason that has nothing to do with the URL. When you verify an identity
+endpoint, assert on `content-type: application/json` and on the response body,
+never on the status code alone.
+
 ## APIs
 
 <Cards>
