@@ -7,6 +7,49 @@ description: API documentation and CLI reference for Lux Network
 
 Complete API and CLI documentation for Lux Network.
 
+## URL convention
+
+Every Lux HTTP surface is versioned once, at the root: `/v1/`. This is the
+canonical statement of the rule; everything we publish conforms to it.
+
+- **`/v1/` only.** Never `/api/`, never `/ext/`, and never a `v2`. The surface
+  moves forward in place; we do not ship a second prefix to migrate between,
+  and we do not keep redirects or compatibility shims for old prefixes.
+- **`/ext/*` is gone, not deprecated.** It was the pre-`/v1/` node path.
+  `api.lux.network`, `api.zoo.network` and `api.hanzo.network` all return `404`
+  for it today, as does a devnet node on its own port. A published `/ext/` URL
+  is a broken URL — not a slower one, not a legacy one. Fix it at the source.
+- **The network is chosen by host, not by path.** There is no `/mainnet/`,
+  `/testnet/` or `/devnet/` path segment — `https://api.lux.network/mainnet/...`
+  returns `404`. Each network is a different host serving the identical
+  path tree.
+- **Each sovereign L1 answers on its own host.** `api.lux.network` serves the
+  Lux primary network only (`/v1/bc/{C,P,X}`). Zoo, Hanzo and Pars are not
+  reachable as an alias or a blockchain ID underneath it; use their own hosts.
+- **Chain paths keep the `bc/` segment**: `/v1/bc/<chain>/rpc`. `/v1/C/rpc` and
+  `/v1/bc/C` are malformed paths, not short aliases, and return `404`.
+- **`<chain>` is the chain letter** (`C`, `P`, `X`), not an L1 nickname.
+
+### Canonical endpoints
+
+| Network | Chain ID | C-Chain JSON-RPC |
+|---------|----------|------------------|
+| Lux mainnet | 96369 | `https://api.lux.network/v1/bc/C/rpc` |
+| Lux testnet | 96368 | `https://api.lux-test.network/v1/bc/C/rpc` |
+| Lux devnet | 96367 | `https://api.lux-dev.network/v1/bc/C/rpc` |
+| Zoo mainnet | 200200 | `https://api.zoo.network/v1/bc/C/rpc` |
+| Zoo testnet | 200201 | `https://api.zoo-test.network/v1/bc/C/rpc` |
+| Hanzo mainnet | 36963 | `https://api.hanzo.network/v1/bc/C/rpc` |
+| Hanzo testnet | 36964 | `https://api.hanzo-test.network/v1/bc/C/rpc` |
+| Pars mainnet | 494949 | `https://api.pars.network/v1/bc/C/rpc` |
+
+WebSocket is the same path with `/ws` instead of `/rpc`, over `wss://`.
+Node-wide routes are `/v1/info` (POST) and `/v1/health` (GET).
+
+Hosts that no longer resolve or no longer hold a valid certificate —
+`api.testnet.lux.network`, `testnet-api.lux.network`, `node.lux.network`,
+`api.spc.network` — are not endpoints. Do not publish them.
+
 ## APIs
 
 <Cards>
@@ -49,17 +92,24 @@ Complete API and CLI documentation for Lux Network.
 ### Mainnet
 
 ```
-RPC: https://api.lux.network/ext/bc/C/rpc
-WebSocket: wss://api.lux.network/ext/bc/C/ws
+RPC: https://api.lux.network/v1/bc/C/rpc
+WebSocket: wss://api.lux.network/v1/bc/C/ws
 Chain ID: 96369
 ```
 
 ### Testnet
 
 ```
-RPC: https://api.testnet.lux.network/ext/bc/C/rpc
-WebSocket: wss://api.testnet.lux.network/ext/bc/C/ws
+RPC: https://api.lux-test.network/v1/bc/C/rpc
+WebSocket: wss://api.lux-test.network/v1/bc/C/ws
 Chain ID: 96368
+```
+
+### Devnet
+
+```
+RPC: https://api.lux-dev.network/v1/bc/C/rpc
+WebSocket: wss://api.lux-dev.network/v1/bc/C/ws
 ```
 
 ## SDK Reference

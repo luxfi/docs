@@ -15,7 +15,7 @@ npm install @luxfi/fhe-sdk
 ```typescript
 import { createInstance } from '@luxfi/fhe-sdk';
 
-const fhe = await createInstance({ networkUrl: 'https://api.lux.network/mainnet' });
+const fhe = await createInstance({ networkUrl: 'https://api.lux.network/v1/bc/C/rpc' });
 
 // Encrypt a value
 const encrypted = fhe.encrypt32(42);
