@@ -18,7 +18,7 @@ Lux KMS includes a full Public Key Infrastructure (PKI) for issuing, managing, a
 ## Create a Certificate Authority
 
 ```bash
-curl -X POST https://kms.lux.network/api/v1/pki/ca \
+curl -X POST https://kms.lux.cloud/api/v1/pki/ca \
   -H "Authorization: Bearer $KMS_TOKEN" \
   -d '{
     "commonName": "Lux Internal CA",
@@ -32,7 +32,7 @@ curl -X POST https://kms.lux.network/api/v1/pki/ca \
 ## Issue a Certificate
 
 ```bash
-curl -X POST https://kms.lux.network/api/v1/pki/certificates \
+curl -X POST https://kms.lux.cloud/api/v1/pki/certificates \
   -H "Authorization: Bearer $KMS_TOKEN" \
   -d '{
     "caId": "ca-abc123",
@@ -58,7 +58,7 @@ Full EST (RFC 7030) support for automated certificate enrollment:
 
 ```bash
 # Simple enrollment
-curl https://kms.lux.network/.well-known/est/simpleenroll \
+curl https://kms.lux.cloud/.well-known/est/simpleenroll \
   --cert client.pem --key client-key.pem \
   -d @csr.pem -H "Content-Type: application/pkcs10"
 ```
@@ -74,7 +74,7 @@ metadata:
   name: lux-kms-issuer
 spec:
   external:
-    endpoint: https://kms.lux.network/api/v1/pki
+    endpoint: https://kms.lux.cloud/api/v1/pki
 ```
 
 ## Alerting

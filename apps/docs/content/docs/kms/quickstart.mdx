@@ -9,7 +9,7 @@ icon: Zap
 Machine identity in, short-lived bearer out.
 
 ```bash
-TOKEN=$(curl -s -X POST https://kms.lux.network/v1/kms/auth/login \
+TOKEN=$(curl -s -X POST https://kms.lux.cloud/v1/kms/auth/login \
   -H 'Content-Type: application/json' \
   -d '{"clientId": "'"$KMS_CLIENT_ID"'", "clientSecret": "'"$KMS_CLIENT_SECRET"'"}' \
   | jq -r .accessToken)
@@ -22,7 +22,7 @@ brings it into being.
 ## Store a secret
 
 ```bash
-curl -X POST https://kms.lux.network/v1/kms/orgs/lux/secrets \
+curl -X POST https://kms.lux.cloud/v1/kms/orgs/lux/secrets \
   -H "Authorization: Bearer $TOKEN" \
   -H 'Content-Type: application/json' \
   -d '{"path": "myapp", "name": "DATABASE_URL", "env": "main", "value": "postgres://..."}'
@@ -35,7 +35,7 @@ create and update.
 
 ```bash
 curl -H "Authorization: Bearer $TOKEN" \
-  "https://kms.lux.network/v1/kms/orgs/lux/secrets/myapp/DATABASE_URL?env=main"
+  "https://kms.lux.cloud/v1/kms/orgs/lux/secrets/myapp/DATABASE_URL?env=main"
 # -> {"secret":{"value":"postgres://..."}}
 ```
 
@@ -43,7 +43,7 @@ curl -H "Authorization: Bearer $TOKEN" \
 
 ```bash
 curl -H "Authorization: Bearer $TOKEN" \
-  "https://kms.lux.network/v1/kms/orgs/lux/secrets?path=myapp&env=main"
+  "https://kms.lux.cloud/v1/kms/orgs/lux/secrets?path=myapp&env=main"
 # -> {"names":["DATABASE_URL"]}
 ```
 

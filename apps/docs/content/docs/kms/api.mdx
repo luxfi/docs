@@ -14,7 +14,7 @@ each secret**, not a hostname — there are no `kms.dev.*` / `kms.test.*` hosts.
 
 | Org | Host |
 |-----|------|
-| Lux | `https://kms.lux.network` |
+| Lux | `https://kms.lux.cloud` |
 | Hanzo, Zoo, Pars | `https://kms.hanzo.ai` |
 | any (aggregate) | `https://api.hanzo.ai` |
 
@@ -23,7 +23,7 @@ each secret**, not a hostname — there are no `kms.dev.*` / `kms.test.*` hosts.
 Machine identity, exchanged for a short-lived bearer:
 
 ```bash
-curl -X POST https://kms.lux.network/v1/kms/auth/login \
+curl -X POST https://kms.lux.cloud/v1/kms/auth/login \
   -H 'Content-Type: application/json' \
   -d '{"clientId": "...", "clientSecret": "..."}'
 # -> {"accessToken": "...", "expiresIn": 3600}

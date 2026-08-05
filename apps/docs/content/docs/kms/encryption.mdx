@@ -19,7 +19,7 @@ The transit encryption engine provides encryption-as-a-service. Applications enc
 ## Encrypt Data
 
 ```bash
-curl -X POST https://kms.lux.network/api/v1/kms/keys/my-key/encrypt \
+curl -X POST https://kms.lux.cloud/api/v1/kms/keys/my-key/encrypt \
   -H "Authorization: Bearer $KMS_TOKEN" \
   -d '{
     "plaintext": "aGVsbG8gd29ybGQ="
@@ -38,7 +38,7 @@ Response:
 ## Decrypt Data
 
 ```bash
-curl -X POST https://kms.lux.network/api/v1/kms/keys/my-key/decrypt \
+curl -X POST https://kms.lux.cloud/api/v1/kms/keys/my-key/decrypt \
   -H "Authorization: Bearer $KMS_TOKEN" \
   -d '{
     "ciphertext": "vault:v1:AbCdEf..."
@@ -48,7 +48,7 @@ curl -X POST https://kms.lux.network/api/v1/kms/keys/my-key/decrypt \
 ## Sign Data
 
 ```bash
-curl -X POST https://kms.lux.network/api/v1/kms/keys/signing-key/sign \
+curl -X POST https://kms.lux.cloud/api/v1/kms/keys/signing-key/sign \
   -H "Authorization: Bearer $KMS_TOKEN" \
   -d '{
     "input": "aGVsbG8=",
@@ -66,11 +66,11 @@ Transit keys support automatic versioning. When a key is rotated:
 
 ```bash
 # Rotate key
-curl -X POST https://kms.lux.network/api/v1/kms/keys/my-key/rotate \
+curl -X POST https://kms.lux.cloud/api/v1/kms/keys/my-key/rotate \
   -H "Authorization: Bearer $KMS_TOKEN"
 
 # Rewrap old ciphertext with new key version
-curl -X POST https://kms.lux.network/api/v1/kms/keys/my-key/rewrap \
+curl -X POST https://kms.lux.cloud/api/v1/kms/keys/my-key/rewrap \
   -H "Authorization: Bearer $KMS_TOKEN" \
   -d '{"ciphertext": "vault:v1:AbCdEf..."}'
 ```
@@ -80,7 +80,7 @@ curl -X POST https://kms.lux.network/api/v1/kms/keys/my-key/rewrap \
 Generate a data encryption key for client-side encryption:
 
 ```bash
-curl -X POST https://kms.lux.network/api/v1/kms/keys/my-key/generate-data-key \
+curl -X POST https://kms.lux.cloud/api/v1/kms/keys/my-key/generate-data-key \
   -H "Authorization: Bearer $KMS_TOKEN"
 ```
 

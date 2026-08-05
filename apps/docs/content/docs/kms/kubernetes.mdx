@@ -11,7 +11,7 @@ icon: Container
 Sync KMS secrets into K8s Secrets:
 
 ```yaml
-apiVersion: kms.lux.network/v1alpha1
+apiVersion: kms.lux.cloud/v1alpha1
 kind: KMSSecret
 metadata:
   name: app-secrets
@@ -28,7 +28,7 @@ spec:
 Push K8s Secrets to KMS:
 
 ```yaml
-apiVersion: kms.lux.network/v1alpha1
+apiVersion: kms.lux.cloud/v1alpha1
 kind: KMSPushSecret
 metadata:
   name: push-creds
