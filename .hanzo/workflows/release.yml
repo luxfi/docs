@@ -12,30 +12,6 @@ name: Release
 # GITHUB_TOKEN on this forge is a Hanzo Git token and carries no rights at
 # ghcr.io.
 
-on: lux-build` —
-# an ARC scale set that no longer exists in any cluster (no
-# autoscalingrunnerset CRD on lux-k8s or hanzo-k8s, and github.com/luxfi reports
-# 0 self-hosted runners at both org and repo scope). A job naming a runner
-# nobody carries does not fail, it waits: v2.3.12 sat `queued` while every
-# release before it finished in about a minute. Nothing was broken and nothing
-# was built.
-#
-# Same move luxfi/exchange and luxfi/explorer already made, and the same shape:
-# ghcr auth from the org GHCR_USER / GHCR_TOKEN secrets — the instance
-# GITHUB_TOKEN on this forge is a Hanzo Git token and carries no rights at
-# ghcr.io — and a registry layer cache rather than type=gha, which is a
-# GitHub-hosted service.
-#
-# NOTE ON THE IMAGE NAME: luxfi/exchange's release matrix also pushes to
-# ghcr.io/luxfi/docs, from its Dockerfile.api — a different program (the
-# older express server.js, no /v1/graphql route) under the SPA's 5.149.x
-# versions. Two programs, one package, two version lineages. Pin this one by
-# digest until they are separated.
-#
-# Semver-only: a v* tag produces a {{version}} manifest plus an immutable sha
-# tag. No :latest, no floating tags — a floating tag can never be pinned in
-# universe.
-
 on:
   push:
     tags: ['v*']
