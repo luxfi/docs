@@ -18,8 +18,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    creator: '@luxnetwork',
+    creator: '@luxdefi',
   },
+  icons: { icon: '/favicon.svg' },
 };
 
 const geist = Geist({

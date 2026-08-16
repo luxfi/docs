@@ -160,17 +160,17 @@ fmt.Printf("Locked (stakeable): %d LUX\n",
     balance.LockedStakeable/1_000_000)
 ```
 
-### Get Chains
+### Get Networks
 
 ```go
-chains, err := platform.GetSubnets(ctx, nil)
+nets, err := platform.GetNets(ctx, nil)
 if err != nil {
     log.Fatal(err)
 }
 
-for _, chain := range chains {
-    fmt.Printf("Chain: %s (control keys: %d, threshold: %d)\n",
-        subnet.ID, len(subnet.ControlKeys), subnet.Threshold)
+for _, net := range nets {
+    fmt.Printf("Network: %s (control keys: %d, threshold: %d)\n",
+        net.ID, len(net.ControlKeys), net.Threshold)
 }
 ```
 

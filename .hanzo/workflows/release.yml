@@ -1,0 +1,111 @@
+name: Release
+
+# Builds ghcr.io/luxfi/docs on the native runners (git.hanzo.ai → git-runner).
+#
+# This replaces .github/workflows/docker.yml, which named `runs-on:
+# lux-docs-build` — a pool that no longer exists, so every push since July sat
+# queued for a day and was cancelled: the site was unbuildable and nobody was
+# told. Semver-only: a v* tag produces a {{version}} manifest plus an immutable
+# sha tag. No :latest — the Deployment pins the tag and digest in universe.
+#
+# ghcr auth from the org GHCR_USER / GHCR_TOKEN secrets — the instance
+# GITHUB_TOKEN on this forge is a Hanzo Git token and carries no rights at
+# ghcr.io.
+
+on: lux-build` —
+# an ARC scale set that no longer exists in any cluster (no
+# autoscalingrunnerset CRD on lux-k8s or hanzo-k8s, and github.com/luxfi reports
+# 0 self-hosted runners at both org and repo scope). A job naming a runner
+# nobody carries does not fail, it waits: v2.3.12 sat `queued` while every
+# release before it finished in about a minute. Nothing was broken and nothing
+# was built.
+#
+# Same move luxfi/exchange and luxfi/explorer already made, and the same shape:
+# ghcr auth from the org GHCR_USER / GHCR_TOKEN secrets — the instance
+# GITHUB_TOKEN on this forge is a Hanzo Git token and carries no rights at
+# ghcr.io — and a registry layer cache rather than type=gha, which is a
+# GitHub-hosted service.
+#
+# NOTE ON THE IMAGE NAME: luxfi/exchange's release matrix also pushes to
+# ghcr.io/luxfi/docs, from its Dockerfile.api — a different program (the
+# older express server.js, no /v1/graphql route) under the SPA's 5.149.x
+# versions. Two programs, one package, two version lineages. Pin this one by
+# digest until they are separated.
+#
+# Semver-only: a v* tag produces a {{version}} manifest plus an immutable sha
+# tag. No :latest, no floating tags — a floating tag can never be pinned in
+# universe.
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A release is not made irrelevant by a newer one — let it finish.
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  docker:
+    runs-on: [lux-build-linux-amd64]
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker-container
+          driver-opts: network=host
+
+      # ghcr.io intermittently rejects a good credential with
+      # `Get "https://ghcr.io/v2/": denied: denied` — bursts of failures among
+      # successes with the same org secret, so neither an expired token nor a
+      # sick runner. docker/login-action does not retry and the job would die
+      # before building, costing a release with no failed push to show for it.
+      #
+      # --password-stdin, so the token is never an argument and never lands in a
+      # process list or a log.
+      - name: Log in to ghcr.io
+        env:
+          GHCR_USER: ${{ secrets.GHCR_USER }}
+          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+        run: |
+          for i in 1 2 3 4 5; do
+            if printf %s "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin; then
+              exit 0
+            fi
+            echo "ghcr.io login attempt $i failed; retrying in $((i * 5))s"
+            sleep $((i * 5))
+          done
+          echo "::error::ghcr.io refused the credential on 5 attempts over 75s — this is no longer the intermittent failure this retry covers"
+          exit 1
+
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/luxfi/docs
+          flavor: latest=false
+          labels: |
+            org.opencontainers.image.source=https://github.com/luxfi/docs
+          tags: |
+            type=semver,pattern={{version}}
+            type=sha,prefix=sha-
+
+      # amd64 only: the pool is amd64, and this build under QEMU arm64 emulation
+      # goes from minutes to hours. arm64 returns as a native matrix entry when
+      # we own an arm64 runner.
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          platforms: linux/amd64
+          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=registry,ref=ghcr.io/luxfi/docs:buildcache-amd64
+          cache-to: type=registry,ref=ghcr.io/luxfi/docs:buildcache-amd64,mode=max
+          provenance: false
+          push: true

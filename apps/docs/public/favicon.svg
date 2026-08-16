@@ -1,0 +1,3 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><!-- @luxfi/logo@1.0.11 getFaviconSVG() — the mark, solid, taking its tone from the tab. The .png and .ico beside it are getFaviconKeyedSVG(), which is white keyed in near-black because a raster cannot ask. --><style>.w{fill:#121312}@media(prefers-color-scheme:dark){.w{fill:#fff}}</style>
+    <path d="M50 85 L15 25 L85 25 Z" transform="translate(0 -5)" class="w"/>
+  </svg>

@@ -125,7 +125,7 @@ func main() {
 
     validators, err := c.Platform().GetCurrentValidators(
         context.Background(),
-        nil,  // subnetID (nil = Primary Network)
+        nil,  // netID (nil = Primary Network)
         nil,  // nodeIDs filter
     )
     if err != nil {

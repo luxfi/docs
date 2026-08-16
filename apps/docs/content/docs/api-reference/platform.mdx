@@ -35,7 +35,7 @@ Returns the current validator set for a chain.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `subnetID` | string | Chain ID (omit for Primary Network) |
+| `netID` | string | Network ID (omit for the Primary Network) |
 | `nodeIDs` | []string | Filter by node IDs (optional) |
 
 ```bash
@@ -211,85 +211,38 @@ curl -s -X POST --data '{
 }' -H 'content-type:application/json' https://api.lux.network/v1/P
 ```
 
-## Chain Methods
+## Network Methods
 
-### platform.createSubnet
+A network is created and its validators added by issuing transactions
+(`CreateNetworkTx`, `AddValidatorTx`, `ConvertNetworkToL1Tx`) through a wallet or
+the `lux` CLI; the API reads them back.
 
-Creates a new chain.
+### platform.getNets
 
-**Parameters:**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `controlKeys` | []string | Addresses that can add validators to the chain |
-| `threshold` | int | Number of control keys required for a signature |
-| `from` | []string | Funding addresses |
-| `username` | string | Keystore username |
-| `password` | string | Keystore password |
+Lists networks, or the ones named by `ids`. Each carries its `id`, `controlKeys`
+and `threshold`.
 
 ```bash
 curl -s -X POST --data '{
   "jsonrpc": "2.0",
   "id": 1,
-  "method": "platform.createSubnet",
-  "params": {
-    "controlKeys": ["P-lux1...", "P-lux1..."],
-    "threshold": 1,
-    "from": ["P-lux1..."],
-    "username": "myuser",
-    "password": "mypassword"
-  }
-}' -H 'content-type:application/json' http://localhost:9650/v1/P
-```
-
-**Response:**
-
-```json
-{
-  "jsonrpc": "2.0",
-  "result": {
-    "txID": "...",
-    "changeAddr": "P-lux1..."
-  },
-  "id": 1
-}
-```
-
-The `txID` is also the new chain's ID.
-
-### platform.getSubnets
-
-Lists all chains or a specific chain.
-
-```bash
-curl -s -X POST --data '{
-  "jsonrpc": "2.0",
-  "id": 1,
-  "method": "platform.getSubnets",
-  "params": {}
+  "method": "platform.getNets",
+  "params": { "ids": [] }
 }' -H 'content-type:application/json' https://api.lux.network/v1/P
 ```
 
-### platform.addSubnetValidator
+### platform.getNet
 
-Adds a validator to a chain. The validator must already be a Primary Network validator.
+One network by `netID`: whether it is permissioned, its control keys and
+threshold, or, once converted to an L1, its manager chain and address.
 
 ```bash
 curl -s -X POST --data '{
   "jsonrpc": "2.0",
   "id": 1,
-  "method": "platform.addSubnetValidator",
-  "params": {
-    "nodeID": "NodeID-...",
-    "subnetID": "...",
-    "startTime": 1700000000,
-    "endTime": 1731536000,
-    "weight": 100,
-    "from": ["P-lux1..."],
-    "username": "myuser",
-    "password": "mypassword"
-  }
-}' -H 'content-type:application/json' http://localhost:9650/v1/P
+  "method": "platform.getNet",
+  "params": { "netID": "..." }
+}' -H 'content-type:application/json' https://api.lux.network/v1/P
 ```
 
 ## Chain Methods

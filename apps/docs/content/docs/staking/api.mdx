@@ -56,7 +56,7 @@ All staking operations go through the P-Chain API at `/v1/bc/P`.
 {
   "jsonrpc": "2.0",
   "method": "platform.getCurrentValidators",
-  "params": {"subnetID": "11111111111111111111111111111111LpoYY"},
+  "params": {"netID": "11111111111111111111111111111111LpoYY"},
   "id": 1
 }
 ```
@@ -69,7 +69,7 @@ Returns an array of active validators with `nodeID`, `stakeAmount`, `startTime`,
 {
   "jsonrpc": "2.0",
   "method": "platform.getPendingValidators",
-  "params": {"subnetID": "11111111111111111111111111111111LpoYY"},
+  "params": {"netID": "11111111111111111111111111111111LpoYY"},
   "id": 1
 }
 ```

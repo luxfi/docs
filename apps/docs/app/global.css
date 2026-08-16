@@ -1,6 +1,9 @@
 @import 'tailwindcss';
-@import '@hanzo/docs/ui/css/neutral.css';
-@import '@hanzo/docs/ui/css/preset.css';
+/* From the package that holds the components. The meta package's copy of this
+   preset scans for classes at a path relative to itself, where there are no
+   components, so Tailwind emitted none of the layout's styles. */
+@import '@hanzo/docs-base-ui/css/neutral.css';
+@import '@hanzo/docs-base-ui/css/preset.css';
 
 /* Lux Network Documentation Theme - Pure Black/White (inlined from @luxfi/brand) */
 :root {
