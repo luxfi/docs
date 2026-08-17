@@ -15,10 +15,10 @@
   },
   "dependencies": {
     "@hanzo/design": "^0.5.13",
-    "@hanzo/docs": "^17.0.3",
+    "@hanzo/docs": "^17.0.4",
     "@hanzo/docs-core": "^17.0.1",
     "@hanzo/docs-mdx": "14.2.8",
-    "@hanzo/docs-ui": "^17.0.3",
+    "@hanzo/docs-ui": "^17.0.4",
     "@hanzo/gui": "^8.1.1",
     "@hanzo/ui": "^8.0.111",
     "@hanzogui/lucide-icons-2": "^8.1.1",
