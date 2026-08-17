@@ -1,4 +1,17 @@
-import Link from 'next/link';
+'use client';
+
+import type { ComponentProps, ReactNode } from 'react';
+import Link from '@hanzo/docs/core/link';
+import {
+  Button,
+  Grid,
+  Paragraph,
+  SizableText,
+  Span,
+  XStack,
+  YStack,
+} from '@hanzo/ui';
+import { Terminal } from '@/components/icons';
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
@@ -115,7 +128,7 @@ const sections: Section[] = [
 ];
 
 const chains = [
-  { name: 'C-Chain', spec: 'EVM \u00b7 96369' },
+  { name: 'C-Chain', spec: 'EVM · 96369' },
   { name: 'P-Chain', spec: 'Platform' },
   { name: 'X-Chain', spec: 'Exchange' },
   { name: 'D-Chain', spec: 'DEX VM' },
@@ -125,38 +138,111 @@ const chains = [
   { name: 'Z-Chain', spec: 'ZK VM' },
 ];
 
+const commands: [string, string][] = [
+  ['lux network start', 'Start a local 5-node network'],
+  ['lux subnet create', 'Create a new subnet with custom VM'],
+  ['lux subnet deploy', 'Deploy subnet to local/testnet/mainnet'],
+  ['lux key create', 'Generate new key pair'],
+  ['lux wallet transfer', 'Transfer assets between chains'],
+  ['lux node validate', 'Start validating on a subnet'],
+];
+
+const governance = [
+  { name: 'DAO', desc: 'Token-based governance, committees, treasury management', href: '/dao' },
+  { name: 'Vote', desc: 'Proposals, delegation, and on-chain execution', href: '/vote' },
+  { name: 'Lux Proposals', desc: '348 standards and improvement proposals', href: 'https://lps.lux.network' },
+];
+
 /* ------------------------------------------------------------------ */
-/*  Components                                                         */
+/*  Pieces                                                             */
 /* ------------------------------------------------------------------ */
 
-function ProductCard({ item }: { item: Product }) {
+/** A bordered surface that lifts under the cursor when it leads somewhere. */
+function Panel({ href, ...props }: { href?: string } & ComponentProps<typeof YStack>) {
   return (
-    <Link
-      href={item.href}
-      className="group flex flex-col justify-between rounded-xl border border-fd-border bg-fd-card p-4 min-h-[120px] hover:border-fd-primary/40 hover:bg-fd-accent transition-all"
-    >
-      <div>
-        <div className="text-sm font-semibold text-fd-foreground mb-1">{item.name}</div>
-        <div className="text-xs text-fd-muted-foreground group-hover:text-fd-foreground transition-colors leading-relaxed">
-          {item.desc}
-        </div>
-      </div>
-      <span className="text-[11px] text-fd-muted-foreground group-hover:text-fd-foreground mt-3">Docs →</span>
-    </Link>
+    <YStack
+      borderWidth={1}
+      borderColor="$borderColor"
+      bg="$color2"
+      rounded="$6"
+      {...(href
+        ? {
+            render: <Link href={href} style={{ textDecoration: 'none' }} />,
+            cursor: 'pointer',
+            hoverStyle: { bg: '$color3', borderColor: '$color4' },
+          }
+        : null)}
+      {...props}
+    />
   );
 }
 
-function ProductSection({ section }: { section: Section }) {
+/** A section title with the line under it that says what the section is. */
+function Title({ children, sub, badge }: { children: ReactNode; sub: string; badge?: string }) {
   return (
-    <section>
-      <h2 className="text-2xl font-bold mb-1">{section.title}</h2>
-      <p className="text-fd-muted-foreground text-sm mb-6">{section.subtitle}</p>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-        {section.items.map((item) => (
-          <ProductCard key={item.name} item={item} />
-        ))}
-      </div>
-    </section>
+    <YStack mb="$5" gap="$1">
+      <XStack items="center" gap="$3">
+        <SizableText render="h2" size="$8" fontWeight="600" color="$color12">
+          {children}
+        </SizableText>
+        {badge ? (
+          <SizableText
+            size="$1"
+            color="$color11"
+            borderWidth={1}
+            borderColor="$borderColor"
+            bg="$color2"
+            rounded="$10"
+            px="$2.5"
+            py="$1"
+          >
+            {badge}
+          </SizableText>
+        ) : null}
+      </XStack>
+      <Paragraph size="$3" color="$color11">
+        {sub}
+      </Paragraph>
+    </YStack>
+  );
+}
+
+function Action({
+  tone = 'primary',
+  href,
+  children,
+}: {
+  tone?: 'primary' | 'outline';
+  href: string;
+  children: ReactNode;
+}) {
+  return (
+    <Button
+      variant={tone === 'primary' ? 'default' : 'outline'}
+      rounded="$4"
+      px="$5"
+      py="$3"
+      render={<Link href={href} style={{ textDecoration: 'none' }} />}
+    >
+      {children}
+    </Button>
+  );
+}
+
+/** The faint wash behind the hero and the closing call. */
+function Wash({ height }: { height: number }) {
+  return (
+    <YStack
+      position="absolute"
+      t={0}
+      l={0}
+      r={0}
+      height={height}
+      pointerEvents="none"
+      style={{
+        backgroundImage: `radial-gradient(${height * 2}px ${height}px ellipse at center top, var(--glass), transparent 70%)`,
+      }}
+    />
   );
 }
 
@@ -166,169 +252,184 @@ function ProductSection({ section }: { section: Section }) {
 
 export default function HomePage() {
   return (
-    <main className="pb-6 md:pb-12">
+    <YStack render="main" pb="$5" $md={{ pb: '$8' }}>
       {/* Hero */}
-      <section className="relative flex flex-col items-center text-center mx-auto w-full max-w-[1400px] px-6 pt-24 md:pt-36 pb-16 md:pb-24">
-        <div
-          className="absolute inset-x-0 top-0 h-[300px] pointer-events-none"
-          style={{
-            background: 'radial-gradient(600px 300px ellipse at center top, rgba(255,255,255,0.04), transparent 70%)',
-          }}
-        />
-        <div className="inline-flex items-center gap-2 rounded-full border border-fd-border bg-fd-card px-4 py-1.5 text-sm text-fd-muted-foreground mb-6">
-          16 Chains &middot; 39 Products &middot; Post-Quantum
-        </div>
-        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05] mb-6">
+      <YStack
+        position="relative"
+        items="center"
+        mx="auto"
+        width="100%"
+        maxW={1400}
+        px="$5"
+        pt="$12"
+        pb="$10"
+        $md={{ pt: '$15', pb: '$12' }}
+      >
+        <Wash height={300} />
+        <SizableText
+          size="$3"
+          color="$color11"
+          borderWidth={1}
+          borderColor="$borderColor"
+          bg="$color2"
+          rounded="$10"
+          px="$4"
+          py="$1.5"
+          mb="$5"
+        >
+          16 Chains · 39 Products · Post-Quantum
+        </SizableText>
+        <SizableText
+          render="h1"
+          size="$12"
+          fontWeight="600"
+          mb="$5"
+          $md={{ fontSize: '$14', lineHeight: '$14' }}
+          style={{ letterSpacing: '-0.02em' }}
+        >
           Lux Network
-        </h1>
-        <p className="text-fd-muted-foreground md:text-xl max-w-xl mb-8">
-          Post-quantum secure, multi-consensus blockchain infrastructure for institutional finance and decentralized applications.
-        </p>
+        </SizableText>
+        <Paragraph
+          size="$4"
+          color="$color11"
+          text="center"
+          maxW={640}
+          mb="$6"
+          $md={{ fontSize: '$6', lineHeight: '$6' }}
+        >
+          Post-quantum secure, multi-consensus blockchain infrastructure for institutional finance
+          and decentralized applications.
+        </Paragraph>
 
-        <div className="rounded-2xl bg-fd-primary text-fd-primary-foreground px-6 py-4 mb-8 font-mono text-sm">
-          <span className="opacity-50">$</span>{' '}
-          <span>curl -sSL https://cli.lux.network/install | sh</span>
-        </div>
+        <XStack bg="var(--primary)" rounded="$6" px="$5" py="$4" mb="$6" gap="$2">
+          <SizableText size="$3" fontFamily="$mono" color="var(--primary-foreground)" opacity={0.5}>
+            $
+          </SizableText>
+          <SizableText size="$3" fontFamily="$mono" color="var(--primary-foreground)">
+            curl -sSL https://cli.lux.network/install | sh
+          </SizableText>
+        </XStack>
 
-        <div className="flex flex-wrap gap-3 justify-center">
-          <Link
-            href="/architecture"
-            className="rounded-lg bg-fd-primary text-fd-primary-foreground px-6 py-3 text-sm font-medium hover:bg-fd-primary/90 transition-colors"
-          >
-            Get Started
-          </Link>
-          <Link
-            href="/api-reference"
-            className="rounded-lg border border-fd-border px-6 py-3 text-sm font-medium hover:bg-fd-accent transition-colors"
-          >
+        <XStack flexWrap="wrap" gap="$3" justify="center">
+          <Action href="/architecture">Get Started</Action>
+          <Action tone="outline" href="/api-reference">
             API Reference
-          </Link>
-          <Link
-            href="https://lps.lux.network"
-            className="rounded-lg border border-fd-border px-6 py-3 text-sm font-medium hover:bg-fd-accent transition-colors"
-          >
+          </Action>
+          <Action tone="outline" href="https://lps.lux.network">
             Lux Proposals
-          </Link>
-        </div>
-      </section>
+          </Action>
+        </XStack>
+      </YStack>
 
-      <div className="mx-auto w-full max-w-[1400px] px-6 md:px-12 space-y-20">
-        {/* Product sections */}
+      <YStack mx="auto" width="100%" maxW={1400} px="$5" gap="$11" $md={{ px: '$8' }}>
+        {/* Products */}
         {sections.map((section) => (
-          <ProductSection key={section.title} section={section} />
+          <YStack key={section.title} render="section">
+            <Title sub={section.subtitle}>{section.title}</Title>
+            <Grid min={200} max={4} gap="$3">
+              {section.items.map((item) => (
+                <Panel key={item.name} href={item.href} p="$4" minH={120} justify="space-between">
+                  <YStack gap="$1">
+                    <SizableText size="$3" fontWeight="600" color="$color12">
+                      {item.name}
+                    </SizableText>
+                    <SizableText size="$2" color="$color11">
+                      {item.desc}
+                    </SizableText>
+                  </YStack>
+                  <SizableText size="$1" color="$color10" mt="$3">
+                    Docs →
+                  </SizableText>
+                </Panel>
+              ))}
+            </Grid>
+          </YStack>
         ))}
 
-        {/* CLI Feature */}
-        <section>
-          <div className="rounded-2xl border border-fd-border bg-fd-card p-8">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="rounded-xl bg-fd-secondary p-2.5">
-                <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="4 17 10 11 4 5" />
-                  <line x1="12" y1="19" x2="20" y2="19" />
-                </svg>
-              </div>
-              <div>
-                <div className="text-lg font-semibold">The <code className="font-mono text-sm">lux</code> CLI</div>
-                <div className="text-xs text-fd-muted-foreground">One tool for everything</div>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-6">
-              {[
-                ['lux network start', 'Start a local 5-node network'],
-                ['lux subnet create', 'Create a new subnet with custom VM'],
-                ['lux subnet deploy', 'Deploy subnet to local/testnet/mainnet'],
-                ['lux key create', 'Generate new key pair'],
-                ['lux wallet transfer', 'Transfer assets between chains'],
-                ['lux node validate', 'Start validating on a subnet'],
-              ].map(([cmd, desc]) => (
-                <div key={cmd} className="rounded-lg border border-fd-border bg-fd-card p-3">
-                  <div className="font-mono text-xs font-medium text-fd-foreground">{cmd}</div>
-                  <div className="text-[11px] text-fd-muted-foreground mt-0.5">{desc}</div>
-                </div>
+        {/* The CLI */}
+        <YStack render="section">
+          <Panel p="$6">
+            <XStack items="center" gap="$3" mb="$2">
+              <YStack bg="$color3" rounded="$6" p="$2.5">
+                <Terminal size={20} />
+              </YStack>
+              <YStack>
+                <SizableText size="$6" fontWeight="600" color="$color12">
+                  The <Span fontFamily="$mono" fontSize="$3">lux</Span> CLI
+                </SizableText>
+                <SizableText size="$1" color="$color11">
+                  One tool for everything
+                </SizableText>
+              </YStack>
+            </XStack>
+            <Grid min={240} max={3} gap="$2" style={{ marginTop: 24 }}>
+              {commands.map(([cmd, desc]) => (
+                <Panel key={cmd} p="$3">
+                  <SizableText size="$2" fontFamily="$mono" fontWeight="500" color="$color12">
+                    {cmd}
+                  </SizableText>
+                  <SizableText size="$1" color="$color11">
+                    {desc}
+                  </SizableText>
+                </Panel>
               ))}
-            </div>
-          </div>
-        </section>
+            </Grid>
+          </Panel>
+        </YStack>
 
         {/* Chains */}
-        <section>
-          <div className="flex items-center gap-3 mb-2">
-            <div className="text-3xl font-bold">Chains</div>
-            <span className="rounded-full border border-fd-border bg-fd-card px-2.5 py-0.5 text-xs text-fd-muted-foreground">
-              16 VMs
-            </span>
-          </div>
-          <p className="text-fd-muted-foreground text-sm mb-6">Multi-chain architecture with specialized virtual machines.</p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2">
+        <YStack render="section">
+          <Title sub="Multi-chain architecture with specialized virtual machines." badge="16 VMs">
+            Chains
+          </Title>
+          <Grid min={120} max={8} gap="$2">
             {chains.map((c) => (
-              <Link
-                key={c.name}
-                href="/chains"
-                className="rounded-lg border border-fd-border bg-fd-card p-3 text-center hover:border-fd-primary/40 hover:bg-fd-accent transition-all"
-              >
-                <div className="font-mono text-xs font-medium text-fd-foreground">{c.name}</div>
-                <div className="text-[10px] text-fd-muted-foreground mt-0.5">{c.spec}</div>
-              </Link>
+              <Panel key={c.name} href="/chains" p="$3" items="center">
+                <SizableText size="$2" fontFamily="$mono" fontWeight="500" color="$color12">
+                  {c.name}
+                </SizableText>
+                <SizableText size="$1" color="$color11">
+                  {c.spec}
+                </SizableText>
+              </Panel>
             ))}
-          </div>
-        </section>
+          </Grid>
+        </YStack>
 
         {/* Governance */}
-        <section>
-          <h2 className="text-3xl font-bold mb-2">Governance</h2>
-          <p className="text-fd-muted-foreground text-sm mb-6">DAO governance and Lux Proposals.</p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <Link
-              href="/dao"
-              className="rounded-2xl border border-fd-border bg-fd-card p-6 hover:border-fd-primary/40 hover:bg-fd-accent transition-all"
-            >
-              <div className="font-semibold text-fd-foreground mb-1">DAO</div>
-              <div className="text-xs text-fd-muted-foreground">Token-based governance, committees, treasury management</div>
-            </Link>
-            <Link
-              href="/vote"
-              className="rounded-2xl border border-fd-border bg-fd-card p-6 hover:border-fd-primary/40 hover:bg-fd-accent transition-all"
-            >
-              <div className="font-semibold text-fd-foreground mb-1">Vote</div>
-              <div className="text-xs text-fd-muted-foreground">Proposals, delegation, and on-chain execution</div>
-            </Link>
-            <Link
-              href="https://lps.lux.network"
-              className="rounded-2xl border border-fd-border bg-fd-card p-6 hover:border-fd-primary/40 hover:bg-fd-accent transition-all"
-            >
-              <div className="font-semibold text-fd-foreground mb-1">Lux Proposals</div>
-              <div className="text-xs text-fd-muted-foreground">348 standards and improvement proposals</div>
-            </Link>
-          </div>
-        </section>
+        <YStack render="section">
+          <Title sub="DAO governance and Lux Proposals.">Governance</Title>
+          <Grid min={260} max={3} gap="$4">
+            {governance.map((g) => (
+              <Panel key={g.name} href={g.href} p="$5" gap="$1">
+                <SizableText size="$4" fontWeight="600" color="$color12">
+                  {g.name}
+                </SizableText>
+                <SizableText size="$2" color="$color11">
+                  {g.desc}
+                </SizableText>
+              </Panel>
+            ))}
+          </Grid>
+        </YStack>
 
-        {/* CTA */}
-        <section className="relative flex flex-col items-center text-center py-16">
-          <div
-            className="absolute inset-x-0 top-0 h-[200px] pointer-events-none"
-            style={{
-              background: 'radial-gradient(400px 200px ellipse at center, rgba(255,255,255,0.04), transparent 70%)',
-            }}
-          />
-          <h2 className="text-3xl font-bold mb-3">Start building</h2>
-          <p className="text-fd-muted-foreground text-sm mb-6">Open source. Post-quantum secure.</p>
-          <div className="flex flex-wrap gap-3 justify-center">
-            <Link
-              href="/architecture"
-              className="rounded-lg bg-fd-primary text-fd-primary-foreground px-6 py-3 text-sm font-medium hover:bg-fd-primary/90 transition-colors"
-            >
-              Browse Documentation
-            </Link>
-            <Link
-              href="https://github.com/luxfi"
-              className="rounded-lg border border-fd-border px-6 py-3 text-sm font-medium hover:bg-fd-accent transition-colors"
-            >
+        {/* Start building */}
+        <YStack render="section" position="relative" items="center" py="$10">
+          <Wash height={200} />
+          <SizableText render="h2" size="$10" fontWeight="600" mb="$3">
+            Start building
+          </SizableText>
+          <Paragraph size="$3" color="$color11" mb="$5">
+            Open source. Post-quantum secure.
+          </Paragraph>
+          <XStack flexWrap="wrap" gap="$3" justify="center">
+            <Action href="/architecture">Browse Documentation</Action>
+            <Action tone="outline" href="https://github.com/luxfi">
               View on GitHub
-            </Link>
-          </div>
-        </section>
-      </div>
-    </main>
+            </Action>
+          </XStack>
+        </YStack>
+      </YStack>
+    </YStack>
   );
 }

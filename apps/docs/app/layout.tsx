@@ -1,4 +1,5 @@
 import './global.css';
+import './gui.css';
 import type { Viewport, Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { Geist, Geist_Mono } from 'next/font/google';
@@ -47,10 +48,21 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${geist.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
-      <body className="flex flex-col min-h-screen">
-        {/* The index is a static file the export writes; the dialog searches
-            it in the browser — this site has no server to ask. */}
-        <RootProvider search={{ options: { type: 'static' } }}>{children}</RootProvider>
+      <body>
+        <RootProvider
+          theme={{ defaultTheme: 'dark' }}
+          // The index is a static file the export writes; the dialog searches
+          // it in the browser — this site has no server to ask.
+          search={{ options: { type: 'static' } }}
+          ai={{
+            token: 'hz_OZP3XrZyXNk1S72D4tRy6Fg9gvorTIpkoRQx65ffRVjZ2rIQ',
+            model: 'free',
+            store: 'docs',
+            greeting: 'Ask about Lux — the docs and the source answer.',
+          }}
+        >
+          {children}
+        </RootProvider>
       </body>
     </html>
   );
