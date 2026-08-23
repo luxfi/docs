@@ -1,0 +1,88 @@
+---
+title: multisig
+description: Package multisig provides multi-signature transaction support.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/multisig"
+```
+
+Package multisig provides multi-signature transaction support.
+
+
+## Functions
+
+### GetOwners
+
+```go
+func GetOwners(network network.LegacyNetwork, chainID ids.ID) ([]ids.ShortID, uint32, error)
+```
+
+## Types
+
+### Multisig
+
+```go
+func New(pChainTx *txs.Tx) *Multisig
+```
+
+```go
+func (ms *Multisig) FromBytes(txBytes []byte) error
+```
+
+```go
+func (ms *Multisig) GetAuthSigners() ([]ids.ShortID, error)
+```
+
+```go
+func (ms *Multisig) GetChainID() (ids.ID, error)
+```
+
+```go
+func (ms *Multisig) GetNetOwners() ([]ids.ShortID, uint32, error)
+```
+
+```go
+func (ms *Multisig) GetNetwork() (network.LegacyNetwork, error)
+```
+
+```go
+func (ms *Multisig) GetNetworkID() (uint32, error)
+```
+
+```go
+func (ms *Multisig) GetRemainingAuthSigners() ([]ids.ShortID, []ids.ShortID, error)
+```
+
+```go
+func (*Multisig) GetSpendSigners() ([]ids.ShortID, error)
+```
+
+```go
+func (ms *Multisig) GetTxKind() (TxKind, error)
+```
+
+```go
+func (ms *Multisig) GetWrappedPChainTx() (*txs.Tx, error)
+```
+
+```go
+func (ms *Multisig) IsReadyToCommit() (bool, error)
+```
+
+```go
+func (ms *Multisig) String() string
+```
+
+```go
+func (ms *Multisig) ToBytes() ([]byte, error)
+```
+
+```go
+func (ms *Multisig) Undefined() bool
+```
+
+### TxKind
+

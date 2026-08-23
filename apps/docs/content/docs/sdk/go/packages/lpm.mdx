@@ -1,0 +1,77 @@
+---
+title: lpm
+description: Package lpm provides Lux Plugin Manager client wrapper for CLI integration.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/lpm"
+```
+
+Package lpm provides Lux Plugin Manager client wrapper for CLI integration.
+
+
+## Types
+
+### Chain
+
+### Client
+
+Client wraps the LPM functionality for CLI use
+
+
+```go
+func NewClient(lpmDir string, pluginDir string, adminAPIEndpoint string) (*Client, error)
+```
+
+```go
+func (c *Client) AddRepository(alias string, url string, branch string) error
+```
+
+```go
+func (c *Client) AddVM(vm *VMUpload) error
+```
+
+```go
+func (c *Client) GetVM(alias string, version string) (*VMUpload, error)
+```
+
+```go
+func (c *Client) Install(alias string) error
+```
+
+```go
+func (c *Client) JoinChain(alias string) error
+```
+
+```go
+func (c *Client) ListRepositories() error
+```
+
+```go
+func (c *Client) Uninstall(alias string) error
+```
+
+```go
+func (c *Client) Update() error
+```
+
+```go
+func (c *Client) Upgrade(alias string) error
+```
+
+### Config
+
+```go
+func DefaultConfig() *Config
+```
+
+### Credential
+
+### Metadata
+
+### VM
+
+### VMUpload
+

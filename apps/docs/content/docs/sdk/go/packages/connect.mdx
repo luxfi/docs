@@ -1,0 +1,31 @@
+---
+title: connectclient
+description: Package connectclient
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/connect"
+```
+
+## Types
+
+### SetRouteHeaderInterceptor
+
+SetRouteHeaderInterceptor sets the api routing header for connect-rpc
+requests
+
+
+```go
+func (s SetRouteHeaderInterceptor) WrapStreamingClient(next connect.StreamingClientFunc) connect.StreamingClientFunc
+```
+
+```go
+func (SetRouteHeaderInterceptor) WrapStreamingHandler(next connect.StreamingHandlerFunc) connect.StreamingHandlerFunc
+```
+
+```go
+func (s SetRouteHeaderInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc
+```
+

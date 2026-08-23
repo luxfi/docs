@@ -1,0 +1,58 @@
+---
+title: keychain
+description: Package keychain provides key management and keychain utilities.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/keychain"
+```
+
+Package keychain provides key management and keychain utilities.
+
+
+## Types
+
+### Keychain
+
+```go
+func NewKeychain(
+	network network.Network,
+	keyPath string,
+	ledgerInfo *LedgerParams,
+) (*Keychain, error)
+```
+
+```go
+func (kc *Keychain) AddLedgerAddresses(addresses []string) error
+```
+
+```go
+func (kc *Keychain) AddLedgerFunds(amount uint64) error
+```
+
+```go
+func (kc *Keychain) AddLedgerIndices(indices []uint32) error
+```
+
+```go
+func (kc *Keychain) LedgerEnabled() bool
+```
+
+### Ledger
+
+Ledger is part of the output of NewKeyChain if a new keychain is to be created using Ledger
+
+
+### LedgerParams
+
+LedgerParams is an input to NewKeyChain if a new keychain is to be created using Ledger
+
+To view Ledger addresses and their balances, you can use Lux CLI and use the command
+lux key list --ledger [0,1,2,3,4]
+The example command above will list the first five addresses in your Ledger
+
+To transfer funds between addresses in Ledger, refer to https://docs.lux.network/tooling/cli-transfer-funds/how-to-transfer-funds
+
+

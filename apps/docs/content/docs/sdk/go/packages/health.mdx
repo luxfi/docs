@@ -1,0 +1,63 @@
+---
+title: health
+description: Package health
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/health"
+```
+
+## Functions
+
+### AwaitAlive
+
+```go
+func AwaitAlive(ctx context.Context, c *Client, freq time.Duration, tags []string, options ...rpc.Option) (bool, error)
+```
+
+AwaitAlive polls the node every [freq] until the node reports liveness.
+Only returns an error if [ctx] returns an error.
+
+
+### AwaitHealthy
+
+```go
+func AwaitHealthy(ctx context.Context, c *Client, freq time.Duration, tags []string, options ...rpc.Option) (bool, error)
+```
+
+AwaitHealthy polls the node every [freq] until the node reports healthy.
+Only returns an error if [ctx] returns an error.
+
+
+### AwaitReady
+
+```go
+func AwaitReady(ctx context.Context, c *Client, freq time.Duration, tags []string, options ...rpc.Option) (bool, error)
+```
+
+AwaitReady polls the node every [freq] until the node reports ready.
+Only returns an error if [ctx] returns an error.
+
+
+## Types
+
+### Client
+
+```go
+func NewClient(uri string) *Client
+```
+
+```go
+func (c *Client) Health(ctx context.Context, tags []string, options ...rpc.Option) (*apihealth.APIReply, error)
+```
+
+```go
+func (c *Client) Liveness(ctx context.Context, tags []string, options ...rpc.Option) (*apihealth.APIReply, error)
+```
+
+```go
+func (c *Client) Readiness(ctx context.Context, tags []string, options ...rpc.Option) (*apihealth.APIReply, error)
+```
+

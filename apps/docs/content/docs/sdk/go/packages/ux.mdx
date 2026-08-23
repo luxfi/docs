@@ -1,0 +1,134 @@
+---
+title: ux
+description: Package ux provides user experience utilities for CLI output formatting.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/ux"
+```
+
+Package ux provides user experience utilities for CLI output formatting.
+
+
+## Functions
+
+### ConvertToStringWithThousandSeparator
+
+```go
+func ConvertToStringWithThousandSeparator(input uint64) string
+```
+
+### DefaultTable
+
+```go
+func DefaultTable(title string, headers []string) *tablewriter.Table
+```
+
+DefaultTable creates a default table with the given title and headers
+
+
+### ExtraStepExecuted
+
+```go
+func ExtraStepExecuted(bar *progressbar.ProgressBar) error
+```
+
+### FormatDuration
+
+```go
+func FormatDuration(d time.Duration) string
+```
+
+FormatDuration returns a user friendly string for a duration
+
+
+### NewUserLog
+
+```go
+func NewUserLog(log luxlog.Logger, userwriter io.Writer)
+```
+
+### PrintTableEndpoints
+
+```go
+func PrintTableEndpoints(clusterInfo *rpcpb.ClusterInfo)
+```
+
+PrintTableEndpoints prints the endpoints coming from the healthy call
+
+
+### PrintWait
+
+```go
+func PrintWait(cancel chan struct{})
+```
+
+PrintWait does some dot printing to entertain the user
+
+
+### SpinComplete
+
+```go
+func SpinComplete(s *ysmrr.Spinner)
+```
+
+### SpinFailWithError
+
+```go
+func SpinFailWithError(s *ysmrr.Spinner, txt string, err error)
+```
+
+### TimedProgressBar
+
+```go
+func TimedProgressBar(
+	duration time.Duration,
+	title string,
+	extraSteps int,
+) (*progressbar.ProgressBar, error)
+```
+
+## Types
+
+### UserLog
+
+```go
+func (ul *UserLog) Error(msg string, args ...interface{})
+```
+
+```go
+func (ul *UserLog) GreenCheckmarkToUser(msg string, args ...interface{})
+```
+
+```go
+func (ul *UserLog) Info(msg string, args ...interface{})
+```
+
+```go
+func (ul *UserLog) PrintLineSeparator(msg ...string)
+```
+
+```go
+func (ul *UserLog) PrintToUser(msg string, args ...interface{})
+```
+
+```go
+func (ul *UserLog) RedXToUser(msg string, args ...interface{})
+```
+
+### UserSpinner
+
+```go
+func NewUserSpinner() *UserSpinner
+```
+
+```go
+func (us *UserSpinner) SpinToUser(msg string, args ...interface{}) *ysmrr.Spinner
+```
+
+```go
+func (us *UserSpinner) Stop()
+```
+

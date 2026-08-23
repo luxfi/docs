@@ -1,0 +1,56 @@
+---
+title: publicarchive
+description: Package publicarchive
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/publicarchive"
+```
+
+## Types
+
+### Downloader
+
+```go
+func NewDownloader(
+	net *network.Network,
+	logger luxlog.Logger,
+) (Downloader, error)
+```
+
+```go
+func (d Downloader) CleanUp()
+```
+
+```go
+func (d Downloader) Download() error
+```
+
+```go
+func (d Downloader) GetBytesComplete() int64
+```
+
+```go
+func (d Downloader) GetDownloadSize() int64
+```
+
+```go
+func (d Downloader) GetFilePath() (string, error)
+```
+
+```go
+func (d Downloader) IsComplete() bool
+```
+
+```go
+func (d Downloader) IsEmpty() bool
+```
+
+```go
+func (d Downloader) UnpackTo(targetDir string) error
+```
+
+### Getter
+

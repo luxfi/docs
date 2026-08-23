@@ -1,0 +1,38 @@
+---
+title: config
+description: Package config provides SDK configuration structures and utilities.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/config"
+```
+
+Package config provides SDK configuration structures and utilities.
+
+
+## Types
+
+### Config
+
+Config represents the SDK configuration
+
+
+```go
+func Default() *Config
+```
+
+### NetworkConfig
+
+NetworkConfig represents network configuration
+
+
+```go
+func DefaultNetworkConfig() *NetworkConfig
+```
+
+```go
+func (nc *NetworkConfig) ChainID() *big.Int
+```
+

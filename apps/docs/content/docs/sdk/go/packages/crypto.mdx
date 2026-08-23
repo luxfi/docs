@@ -1,0 +1,78 @@
+---
+title: crypto
+description: Package crypto provides functionality for interacting with Ed25519 public and private keys.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/crypto"
+```
+
+Package crypto provides functionality for interacting with Ed25519
+public and private keys. Package crypto uses the "crypto/ed25519"
+package from  Go's standard library for the underlying cryptography.
+
+
+## Functions
+
+### Address
+
+```go
+func Address(hrp string, p PublicKey) string
+```
+
+Address returns a Bech32 address from hrp and p.
+This function uses node's FormatBech32 function.
+Returns empty string if formatting fails.
+
+
+### Verify
+
+```go
+func Verify(msg []byte, p PublicKey, s Signature) bool
+```
+
+Verify returns whether s is a valid signature of msg by p.
+
+
+## Types
+
+### PrivateKey
+
+```go
+func GeneratePrivateKey() (PrivateKey, error)
+```
+
+```go
+func HexToKey(key string) (PrivateKey, error)
+```
+
+```go
+func LoadKey(filename string) (PrivateKey, error)
+```
+
+```go
+func (p PrivateKey) PublicKey() PublicKey
+```
+
+```go
+func (p PrivateKey) Save(filename string) error
+```
+
+```go
+func (p PrivateKey) ToHex() string
+```
+
+### PublicKey
+
+```go
+func ParseAddress(hrp, saddr string) (PublicKey, error)
+```
+
+### Signature
+
+```go
+func Sign(msg []byte, pk PrivateKey) Signature
+```
+

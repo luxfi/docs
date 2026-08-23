@@ -1,0 +1,186 @@
+---
+title: prompts
+description: Package prompts provides interactive user prompts for CLI applications.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/prompts"
+```
+
+Package prompts provides interactive user prompts for CLI applications.
+
+
+## Functions
+
+### CaptureKeyAddress
+
+```go
+func CaptureKeyAddress(
+	prompt Prompter,
+	goal string,
+	keyDir string,
+	getKey func(string) (string, error),
+	network models.Network,
+	addressFormat string,
+) (string, error)
+```
+
+CaptureKeyAddress prompts the user to select a key address
+
+
+### CaptureListDecision
+
+```go
+func CaptureListDecision[T comparable](
+
+	prompter Prompter,
+
+	prompt string,
+
+	capture func(prompt string) (T, error),
+
+	capturePrompt string,
+
+	label string,
+
+	info string,
+) ([]T, bool, error)
+```
+
+CaptureListDecision runs a for loop and continuously asks the
+user for a specific input (currently only `CapturePChainAddress`
+and `CaptureAddress` is supported) until the user cancels or
+chooses `Done`. It does also offer an optional `info` to print
+(if provided) and a preview. Items can also be removed.
+
+
+### CheckChainAuthKeys
+
+```go
+func CheckChainAuthKeys(chainAuthKeys []string, controlKeys []string, threshold uint32) error
+```
+
+CheckChainAuthKeys checks chain authorization criteria:
+- [chainAuthKeys] satisfy chain's [threshold]
+- [chainAuthKeys] is a subset of chain's [controlKeys]
+
+
+### ConvertToAddress
+
+```go
+func ConvertToAddress(addr string) (crypto.Address, error)
+```
+
+ConvertToAddress converts a string to a crypto.Address
+
+
+### GetChainAuthKeys
+
+```go
+func GetChainAuthKeys(prompt Prompter, controlKeys []string, threshold uint32) ([]string, error)
+```
+
+GetChainAuthKeys gets chain authorization keys from the user, as a subset of the chain's [controlKeys]
+with a len equal to the chain's [threshold].
+
+
+### GetKeyOrLedger
+
+```go
+func GetKeyOrLedger(prompter Prompter, goal string, keyDir string, includeEwoq bool) (bool, string, error)
+```
+
+GetKeyOrLedger prompts user to choose between key or ledger
+
+
+### GetTestnetKeyOrLedger
+
+```go
+func GetTestnetKeyOrLedger(prompt Prompter, goal string, keyDir string) (bool, string, error)
+```
+
+### PromptAddress
+
+```go
+func PromptAddress(prompter Prompter, prompt string) (string, error)
+```
+
+PromptAddress prompts the user for an address
+
+
+### PromptChain
+
+```go
+func PromptChain(
+	prompt Prompter,
+	message string,
+	blockchainNames []string,
+	pChainEnabled bool,
+	xChainEnabled bool,
+	cChainEnabled bool,
+	blockchainNameToAvoid string,
+	blockchainIDEnabled bool,
+) (bool, bool, bool, bool, string, string, error)
+```
+
+PromptChain prompts the user to select a chain
+
+
+### PromptPrivateKey
+
+```go
+func PromptPrivateKey(prompter Prompter, prompt string) (string, error)
+```
+
+PromptPrivateKey prompts the user for a private key
+
+
+### ValidateAddress
+
+```go
+func ValidateAddress(addr string) error
+```
+
+ValidateAddress validates an Ethereum address
+
+
+### ValidateHexa
+
+```go
+func ValidateHexa(input string) error
+```
+
+ValidateHexa validates hexadecimal string format
+
+
+### ValidatePositiveInt
+
+```go
+func ValidatePositiveInt(val int) error
+```
+
+ValidatePositiveInt validates that an integer is positive
+
+
+### ValidateURLFormat
+
+```go
+func ValidateURLFormat(input string) error
+```
+
+## Types
+
+### Comparator
+
+```go
+func (comparator *Comparator) Validate(val uint64) error
+```
+
+### Prompter
+
+```go
+func NewPrompter() Prompter
+```
+

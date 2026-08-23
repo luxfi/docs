@@ -1,0 +1,84 @@
+---
+title: validator
+description: Package validator provides validator management and configuration utilities.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/validator"
+```
+
+Package validator provides validator management and configuration utilities.
+
+
+## Functions
+
+### GetRemainingValidationTime
+
+```go
+func GetRemainingValidationTime(networkEndpoint string, nodeID ids.NodeID, chainID ids.ID, startTime time.Time) (time.Duration, error)
+```
+
+GetRemainingValidationTime returns the time remaining for [nodeID] on [chainID].
+
+
+### GetTotalWeight
+
+```go
+func GetTotalWeight(network models.Network, chainID ids.ID) (uint64, error)
+```
+
+### GetValidationID
+
+```go
+func GetValidationID(
+	rpcURL string,
+	managerAddress crypto.Address,
+	nodeID ids.NodeID,
+) (ids.ID, error)
+```
+
+GetValidationID returns the validation ID for the Node ID, as registered at the validator manager.
+Will return ids.Empty in case it is not registered.
+
+
+### GetValidatorBalance
+
+```go
+func GetValidatorBalance(net models.Network, validationID ids.ID) (uint64, error)
+```
+
+### GetValidatorInfo
+
+```go
+func GetValidatorInfo(net models.Network, validationID ids.ID) (platformvm.ClientPermissionlessValidator, error)
+```
+
+### IsValidator
+
+```go
+func IsValidator(network models.Network, chainID ids.ID, nodeID ids.NodeID) (bool, error)
+```
+
+## Types
+
+### CurrentValidatorInfo
+
+CurrentValidatorInfo enables querying validation IDs from P-Chain.
+
+
+```go
+func GetCurrentValidators(network models.Network, chainID ids.ID) ([]CurrentValidatorInfo, error)
+```
+
+### ValidatorKind
+
+```go
+func GetValidatorKind(
+	network models.Network,
+	chainID ids.ID,
+	nodeID ids.NodeID,
+) (ValidatorKind, error)
+```
+

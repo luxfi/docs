@@ -1,0 +1,93 @@
+---
+title: admin
+description: Package admin
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/admin"
+```
+
+## Types
+
+### Client
+
+```go
+func NewClient(uri string) *Client
+```
+
+```go
+func (c *Client) Alias(ctx context.Context, endpoint, alias string, options ...rpc.Option) error
+```
+
+```go
+func (c *Client) AliasChain(ctx context.Context, chain, alias string, options ...rpc.Option) error
+```
+
+```go
+func (c *Client) DBGet(ctx context.Context, key []byte, options ...rpc.Option) ([]byte, error)
+```
+
+```go
+func (c *Client) GetChainAliases(ctx context.Context, chain string, options ...rpc.Option) ([]string, error)
+```
+
+```go
+func (c *Client) GetConfig(ctx context.Context, options ...rpc.Option) (interface{}, error)
+```
+
+```go
+func (c *Client) GetLoggerLevel(
+	ctx context.Context,
+	loggerName string,
+	options ...rpc.Option,
+) (map[string]apiadmin.LogAndDisplayLevels, error)
+```
+
+```go
+func (c *Client) ListVMs(ctx context.Context, options ...rpc.Option) (map[string]apiadmin.VMInfo, error)
+```
+
+```go
+func (c *Client) Load(ctx context.Context, path string, options ...rpc.Option) error
+```
+
+```go
+func (c *Client) LoadVMs(ctx context.Context, options ...rpc.Option) (map[ids.ID][]string, map[ids.ID]string, error)
+```
+
+```go
+func (c *Client) LockProfile(ctx context.Context, options ...rpc.Option) error
+```
+
+```go
+func (c *Client) MemoryProfile(ctx context.Context, options ...rpc.Option) error
+```
+
+```go
+func (c *Client) SetLoggerLevel(
+	ctx context.Context,
+	loggerName,
+	logLevel,
+	displayLevel string,
+	options ...rpc.Option,
+) (map[string]apiadmin.LogAndDisplayLevels, error)
+```
+
+```go
+func (c *Client) Snapshot(ctx context.Context, path string, since uint64, options ...rpc.Option) (uint64, error)
+```
+
+```go
+func (c *Client) Stacktrace(ctx context.Context, options ...rpc.Option) error
+```
+
+```go
+func (c *Client) StartCPUProfiler(ctx context.Context, options ...rpc.Option) error
+```
+
+```go
+func (c *Client) StopCPUProfiler(ctx context.Context, options ...rpc.Option) error
+```
+

@@ -1,0 +1,160 @@
+---
+title: key
+description: Package key provides cryptographic key generation and management.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/key"
+```
+
+Package key provides cryptographic key generation and management.
+
+
+## Functions
+
+### DeriveKey
+
+```go
+func DeriveKey(mnemonic []string, index uint32) (crypto.PrivateKey, error)
+```
+
+DeriveKey derives a key from a mnemonic at the given index
+
+
+### ExportKey
+
+```go
+func ExportKey(key *Key, format string, writer io.Writer) error
+```
+
+ExportKey exports a key in various formats
+
+
+### GenerateMnemonic
+
+```go
+func GenerateMnemonic(bitSize int) ([]string, error)
+```
+
+GenerateMnemonic generates a mnemonic phrase
+
+
+## Types
+
+### Key
+
+Key represents a cryptographic key with metadata
+
+
+```go
+func LoadSoft(networkID uint32, keyPath string) (*Key, error)
+```
+
+```go
+func (k *Key) C() string
+```
+
+```go
+func (k *Key) PrivKeyHex() string
+```
+
+### Keychain
+
+Keychain manages a collection of private keys for signing
+
+
+```go
+func NewKeychain() *Keychain
+```
+
+```go
+func (kc *Keychain) Add(privateKey crypto.PrivateKey) error
+```
+
+```go
+func (kc *Keychain) Addresses() []ids.ShortID
+```
+
+```go
+func (kc *Keychain) Get(address ids.ShortID) (crypto.PrivateKey, error)
+```
+
+```go
+func (kc *Keychain) Sign(message []byte, address ids.ShortID) (crypto.Signature, error)
+```
+
+### Manager
+
+Manager handles key generation, storage, and retrieval
+
+
+```go
+func NewManager(keyDir string) (*Manager, error)
+```
+
+```go
+func (m *Manager) Delete(keyID ids.ID) error
+```
+
+```go
+func (m *Manager) DeleteKey(keyID ids.ID) error
+```
+
+```go
+func (m *Manager) ExportKey(keyID ids.ID) (string, error)
+```
+
+```go
+func (m *Manager) GenerateBLS() (*Key, *bls.SecretKey, error)
+```
+
+```go
+func (m *Manager) GenerateEd25519() (*Key, error)
+```
+
+```go
+func (m *Manager) GenerateKey(keyType string) (*Key, error)
+```
+
+```go
+func (m *Manager) Get(keyID ids.ID) (*Key, error)
+```
+
+```go
+func (m *Manager) GetByAddress(address ids.ShortID) (*Key, error)
+```
+
+```go
+func (m *Manager) GetKey(keyID ids.ID) (*Key, error)
+```
+
+```go
+func (m *Manager) ImportKey(privateKey crypto.PrivateKey, keyType string) (*Key, error)
+```
+
+```go
+func (m *Manager) ImportPrivateKey(privateKey crypto.PrivateKey) (*Key, error)
+```
+
+```go
+func (m *Manager) List() []*Key
+```
+
+```go
+func (m *Manager) ListKeys() []*Key
+```
+
+```go
+func (m *Manager) Save(keyID ids.ID) error
+```
+
+```go
+func (m *Manager) SaveAll() error
+```
+
+```go
+func (m *Manager) SaveKey(key *Key) error
+```
+

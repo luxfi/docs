@@ -1,0 +1,72 @@
+---
+title: fees
+description: Package fees provides fee calculation and configuration utilities.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/fees"
+```
+
+Package fees provides fee calculation and configuration utilities.
+
+
+## Functions
+
+### GetFeeConfigForThroughput
+
+```go
+func GetFeeConfigForThroughput(throughput string) commontype.FeeConfig
+```
+
+GetFeeConfigForThroughput returns a fee configuration for the specified throughput level
+
+
+## Types
+
+### FeeConfigBuilder
+
+FeeConfigBuilder helps construct custom fee configurations
+
+
+```go
+func NewFeeConfigBuilder() *FeeConfigBuilder
+```
+
+```go
+func (b *FeeConfigBuilder) Build() commontype.FeeConfig
+```
+
+```go
+func (b *FeeConfigBuilder) WithBaseFeeChangeDenominator(denominator *big.Int) *FeeConfigBuilder
+```
+
+```go
+func (b *FeeConfigBuilder) WithBlockGasCostStep(blockGasCostStep *big.Int) *FeeConfigBuilder
+```
+
+```go
+func (b *FeeConfigBuilder) WithGasLimit(gasLimit *big.Int) *FeeConfigBuilder
+```
+
+```go
+func (b *FeeConfigBuilder) WithMaxBlockGasCost(maxBlockGasCost *big.Int) *FeeConfigBuilder
+```
+
+```go
+func (b *FeeConfigBuilder) WithMinBaseFee(minBaseFee *big.Int) *FeeConfigBuilder
+```
+
+```go
+func (b *FeeConfigBuilder) WithMinBlockGasCost(minBlockGasCost *big.Int) *FeeConfigBuilder
+```
+
+```go
+func (b *FeeConfigBuilder) WithTargetBlockRate(targetBlockRate uint64) *FeeConfigBuilder
+```
+
+```go
+func (b *FeeConfigBuilder) WithTargetGas(targetGas *big.Int) *FeeConfigBuilder
+```
+

@@ -1,0 +1,739 @@
+---
+title: validatormanager
+description: Package validatormanager provides L1 validator lifecycle management.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/validatormanager"
+```
+
+Package validatormanager provides L1 validator lifecycle management.
+
+
+## Functions
+
+### AddPoAValidatorManagerV1_0_0ContractToAllocations
+
+```go
+func AddPoAValidatorManagerV1_0_0ContractToAllocations(
+	allocs types.GenesisAlloc,
+)
+```
+
+### AddRewardCalculatorV2_0_0ToAllocations
+
+```go
+func AddRewardCalculatorV2_0_0ToAllocations(
+	allocs types.GenesisAlloc,
+	rewardBasisPoints uint64,
+)
+```
+
+### AddSpecializationTransparentProxyContractToAllocations
+
+```go
+func AddSpecializationTransparentProxyContractToAllocations(
+	allocs types.GenesisAlloc,
+	proxyManager string,
+)
+```
+
+### AddValidatorManagerV2_0_0ContractToAllocations
+
+```go
+func AddValidatorManagerV2_0_0ContractToAllocations(
+	allocs types.GenesisAlloc,
+)
+```
+
+### AddValidatorMessagesV2_0_0ContractToAllocations
+
+```go
+func AddValidatorMessagesV2_0_0ContractToAllocations(
+	allocs types.GenesisAlloc,
+)
+```
+
+### AddValidatorTransparentProxyContractToAllocations
+
+```go
+func AddValidatorTransparentProxyContractToAllocations(
+	allocs types.GenesisAlloc,
+	proxyManager string,
+)
+```
+
+### CompleteValidatorRegistration
+
+```go
+func CompleteValidatorRegistration(
+	rpcURL string,
+	managerAddress crypto.Address,
+	generateRawTxOnly bool,
+	ownerAddress crypto.Address,
+	privateKey string,
+	l1ValidatorRegistrationSignedMessage *warp.Envelope,
+) (*types.Transaction, *types.Receipt, error)
+```
+
+CompleteValidatorRegistration is the last step of flow for adding a new validator.
+
+
+### CompleteValidatorRemoval
+
+```go
+func CompleteValidatorRemoval(
+	rpcURL string,
+	managerAddress crypto.Address,
+	generateRawTxOnly bool,
+	ownerAddress crypto.Address,
+	privateKey string,
+	chainValidatorRegistrationSignedMessage *warp.Envelope,
+	useACP99 bool,
+) (*types.Transaction, *types.Receipt, error)
+```
+
+### CompleteValidatorWeightChange
+
+```go
+func CompleteValidatorWeightChange(
+	rpcURL string,
+	managerAddress crypto.Address,
+	generateRawTxOnly bool,
+	ownerAddress crypto.Address,
+	privateKey string,
+	pchainL1ValidatorRegistrationSignedMessage *warp.Envelope,
+) (*types.Transaction, *types.Receipt, error)
+```
+
+### DeployAndRegisterPoSValidatorManagerV1_0_0Contract
+
+```go
+func DeployAndRegisterPoSValidatorManagerV1_0_0Contract(
+	rpcURL string,
+	privateKey string,
+	proxyOwnerPrivateKey string,
+) (luxcrypto.Address, error)
+```
+
+### DeployAndRegisterPoSValidatorManagerV2_0_0Contract
+
+```go
+func DeployAndRegisterPoSValidatorManagerV2_0_0Contract(
+	rpcURL string,
+	privateKey string,
+	proxyOwnerPrivateKey string,
+) (luxcrypto.Address, error)
+```
+
+### DeployAndRegisterValidatorManagerV2_0_0Contract
+
+```go
+func DeployAndRegisterValidatorManagerV2_0_0Contract(
+	rpcURL string,
+	privateKey string,
+	proxyOwnerPrivateKey string,
+) (luxcrypto.Address, error)
+```
+
+### DeployPoSValidatorManagerV1_0_0Contract
+
+```go
+func DeployPoSValidatorManagerV1_0_0Contract(
+	rpcURL string,
+	privateKey string,
+) (luxcrypto.Address, error)
+```
+
+### DeployPoSValidatorManagerV2_0_0Contract
+
+```go
+func DeployPoSValidatorManagerV2_0_0Contract(
+	rpcURL string,
+	privateKey string,
+) (luxcrypto.Address, error)
+```
+
+### DeployValidatorManagerV2_0_0Contract
+
+```go
+func DeployValidatorManagerV2_0_0Contract(
+	rpcURL string,
+	privateKey string,
+) (luxcrypto.Address, error)
+```
+
+### FinishValidatorRegistration
+
+```go
+func FinishValidatorRegistration(
+	ctx context.Context,
+	app *application.Lux,
+	network models.Network,
+	rpcURL string,
+	chainSpec contract.ChainSpec,
+	generateRawTxOnly bool,
+	ownerAddressStr string,
+	privateKey string,
+	validationID ids.ID,
+	aggregatorLogger luxlog.Logger,
+	validatorManagerAddressStr string,
+	signatureAggregatorEndpoint string,
+) (*types.Transaction, error)
+```
+
+### FinishValidatorRemoval
+
+```go
+func FinishValidatorRemoval(
+	ctx context.Context,
+	app *application.Lux,
+	network models.Network,
+	rpcURL string,
+	chainSpec contract.ChainSpec,
+	generateRawTxOnly bool,
+	ownerAddressStr string,
+	privateKey string,
+	validationID ids.ID,
+	aggregatorLogger luxlog.Logger,
+	validatorManagerAddressStr string,
+	useACP99 bool,
+	signatureAggregatorEndpoint string,
+) (*types.Transaction, error)
+```
+
+### FinishValidatorWeightChange
+
+```go
+func FinishValidatorWeightChange(
+	ctx context.Context,
+	app *application.Lux,
+	network models.Network,
+	rpcURL string,
+	chainSpec contract.ChainSpec,
+	generateRawTxOnly bool,
+	ownerAddressStr string,
+	privateKey string,
+	validationID ids.ID,
+	aggregatorLogger luxlog.Logger,
+	validatorManagerAddressStr string,
+	l1ValidatorRegistrationSignedMessage *warp.Envelope,
+	weight uint64,
+	signatureAggregatorEndpoint string,
+) (*types.Transaction, error)
+```
+
+### GetL1ValidatorUptimeSeconds
+
+```go
+func GetL1ValidatorUptimeSeconds(rpcURL string, nodeID ids.NodeID) (uint64, error)
+```
+
+GetL1ValidatorUptimeSeconds returns the uptime of the L1 validator
+
+
+### GetL1ValidatorWeightMessage
+
+```go
+func GetL1ValidatorWeightMessage(
+	network models.Network,
+	aggregatorLogger luxlog.Logger,
+
+	unsignedMessage *warp.Message,
+	chainID ids.ID,
+	blockchainID ids.ID,
+	managerAddress crypto.Address,
+	validationID ids.ID,
+	nonce uint64,
+	weight uint64,
+	signatureAggregatorEndpoint string,
+) (*warp.Envelope, error)
+```
+
+### GetL1ValidatorWeightMessageFromTx
+
+```go
+func GetL1ValidatorWeightMessageFromTx(
+	rpcURL string,
+	validationID ids.ID,
+	weight uint64,
+	txHash string,
+) (*warp.Message, error)
+```
+
+### GetPChainChainToL1ConversionUnsignedMessage
+
+```go
+func GetPChainChainToL1ConversionUnsignedMessage(
+	net models.Network,
+	chainID ids.ID,
+	managerBlockchainID ids.ID,
+	managerAddress crypto.Address,
+	convertChainValidators []*txs.ConvertNetworkToL1Validator,
+) (*warp.Message, error)
+```
+
+### GetPChainL1ValidatorRegistrationMessage
+
+```go
+func GetPChainL1ValidatorRegistrationMessage(
+	ctx context.Context,
+	network models.Network,
+	rpcURL string,
+	aggregatorLogger luxlog.Logger,
+	aggregatorQuorumPercentage uint64,
+	chainID ids.ID,
+	validationID ids.ID,
+	registered bool,
+	signatureAggregatorEndpoint string,
+) (*warp.Envelope, error)
+```
+
+### GetPChainL1ValidatorWeightMessage
+
+```go
+func GetPChainL1ValidatorWeightMessage(
+	network models.Network,
+	aggregatorLogger luxlog.Logger,
+	aggregatorQuorumPercentage uint64,
+	chainID ids.ID,
+
+	l1SignedMessage *warp.Envelope,
+
+	validationID ids.ID,
+	nonce uint64,
+	weight uint64,
+	signatureAggregatorEndpoint string,
+) (*warp.Envelope, error)
+```
+
+### GetRegisterL1ValidatorMessage
+
+```go
+func GetRegisterL1ValidatorMessage(
+	ctx context.Context,
+	rpcURL string,
+	network models.Network,
+	aggregatorLogger luxlog.Logger,
+	aggregatorQuorumPercentage uint64,
+	chainID ids.ID,
+	blockchainID ids.ID,
+	managerAddress crypto.Address,
+	nodeID ids.NodeID,
+	blsPublicKey [48]byte,
+	expiry uint64,
+	balanceOwners warpMessage.PChainOwner,
+	disableOwners warpMessage.PChainOwner,
+	weight uint64,
+	alreadyInitialized bool,
+	initiateTxHash string,
+	registerChainValidatorUnsignedMessage *warp.Message,
+	signatureAggregatorEndpoint string,
+) (*warp.Envelope, ids.ID, error)
+```
+
+### GetRegisterL1ValidatorMessageFromTx
+
+```go
+func GetRegisterL1ValidatorMessageFromTx(
+	rpcURL string,
+	validationID ids.ID,
+	txHash string,
+) (*warp.Message, error)
+```
+
+### GetRegistrationJustification
+
+```go
+func GetRegistrationJustification(
+	ctx context.Context,
+	rpcURL string,
+	validationID ids.ID,
+	chainID ids.ID,
+) ([]byte, error)
+```
+
+### GetSpecializedValidatorProxyImplementation
+
+```go
+func GetSpecializedValidatorProxyImplementation(
+	rpcURL string,
+) (crypto.Address, error)
+```
+
+### GetUptimeProofMessage
+
+```go
+func GetUptimeProofMessage(
+	network models.Network,
+	aggregatorLogger luxlog.Logger,
+	aggregatorQuorumPercentage uint64,
+	chainID ids.ID,
+	blockchainID ids.ID,
+	validationID ids.ID,
+	uptime uint64,
+	signatureAggregatorEndpoint string,
+) (*warp.Envelope, error)
+```
+
+### GetValidatorManagerType
+
+```go
+func GetValidatorManagerType(
+	rpcURL string,
+	managerAddress crypto.Address,
+) validatormanagertypes.ValidatorManagementType
+```
+
+GetValidatorManagerType returns validatormanagertypes.ProofOfAuthority if validator manager is verified to be Proof of Authority
+If validator manager is verified to be Proof of Stake, returns validatormanagertypes.ProofOfStake
+In other cases, returns validatormanagertypes.UndefinedValidatorManagement
+
+
+### GetValidatorNonce
+
+```go
+func GetValidatorNonce(
+	ctx context.Context,
+	rpcURL string,
+	validationID ids.ID,
+) (uint64, error)
+```
+
+### GetValidatorProxyImplementation
+
+```go
+func GetValidatorProxyImplementation(
+	rpcURL string,
+) (crypto.Address, error)
+```
+
+### InitValidatorRegistration
+
+```go
+func InitValidatorRegistration(
+	ctx context.Context,
+	app *application.Lux,
+	network models.Network,
+	rpcURL string,
+	chainSpec contract.ChainSpec,
+	generateRawTxOnly bool,
+	ownerAddressStr string,
+	ownerPrivateKey string,
+	nodeID ids.NodeID,
+	blsPublicKey []byte,
+	expiry uint64,
+	balanceOwners warpMessage.PChainOwner,
+	disableOwners warpMessage.PChainOwner,
+	weight uint64,
+	aggregatorLogger luxlog.Logger,
+	isPos bool,
+	delegationFee uint16,
+	stakeDuration time.Duration,
+	rewardRecipient crypto.Address,
+	validatorManagerAddressStr string,
+	useACP99 bool,
+	initiateTxHash string,
+	signatureAggregatorEndpoint string,
+) (*warp.Envelope, ids.ID, *types.Transaction, error)
+```
+
+### InitValidatorRemoval
+
+```go
+func InitValidatorRemoval(
+	ctx context.Context,
+	app *application.Lux,
+	network models.Network,
+	rpcURL string,
+	chainSpec contract.ChainSpec,
+	generateRawTxOnly bool,
+	ownerAddressStr string,
+	ownerPrivateKey string,
+	nodeID ids.NodeID,
+	aggregatorLogger luxlog.Logger,
+	isPoS bool,
+	uptimeSec uint64,
+	force bool,
+	validatorManagerAddressStr string,
+	useACP99 bool,
+	initiateTxHash string,
+	signatureAggregatorEndpoint string,
+) (*warp.Envelope, ids.ID, *types.Transaction, error)
+```
+
+### InitValidatorWeightChange
+
+```go
+func InitValidatorWeightChange(
+	ctx context.Context,
+	printFunc func(msg string, args ...interface{}),
+	app *application.Lux,
+	network models.Network,
+	rpcURL string,
+	chainSpec contract.ChainSpec,
+	generateRawTxOnly bool,
+	ownerAddressStr string,
+	ownerPrivateKey string,
+	nodeID ids.NodeID,
+	aggregatorLogger luxlog.Logger,
+	validatorManagerAddressStr string,
+	weight uint64,
+	initiateTxHash string,
+	signatureAggregatorEndpoint string,
+) (*warp.Envelope, ids.ID, *types.Transaction, error)
+```
+
+### InitializeValidatorRegistrationPoA
+
+```go
+func InitializeValidatorRegistrationPoA(
+	rpcURL string,
+	managerAddress crypto.Address,
+	generateRawTxOnly bool,
+	managerOwnerAddress crypto.Address,
+	managerOwnerPrivateKey string,
+	nodeID ids.NodeID,
+	blsPublicKey []byte,
+	expiry uint64,
+	balanceOwners warpMessage.PChainOwner,
+	disableOwners warpMessage.PChainOwner,
+	weight uint64,
+	useACP99 bool,
+) (*types.Transaction, *types.Receipt, error)
+```
+
+InitializeValidatorRegistrationPoA is step 1 of flow for adding a new validator.
+
+
+### InitializeValidatorRegistrationPoSNative
+
+```go
+func InitializeValidatorRegistrationPoSNative(
+	rpcURL string,
+	managerAddress crypto.Address,
+	managerOwnerPrivateKey string,
+	nodeID ids.NodeID,
+	blsPublicKey []byte,
+	expiry uint64,
+	balanceOwners warpMessage.PChainOwner,
+	disableOwners warpMessage.PChainOwner,
+	delegationFeeBips uint16,
+	minStakeDuration time.Duration,
+	stakeAmount *big.Int,
+	rewardRecipient crypto.Address,
+	useACP99 bool,
+) (*types.Transaction, *types.Receipt, error)
+```
+
+### InitializeValidatorRemoval
+
+```go
+func InitializeValidatorRemoval(
+	rpcURL string,
+	managerAddress crypto.Address,
+	generateRawTxOnly bool,
+	managerOwnerAddress crypto.Address,
+	privateKey string,
+	validationID ids.ID,
+	isPoS bool,
+	uptimeProofSignedMessage *warp.Envelope,
+	force bool,
+	useACP99 bool,
+) (*types.Transaction, *types.Receipt, error)
+```
+
+### InitializeValidatorWeightChange
+
+```go
+func InitializeValidatorWeightChange(
+	rpcURL string,
+	managerAddress crypto.Address,
+	generateRawTxOnly bool,
+	managerOwnerAddress crypto.Address,
+	privateKey string,
+	validationID ids.ID,
+	weight uint64,
+) (*types.Transaction, *types.Receipt, error)
+```
+
+### InitializeValidatorsSet
+
+```go
+func InitializeValidatorsSet(
+	rpcURL string,
+	managerAddress crypto.Address,
+	privateKey string,
+	chainID ids.ID,
+	managerBlockchainID ids.ID,
+	convertChainValidators []*txs.ConvertNetworkToL1Validator,
+	chainConversionSignedMessage *warp.Envelope,
+) (*types.Transaction, *types.Receipt, error)
+```
+
+InitializeValidatorsSet calls poa manager validators set init method,
+passing to it the p-chain signed [chainConversionSignedMessage]
+to verify p-chain already processed the associated ConvertNetworkToL1Tx
+
+
+### PoAValidatorManagerInitialize
+
+```go
+func PoAValidatorManagerInitialize(
+	rpcURL string,
+	managerAddress crypto.Address,
+	privateKey string,
+	chainID ids.ID,
+	ownerAddress crypto.Address,
+	useACP99 bool,
+) (*types.Transaction, *types.Receipt, error)
+```
+
+PoAValidatorManagerInitialize initializes contract [managerAddress] at [rpcURL], to
+manage validators on [chainID], with
+owner given by [ownerAddress]
+
+
+### PoSValidatorManagerInitialize
+
+```go
+func PoSValidatorManagerInitialize(
+	rpcURL string,
+	managerAddress crypto.Address,
+	specializedManagerAddress crypto.Address,
+	managerOwnerPrivateKey string,
+	privateKey string,
+	chainID [32]byte,
+	posParams PoSParams,
+	useACP99 bool,
+) (*types.Transaction, *types.Receipt, error)
+```
+
+PoSValidatorManagerInitialize initializes contract [managerAddress] at [rpcURL], to
+manage validators on [chainID] using PoS specific settings.
+
+
+### PoSWeightToValue
+
+```go
+func PoSWeightToValue(
+	rpcURL string,
+	managerAddress crypto.Address,
+	weight uint64,
+) (*big.Int, error)
+```
+
+### SearchForL1ValidatorWeightMessage
+
+```go
+func SearchForL1ValidatorWeightMessage(
+	ctx context.Context,
+	rpcURL string,
+	validationID ids.ID,
+	weight uint64,
+) (*warp.Message, error)
+```
+
+### SearchForRegisterL1ValidatorMessage
+
+```go
+func SearchForRegisterL1ValidatorMessage(
+	ctx context.Context,
+	rpcURL string,
+	validationID ids.ID,
+) (*warp.Message, error)
+```
+
+### SetupPoA
+
+```go
+func SetupPoA(
+	log luxlog.Logger,
+	chain blockchainSDK.Net,
+	network models.Network,
+	privateKey string,
+	aggregatorLogger luxlog.Logger,
+	validatorManagerAddressStr string,
+	v2_0_0 bool,
+	signatureAggregatorEndpoint string,
+) error
+```
+
+SetupPoA sets up PoA manager after a successful execution of
+ConvertNetworkToL1Tx on P-Chain.
+Needs the list of validators for that tx,
+[convertChainValidators], together with an evm [ownerAddress]
+to set as the owner of the PoA manager.
+
+
+### SetupPoS
+
+```go
+func SetupPoS(
+	log luxlog.Logger,
+	chain blockchainSDK.Net,
+	network models.Network,
+	privateKey string,
+	aggregatorLogger luxlog.Logger,
+	posParams PoSParams,
+	managerAddress string,
+	specializedManagerAddress string,
+	managerOwnerPrivateKey string,
+	v2_0_0 bool,
+	signatureAggregatorEndpoint string,
+) error
+```
+
+SetupPoS sets up PoS manager after a successful execution of
+ConvertNetworkToL1Tx on P-Chain.
+Needs the list of validators for that tx,
+[convertChainValidators], together with an evm [ownerAddress]
+to set as the owner of the PoS manager.
+
+
+### SetupSpecializationProxyImplementation
+
+```go
+func SetupSpecializationProxyImplementation(
+	rpcURL string,
+	proxyManagerPrivateKey string,
+	validatorManager crypto.Address,
+) (*types.Transaction, *types.Receipt, error)
+```
+
+### SetupValidatorProxyImplementation
+
+```go
+func SetupValidatorProxyImplementation(
+	rpcURL string,
+	proxyManagerPrivateKey string,
+	validatorManager crypto.Address,
+) (*types.Transaction, *types.Receipt, error)
+```
+
+### ValidatorProxyHasImplementationSet
+
+```go
+func ValidatorProxyHasImplementationSet(
+	rpcURL string,
+) (bool, error)
+```
+
+## Types
+
+### ACP99ValidatorManagerSettings
+
+### NativeTokenValidatorManagerSettingsV1_0_0
+
+### NativeTokenValidatorManagerSettingsV2_0_0
+
+### PoSParams
+
+```go
+func (p PoSParams) Verify() error
+```
+
+### ValidatorManagerSettings
+

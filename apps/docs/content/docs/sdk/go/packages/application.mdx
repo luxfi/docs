@@ -1,0 +1,491 @@
+---
+title: application
+description: Package application provides application context and configuration management.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/application"
+```
+
+Package application provides application context and configuration management.
+
+
+## Types
+
+### Downloader
+
+Downloader is a generic interface for performing highly testable downloads. All methods here involve
+external http requests. To write tests using these functions, provide a mocked version of this
+interface to your application object.
+
+
+```go
+func NewDownloader() Downloader
+```
+
+### LastActions
+
+### Lux
+
+```go
+func New() *Lux
+```
+
+```go
+func (app *Lux) AddDefaultBlockchainRPCsToSidecar(
+	blockchainName string,
+	network models.Network,
+	nodeURIs []string,
+) (bool, error)
+```
+
+```go
+func (app *Lux) BlockchainConfigExists(blockchainName string) bool
+```
+
+```go
+func (app *Lux) CaptureYesNo(prompt string) (bool, error)
+```
+
+```go
+func (app *Lux) ChainConfigExists(chainName string) bool
+```
+
+```go
+func (app *Lux) ChainConfigFileExists(chainName string) bool
+```
+
+```go
+func (app *Lux) ClustersConfigExists() bool
+```
+
+```go
+func (app *Lux) ConfigFileExists() bool
+```
+
+```go
+func (app *Lux) CopyGenesisFile(inputFilename string, chainName string) error
+```
+
+```go
+func (app *Lux) CopyKeyFile(inputFilename string, keyName string) error
+```
+
+```go
+func (app *Lux) CopyVMBinary(inputFilename string, chainName string) error
+```
+
+```go
+func (app *Lux) CreateElasticChainConfig(chainName string, es *models.ElasticChainConfig) error
+```
+
+```go
+func (app *Lux) CreateSidecar(sc *models.Sidecar) error
+```
+
+```go
+func (app *Lux) GenesisExists(chainName string) bool
+```
+
+```go
+func (app *Lux) GetAnsibleInventoryDirPath(clusterName string) string
+```
+
+```go
+func (app *Lux) GetBaseDir() string
+```
+
+```go
+func (app *Lux) GetBasePath() string
+```
+
+```go
+func (app *Lux) GetBlockchainNamesOnNetwork(network models.Network, onlySOV bool) ([]string, error)
+```
+
+```go
+func (app *Lux) GetChainConfigDir() string
+```
+
+```go
+func (app *Lux) GetChainConfigPath(chainName string) string
+```
+
+```go
+func (app *Lux) GetChainDir() string
+```
+
+```go
+func (app *Lux) GetChainsDir() string
+```
+
+```go
+func (app *Lux) GetClusterConfig(clusterName string) (map[string]interface{}, error)
+```
+
+```go
+func (app *Lux) GetClusterNetwork(clusterName string) (models.Network, error)
+```
+
+```go
+func (app *Lux) GetConfigPath() string
+```
+
+```go
+func (app *Lux) GetCurrentPluginsDir() string
+```
+
+```go
+func (app *Lux) GetCustomVMDir() string
+```
+
+```go
+func (app *Lux) GetCustomVMPath(chainName string) string
+```
+
+```go
+func (app *Lux) GetDevDir() string
+```
+
+```go
+func (app *Lux) GetDownloader() Downloader
+```
+
+```go
+func (app *Lux) GetEVMBinDir() string
+```
+
+```go
+func (app *Lux) GetElasticChainConfigPath(chainName string) string
+```
+
+```go
+func (app *Lux) GetGenesisPath(chainName string) string
+```
+
+```go
+func (app *Lux) GetKey(keyName string) (string, error)
+```
+
+```go
+func (app *Lux) GetKeyDir() string
+```
+
+```go
+func (app *Lux) GetKeyPath(keyName string) string
+```
+
+```go
+func (app *Lux) GetLPMBaseDir() string
+```
+
+```go
+func (app *Lux) GetLPMLog() string
+```
+
+```go
+func (app *Lux) GetLPMPluginDir() string
+```
+
+```go
+func (app *Lux) GetLPMVMPath(vmid string) string
+```
+
+```go
+func (app *Lux) GetLocalClusterDir(clusterName string) string
+```
+
+```go
+func (app *Lux) GetLocalClustersDir() string
+```
+
+```go
+func (app *Lux) GetLocalRelayerConfigPath() string
+```
+
+```go
+func (app *Lux) GetLocalRelayerLogPath(network models.Network) string
+```
+
+```go
+func (app *Lux) GetLocalRelayerRunPath(network models.Network) string
+```
+
+```go
+func (app *Lux) GetLocalRelayerStorageDir(network models.Network) string
+```
+
+```go
+func (app *Lux) GetLogDir() string
+```
+
+```go
+func (app *Lux) GetLuxBinDir() string
+```
+
+```go
+func (*Lux) GetLuxCompatibilityURL() string
+```
+
+```go
+func (app *Lux) GetLuxdChainConfigPath(chainName string) string
+```
+
+```go
+func (app *Lux) GetLuxdNodeConfigPath(chainName string) string
+```
+
+```go
+func (app *Lux) GetLuxgoBinDir() string
+```
+
+```go
+func (app *Lux) GetMonitoringInventoryDir(clusterName string) string
+```
+
+```go
+func (app *Lux) GetNetDir() string
+```
+
+```go
+func (app *Lux) GetNetworkFromSidecarNetworkName(name string) (models.Network, error)
+```
+
+```go
+func (app *Lux) GetNetworkPluginsDir(networkType string) string
+```
+
+```go
+func (app *Lux) GetNodesDir() string
+```
+
+```go
+func (app *Lux) GetPerNodeBlockchainConfig(chainName string) map[string]interface{}
+```
+
+```go
+func (app *Lux) GetPluginsDir() string
+```
+
+```go
+func (app *Lux) GetReposDir() string
+```
+
+```go
+func (app *Lux) GetRunDir() string
+```
+
+```go
+func (app *Lux) GetRunFile() string
+```
+
+```go
+func (app *Lux) GetSidecarNames() ([]string, error)
+```
+
+```go
+func (app *Lux) GetSidecarPath(chainName string) string
+```
+
+```go
+func (app *Lux) GetSnapshotPath(snapshotName string) string
+```
+
+```go
+func (app *Lux) GetSnapshotsDir() string
+```
+
+```go
+func (*Lux) GetTmpPluginDir() string
+```
+
+```go
+func (app *Lux) GetTokenName(chainName string) string
+```
+
+```go
+func (app *Lux) GetUpgradeBytesFilePath(chainName string) string
+```
+
+```go
+func (app *Lux) GetUpgradeBytesFilepath(chainName string) string
+```
+
+```go
+func (app *Lux) GetVersion() string
+```
+
+```go
+func (app *Lux) IsLocalNetworkRunning() bool
+```
+
+```go
+func (app *Lux) IsPathProtected(path string) bool
+```
+
+```go
+func (app *Lux) KeyExists(keyName string) bool
+```
+
+```go
+func (app *Lux) ListClusterNames() ([]string, error)
+```
+
+```go
+func (app *Lux) LoadClusterNodeConfig(clusterName string, nodeID string) (map[string]interface{}, error)
+```
+
+```go
+func (app *Lux) LoadClustersConfig() (map[string]interface{}, error)
+```
+
+```go
+func (app *Lux) LoadConfig() (types.Config, error)
+```
+
+```go
+func (app *Lux) LoadElasticChainConfig(chainName string) (models.ElasticChainConfig, error)
+```
+
+```go
+func (app *Lux) LoadEvmGenesis(chainName string) (core.Genesis, error)
+```
+
+```go
+func (app *Lux) LoadRawChainConfig(chainName string) ([]byte, error)
+```
+
+```go
+func (app *Lux) LoadRawGenesis(chainName string) ([]byte, error)
+```
+
+```go
+func (app *Lux) LoadRawLuxdChainConfig(chainName string) ([]byte, error)
+```
+
+```go
+func (app *Lux) LoadRawNetworkUpgrades(chainName string) ([]byte, error)
+```
+
+```go
+func (app *Lux) LoadSidecar(chainName string) (models.Sidecar, error)
+```
+
+```go
+func (app *Lux) LuxdChainConfigExists(chainName string) bool
+```
+
+```go
+func (app *Lux) LuxdNodeConfigExists(chainName string) bool
+```
+
+```go
+func (app *Lux) NetworkUpgradeExists(chainName string) bool
+```
+
+```go
+func (app *Lux) ProtectedDirectories() []string
+```
+
+```go
+func (app *Lux) ReadLastActionsFile() (*LastActions, error)
+```
+
+```go
+func (app *Lux) ReadLockUpgradeFile(chainName string) ([]byte, error)
+```
+
+```go
+func (app *Lux) ReadUpgradeFile(chainName string) ([]byte, error)
+```
+
+```go
+func (app *Lux) ResetPluginsDir() error
+```
+
+```go
+func (app *Lux) SafeRemoveAll(path string) error
+```
+
+```go
+func (app *Lux) Setup(baseDir string, log luxlog.Logger, conf *config.Config, prompt Prompter, downloader Downloader)
+```
+
+```go
+func (app *Lux) SidecarExists(chainName string) bool
+```
+
+```go
+func (app *Lux) UpdateSidecar(sc *models.Sidecar) error
+```
+
+```go
+func (app *Lux) UpdateSidecarElasticChain(
+	sc *models.Sidecar,
+	network models.Network,
+	chainID ids.ID,
+	assetID ids.ID,
+	pchainTXID ids.ID,
+	tokenName string,
+	tokenSymbol string,
+) error
+```
+
+```go
+func (app *Lux) UpdateSidecarElasticChainPartialTx(
+	sc *models.Sidecar,
+	network models.Network,
+	txName string,
+	txID ids.ID,
+) error
+```
+
+```go
+func (app *Lux) UpdateSidecarNetworks(
+	sc *models.Sidecar,
+	network models.Network,
+	chainID ids.ID,
+	blockchainID ids.ID,
+) error
+```
+
+```go
+func (app *Lux) UpdateSidecarPermissionlessValidator(
+	sc *models.Sidecar,
+	network models.Network,
+	nodeID string,
+	txID ids.ID,
+) error
+```
+
+```go
+func (app *Lux) WriteConfigFile(data []byte) error
+```
+
+```go
+func (app *Lux) WriteGenesisFile(chainName string, genesisBytes []byte) error
+```
+
+```go
+func (app *Lux) WriteLastActionsFile(acts *LastActions)
+```
+
+```go
+func (app *Lux) WriteLockUpgradeFile(chainName string, bytes []byte) error
+```
+
+```go
+func (app *Lux) WriteSidecarFile(sc *models.Sidecar) error
+```
+
+```go
+func (app *Lux) WriteUpgradeFile(chainName string, bytes []byte) error
+```
+
+### Prompter
+
+Prompter is an alias for the prompts.Prompter interface
+
+

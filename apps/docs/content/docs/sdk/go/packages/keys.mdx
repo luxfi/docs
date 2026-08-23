@@ -1,0 +1,136 @@
+---
+title: keys
+description: Package keys provides key derivation and management utilities for LUX.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/keys"
+```
+
+Package keys provides key derivation and management utilities for LUX.
+
+
+## Functions
+
+### DeriveKeyFromMnemonic
+
+```go
+func DeriveKeyFromMnemonic(mnemonic string, accountIndex uint32) ([]byte, error)
+```
+
+DeriveKeyFromMnemonic derives a private key from a BIP-39 mnemonic using BIP-44 path.
+Default path: m/44'/9000'/0'/0/0 (P/X-Chain)
+
+
+### DeriveKeyFromSeed
+
+```go
+func DeriveKeyFromSeed(seed []byte, accountIndex uint32) ([]byte, error)
+```
+
+DeriveKeyFromSeed derives a private key from a BIP-39 seed using BIP-44 path.
+Path: m/44'/9000'/0'/0/&#123;accountIndex} (P/X-Chain)
+
+
+### GenerateNodeID
+
+```go
+func GenerateNodeID() (ids.NodeID, []byte, []byte, error)
+```
+
+GenerateNodeID creates a new random NodeID (for non-deterministic use cases)
+
+
+### LoadKey
+
+```go
+func LoadKey(keyPath string) ([]byte, error)
+```
+
+LoadKey loads a key from file, environment, or returns an error.
+Priority: 1) keyPath if non-empty, 2) PRIVATE_KEY env, 3) MNEMONIC env
+
+
+### LoadKeyFromEnv
+
+```go
+func LoadKeyFromEnv() ([]byte, error)
+```
+
+LoadKeyFromEnv loads a key from environment variables.
+Priority: 1) PRIVATE_KEY (hex), 2) MNEMONIC (24 words)
+
+
+### LoadKeyFromFile
+
+```go
+func LoadKeyFromFile(path string) ([]byte, error)
+```
+
+LoadKeyFromFile reads a hex-encoded private key from a file.
+
+
+### MustNewKeychain
+
+```go
+func MustNewKeychain(keyBytes []byte) *secp256k1fx.Keychain
+```
+
+MustNewKeychain creates a secp256k1fx.Keychain from raw key bytes, panics on error.
+
+
+### NewKeychain
+
+```go
+func NewKeychain(keyBytes []byte) (*secp256k1fx.Keychain, error)
+```
+
+NewKeychain creates a secp256k1fx.Keychain from raw key bytes.
+
+
+### ToPrivateKey
+
+```go
+func ToPrivateKey(keyBytes []byte) (*secp256k1.PrivateKey, error)
+```
+
+ToPrivateKey converts raw key bytes to a secp256k1 private key.
+
+
+### ValidatorBundlesToCAddresses
+
+```go
+func ValidatorBundlesToCAddresses(bundles []ValidatorBundle) []common.Address
+```
+
+ValidatorBundlesToCAddresses extracts C-chain addresses from bundles
+
+
+### ValidatorBundlesToNodeIDs
+
+```go
+func ValidatorBundlesToNodeIDs(bundles []ValidatorBundle) []ids.NodeID
+```
+
+ValidatorBundlesToNodeIDs extracts NodeIDs from a slice of bundles
+
+
+## Types
+
+### ValidatorBundle
+
+ValidatorBundle contains all cryptographic materials for a validator node.
+This is a pure data structure with no key management logic - the CLI handles
+storage, environment reads, and interactive selection.
+
+
+```go
+func DeriveValidatorBundle(mnemonic string, index uint32, hrp string) (ValidatorBundle, error)
+```
+
+```go
+func DeriveValidatorBundles(mnemonic string, n int, hrp string) ([]ValidatorBundle, error)
+```
+

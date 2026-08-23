@@ -1,0 +1,183 @@
+---
+title: blockchain
+description: Package blockchain provides blockchain configuration and genesis utilities.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/blockchain"
+```
+
+Package blockchain provides blockchain configuration and genesis utilities.
+
+
+## Types
+
+### Blockchain
+
+Blockchain represents a Lux blockchain
+
+
+### BlockchainStatus
+
+BlockchainStatus defines the status of a blockchain
+
+
+### BlockchainType
+
+BlockchainType defines the type of blockchain
+
+
+### Builder
+
+Builder handles blockchain creation and deployment
+
+
+```go
+func NewBuilder(logger log.Logger) *Builder
+```
+
+```go
+func (b *Builder) CreateBlockchain(ctx context.Context, params *CreateParams) (*Blockchain, error)
+```
+
+```go
+func (b *Builder) Deploy(ctx context.Context, blockchain *Blockchain, network *network.Network) error
+```
+
+```go
+func (b *Builder) GenerateGenesis(params *GenesisParams) ([]byte, error)
+```
+
+```go
+func (b *Builder) GetBlockchain(blockchainID string) (*Blockchain, error)
+```
+
+```go
+func (b *Builder) ListBlockchains() []*Blockchain
+```
+
+```go
+func (b *Builder) ValidateConfig(config []byte) error
+```
+
+### CreateParams
+
+CreateParams defines parameters for creating a blockchain
+
+
+### GenesisAccount
+
+GenesisAccount defines an account in genesis
+
+
+### GenesisParams
+
+GenesisParams defines parameters for genesis generation
+
+
+### GenesisValidator
+
+GenesisValidator defines a validator in the genesis
+Uses simplified fields for genesis configuration
+
+
+### L1Params
+
+L1Params defines parameters for L1 creation
+
+
+### L2Config
+
+L2Config defines L2-specific configuration
+
+
+### L2Params
+
+L2Params defines parameters for L2 creation
+
+
+### L3Config
+
+L3Config defines L3-specific configuration
+
+
+### L3Params
+
+L3Params defines parameters for L3 creation
+
+
+### Metrics
+
+Metrics tracks blockchain performance metrics
+
+
+```go
+func NewMetrics() *Metrics
+```
+
+```go
+func (m *Metrics) GetSnapshot() map[string]interface{}
+```
+
+```go
+func (m *Metrics) RecordBlock(blockTime time.Time)
+```
+
+```go
+func (m *Metrics) RecordTransaction(success bool)
+```
+
+```go
+func (m *Metrics) UpdateNetwork(peers int, latency time.Duration)
+```
+
+```go
+func (m *Metrics) UpdateResources(cpu float64, memory, disk uint64)
+```
+
+```go
+func (m *Metrics) UpdateTPS(tps float64)
+```
+
+### Net
+
+Net represents a blockchain network with validator management capabilities
+As above, so below - unified across all network layers (primary, L1, L2, L3)
+
+
+```go
+func (s *Net) InitializeProofOfAuthority(
+	log interface{},
+	network interface{},
+	privateKey string,
+	aggregatorLogger interface{},
+	validatorManagerAddress string,
+	v2_0_0 bool,
+	signatureAggregatorEndpoint string,
+) error
+```
+
+```go
+func (s *Net) InitializeProofOfStake(
+	log interface{},
+	network interface{},
+	privateKey string,
+	aggregatorLogger interface{},
+	posParams interface{},
+	managerAddress string,
+	signatureAggregatorEndpoint string,
+) error
+```
+
+### VMType
+
+VMType defines the virtual machine type
+
+
+### Validator
+
+Validator is an alias for backward compatibility
+
+

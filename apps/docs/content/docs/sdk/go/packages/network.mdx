@@ -1,0 +1,129 @@
+---
+title: network
+description: Package network provides network configuration and management utilities.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/network"
+```
+
+Package network provides network configuration and management utilities.
+
+
+## Types
+
+### ChainConfig
+
+ChainConfig defines configuration for a chain
+
+
+### LegacyNetwork
+
+LegacyNetwork represents a network configuration with endpoint
+This is for compatibility with existing code
+
+
+```go
+func GetNetworkByName(name string) (LegacyNetwork, error)
+```
+
+```go
+func NetworkFromNetworkID(networkID uint32) LegacyNetwork
+```
+
+### Network
+
+Network represents a managed Lux network
+
+
+### NetworkKind
+
+NetworkKind represents the kind of network
+
+
+```go
+func (k NetworkKind) String() string
+```
+
+### NetworkManager
+
+NetworkManager handles all network operations using netrunner
+
+
+```go
+func NewNetworkManager(config *config.NetworkConfig, logger log.Logger) (*NetworkManager, error)
+```
+
+```go
+func (nm *NetworkManager) AddNode(ctx context.Context, networkID string, nodeParams *NodeParams) (*Node, error)
+```
+
+```go
+func (nm *NetworkManager) CreateNetwork(ctx context.Context, params *NetworkParams) (*Network, error)
+```
+
+```go
+func (nm *NetworkManager) DeleteNetwork(ctx context.Context, networkID string) error
+```
+
+```go
+func (nm *NetworkManager) GetNetwork(networkID string) (*Network, error)
+```
+
+```go
+func (nm *NetworkManager) GetNodeStatus(ctx context.Context, networkID, nodeID string) (*NodeStatus, error)
+```
+
+```go
+func (nm *NetworkManager) ListNetworks() []*Network
+```
+
+```go
+func (nm *NetworkManager) RemoveNode(ctx context.Context, networkID, nodeID string) error
+```
+
+```go
+func (nm *NetworkManager) StartNetwork(ctx context.Context, networkID string) error
+```
+
+```go
+func (nm *NetworkManager) StopNetwork(ctx context.Context, networkID string) error
+```
+
+### NetworkParams
+
+NetworkParams defines parameters for creating a network
+
+
+### NetworkStatus
+
+NetworkStatus defines the status of a network
+
+
+### NetworkType
+
+NetworkType defines the type of network
+
+
+### Node
+
+Node represents a node in the network
+
+
+### NodeParams
+
+NodeParams defines parameters for adding a node
+
+
+### NodeStatus
+
+NodeStatus defines the status of a node
+
+
+### NodeType
+
+NodeType defines the type of node
+
+

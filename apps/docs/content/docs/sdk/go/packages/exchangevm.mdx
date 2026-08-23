@@ -1,0 +1,198 @@
+---
+title: exchangevm
+description: Package exchangevm
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/exchangevm"
+```
+
+## Functions
+
+### AwaitTxAccepted
+
+```go
+func AwaitTxAccepted(
+	c *Client,
+	ctx context.Context,
+	txID ids.ID,
+	freq time.Duration,
+	options ...rpc.Option,
+) error
+```
+
+AwaitTxAccepted waits for a transaction to be accepted
+
+
+## Types
+
+### AssetDefinition
+
+AssetDefinition defines an asset in genesis
+
+
+### Balance
+
+Balance represents an asset balance
+
+
+### BuildGenesisArgs
+
+BuildGenesisArgs are arguments for BuildGenesis
+
+
+### BuildGenesisReply
+
+BuildGenesisReply is the reply from BuildGenesis
+
+
+### Client
+
+Client for interacting with the Exchange VM (X-Chain)
+
+
+```go
+func NewClient(uri, chain string) *Client
+```
+
+```go
+func (c *Client) GetAllBalances(
+	ctx context.Context,
+	addr ids.ShortID,
+	includePartial bool,
+	options ...rpc.Option,
+) ([]Balance, error)
+```
+
+```go
+func (c *Client) GetAssetDescription(ctx context.Context, assetID string, options ...rpc.Option) (*GetAssetDescriptionReply, error)
+```
+
+```go
+func (c *Client) GetAtomicUTXOs(
+	ctx context.Context,
+	addrs []ids.ShortID,
+	sourceChain string,
+	limit uint32,
+	startAddress ids.ShortID,
+	startUTXOID ids.ID,
+	options ...rpc.Option,
+) ([][]byte, ids.ShortID, ids.ID, error)
+```
+
+```go
+func (c *Client) GetBalance(
+	ctx context.Context,
+	addr ids.ShortID,
+	assetID string,
+	includePartial bool,
+	options ...rpc.Option,
+) (*GetBalanceReply, error)
+```
+
+```go
+func (c *Client) GetBlock(ctx context.Context, blkID ids.ID, options ...rpc.Option) ([]byte, error)
+```
+
+```go
+func (c *Client) GetBlockByHeight(ctx context.Context, height uint64, options ...rpc.Option) ([]byte, error)
+```
+
+```go
+func (c *Client) GetHeight(ctx context.Context, options ...rpc.Option) (uint64, error)
+```
+
+```go
+func (c *Client) GetTx(ctx context.Context, txID ids.ID, options ...rpc.Option) ([]byte, error)
+```
+
+```go
+func (c *Client) GetTxFee(ctx context.Context, options ...rpc.Option) (uint64, uint64, error)
+```
+
+```go
+func (c *Client) GetTxStatus(ctx context.Context, txID ids.ID, options ...rpc.Option) (choices.Status, error)
+```
+
+```go
+func (c *Client) GetUTXOs(
+	ctx context.Context,
+	addrs []ids.ShortID,
+	limit uint32,
+	startAddress ids.ShortID,
+	startUTXOID ids.ID,
+	options ...rpc.Option,
+) ([][]byte, ids.ShortID, ids.ID, error)
+```
+
+```go
+func (c *Client) IssueTx(ctx context.Context, txBytes []byte, options ...rpc.Option) (ids.ID, error)
+```
+
+### GetAllBalancesArgs
+
+GetAllBalancesArgs are arguments for GetAllBalances
+
+
+### GetAllBalancesReply
+
+GetAllBalancesReply is the reply from GetAllBalances
+
+
+### GetAssetDescriptionArgs
+
+GetAssetDescriptionArgs are arguments for GetAssetDescription
+
+
+### GetAssetDescriptionReply
+
+GetAssetDescriptionReply is the reply from GetAssetDescription
+
+
+### GetBalanceArgs
+
+GetBalanceArgs are arguments for GetBalance
+
+
+### GetBalanceReply
+
+GetBalanceReply is the reply from GetBalance
+
+
+### GetTxFeeReply
+
+GetTxFeeReply is the response from a GetTxFee call
+
+
+### GetTxStatusReply
+
+GetTxStatusReply is the response from a GetTxStatus call
+
+
+### StaticClient
+
+StaticClient for interacting with the XVM static api
+
+
+```go
+func NewStaticClient(uri string) StaticClient
+```
+
+### WalletClient
+
+WalletClient for interacting with exchangevm managed wallet.
+
+Deprecated: Transactions should be issued using the
+`luxfi/node/wallet/chain/x.Wallet` utility.
+
+
+```go
+func NewWalletClient(uri, chain string) *WalletClient
+```
+
+```go
+func (c *WalletClient) IssueTx(ctx context.Context, txBytes []byte, options ...rpc.Option) (ids.ID, error)
+```
+

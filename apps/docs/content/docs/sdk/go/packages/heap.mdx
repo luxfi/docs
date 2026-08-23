@@ -1,0 +1,62 @@
+---
+title: heap
+description: Package heap provides heap data structure implementations.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/heap"
+```
+
+Package heap provides heap data structure implementations.
+
+
+## Types
+
+### Entry
+
+### Heap
+
+Heap is used to track objects of [I] by [Val].
+
+This data structure does not perform any synchronization and is not
+safe to use concurrently without external locking.
+
+
+```go
+func New[I any, V cmp.Ordered](items int, isMinHeap bool) *Heap[I, V]
+```
+
+```go
+func (h *Heap[I, V]) First() *Entry[I, V]
+```
+
+```go
+func (h *Heap[I, V]) Get(id ids.ID) (*Entry[I, V], bool)
+```
+
+```go
+func (h *Heap[I, V]) Has(id ids.ID) bool
+```
+
+```go
+func (h *Heap[I, V]) Items() []*Entry[I, V]
+```
+
+```go
+func (h *Heap[I, V]) Len() int
+```
+
+```go
+func (h *Heap[I, V]) Pop() *Entry[I, V]
+```
+
+```go
+func (h *Heap[I, V]) Push(e *Entry[I, V])
+```
+
+```go
+func (h *Heap[I, V]) Remove(index int) *Entry[I, V]
+```
+

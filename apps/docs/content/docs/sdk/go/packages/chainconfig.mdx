@@ -1,0 +1,206 @@
+---
+title: chainconfig
+description: Package chainconfig provides chain configuration utilities.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/chainconfig"
+```
+
+Package chainconfig provides chain configuration utilities.
+
+
+## Functions
+
+### CreateAirdropGenesis
+
+```go
+func CreateAirdropGenesis(
+	chainConfig *params.ChainConfig,
+	airdropAddresses []common.Address,
+	airdropAmount *big.Int,
+) *core.Genesis
+```
+
+CreateAirdropGenesis creates a genesis with airdrop allocations
+
+
+### CreateDevGenesis
+
+```go
+func CreateDevGenesis(chainID *big.Int) *core.Genesis
+```
+
+CreateDevGenesis creates a genesis suitable for development
+
+
+### DefaultChainConfig
+
+```go
+func DefaultChainConfig() *params.ChainConfig
+```
+
+DefaultChainConfig returns the default EVM chain configuration
+
+
+### DefaultGenesis
+
+```go
+func DefaultGenesis() *core.Genesis
+```
+
+DefaultGenesis creates a default genesis configuration
+
+
+### GetPresetChainConfig
+
+```go
+func GetPresetChainConfig(preset string, chainID *big.Int) *params.ChainConfig
+```
+
+GetPresetChainConfig returns a preset chain configuration by name
+
+
+### LocalChainConfig
+
+```go
+func LocalChainConfig(chainID *big.Int) *params.ChainConfig
+```
+
+LocalChainConfig returns a chain configuration suitable for local development
+
+
+### MainnetChainConfig
+
+```go
+func MainnetChainConfig(chainID *big.Int) *params.ChainConfig
+```
+
+MainnetChainConfig returns a chain configuration suitable for mainnet
+
+
+### ParseGenesis
+
+```go
+func ParseGenesis(data []byte) (*core.Genesis, error)
+```
+
+ParseGenesis parses genesis from JSON bytes
+
+
+### TestnetChainConfig
+
+```go
+func TestnetChainConfig(chainID *big.Int) *params.ChainConfig
+```
+
+TestnetChainConfig returns a chain configuration suitable for testnet
+
+
+### ValidateGenesis
+
+```go
+func ValidateGenesis(genesis *core.Genesis) error
+```
+
+ValidateGenesis validates a genesis configuration
+
+
+## Types
+
+### ChainConfigBuilder
+
+ChainConfigBuilder helps construct EVM chain configurations
+
+
+```go
+func NewChainConfigBuilder() *ChainConfigBuilder
+```
+
+```go
+func (b *ChainConfigBuilder) Build() *params.ChainConfig
+```
+
+```go
+func (b *ChainConfigBuilder) GetAllowFeeRecipients() bool
+```
+
+```go
+func (b *ChainConfigBuilder) GetFeeConfig() interface{}
+```
+
+```go
+func (b *ChainConfigBuilder) GetNetworkUpgrades() map[string]interface{}
+```
+
+```go
+func (b *ChainConfigBuilder) GetPrecompiles() map[string]interface{}
+```
+
+```go
+func (b *ChainConfigBuilder) WithAllowFeeRecipients(allow bool) *ChainConfigBuilder
+```
+
+```go
+func (b *ChainConfigBuilder) WithChainID(chainID *big.Int) *ChainConfigBuilder
+```
+
+```go
+func (b *ChainConfigBuilder) WithFeeConfig(feeConfig interface{}) *ChainConfigBuilder
+```
+
+```go
+func (b *ChainConfigBuilder) WithNetworkUpgrade(name string, timestamp *big.Int) *ChainConfigBuilder
+```
+
+```go
+func (b *ChainConfigBuilder) WithPrecompile(address common.Address, config interface{}) *ChainConfigBuilder
+```
+
+### GenesisBuilder
+
+GenesisBuilder helps construct EVM genesis configurations
+
+
+```go
+func NewGenesisBuilder() *GenesisBuilder
+```
+
+```go
+func (b *GenesisBuilder) Build() *core.Genesis
+```
+
+```go
+func (b *GenesisBuilder) ToJSON() ([]byte, error)
+```
+
+```go
+func (b *GenesisBuilder) WithAllocation(address common.Address, balance *big.Int) *GenesisBuilder
+```
+
+```go
+func (b *GenesisBuilder) WithAllocations(allocations map[common.Address]*big.Int) *GenesisBuilder
+```
+
+```go
+func (b *GenesisBuilder) WithChainConfig(config *params.ChainConfig) *GenesisBuilder
+```
+
+```go
+func (b *GenesisBuilder) WithContract(address common.Address, balance *big.Int, code []byte, storage map[common.Hash]common.Hash) *GenesisBuilder
+```
+
+```go
+func (b *GenesisBuilder) WithExtraData(extraData []byte) *GenesisBuilder
+```
+
+```go
+func (b *GenesisBuilder) WithGasLimit(gasLimit uint64) *GenesisBuilder
+```
+
+```go
+func (b *GenesisBuilder) WithTimestamp(timestamp uint64) *GenesisBuilder
+```
+

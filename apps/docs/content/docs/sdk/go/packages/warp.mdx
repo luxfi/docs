@@ -1,0 +1,49 @@
+---
+title: warp
+description: Package warp provides warp message signing and aggregation utilities.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/warp"
+```
+
+Package warp provides warp message signing and aggregation utilities.
+
+
+## Functions
+
+### SignMessage
+
+```go
+func SignMessage(logger luxlog.Logger, signatureAggregatorEndpoint string, message, justification, signingChainID string, quorumPercentage uint64) (*warp.Envelope, error)
+```
+
+SignMessage sends a request to the signature aggregator to sign a message.
+It returns the signed warp message or an error if the operation fails.
+
+
+## Types
+
+### AggregateSignatureRequest
+
+AggregateSignatureRequest defines the request structure for signature aggregation
+
+
+### AggregateSignatureResponse
+
+AggregateSignatureResponse defines the response structure for signature aggregation
+
+
+### Client
+
+Client interface for interacting with the IPCS endpoint
+
+Deprecated: The IPCs API is deprecated. The Index API should be used instead.
+
+
+```go
+func NewClient(uri string) Client
+```
+

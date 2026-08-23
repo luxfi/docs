@@ -1,0 +1,432 @@
+---
+title: contract
+description: Package contract provides smart contract interaction utilities.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/contract"
+```
+
+Package contract provides smart contract interaction utilities.
+
+
+## Functions
+
+### CallToMethod
+
+```go
+func CallToMethod(
+	rpcURL string,
+	contractAddress crypto.Address,
+	methodSpec string,
+	params ...interface{},
+) ([]interface{}, error)
+```
+
+### ContractAddressIsInGenesisData
+
+```go
+func ContractAddressIsInGenesisData(
+	genesisData []byte,
+	contractAddress crypto.Address,
+) (bool, error)
+```
+
+### DebugTraceCall
+
+```go
+func DebugTraceCall(
+	rpcURL string,
+	from crypto.Address,
+	privateKey string,
+	contractAddress crypto.Address,
+	payment *big.Int,
+	methodSpec string,
+	params ...interface{},
+) (map[string]interface{}, error)
+```
+
+### DeployContract
+
+```go
+func DeployContract(
+	rpcURL string,
+	privateKey string,
+	binBytes []byte,
+	methodSpec string,
+	params ...interface{},
+) (crypto.Address, error)
+```
+
+### DeployERC20
+
+```go
+func DeployERC20(
+	rpcURL string,
+	privateKey string,
+	symbol string,
+	funded crypto.Address,
+	supply *big.Int,
+) (crypto.Address, error)
+```
+
+### GetBlockchainAirdropKeyInfo
+
+```go
+func GetBlockchainAirdropKeyInfo(
+	app *application.Lux,
+	network models.Network,
+	blockchainName string,
+	genesisData []byte,
+) (string, string, string, error)
+```
+
+GetBlockchainAirdropKeyInfo looks for known private keys inside a given genesis,
+giving preference to the ones expected to be default.
+It searches for:
+1) default CLI allocation key for blockchains
+2) ewoq
+3) all other stored keys managed by CLI
+Returns address + private key when found.
+
+
+### GetBlockchainDesc
+
+```go
+func GetBlockchainDesc(
+	chainSpec ChainSpec,
+) (string, error)
+```
+
+### GetBlockchainEndpoints
+
+```go
+func GetBlockchainEndpoints(
+	app *application.Lux,
+	network models.Network,
+	chainSpec ChainSpec,
+	promptForRPCEndpoint bool,
+	promptForWSEndpoint bool,
+) (string, string, error)
+```
+
+### GetBlockchainGenesis
+
+```go
+func GetBlockchainGenesis(
+	app *application.Lux,
+	network models.Network,
+	chainSpec ChainSpec,
+) ([]byte, error)
+```
+
+GetBlockchainGenesis gets the deployed blockchain genesis.
+
+
+### GetBlockchainID
+
+```go
+func GetBlockchainID(
+	app *application.Lux,
+	network models.Network,
+	chainSpec ChainSpec,
+) (ids.ID, error)
+```
+
+### GetBlockchainIDFromAlias
+
+```go
+func GetBlockchainIDFromAlias(endpoint string, alias string) (ids.ID, error)
+```
+
+GetBlockchainIDFromAlias retrieves a blockchain ID from its alias using the info API.
+
+
+### GetBlockchainTx
+
+```go
+func GetBlockchainTx(endpoint string, blockchainID ids.ID) (*txs.CreateChainTx, error)
+```
+
+GetBlockchainTx retrieves a blockchain CreateChainTx from the network.
+
+
+### GetCChainWarpInfo
+
+```go
+func GetCChainWarpInfo(
+	app *application.Lux,
+	network models.Network,
+) (string, string, error)
+```
+
+### GetContractOwner
+
+```go
+func GetContractOwner(
+	rpcURL string,
+	contractAddress crypto.Address,
+) (crypto.Address, error)
+```
+
+GetContractOwner gets owner for https://docs.openzeppelin.com/contracts/2.x/api/ownership#Ownable-owner contracts
+
+
+### GetDefaultBlockchainAirdropKeyInfo
+
+```go
+func GetDefaultBlockchainAirdropKeyInfo(
+	app *application.Lux,
+	blockchainName string,
+) (string, string, string, error)
+```
+
+GetDefaultBlockchainAirdropKeyInfo returns information for the blockchain default allocation key.
+If found, returns key name, address, private key.
+
+
+### GetEVMChainGenesisNativeMinterAdmin
+
+```go
+func GetEVMChainGenesisNativeMinterAdmin(
+	app *application.Lux,
+	network models.Network,
+	chainSpec ChainSpec,
+) (bool, bool, string, string, string, error)
+```
+
+### GetEVMChainGenesisNativeMinterManager
+
+```go
+func GetEVMChainGenesisNativeMinterManager(
+	app *application.Lux,
+	network models.Network,
+	chainSpec ChainSpec,
+) (bool, bool, string, string, string, error)
+```
+
+### GetEVMChainGenesisSupply
+
+```go
+func GetEVMChainGenesisSupply(
+	app *application.Lux,
+	network models.Network,
+	chainSpec ChainSpec,
+) (*big.Int, error)
+```
+
+### GetEVMChainPrefundedKey
+
+```go
+func GetEVMChainPrefundedKey(
+	app *application.Lux,
+	network models.Network,
+	chainSpec ChainSpec,
+) (string, string, error)
+```
+
+GetEVMChainPrefundedKey gets the deployed blockchain genesis, and then looks for known
+private keys inside it.
+Returns address + private key when found.
+
+
+### GetNetworkID
+
+```go
+func GetNetworkID(
+	app *application.Lux,
+	network models.Network,
+	chainSpec ChainSpec,
+) (ids.ID, error)
+```
+
+### GetSmartContractCallResult
+
+```go
+func GetSmartContractCallResult[T any](methodName string, out []interface{}) (T, error)
+```
+
+### GetWarpInfo
+
+```go
+func GetWarpInfo(
+	app *application.Lux,
+	network models.Network,
+	chainSpec ChainSpec,
+	promptForRegistry bool,
+	promptForMessenger bool,
+	defaultToLatestReleasedMessenger bool,
+) (string, string, error)
+```
+
+### ParseSpec
+
+```go
+func ParseSpec(
+	esp string,
+	indexedFields []int,
+	constructor bool,
+	event bool,
+	paid bool,
+	view bool,
+	params ...interface{},
+) (string, string, error)
+```
+
+### PromptChain
+
+```go
+func PromptChain(
+	app *application.Lux,
+	network models.Network,
+	prompt string,
+	blockchainNameToAvoid string,
+	chainSpec *ChainSpec,
+) (bool, error)
+```
+
+### SearchForManagedKey
+
+```go
+func SearchForManagedKey(
+	app *application.Lux,
+	network models.Network,
+	address string,
+	includeEwoq bool,
+) (bool, string, string, string, error)
+```
+
+### TransferOwnership
+
+```go
+func TransferOwnership(
+	rpcURL string,
+	contractAddress crypto.Address,
+	ownerPrivateKey string,
+	newOwner crypto.Address,
+) error
+```
+
+### TxToMethod
+
+```go
+func TxToMethod(
+	rpcURL string,
+	generateRawTxOnly bool,
+	from crypto.Address,
+	privateKey string,
+	contractAddress crypto.Address,
+	payment *big.Int,
+	description string,
+	errorSignatureToError map[string]error,
+	methodSpec string,
+	params ...interface{},
+) (*types.Transaction, *types.Receipt, error)
+```
+
+TxToMethod gets method name and types from [methodsSpec], then calls it
+at the smart contract [contractAddress] with the given [params].
+Also sends [payment] tokens to it.
+
+
+### TxToMethodWithWarpMessage
+
+```go
+func TxToMethodWithWarpMessage(
+	rpcURL string,
+	generateRawTxOnly bool,
+	from crypto.Address,
+	privateKey string,
+	contractAddress crypto.Address,
+	warpMessage *luxWarp.Envelope,
+	payment *big.Int,
+	description string,
+	errorSignatureToError map[string]error,
+	methodSpec string,
+	params ...interface{},
+) (*types.Transaction, *types.Receipt, error)
+```
+
+TxToMethodWithWarpMessage gets method name and types from [methodsSpec], then calls it
+at the smart contract [contractAddress] with the given [params].
+Sends [warpMessage] on the same call, whose signature is
+going to be verified previously to pass it to the method.
+Also sends [payment] tokens to it.
+
+
+### UnpackLog
+
+```go
+func UnpackLog(
+	eventSpec string,
+	indexedFields []int,
+	log types.Log,
+	event interface{},
+) error
+```
+
+## Types
+
+### ChainSpec
+
+```go
+func (cs *ChainSpec) AddToCmd(
+	cmd *cobra.Command,
+	goalFmt string,
+)
+```
+
+```go
+func (cs *ChainSpec) CheckMutuallyExclusiveFields() error
+```
+
+```go
+func (cs *ChainSpec) Defined() bool
+```
+
+```go
+func (cs *ChainSpec) SetEnabled(
+	blockchainNameFlagEnabled bool,
+	cChainFlagEnabled bool,
+	pChainFlagEnabled bool,
+	xChainFlagEnabled bool,
+	blockchainIDFlagEnabled bool,
+)
+```
+
+```go
+func (cs *ChainSpec) SetFlagNames(
+	blockchainNameFlagName string,
+	cChainFlagName string,
+	pChainFlagName string,
+	xChainFlagName string,
+	blockchainIDFlagName string,
+)
+```
+
+### PrivateKeyFlags
+
+```go
+func (pkf *PrivateKeyFlags) AddToCmd(
+	cmd *cobra.Command,
+	goal string,
+)
+```
+
+```go
+func (pkf *PrivateKeyFlags) GetPrivateKey(
+	app *application.Lux,
+	genesisPrivateKey string,
+) (string, error)
+```
+
+```go
+func (pkf *PrivateKeyFlags) SetFlagNames(
+	privateKeyFlagName string,
+	keyFlagName string,
+	genesisKeyFlagName string,
+)
+```
+

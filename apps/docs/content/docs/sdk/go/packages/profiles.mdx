@@ -1,0 +1,110 @@
+---
+title: profiles
+description: Package profiles provides embedded network tuning profiles for the Lux SDK.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/profiles"
+```
+
+Package profiles provides embedded network tuning profiles for the Lux SDK.
+These profiles configure consensus, health, and network parameters for different
+deployment scenarios (mainnet, testnet, devnet, dev mode).
+
+Available profiles:
+  - standard: Conservative mainnet settings for production-safe operation
+  - fast:     Balanced testnet settings for development
+  - turbo:    Aggressive 3-node local network with 2/3 quorum
+  - ultra:    Maximum aggression for single-node dev mode with K=1 consensus
+
+
+## Functions
+
+### DefaultProfileForNetwork
+
+```go
+func DefaultProfileForNetwork(networkName string) string
+```
+
+DefaultProfileForNetwork returns the default profile name for a network type.
+For local development, all networks use turbo for ultra-fast consensus.
+
+
+### GetProfileMap
+
+```go
+func GetProfileMap(name string) (map[string]interface{}, error)
+```
+
+GetProfileMap loads a profile and returns it as map[string]interface&#123;}.
+Useful for direct JSON manipulation.
+
+
+### IsByzantineSafe
+
+```go
+func IsByzantineSafe(sampleSize, quorumSize int) bool
+```
+
+IsByzantineSafe reports whether a sample/quorum pair satisfies the consensus
+engine's Byzantine-safety invariant. Use it to validate any consensus config.
+
+
+### ListProfiles
+
+```go
+func ListProfiles() []string
+```
+
+ListProfiles returns names of all available profiles, sorted alphabetically.
+
+
+### ValidateProfile
+
+```go
+func ValidateProfile(data map[string]interface{}) error
+```
+
+ValidateProfile checks that a profile has required fields.
+
+
+## Types
+
+### ConsensusConfig
+
+ConsensusConfig holds consensus tuning parameters.
+
+
+```go
+func Consensus(n int) ConsensusConfig
+```
+
+### HealthConfig
+
+HealthConfig holds health check tuning parameters.
+
+
+### NetworkConfig
+
+NetworkConfig holds network tuning parameters.
+
+
+### Profile
+
+Profile represents a network tuning profile.
+
+
+```go
+func GetProfile(name string) (*Profile, error)
+```
+
+```go
+func MustGetProfile(name string) *Profile
+```
+
+```go
+func (p *Profile) ToNodeConfig() map[string]interface{}
+```
+

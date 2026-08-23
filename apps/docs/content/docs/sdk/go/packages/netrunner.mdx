@@ -1,0 +1,79 @@
+---
+title: netrunner
+description: Package netrunner provides integration with the Lux netrunner tool for managing test networks and blockchain deployments.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/netrunner"
+```
+
+Package netrunner provides integration with the Lux netrunner tool
+for managing test networks and blockchain deployments.
+
+
+## Types
+
+### Client
+
+Client wraps the netrunner client with additional functionality
+
+
+```go
+func NewClient(config *Config, logger log.Logger) (*Client, error)
+```
+
+```go
+func (c *Client) AddNode(ctx context.Context, name string, execPath string, opts ...client.OpOption) (*rpcpb.AddNodeResponse, error)
+```
+
+```go
+func (c *Client) Close() error
+```
+
+```go
+func (c *Client) CreateChains(ctx context.Context, specs []*rpcpb.BlockchainSpec) (*rpcpb.CreateBlockchainsResponse, error)
+```
+
+```go
+func (c *Client) Health(ctx context.Context) (*rpcpb.HealthResponse, error)
+```
+
+```go
+func (c *Client) RemoveNode(ctx context.Context, name string) error
+```
+
+```go
+func (c *Client) RestartNode(ctx context.Context, name string, opts ...client.OpOption) error
+```
+
+```go
+func (c *Client) Start(ctx context.Context, execPath string, opts ...client.OpOption) (*rpcpb.StartResponse, error)
+```
+
+```go
+func (c *Client) Status(ctx context.Context) (*rpcpb.StatusResponse, error)
+```
+
+```go
+func (c *Client) Stop(ctx context.Context) error
+```
+
+```go
+func (c *Client) URIs(ctx context.Context) ([]string, error)
+```
+
+```go
+func (c *Client) WaitForHealthy(ctx context.Context, timeout time.Duration) error
+```
+
+### Config
+
+Config holds configuration for the netrunner client
+
+
+```go
+func DefaultConfig() *Config
+```
+

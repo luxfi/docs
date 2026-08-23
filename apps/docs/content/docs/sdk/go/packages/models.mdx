@@ -1,0 +1,485 @@
+---
+title: models
+description: Package models provides data structures and types used throughout the SDK.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/models"
+```
+
+Package models provides data structures and types used throughout the SDK.
+
+Copyright (C) 2022, Lux Partners Limited All rights reserved.
+See the file LICENSE for licensing terms.
+
+Copyright (C) 2022, Lux Partners Limited All rights reserved.
+See the file LICENSE for licensing terms.
+
+
+## Functions
+
+### GetRPCEndpoint
+
+```go
+func GetRPCEndpoint(baseEndpoint string, blockchainID string) string
+```
+
+GetRPCEndpoint returns the RPC endpoint for a given base endpoint and blockchain ID
+
+
+### GetWSEndpoint
+
+```go
+func GetWSEndpoint(baseEndpoint string, blockchainID string) string
+```
+
+GetWSEndpoint returns the WebSocket endpoint for a given base endpoint and blockchain ID
+
+
+### HostAnsibleIDToCloudID
+
+```go
+func HostAnsibleIDToCloudID(hostAnsibleID string) (string, string, error)
+```
+
+HostAnsibleIDToCloudID converts a host Ansible ID to a cloud ID.
+
+
+### HostCloudIDToAnsibleID
+
+```go
+func HostCloudIDToAnsibleID(cloudService string, hostCloudID string) (string, error)
+```
+
+### NewHostConnection
+
+```go
+func NewHostConnection(h *Host, port uint) (*goph.Client, error)
+```
+
+## Types
+
+### BaseMigration
+
+BaseMigration represents a base chain migration
+
+
+### BridgeRoute
+
+BridgeRoute represents a cross-chain route
+
+
+### CLIDependencyMap
+
+CLIDependencyMap represents CLI dependency versions
+
+
+### ChainValidator
+
+ChainValidator is a backward compatibility alias for Validator.
+
+
+### CloudConfig
+
+```go
+func (ccm *CloudConfig) GetAPIInstanceIDsForRegion(region string) []string
+```
+
+```go
+func (ccm *CloudConfig) GetAllAPIInstanceIDs() []string
+```
+
+```go
+func (ccm *CloudConfig) GetAllInstanceIDs() []string
+```
+
+```go
+func (ccm *CloudConfig) GetInstanceIDsForRegion(region string) []string
+```
+
+```go
+func (ccm *CloudConfig) GetRegions() []string
+```
+
+### ClusterConfig
+
+```go
+func (cc *ClusterConfig) GetAPIHosts(hosts []*Host) []*Host
+```
+
+```go
+func (cc *ClusterConfig) GetCloudIDs() []string
+```
+
+```go
+func (cc *ClusterConfig) GetHostRoles(nodeConf NodeConfig) []string
+```
+
+```go
+func (cc *ClusterConfig) GetValidatorHosts(hosts []*Host) []*Host
+```
+
+```go
+func (cc *ClusterConfig) IsAPIHost(hostCloudID string) bool
+```
+
+```go
+func (cc *ClusterConfig) IsLuxdHost(hostCloudID string) bool
+```
+
+### ClustersConfig
+
+### ClustersConfigV0
+
+### ElasticChain
+
+### ElasticChainConfig
+
+### ElasticNet
+
+ElasticNet is an alias for ElasticChain (deprecated)
+
+
+### ElasticNetConfig
+
+ElasticNetConfig is an alias for backward compatibility (deprecated)
+
+
+### ExportCluster
+
+### ExportNode
+
+### Exportable
+
+### ExtraNetworkData
+
+### GCPConfig
+
+### GenesisParams
+
+GenesisParams represents network genesis parameters
+
+
+### GovernanceProposal
+
+GovernanceProposal for base migrations and upgrades
+
+
+### Host
+
+```go
+func (h *Host) Command(script string, env []string, timeout time.Duration) ([]byte, error)
+```
+
+```go
+func (h *Host) Connect(port uint) error
+```
+
+```go
+func (h *Host) Connected() bool
+```
+
+```go
+func (h *Host) CreateTempDir() (string, error)
+```
+
+```go
+func (h *Host) CreateTempFile() (string, error)
+```
+
+```go
+func (h *Host) Disconnect() error
+```
+
+```go
+func (h *Host) Download(remoteFile string, localFile string, timeout time.Duration) error
+```
+
+```go
+func (h *Host) ExpandHome(path string) string
+```
+
+```go
+func (h *Host) FileExists(path string) (bool, error)
+```
+
+```go
+func (h *Host) Forward(httpRequest string, timeout time.Duration) ([]byte, error)
+```
+
+```go
+func (h *Host) GetAnsibleInventoryRecord() string
+```
+
+```go
+func (h *Host) GetCloudID() string
+```
+
+```go
+func (h *Host) IsSystemD() bool
+```
+
+```go
+func (h *Host) MkdirAll(remoteDir string, timeout time.Duration) error
+```
+
+```go
+func (h *Host) ReadFileBytes(remoteFile string, timeout time.Duration) ([]byte, error)
+```
+
+```go
+func (h *Host) Remove(path string, recursive bool) error
+```
+
+```go
+func (h *Host) StreamSSHCommand(command string, env []string, timeout time.Duration) error
+```
+
+```go
+func (h *Host) UntimedForward(httpRequest string) ([]byte, error)
+```
+
+```go
+func (h *Host) UntimedMkdirAll(remoteDir string) error
+```
+
+```go
+func (h *Host) Upload(localFile string, remoteFile string, timeout time.Duration) error
+```
+
+```go
+func (h *Host) UploadBytes(data []byte, remoteFile string, timeout time.Duration) error
+```
+
+```go
+func (h *Host) WaitForPort(port uint, timeout time.Duration) error
+```
+
+```go
+func (h *Host) WaitForSSHShell(timeout time.Duration) error
+```
+
+### L2Config
+
+L2Config represents a based rollup configuration
+
+
+### L3Config
+
+L3Config for nested rollups
+
+
+### LuxCompatiblity
+
+### LuxdCompatiblity
+
+LuxdCompatiblity is an alias for backward compatibility
+
+
+### MigrationTx
+
+MigrationTx represents a chain to L1 migration transaction
+
+
+### MultisigTxInfo
+
+### Network
+
+```go
+func ConvertClusterToNetwork(network Network) Network
+```
+
+```go
+func GetNetworkFromSidecarNetworkName(name string) Network
+```
+
+```go
+func NetworkFromNetworkID(networkID uint32) Network
+```
+
+```go
+func NetworkFromString(s string) Network
+```
+
+```go
+func NewDevnetNetwork() Network
+```
+
+```go
+func NewLocalNetwork() Network
+```
+
+```go
+func NewMainnetNetwork() Network
+```
+
+```go
+func NewNetworkFromCluster(network Network, clusterName string) Network
+```
+
+```go
+func NewTestnetNetwork() Network
+```
+
+```go
+func (s Network) BlockchainEndpoint(blockchainID string) string
+```
+
+```go
+func (s Network) BootstrappingContext() (context.Context, func())
+```
+
+```go
+func (s Network) CChainEndpoint() string
+```
+
+```go
+func (s Network) CChainWSEndpoint() string
+```
+
+```go
+func (s Network) ClusterName() string
+```
+
+```go
+func (s Network) Endpoint() string
+```
+
+```go
+func (s Network) Equals(other Network) bool
+```
+
+```go
+func (s Network) GenesisParams() *GenesisParams
+```
+
+```go
+func (s Network) HandlePublicNetworkSimulation() bool
+```
+
+```go
+func (s Network) ID() uint32
+```
+
+```go
+func (s Network) Kind() Network
+```
+
+```go
+func (s Network) Name() string
+```
+
+```go
+func (s Network) NetworkID() (uint32, error)
+```
+
+```go
+func (s Network) NetworkIDFlagValue() string
+```
+
+```go
+func (s Network) SDKNetwork() interface{}
+```
+
+```go
+func (s Network) String() string
+```
+
+```go
+func (s Network) WSEndpoints() []string
+```
+
+### NetworkData
+
+### NetworkVersions
+
+NetworkVersions represents versions for a network
+
+
+### NodeConfig
+
+### NodeResult
+
+### NodeResults
+
+```go
+func (nr *NodeResults) AddResult(nodeID string, value interface{}, err error)
+```
+
+```go
+func (nr *NodeResults) GetErrorHostMap() map[string]error
+```
+
+```go
+func (nr *NodeResults) GetErrorHosts() []string
+```
+
+```go
+func (nr *NodeResults) GetNodeList() []string
+```
+
+```go
+func (nr *NodeResults) GetResultMap() map[string]interface{}
+```
+
+```go
+func (nr *NodeResults) GetResults() []NodeResult
+```
+
+```go
+func (nr *NodeResults) HasErrors() bool
+```
+
+```go
+func (nr *NodeResults) HasIDWithError(id string) bool
+```
+
+```go
+func (nr *NodeResults) Len() int
+```
+
+### PermissionlessValidators
+
+### PreconfirmConfig
+
+PreconfirmConfig represents pre-confirmation settings
+
+
+### RegionConfig
+
+### Sidecar
+
+```go
+func (sc Sidecar) GetVMID() (string, error)
+```
+
+```go
+func (sc *Sidecar) NetworkDataIsEmpty() bool
+```
+
+### TokenInfo
+
+### VMCompatibility
+
+### VMType
+
+```go
+func VMTypeFromString(s string) VMType
+```
+
+```go
+func (v VMType) Org() string
+```
+
+```go
+func (v VMType) RepoName() string
+```
+
+### Validator
+
+Validator represents a validator on any network layer (primary, L1, L2, L3)
+As above, so below - validators are unified across all network layers
+
+

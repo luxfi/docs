@@ -1,0 +1,144 @@
+---
+title: wallet
+description: Package wallet provides multi-chain wallet implementation.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/wallet"
+```
+
+Package wallet provides multi-chain wallet implementation.
+
+
+## Types
+
+### PQWallet
+
+PQWallet is the post-quantum native wallet facade. It stores
+PQAccounts (ML-DSA-65) and RecoveryAccounts (SLH-DSA-SHAKE-192s) by
+their canonical 48-byte AccountID, exposes Sign on accounts by ID,
+and is safe for concurrent use across goroutines.
+
+PQWallet is intentionally separate from the secp256k1 Wallet type in
+this package: classical-compat keys live in a strictly disjoint
+keyring so a chain that refuses WalletSchemeSecp256k1 cannot
+accidentally see one. Callers that mix classical and PQ keys hold
+both Wallet and PQWallet instances.
+
+
+```go
+func NewPQWallet() *PQWallet
+```
+
+```go
+func (w *PQWallet) Account(id account.AccountID) (*account.PQAccount, bool)
+```
+
+```go
+func (w *PQWallet) AccountIDs() []account.AccountID
+```
+
+```go
+func (w *PQWallet) AddAccount(a *account.PQAccount) error
+```
+
+```go
+func (w *PQWallet) AddRecovery(r *account.RecoveryAccount) error
+```
+
+```go
+func (w *PQWallet) Recovery(id account.AccountID) (*account.RecoveryAccount, bool)
+```
+
+```go
+func (w *PQWallet) RemoveAccount(id account.AccountID) bool
+```
+
+```go
+func (w *PQWallet) SignTx(id account.AccountID, env account.TxAuthEnvelope) error
+```
+
+### TransferInput
+
+TransferInput represents an input to a transfer transaction
+
+
+### TransferOutput
+
+TransferOutput represents an output from a transfer transaction
+
+
+### TransferTx
+
+TransferTx represents a transfer transaction
+
+
+### UTXO
+
+UTXO represents an unspent transaction output
+
+
+### Wallet
+
+Wallet manages keys and transactions for personal usage
+
+
+```go
+func New(networkID uint32, chainID ids.ID) *Wallet
+```
+
+```go
+func (w *Wallet) AddUTXO(utxo *UTXO)
+```
+
+```go
+func (w *Wallet) CreateTransferTx(
+	to ids.ShortID,
+	assetID ids.ID,
+	amount uint64,
+	memo []byte,
+) (*TransferTx, error)
+```
+
+```go
+func (w *Wallet) GenerateKey() (ids.ShortID, error)
+```
+
+```go
+func (w *Wallet) GetAddress() (ids.ShortID, error)
+```
+
+```go
+func (w *Wallet) GetAllAddresses() []ids.ShortID
+```
+
+```go
+func (w *Wallet) GetBLSKey() (*bls.SecretKey, error)
+```
+
+```go
+func (w *Wallet) GetBalance(assetID ids.ID) uint64
+```
+
+```go
+func (w *Wallet) GetUTXOs(assetID ids.ID, amount uint64) ([]*UTXO, uint64, error)
+```
+
+```go
+func (w *Wallet) ImportKey(privateKey crypto.PrivateKey) (ids.ShortID, error)
+```
+
+```go
+func (w *Wallet) RemoveUTXO(utxoID ids.ID)
+```
+
+```go
+func (w *Wallet) SetBLSKey(key *bls.SecretKey)
+```
+
+```go
+func (w *Wallet) Sign(ctx context.Context, tx chain.Transaction) error
+```
+

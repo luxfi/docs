@@ -1,0 +1,514 @@
+---
+title: platformvm
+description: Package platformvm
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/platformvm"
+```
+
+## Functions
+
+### AwaitTxAccepted
+
+```go
+func AwaitTxAccepted(
+	c *Client,
+	ctx context.Context,
+	txID ids.ID,
+	freq time.Duration,
+	options ...rpc.Option,
+) error
+```
+
+### GetDeactivationOwners
+
+```go
+func GetDeactivationOwners(
+	c *Client,
+	ctx context.Context,
+	validationIDs ...ids.ID,
+) (map[ids.ID]fx.Owner, error)
+```
+
+GetDeactivationOwners returns a map of validation ID to deactivation owners
+
+
+### GetNetOwners
+
+```go
+func GetNetOwners(
+	c *Client,
+	ctx context.Context,
+	chainIDs ...ids.ID,
+) (map[ids.ID]fx.Owner, error)
+```
+
+GetNetOwners returns a map of chain ID to current chain's owner
+
+
+### GetOwners
+
+```go
+func GetOwners(
+	c *Client,
+	ctx context.Context,
+	chainIDs []ids.ID,
+	validationIDs []ids.ID,
+) (map[ids.ID]fx.Owner, error)
+```
+
+GetOwners returns the union of GetNetOwners and GetDeactivationOwners.
+
+
+## Types
+
+### APIBlockchain
+
+APIBlockchain represents a blockchain in the API response.
+NetID is the ID of the network that validates this blockchain.
+
+
+### APINet
+
+APINet represents a net in the API
+
+
+### Client
+
+```go
+func NewClient(uri string) *Client
+```
+
+```go
+func NewClientWithNetworkID(uri string, networkID uint32) *Client
+```
+
+```go
+func (c *Client) GetAtomicUTXOs(
+	ctx context.Context,
+	addrs []ids.ShortID,
+	sourceChain string,
+	limit uint32,
+	startAddress ids.ShortID,
+	startUTXOID ids.ID,
+	options ...rpc.Option,
+) ([][]byte, ids.ShortID, ids.ID, error)
+```
+
+```go
+func (c *Client) GetBalance(ctx context.Context, addrs []ids.ShortID, options ...rpc.Option) (*GetBalanceResponse, error)
+```
+
+```go
+func (c *Client) GetBlock(ctx context.Context, blockID ids.ID, options ...rpc.Option) ([]byte, error)
+```
+
+```go
+func (c *Client) GetBlockByHeight(ctx context.Context, height uint64, options ...rpc.Option) ([]byte, error)
+```
+
+```go
+func (c *Client) GetBlockchainStatus(ctx context.Context, blockchainID string, options ...rpc.Option) (status.BlockchainStatus, error)
+```
+
+```go
+func (c *Client) GetBlockchains(ctx context.Context, options ...rpc.Option) ([]APIBlockchain, error)
+```
+
+```go
+func (c *Client) GetCurrentSupply(ctx context.Context, chainID ids.ID, options ...rpc.Option) (uint64, uint64, error)
+```
+
+```go
+func (c *Client) GetCurrentValidators(
+	ctx context.Context,
+	chainID ids.ID,
+	nodeIDs []ids.NodeID,
+	options ...rpc.Option,
+) ([]ClientPermissionlessValidator, error)
+```
+
+```go
+func (c *Client) GetFeeConfig(ctx context.Context, options ...rpc.Option) (*gas.Config, error)
+```
+
+```go
+func (c *Client) GetFeeState(ctx context.Context, options ...rpc.Option) (
+	gas.State,
+	gas.Price,
+	time.Time,
+	error,
+)
+```
+
+```go
+func (c *Client) GetHeight(ctx context.Context, options ...rpc.Option) (uint64, error)
+```
+
+```go
+func (c *Client) GetL1Validator(
+	ctx context.Context,
+	validationID ids.ID,
+	options ...rpc.Option,
+) (L1Validator, uint64, error)
+```
+
+```go
+func (c *Client) GetMinStake(ctx context.Context, chainID ids.ID, options ...rpc.Option) (uint64, uint64, error)
+```
+
+```go
+func (c *Client) GetNet(ctx context.Context, chainID ids.ID, options ...rpc.Option) (GetNetClientResponse, error)
+```
+
+```go
+func (c *Client) GetNets(ctx context.Context, ids []ids.ID, options ...rpc.Option) ([]ClientNet, error)
+```
+
+```go
+func (c *Client) GetProposedHeight(ctx context.Context, options ...rpc.Option) (uint64, error)
+```
+
+```go
+func (c *Client) GetRewardUTXOs(ctx context.Context, args *api.GetTxArgs, options ...rpc.Option) ([][]byte, error)
+```
+
+```go
+func (c *Client) GetStake(
+	ctx context.Context,
+	addrs []ids.ShortID,
+	validatorsOnly bool,
+	options ...rpc.Option,
+) (map[ids.ID]uint64, [][]byte, error)
+```
+
+```go
+func (c *Client) GetStakingAssetID(ctx context.Context, chainID ids.ID, options ...rpc.Option) (ids.ID, error)
+```
+
+```go
+func (c *Client) GetTimestamp(ctx context.Context, options ...rpc.Option) (time.Time, error)
+```
+
+```go
+func (c *Client) GetTotalStake(ctx context.Context, chainID ids.ID, options ...rpc.Option) (uint64, error)
+```
+
+```go
+func (c *Client) GetTx(ctx context.Context, txID ids.ID, options ...rpc.Option) ([]byte, error)
+```
+
+```go
+func (c *Client) GetTxStatus(ctx context.Context, txID ids.ID, options ...rpc.Option) (*GetTxStatusResponse, error)
+```
+
+```go
+func (c *Client) GetUTXOs(
+	ctx context.Context,
+	addrs []ids.ShortID,
+	limit uint32,
+	startAddress ids.ShortID,
+	startUTXOID ids.ID,
+	options ...rpc.Option,
+) ([][]byte, ids.ShortID, ids.ID, error)
+```
+
+```go
+func (c *Client) GetValidatorFeeConfig(ctx context.Context, options ...rpc.Option) (*fee.Config, error)
+```
+
+```go
+func (c *Client) GetValidatorFeeState(ctx context.Context, options ...rpc.Option) (
+	gas.Gas,
+	gas.Price,
+	time.Time,
+	error,
+)
+```
+
+```go
+func (c *Client) GetValidatorsAt(
+	ctx context.Context,
+	chainID ids.ID,
+	height platformapi.Height,
+	options ...rpc.Option,
+) (map[ids.NodeID]*validators.GetValidatorOutput, error)
+```
+
+```go
+func (c *Client) IssueTx(ctx context.Context, txBytes []byte, options ...rpc.Option) (ids.ID, error)
+```
+
+```go
+func (c *Client) SampleValidators(ctx context.Context, chainID ids.ID, sampleSize uint16, options ...rpc.Option) ([]ids.NodeID, error)
+```
+
+```go
+func (c *Client) SetNetworkID(networkID uint32)
+```
+
+```go
+func (c *Client) ValidatedBy(ctx context.Context, blockchainID ids.ID, options ...rpc.Option) (ids.ID, error)
+```
+
+```go
+func (c *Client) Validates(ctx context.Context, chainID ids.ID, options ...rpc.Option) ([]ids.ID, error)
+```
+
+### ClientDelegator
+
+ClientDelegator is the repr. of a delegator sent over client
+
+
+### ClientL1Validator
+
+### ClientNet
+
+ClientNet is a representation of a net used in client methods
+
+
+### ClientOwner
+
+ClientOwner is the repr. of a reward owner sent over client
+
+
+### ClientPermissionlessValidator
+
+ClientPermissionlessValidator is the repr. of a permissionless validator sent
+over client
+
+
+### ClientStaker
+
+ClientStaker is the representation of a staker sent via client.
+
+
+### GetBalanceRequest
+
+GetBalanceRequest is the request for GetBalance
+
+
+### GetBalanceResponse
+
+GetBalanceResponse is the response from GetBalance
+
+
+### GetBlockchainStatusArgs
+
+GetBlockchainStatusArgs is the request for GetBlockchainStatus
+
+
+### GetBlockchainStatusReply
+
+GetBlockchainStatusReply is the response from GetBlockchainStatus
+
+
+### GetBlockchainsReply
+
+GetBlockchainsReply is the response from GetBlockchains
+
+
+### GetBlockchainsResponse
+
+GetBlockchainsResponse is the response from GetBlockchains
+
+
+### GetCurrentSupplyArgs
+
+GetCurrentSupplyArgs is the request for GetCurrentSupply
+
+
+### GetCurrentSupplyReply
+
+GetCurrentSupplyReply is the response from GetCurrentSupply
+
+
+### GetCurrentValidatorsArgs
+
+GetCurrentValidatorsArgs is the request for GetCurrentValidators
+
+
+### GetCurrentValidatorsReply
+
+GetCurrentValidatorsReply is the response from GetCurrentValidators
+
+
+### GetFeeConfigReply
+
+GetFeeConfigReply is the response from GetFeeConfig
+
+
+### GetFeeStateReply
+
+GetFeeStateReply is the response from GetFeeState
+
+
+### GetL1ValidatorArgs
+
+GetL1ValidatorArgs is the request for GetL1Validator
+
+
+### GetL1ValidatorReply
+
+GetL1ValidatorReply is the response from GetL1Validator
+
+
+### GetMinStakeArgs
+
+GetMinStakeArgs is the request for GetMinStake
+
+
+### GetMinStakeReply
+
+GetMinStakeReply is the response from GetMinStake
+
+
+### GetNetArgs
+
+GetNetArgs is the request for GetNet
+
+
+### GetNetClientResponse
+
+GetNetClientResponse is the response from calling GetNet on the client
+
+
+### GetNetResponse
+
+GetNetResponse is the response from GetNet
+
+
+### GetNetsArgs
+
+GetNetsArgs is the request for GetNets
+
+
+### GetNetsResponse
+
+GetNetsResponse is the response from GetNets
+
+
+### GetRewardUTXOsReply
+
+GetRewardUTXOsReply is the response from GetRewardUTXOs
+
+
+### GetStakeArgs
+
+GetStakeArgs is the request for GetStake
+
+
+### GetStakeReply
+
+GetStakeReply is the response from GetStake
+
+
+### GetStakingAssetIDArgs
+
+GetStakingAssetIDArgs is the request for GetStakingAssetID
+
+
+### GetStakingAssetIDResponse
+
+GetStakingAssetIDResponse is the response from GetStakingAssetID
+
+
+### GetTimestampReply
+
+GetTimestampReply is the response from GetTimestamp
+
+
+### GetTotalStakeArgs
+
+GetTotalStakeArgs is the request for GetTotalStake
+
+
+### GetTotalStakeReply
+
+GetTotalStakeReply is the response from GetTotalStake
+
+
+### GetTxStatusArgs
+
+GetTxStatusArgs is the request for GetTxStatus
+
+
+### GetTxStatusResponse
+
+GetTxStatusResponse is the response from GetTxStatus
+
+
+### GetValidatorFeeStateReply
+
+GetValidatorFeeStateReply is the response from GetValidatorFeeState
+
+
+### GetValidatorsAtArgs
+
+GetValidatorsAtArgs is the request for GetValidatorsAt
+
+
+### GetValidatorsAtReply
+
+GetValidatorsAtReply is the response from GetValidatorsAt
+
+
+### L1Validator
+
+L1Validator is the response from calling GetL1Validator on the API client.
+
+
+### L1ValidatorOwner
+
+L1ValidatorOwner represents an owner in an L1 validator response
+
+
+### SampleValidatorsArgs
+
+SampleValidatorsArgs is the request for SampleValidators
+
+
+### SampleValidatorsReply
+
+SampleValidatorsReply is the response from SampleValidators
+
+
+### Uint16
+
+Uint16 is a uint16 that marshals as a JSON string for compatibility with
+the historical luxd JSON-RPC numeric wire (every numeric over the wire is
+a string). luxfi/api/types ships Uint64/Uint32/Float64 but not Uint16;
+this is a local 1:1 mirror sitting at the same external boundary.
+
+
+```go
+func (u Uint16) MarshalJSON() ([]byte, error)
+```
+
+```go
+func (u *Uint16) UnmarshalJSON(b []byte) error
+```
+
+### ValidatedByArgs
+
+ValidatedByArgs is the request for ValidatedBy
+
+
+### ValidatedByResponse
+
+ValidatedByResponse is the response from ValidatedBy
+
+
+### ValidatesArgs
+
+ValidatesArgs is the request for Validates
+
+
+### ValidatesResponse
+
+ValidatesResponse is the response from Validates
+
+

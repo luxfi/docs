@@ -1,0 +1,77 @@
+---
+title: info
+description: Package info
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/sdk/info"
+```
+
+## Functions
+
+### AwaitBootstrapped
+
+```go
+func AwaitBootstrapped(ctx context.Context, c *Client, chainID string, freq time.Duration, options ...rpc.Option) (bool, error)
+```
+
+AwaitBootstrapped polls the node every [freq] to check if [chainID] has
+finished bootstrapping. Returns true once [chainID] reports that it has
+finished bootstrapping.
+Only returns an error if [ctx] returns an error.
+
+
+## Types
+
+### Client
+
+```go
+func NewClient(uri string) *Client
+```
+
+```go
+func (c *Client) GetBlockchainID(ctx context.Context, alias string, options ...rpc.Option) (ids.ID, error)
+```
+
+```go
+func (c *Client) GetNetworkID(ctx context.Context, options ...rpc.Option) (uint32, error)
+```
+
+```go
+func (c *Client) GetNetworkName(ctx context.Context, options ...rpc.Option) (string, error)
+```
+
+```go
+func (c *Client) GetNodeID(ctx context.Context, options ...rpc.Option) (ids.NodeID, *apiinfo.ProofOfPossession, error)
+```
+
+```go
+func (c *Client) GetNodeIP(ctx context.Context, options ...rpc.Option) (netip.AddrPort, error)
+```
+
+```go
+func (c *Client) GetNodeVersion(ctx context.Context, options ...rpc.Option) (*apiinfo.GetNodeVersionReply, error)
+```
+
+```go
+func (c *Client) GetVMs(ctx context.Context, options ...rpc.Option) (map[ids.ID][]string, error)
+```
+
+```go
+func (c *Client) IsBootstrapped(ctx context.Context, chainID string, options ...rpc.Option) (bool, error)
+```
+
+```go
+func (c *Client) Peers(ctx context.Context, nodeIDs []ids.NodeID, options ...rpc.Option) ([]apiinfo.Peer, error)
+```
+
+```go
+func (c *Client) Upgrades(ctx context.Context, options ...rpc.Option) (*upgrade.Config, error)
+```
+
+```go
+func (c *Client) Uptime(ctx context.Context, options ...rpc.Option) (*apiinfo.UptimeResponse, error)
+```
+
