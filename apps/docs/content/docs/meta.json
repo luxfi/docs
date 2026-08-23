@@ -40,6 +40,7 @@
     "---Developer Tools---",
     "cli",
     "sdk",
+    "mcp",
     "netrunner",
     "accel",
     "zap",

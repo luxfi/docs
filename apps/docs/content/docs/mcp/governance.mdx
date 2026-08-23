@@ -1,0 +1,172 @@
+---
+title: governance
+description: Governance read tools — on-chain DAO/AI-governance state, read-only.
+---
+
+{/* Generated from the MCP tool registry by tools/docgen — edit the tool, not this file. */}
+
+Governance read tools — on-chain DAO/AI-governance state, read-only.
+
+## chain_state
+
+Current chain head: block number, chain id, latest block hash and timestamp.
+
+**Input:**
+
+```json
+{
+  "properties": {},
+  "type": "object"
+}
+```
+
+## operator_reputation
+
+Operator standing: &#123;isOperator, bond, weight, agreementRateBps, rep} from AIGovernor and AIReputation.
+
+**Input:**
+
+```json
+{
+  "properties": {
+    "operator": {
+      "description": "operator address, 0x-hex",
+      "type": "string"
+    }
+  },
+  "required": [
+    "operator"
+  ],
+  "type": "object"
+}
+```
+
+## param_history
+
+AIParams round history (newest first): each round with its proposals. Optional limit (default 16) and fromRound.
+
+**Input:**
+
+```json
+{
+  "properties": {
+    "fromRound": {
+      "description": "highest round id to start from (default roundCount-1)",
+      "type": "integer"
+    },
+    "limit": {
+      "description": "max rounds to return (default 16)",
+      "type": "integer"
+    }
+  },
+  "type": "object"
+}
+```
+
+## param_value
+
+Read a decided governance knob value from AIParams.valueOf(modelSpecHash, knobKey). Returns &#123;value, decided}.
+
+**Input:**
+
+```json
+{
+  "properties": {
+    "knobKey": {
+      "description": "knob key string",
+      "type": "string"
+    },
+    "modelSpecHash": {
+      "description": "bytes32 model spec hash, 0x-hex",
+      "type": "string"
+    }
+  },
+  "required": [
+    "modelSpecHash",
+    "knobKey"
+  ],
+  "type": "object"
+}
+```
+
+## pending_operations
+
+Currently-OPEN (unsettled) thoughts. Optional limit (default 16). Scans only the TAIL of taskCount (newest tasks), so a still-Open task buried below the window is NOT returned; when that happens truncated=true and scannedFrom marks the lowest id inspected (range scannedFrom..taskCount-1). Each entry carries deadlinePassed (now >= deadline) so a still-Open task whose voting window has closed is visible as settle-ready. Also returns observedBlock.
+
+**Input:**
+
+```json
+{
+  "properties": {
+    "limit": {
+      "description": "max open thoughts to return (default 16)",
+      "type": "integer"
+    }
+  },
+  "type": "object"
+}
+```
+
+## quorum_status
+
+Quorum tally for a task, computed to match AIGovernor.settle() exactly. Counts ONLY verdicts from operators still bonded at the observed block (a withdrawn operator's verdict is dropped, as settle drops it), groups by (vote,bucket), and reports quorumReached, the winningVote/winningBucket, winningIsApprove (winning vote == Yes), deadlinePassed and settleable (quorum reached AND deadline passed — settle reverts before the deadline). Also returns verdictsTotal/verdictsCounted/droppedUnbonded and observedBlock.
+
+**Input:**
+
+```json
+{
+  "properties": {
+    "taskId": {
+      "description": "task id",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "taskId"
+  ],
+  "type": "object"
+}
+```
+
+## receipt_lookup
+
+AIThoughtRegistry receipt lookup by receiptId. Returns &#123;exists, receipt, receiptCount}.
+
+**Input:**
+
+```json
+{
+  "properties": {
+    "receiptId": {
+      "description": "bytes32 receipt id, 0x-hex",
+      "type": "string"
+    }
+  },
+  "required": [
+    "receiptId"
+  ],
+  "type": "object"
+}
+```
+
+## thought_status
+
+AIGovernor.getThought(taskId) fields plus a derived status (Open/Settled/NoQuorum) and taskCount.
+
+**Input:**
+
+```json
+{
+  "properties": {
+    "taskId": {
+      "description": "task id",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "taskId"
+  ],
+  "type": "object"
+}
+```
+
