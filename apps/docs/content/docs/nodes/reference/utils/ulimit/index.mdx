@@ -1,6 +1,6 @@
 ---
-title: ulimit
-description: Package ulimit
+title: "ulimit"
+description: "Package ulimit"
 ---
 
 {/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
@@ -17,11 +17,6 @@ import "github.com/luxfi/node/utils/ulimit"
 func Set(limit uint64, log log.Logger) error
 ```
 
-Set attempts to bump the Rlimit which has a soft (Cur) and a hard (Max) value.
-The soft limit is what is used by the kernel to report EMFILE errors. The hard
-limit is a secondary limit which the process can be bumped to without additional
-privileges. Bumping the Max limit further would require superuser privileges.
-If the current Max is below our recommendation we will warn on start.
-see: http://0pointer.net/blog/file-descriptor-limits.html
+Set is a no-op for windows and will warn if the default is not used.
 
 

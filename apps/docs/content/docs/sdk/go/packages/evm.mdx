@@ -1,6 +1,6 @@
 ---
-title: evm
-description: Package evm provides EVM chain interaction and transaction utilities.
+title: "evm"
+description: "Package evm provides EVM chain interaction and transaction utilities."
 ---
 
 {/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
@@ -36,7 +36,7 @@ it to the nearest whole number.
 ```go
 func ExtractWarpMessageFromLogs(
 	logs []*types.Log,
-) (*warp.Message, error)
+) (*warp.UnsignedMessage, error)
 ```
 
 ExtractWarpMessageFromLogs gets first unsigned warp message contained in [logs].
@@ -47,7 +47,7 @@ ExtractWarpMessageFromLogs gets first unsigned warp message contained in [logs].
 ```go
 func ExtractWarpMessageFromReceipt(
 	receipt *types.Receipt,
-) (*warp.Message, error)
+) (*warp.UnsignedMessage, error)
 ```
 
 ExtractWarpMessageFromReceipt gets first unsigned warp message contained in [receipt].
@@ -112,7 +112,7 @@ Supports [repeatsOnFailure] failures.
 ```go
 func GetWarpMessagesFromLogs(
 	logs []*types.Log,
-) []*warp.Message
+) []*warp.UnsignedMessage
 ```
 
 GetWarpMessagesFromLogs gets all unsigned warp messages contained in [logs].
@@ -295,7 +295,7 @@ func (client Client) SuggestGasTipCap() (*big.Int, error)
 func (client Client) TransactWithWarpMessage(
 	from crypto.Address,
 	privateKeyStr string,
-	warpMessage *warp.Envelope,
+	warpMessage *warp.Message,
 	contract crypto.Address,
 	callData []byte,
 	value *big.Int,

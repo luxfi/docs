@@ -1,6 +1,6 @@
 ---
-title: platformvm
-description: Package platformvm
+title: "platformvm"
+description: "Package platformvm"
 ---
 
 {/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
@@ -68,7 +68,7 @@ GetOwners returns the union of GetNetOwners and GetDeactivationOwners.
 ### APIBlockchain
 
 APIBlockchain represents a blockchain in the API response.
-NetID is the ID of the network that validates this blockchain.
+NetID is the ID of the network (subnet) that validates this blockchain.
 
 
 ### APINet
@@ -475,22 +475,6 @@ SampleValidatorsArgs is the request for SampleValidators
 
 SampleValidatorsReply is the response from SampleValidators
 
-
-### Uint16
-
-Uint16 is a uint16 that marshals as a JSON string for compatibility with
-the historical luxd JSON-RPC numeric wire (every numeric over the wire is
-a string). luxfi/api/types ships Uint64/Uint32/Float64 but not Uint16;
-this is a local 1:1 mirror sitting at the same external boundary.
-
-
-```go
-func (u Uint16) MarshalJSON() ([]byte, error)
-```
-
-```go
-func (u *Uint16) UnmarshalJSON(b []byte) error
-```
 
 ### ValidatedByArgs
 

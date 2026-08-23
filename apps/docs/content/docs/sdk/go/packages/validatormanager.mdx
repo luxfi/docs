@@ -1,6 +1,6 @@
 ---
-title: validatormanager
-description: Package validatormanager provides L1 validator lifecycle management.
+title: "validatormanager"
+description: "Package validatormanager provides L1 validator lifecycle management."
 ---
 
 {/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
@@ -74,7 +74,7 @@ func CompleteValidatorRegistration(
 	generateRawTxOnly bool,
 	ownerAddress crypto.Address,
 	privateKey string,
-	l1ValidatorRegistrationSignedMessage *warp.Envelope,
+	l1ValidatorRegistrationSignedMessage *warp.Message,
 ) (*types.Transaction, *types.Receipt, error)
 ```
 
@@ -90,7 +90,7 @@ func CompleteValidatorRemoval(
 	generateRawTxOnly bool,
 	ownerAddress crypto.Address,
 	privateKey string,
-	chainValidatorRegistrationSignedMessage *warp.Envelope,
+	chainValidatorRegistrationSignedMessage *warp.Message,
 	useACP99 bool,
 ) (*types.Transaction, *types.Receipt, error)
 ```
@@ -104,7 +104,7 @@ func CompleteValidatorWeightChange(
 	generateRawTxOnly bool,
 	ownerAddress crypto.Address,
 	privateKey string,
-	pchainL1ValidatorRegistrationSignedMessage *warp.Envelope,
+	pchainL1ValidatorRegistrationSignedMessage *warp.Message,
 ) (*types.Transaction, *types.Receipt, error)
 ```
 
@@ -219,7 +219,7 @@ func FinishValidatorWeightChange(
 	validationID ids.ID,
 	aggregatorLogger luxlog.Logger,
 	validatorManagerAddressStr string,
-	l1ValidatorRegistrationSignedMessage *warp.Envelope,
+	l1ValidatorRegistrationSignedMessage *warp.Message,
 	weight uint64,
 	signatureAggregatorEndpoint string,
 ) (*types.Transaction, error)
@@ -241,7 +241,7 @@ func GetL1ValidatorWeightMessage(
 	network models.Network,
 	aggregatorLogger luxlog.Logger,
 
-	unsignedMessage *warp.Message,
+	unsignedMessage *warp.UnsignedMessage,
 	chainID ids.ID,
 	blockchainID ids.ID,
 	managerAddress crypto.Address,
@@ -249,7 +249,7 @@ func GetL1ValidatorWeightMessage(
 	nonce uint64,
 	weight uint64,
 	signatureAggregatorEndpoint string,
-) (*warp.Envelope, error)
+) (*warp.Message, error)
 ```
 
 ### GetL1ValidatorWeightMessageFromTx
@@ -260,7 +260,7 @@ func GetL1ValidatorWeightMessageFromTx(
 	validationID ids.ID,
 	weight uint64,
 	txHash string,
-) (*warp.Message, error)
+) (*warp.UnsignedMessage, error)
 ```
 
 ### GetPChainChainToL1ConversionUnsignedMessage
@@ -272,7 +272,7 @@ func GetPChainChainToL1ConversionUnsignedMessage(
 	managerBlockchainID ids.ID,
 	managerAddress crypto.Address,
 	convertChainValidators []*txs.ConvertNetworkToL1Validator,
-) (*warp.Message, error)
+) (*warp.UnsignedMessage, error)
 ```
 
 ### GetPChainL1ValidatorRegistrationMessage
@@ -288,7 +288,7 @@ func GetPChainL1ValidatorRegistrationMessage(
 	validationID ids.ID,
 	registered bool,
 	signatureAggregatorEndpoint string,
-) (*warp.Envelope, error)
+) (*warp.Message, error)
 ```
 
 ### GetPChainL1ValidatorWeightMessage
@@ -300,13 +300,13 @@ func GetPChainL1ValidatorWeightMessage(
 	aggregatorQuorumPercentage uint64,
 	chainID ids.ID,
 
-	l1SignedMessage *warp.Envelope,
+	l1SignedMessage *warp.Message,
 
 	validationID ids.ID,
 	nonce uint64,
 	weight uint64,
 	signatureAggregatorEndpoint string,
-) (*warp.Envelope, error)
+) (*warp.Message, error)
 ```
 
 ### GetRegisterL1ValidatorMessage
@@ -329,9 +329,9 @@ func GetRegisterL1ValidatorMessage(
 	weight uint64,
 	alreadyInitialized bool,
 	initiateTxHash string,
-	registerChainValidatorUnsignedMessage *warp.Message,
+	registerChainValidatorUnsignedMessage *warp.UnsignedMessage,
 	signatureAggregatorEndpoint string,
-) (*warp.Envelope, ids.ID, error)
+) (*warp.Message, ids.ID, error)
 ```
 
 ### GetRegisterL1ValidatorMessageFromTx
@@ -341,7 +341,7 @@ func GetRegisterL1ValidatorMessageFromTx(
 	rpcURL string,
 	validationID ids.ID,
 	txHash string,
-) (*warp.Message, error)
+) (*warp.UnsignedMessage, error)
 ```
 
 ### GetRegistrationJustification
@@ -375,7 +375,7 @@ func GetUptimeProofMessage(
 	validationID ids.ID,
 	uptime uint64,
 	signatureAggregatorEndpoint string,
-) (*warp.Envelope, error)
+) (*warp.Message, error)
 ```
 
 ### GetValidatorManagerType
@@ -437,7 +437,7 @@ func InitValidatorRegistration(
 	useACP99 bool,
 	initiateTxHash string,
 	signatureAggregatorEndpoint string,
-) (*warp.Envelope, ids.ID, *types.Transaction, error)
+) (*warp.Message, ids.ID, *types.Transaction, error)
 ```
 
 ### InitValidatorRemoval
@@ -461,7 +461,7 @@ func InitValidatorRemoval(
 	useACP99 bool,
 	initiateTxHash string,
 	signatureAggregatorEndpoint string,
-) (*warp.Envelope, ids.ID, *types.Transaction, error)
+) (*warp.Message, ids.ID, *types.Transaction, error)
 ```
 
 ### InitValidatorWeightChange
@@ -483,7 +483,7 @@ func InitValidatorWeightChange(
 	weight uint64,
 	initiateTxHash string,
 	signatureAggregatorEndpoint string,
-) (*warp.Envelope, ids.ID, *types.Transaction, error)
+) (*warp.Message, ids.ID, *types.Transaction, error)
 ```
 
 ### InitializeValidatorRegistrationPoA
@@ -539,7 +539,7 @@ func InitializeValidatorRemoval(
 	privateKey string,
 	validationID ids.ID,
 	isPoS bool,
-	uptimeProofSignedMessage *warp.Envelope,
+	uptimeProofSignedMessage *warp.Message,
 	force bool,
 	useACP99 bool,
 ) (*types.Transaction, *types.Receipt, error)
@@ -569,7 +569,7 @@ func InitializeValidatorsSet(
 	chainID ids.ID,
 	managerBlockchainID ids.ID,
 	convertChainValidators []*txs.ConvertNetworkToL1Validator,
-	chainConversionSignedMessage *warp.Envelope,
+	chainConversionSignedMessage *warp.Message,
 ) (*types.Transaction, *types.Receipt, error)
 ```
 
@@ -633,7 +633,7 @@ func SearchForL1ValidatorWeightMessage(
 	rpcURL string,
 	validationID ids.ID,
 	weight uint64,
-) (*warp.Message, error)
+) (*warp.UnsignedMessage, error)
 ```
 
 ### SearchForRegisterL1ValidatorMessage
@@ -643,7 +643,7 @@ func SearchForRegisterL1ValidatorMessage(
 	ctx context.Context,
 	rpcURL string,
 	validationID ids.ID,
-) (*warp.Message, error)
+) (*warp.UnsignedMessage, error)
 ```
 
 ### SetupPoA

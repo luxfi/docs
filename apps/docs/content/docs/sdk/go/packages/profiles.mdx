@@ -1,6 +1,6 @@
 ---
-title: profiles
-description: Package profiles provides embedded network tuning profiles for the Lux SDK.
+title: "profiles"
+description: "Package profiles provides embedded network tuning profiles for the Lux SDK."
 ---
 
 {/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
@@ -42,16 +42,6 @@ GetProfileMap loads a profile and returns it as map[string]interface&#123;}.
 Useful for direct JSON manipulation.
 
 
-### IsByzantineSafe
-
-```go
-func IsByzantineSafe(sampleSize, quorumSize int) bool
-```
-
-IsByzantineSafe reports whether a sample/quorum pair satisfies the consensus
-engine's Byzantine-safety invariant. Use it to validate any consensus config.
-
-
 ### ListProfiles
 
 ```go
@@ -76,10 +66,6 @@ ValidateProfile checks that a profile has required fields.
 
 ConsensusConfig holds consensus tuning parameters.
 
-
-```go
-func Consensus(n int) ConsensusConfig
-```
 
 ### HealthConfig
 

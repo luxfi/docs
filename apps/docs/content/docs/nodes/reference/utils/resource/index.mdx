@@ -1,6 +1,6 @@
 ---
-title: resource
-description: Package resource
+title: "resource"
+description: "Package resource"
 ---
 
 {/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
@@ -19,10 +19,12 @@ import "github.com/luxfi/node/utils/resource"
 
 ```go
 func NewManager(
-	_ log.Logger,
+	log log.Logger,
 	diskPath string,
-	_, _, _ time.Duration,
-	_ metric.Registerer,
+	frequency,
+	cpuHalflife,
+	diskHalflife time.Duration,
+	metricsRegisterer metric.Registerer,
 ) (Manager, error)
 ```
 
