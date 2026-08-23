@@ -1,0 +1,110 @@
+---
+title: lux ai
+description: AI operations (chat, agents, models)
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux ai
+
+The ai command provides tools for interacting with the Lux AI network,
+including chat completion, model listing, and agent execution.
+
+Connects to a local lux-ai node or the Hanzo AI gateway (api.hanzo.ai).
+
+ENDPOINTS:
+
+  Local:    http://localhost:9090 (default, via lux ai serve)
+  Gateway:  https://api.hanzo.ai/v1
+
+ENVIRONMENT:
+
+  LUX_AI_ENDPOINT   Override the default AI endpoint
+  LUX_AI_API_KEY    API key for gateway authentication
+
+**Usage:**
+
+```bash
+lux ai
+```
+
+### lux ai agent
+
+Run an AI agent that executes a task using the connected AI endpoint.
+
+The agent sends the task as a system-prompted chat request with
+tool-use capabilities when supported by the model.
+
+Examples:
+  lux ai agent "Deploy a new EVM chain on devnet"
+  lux ai agent --model qwen3-8b "Analyze the validator set"
+
+**Usage:**
+
+```bash
+lux ai agent [task] [flags]
+```
+
+**Flags:**
+
+```
+      --model string   Model to use (default "qwen3-8b")
+```
+
+### lux ai chat
+
+Send a chat message to the AI model and print the response.
+
+Examples:
+  lux ai chat "What is the Lux network?"
+  lux ai chat --model qwen3-8b "Explain post-quantum cryptography"
+  lux ai chat --system "You are a blockchain expert" "What is BFT?"
+
+**Usage:**
+
+```bash
+lux ai chat [message] [flags]
+```
+
+**Flags:**
+
+```
+      --model string    Model to use (default "qwen3-8b")
+      --system string   System prompt
+```
+
+### lux ai complete
+
+Generate a text completion from a prompt.
+
+Examples:
+  lux ai complete "The Lux blockchain uses"
+  lux ai complete --model zen-coder-1.5b --max-tokens 256 "func main() &#123;"
+
+**Usage:**
+
+```bash
+lux ai complete [prompt] [flags]
+```
+
+**Flags:**
+
+```
+      --max-tokens int   Maximum tokens to generate (0 = model default)
+      --model string     Model to use (default "qwen3-8b")
+```
+
+### lux ai models
+
+List all models available on the connected AI endpoint.
+
+Examples:
+  lux ai models
+  LUX_AI_ENDPOINT=https://api.hanzo.ai lux ai models
+
+**Usage:**
+
+```bash
+lux ai models
+```
+

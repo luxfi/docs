@@ -1,0 +1,386 @@
+---
+title: lux dex
+description: Manage decentralized exchange operations
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux dex
+
+Commands for interacting with Lux DEX - a high-performance
+decentralized exchange with spot trading, AMM pools, and perpetual futures.
+
+Features:
+  - Central Limit Order Book (CLOB) for spot trading
+  - AMM pools (Constant Product, StableSwap, Concentrated Liquidity)
+  - Perpetual futures with up to 100x leverage
+  - Cross-chain swaps via Warp messaging
+  - 1ms block times for ultra-low latency HFT
+
+Example usage:
+  lux dex market list              # List all markets
+  lux dex order place              # Place an order
+  lux dex pool create              # Create liquidity pool
+  lux dex perp open                # Open perpetual position
+
+**Usage:**
+
+```bash
+lux dex
+```
+
+### lux dex account
+
+Commands for managing your DEX trading account, deposits, and withdrawals
+
+#### lux dex account balance
+
+View account balances
+
+**Usage:**
+
+```bash
+lux dex account balance
+```
+
+#### lux dex account deposit
+
+Deposit funds to trading account
+
+**Usage:**
+
+```bash
+lux dex account deposit [flags]
+```
+
+**Flags:**
+
+```
+      --amount float   Amount to deposit
+      --token string   Token to deposit
+```
+
+#### lux dex account history
+
+View transaction history
+
+**Usage:**
+
+```bash
+lux dex account history
+```
+
+#### lux dex account withdraw
+
+Withdraw funds from trading account
+
+**Usage:**
+
+```bash
+lux dex account withdraw [flags]
+```
+
+**Flags:**
+
+```
+      --amount float   Amount to withdraw
+      --token string   Token to withdraw
+```
+
+### lux dex market
+
+Commands for listing, creating, and managing trading markets
+
+#### lux dex market create
+
+Create a new spot or perpetual market with specified parameters
+
+**Usage:**
+
+```bash
+lux dex market create
+```
+
+#### lux dex market info
+
+Display detailed information about a specific market including orderbook depth, recent trades, and statistics
+
+**Usage:**
+
+```bash
+lux dex market info [symbol]
+```
+
+#### lux dex market list
+
+Display all spot and perpetual markets with current prices and volume
+
+**Usage:**
+
+```bash
+lux dex market list
+```
+
+### lux dex order
+
+Commands for placing, cancelling, and viewing orders
+
+#### lux dex order cancel
+
+Cancel an order
+
+**Usage:**
+
+```bash
+lux dex order cancel [order-id]
+```
+
+#### lux dex order history
+
+View order history
+
+**Usage:**
+
+```bash
+lux dex order history
+```
+
+#### lux dex order list
+
+List open orders
+
+**Usage:**
+
+```bash
+lux dex order list
+```
+
+#### lux dex order place
+
+Place a limit or market order on a trading pair.
+
+Examples:
+  lux dex order place --market LUX/USDT --side buy --type limit --price 10.50 --amount 100
+  lux dex order place --market BTC/USDT --side sell --type market --amount 0.5
+
+**Usage:**
+
+```bash
+lux dex order place [flags]
+```
+
+**Flags:**
+
+```
+      --amount float    Order amount
+      --market string   Trading pair symbol (e.g., LUX/USDT)
+      --price float     Limit price (required for limit orders)
+      --side string     Order side: buy or sell
+      --tif string      Time in force: gtc, ioc, fok (default "gtc")
+      --type string     Order type: limit or market (default "limit")
+```
+
+### lux dex perp
+
+Commands for trading perpetual futures contracts.
+
+Features:
+  - Up to 100x leverage
+  - Cross and isolated margin modes
+  - Automatic liquidation protection
+  - 8-hour funding rate intervals
+
+Similar to Hyperliquid and GMX perpetual trading.
+
+#### lux dex perp close
+
+Close a perpetual position
+
+**Usage:**
+
+```bash
+lux dex perp close [market] [flags]
+```
+
+**Flags:**
+
+```
+      --percent float   Percentage of position to close (0-100) (default 100)
+```
+
+#### lux dex perp funding
+
+View funding rate information
+
+**Usage:**
+
+```bash
+lux dex perp funding
+```
+
+#### lux dex perp markets
+
+List perpetual markets
+
+**Usage:**
+
+```bash
+lux dex perp markets
+```
+
+#### lux dex perp open
+
+Open a new perpetual futures position.
+
+Examples:
+  lux dex perp open --market BTC-PERP --side long --size 0.1 --leverage 10
+  lux dex perp open --market ETH-PERP --side short --size 1 --leverage 5 --margin isolated
+
+**Usage:**
+
+```bash
+lux dex perp open [flags]
+```
+
+**Flags:**
+
+```
+      --leverage uint16   Leverage multiplier (1-100) (default 10)
+      --margin string     Margin mode: cross or isolated (default "cross")
+      --market string     Perpetual market symbol (e.g., BTC-PERP)
+      --side string       Position side: long or short
+      --size float        Position size in base units
+```
+
+#### lux dex perp pnl
+
+View profit/loss summary
+
+**Usage:**
+
+```bash
+lux dex perp pnl
+```
+
+#### lux dex perp positions
+
+List open positions
+
+**Usage:**
+
+```bash
+lux dex perp positions
+```
+
+### lux dex pool
+
+Commands for creating, managing, and interacting with AMM liquidity pools
+
+#### lux dex pool add
+
+Add liquidity to a pool
+
+**Usage:**
+
+```bash
+lux dex pool add [pool-id] [flags]
+```
+
+**Flags:**
+
+```
+      --amount0 float   Amount of token0 to add
+      --amount1 float   Amount of token1 to add
+```
+
+#### lux dex pool create
+
+Create a new AMM liquidity pool.
+
+Pool types:
+  - constant-product: Standard x*y=k AMM (like Uniswap V2)
+  - stableswap: Optimized for stable pairs (like Curve)
+  - concentrated: Concentrated liquidity (like Uniswap V3)
+
+Examples:
+  lux dex pool create --token0 LUX --token1 USDT --amount0 1000 --amount1 10000 --type constant-product --fee 30
+
+**Usage:**
+
+```bash
+lux dex pool create [flags]
+```
+
+**Flags:**
+
+```
+      --amount0 float   Initial amount of token0
+      --amount1 float   Initial amount of token1
+      --fee uint16      Fee in basis points (30 = 0.3%) (default 30)
+      --token0 string   First token symbol
+      --token1 string   Second token symbol
+      --type string     Pool type: constant-product, stableswap, concentrated (default "constant-product")
+```
+
+#### lux dex pool list
+
+List all liquidity pools
+
+**Usage:**
+
+```bash
+lux dex pool list
+```
+
+#### lux dex pool remove
+
+Remove liquidity from a pool
+
+**Usage:**
+
+```bash
+lux dex pool remove [pool-id] [flags]
+```
+
+**Flags:**
+
+```
+      --percent float   Percentage of liquidity to remove (0-100)
+```
+
+#### lux dex pool swap
+
+Swap tokens using the best available route through AMM pools.
+
+Examples:
+  lux dex pool swap --from LUX --to USDT --amount 100 --slippage 0.5
+
+**Usage:**
+
+```bash
+lux dex pool swap [flags]
+```
+
+**Flags:**
+
+```
+      --amount float     Amount to swap
+      --from string      Token to swap from
+      --slippage float   Maximum slippage tolerance (%) (default 0.5)
+      --to string        Token to swap to
+```
+
+### lux dex status
+
+Display DEX network status including:
+  - Connected nodes
+  - Market statistics
+  - Recent trades
+  - Network health
+
+**Usage:**
+
+```bash
+lux dex status
+```
+

@@ -1,71 +1,708 @@
 ---
 title: lux network
-description: Manage local and remote networks
+description: Manage local network runtime
 ---
 
-The `network` command manages the lifecycle of local Lux networks used for development and testing. It controls node processes and runtime state via the Netrunner gRPC server.
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
 
-## Commands
+## lux network
+
+The network command manages local network runtime operations.
+
+OVERVIEW:
+
+  The network command suite controls the lifecycle of local Lux networks
+  used for development and testing. It manages the node processes and runtime
+  state, but does NOT manage blockchain configurations (use 'lux chain' for that).
+
+COMMANDS:
+
+  start     Start a local network (mainnet/testnet/devnet/dev mode)
+  stop      Stop the running network and save a snapshot
+  status    Show network status and endpoints
+  clean     Stop network and delete runtime data (preserves chains)
+  snapshot  Manage network snapshots
+
+NETWORK TYPES:
+
+  mainnet   Production network (3 validators, port 9630)
+  testnet   Test network (3 validators, port 9640)
+  devnet    Development network (3 validators, port 9650)
+  dev       Single-node dev mode with K=1 consensus
+
+TYPICAL WORKFLOW:
+
+  # Start a development network
+  lux network start --devnet
+
+  # Check it's running
+  lux network status
+
+  # Deploy a chain (see 'lux chain --help')
+  lux chain deploy mychain
+
+  # Stop and save state
+  lux network stop
+
+  # Clean everything (preserves chain configs)
+  lux network clean
+
+NOTES:
+
+  - Only one network type can run at a time
+  - Chain configurations are managed separately via 'lux chain'
+  - Runtime data is stored in ~/.lux/networks/&lt;type>
+  - Use 'lux network clean' to wipe runtime data but keep chain configs
+
+**Usage:**
 
 ```bash
-# Start a local network
-lux network start --mainnet    # 5 validators, port 9630
-lux network start --testnet    # 5 validators, port 9640
-lux network start --devnet     # 5 validators, port 9650
-lux network start --dev        # 1 node, port 8545
+lux network
+```
 
-# Stop the running network
-lux network stop
-lux network stop --snapshot-name my-backup
+### lux network bootstrap
 
-# Check network status and endpoints
-lux network status
+The bootstrap command downloads and installs a network snapshot from a remote source.
+It supports downloading split archives (parts) in parallel and reassembling them.
 
-# Clean all runtime data (preserves chain configs)
-lux network clean
+This is useful for quickly syncing a new node by starting from a recent snapshot
+instead of syncing from genesis.
 
-# Manage snapshots
-lux network snapshot save <name>
-lux network snapshot restore <name>
+**Usage:**
+
+```bash
+lux network bootstrap [flags]
+```
+
+**Flags:**
+
+```
+      --network-type string    network type to bootstrap (mainnet, testnet) (default "mainnet")
+      --snapshot-name string   specific snapshot name to download (optional)
+      --url string             base URL for the snapshot parts (optional, defaults to official repo)
+```
+
+### lux network clean
+
+The network clean command stops the network and deletes runtime data.
+
+⚠️  IMPORTANT - WHAT GETS DELETED:
+
+  Runtime Data (DELETED):
+  - Network snapshots (blockchain state, databases)
+  - Validator state
+  - Log files
+  - Running processes
+
+  Chain Configs (PRESERVED):
+  - Chain configurations in ~/.lux/chains/
+  - Genesis files
+  - Sidecar metadata
+
+BEHAVIOR:
+
+  1. Stops the running network gracefully
+  2. Deletes network runtime data and snapshots
+  3. Removes local deployment info from sidecars
+  4. Preserves chain configurations for redeployment
+
+  After cleaning, you can redeploy your chains to a fresh network:
+    lux network start --devnet
+    lux chain deploy mychain
+
+OPTIONS:
+
+  --reset-plugins    Also delete the plugins directory (removes user-installed VMs)
+
+EXAMPLES:
+
+  # Clean network runtime (most common)
+  lux network clean
+
+  # Clean and also remove custom VM plugins
+  lux network clean --reset-plugins
+
+WHEN TO USE:
+
+  ✓ Network state is corrupted
+  ✓ Want to start fresh but keep chain configs
+  ✓ Testing deployment from scratch
+  ✓ Cleaning up after development session
+
+  ✗ Just want to stop the network (use 'lux network stop')
+  ✗ Want to delete a specific chain (use 'lux chain delete &lt;name>')
+
+CLEAN vs STOP:
+
+  lux network stop     - Saves state for resuming later
+  lux network clean    - Deletes runtime data, preserves chain configs
+  lux chain delete     - Deletes a specific chain configuration
+
+STORAGE CLEANUP:
+
+  The CLI can accumulate significant storage over time:
+  - netrunner-server.log files (can grow to 100GB+)
+  - .backup.* directories from snapshot loads
+  - Stale run directories from previous sessions
+
+  Use --logs, --backups, --stale-runs, or --all to clean these:
+    lux network clean --all              # Clean everything
+    lux network clean --logs             # Clean large logs only
+    lux network clean --all --dry-run    # Preview what would be deleted
+
+NOTE: Chain configurations are explicitly preserved. To delete a chain
+configuration, use: lux chain delete &lt;chainName>
+
+**Usage:**
+
+```bash
+lux network clean [flags]
+```
+
+**Flags:**
+
+```
+      --all                clean all: logs, backups, and stale runs
+      --backups            clean up old .backup.* directories
+      --dry-run            show what would be deleted without actually deleting
+      --logs               clean up large netrunner-server.log files
+      --max-age-days int   maximum age in days for backups and stale runs (default 7)
+      --max-log-mb int     maximum log file size in MB before cleanup (default 100)
+      --reset-plugins      also reset the plugins directory (removes user-installed VMs)
+      --stale-runs         clean up stale run directories from previous sessions
+```
+
+### lux network describe
+
+Show detailed information about a network including:
+- Genesis configuration
+- C-chain allocations and precompiles
+- Initial validators/stakers
+- Network parameters
+
+Network must be one of: mainnet, testnet, devnet, local
+
+**Usage:**
+
+```bash
+lux network describe <network>
+```
+
+### lux network monitor
+
+The monitor command shows real-time network status updates.
+
+OVERVIEW:
+
+  Continuously monitors network health, validator nodes, endpoints, and custom chains.
+  Updates display every second by default, showing live statistics.
+
+OPTIONS:
+
+  --interval, -i   Update interval in seconds (default: 1)
+  --format         Output format (full, summary, chains, nodes)
+  --compact        Use compact output format
+
+EXAMPLES:
+
+  # Monitor with default 1-second updates
+  lux network monitor
+
+  # Monitor with 5-second updates
+  lux network monitor --interval 5
+
+  # Monitor with compact format
+  lux network monitor --compact
+
+  # Monitor only chain status
+  lux network monitor --format chains
+
+**Usage:**
+
+```bash
+lux network monitor [flags]
+```
+
+**Flags:**
+
+```
+      --compact         use compact output format
+      --format string   output format (full, summary, chains, nodes) (default "full")
+  -i, --interval int    update interval in seconds (default 1)
+  -o, --output string   output format (text, json) (default "text")
+```
+
+### lux network send
+
+Send funds on the C-Chain of the running local network.
+
+This command uses a local key (MNEMONIC or --from) to sign a C-Chain
+transfer and submit it to the running network's C-Chain RPC.
+
+Examples:
+  # Send 100 LUX to a C-Chain address (uses MNEMONIC account 0)
+  lux network send --amount 100 --to 0x9011E888251AB053B7bD1cdB598Db4f9DEd94714
+
+  # Send with a specific stored key
+  lux network send --amount 25 --to 0x... --from node1
+
+Notes:
+  - Amount is in LUX (converted to wei)
+  - Requires a running local network (mainnet/testnet/devnet)
+  - Source/dest flags are accepted but only C->C is supported right now
+
+**Usage:**
+
+```bash
+lux network send [flags]
+```
+
+**Flags:**
+
+```
+      --amount float    Amount to send in LUX (required)
+      --dest string     Destination chain (only C supported) (default "C")
+      --from string     Key name to use for signing (default: MNEMONIC account 0)
+      --source string   Source chain (only C supported) (default "C")
+      --to string       Destination address (C-Chain hex address)
+```
+
+### lux network snapshot
+
+The snapshot command allows you to save, load, list, and delete snapshots of your local network state.
+
+Snapshots capture the entire network state including all node data, databases, and configurations.
+
+Commands:
+  save &lt;name>      - Save current network state as a named snapshot (Legacy)
+  load &lt;name>      - Load a snapshot and restart the network (Legacy)
+  list             - List all available snapshots
+  delete &lt;name>    - Delete a snapshot
+  advanced         - Advanced coordinated snapshots (incremental, squash, etc)
+
+Examples:
+  lux network snapshot save my-test-state
+  lux network snapshot advanced create my-prod-state --incremental
+  lux network snapshot list
+
+**Usage:**
+
+```bash
+lux network snapshot
+```
+
+#### lux network snapshot advanced
+
+Advanced snapshot commands for coordinated multi-node snapshots.
+
+Commands:
+  create &lt;name>    - Create advanced snapshot of all nodes (base or incremental)
+  restore &lt;name>   - Restore network from advanced snapshot
+  squash &lt;network> &lt;chain-id> - Squash incrementals into base
+  download &lt;name>  - Download from GitHub (placeholder)
+  upload &lt;name>    - Upload to GitHub (placeholder)
+
+Examples:
+  lux network snapshot advanced create production-backup --incremental
+  lux network snapshot advanced restore production-backup
+  lux network snapshot advanced squash mainnet 1
+
+**Usage:**
+
+```bash
+lux network snapshot advanced
+```
+
+##### lux network snapshot advanced create
+
+Create a coordinated snapshot of all nodes in the network.
+If --incremental is set, tries to create an incremental backup from the last checkpoint.
+Otherwise creates a full base snapshot.
+
+**Usage:**
+
+```bash
+lux network snapshot advanced create <name> [flags]
+```
+
+**Flags:**
+
+```
+      --incremental   Create incremental snapshot if possible
+```
+
+##### lux network snapshot advanced download
+
+Download a snapshot from GitHub releases.
+
+This feature will download chunked snapshot files from GitHub releases
+and verify SHA256 hashes before restoring.
+
+Note: This is a planned feature. For now, manually download snapshot
+chunks and use 'lux network snapshot advanced restore' to restore.
+
+**Usage:**
+
+```bash
+lux network snapshot advanced download <name>
+```
+
+##### lux network snapshot advanced restore
+
+Restore network from advanced snapshot
+
+**Usage:**
+
+```bash
+lux network snapshot advanced restore <name>
+```
+
+##### lux network snapshot advanced squash
+
+Squashes all incremental snapshots for a specific chain into the base snapshot.
+This creates a new base snapshot and removes the incrementals, saving space.
+
+**Usage:**
+
+```bash
+lux network snapshot advanced squash <network> <chain-id> <snapshot-name>
+```
+
+##### lux network snapshot advanced upload
+
+Upload a snapshot to GitHub releases.
+
+This feature will upload chunked snapshot files (99MB each) to GitHub
+releases for distribution.
+
+Note: This is a planned feature. For now, manually upload the snapshot
+chunks from ~/.lux/snapshots/&lt;name>/.
+
+**Usage:**
+
+```bash
+lux network snapshot advanced upload <name>
+```
+
+#### lux network snapshot delete
+
+The snapshot delete command removes a saved snapshot from disk.
+
+Example:
+  lux network snapshot delete my-test-state
+
+**Usage:**
+
+```bash
+lux network snapshot delete <name>
+```
+
+#### lux network snapshot list
+
+The snapshot list command displays all saved snapshots with their metadata.
+
+Example:
+  lux network snapshot list
+
+**Usage:**
+
+```bash
 lux network snapshot list
 ```
 
-## Network Types
+#### lux network snapshot load
 
-| Type | Network ID | C-Chain ID | Base Port | Validators |
-|------|-----------|------------|-----------|-----------|
-| `--mainnet` | 1 | 96369 | 9630 | 5 |
-| `--testnet` | 2 | 96368 | 9640 | 5 |
-| `--devnet` | 3 | 96370 | 9650 | 5 |
-| `--dev` | 1337 | 1337 | 8545 | 1 |
+The snapshot load command loads a previously saved snapshot.
 
-## Typical Workflow
+If the network is currently running, it will be stopped first. The snapshot
+data will be copied to the active network directory and the network will be restarted.
+
+Example:
+  lux network snapshot load my-test-state
+
+**Usage:**
 
 ```bash
-# Start a development network
-lux network start --testnet
-
-# Deploy a chain
-lux chain create mychain --evm-chain-id=12345
-lux chain deploy mychain --testnet
-
-# Work with the chain...
-
-# Save state and stop
-lux network stop --snapshot-name checkpoint1
-
-# Resume later
-lux network start --testnet --snapshot-name checkpoint1
+lux network snapshot load <name> [flags]
 ```
 
-## Port Allocation
+**Flags:**
 
-Each 5-validator network uses 5 HTTP ports (base, +2, +4, +6, +8):
+```
+      --network-type string   network type to load snapshot into (mainnet, testnet, devnet, custom)
+```
 
-| Node | Mainnet HTTP | Testnet HTTP |
-|------|-------------|-------------|
-| node-0 | 9630 | 9640 |
-| node-1 | 9632 | 9642 |
-| node-2 | 9634 | 9644 |
-| node-3 | 9636 | 9646 |
-| node-4 | 9638 | 9648 |
+#### lux network snapshot save
+
+The snapshot save command saves the current network state to a named snapshot.
+
+Uses native BadgerDB backup API for reliable, consistent snapshots. Works on both
+running and stopped networks - BadgerDB supports concurrent reads during backup.
+
+Use --incremental to create a smaller incremental backup if a previous backup exists.
+Incremental backups only store changes since the last backup, saving significant space.
+
+Example:
+  lux network snapshot save my-test-state              # Full backup (works while running)
+  lux network snapshot save my-backup --incremental    # Incremental backup (smaller, faster)
+
+**Usage:**
+
+```bash
+lux network snapshot save <name> [flags]
+```
+
+**Flags:**
+
+```
+      --incremental           create incremental backup (smaller, faster if previous backup exists)
+      --network-type string   network type to snapshot (mainnet, testnet, devnet, custom)
+```
+
+### lux network start
+
+The network start command starts a local, multi-node Lux network.
+
+NETWORK TYPES (choose one, required):
+
+  --mainnet, -m    Production mainnet with 3 validators (port 9630)
+                   - Network ID: 1
+                   - HTTP API: ports 9630-9638
+                   - Use for mainnet testing and development
+
+  --testnet, -t    Test network with 3 validators (port 9640)
+                   - Network ID: 2
+                   - HTTP API: ports 9640-9648
+                   - Use for testnet deployment testing
+
+  --devnet, -d     Development network with 3 validators (port 9650)
+                   - Network ID: 3
+                   - HTTP API: ports 9650-9658
+                   - Use for rapid local development
+
+  --dev            Dev mode (port 8545) - Anvil/Hardhat compatible
+                   - Single-node: K=1 consensus, instant finality
+                   - Multi-node: --dev --num-validators=3 (turbo profile)
+                   - Primary chains: C/P/X (Contract/Platform/Exchange)
+                   - App chain VMs: A(AI) B(Bridge) D(DEX) G(Graph) I(Identity)
+                             K(Key) O(Oracle) Q(Quantum) R(Relay) T(Threshold) Z(ZK)
+                   - Set MNEMONIC to auto-fund derived accounts
+
+OPTIONS:
+
+  --num-validators    Number of validator nodes (default: 3)
+                      With --dev: 1 = K=1 single-node, >1 = turbo multi-node
+  --node-path         Path to custom luxd binary
+  --node-version      luxd version to use (default: latest)
+  --snapshot-name     Resume from named snapshot
+  --port              Base port for APIs (overrides defaults)
+  --profile           Consensus profile: standard, fast, turbo (default: auto)
+
+EXAMPLES:
+
+  # Start mainnet (3 validators, port 9630)
+  lux network start --mainnet
+  lux network start -m
+
+  # Start testnet with custom validator count
+  lux network start --testnet --num-validators 2
+
+  # Start devnet (most common for development)
+  lux network start --devnet
+
+  # Start single-node dev mode for rapid testing (K=1)
+  lux network start --dev
+
+  # Start 3-validator dev mode with turbo consensus
+  lux network start --dev --num-validators=3
+
+  # 3-node dev with mnemonic-funded accounts
+  export LIGHT_MNEMONIC="light light light light light light light light light light light energy"
+  lux network start --dev --num-validators=3
+
+  # Use custom luxd binary
+  lux network start --devnet --node-path ~/work/lux/node/build/luxd
+
+NOTES:
+
+  - Only one network type can run at a time
+  - Each network type uses different ports to avoid conflicts
+  - Network data is stored in ~/.lux/networks/&lt;type>
+  - Use 'lux network status' to verify the network is running
+  - Use 'lux network stop' to stop and save a snapshot
+  - Admin APIs are enabled by default for chain deployment
+
+TYPICAL WORKFLOW:
+
+  1. Start network:    lux network start --devnet
+  2. Deploy chain:     lux chain deploy mychain
+  3. Test your dapp:   (connect to http://localhost:9650/v1/bc/C/rpc)
+  4. Stop network:     lux network stop
+
+**Usage:**
+
+```bash
+lux network start [flags]
+```
+
+**Flags:**
+
+```
+      --archive-path string        path to BadgerDB archive database (enables dual-database mode)
+      --archive-shared             enable shared read-only access to archive database
+      --blockchain-id string       blockchain ID for the loaded state
+      --chain-id string            chain ID for the loaded state
+      --chain-state-path string    path to existing chain database to load
+      --db-backend string          database backend to use (pebble, leveldb, or badgerdb)
+      --dev                        single-node dev mode with K=1 consensus
+  -d, --devnet                     start devnet with 3 validators (port 9650)
+      --import-chain-data string   path to import blockchain data from another chain into C-Chain
+      --k8s string                 deploy to Kubernetes cluster (use kubeconfig context name)
+      --k8s-image string           Docker image for K8s deployment (default "ghcr.io/luxfi/node:latest")
+  -l, --local                      start 3-node localnet on K8s (operator-native, light mnemonic)
+  -m, --mainnet                    start mainnet with 3 validators (port 9630)
+      --node-path string           path to local luxd binary (overrides --node-version)
+      --node-version string        use this version of node (ex: v1.17.12) (default "latest")
+      --num-validators int         number of validators to start (default 3)
+      --port int                   base port for node APIs (each node uses 2 ports: HTTP and staking) (default 9630)
+      --profile string             performance profile: standard, fast, turbo (default: per-network)
+      --snapshot-name string       name of snapshot to use to start the network from (default "default-20251225")
+      --state-path string          path to existing state directory (e.g., ~/work/lux/state/chaindata/lux-mainnet-96369)
+  -t, --testnet                    start testnet with 3 validators (port 9640)
+```
+
+### lux network status
+
+The improved network status command shows detailed information about running networks.
+
+OVERVIEW:
+
+  Displays network health, validator nodes, endpoints, and custom chains.
+  Uses clean, structured output suitable for scripting and human reading.
+
+FORMAT OPTIONS:
+
+  --format full     Show full detailed status (default)
+  --format summary  Show only network summary
+  --format chains   Show only chain status
+  --format nodes    Show only node status
+  --compact         Use compact output format
+
+EXAMPLES:
+
+  # Show full status
+  lux network status-new
+
+  # Show only chain status
+  lux network status-new --format chains
+
+  # Show compact summary
+  lux network status-new --compact
+
+OUTPUT FORMAT:
+
+  status  mainnet  up   grpc=8369  nodes=5  vms=1  controller=on
+  status  testnet  up   grpc=8368  nodes=5  vms=1  controller=on
+  
+  mainnet nodes
+  node   http                         version       peers  uptime     ok
+  1      http://127.0.0.1:9630        luxd/1.22.75   12     01:22:10   yes
+  
+  mainnet chains (heights)
+  chain  kind  height     block_time           rpc_ok  latency
+  p      p     12345      2026-01-06 14:27:03   yes     18ms
+  c      evm   218        2026-01-06 14:27:01   yes     16ms
+
+**Usage:**
+
+```bash
+lux network status [flags]
+```
+
+**Flags:**
+
+```
+      --compact         use compact output format
+      --format string   output format (full, summary, chains, nodes) (default "full")
+  -o, --output string   output format (text, json, yaml, wide) (default "text")
+      --verbose         show verbose progress information
+```
+
+### lux network stop
+
+The network stop command gracefully shuts down the running network and saves state.
+
+SNAPSHOT BEHAVIOR:
+
+  By default, the network saves its state to a snapshot when stopping. This includes:
+  - Blockchain state (C-Chain, P-Chain, X-Chain, deployed chains)
+  - Validator state
+  - Database contents
+
+  The snapshot allows you to resume exactly where you left off with:
+    lux network start --&lt;type> --snapshot-name &lt;name>
+
+OPTIONS:
+
+  --mainnet           Stop mainnet network (network-id=1)
+  --testnet           Stop testnet network (network-id=2)
+  --devnet            Stop devnet network (network-id=3)
+  --network-id        Stop network by ID (for custom networks)
+  --snapshot-name     Name for the snapshot (default: default-snapshot)
+  --force             Force stop without confirmation (use with caution)
+
+SAFETY CHECKS:
+
+  If multiple networks are running, you MUST specify which one to stop:
+    lux network stop --devnet
+    lux network stop --testnet
+
+  Stopping mainnet or testnet requires explicit --mainnet/--testnet flag.
+  This prevents accidental disruption of production deployments.
+
+EXAMPLES:
+
+  # Stop the running network (when only one is running)
+  lux network stop
+
+  # Stop specific network type (required when multiple running)
+  lux network stop --devnet
+  lux network stop --testnet
+
+  # Stop with named snapshot
+  lux network stop --devnet --snapshot-name my-snapshot
+
+  # Resume from snapshot later
+  lux network start --devnet --snapshot-name my-snapshot
+
+NOTES:
+
+  - Snapshots preserve ALL network state including deployed chains
+  - Chain configurations (in ~/.lux/chains/) are NOT affected
+  - Use 'lux network clean' to wipe runtime data completely
+  - Only the specified network type is stopped (others remain running)
+  - Use 'lux dev stop' for the dev mode node (separate from network command)
+
+SNAPSHOT vs CLEAN:
+
+  lux network stop    - Saves state for resuming later
+  lux network clean   - Deletes runtime data, preserves chain configs
+
+**Usage:**
+
+```bash
+lux network stop [flags]
+```
+
+**Flags:**
+
+```
+      --cleanup                clean up old log files and stale run directories
+      --devnet                 stop devnet network (network-id=3)
+      --force                  force stop without confirmation (use with caution for mainnet/testnet)
+      --mainnet                stop mainnet network (network-id=1)
+      --network-id uint32      stop network by ID (for custom networks)
+      --snapshot-name string   name of snapshot to use to save network state into (default "default-20251225")
+      --testnet                stop testnet network (network-id=2)
+```
+

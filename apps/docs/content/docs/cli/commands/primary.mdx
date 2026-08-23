@@ -1,0 +1,68 @@
+---
+title: lux primary
+description: Interact with the Primary Network
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux primary
+
+The primary command suite provides a collection of tools for interacting with the
+Primary Network
+
+**Usage:**
+
+```bash
+lux primary
+```
+
+### lux primary addValidator
+
+Issues an AddPermissionlessValidatorTx for a node identity.
+
+Create the identity first — it prints every value this command needs:
+
+  lux key staker ~/.luxd/staking
+  lux primary addValidator --mainnet \
+      --node-id NodeID-... --public-key 0x... --proof-of-possession 0x... \
+      --stake 2000000000 --duration 336h
+
+The stake is in nLUX (1 LUX = 1e9 nLUX) and the chain reads the start time
+from its own clock, so --duration measures from when the tx is accepted.
+
+**Usage:**
+
+```bash
+lux primary addValidator [flags]
+```
+
+**Flags:**
+
+```
+      --cluster string               operate on the given cluster
+      --delegation-fee uint32        share of delegation rewards the validator keeps, out of 1,000,000 (default 20000)
+      --devnet                       operate on a devnet network
+      --duration duration            how long the validator stays in the set
+      --endpoint string              use the given endpoint for network operations
+  -k, --key string                   name of the stored key that pays and owns the rewards
+  -g, --ledger                       sign with a ledger device instead of a stored key
+      --ledger-addrs strings         ledger addresses to search
+  -m, --mainnet                      operate on mainnet
+      --node-id string               NodeID of the validator
+      --proof-of-possession string   BLS proof of possession of the validator
+      --public-key string            BLS public key of the validator
+      --reward-address string        P-Chain address to own the staking reward (default: the paying key)
+      --stake uint                   amount to stake, in nLUX
+  -t, --testnet                      operate on testnet
+```
+
+### lux primary describe
+
+The chain describe command prints details of the primary network configuration to the console.
+
+**Usage:**
+
+```bash
+lux primary describe
+```
+

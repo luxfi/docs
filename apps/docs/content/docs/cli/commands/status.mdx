@@ -1,0 +1,64 @@
+---
+title: lux status
+description: Show network status with improved formatting
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux status
+
+The improved network status command shows detailed information about running networks.
+
+OVERVIEW:
+
+  Displays network health, validator nodes, endpoints, and custom chains.
+  Uses clean, structured output suitable for scripting and human reading.
+
+FORMAT OPTIONS:
+
+  --format full     Show full detailed status (default)
+  --format summary  Show only network summary
+  --format chains   Show only chain status
+  --format nodes    Show only node status
+  --compact         Use compact output format
+
+EXAMPLES:
+
+  # Show full status
+  lux network status-new
+
+  # Show only chain status
+  lux network status-new --format chains
+
+  # Show compact summary
+  lux network status-new --compact
+
+OUTPUT FORMAT:
+
+  status  mainnet  up   grpc=8369  nodes=5  vms=1  controller=on
+  status  testnet  up   grpc=8368  nodes=5  vms=1  controller=on
+  
+  mainnet nodes
+  node   http                         version       peers  uptime     ok
+  1      http://127.0.0.1:9630        luxd/1.22.75   12     01:22:10   yes
+  
+  mainnet chains (heights)
+  chain  kind  height     block_time           rpc_ok  latency
+  p      p     12345      2026-01-06 14:27:03   yes     18ms
+  c      evm   218        2026-01-06 14:27:01   yes     16ms
+
+**Usage:**
+
+```bash
+lux status [flags]
+```
+
+**Flags:**
+
+```
+      --compact         use compact output format
+      --format string   output format (full, summary, chains, nodes) (default "full")
+  -o, --output string   output format (text, json, yaml, wide) (default "text")
+      --verbose         show verbose progress information
+```
+

@@ -1,0 +1,45 @@
+---
+title: lux netrunner
+description: Manage the network runner
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux netrunner
+
+Commands for managing the Lux network runner.
+
+The netrunner is used for local network testing and development.
+
+**Usage:**
+
+```bash
+lux netrunner
+```
+
+### lux netrunner link
+
+Link netrunner binary for the CLI to use.
+
+Creates ~/.lux/bin directory if needed and symlinks the netrunner binary.
+
+EXAMPLES:
+
+  # Link netrunner (auto-detect from ../netrunner/bin/netrunner)
+  lux netrunner link --auto
+
+  # Link specific path
+  lux netrunner link /path/to/netrunner
+
+**Usage:**
+
+```bash
+lux netrunner link [path] [flags]
+```
+
+**Flags:**
+
+```
+      --auto   auto-detect netrunner from standard locations
+```
+

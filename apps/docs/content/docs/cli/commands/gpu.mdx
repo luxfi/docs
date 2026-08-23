@@ -1,0 +1,45 @@
+---
+title: lux gpu
+description: Manage GPU acceleration
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux gpu
+
+The gpu command provides utilities for managing GPU acceleration
+in the Lux node. Use subcommands to check GPU status, availability,
+and configuration.
+
+GPU acceleration is used for:
+  - NTT operations in Corona consensus
+  - FHE operations in ThresholdVM
+  - Lattice cryptography operations
+
+**Usage:**
+
+```bash
+lux gpu
+```
+
+### lux gpu status
+
+Show the current GPU acceleration status including:
+  - GPU availability on this system
+  - Active backend (Metal, CUDA, or CPU)
+  - Platform and architecture information
+  - Available GPU-accelerated features
+  - Default configuration settings
+
+**Usage:**
+
+```bash
+lux gpu status [flags]
+```
+
+**Flags:**
+
+```
+      --json   output status in JSON format
+```
+

@@ -1,0 +1,136 @@
+---
+title: lux snapshot
+description: Create and manage network snapshots
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux snapshot
+
+The snapshot command creates native incremental backups of running networks.
+
+This uses BadgerDB's native backup API for:
+  - Incremental backups (only changes since last backup)
+  - Consistent snapshots (atomic database state)
+  - Fast restore times
+  - Smaller backup sizes (zstd compressed)
+
+USAGE:
+
+  # Create snapshot of running network (auto-detects which network)
+  lux snapshot
+
+  # Create snapshot of specific network
+  lux snapshot --mainnet
+  lux snapshot --testnet
+
+  # Create snapshot with custom name
+  lux snapshot --name my-backup
+
+  # Force full backup (not incremental)
+  lux snapshot --full
+
+  # Restore from snapshot
+  lux snapshot restore my-backup
+
+  # List available snapshots
+  lux snapshot list
+
+INCREMENTAL BACKUPS:
+
+  By default, snapshots are incremental - they only include data that changed
+  since the last backup. This makes them much smaller and faster.
+
+  First backup: Full backup (~90MB compressed for fresh network)
+  Subsequent:   Incremental (~1-10MB for typical changes)
+
+  Use --full to force a complete backup.
+
+**Usage:**
+
+```bash
+lux snapshot [flags]
+```
+
+**Flags:**
+
+```
+      --devnet        snapshot devnet network
+      --full          create full backup instead of incremental
+      --mainnet       snapshot mainnet network
+      --name string   snapshot name (default: <network>-<date>)
+      --testnet       snapshot testnet network
+```
+
+### lux snapshot clean
+
+Clean up old snapshots, large log files, and stale run directories.
+
+This command frees disk space by removing:
+  - Old backup directories
+  - Large netrunner log files (>100MB)
+  - Stale run directories from previous sessions
+
+EXAMPLES:
+
+  # Preview what would be cleaned
+  lux snapshot clean --dry-run
+
+  # Clean everything, keep last 3 snapshots
+  lux snapshot clean --keep 3
+
+  # Clean all old data
+  lux snapshot clean
+
+**Usage:**
+
+```bash
+lux snapshot clean [flags]
+```
+
+**Flags:**
+
+```
+      --dry-run    show what would be cleaned without deleting
+      --keep int   number of recent snapshots to keep (default 3)
+```
+
+### lux snapshot list
+
+List available snapshots
+
+**Usage:**
+
+```bash
+lux snapshot list
+```
+
+### lux snapshot restore
+
+Restore a network from a previously created snapshot.
+
+The network must be stopped before restoring. After restore, start the
+network with 'lux network start'.
+
+EXAMPLES:
+
+  # Restore from snapshot
+  lux snapshot restore my-backup
+
+  # Restore mainnet snapshot
+  lux snapshot restore mainnet-2026-01-19 --mainnet
+
+**Usage:**
+
+```bash
+lux snapshot restore [name] [flags]
+```
+
+**Flags:**
+
+```
+      --devnet    restore to devnet
+      --mainnet   restore to mainnet
+      --testnet   restore to testnet
+```
+

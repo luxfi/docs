@@ -1,0 +1,38 @@
+---
+title: lux link
+description: Link Lux binaries to ~/.lux/bin/
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux link
+
+Link Lux binaries for system-wide use.
+
+Creates ~/.lux/bin directory if needed and symlinks binaries.
+Add ~/.lux/bin to your PATH for easy access.
+
+SUPPORTED BINARIES:
+  all        - All binaries (lux, luxd, netrunner)
+  lux        - CLI binary
+  luxd       - Node binary
+  netrunner  - Network runner
+
+EXAMPLES:
+
+  # Link all binaries (auto-detect from workspace)
+  lux link all
+
+  # Link specific binary (auto-detect)
+  lux link luxd
+  lux link netrunner
+
+  # Link specific binary with explicit path
+  lux link luxd /path/to/luxd
+
+**Usage:**
+
+```bash
+lux link [binary] [path]
+```
+

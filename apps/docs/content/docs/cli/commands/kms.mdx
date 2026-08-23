@@ -1,0 +1,192 @@
+---
+title: lux kms
+description: Key Management Service operations
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux kms
+
+Key Management Service (KMS) for managing cryptographic keys and secrets.
+
+The KMS provides:
+  - Key generation (AES-256, RSA, ECDSA, Ed25519)
+  - Encryption/decryption operations
+  - Digital signatures
+  - Secret management
+  - MPC wallet integration
+
+QUICK START:
+
+  # Start the KMS server
+  lux kms server start
+
+  # Generate a new key
+  lux kms key create --name mykey --type aes-256-gcm --usage encrypt-decrypt
+
+  # List keys
+  lux kms key list
+
+  # Create a secret
+  lux kms secret create --name API_KEY --value "sk-xxx" --env production
+
+STORAGE:
+
+  KMS data is stored in ~/.lux/kms/ by default.
+  The root encryption key is derived from your system keychain or environment.
+
+API:
+
+  The KMS server exposes a REST API compatible with the kms-go SDK.
+  Default address: http://localhost:8200
+
+Available subcommands:
+  server  - Manage the KMS server
+  key     - Key management operations
+  secret  - Secret management operations
+
+### lux kms key
+
+Commands for managing cryptographic keys.
+
+#### lux kms key create
+
+Create a new cryptographic key.
+
+Supported key types:
+  - aes-256-gcm   : Symmetric encryption (default)
+  - rsa-4096      : RSA asymmetric key
+  - ecdsa-p256    : ECDSA P-256 curve
+  - ecdsa-p384    : ECDSA P-384 curve
+  - ed25519       : EdDSA Ed25519
+
+Usage types:
+  - encrypt-decrypt : For encryption operations
+  - sign-verify     : For digital signatures
+
+Examples:
+  lux kms key create --name mykey --type aes-256-gcm
+  lux kms key create --name signing --type ecdsa-p256 --usage sign-verify
+
+**Usage:**
+
+```bash
+lux kms key create [flags]
+```
+
+**Flags:**
+
+```
+      --description string   Key description
+      --name string          Key name (required)
+      --project string       Project ID
+      --type string          Key type (default "aes-256-gcm")
+      --usage string         Key usage (default "encrypt-decrypt")
+```
+
+#### lux kms key delete
+
+Delete a key
+
+**Usage:**
+
+```bash
+lux kms key delete [keyID]
+```
+
+#### lux kms key list
+
+List all keys
+
+**Usage:**
+
+```bash
+lux kms key list
+```
+
+### lux kms secret
+
+Commands for managing encrypted secrets.
+
+#### lux kms secret create
+
+Create a new encrypted secret.
+
+Examples:
+  lux kms secret create --name API_KEY --value "sk-xxx"
+  lux kms secret create --name DB_PASSWORD --value "secret" --env production
+
+**Usage:**
+
+```bash
+lux kms secret create [flags]
+```
+
+**Flags:**
+
+```
+      --env string     Environment (dev, staging, prod)
+      --name string    Secret name (required)
+      --path string    Secret path (default "/")
+      --value string   Secret value (required)
+```
+
+#### lux kms secret get
+
+Get a secret value
+
+**Usage:**
+
+```bash
+lux kms secret get [secretName]
+```
+
+#### lux kms secret list
+
+List all secrets
+
+**Usage:**
+
+```bash
+lux kms secret list
+```
+
+### lux kms server
+
+Commands for starting and managing the KMS server.
+
+#### lux kms server start
+
+Start the KMS HTTP API server.
+
+The server provides a REST API for key management, encryption, and secret
+operations. It is compatible with the kms-go SDK client.
+
+Examples:
+  # Start with default settings
+  lux kms server start
+
+  # Start on a custom port
+  lux kms server start --addr :9200
+
+  # Start with in-memory storage (for testing)
+  lux kms server start --in-memory
+
+  # Start with API key authentication
+  lux kms server start --api-key your-secret-key
+
+**Usage:**
+
+```bash
+lux kms server start [flags]
+```
+
+**Flags:**
+
+```
+      --addr string       Server listen address (default ":8200")
+      --api-key string    API key for authentication
+      --data-dir string   Data directory (default: ~/.lux/kms)
+      --in-memory         Use in-memory storage (data lost on restart)
+```
+

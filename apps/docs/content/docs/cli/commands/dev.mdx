@@ -1,0 +1,172 @@
+---
+title: lux dev
+description: Development environment commands
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux dev
+
+The dev command provides local development environment tools.
+
+This runs a single-node Lux network with K=1 consensus for instant
+block finality. All chains (C/P/X) are enabled with full validator
+signing capabilities.
+
+Commands:
+  start   - Start local dev node (default port 8545)
+  stop    - Stop the dev node
+
+Features:
+  • K=1 consensus (instant finality, no validator sampling)
+  • Full validator signing for all chains
+  • Compatible with Hardhat/Foundry/Anvil tooling
+  • Test accounts pre-funded in genesis
+
+**Usage:**
+
+```bash
+lux dev
+```
+
+### lux dev stack
+
+Manage a multi-app local development stack.
+
+The stack runs luxd (one or more nodes) plus companion apps:
+explorer, bridge, exchange, safe, dao, wallet, faucet.
+
+Config lives at ~/.lux/dev/stack.yaml and is auto-created on first run.
+
+Examples:
+  lux dev stack up                # Start stack with defaults
+  lux dev stack up --chains 3     # Start 3 luxd nodes + apps
+  lux dev stack down              # Graceful shutdown
+  lux dev stack status            # Show running processes
+  lux dev stack logs explorer     # Tail explorer logs
+
+**Usage:**
+
+```bash
+lux dev stack
+```
+
+#### lux dev stack down
+
+Gracefully stop all running stack processes. Sends SIGTERM, waits 10s, then SIGKILL.
+
+**Usage:**
+
+```bash
+lux dev stack down
+```
+
+#### lux dev stack logs
+
+Tail the log file for a stack application.
+
+The app name can be a base name (e.g., "explorer") which tails instance 0,
+or a full instance name (e.g., "explorer-1") for a specific chain instance.
+
+**Usage:**
+
+```bash
+lux dev stack logs <app>
+```
+
+#### lux dev stack status
+
+Display a table of all stack processes with PID, port, state, and uptime.
+
+**Usage:**
+
+```bash
+lux dev stack status
+```
+
+#### lux dev stack up
+
+Start all enabled apps in the dev stack.
+
+luxd nodes start first and must pass health checks before companion
+apps are launched. Port deconfliction for multi-chain: chain i gets
+ports at port_base + 100*i.
+
+**Usage:**
+
+```bash
+lux dev stack up [flags]
+```
+
+**Flags:**
+
+```
+      --chains int      number of luxd nodes (overrides stack.yaml)
+      --config string   path to stack.yaml (default: ~/.lux/dev/stack.yaml)
+```
+
+### lux dev start
+
+Start a single-node Lux development network.
+
+The dev node uses K=1 consensus for instant block finality without
+validator sampling. All chains are enabled with full validator signing:
+  • C-Chain: EVM-compatible smart contracts
+  • P-Chain: Platform staking and validation
+  • X-Chain: UTXO-based asset exchange
+  • T-Chain: Threshold FHE operations
+
+Default port is 8545 (Anvil-compatible) so it works seamlessly with
+Hardhat, Foundry, and other Ethereum tooling.
+
+FHE Support:
+  The T-Chain provides threshold homomorphic encryption for confidential
+  smart contracts. Use FHE precompiles at 0x0200...0080 or the @luxfi/fhe SDK.
+
+DEX / D-Chain:
+  The public default luxd does NOT include the DEX D-Chain. To launch the
+  dchain-tagged luxd (which bakes D-Chain on localnet 1337) pass:
+    lux dev start --build-tags dchain
+  This resolves the dchain-tagged binary and points --plugin-dir at the plugin
+  directory so the EVM plugin subprocess is found deterministically.
+
+Examples:
+  lux dev start                    # Start on default port 8545
+  lux dev start --port 9650        # Start on custom port
+  lux dev start --automine 1s      # Mine blocks every 1 second
+  lux dev start --automine 500ms   # Mine blocks every 500ms
+  lux dev start --build-tags dchain # Start the D-Chain-enabled (dexvm) node
+
+**Usage:**
+
+```bash
+lux dev start [flags]
+```
+
+**Flags:**
+
+```
+      --automine string       auto-mine interval (e.g., '1s', '500ms'); empty = mine as blocks arrive
+      --build-tags string     luxd build-tag selector; 'dchain' launches the D-Chain-enabled (dexvm) node
+      --clean                 clean state before starting (fresh genesis)
+      --data-dir string       luxd data-dir (default ~/.lux/devnet)
+      --genesis-file string   genesis file path (uses luxd embedded if empty)
+      --log-level string      log level (debug, info, warn, error) (default "info")
+      --network-id uint32     sovereign-L1 networkID (override 1337 default) (default 1337)
+      --node-path string      path to luxd binary (auto-detected if not set)
+      --plugin-dir string     VM plugin directory passed to luxd (default: luxd's own ~/.lux/plugins/current)
+      --port int              HTTP port for RPC (Anvil-compatible default) (default 8545)
+```
+
+### lux dev stop
+
+Stops the dev node that `lux dev start` writes to its default
+data-dir (~/.lux/devnet). For sovereign-L1 nodes booted via
+`lux up &lt;brand>/&lt;env>`, use `lux down &lt;brand>/&lt;env>` instead.
+
+**Usage:**
+
+```bash
+lux dev stop
+```
+

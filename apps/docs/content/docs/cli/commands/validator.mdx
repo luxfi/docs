@@ -1,0 +1,70 @@
+---
+title: lux validator
+description: Manage P-Chain validator balance
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux validator
+
+The validator command suite provides a collection of tools for managing validator
+balance on P-Chain.
+
+Validator's balance is used to pay for continuous fee to the P-Chain. When this Balance reaches 0, 
+the validator will be considered inactive and will no longer participate in validating the L1
+
+**Usage:**
+
+```bash
+lux validator
+```
+
+### lux validator getBalance
+
+This command gets the remaining validator P-Chain balance that is available to pay
+P-Chain continuous fee
+
+**Usage:**
+
+```bash
+lux validator getBalance [flags]
+```
+
+**Flags:**
+
+```
+      --l1 string              name of L1
+      --node-id string         node ID of the validator
+      --validation-id string   validation ID of the validator
+```
+
+### lux validator increaseBalance
+
+This command increases the validator P-Chain balance
+
+**Usage:**
+
+```bash
+lux validator increaseBalance [flags]
+```
+
+**Flags:**
+
+```
+      --balance float          amount of LUX to increase validator's balance by
+  -k, --key string             select the key to use [testnet/devnet deploy only]
+      --l1 string              name of L1 (to increase balance of bootstrap validators only)
+      --node-id string         node ID of the validator
+      --validation-id string   validationIDStr of the validator
+```
+
+### lux validator list
+
+This command gets a list of the validators of the L1
+
+**Usage:**
+
+```bash
+lux validator list [blockchainName]
+```
+

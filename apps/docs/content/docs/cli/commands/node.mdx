@@ -1,62 +1,303 @@
 ---
 title: lux node
-description: Manage luxd nodes on Kubernetes
+description: Manage luxd nodes (local binary and Kubernetes deployments)
 ---
 
-The `node` command manages luxd nodes -- both local binary linking and Kubernetes deployments via Helm.
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
 
-## Local Commands
+## lux node
+
+Commands for managing luxd nodes — locally and on Kubernetes.
+
+LOCAL COMMANDS:
+  link        Symlink a luxd binary to ~/.lux/bin/luxd
+  join        Join this box to the node pool (run a validator anywhere)
+
+KUBERNETES COMMANDS (via Helm chart):
+  deploy      Deploy/update luxd via Helm (single source of truth)
+  upgrade     Rolling upgrade with zero downtime (partition-based)
+  status      Show pod status, images, and health
+  logs        Stream logs from a luxd pod
+  rollback    Revert to previous StatefulSet revision
+
+The deploy command uses the canonical Helm chart at ~/work/lux/devops/charts/lux/
+(configurable via --chart-path or $CHART_PATH). All other k8s commands use
+the Kubernetes API directly for fast read/write operations.
+
+All k8s commands require one of --mainnet, --testnet, --devnet, or --namespace.
+Use --context to target a specific kubeconfig context.
+
+EXAMPLES:
+  # Local
+  lux node link --auto
+
+  # Deploy via Helm (uses canonical chart + values-&#123;network}.yaml)
+  lux node deploy --mainnet
+  lux node deploy --testnet --set image.tag=luxd-v1.23.15
+
+  # Zero-downtime upgrade (partition-based, per-pod health checks)
+  lux node upgrade --mainnet --image ghcr.io/luxfi/node:v1.23.6
+
+  # Check status
+  lux node status --mainnet
+
+  # Stream logs
+  lux node logs --mainnet luxd-0 -f
+
+  # Rollback
+  lux node rollback --mainnet
+
+**Usage:**
 
 ```bash
-# Symlink a luxd binary for the CLI to use
-lux node link --auto
-lux node link --path /path/to/luxd
+lux node
 ```
 
-## Kubernetes Commands
+### lux node deploy
 
-All K8s commands use the canonical Helm chart and require a network flag (`--mainnet`, `--testnet`, or `--devnet`).
+Deploys the luxd Helm chart to Kubernetes using helm upgrade --install.
+
+Uses the canonical Helm chart from ~/work/lux/devops/charts/lux/ as the
+single source of truth. This ensures the CLI creates identical deployments
+to the deploy-all.sh script — same startup.sh, staking keys, bootstrap
+nodes, upgrade-file-content, chain configs, and per-pod services.
+
+CHART DISCOVERY (in order):
+  1. --chart-path flag
+  2. $CHART_PATH environment variable
+  3. ~/work/lux/devops/charts/lux/
+
+EXAMPLES:
+  lux node deploy --mainnet
+  lux node deploy --testnet --set image.tag=luxd-v1.23.15
+  lux node deploy --devnet --replicas 3
+  lux node deploy --mainnet --chart-path /path/to/chart
+  lux node deploy --mainnet --dry-run
+
+**Usage:**
 
 ```bash
-# Deploy or update via Helm
-lux node deploy --mainnet
-lux node deploy --testnet --set image.tag=v1.23.23
-
-# Zero-downtime rolling upgrade (partition-based)
-lux node upgrade --mainnet --image ghcr.io/luxfi/node:v1.23.23
-
-# Check pod status, images, and health
-lux node status --mainnet
-
-# Stream logs from a specific pod
-lux node logs --mainnet luxd-0 -f
-
-# Rollback to previous StatefulSet revision
-lux node rollback --mainnet
+lux node deploy [flags]
 ```
 
-## Helm Chart
-
-The `deploy` command uses `helm upgrade --install` with the chart at `~/work/lux/devops/charts/lux/`. Override the chart path with `--chart-path` or `$LUX_CHART_PATH`.
-
-## Flags
-
-| Flag | Description |
-|------|-------------|
-| `--mainnet` | Target lux-mainnet namespace |
-| `--testnet` | Target lux-testnet namespace |
-| `--devnet` | Target lux-devnet namespace |
-| `--namespace` | Custom namespace |
-| `--context` | Kubeconfig context |
-| `--set` | Helm value override |
-| `--dry-run` | Template only, do not apply |
-| `--chart-path` | Path to Helm chart |
-| `--image` | Container image for upgrades |
-
-## Image Format
+**Flags:**
 
 ```
-ghcr.io/luxfi/node:<tag>
+      --chart-path string   path to Helm chart (default: auto-detect)
+      --context string      kubeconfig context to use
+      --devnet              target lux-devnet namespace
+      --dry-run             helm dry-run mode (template only, no apply)
+      --image string        override image tag (shorthand for --set image.tag=TAG)
+      --mainnet             target lux-mainnet namespace
+      --namespace string    k8s namespace (overrides network flags)
+      --replicas int32      override replica count (0 = use chart default)
+      --set stringArray     additional Helm --set overrides (repeatable)
+      --testnet             target lux-testnet namespace
 ```
 
-Always build for `--platform linux/amd64`. Images are built by CI/CD, never locally.
+### lux node join
+
+Run this on any box and it joins the pool; the operator schedules a
+compact validator onto it and rebalances the fleet. Drain a box and its
+validator reschedules onto the others — run a node anywhere, the network spreads.
+
+  # First box — become the control plane and hold history:
+  lux node join --init --role archive
+
+  # Any other box — join and run a compact validator:
+  lux node join --server https://&lt;control>:6443 --token &lt;token>
+
+Off-LAN boxes: put them on one tailnet first (tailscale up, or hanzozt) and pass
+the tailnet IP as --server, so "anywhere" really means anywhere. The role is a
+node label (lux.cloud/validator|archive=true) the NodeFleet schedules against —
+see operator/spec/examples/nodefleet-lab.yaml.
+
+**Usage:**
+
+```bash
+lux node join [flags]
+```
+
+**Flags:**
+
+```
+      --init            make THIS box the pool's control plane (k3s server)
+      --name string     node name (default: hostname)
+      --print           print the k3s command instead of running it
+      --role string     node role: validator (compact) or archive (full history) (default "validator")
+      --server string   control-plane API URL, e.g. https://<ip>:6443 (agent mode)
+      --token string    node token from the control plane (agent mode)
+```
+
+### lux node link
+
+Link luxd binary for the CLI to use.
+
+Creates ~/.lux/bin directory if needed and symlinks the luxd binary.
+
+PRIORITY ORDER for binary lookup:
+  1. Command-line flags (--node-path)
+  2. ~/.lux/bin/luxd (this symlink)
+  3. Environment variable (NODE_PATH)
+  4. Config file settings
+  5. PATH lookup
+  6. Relative paths from CLI location
+
+EXAMPLES:
+
+  # Link luxd (auto-detect from ../node/bin/luxd)
+  lux node link --auto
+
+  # Link specific path
+  lux node link /path/to/luxd
+
+**Usage:**
+
+```bash
+lux node link [path] [flags]
+```
+
+**Flags:**
+
+```
+      --auto   auto-detect luxd from standard locations
+```
+
+### lux node logs
+
+Streams logs from a specific luxd pod in the StatefulSet.
+
+If no pod name is given, defaults to luxd-0.
+
+EXAMPLES:
+  lux node logs --mainnet
+  lux node logs --mainnet luxd-2
+  lux node logs --mainnet luxd-0 -f
+  lux node logs --testnet --tail 100
+
+**Usage:**
+
+```bash
+lux node logs [pod-name] [flags]
+```
+
+**Flags:**
+
+```
+      --context string     kubeconfig context to use
+      --devnet             target lux-devnet namespace
+  -f, --follow             follow log output
+      --mainnet            target lux-mainnet namespace
+      --namespace string   k8s namespace (overrides network flags)
+      --tail int           number of recent lines to show (default 200)
+      --testnet            target lux-testnet namespace
+```
+
+### lux node rollback
+
+Reverts the luxd StatefulSet to its previous ControllerRevision.
+
+By default rolls back to the immediately previous revision. Use --revision
+to target a specific revision number.
+
+After rollback, performs the same partition-based rolling update to ensure
+zero downtime — pods are updated one at a time with health checks.
+
+EXAMPLES:
+  lux node rollback --mainnet
+  lux node rollback --mainnet --revision 3
+  lux node rollback --testnet --timeout 10m
+
+**Usage:**
+
+```bash
+lux node rollback [flags]
+```
+
+**Flags:**
+
+```
+      --context string     kubeconfig context to use
+      --devnet             target lux-devnet namespace
+      --mainnet            target lux-mainnet namespace
+      --namespace string   k8s namespace (overrides network flags)
+      --revision int       target revision number (0 = previous)
+      --testnet            target lux-testnet namespace
+      --timeout duration   max time to wait per pod (default 5m0s)
+```
+
+### lux node status
+
+Displays the current state of the luxd Kubernetes deployment.
+
+Shows:
+  - StatefulSet metadata (replicas, revision, update strategy)
+  - Per-pod status (ready, image, restarts, age)
+  - LoadBalancer external IP
+  - Revision history for rollback
+
+EXAMPLES:
+  lux node status --mainnet
+  lux node status --testnet
+  lux node status --namespace my-custom-ns
+
+**Usage:**
+
+```bash
+lux node status [flags]
+```
+
+**Flags:**
+
+```
+      --context string     kubeconfig context to use
+      --devnet             target lux-devnet namespace
+      --mainnet            target lux-mainnet namespace
+      --namespace string   k8s namespace (overrides network flags)
+      --testnet            target lux-testnet namespace
+```
+
+### lux node upgrade
+
+Performs a partition-based rolling upgrade of the luxd StatefulSet.
+
+Upgrades one pod at a time (highest ordinal first), waiting for each pod
+to become ready and stable before proceeding. This ensures C-chain RPC
+clients experience no downtime since a quorum of validators remains
+available throughout the upgrade.
+
+PROCESS:
+  1. Validates the new image exists and differs from current
+  2. Updates the StatefulSet pod template with new image
+  3. Sets partition = replicas (no pods restart yet)
+  4. Lowers partition one at a time (pod N-1, N-2, ... 0)
+  5. After each pod restart: waits for readiness + stability period
+  6. If any pod fails health check, stops and prints rollback command
+
+EXAMPLES:
+  lux node upgrade --mainnet --image ghcr.io/luxfi/node:v1.23.5
+  lux node upgrade --testnet --image ghcr.io/luxfi/node:v1.23.5 --stability-wait 60s
+  lux node upgrade --devnet --image ghcr.io/luxfi/node:v1.23.5 --dry-run
+
+**Usage:**
+
+```bash
+lux node upgrade [flags]
+```
+
+**Flags:**
+
+```
+      --context string            kubeconfig context to use
+      --devnet                    target lux-devnet namespace
+      --dry-run                   show what would happen without making changes
+      --evm-version string        EVM plugin version to update in init container
+      --force                     proceed even if image is the same
+      --health-timeout duration   max time to wait for a pod to become ready (default 5m0s)
+      --image string              new container image (required)
+      --mainnet                   target lux-mainnet namespace
+      --namespace string          k8s namespace (overrides network flags)
+      --stability-wait duration   wait time after pod ready before proceeding (default 30s)
+      --testnet                   target lux-testnet namespace
+```
+

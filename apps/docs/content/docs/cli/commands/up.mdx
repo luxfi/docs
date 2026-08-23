@@ -1,0 +1,37 @@
+---
+title: lux up
+description: Boot a sovereign-L1 network instance (foreground)
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux up
+
+Boots the luxd node for &lt;network>/&lt;env> in K=1 PoA mode.
+
+The (network, env) tuple identifies one L1 instance globally. Every
+parameter — port, networkID, dataDir, genesisFile — is derived from that
+network's chain.yaml under $LUX_NETWORK_PATH. Foreground: `lux up`
+blocks until the node exits or Ctrl-C is pressed.
+
+Examples:
+  lux up zoo/localnet                 # K=1 dev node for Zoo, networkID 200203
+  lux up lux/devnet                   # K=1 dev node for Lux, networkID 3
+  lux up hanzo/testnet --clean        # wipe state then boot
+
+Stop with: lux down &lt;network>/&lt;env>
+
+**Usage:**
+
+```bash
+lux up <network>/<env> [flags]
+```
+
+**Flags:**
+
+```
+      --automine string    auto-mine interval (e.g., '1s'); empty = instant
+      --clean              remove data-dir before boot (fresh genesis)
+      --node-path string   path to luxd binary (auto-detected if empty)
+```
+

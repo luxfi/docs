@@ -1,0 +1,65 @@
+---
+title: lux explore
+description: Run a local block explorer
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux explore
+
+The explore command starts a local block explorer that indexes
+chain data and serves the explorer API + frontend.
+
+USAGE:
+
+  lux explore                     Start explorer for the running local network
+  lux explore --rpc &lt;url>         Start explorer for a specific RPC endpoint
+  lux explore --chain cchain      Index a specific chain (default: cchain)
+  lux explore --port 8090         API port (default: 8090)
+
+The explorer runs as a background process. Use 'lux explore stop' to stop it.
+Data is stored in ~/.lux/explorer/ and persists across restarts.
+
+ENDPOINTS:
+
+  http://localhost:8090/v1/explorer/stats     Chain statistics
+  http://localhost:8090/v1/explorer/blocks     Block list
+  http://localhost:8090/v1/explorer/search     Search
+  http://localhost:8090/health                 Health check
+
+**Usage:**
+
+```bash
+lux explore [flags]
+```
+
+**Flags:**
+
+```
+      --chain string   Chain to index (cchain, xchain, pchain, or chain name) (default "cchain")
+      --data string    Data directory (default: ~/.lux/explorer/)
+      --open           Open browser after starting (default true)
+      --port int       HTTP port for explorer API (default 8090)
+      --rpc string     RPC endpoint (auto-detected from running network if not set)
+```
+
+### lux explore status
+
+Show explorer status
+
+**Usage:**
+
+```bash
+lux explore status
+```
+
+### lux explore stop
+
+Stop the running explorer
+
+**Usage:**
+
+```bash
+lux explore stop
+```
+

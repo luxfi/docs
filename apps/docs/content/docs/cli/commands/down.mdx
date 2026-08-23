@@ -1,0 +1,30 @@
+---
+title: lux down
+description: Stop a sovereign-L1 node by identity (not by PID file)
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux down
+
+Stops the luxd node for &lt;network>/&lt;env> by:
+
+  1. Probing http://127.0.0.1:&lt;httpPort>/v1/info → info.getNetworkID
+  2. Verifying the response equals the expected networkID from chain.yaml
+  3. Looking up the PID listening on httpPort via lsof
+  4. SIGTERM → wait drain → SIGKILL if still up
+
+The (network, env) tuple alone determines what gets stopped. No --data-dir,
+no --pid-file. Refusal-by-default: if the responder's networkID does not
+match, we leave it alone.
+
+Examples:
+  lux down zoo/localnet
+  lux down lux/devnet
+
+**Usage:**
+
+```bash
+lux down <network>/<env>
+```
+

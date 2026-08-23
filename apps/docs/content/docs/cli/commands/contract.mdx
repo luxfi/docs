@@ -1,0 +1,139 @@
+---
+title: lux contract
+description: Manage smart contracts
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux contract
+
+The contract command suite provides a collection of tools for deploying
+and interacting with smart contracts on Lux networks.
+
+**Usage:**
+
+```bash
+lux contract
+```
+
+### lux contract deploy
+
+The contract command suite provides a collection of tools for deploying
+smart contracts on Lux networks.
+
+**Usage:**
+
+```bash
+lux contract deploy
+```
+
+#### lux contract deploy erc20
+
+Deploy an ERC20 token into a given Network and Blockchain.
+
+The command deploys a standard ERC20 token contract with the specified
+symbol, initial supply, and recipient address for the minted tokens.
+
+Examples:
+  # Interactive mode (prompts for missing values)
+  lux contract deploy erc20
+
+  # Non-interactive mode (all flags required)
+  lux contract deploy erc20 --symbol USDC --supply 1000000 \
+    --funded 0x1234...abcd --private-key-file ./key.txt \
+    --c-chain --mainnet
+
+  # Deploy to a specific blockchain
+  lux contract deploy erc20 --symbol LUX --supply 100000000 \
+    --funded 0xYourAddress --blockchain-id &lt;ID> --testnet
+
+**Usage:**
+
+```bash
+lux contract deploy erc20 [flags]
+```
+
+**Flags:**
+
+```
+      --blockchain string      deploy the ERC20 contract into the given CLI blockchain
+      --blockchain-id string   deploy the ERC20 contract into the given blockchain ID/Alias
+      --c-chain                deploy the ERC20 contract into C-Chain
+      --funded string          address to receive the initial token supply (0x...)
+      --genesis-key            use genesis allocated key as contract deployer
+      --key string             CLI stored key to use as contract deployer
+      --private-key string     private key to use as contract deployer
+      --rpc string             RPC endpoint URL (auto-detected if not specified)
+      --supply uint            total token supply to mint
+      --symbol string          token symbol (e.g., USDC, LUX)
+```
+
+#### lux contract deploy l2
+
+Deploy the canonical lux/standard contract stack (Safe + Bridge + Exchange +
+sToken + WLUX/BridgedETH/BridgedBTC) to one or more L2 chains.
+
+The inventory JSON describes which chains exist for a given env and what
+their evmChainId values should be. The command per-brand:
+
+  1. Probes the L2's RPC for eth_chainId and checks it matches inventory.
+  2. Reads the deployments manifest; if WLUX is already deployed (cast code
+     returns non-empty), the deploy is skipped (use --resume to override).
+  3. Invokes forge script with the appropriate identity, RPC, and resume
+     flags.
+  4. Parses forge's broadcast output and writes a manifest at
+     lux/standard/deployments/l2-&lt;env>/&lt;brand>.json.
+
+Mainnet broadcast (--confirm with --env mainnet) is gated behind
+--i-know-this-is-real-money.
+
+**Usage:**
+
+```bash
+lux contract deploy l2 [flags]
+```
+
+**Flags:**
+
+```
+      --brand string                restrict to a single brand (default: all in inventory)
+      --confirm                     broadcast instead of dry-run
+      --deployer-index uint         BIP44 mnemonic index for the deployer key
+      --env string                  mainnet|testnet|devnet
+      --i-know-this-is-real-money   mainnet broadcast safeguard
+      --inventory string            inventory JSON path
+      --kms-fetch string            kms-fetch binary path (default: ~/work/hanzo/kms/cmd/kms-fetch/kms-fetch)
+      --liquid                      after standard succeeds, also deploy lux/liquid
+      --liquid-repo string          lux/liquid repo root (default: ~/work/lux/liquid)
+      --liquid-script string        forge script in lux/liquid (default: script/DeployL2.s.sol)
+      --repo string                 lux/standard repo root (default: ~/work/lux/standard)
+      --resume                      pass --resume to forge to continue a partial broadcast
+      --script string               forge script (default: contracts/script/DeployMultiNetwork.s.sol)
+```
+
+### lux contract initValidatorManager
+
+Initializes Proof of Authority(PoA) or Proof of Stake(PoS)Validator Manager contract on a Blockchain and sets up initial validator set on the Blockchain. For more info on Validator Manager, please head to https://github.com/luxfi/warp-contracts/tree/main/contracts/validator-manager
+
+**Usage:**
+
+```bash
+lux contract initValidatorManager blockchainName [flags]
+```
+
+**Flags:**
+
+```
+      --genesis-key                            use genesis allocated key as contract deployer
+      --key string                             CLI stored key to use as contract deployer
+      --pos-maximum-stake-amount uint          (PoS only) maximum stake amount (default 1000)
+      --pos-maximum-stake-multiplier uint8     (PoS only )maximum stake multiplier (default 1)
+      --pos-minimum-delegation-fee uint16      (PoS only) minimum delegation fee (default 1)
+      --pos-minimum-stake-amount uint          (PoS only) minimum stake amount (default 1)
+      --pos-minimum-stake-duration uint        (PoS only) minimum stake duration (in seconds) (default 86400)
+      --pos-reward-calculator-address string   (PoS only) initialize the ValidatorManager with reward calculator address
+      --pos-weight-to-value-factor uint        (PoS only) weight to value factor (default 1)
+      --private-key string                     private key to use as contract deployer
+      --rpc string                             blockchain rpc endpoint
+```
+

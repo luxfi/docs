@@ -1,0 +1,39 @@
+---
+title: lux cycle
+description: Boot → deploy → stop → snapshot in one pipeline
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux cycle
+
+Atomically boots the network's L1, deploys the standard contract
+suite, stops the node cleanly, and writes a tar.zst snapshot.
+
+Pipeline:
+  1. lux up    &lt;ref>           (background within this process)
+  2. wait healthy (networkID match + C-chain responding)
+  3. lux deploy &lt;ref>          (forge against the local RPC)
+  4. lux down  &lt;ref>           (SIGTERM + wait drain)
+  5. lux snap  &lt;ref>           (tar.zst the data-dir)
+
+Examples:
+  lux cycle zoo/localnet
+  lux cycle lux/devnet --skip-deploy   # boot, stop, snap only
+  lux cycle hanzo/testnet --skip-snap
+
+**Usage:**
+
+```bash
+lux cycle <network>/<env> [flags]
+```
+
+**Flags:**
+
+```
+      --mnemonic string    BIP44 mnemonic for the deployer (defaults to $LUX_MNEMONIC)
+      --node-path string   path to luxd binary
+      --skip-deploy        do not run contract deploy stage
+      --skip-snap          do not run snapshot stage
+```
+

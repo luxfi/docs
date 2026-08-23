@@ -1,0 +1,117 @@
+---
+title: lux fhe
+description: Fully Homomorphic Encryption operations
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux fhe
+
+The fhe command provides tools for Fully Homomorphic Encryption (FHE)
+on the Lux network, including key generation, encryption, computation
+on encrypted data, and decryption.
+
+These operations integrate with the T-Chain (Threshold chain) for
+on-chain FHE computation via precompiled contracts.
+
+SCHEMES:
+
+  TFHE    - Fast bootstrapping, boolean/small integer circuits
+  BGV     - Batched integer arithmetic
+  CKKS    - Approximate fixed-point arithmetic
+
+**Usage:**
+
+```bash
+lux fhe
+```
+
+### lux fhe decrypt
+
+Decrypt a hex-encoded ciphertext using the FHE secret key.
+
+Examples:
+  lux fhe decrypt --key ./keys/secret.key --input &lt;hex>
+
+**Usage:**
+
+```bash
+lux fhe decrypt [flags]
+```
+
+**Flags:**
+
+```
+      --input string   Hex-encoded ciphertext
+      --key string     Path to secret key file
+```
+
+### lux fhe encrypt
+
+Encrypt a boolean value using an FHE secret key.
+Outputs hex-encoded ciphertext to stdout.
+
+Examples:
+  lux fhe encrypt --key ./keys/secret.key --value true
+  lux fhe encrypt --key ./keys/secret.key --value false
+
+**Usage:**
+
+```bash
+lux fhe encrypt [flags]
+```
+
+**Flags:**
+
+```
+      --key string   Path to secret key file
+      --value        Boolean value to encrypt
+```
+
+### lux fhe eval
+
+Evaluate a boolean operation on FHE-encrypted data without decrypting.
+
+Requires bootstrap key for homomorphic evaluation.
+
+Supported gates: AND, OR, XOR, NAND, NOR, XNOR, NOT
+
+Examples:
+  lux fhe eval --op AND --inputs ct1.hex,ct2.hex --bsk ./keys/bootstrap.key
+
+**Usage:**
+
+```bash
+lux fhe eval [flags]
+```
+
+**Flags:**
+
+```
+      --op string   Boolean gate (AND, OR, XOR, NAND, NOR, XNOR, NOT) (default "AND")
+```
+
+### lux fhe keygen
+
+Generate a Fully Homomorphic Encryption key pair.
+
+Produces a secret key (for decryption), public key (for encryption),
+and bootstrap key (for homomorphic operations).
+
+Examples:
+  lux fhe keygen
+  lux fhe keygen --scheme PN11QP54 --output ./keys/
+
+**Usage:**
+
+```bash
+lux fhe keygen [flags]
+```
+
+**Flags:**
+
+```
+      --output string   Output directory for keys (default: current dir)
+      --scheme string   Parameter set (PN10QP27, PN11QP54, STD128, STD128Q) (default "PN10QP27")
+```
+

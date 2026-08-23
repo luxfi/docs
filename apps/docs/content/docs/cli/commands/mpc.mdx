@@ -1,0 +1,564 @@
+---
+title: lux mpc
+description: Manage MPC nodes and wallets
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux mpc
+
+Multi-Party Computation (MPC) management commands.
+
+MPC enables threshold signing for blockchain wallets, where multiple
+parties must cooperate to sign transactions without any single party
+having access to the complete private key.
+
+Each MPC node holds exactly one key shard. For a t-of-n threshold scheme,
+at least t nodes must cooperate to produce a valid signature.
+
+NETWORK TYPES:
+
+  --mainnet   Production MPC network (ports 9700-9799)
+  --testnet   Test MPC network (ports 9710-9809)
+  --devnet    Development MPC network (ports 9720-9819)
+
+QUICK START:
+
+  # Initialize a 3-of-5 MPC network
+  lux mpc node init --threshold 3 --nodes 5 --devnet
+
+  # Start all MPC nodes
+  lux mpc node start
+
+  # Check status
+  lux mpc node status
+
+  # Create a wallet
+  lux mpc wallet create --name "Treasury"
+
+  # Stop the network
+  lux mpc node stop
+
+SECURITY:
+
+  Key shards are stored encrypted in ~/.lux/keys/mpc/
+  Backups are stored in ~/.lux/mpc/backups/ by default
+
+CLOUD DEPLOYMENT:
+
+  Deploy MPC nodes to cloud providers:
+  lux mpc deploy create mpc-devnet-xxx --provider aws --region us-east-1
+  lux mpc deploy status mpc-devnet-xxx
+  lux mpc deploy ssh mpc-devnet-xxx mpc-node-1
+
+Available subcommands:
+  node     - Manage MPC nodes (local)
+  deploy   - Deploy MPC nodes to cloud
+  backup   - Backup and restore node data
+  wallet   - Manage MPC wallets
+  sign     - Threshold signing operations
+
+### lux mpc backup
+
+Backup and restore MPC node data.
+
+By default, backups are stored locally in ~/.lux/mpc/backups.
+For cloud storage, specify a destination URI.
+
+Supports multiple storage backends:
+  - Local filesystem (default: ~/.lux/mpc/backups)
+  - S3 (AWS, MinIO, Cloudflare R2, etc.)
+  - GCS (Google Cloud Storage)
+  - Azure Blob Storage
+
+Examples:
+  # Backup to default local directory (~/.lux/mpc/backups)
+  lux mpc backup create
+
+  # Backup to S3
+  lux mpc backup create --destination s3://my-bucket/backups
+
+  # Backup to custom local directory
+  lux mpc backup create --destination file:///backups/mpc
+
+  # List local backups (default)
+  lux mpc backup list
+
+  # List S3 backups
+  lux mpc backup list --destination s3://my-bucket/backups
+
+  # Restore from local backup
+  lux mpc backup restore my-backup-20250125
+
+  # Restore from S3
+  lux mpc backup restore my-backup-20250125 --destination s3://my-bucket/backups
+
+#### lux mpc backup create
+
+Create a backup of MPC node data.
+
+The backup includes:
+  - BadgerDB database
+  - Key shares and wallet data
+  - Node configuration
+
+By default, backups are stored in ~/.lux/mpc/backups.
+Backups are compressed with zstd by default and can be encrypted
+with age encryption for secure storage.
+
+**Usage:**
+
+```bash
+lux mpc backup create [flags]
+```
+
+**Flags:**
+
+```
+      --age-recipient strings   Age recipient public key(s)
+      --compression string      Compression algorithm (zstd, gzip, none) (default "zstd")
+  -d, --destination string      Storage destination (default: ~/.lux/mpc/backups)
+      --encrypt                 Encrypt backup with age
+      --incremental             Create incremental backup
+```
+
+#### lux mpc backup delete
+
+Delete a backup
+
+**Usage:**
+
+```bash
+lux mpc backup delete <backup-name> [flags]
+```
+
+**Flags:**
+
+```
+  -d, --destination string   Storage destination (default: ~/.lux/mpc/backups)
+```
+
+#### lux mpc backup list
+
+List available backups
+
+**Usage:**
+
+```bash
+lux mpc backup list [flags]
+```
+
+**Flags:**
+
+```
+  -d, --destination string   Storage destination (default: ~/.lux/mpc/backups)
+```
+
+#### lux mpc backup restore
+
+Restore MPC node data from a backup.
+
+This will stop the MPC node if running, restore the data,
+and optionally restart the node.
+
+**Usage:**
+
+```bash
+lux mpc backup restore <backup-name> [flags]
+```
+
+**Flags:**
+
+```
+      --age-identity strings   Age identity file(s) for decryption
+  -d, --destination string     Storage destination (default: ~/.lux/mpc/backups)
+      --target string          Target path (default: original location)
+```
+
+#### lux mpc backup verify
+
+Download and verify backup integrity without restoring.
+
+**Usage:**
+
+```bash
+lux mpc backup verify <backup-name> [flags]
+```
+
+**Flags:**
+
+```
+      --age-identity strings   Age identity file(s) for decryption
+  -d, --destination string     Storage destination (default: ~/.lux/mpc/backups)
+```
+
+### lux mpc deploy
+
+Deploy MPC nodes to cloud providers for production use.
+
+Each MPC node is deployed to a separate server for security.
+Key shards are encrypted and stored securely on each node.
+
+SUPPORTED PROVIDERS:
+
+  aws           Amazon Web Services (EC2)
+  gcp           Google Cloud Platform (Compute Engine)
+  azure         Microsoft Azure (Virtual Machines)
+  digitalocean  DigitalOcean (Droplets)
+
+SECURITY CONSIDERATIONS:
+
+  - Each node should be in a different availability zone/region
+  - Key shards are encrypted with age before storage
+  - SSH access is required for node management
+  - Use private networks where possible
+
+Examples:
+  # Deploy to AWS
+  lux mpc deploy create mpc-devnet-xxx --provider aws --region us-east-1
+
+  # Deploy to DigitalOcean
+  lux mpc deploy create mpc-devnet-xxx --provider digitalocean --region nyc1
+
+  # Check deployment status
+  lux mpc deploy status mpc-devnet-xxx
+
+  # SSH to a specific node
+  lux mpc deploy ssh mpc-devnet-xxx mpc-node-1
+
+  # Destroy deployment
+  lux mpc deploy destroy mpc-devnet-xxx
+
+#### lux mpc deploy create
+
+Deploy an initialized MPC network to cloud infrastructure.
+
+The network must be initialized first with 'lux mpc node init'.
+Each node will be deployed to a separate cloud instance.
+
+**Usage:**
+
+```bash
+lux mpc deploy create <network-name> [flags]
+```
+
+**Flags:**
+
+```
+      --aws-profile string            AWS profile name
+      --aws-vpc string                AWS VPC ID
+      --azure-resource-group string   Azure resource group
+      --azure-subscription string     Azure subscription ID
+      --gcp-project string            GCP project ID
+      --gcp-zone string               GCP zone
+      --instance-type string          Instance type (default: provider-specific)
+  -p, --provider string               Cloud provider (aws, gcp, azure, digitalocean)
+  -r, --region string                 Cloud region
+      --ssh-key string                Path to SSH private key
+      --ssh-user string               SSH username (default "ubuntu")
+```
+
+#### lux mpc deploy destroy
+
+Terminate all cloud instances and clean up resources.
+
+WARNING: This will delete all deployed instances!
+Make sure you have backups of key shards before destroying.
+
+**Usage:**
+
+```bash
+lux mpc deploy destroy <network-name> [flags]
+```
+
+**Flags:**
+
+```
+  -f, --force   Skip confirmation
+```
+
+#### lux mpc deploy list
+
+List deployments
+
+**Usage:**
+
+```bash
+lux mpc deploy list
+```
+
+#### lux mpc deploy ssh
+
+Open an SSH session to a deployed MPC node.
+
+Examples:
+  lux mpc deploy ssh mpc-devnet-xxx mpc-node-1
+
+**Usage:**
+
+```bash
+lux mpc deploy ssh <network-name> <node-name>
+```
+
+#### lux mpc deploy status
+
+Show deployment status
+
+**Usage:**
+
+```bash
+lux mpc deploy status <network-name>
+```
+
+### lux mpc node
+
+Commands for managing MPC node lifecycle.
+
+MPC nodes form a threshold signing network. Each node holds one key shard
+and participates in distributed signing operations.
+
+Examples:
+  # Initialize a new 3-of-5 MPC network
+  lux mpc node init --threshold 3 --nodes 5 --devnet
+
+  # Start all nodes in the network
+  lux mpc node start
+
+  # Check status of all nodes
+  lux mpc node status
+
+  # Stop all nodes
+  lux mpc node stop
+
+  # Clean up (stop and remove data)
+  lux mpc node clean
+
+#### lux mpc node clean
+
+Stop all nodes and remove network data.
+
+WARNING: This will delete all node data including key shards!
+Make sure you have backups before running this command.
+
+Examples:
+  # Clean the default network
+  lux mpc node clean
+
+  # Force clean without confirmation
+  lux mpc node clean --force
+
+**Usage:**
+
+```bash
+lux mpc node clean [network-name] [flags]
+```
+
+**Flags:**
+
+```
+  -f, --force   Skip confirmation
+```
+
+#### lux mpc node init
+
+Initialize a new MPC network with the specified threshold configuration.
+
+This creates the network directory structure, generates node configurations,
+and prepares encrypted key storage directories.
+
+Examples:
+  # Create a 2-of-3 devnet MPC network
+  lux mpc node init --threshold 2 --nodes 3 --devnet
+
+  # Create a 3-of-5 mainnet MPC network
+  lux mpc node init --threshold 3 --nodes 5 --mainnet
+
+**Usage:**
+
+```bash
+lux mpc node init [flags]
+```
+
+**Flags:**
+
+```
+      --devnet          Initialize devnet MPC network (default)
+      --mainnet         Initialize mainnet MPC network
+  -n, --nodes int       Total number of nodes (default 3)
+      --testnet         Initialize testnet MPC network
+  -t, --threshold int   Signing threshold (t in t-of-n) (default 2)
+```
+
+#### lux mpc node list
+
+List all initialized MPC networks.
+
+**Usage:**
+
+```bash
+lux mpc node list
+```
+
+#### lux mpc node start
+
+Start all MPC nodes in a network.
+
+If no network name is specified, starts the most recently created network.
+
+Examples:
+  # Start all nodes in the default network
+  lux mpc node start
+
+  # Start a specific network
+  lux mpc node start mpc-devnet-abc123
+
+**Usage:**
+
+```bash
+lux mpc node start [network-name] [flags]
+```
+
+**Flags:**
+
+```
+      --devnet    Start devnet MPC network
+      --mainnet   Start mainnet MPC network
+      --testnet   Start testnet MPC network
+```
+
+#### lux mpc node status
+
+Display status of all MPC nodes in a network.
+
+Shows running status, uptime, endpoints, and health information.
+
+Examples:
+  # Show status of default network
+  lux mpc node status
+
+  # Show status of specific network
+  lux mpc node status mpc-devnet-abc123
+
+**Usage:**
+
+```bash
+lux mpc node status [network-name]
+```
+
+#### lux mpc node stop
+
+Stop all MPC nodes in a network.
+
+This gracefully shuts down nodes and saves state for later restart.
+
+Examples:
+  # Stop the default network
+  lux mpc node stop
+
+  # Stop a specific network
+  lux mpc node stop mpc-devnet-abc123
+
+**Usage:**
+
+```bash
+lux mpc node stop [network-name]
+```
+
+### lux mpc sign
+
+Commands for threshold signing operations.
+
+Examples:
+  # Initiate a signing request
+  lux mpc sign request --wallet &lt;wallet-id> --message "0x..."
+
+  # Approve a signing request
+  lux mpc sign approve &lt;request-id>
+
+  # Check signing status
+  lux mpc sign status &lt;request-id>
+
+#### lux mpc sign approve
+
+Approve a signing request
+
+**Usage:**
+
+```bash
+lux mpc sign approve <request-id>
+```
+
+#### lux mpc sign request
+
+Initiate a signing request
+
+**Usage:**
+
+```bash
+lux mpc sign request
+```
+
+#### lux mpc sign status
+
+Check signing status
+
+**Usage:**
+
+```bash
+lux mpc sign status <request-id>
+```
+
+### lux mpc wallet
+
+Commands for managing MPC wallets and their key shares.
+
+Examples:
+  # List wallets
+  lux mpc wallet list
+
+  # Create a new wallet
+  lux mpc wallet create --name "Treasury" --threshold 2 --parties 3
+
+  # Show wallet details
+  lux mpc wallet show &lt;wallet-id>
+
+#### lux mpc wallet create
+
+Create a new wallet
+
+**Usage:**
+
+```bash
+lux mpc wallet create
+```
+
+#### lux mpc wallet export
+
+Export wallet public key
+
+**Usage:**
+
+```bash
+lux mpc wallet export <wallet-id>
+```
+
+#### lux mpc wallet list
+
+List wallets
+
+**Usage:**
+
+```bash
+lux mpc wallet list
+```
+
+#### lux mpc wallet show
+
+Show wallet details
+
+**Usage:**
+
+```bash
+lux mpc wallet show <wallet-id>
+```
+

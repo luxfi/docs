@@ -1,0 +1,32 @@
+---
+title: lux snap
+description: Compress the data-dir into &lt;snapshotDir>/&lt;name>.tar.zst
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux snap
+
+Snapshots the resolved data-dir to &lt;snapshotDir>/&lt;snapshotName>.tar.zst.
+
+The node should be stopped first (`lux down`) — snapshotting a
+live database produces corrupt archives. Use --live to override the
+safety check.
+
+Examples:
+  lux snap zoo/devnet              # → ~/work/lux/snapshots/200202-zoo-devnet-with-contracts.tar.zst
+  lux snap lux/mainnet --tag pre-merge
+
+**Usage:**
+
+```bash
+lux snap <network>/<env> [flags]
+```
+
+**Flags:**
+
+```
+      --live         allow snapshot while node is still up (unsafe)
+      --tag string   override the trailing token in the snapshot name (default: with-contracts)
+```
+

@@ -1,0 +1,123 @@
+---
+title: lux rt
+description: Corona threshold signing
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux rt
+
+The rt (corona) command provides tools for Corona threshold signing,
+a post-quantum threshold signature scheme using Module-LWE.
+
+Corona is part of the triple consensus (BLS + Corona + ML-DSA) used
+by Lux validators. It provides threshold signatures where t-of-n parties
+can cooperatively produce a valid signature without reconstructing the
+full private key.
+
+KEY PROPERTIES:
+
+  - Post-quantum secure (lattice-based)
+  - t-of-n threshold without trusted dealer (via DKG)
+  - Proactive resharing for key rotation
+  - Compatible with QuasarCert attestations
+
+**Usage:**
+
+```bash
+lux rt
+```
+
+### lux rt keygen
+
+Generate t-of-n threshold key shares for Corona signing.
+
+Examples:
+  lux rt keygen --threshold 3 --parties 5 --output ./shares/
+  lux rt keygen --threshold 2 --parties 3
+
+**Usage:**
+
+```bash
+lux rt keygen [flags]
+```
+
+**Flags:**
+
+```
+      --output string   Output directory for key shares (default: current dir)
+      --parties int     Total number of parties (n)
+      --threshold int   Signing threshold (t)
+```
+
+### lux rt reshare
+
+Reshare existing key shares to a new committee configuration.
+
+Proactive resharing allows rotating key shares without changing the
+group public key. Used for committee membership changes.
+
+Examples:
+  lux rt reshare --old-shares ./old/ --new-threshold 3 --new-parties 7
+
+**Usage:**
+
+```bash
+lux rt reshare [flags]
+```
+
+**Flags:**
+
+```
+      --new-parties int     New total number of parties
+      --new-threshold int   New signing threshold
+      --old-shares string   Directory containing old key shares
+```
+
+### lux rt sign
+
+Initiate a Corona threshold signing session.
+
+Requires t-of-n key holders to participate in the 2-round signing protocol:
+  Round 1: Each party broadcasts D matrix + MACs
+  Round 2: Each party broadcasts z share
+  Finalize: Any party aggregates into final signature
+
+Examples:
+  lux rt sign --message "hello" --share ./shares/share-0.json
+  lux rt sign --tx-file unsigned.tx --share ./shares/share-0.json
+
+**Usage:**
+
+```bash
+lux rt sign [flags]
+```
+
+**Flags:**
+
+```
+      --message string   Message to sign (hex or string)
+      --share string     Path to key share file
+```
+
+### lux rt verify
+
+Verify a Corona threshold signature against the group public key.
+
+Examples:
+  lux rt verify --signature sig.json --message "hello" --group-key group.json
+
+**Usage:**
+
+```bash
+lux rt verify [flags]
+```
+
+**Flags:**
+
+```
+      --group-key string   Path to group key file
+      --message string     Message that was signed
+      --signature string   Path to signature file
+```
+

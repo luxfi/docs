@@ -1,0 +1,100 @@
+---
+title: lux warp
+description: Cross-chain messaging protocol operations
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux warp
+
+Warp V2 provides cross-chain messaging with post-quantum safety.
+
+This command provides tools for creating, signing, verifying, and relaying
+cross-chain messages between Lux networks.
+
+Commands:
+  create    Create a new cross-chain message
+  sign      Sign a message with validator key
+  verify    Verify a signed message
+  relay     Start message relayer
+
+**Usage:**
+
+```bash
+lux warp
+```
+
+### lux warp create
+
+Create a new Warp message to send between chains.
+
+Example:
+  lux warp create --source 0xAA --dest 0xBB --payload "Hello from chain A"
+
+**Usage:**
+
+```bash
+lux warp create [flags]
+```
+
+**Flags:**
+
+```
+  -d, --dest string      Destination chain ID (hex)
+  -p, --payload string   Message payload
+  -s, --source string    Source chain ID (hex)
+```
+
+### lux warp relay
+
+Start a Warp message relayer to bridge messages between chains.
+
+The relayer monitors source chains for new messages and delivers them
+to destination chains after signature verification.
+
+**Usage:**
+
+```bash
+lux warp relay
+```
+
+### lux warp sign
+
+Sign a cross-chain message with your validator key.
+
+Example:
+  lux warp sign --message &lt;hex> --key ~/.lux/staking/signer.key
+
+**Usage:**
+
+```bash
+lux warp sign [flags]
+```
+
+**Flags:**
+
+```
+  -k, --key string       Path to signing key
+  -m, --message string   Message to sign (hex)
+```
+
+### lux warp verify
+
+Verify a Warp message signature against the validator set.
+
+Example:
+  lux warp verify --message &lt;hex> --signature &lt;hex>
+
+**Usage:**
+
+```bash
+lux warp verify [flags]
+```
+
+**Flags:**
+
+```
+  -m, --message string     Message to verify (hex)
+  -s, --signature string   Signature to verify (hex)
+```
+

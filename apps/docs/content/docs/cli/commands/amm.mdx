@@ -1,0 +1,153 @@
+---
+title: lux amm
+description: Trade on Lux/Zoo AMM (Uniswap V2/V3)
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux amm
+
+Commands for trading on Lux Exchange AMM pools.
+
+Supported networks:
+  - lux (Lux Mainnet C-Chain, chain ID 96369)
+  - zoo (Zoo Mainnet, chain ID 200200)
+  - lux-testnet (Lux Testnet, chain ID 96368)
+
+Wallet access via:
+  - MNEMONIC environment variable (BIP39 mnemonic)
+  - PRIVATE_KEY environment variable (hex private key)
+  - --private-key flag (hex private key)
+
+Example usage:
+  lux amm balance --network zoo
+  lux amm swap --network zoo --from LUX --to USDT --amount 100
+  lux amm pools --network zoo
+  lux amm quote --network zoo --from LUX --to USDT --amount 100
+  lux amm balance --network zoo --private-key 0x...
+
+**Usage:**
+
+```bash
+lux amm
+```
+
+**Flags:**
+
+```
+      --network string       Network: lux, zoo, or lux-testnet (default "zoo")
+      --private-key string   Private key (hex) for wallet access
+      --rpc string           Custom RPC endpoint (overrides network default)
+```
+
+### lux amm balance
+
+Display native token and ERC20 token balances.
+
+Examples:
+  lux amm balance --network zoo
+  lux amm balance --network zoo --token 0x...
+
+**Usage:**
+
+```bash
+lux amm balance [flags]
+```
+
+**Flags:**
+
+```
+      --token string   ERC20 token address to check
+```
+
+### lux amm pools
+
+List all liquidity pools on the AMM.
+
+Examples:
+  lux amm pools --network zoo
+
+**Usage:**
+
+```bash
+lux amm pools
+```
+
+### lux amm quote
+
+Get a quote for swapping tokens without executing.
+Tries V2 pools first, then V3 if no V2 pool exists.
+
+Examples:
+  lux amm quote --network zoo --from 0x... --to 0x... --amount 100
+  lux amm quote --network zoo --from 0x... --to 0x... --amount 100 --v3
+
+**Usage:**
+
+```bash
+lux amm quote [flags]
+```
+
+**Flags:**
+
+```
+      --amount float   Amount to quote
+      --from string    Token address to swap from
+      --to string      Token address to swap to
+      --v3             Force V3 pool
+```
+
+### lux amm status
+
+Show AMM contract status and network info.
+
+Examples:
+  lux amm status --network zoo
+
+**Usage:**
+
+```bash
+lux amm status
+```
+
+### lux amm swap
+
+Swap tokens using Uniswap V2/V3 style AMM.
+Tries V2 pools first, then V3 if no V2 pool exists.
+
+Examples:
+  lux amm swap --network zoo --from 0x... --to 0x... --amount 100
+  lux amm swap --network zoo --from 0x... --to 0x... --amount 100 --slippage 1.0
+  lux amm swap --network zoo --from 0x... --to 0x... --amount 100 --v3
+  lux amm swap --network zoo --from 0x... --to 0x... --amount 100 --dry-run
+
+**Usage:**
+
+```bash
+lux amm swap [flags]
+```
+
+**Flags:**
+
+```
+      --amount float     Amount to swap
+      --dry-run          Only show quote, don't execute
+      --from string      Token address to swap from
+      --slippage float   Max slippage tolerance (%) (default 0.5)
+      --to string        Token address to swap to
+      --v3               Force V3 pool
+```
+
+### lux amm tokens
+
+Get information about ERC20 tokens.
+
+Examples:
+  lux amm tokens --network zoo 0x...
+
+**Usage:**
+
+```bash
+lux amm tokens [address...]
+```
+

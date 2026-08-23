@@ -1,71 +1,790 @@
 ---
 title: lux chain
-description: Create and deploy chains (chains)
+description: Manage blockchain lifecycle - create, deploy, import, export, validate
 ---
 
-The `chain` command manages the full lifecycle of Lux chains -- creation, deployment, import/export, and configuration.
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
 
-## Commands
+## lux chain
+
+The chain command provides unified operations for blockchain management.
+
+OVERVIEW:
+
+  The chain command suite handles the complete blockchain lifecycle from
+  configuration creation through deployment and operation. It works with
+  chain configurations stored in ~/.lux/chains/.
+
+CHAIN TYPES:
+
+  L1 (Sovereign)  - Independent validator set, own tokenomics
+  L2 (Rollup)     - Based on L1 sequencing (Lux, Ethereum, etc.)
+  L3 (App Chain)  - Built on L2 for application-specific use
+
+CORE COMMANDS:
+
+  create       Create a new blockchain configuration
+  deploy       Deploy to local network, testnet, or mainnet
+  list         List all configured blockchains
+  describe     Show detailed blockchain information
+  delete       Delete a blockchain configuration
+
+DATA OPERATIONS:
+
+  import       Import blocks from RLP file to running chain
+
+NETWORK FLAGS (for deployment):
+
+  --mainnet, -m    Deploy to mainnet (port 9630)
+  --testnet, -t    Deploy to testnet (port 9640)
+  --devnet, -d     Deploy to devnet (port 9650)
+  --custom         Deploy to custom network
+
+EXAMPLES:
+
+  # Create a new L2 blockchain
+  lux chain create mychain
+
+  # Create a sovereign L1
+  lux chain create mychain --type=l1
+
+  # Deploy to local devnet
+  lux chain deploy mychain --devnet
+
+  # Deploy to testnet
+  lux chain deploy mychain --testnet
+
+  # List all configured chains
+  lux chain list
+
+  # Import historical blocks
+  lux chain import c ~/work/lux/state/rlp/mainnet.rlp --mainnet
+
+  # Delete a chain configuration
+  lux chain delete mychain
+
+TYPICAL WORKFLOW:
+
+  1. Create configuration:  lux chain create mychain
+  2. Start network:         lux network start --devnet
+  3. Deploy chain:          lux chain deploy mychain --devnet
+  4. Verify deployment:     lux chain list
+  5. Check endpoints:       lux network status
+
+NOTES:
+
+  - Chain configurations are stored in ~/.lux/chains/&lt;name>/
+  - Each chain has a genesis.json and sidecar.json
+  - Chains can be deployed to multiple networks (local, testnet, mainnet)
+  - Use 'lux chain delete' to remove configurations
+  - Network must be running before deployment
+
+**Usage:**
 
 ```bash
-# Create a new chain configuration
-lux chain create <name>
-lux chain create <name> --evm-chain-id=12345
-lux chain create <name> --token-name=MYTOKEN --token-symbol=MTK
-lux chain create <name> --type=l1    # Sovereign L1
-lux chain create <name> --type=l3    # App-specific L3
-
-# Deploy to a network
-lux chain deploy <name> --devnet
-lux chain deploy <name> --testnet
-lux chain deploy <name> --mainnet
-
-# List configured chains
-lux chain list
-
-# Show chain details
-lux chain describe <name>
-
-# Import RLP blocks
-lux chain import --chain=c --path=/path/to/blocks.rlp
-lux chain import --chain=zoo --path=/path/to/zoo.rlp
-
-# Export chain configuration
-lux chain export <name>
+lux chain
 ```
 
-## Chain Types
+### lux chain create
 
-| Type | Flag | Description |
-|------|------|-------------|
-| L1 (default) | `--type=l1` | Sovereign L1 chain with its own validator set |
-| L3 | `--type=l3` | Application-specific chain anchored to an L1 |
+Create a new blockchain configuration for deployment.
 
-## Chain Configuration
+OVERVIEW:
 
-Configurations are stored in `~/.lux/chains/<name>/`:
+  Creates a blockchain configuration with genesis file and metadata.
+  The configuration is stored in ~/.lux/chains/&lt;chainName>/ and can
+  be deployed to any network (local, testnet, mainnet).
+
+CHAIN TYPES:
+
+  l1    Sovereign L1 with independent validation
+  l2    Layer 2 rollup/chain (default)
+  l3    App-specific L3 chain
+
+SEQUENCER OPTIONS (for L2):
+
+  lux       Lux-based rollup, 100ms blocks (default, lowest cost)
+  ethereum  Ethereum-based rollup, 12s blocks (highest security)
+  op        OP Stack compatible
+  external  External/custom sequencer
+
+VM OPTIONS:
+
+  --evm          Use Lux EVM (default)
+  --pars         Use Pars VM (post-quantum messaging)
+  --custom-vm    Use custom VM binary
+  --vm           Path to custom VM binary
+  --vm-version   Specific VM version (default: latest)
+  --latest       Use latest VM version
+
+GENESIS OPTIONS:
+
+  --genesis           Path to custom genesis.json file
+                      If not provided, generates default EVM genesis
+  --evm-chain-id      EVM chain ID (default: 200200)
+  --token-name        Native token name (default: TOKEN)
+  --token-symbol      Native token symbol (default: TKN)
+  --airdrop-address   Address to airdrop tokens to (default: test account)
+  --airdrop-amount    Amount to airdrop in wei (default: 1000000000000000000000000)
+
+NON-INTERACTIVE MODE:
+
+  Non-interactive mode is automatically enabled when:
+    - NON_INTERACTIVE=1 environment variable is set
+    - CI=1 environment variable is set (common in CI/CD pipelines)
+    - stdin is not a TTY (piped input, scripts, etc.)
+
+  In non-interactive mode, sensible defaults are used for optional values.
+  Required values must be provided via flags.
+
+OTHER OPTIONS:
+
+  --force, -f              Overwrite existing configuration
+  --enable-preconfirm      Enable pre-confirmations (&lt;100ms acknowledgment)
+
+EXAMPLES:
+
+  # Create default L2 chain with Lux sequencing
+  lux chain create mychain
+
+  # Create sovereign L1
+  lux chain create mychain --type=l1
+
+  # Create with Ethereum sequencing (12s blocks)
+  lux chain create mychain --sequencer=ethereum
+
+  # Create with custom genesis
+  lux chain create mychain --genesis=~/custom-genesis.json
+
+  # Create L3 on existing L2
+  lux chain create myapp --type=l3
+
+  # Overwrite existing configuration
+  lux chain create mychain --force
+
+  # Create with pre-confirmations enabled
+  lux chain create mychain --enable-preconfirm
+
+  # Non-interactive in CI/CD (env var triggers non-interactive mode)
+  CI=1 lux chain create mychain
+
+  # Non-interactive with custom chain ID
+  NON_INTERACTIVE=1 lux chain create mychain --evm-chain-id=12345
+
+  # Piped input also triggers non-interactive mode
+  echo "" | lux chain create mychain --evm-chain-id=12345
+
+OUTPUT:
+
+  Creates two files in ~/.lux/chains/&lt;chainName>/:
+  - genesis.json    Blockchain genesis configuration
+  - sidecar.json    Metadata (VM type, versions, deployment info)
+
+NEXT STEPS:
+
+  After creating a chain configuration:
+  1. Start a network:     lux network start --devnet
+  2. Deploy the chain:    lux chain deploy mychain --devnet
+  3. Verify deployment:   lux network status
+
+NOTES:
+
+  - Chain names must be unique and ≤32 characters
+  - Reserved names: c, p, x, primary, platform
+  - Default genesis includes funded test account
+  - Genesis can be customized after creation
+
+**Usage:**
+
+```bash
+lux chain create [chainName] [flags]
+```
+
+**Flags:**
 
 ```
-~/.lux/chains/<name>/
-  genesis.json      Chain genesis with allocations and config
-  sidecar.json      VM metadata and chain type
-  config.json       Runtime configuration (optional)
+      --airdrop-address string   Address to airdrop tokens to
+      --airdrop-amount string    Amount to airdrop in wei
+      --custom                   Target custom network
+      --custom-vm                Use custom VM
+  -d, --devnet                   Target devnet
+      --enable-preconfirm        Enable pre-confirmations
+      --evm                      Use Lux EVM
+      --evm-chain-id uint        EVM chain ID (default: 200200)
+  -f, --force                    Overwrite existing configuration
+      --genesis string           Path to custom genesis file
+      --latest                   Use latest VM version
+  -m, --mainnet                  Target mainnet
+      --pars                     Use Pars VM (post-quantum messaging)
+      --sequencer string         Sequencer: lux, ethereum, op, external (default "lux")
+  -t, --testnet                  Target testnet
+      --token-name string        Native token name (default: TOKEN)
+      --token-symbol string      Native token symbol (default: TKN)
+      --type string              Chain type: l1, l2, l3 (default "l2")
+      --vm string                Path to custom VM binary
+      --vm-version string        VM version to use
 ```
 
-## Deployment
+### lux chain delete
 
-When deploying, the CLI:
+Delete a blockchain configuration
 
-1. Creates a chain on the P-Chain
-2. Adds validators to the chain
-3. Creates the blockchain with the genesis file
-4. Configures all nodes to track the new chain
+**Usage:**
 
-## Pre-deployed Chains
+```bash
+lux chain delete [chainName] [flags]
+```
 
-| Chain | Mainnet Chain ID | Chain ID |
-|-------|-----------------|-----------|
-| Zoo | 200200 | See blockchain-ids |
-| Hanzo | 36963 | See blockchain-ids |
-| SPC | 36911 | See blockchain-ids |
-| Pars | 494949 | See blockchain-ids |
+**Flags:**
+
+```
+      --custom    Target custom network
+  -d, --devnet    Target devnet
+  -f, --force     Skip confirmation prompt (required in non-interactive mode)
+  -m, --mainnet   Target mainnet
+  -t, --testnet   Target testnet
+```
+
+### lux chain deploy
+
+Deploy a configured blockchain to the network.
+
+OVERVIEW:
+
+  Deploys a blockchain configuration to a running network. The blockchain
+  must be created first with 'lux chain create'. The target network must
+  be running before deployment.
+
+NETWORK FLAGS (choose one):
+
+  --mainnet, -m    Deploy to mainnet (port 9630, Network ID 1)
+  --testnet, -t    Deploy to testnet (port 9640, Network ID 2)
+  --devnet, -d     Deploy to devnet (port 9650, Network ID 3)
+  --local, -l      Deploy to local/custom network
+
+  Default: --local (deploys to custom/local network)
+
+PREREQUISITES:
+
+  1. Chain must be created:
+     lux chain create mychain
+
+  2. For local networks, network must be running:
+     lux network start --devnet
+
+  3. For remote networks (devnet, testnet, mainnet), a funded key is needed:
+     Set MNEMONIC or PRIVATE_KEY env var, or use --key flag
+
+  4. VM must be installed (for custom VMs):
+     lux vm link "Lux EVM" --path ~/work/lux/evm/build/evm
+
+OPTIONS:
+
+  --node-version   Specific luxd version to use (default: latest)
+  --key            Key name for remote network deployment (from ~/.lux/keys/)
+
+EXAMPLES:
+
+  # Deploy to remote devnet (auto-detects remote endpoint)
+  lux chain deploy mychain --devnet
+
+  # Deploy to remote devnet with specific key
+  lux chain deploy mychain --devnet --key mykey
+
+  # Deploy to local devnet (if local network is running)
+  lux chain deploy mychain --devnet
+
+  # Deploy to testnet
+  lux chain deploy mychain --testnet
+  lux chain deploy mychain -t
+
+  # Deploy to mainnet
+  lux chain deploy mychain --mainnet
+  lux chain deploy mychain -m
+
+  # Deploy with specific node version
+  lux chain deploy mychain --devnet --node-version v1.11.0
+
+DEPLOYMENT PROCESS:
+
+  Local network:
+  1. Validates chain configuration exists
+  2. Verifies local gRPC network is running
+  3. Checks VM plugin is installed
+  4. Creates blockchain via netrunner gRPC
+  5. Updates sidecar with deployment info
+
+  Remote network:
+  1. Validates chain configuration exists
+  2. Probes remote endpoint (e.g., https://api.lux-dev.network)
+  3. Creates chain on P-chain via wallet transaction
+  4. Creates blockchain on P-chain via wallet transaction
+  5. Updates sidecar with deployment info
+
+OUTPUT:
+
+  On success, displays:
+  - Blockchain ID
+  - Chain ID
+  - RPC endpoints
+
+TROUBLESHOOTING:
+
+  "Network not running" → Start network first:
+    lux network start --devnet
+
+  "Chain mychain not found" → Create chain first:
+    lux chain create mychain
+
+  "VM not installed" → Link VM binary:
+    lux vm link "Lux EVM" --path ~/path/to/evm
+
+  "RPC version mismatch" → Chain VM version incompatible with running node
+
+NOTES:
+
+  - Deployment info is saved to the chain's sidecar.json
+  - Same chain can be deployed to multiple networks
+  - Each deployment gets unique blockchain ID
+  - Use 'lux network status' to see deployed chain endpoints
+
+**Usage:**
+
+```bash
+lux chain deploy [chainName] [flags]
+```
+
+**Flags:**
+
+```
+  -d, --devnet                Deploy to devnet
+      --key string            Key name for remote network deployment (from ~/.lux/keys/)
+  -l, --local                 Deploy to local/custom network
+  -m, --mainnet               Deploy to mainnet
+      --node-version string   Node version to use (default "latest")
+  -t, --testnet               Deploy to testnet
+      --timeout duration      Maximum time to wait for chain deployment (e.g., 60s, 2m) (default 30s)
+```
+
+### lux chain describe
+
+Show detailed information about a blockchain
+
+**Usage:**
+
+```bash
+lux chain describe [chainName] [flags]
+```
+
+**Flags:**
+
+```
+      --custom    Target custom network
+  -d, --devnet    Target devnet
+  -m, --mainnet   Target mainnet
+  -t, --testnet   Target testnet
+```
+
+### lux chain import
+
+Import blocks from an RLP-encoded file to a running chain.
+
+OVERVIEW:
+
+  Imports historical blockchain data from RLP files into a running chain.
+  This is useful for bootstrapping chains with existing state or syncing
+  from canonical snapshots.
+
+  Uses the admin_importChain RPC method. The network must be running and
+  the admin API must be enabled (default when started via CLI).
+
+CHAIN IDENTIFIERS:
+
+  c, C         C-Chain (primary EVM chain)
+  &lt;name>       Chain name (looks up blockchain ID from sidecar)
+  &lt;blockchainID>  Direct blockchain ID
+
+NETWORK FLAGS (auto-detects port):
+
+  --mainnet, -m    Import to mainnet chain (port 9630)
+  --testnet, -t    Import to testnet chain (port 9640)
+  --devnet, -d     Import to devnet chain (port 9650)
+
+  Default: auto-detects running network or uses custom (port 9660)
+
+OPTIONS:
+
+  --rpc &lt;url>      Custom RPC endpoint (overrides network flag)
+
+PREREQUISITES:
+
+  1. Network must be running:
+     lux network start --mainnet
+
+  2. RLP file must exist and be readable by the node
+
+EXAMPLES:
+
+  # Import C-Chain mainnet blocks
+  lux chain import c ~/work/lux/state/rlp/lux-mainnet-96369.rlp --mainnet
+
+  # Import to custom chain on devnet
+  lux chain import zoo ~/work/lux/state/rlp/zoo-mainnet-200200.rlp --devnet
+
+  # Import with custom RPC endpoint
+  lux chain import c blocks.rlp --rpc http://localhost:9630/v1/bc/C/rpc
+
+  # Import to blockchain by ID
+  lux chain import 2ebCneCbwthjQ1rYT41nhd7M76Hc6YmosMAQrTFhBq8qeqh6tt blocks.rlp --mainnet
+
+RLP FILE LOCATIONS:
+
+  Canonical RLP files are stored in:
+    ~/work/lux/state/rlp/&lt;network>/&lt;chain>-&lt;chainid>.rlp
+
+  Examples:
+    ~/work/lux/state/rlp/lux-mainnet/lux-mainnet-96369.rlp
+    ~/work/lux/state/rlp/zoo-mainnet/zoo-mainnet-200200.rlp
+
+IMPORT PROCESS:
+
+  1. Validates file exists
+  2. Detects or connects to RPC endpoint
+  3. Gets current block height
+  4. Calls admin_importChain with file path
+  5. Monitors import progress
+  6. Reports final block height and import rate
+
+OUTPUT:
+
+  Import complete!
+    Blocks imported: 1082780
+    Final height: 1082780
+    Time: 45m12s
+    Rate: 399.2 blocks/sec
+
+TROUBLESHOOTING:
+
+  "Network not running" → Start network first:
+    lux network start --mainnet
+
+  "RPC connection refused" → Check network is running:
+    lux network status
+
+  "File not found" → Use absolute path or verify file exists
+
+  "Import timeout" → Import continues in background, check node logs
+
+NOTES:
+
+  - Import runs asynchronously - RPC may timeout but import continues
+  - Large imports (1M+ blocks) can take 30min - 2hrs depending on hardware
+  - The node must have read access to the RLP file
+  - Genesis config must match the RLP file exactly for successful import
+  - Use 'lux chain export' to create RLP files from running chains
+
+**Usage:**
+
+```bash
+lux chain import <chain> <path> [flags]
+```
+
+**Flags:**
+
+```
+      --custom       Target custom network
+  -d, --devnet       Target devnet
+  -m, --mainnet      Target mainnet
+      --rpc string   Custom RPC endpoint (default: auto-detected)
+  -t, --testnet      Target testnet
+```
+
+### lux chain launch
+
+Launch a complete blockchain ecosystem from a single chain.yaml configuration.
+
+OVERVIEW:
+
+  The launch command reads a chain.yaml file and generates Kubernetes CRDs
+  that the lux-operator reconciles into a fully running ecosystem:
+  nodes, indexer, explorer, gateway, exchange, and faucet.
+
+GENERATED RESOURCES:
+
+  LuxNetwork    Validator node fleet (StatefulSet, genesis, staking)
+  LuxIndexer    Blockscout indexer per chain
+  LuxExplorer   Branded explorer frontend
+  LuxGateway    API gateway with rate limiting and CORS
+  Exchange      DEX frontend deployment (branded)
+  Faucet        Testnet/devnet token faucet
+
+EXAMPLES:
+
+  # Generate manifests for all networks (dry run)
+  lux chain launch chain.yaml --dry-run
+
+  # Generate and apply to devnet only
+  lux chain launch chain.yaml --network=devnet --apply
+
+  # Generate only explorer manifests
+  lux chain launch chain.yaml --service=explorer --dry-run
+
+  # Output manifests to custom directory
+  lux chain launch chain.yaml --output=./k8s/generated --dry-run
+
+WORKFLOW:
+
+  1. Create chain.yaml in your project root
+  2. Run: lux chain launch chain.yaml --dry-run
+  3. Review generated manifests
+  4. Run: lux chain launch chain.yaml --network=devnet --apply
+  5. Monitor: kubectl get luxnet,luxidx,luxexp,luxgw -n &lt;namespace>
+
+NOTES:
+
+  - chain.yaml is the single source of truth for the entire ecosystem
+  - Generated CRDs require the lux-operator to be running in the cluster
+  - Ingress uses hanzoai/ingress (never nginx/caddy)
+  - All secrets are referenced via KMS, never stored in manifests
+
+**Usage:**
+
+```bash
+lux chain launch <chain.yaml> [flags]
+```
+
+**Flags:**
+
+```
+      --apply            Apply generated manifests to the cluster via kubectl
+      --dry-run          Generate manifests without applying
+      --network string   Target specific network (mainnet, testnet, devnet)
+  -o, --output string    Output directory for generated manifests
+      --service string   Generate only specific service (node, indexer, explorer, gateway, exchange, faucet)
+```
+
+### lux chain list
+
+List all configured blockchains with their details.
+
+OVERVIEW:
+
+  Displays a table of all blockchain configurations stored in ~/.lux/chains/.
+  Shows configuration details and deployment status across networks.
+
+OUTPUT COLUMNS:
+
+  Name        Blockchain configuration name
+  Type        Chain type (L1, L2, L3)
+  Chain ID    EVM chain ID
+  VM          Virtual machine type (EVM, CustomVM)
+  Sequencer   Sequencer type (lux, ethereum, op)
+  Deployed    Whether chain is deployed to any network
+
+EXAMPLES:
+
+  # List all configured chains
+  lux chain list
+
+TYPICAL OUTPUT:
+
+  +----------+------+----------+-----+-----------+----------+
+  | NAME     | TYPE | CHAIN ID | VM  | SEQUENCER | DEPLOYED |
+  +----------+------+----------+-----+-----------+----------+
+  | mychain  | L2   | 200200   | EVM | lux       | Yes      |
+  | testnet  | L1   | 36911    | EVM | lux       | No       |
+  +----------+------+----------+-----+-----------+----------+
+
+NOTES:
+
+  - Only shows chains with valid configurations
+  - "Deployed: Yes" means chain is deployed to at least one network
+  - Use 'lux chain describe &lt;name>' for detailed chain information
+  - Use 'lux network status' to see endpoints of deployed chains
+
+**Usage:**
+
+```bash
+lux chain list [flags]
+```
+
+**Flags:**
+
+```
+      --custom    Target custom network
+  -d, --devnet    Target devnet
+  -m, --mainnet   Target mainnet
+  -t, --testnet   Target testnet
+```
+
+### lux chain upgrade
+
+The blockchain upgrade command suite provides a collection of tools for
+updating your developmental and deployed Blockchains.
+
+**Usage:**
+
+```bash
+lux chain upgrade
+```
+
+#### lux chain upgrade apply
+
+Apply generated upgrade bytes to running Blockchain nodes to trigger a network upgrade.
+
+For public networks (Testnet or Mainnet), to complete this process,
+you must have access to the machine running your validator.
+If the CLI is running on the same machine as your validator, it can manipulate your node's
+configuration automatically. Alternatively, the command can print the necessary instructions
+to upgrade your node manually.
+
+After you update your validator's configuration, you need to restart your validator manually.
+If you provide the --luxd-chain-config-dir flag, this command attempts to write the upgrade file at that path.
+Refer to https://docs.lux.network/nodes/maintain/chain-config-flags#chain-chain-configs for related documentation.
+
+In non-interactive mode (CI/scripts), use --force to skip confirmation prompts for
+timestamps in the past. The --luxd-chain-config-dir defaults to ~/.luxd/chains and
+will be used without confirmation prompts.
+
+Examples:
+  # Interactive mode
+  lux blockchain upgrade apply mychain --local
+
+  # Non-interactive mode with custom config directory
+  lux blockchain upgrade apply mychain --testnet --luxd-chain-config-dir /path/to/chains --force
+
+  # Print manual instructions (non-interactive friendly)
+  lux blockchain upgrade apply mychain --mainnet --print
+
+**Usage:**
+
+```bash
+lux chain upgrade apply [blockchainName] [flags]
+```
+
+**Flags:**
+
+```
+      --config                         Create upgrade config for future chain deployments (same as generate)
+  -f, --force                          Skip confirmation prompts (e.g., for timestamps in the past)
+      --local                          Apply upgrade to existing local deployment
+      --luxd-chain-config-dir string   Luxd chain config directory (e.g., ~/.luxd/chains) (default "/Users/z/.luxd/chains")
+      --mainnet                        Apply upgrade to existing mainnet deployment
+      --print                          Print manual config instructions (for public networks only, non-interactive friendly)
+      --testnet                        Apply upgrade to existing testnet deployment
+```
+
+#### lux chain upgrade export
+
+Export the upgrade bytes file to a location of choice on disk.
+
+In non-interactive mode (CI/scripts), use --output to specify the file path
+and --force to overwrite existing files without confirmation.
+
+Examples:
+  # Interactive mode (prompts for path)
+  lux blockchain upgrade export mychain
+
+  # Non-interactive mode
+  lux blockchain upgrade export mychain --output ./upgrade.json --force
+
+**Usage:**
+
+```bash
+lux chain upgrade export [blockchainName] [flags]
+```
+
+**Flags:**
+
+```
+  -f, --force           Overwrite existing file without confirmation
+  -o, --output string   Output file path for upgrade bytes (required in non-interactive mode)
+```
+
+#### lux chain upgrade generate
+
+The blockchain upgrade generate command builds a new upgrade.json file to customize your Blockchain.
+It guides the user through the process using an interactive wizard.
+
+IMPORTANT: This command requires interactive mode (TTY) due to the complexity of precompile
+configuration. For non-interactive/CI environments, create the upgrade.json file manually
+or use 'lux blockchain upgrade import' to import a pre-created configuration.
+
+Use --yes/-y to skip the initial warning confirmation when running interactively.
+
+Examples:
+  # Interactive mode (wizard)
+  lux blockchain upgrade generate mychain
+
+  # Skip initial warning
+  lux blockchain upgrade generate mychain --yes
+
+  # For CI/non-interactive: import a pre-created upgrade file instead
+  lux blockchain upgrade import mychain --upgrade-filepath ./upgrade.json
+
+**Usage:**
+
+```bash
+lux chain upgrade generate [blockchainName] [flags]
+```
+
+**Flags:**
+
+```
+  -y, --yes   Skip initial warning confirmation prompt
+```
+
+#### lux chain upgrade import
+
+Import the upgrade bytes file into the local environment
+
+**Usage:**
+
+```bash
+lux chain upgrade import [blockchainName] [flags]
+```
+
+**Flags:**
+
+```
+      --upgrade-filepath string   Import upgrade bytes file into local environment
+```
+
+#### lux chain upgrade print
+
+Print the upgrade.json file content
+
+**Usage:**
+
+```bash
+lux chain upgrade print [blockchainName]
+```
+
+#### lux chain upgrade vm
+
+The blockchain upgrade vm command enables the user to upgrade their Blockchain's VM binary. The command
+can upgrade both local Blockchains and publicly deployed Blockchains on Testnet and Mainnet.
+
+The command walks the user through an interactive wizard. The user can skip the wizard by providing
+command line flags.
+
+**Usage:**
+
+```bash
+lux chain upgrade vm [blockchainName] [flags]
+```
+
+**Flags:**
+
+```
+      --binary string       Upgrade to custom binary
+      --config              upgrade config for future chain deployments
+      --latest              upgrade to latest version
+      --local local         upgrade existing local deployment
+      --mainnet mainnet     upgrade existing mainnet deployment
+      --plugin-dir string   plugin directory to automatically upgrade VM
+      --print               print instructions for upgrading
+      --testnet testnet     upgrade existing testnet deployment (alias for `testnet`)
+      --version string      Upgrade to custom version
+```
+

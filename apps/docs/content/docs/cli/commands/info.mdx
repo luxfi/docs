@@ -1,0 +1,31 @@
+---
+title: lux info
+description: Print the full runtime profile for one network instance
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux info
+
+Resolves &lt;name>/&lt;env> against the registry and prints every field
+of the resulting profile: distinct identifiers (network ID + EVM chain
+ID), ports, paths, snapshot name, service label, RPC endpoints, and
+live state.
+
+The wire identifiers are deliberately distinct:
+  network ID       uint32, validator wire (--network-id, info.getNetworkID)
+  EVM chain ID     uint64, EIP-155 (eth_chainId, MetaMask)
+
+Lux brand keeps them separate (NID 1 / EVM 96369). Sovereign-L1 brand
+forks (Zoo, Hanzo, Pars, Osage, Liquidity) collapse them by convention.
+
+Examples:
+  lux info zoo/mainnet
+  lux info lux/devnet
+
+**Usage:**
+
+```bash
+lux info <name>/<env>
+```
+

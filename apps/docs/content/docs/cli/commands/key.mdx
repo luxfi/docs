@@ -1,65 +1,928 @@
 ---
 title: lux key
-description: Manage cryptographic keys and addresses
+description: Manage cryptographic keys for validators and accounts
 ---
 
-The `key` command manages all cryptographic keys used in the Lux network. Keys are stored in `~/.lux/keys/<name>/` with separate subdirectories for each type.
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
 
-## Key Types
+## lux key
 
-| Type | Algorithm | Purpose |
-|------|-----------|---------|
-| EC | secp256k1 | Transaction signing, Ethereum compatibility |
-| BLS | BLS12-381 | Consensus participation, aggregated signatures |
-| Pulsar | Ring signatures | Privacy-preserving operations |
-| ML-DSA | NIST Level 3 | Post-quantum digital signatures |
+The key command suite provides tools for managing all cryptographic keys
+used in the Lux network.
 
-## Commands
+Key types managed:
+- EC (secp256k1): Transaction signing, Ethereum compatibility
+- BLS: Consensus participation, aggregated signatures
+- Ring-sig (LSAG over secp256k1) for privacy
+- ML-DSA: Post-quantum digital signatures (NIST Level 3)
+
+All keys are derived from a single BIP39 mnemonic phrase using HKDF,
+stored in ~/.lux/keys/&lt;name>/ with separate subdirectories for each type.
+
+Examples:
+  lux key create validator1              # Create new key set
+  lux key create validator1 --mnemonic   # Create from existing mnemonic
+  lux key generate -n 5                  # Batch generate 5 key sets (key-0 to key-4)
+  lux key generate -n 10 -p validator    # Generate validator-0 to validator-9
+  lux key derive -n 5                    # Derive 5 keys from MNEMONIC
+  lux key derive -n 5 --show             # Show derived addresses without saving
+  lux key list                           # List all key sets
+  lux key show validator1                # Show public keys and addresses
+  lux key delete validator1              # Delete key set
+  lux key export validator1              # Export mnemonic (DANGER!)
+  lux key lock validator1                # Lock key (clear from memory)
+  lux key lock --all                     # Lock all keys
+  lux key unlock validator1              # Unlock key for use
+  lux key backend list                   # List available backends
+  lux key backend set keychain           # Set default backend
+  lux key kchain status                  # Check K-Chain service
+  lux key kchain create mykey            # Create distributed key
+  lux key kchain sign mykey "data"       # Threshold sign data
+
+**Usage:**
 
 ```bash
-# Create a new key set from mnemonic
-lux key create <name>
+lux key
+```
 
-# Create from existing mnemonic
-lux key create <name> --mnemonic
+### lux key backend
 
-# Batch generate multiple key sets
-lux key generate -n 5
-lux key generate -n 10 -p validator
+Manage key storage backends for cryptographic keys.
 
-# Derive keys from LUX_MNEMONIC env var
-lux key derive -n 5
-lux key derive -n 5 --show
+Available backends:
+  software       - Encrypted file storage (AES-256-GCM + Argon2id)
+  keychain       - macOS Keychain with optional TouchID
+  secret-service - Linux Secret Service (GNOME Keyring, KWallet)
+  yubikey        - Yubikey hardware token
+  zymbit         - Zymbit HSM (Raspberry Pi)
+  walletconnect  - Remote signing via mobile wallet
+  ledger         - Ledger hardware wallet
+  env            - Environment variable storage
 
-# List all key sets
+Examples:
+  lux key backend list          # List available backends
+  lux key backend set keychain  # Set default backend
+  lux key backend info          # Show current backend info
+
+**Usage:**
+
+```bash
+lux key backend
+```
+
+#### lux key backend info
+
+Display detailed information about the current default key storage backend.
+
+**Usage:**
+
+```bash
+lux key backend info
+```
+
+#### lux key backend list
+
+List all key storage backends and their availability status.
+
+Backends marked as 'available' can be used on this system.
+Some backends require specific hardware or services to be present.
+
+**Usage:**
+
+```bash
+lux key backend list
+```
+
+#### lux key backend set
+
+Set the default key storage backend.
+
+The default backend is used when creating new keys.
+Existing keys remain in their original backend.
+
+Valid backend types:
+  software, keychain, secret-service, yubikey, zymbit, walletconnect, ledger, env
+
+**Usage:**
+
+```bash
+lux key backend set <type>
+```
+
+### lux key create
+
+Create a new key set with all cryptographic key types.
+
+Generates a BIP39 mnemonic phrase and derives:
+- EC (secp256k1) key for transactions
+- BLS key for consensus
+- Ring-signature (LSAG) key over secp256k1
+- ML-DSA key for post-quantum signatures
+
+Keys are stored in ~/.lux/keys/&lt;name>/
+
+Examples:
+  lux key create validator1                           # Generate new mnemonic
+  lux key create validator1 --mnemonic                # Prompt for existing mnemonic
+  lux key create validator1 --phrase "word1 word2..." # Use provided mnemonic
+  lux key create mainnet-key-01 --phrase "$MNEMONIC" --account 1  # Derive account 1
+
+**Usage:**
+
+```bash
+lux key create <name> [flags]
+```
+
+**Flags:**
+
+```
+      --account uint32   Account index for HD derivation (0-based)
+  -m, --mnemonic         Import from existing mnemonic (prompts for input)
+      --phrase string    Mnemonic phrase to import (12 or 24 words)
+```
+
+### lux key delete
+
+Delete a key set from ~/.lux/keys/
+
+WARNING: This permanently deletes all keys! Make sure you have backed up
+the mnemonic phrase before deleting.
+
+Example:
+  lux key delete validator1
+  lux key delete validator1 --force  # Skip confirmation
+
+**Usage:**
+
+```bash
+lux key delete <name> [flags]
+```
+
+**Flags:**
+
+```
+  -f, --force   Skip confirmation prompt
+```
+
+### lux key derive
+
+Derive multiple key sets from a single mnemonic phrase.
+
+Uses the MNEMONIC environment variable to derive keys deterministically.
+Each key uses Lux P/X-Chain BIP-44 path: m/44'/9000'/0'/0/&#123;index}
+
+This ensures compatibility with MetaMask, cast, and other Ethereum tools.
+The same mnemonic always produces the same keys across all tools.
+
+Examples:
+  # Derive 5 validator keys from mnemonic
+  export MNEMONIC="your 24 words here"
+  lux key derive -n 5 --prefix validator
+
+  # Derive keys starting at index 5
+  lux key derive -n 3 --start 5 --prefix backup
+
+  # Show addresses without saving (for verification)
+  lux key derive -n 5 --show
+
+  # Show addresses with private keys (DANGER)
+  lux key derive -n 1 --show --export
+
+**Usage:**
+
+```bash
+lux key derive [flags]
+```
+
+**Flags:**
+
+```
+  -n, --count int        Number of keys to derive (default 5)
+      --export           Show private keys in output (DANGER - keep secret!)
+      --network string   Network for P/X address HRP: mainnet (P-lux1…) | testnet (P-test1…) | devnet (P-dev1…) | local (P-local1…) | custom (P-custom1…) (default "mainnet")
+  -p, --prefix string    Prefix for key names (default "mainnet-key")
+      --show             Only show addresses, don't save keys
+  -s, --start int        Starting account index
+```
+
+### lux key export
+
+Export key set data.
+
+By default, exports public keys. Use --mnemonic to export the seed phrase.
+
+WARNING: Exporting the mnemonic exposes your private keys!
+
+Examples:
+  lux key export validator1                    # Export public keys
+  lux key export validator1 --mnemonic         # Export mnemonic (DANGER!)
+  lux key export validator1 -o keys.json       # Export to file
+
+**Usage:**
+
+```bash
+lux key export <name> [flags]
+```
+
+**Flags:**
+
+```
+      --mnemonic        Export mnemonic phrase (DANGEROUS!)
+  -o, --output string   Output file (default: stdout)
+```
+
+### lux key export-signer
+
+Export BLS signer keys derived from MNEMONIC for use as luxd
+staking signer keys. Each key is written as a raw 32-byte file.
+
+This is needed when starting luxd nodes manually (outside of netrunner)
+that need to use mnemonic-derived BLS keys for consensus.
+
+Examples:
+  # Export signer keys for accounts 5-9
+  export MNEMONIC="your mnemonic here"
+  lux key export-signer -n 5 --start 5 --output ~/.lux/local-validators
+
+  # This creates:
+  #   ~/.lux/local-validators/node5/signer.key
+  #   ~/.lux/local-validators/node6/signer.key
+  #   ...
+
+**Usage:**
+
+```bash
+lux key export-signer [flags]
+```
+
+**Flags:**
+
+```
+  -n, --count int       Number of signer keys to export (default 5)
+  -o, --output string   Output directory (required)
+  -s, --start int       Starting account index
+```
+
+### lux key generate
+
+Generate multiple key sets with indexed names.
+
+Creates keys with names like: prefix-0, prefix-1, prefix-2, etc.
+Each key set contains EC, BLS, ring-sig, and ML-DSA keys.
+
+Examples:
+  lux key generate -n 5                    # Creates key-0 through key-4
+  lux key generate -n 10 --prefix validator # Creates validator-0 through validator-9
+  lux key generate -n 3 --start 5          # Creates key-5, key-6, key-7
+
+**Usage:**
+
+```bash
+lux key generate [flags]
+```
+
+**Flags:**
+
+```
+  -n, --count int       Number of key sets to generate (default 1)
+  -p, --prefix string   Prefix for key names (default "key")
+  -s, --start int       Starting index number
+```
+
+### lux key genesis
+
+Generate a genesis.json file with P-Chain and X-Chain allocations.
+
+Network modes:
+  --mainnet   Use mainnet configuration (Network ID: 1, Chain ID: 96369)
+              - Uses mainnet-key-01 through mainnet-key-11
+              - 5 P-Chain keys (first unlocked, rest 100-year vesting)
+              - 5 X-Chain keys (100-year vesting)
+
+  --testnet   Use testnet configuration (Network ID: 2, Chain ID: 96368)
+              - Uses testnet-key-01 through testnet-key-10
+              - Shorter vesting for testing
+
+  --devnet    Use devnet configuration (Network ID: 3, Chain ID: 96370)
+              - Uses devnet-key-01 through devnet-key-05
+              - No vesting, fully unlocked
+
+  (no flag)   Local development (Network ID: 1337, Chain ID: 1337)
+              - Generates new keys if needed
+              - Single validator, fully unlocked
+
+The command will generate keys if they don't exist (use --generate-keys to force).
+
+Examples:
+  # Generate mainnet genesis using existing mainnet keys
+  lux key genesis --mainnet -o /path/to/genesis.json
+
+  # Generate testnet genesis
+  lux key genesis --testnet -o /path/to/genesis.json
+
+  # Generate devnet genesis with new keys
+  lux key genesis --devnet --generate-keys -o /path/to/genesis.json
+
+  # Custom configuration with manual key selection
+  lux key genesis --p-chain key1,key2 --x-chain key3 -o genesis.json
+
+**Usage:**
+
+```bash
+lux key genesis [flags]
+```
+
+**Flags:**
+
+```
+      --amount uint              Amount per key in nLUX (default 1B LUX) (default 1000000000000000000)
+      --c-chain-genesis string   Path to existing genesis to preserve C-Chain config
+      --devnet                   Generate devnet genesis (Network ID: 3, Chain ID: 96370)
+      --generate-keys            Generate new keys if they don't exist
+      --mainnet                  Generate mainnet genesis (Network ID: 1, Chain ID: 96369)
+      --network-id uint32        Network ID (overrides network preset)
+  -n, --num-keys int             Number of keys to generate (for mainnet/testnet) (default 11)
+  -o, --output string            Output file path (default: ~/.lux/networks/<network>/genesis.json)
+      --p-chain strings          P-Chain allocation keys (overrides network preset)
+      --save                     Save genesis to ~/.lux/networks/<network>/genesis.json
+      --testnet                  Generate testnet genesis (Network ID: 2, Chain ID: 96368)
+      --vesting-percent float    Percentage unlocked per year (overrides network preset)
+      --vesting-years int        Vesting period in years (overrides network preset)
+      --x-chain strings          X-Chain allocation keys (overrides network preset)
+```
+
+### lux key import
+
+Import a key set by recovering from a mnemonic phrase.
+
+Derives all key types (EC, BLS, ring-sig, ML-DSA) from the mnemonic.
+
+Example:
+  lux key import validator1
+
+**Usage:**
+
+```bash
+lux key import <name>
+```
+
+### lux key kchain
+
+K-Chain provides distributed key management using threshold cryptography.
+
+Keys are split across multiple validators using Shamir Secret Sharing,
+requiring a threshold of shares to reconstruct or sign.
+
+Features:
+  - Distributed key storage across validators
+  - Threshold signing without key reconstruction
+  - Proactive secret resharing
+  - ML-KEM post-quantum encryption
+  - ML-DSA post-quantum signatures
+
+Default port range: 963N (9630-9639)
+
+Examples:
+  lux key kchain status                    # Check K-Chain service status
+  lux key kchain distribute mykey          # Distribute key to validators
+  lux key kchain sign mykey "data"         # Threshold sign data
+  lux key kchain encrypt mykey "plaintext" # Encrypt with ML-KEM
+  lux key kchain algorithms                # List supported algorithms
+
+**Usage:**
+
+```bash
+lux key kchain
+```
+
+**Flags:**
+
+```
+      --endpoint string   K-Chain RPC endpoint (default "http://localhost:9630")
+```
+
+#### lux key kchain algorithms
+
+List all cryptographic algorithms supported by K-Chain.
+
+**Usage:**
+
+```bash
+lux key kchain algorithms
+```
+
+#### lux key kchain create
+
+Create a new key and distribute it across K-Chain validators.
+
+Examples:
+  lux key kchain create mykey
+  lux key kchain create mykey -a ml-kem-768 -t 3 -n 5
+
+**Usage:**
+
+```bash
+lux key kchain create <key-name> [flags]
+```
+
+**Flags:**
+
+```
+  -a, --algorithm string   Key algorithm (default "ml-kem-768")
+  -n, --shares int         Total shares (default 5)
+  -t, --threshold int      Threshold for reconstruction (default 3)
+```
+
+#### lux key kchain decrypt
+
+Decrypt data using threshold key reconstruction.
+
+Requires gathering shares from validators to reconstruct the
+decryption key. The key is immediately cleared after decryption.
+
+Examples:
+  lux key kchain decrypt mykey &lt;ciphertext>
+
+**Usage:**
+
+```bash
+lux key kchain decrypt <key-name> <ciphertext>
+```
+
+#### lux key kchain delete
+
+Delete a key and securely wipe all shares from validators.
+
+Examples:
+  lux key kchain delete mykey
+  lux key kchain delete mykey --force
+
+**Usage:**
+
+```bash
+lux key kchain delete <key-name> [flags]
+```
+
+**Flags:**
+
+```
+      --force   Force deletion even if shares exist
+```
+
+#### lux key kchain distribute
+
+Distribute a key across K-Chain validators using Shamir Secret Sharing.
+
+The key is split into shares, each stored on a different validator.
+A threshold number of shares is required to reconstruct or sign.
+
+Examples:
+  lux key kchain distribute mykey                    # Use defaults (3-of-5)
+  lux key kchain distribute mykey -t 2 -n 3          # 2-of-3 threshold
+  lux key kchain distribute mykey --validators v1:9630,v2:9631,v3:9632
+
+**Usage:**
+
+```bash
+lux key kchain distribute <key-name> [flags]
+```
+
+**Flags:**
+
+```
+  -n, --shares int           Total number of shares to create (default 5)
+  -t, --threshold int        Number of shares required to reconstruct (default 3)
+      --validators strings   Validator endpoints (host:port)
+```
+
+#### lux key kchain encrypt
+
+Encrypt data using the key's ML-KEM public key.
+
+ML-KEM (Module-Lattice Key Encapsulation Mechanism) provides
+post-quantum secure encryption.
+
+Examples:
+  lux key kchain encrypt mykey "secret message"
+  lux key kchain encrypt mykey --algorithm ml-kem-768 "data"
+
+**Usage:**
+
+```bash
+lux key kchain encrypt <key-name> <plaintext> [flags]
+```
+
+**Flags:**
+
+```
+  -a, --algorithm string   Encryption algorithm (default "ml-kem-768")
+```
+
+#### lux key kchain gather
+
+Gather threshold shares from validators to reconstruct a key.
+
+This command contacts validators to retrieve shares and reconstructs
+the original key material. Requires threshold number of responsive validators.
+
+Examples:
+  lux key kchain gather mykey
+
+**Usage:**
+
+```bash
+lux key kchain gather <key-name>
+```
+
+#### lux key kchain list
+
+List all keys stored in K-Chain.
+
+**Usage:**
+
+```bash
+lux key kchain list [flags]
+```
+
+**Flags:**
+
+```
+  -a, --algorithm string   Filter by algorithm
+```
+
+#### lux key kchain reshare
+
+Perform proactive secret resharing to rotate key shares.
+
+This creates new shares without changing the underlying key,
+limiting the window of exposure if any shares are compromised.
+
+Examples:
+  lux key kchain reshare mykey
+  lux key kchain reshare mykey -t 4 -n 7   # Change to 4-of-7
+
+**Usage:**
+
+```bash
+lux key kchain reshare <key-name> [flags]
+```
+
+**Flags:**
+
+```
+  -n, --shares int           New total shares (0 = keep current)
+  -t, --threshold int        New threshold (0 = keep current)
+      --validators strings   New validator set
+```
+
+#### lux key kchain show
+
+Show detailed information about a distributed key.
+
+**Usage:**
+
+```bash
+lux key kchain show <key-name> [flags]
+```
+
+**Flags:**
+
+```
+  -f, --format string   Public key format (pem, der, raw) (default "pem")
+```
+
+#### lux key kchain sign
+
+Sign data using threshold signatures without reconstructing the key.
+
+Each validator computes a partial signature using their share.
+Partial signatures are combined to produce the final signature.
+
+Examples:
+  lux key kchain sign mykey "message to sign"
+  lux key kchain sign mykey --hex 48656c6c6f
+  lux key kchain sign mykey --algorithm bls-threshold "data"
+
+**Usage:**
+
+```bash
+lux key kchain sign <key-name> <data> [flags]
+```
+
+**Flags:**
+
+```
+  -a, --algorithm string   Signing algorithm (default "bls-threshold")
+      --hex                Interpret data as hex-encoded
+```
+
+#### lux key kchain status
+
+Check the health and status of the K-Chain distributed key management service.
+
+**Usage:**
+
+```bash
+lux key kchain status
+```
+
+#### lux key kchain verify
+
+Verify a signature against the key's public key.
+
+Examples:
+  lux key kchain verify mykey "message" &lt;signature>
+
+**Usage:**
+
+```bash
+lux key kchain verify <key-name> <data> <signature> [flags]
+```
+
+**Flags:**
+
+```
+  -a, --algorithm string   Signature algorithm (default "bls-threshold")
+```
+
+### lux key list
+
+List all key sets stored in ~/.lux/keys/
+
+Shows the name of each key set. Use 'lux key show &lt;name>' for details.
+
+Example:
+  lux key list
+  lux key ls
+
+**Usage:**
+
+```bash
 lux key list
-
-# Show public keys and addresses
-lux key show <name>
-
-# Export mnemonic (handle with care)
-lux key export <name>
-
-# Delete a key set
-lux key delete <name>
-
-# Lock/unlock keys in memory
-lux key lock <name>
-lux key lock --all
-lux key unlock <name>
-
-# Migrate plaintext keys to encrypted storage
-lux key migrate
 ```
 
-## Storage Layout
+### lux key lock
+
+Lock a key to clear it from the memory session.
+
+A locked key requires password authentication to use again.
+This is a security measure to protect keys when not in use.
+
+Examples:
+  lux key lock validator1    # Lock a specific key
+  lux key lock --all         # Lock all keys
+
+**Usage:**
+
+```bash
+lux key lock [name] [flags]
+```
+
+**Flags:**
 
 ```
-~/.lux/keys/<name>/
-  ec/       secp256k1 keys
-  bls/      BLS consensus keys
-  rt/       Pulsar ring signature keys
-  mldsa/    ML-DSA post-quantum keys
+  -a, --all   Lock all keys
 ```
 
-All keys are derived from a single BIP-39 mnemonic phrase using HKDF.
+### lux key migrate
+
+Migrate legacy plaintext key files to encrypted keystore.enc format.
+
+This command reads plaintext key files (ec/private.key, bls/secret.key, staker.key)
+and encrypts them using AES-256-GCM with Argon2id key derivation.
+
+After migration, the plaintext originals can be securely deleted with --secure.
+
+Examples:
+  lux key migrate node0              # Migrate single node
+  lux key migrate node0 node1 node2  # Migrate multiple nodes
+  lux key migrate --all              # Migrate all keys with plaintext files
+  lux key migrate node0 --secure     # Migrate and securely delete originals
+
+**Usage:**
+
+```bash
+lux key migrate [name...] [flags]
+```
+
+**Flags:**
+
+```
+      --all      Migrate all keys with plaintext files
+      --force    Overwrite existing keystore.enc files
+      --secure   Securely delete plaintext files after migration
+```
+
+### lux key ring
+
+Ring signatures allow signing messages such that the signature can be
+verified as coming from someone in a group (the "ring"), without revealing
+which member actually signed. This provides strong anonymity guarantees.
+
+Features:
+  - LSAG (Linkable Spontaneous Anonymous Group) signatures using secp256k1
+  - Lattice-based ring signatures for post-quantum security
+  - Key images for linkability (double-spend detection)
+
+The ring signature uses your ring-signature key (LSAG over secp256k1) from ~/.lux/keys/&lt;name>/rt/
+
+Examples:
+  lux key ring sign mykey "message" --ring key1,key2,key3
+  lux key ring verify "message" --signature &lt;sig> --ring key1,key2,key3
+  lux key ring keyimage mykey
+  lux key ring schemes
+
+**Usage:**
+
+```bash
+lux key ring
+```
+
+#### lux key ring generate
+
+Generate random public keys to use as decoys in a ring signature.
+
+In production, you should use real public keys from the network for better
+anonymity. This command is mainly for testing and demonstration.
+
+Examples:
+  lux key ring generate --size 5
+  lux key ring generate --size 10 --scheme lattice
+
+**Usage:**
+
+```bash
+lux key ring generate [flags]
+```
+
+**Flags:**
+
+```
+      --scheme string   Signature scheme (lsag, lattice) (default "lsag")
+  -n, --size int        Number of keys to generate (default 5)
+```
+
+#### lux key ring keyimage
+
+Show the key image for a key. Key images are deterministic identifiers
+derived from the private key that enable linkability - two signatures from
+the same key will have the same key image.
+
+This is used for double-spend detection in privacy-preserving transactions.
+
+Examples:
+  lux key ring keyimage mykey
+  lux key ring keyimage mykey --scheme lattice
+
+**Usage:**
+
+```bash
+lux key ring keyimage <key-name> [flags]
+```
+
+**Flags:**
+
+```
+      --scheme string   Signature scheme (lsag, lattice) (default "lsag")
+```
+
+#### lux key ring schemes
+
+List all supported ring signature schemes and their properties.
+
+**Usage:**
+
+```bash
+lux key ring schemes
+```
+
+#### lux key ring sign
+
+Create a ring signature for a message using your key and a ring of public keys.
+
+Your key must be one of the keys in the ring. The signature proves you're a member
+of the ring without revealing which member you are.
+
+Examples:
+  lux key ring sign mykey "message to sign" --ring key1,key2,key3
+  lux key ring sign mykey --file message.txt --ring key1,key2,key3,key4
+  lux key ring sign mykey "data" --ring key1,key2,key3 --scheme lattice
+
+**Usage:**
+
+```bash
+lux key ring sign <key-name> <message> [flags]
+```
+
+**Flags:**
+
+```
+  -f, --file string     Read message from file
+  -o, --output string   Write signature to file
+      --ring strings    Ring member key names (comma-separated)
+  -s, --scheme string   Signature scheme (lsag, lattice) (default "lsag")
+```
+
+#### lux key ring verify
+
+Verify a ring signature against a message and ring of public keys.
+
+Examples:
+  lux key ring verify "message" --signature &lt;sig> --ring key1,key2,key3
+  lux key ring verify --file message.txt --signature-file sig.txt --ring key1,key2,key3
+
+**Usage:**
+
+```bash
+lux key ring verify <message> [flags]
+```
+
+**Flags:**
+
+```
+  -f, --file string             Read message from file
+      --ring strings            Ring member key names (comma-separated)
+      --scheme string           Signature scheme (lsag, lattice) (default "lsag")
+      --signature string        Signature (hex-encoded)
+      --signature-file string   Read signature from file
+```
+
+### lux key show
+
+Show public keys and addresses for a key set.
+
+Displays:
+- EC (secp256k1) address (Ethereum format)
+- BLS public key (consensus)
+- Ring-signature public key (LSAG over secp256k1)
+- ML-DSA public key (post-quantum)
+
+With --export flag, also displays private keys (DANGER - keep secret!).
+
+Example:
+  lux key show validator1
+  lux key show validator1 --export
+
+**Usage:**
+
+```bash
+lux key show <name> [flags]
+```
+
+**Flags:**
+
+```
+      --export   Export private keys (DANGER - keep secret!)
+```
+
+### lux key staker
+
+Writes staker.crt, staker.key and signer.key into &lt;dir> and prints the
+NodeID, BLS public key and proof of possession.
+
+Point luxd at the directory, then register the printed values:
+
+  lux key staker ~/.luxd/staking
+  lux primary addValidator --mainnet \
+      --node-id &lt;NodeID> --public-key &lt;pub> --proof-of-possession &lt;pop> \
+      --stake 2 --duration 336h
+
+**Usage:**
+
+```bash
+lux key staker <dir>
+```
+
+### lux key unlock
+
+Unlock a key by providing the password.
+
+The key remains unlocked for the session duration (default 30 seconds).
+After the timeout without access, the key is automatically locked and
+requires re-authentication. The timeout resets on each key access.
+
+Session timeout can be configured via:
+  KEY_SESSION_TIMEOUT environment variable (e.g., "30s", "5m", "1h")
+
+Password can be provided via:
+  --password flag
+  KEY_PASSWORD environment variable
+  Interactive prompt (most secure)
+
+Examples:
+  lux key unlock validator1                    # Prompts for password
+  lux key unlock validator1 --password secret  # Password via flag (less secure)
+  KEY_SESSION_TIMEOUT=5m lux key unlock validator1  # 5 minute session
+
+**Usage:**
+
+```bash
+lux key unlock <name> [flags]
+```
+
+**Flags:**
+
+```
+  -p, --password string   Password for the key
+```
+

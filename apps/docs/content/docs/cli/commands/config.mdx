@@ -1,0 +1,48 @@
+---
+title: lux config
+description: Modify configuration for Lux CLI
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux config
+
+Customize configuration for Lux CLI
+
+**Usage:**
+
+```bash
+lux config
+```
+
+### lux config lint
+
+Validate a luxd configuration file for errors.
+
+Reports:
+  - Unknown configuration keys (with typo suggestions)
+  - Invalid value types (e.g., "abc" for a duration)
+  - Deprecated keys (with replacement hints)
+
+Uses the authoritative flag spec from github.com/luxfi/config/spec,
+which is generated from the node's source of truth.
+
+Example:
+  lux config lint myconfig.json
+
+**Usage:**
+
+```bash
+lux config lint <config-file.json>
+```
+
+### lux config metrics
+
+set user metrics collection preferences
+
+**Usage:**
+
+```bash
+lux config metrics [enable | disable]
+```
+

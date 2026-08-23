@@ -1,0 +1,42 @@
+---
+title: lux tui
+description: Interactive terminal UI for Lux
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux tui
+
+Launch the interactive terminal UI for monitoring and managing
+the Lux blockchain stack.
+
+The TUI provides a dashboard with tabs for:
+  - Dashboard:   Network overview and health
+  - Nodes:       Node status and management
+  - Chains:      Chain status and block heights
+  - Validators:  Validator set and uptime
+  - Logs:        Live log streaming
+
+NAVIGATION:
+
+  Tab/Arrow   Navigate between tabs
+  1-5         Jump to tab by number
+  r           Refresh data
+  q           Quit
+
+Examples:
+  lux tui
+  lux tui --endpoint http://localhost:9640
+
+**Usage:**
+
+```bash
+lux tui [flags]
+```
+
+**Flags:**
+
+```
+      --endpoint string   Lux node API endpoint (default: http://127.0.0.1:9630)
+```
+

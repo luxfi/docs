@@ -1,0 +1,115 @@
+---
+title: lux self
+description: Manage the Lux CLI installation
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux self
+
+Commands for managing the Lux CLI installation.
+
+Similar to nvm for Node.js, this allows you to:
+- Link development builds to ~/.lux/bin/
+- Install specific versions
+- Switch between versions
+- Self-update
+
+EXAMPLES:
+
+  # Link current binary to ~/.lux/bin/lux
+  lux self link
+
+  # Install a specific version
+  lux self install v1.22.5
+
+  # List installed versions
+  lux self list
+
+  # Use a specific version
+  lux self use v1.22.5
+
+**Usage:**
+
+```bash
+lux self
+```
+
+### lux self install
+
+Install a specific version of the Lux CLI.
+
+Downloads and installs the specified version to ~/.lux/versions/&lt;version>/.
+
+If no version is specified, installs the latest version.
+
+EXAMPLES:
+
+  # Install latest version
+  lux self install
+
+  # Install specific version
+  lux self install v1.22.5
+
+**Usage:**
+
+```bash
+lux self install [version]
+```
+
+### lux self link
+
+Link the currently running CLI binary to ~/.lux/bin/lux.
+
+This makes the development build available system-wide when ~/.lux/bin
+is in your PATH.
+
+EXAMPLES:
+
+  # Link current binary
+  lux self link
+
+**Usage:**
+
+```bash
+lux self link
+```
+
+### lux self list
+
+List all installed versions of the Lux CLI.
+
+Shows installed versions and indicates which one is currently active.
+
+EXAMPLES:
+
+  lux self list
+
+**Usage:**
+
+```bash
+lux self list
+```
+
+### lux self use
+
+Switch to a specific installed version of the Lux CLI.
+
+Updates the ~/.lux/bin/lux symlink to point to the specified version.
+
+Use 'dev' to switch back to your development build.
+
+EXAMPLES:
+
+  # Switch to a specific version
+  lux self use v1.22.5
+
+  # Switch back to development build
+  lux self use dev
+
+**Usage:**
+
+```bash
+lux self use <version>
+```
+

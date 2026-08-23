@@ -1,0 +1,71 @@
+---
+title: lux rpc
+description: Make RPC calls to Lux node
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux rpc
+
+Make JSON-RPC calls to a Lux node.
+
+Examples:
+  # Get P-Chain height
+  lux rpc call --method platform.getHeight --endpoint http://localhost:9630/v1/bc/P
+
+  # Get blockchains with params
+  lux rpc call --method platform.getBlockchains --params '&#123;}' --endpoint http://localhost:9630/v1/bc/P
+
+  # Create blockchain
+  lux rpc call --method platform.createBlockchain \
+    --params '&#123;"vmID":"...", "name":"mychain", "genesis":"..."}' \
+    --endpoint http://localhost:9630/v1/bc/P
+
+
+### lux rpc call
+
+Make a JSON-RPC call to the specified endpoint with the given method and parameters
+
+**Usage:**
+
+```bash
+lux rpc call [flags]
+```
+
+**Flags:**
+
+```
+      --endpoint string   RPC endpoint URL (default "http://localhost:9630/v1/bc/P")
+      --method string     RPC method to call (required)
+      --params string     JSON params object (optional)
+      --timeout int       Request timeout in seconds (default 30)
+```
+
+### lux rpc transfer
+
+Transfer LUX between the P and X chains by atomic export/import.
+
+The C-Chain is an EVM: move value on it with an ordinary EVM transaction
+against /v1/bc/C/rpc, not with this command.
+
+Example:
+  lux rpc transfer --from-chain P --to-chain X --to X-lux1... --amount 10
+
+
+**Usage:**
+
+```bash
+lux rpc transfer [flags]
+```
+
+**Flags:**
+
+```
+      --amount float        Amount to transfer in LUX
+      --from string         Key name to use (default: MNEMONIC account 0)
+      --from-chain string   Source chain: P or X (default "P")
+      --rpc-url string      Base RPC URL (default: RPC_URL or running network endpoint)
+      --to string           Destination bech32 address
+      --to-chain string     Destination chain: P or X (default "X")
+```
+

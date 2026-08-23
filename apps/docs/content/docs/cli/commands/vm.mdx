@@ -1,0 +1,141 @@
+---
+title: lux vm
+description: Manage VM plugins
+---
+
+{/* Generated from the command tree — edit the command's Long/Short, not this file. */}
+
+## lux vm
+
+Commands for installing, linking, and managing VM plugins.
+
+VM plugins are stored as symlinks in ~/.lux/plugins/&lt;vmid>.
+The VMID is calculated from the VM name (padded to 32 bytes, CB58 encoded).
+
+Examples:
+  lux vm link lux-evm --path ~/work/lux/evm/build/evm
+  lux vm status
+  lux vm unlink lux-evm
+  lux vm reload
+
+**Usage:**
+
+```bash
+lux vm
+```
+
+### lux vm install
+
+Install a VM plugin from GitHub releases.
+
+Downloads the latest (or specified) version from GitHub releases and installs it
+to ~/.lux/plugins/packages/&lt;org>/&lt;name>/&lt;version>/.
+
+Package format: &lt;org>/&lt;name> or &lt;org>/&lt;name>@&lt;version>
+
+Examples:
+  lux vm install luxfi/evm           # Install latest
+  lux vm install luxfi/evm@v1.0.0    # Install specific version
+  lux vm install myuser/myvm         # Install from any org
+
+**Usage:**
+
+```bash
+lux vm install <org/name>[@version] [flags]
+```
+
+**Flags:**
+
+```
+  -v, --version string   Version to install (default: latest)
+```
+
+### lux vm link
+
+Link a local VM binary to the plugins directory for development.
+
+Creates a proper package entry and VMID symlink for a locally built VM binary.
+Use this during development to test local builds with the node.
+
+Package format: &lt;org>/&lt;name> (e.g., luxfi/evm, myuser/myvm)
+
+The binary must exist and be executable.
+
+Examples:
+  lux vm link luxfi/evm ~/work/lux/evm/build/evm
+  lux vm link luxfi/evm ~/work/lux/evm/build/evm --version v1.2.3-dev
+  lux vm link myuser/myvm /path/to/myvm/build/myvm
+
+**Usage:**
+
+```bash
+lux vm link <org/name> <path> [flags]
+```
+
+**Flags:**
+
+```
+  -v, --version string   Version label (default: v0.0.0-local)
+```
+
+### lux vm reload
+
+Reload VMs on network nodes by calling admin.loadVMs.
+
+This triggers the node to scan the plugins directory and load any new VMs.
+
+Examples:
+  lux vm reload
+  lux vm reload --endpoint http://127.0.0.1:9630
+
+**Usage:**
+
+```bash
+lux vm reload [flags]
+```
+
+**Flags:**
+
+```
+  -e, --endpoint string    Node endpoint to call admin.loadVMs on (default "http://127.0.0.1:9630")
+  -t, --timeout duration   Timeout for the reload request (default 30s)
+```
+
+### lux vm status
+
+Show all linked VMs in the plugins directory.
+
+Displays VMID, name (if known), target path, and whether the target exists.
+
+Examples:
+  lux vm status
+  lux vm status --json
+
+**Usage:**
+
+```bash
+lux vm status [flags]
+```
+
+**Flags:**
+
+```
+      --json   Output in JSON format
+```
+
+### lux vm unlink
+
+Remove a VM symlink from the plugins directory.
+
+Removes the symlink at ~/.lux/plugins/&lt;vmid> for the given VM name.
+
+Examples:
+  lux vm unlink lux-evm
+  lux vm unlink "Lux EVM"
+
+**Usage:**
+
+```bash
+lux vm unlink <vm-name>
+```
+
