@@ -1,0 +1,50 @@
+---
+title: zwarp
+description: Package zwarp provides ZAP transport for warp messaging.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/warp/zwarp"
+```
+
+Package zwarp provides ZAP transport for warp messaging.
+
+
+## Types
+
+### Client
+
+Client implements warp.Signer over ZAP transport
+
+
+```go
+func NewClient(conn *zapwire.Conn) *Client
+```
+
+```go
+func (c *Client) BatchSign(messages []*warp.UnsignedMessage) ([][]byte, []error)
+```
+
+```go
+func (c *Client) Sign(unsignedMsg *warp.UnsignedMessage) ([]byte, error)
+```
+
+### Server
+
+Server implements the ZAP server for warp signing
+
+
+```go
+func NewServer(signer warp.Signer) *Server
+```
+
+```go
+func (s *Server) HandleMessage(ctx context.Context, msgType zapwire.MessageType, payload []byte) ([]byte, error)
+```
+
+```go
+func (s *Server) Handler() zapwire.HandlerFunc
+```
+

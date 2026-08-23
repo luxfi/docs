@@ -1,0 +1,215 @@
+---
+title: keychain
+description: Package keychain
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/wallet/keychain"
+```
+
+## Types
+
+### KeyType
+
+KeyType represents the type of cryptographic key
+
+
+### Keychain
+
+Keychain interface that wallet signers can use
+This allows both secp256k1fx.Keychain and ledger-lux-go/keychain.Keychain to be used
+Generic across chains, DAGs, and post-quantum crypto
+
+
+### PQKeychain
+
+PQKeychain implements Keychain with post-quantum support
+
+
+```go
+func NewPQKeychain(defaultType KeyType) *PQKeychain
+```
+
+```go
+func (kc *PQKeychain) AddBLS(key *bls.SecretKey) ids.ShortID
+```
+
+```go
+func (kc *PQKeychain) AddHybrid(classical *secp256k1.PrivateKey, pq interface{}) ids.ShortID
+```
+
+```go
+func (kc *PQKeychain) AddHybridBLS(blsKey *bls.SecretKey, pqKey *mldsa.PrivateKey) ids.ShortID
+```
+
+```go
+func (kc *PQKeychain) AddMLDSA(key *mldsa.PrivateKey, keyType KeyType) ids.ShortID
+```
+
+```go
+func (kc *PQKeychain) AddMLKEM(pubKey *mlkem.PublicKey, privKey *mlkem.PrivateKey, mode mlkem.Mode) ids.ShortID
+```
+
+```go
+func (kc *PQKeychain) AddRingSig(signer ring.Signer, scheme ring.Scheme) ids.ShortID
+```
+
+```go
+func (kc *PQKeychain) AddSLHDSA(key *slhdsa.PrivateKey, keyType KeyType) ids.ShortID
+```
+
+```go
+func (kc *PQKeychain) AddSecp256k1(key *secp256k1.PrivateKey) ids.ShortID
+```
+
+```go
+func (kc *PQKeychain) Addresses() []ids.ShortID
+```
+
+```go
+func (kc *PQKeychain) GenerateCoronaKey(scheme ring.Scheme) (ids.ShortID, error)
+```
+
+```go
+func (kc *PQKeychain) GenerateKey() (ids.ShortID, error)
+```
+
+```go
+func (kc *PQKeychain) Get(addr ids.ShortID) (Signer, bool)
+```
+
+```go
+func (kc *PQKeychain) GetPQSigner(addr ids.ShortID) (*PQSigner, bool)
+```
+
+```go
+func (kc *PQKeychain) SetDefaultType(keyType KeyType)
+```
+
+### PQSigner
+
+PQSigner implements Signer with post-quantum support
+
+
+```go
+func (s *PQSigner) Address() ids.ShortID
+```
+
+```go
+func (s *PQSigner) BLSPublicKey() *bls.PublicKey
+```
+
+```go
+func (s *PQSigner) Decapsulate(ciphertext []byte) (sharedSecret []byte, err error)
+```
+
+```go
+func (s *PQSigner) Encapsulate(recipientPubKey *mlkem.PublicKey) (ciphertext, sharedSecret []byte, err error)
+```
+
+```go
+func (s *PQSigner) KeyImage() []byte
+```
+
+```go
+func (s *PQSigner) KeyType() KeyType
+```
+
+```go
+func (s *PQSigner) PublicKey() []byte
+```
+
+```go
+func (s *PQSigner) RingScheme() ring.Scheme
+```
+
+```go
+func (s *PQSigner) Sign(msg []byte) ([]byte, error)
+```
+
+```go
+func (s *PQSigner) SignHash(hash []byte) ([]byte, error)
+```
+
+```go
+func (s *PQSigner) SignRing(message []byte, ringPubKeys [][]byte, signerIndex int) (ring.RingSignature, error)
+```
+
+### Signer
+
+Signer interface for signing operations
+Generic interface for all signing needs (classical and post-quantum)
+
+
+### UnifiedKeychain
+
+UnifiedKeychain uses the unified crypto interface for all key operations
+
+
+```go
+func NewUnifiedKeychain(defaultAlgo crypto.Algorithm) *UnifiedKeychain
+```
+
+```go
+func (kc *UnifiedKeychain) AddKey(privKey crypto.PrivateKey, pubKey crypto.PublicKey) ids.ShortID
+```
+
+```go
+func (kc *UnifiedKeychain) Addresses() []ids.ShortID
+```
+
+```go
+func (kc *UnifiedKeychain) GenerateKey() (ids.ShortID, error)
+```
+
+```go
+func (kc *UnifiedKeychain) GenerateKeyWithAlgo(algo crypto.Algorithm) (ids.ShortID, error)
+```
+
+```go
+func (kc *UnifiedKeychain) Get(addr ids.ShortID) (Signer, bool)
+```
+
+```go
+func (kc *UnifiedKeychain) GetUnifiedSigner(addr ids.ShortID) (*UnifiedSigner, bool)
+```
+
+### UnifiedSigner
+
+UnifiedSigner implements the Signer interface using unified crypto
+
+
+```go
+func (s *UnifiedSigner) Address() ids.ShortID
+```
+
+```go
+func (s *UnifiedSigner) Algorithm() crypto.Algorithm
+```
+
+```go
+func (s *UnifiedSigner) Decapsulate(ciphertext []byte) (sharedSecret []byte, err error)
+```
+
+```go
+func (s *UnifiedSigner) Encapsulate(pubKey crypto.PublicKey) (ciphertext []byte, sharedSecret []byte, err error)
+```
+
+```go
+func (s *UnifiedSigner) PublicKey() crypto.PublicKey
+```
+
+```go
+func (s *UnifiedSigner) Sign(msg []byte) ([]byte, error)
+```
+
+```go
+func (s *UnifiedSigner) SignHash(hash []byte) ([]byte, error)
+```
+
+```go
+func (s *UnifiedSigner) SignRing(message []byte, ring []crypto.PublicKey) ([]byte, error)
+```
+

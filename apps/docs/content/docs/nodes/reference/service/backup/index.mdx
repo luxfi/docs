@@ -1,0 +1,69 @@
+---
+title: backup
+description: Package backup provides database backup and restore functionality.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/service/backup"
+```
+
+Package backup provides database backup and restore functionality.
+It supports incremental backups using ZapDB's native backup mechanism
+with optional zstd compression.
+
+
+## Types
+
+### Config
+
+Config configures the backup service.
+
+
+### Metadata
+
+Metadata stores information about the last backup.
+
+
+### Service
+
+Service provides backup and restore operations.
+
+
+```go
+func New(cfg Config) (*Service, error)
+```
+
+```go
+func (s *Service) Backup(w io.Writer, since uint64, compress bool) (uint64, error)
+```
+
+```go
+func (s *Service) BackupChunked(since uint64, compress bool) (<-chan []byte, <-chan error, <-chan uint64)
+```
+
+```go
+func (s *Service) BackupToFile(path string, since uint64, compress bool) (uint64, error)
+```
+
+```go
+func (s *Service) GetLastVersion() uint64
+```
+
+```go
+func (s *Service) GetMetadata() *Metadata
+```
+
+```go
+func (s *Service) Restore(r io.Reader, compressed bool) error
+```
+
+```go
+func (s *Service) RestoreChunked(compressed bool) (chan<- []byte, <-chan error)
+```
+
+```go
+func (s *Service) RestoreFromFile(path string, compressed bool) error
+```
+

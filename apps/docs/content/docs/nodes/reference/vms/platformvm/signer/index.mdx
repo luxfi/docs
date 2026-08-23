@@ -1,0 +1,149 @@
+---
+title: signer
+description: Package signer
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/signer"
+```
+
+## Types
+
+### Empty
+
+```go
+func (*Empty) Key() *bls.PublicKey
+```
+
+```go
+func (*Empty) Verify() error
+```
+
+### HybridProofOfPossession
+
+HybridProofOfPossession combines BLS and Corona proofs of possession.
+This is REQUIRED for all Q-Chain validators to bind both classical
+and post-quantum keys to their validator identity.
+
+Wire format:
+  - BLS PublicKey: 48 bytes (compressed)
+  - BLS ProofOfPossession: 96 bytes
+  - RT PublicKey: 1952 bytes (ML-DSA-65)
+  - RT ProofOfPossession: 3309 bytes (ML-DSA-65 signature)
+
+
+```go
+func NewHybridProofOfPossession(
+	blsSigner bls.Signer,
+	rtPublicKey []byte,
+	rtSign func(msg []byte) ([]byte, error),
+) (*HybridProofOfPossession, error)
+```
+
+```go
+func (h *HybridProofOfPossession) HasRT() bool
+```
+
+```go
+func (h *HybridProofOfPossession) Key() *bls.PublicKey
+```
+
+```go
+func (h *HybridProofOfPossession) MarshalJSON() ([]byte, error)
+```
+
+```go
+func (h *HybridProofOfPossession) RTKey() []byte
+```
+
+```go
+func (h *HybridProofOfPossession) UnmarshalJSON(b []byte) error
+```
+
+```go
+func (h *HybridProofOfPossession) ValidateForQChain() error
+```
+
+```go
+func (h *HybridProofOfPossession) Verify() error
+```
+
+### HybridSigner
+
+HybridSigner extends Signer with post-quantum Corona key support.
+This is the key material binding interface for Q-Chain validators.
+
+NodeID X corresponds to:
+  - TLS pubkey A (staking certificate) - established during TLS handshake
+  - BLS pubkey B (aggregate signatures) - from ProofOfPossession
+  - RT pubkey C (post-quantum security) - from RTProofOfPossession
+
+All three keys must be bound to the same validator identity for
+Q-Chain consensus to be secure against both classical and quantum attacks.
+
+
+### ProofOfPossession
+
+```go
+func NewProofOfPossession(sk bls.Signer) (*ProofOfPossession, error)
+```
+
+```go
+func (p *ProofOfPossession) Key() *bls.PublicKey
+```
+
+```go
+func (p *ProofOfPossession) MarshalJSON() ([]byte, error)
+```
+
+```go
+func (p *ProofOfPossession) UnmarshalJSON(b []byte) error
+```
+
+```go
+func (p *ProofOfPossession) Verify() error
+```
+
+### RTProofOfPossession
+
+RTProofOfPossession proves ownership of a Corona (ML-DSA) keypair.
+This is REQUIRED for all Q-Chain validators.
+
+Key material binding: NodeID X corresponds to:
+  - TLS pubkey A (staking certificate)
+  - BLS pubkey B (aggregate signatures)
+  - RT pubkey C (post-quantum security)
+
+The RTProofOfPossession binds the RT public key to the validator identity
+by requiring a signature over the public key itself.
+
+
+```go
+func NewRTProofOfPossession(publicKey []byte, sign func(msg []byte) ([]byte, error)) (*RTProofOfPossession, error)
+```
+
+```go
+func (p *RTProofOfPossession) MarshalJSON() ([]byte, error)
+```
+
+```go
+func (p *RTProofOfPossession) RTKey() []byte
+```
+
+```go
+func (p *RTProofOfPossession) UnmarshalJSON(b []byte) error
+```
+
+```go
+func (p *RTProofOfPossession) Verify() error
+```
+
+### RTSigner
+
+RTSigner interface for Corona proof of possession
+
+
+### Signer
+

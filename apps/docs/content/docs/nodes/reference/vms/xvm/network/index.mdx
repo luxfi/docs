@@ -1,0 +1,82 @@
+---
+title: network
+description: Package network
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/xvm/network"
+```
+
+## Types
+
+### Atomic
+
+```go
+func NewAtomic(h warp.Handler) Atomic
+```
+
+### Config
+
+### LockedTxVerifier
+
+```go
+func NewLockedTxVerifier(lock sync.Locker, txVerifier TxVerifier) *LockedTxVerifier
+```
+
+```go
+func (l *LockedTxVerifier) VerifyTx(tx *txs.Tx) error
+```
+
+### Network
+
+```go
+func New(
+	log log.Logger,
+	nodeID ids.NodeID,
+	netID ids.ID,
+	vdrs consensusvalidator.State,
+	parser txs.Parser,
+	txVerifier TxVerifier,
+	mempool mempool.Mempool[*txs.Tx],
+	sender warp.Sender,
+	registerer metric.Registerer,
+	config Config,
+) (*Network, error)
+```
+
+```go
+func (n *Network) Gossip(ctx context.Context, nodeID ids.NodeID, msg []byte) error
+```
+
+```go
+func (n *Network) IssueTxFromRPC(tx *txs.Tx) error
+```
+
+```go
+func (n *Network) IssueTxFromRPCWithoutVerification(tx *txs.Tx) error
+```
+
+```go
+func (n *Network) PullGossip(ctx context.Context)
+```
+
+```go
+func (n *Network) PushGossip(ctx context.Context)
+```
+
+```go
+func (n *Network) Request(ctx context.Context, nodeID ids.NodeID, requestID uint32, deadline time.Time, msg []byte) ([]byte, *p2p.Error)
+```
+
+```go
+func (n *Network) RequestFailed(ctx context.Context, nodeID ids.NodeID, requestID uint32, err *p2p.Error) error
+```
+
+```go
+func (n *Network) Response(ctx context.Context, nodeID ids.NodeID, requestID uint32, msg []byte) error
+```
+
+### TxVerifier
+

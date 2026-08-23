@@ -1,0 +1,122 @@
+---
+title: wrappers
+description: Package wrappers
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/wrappers"
+```
+
+## Functions
+
+### StringLen
+
+```go
+func StringLen(str string) int
+```
+
+## Types
+
+### Closer
+
+Closer is a nice utility for closing a group of objects while reporting an
+error if one occurs.
+
+
+```go
+func (c *Closer) Add(closer io.Closer)
+```
+
+```go
+func (c *Closer) Close() error
+```
+
+### Errs
+
+```go
+func (errs *Errs) Add(errors ...error)
+```
+
+```go
+func (errs *Errs) Errored() bool
+```
+
+### Packer
+
+Packer packs and unpacks a byte array from/to standard values
+
+
+```go
+func (p *Packer) PackBool(b bool)
+```
+
+```go
+func (p *Packer) PackByte(val byte)
+```
+
+```go
+func (p *Packer) PackBytes(bytes []byte)
+```
+
+```go
+func (p *Packer) PackFixedBytes(bytes []byte)
+```
+
+```go
+func (p *Packer) PackInt(val uint32)
+```
+
+```go
+func (p *Packer) PackLong(val uint64)
+```
+
+```go
+func (p *Packer) PackShort(val uint16)
+```
+
+```go
+func (p *Packer) PackStr(str string)
+```
+
+```go
+func (p *Packer) UnpackBool() bool
+```
+
+```go
+func (p *Packer) UnpackByte() byte
+```
+
+```go
+func (p *Packer) UnpackBytes() []byte
+```
+
+```go
+func (p *Packer) UnpackFixedBytes(size int) []byte
+```
+
+```go
+func (p *Packer) UnpackInt() uint32
+```
+
+```go
+func (p *Packer) UnpackLimitedBytes(limit uint32) []byte
+```
+
+```go
+func (p *Packer) UnpackLimitedStr(limit uint16) string
+```
+
+```go
+func (p *Packer) UnpackLong() uint64
+```
+
+```go
+func (p *Packer) UnpackShort() uint16
+```
+
+```go
+func (p *Packer) UnpackStr() string
+```
+

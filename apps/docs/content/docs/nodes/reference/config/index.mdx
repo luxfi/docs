@@ -1,0 +1,207 @@
+---
+title: config
+description: Package config
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/config"
+```
+
+## Functions
+
+### ApplyConfigProfile
+
+```go
+func ApplyConfigProfile(v *viper.Viper, profile map[string]interface{})
+```
+
+ApplyConfigProfile applies a configuration profile to viper.
+Profile values are set with lower priority than command-line flags.
+
+
+### ApplyDevLightMode
+
+```go
+func ApplyDevLightMode(v *viper.Viper) error
+```
+
+ApplyDevLightMode applies --dev-light settings to viper.
+This is equivalent to --dev --low-memory.
+
+
+### BuildFlagSet
+
+```go
+func BuildFlagSet() *pflag.FlagSet
+```
+
+BuildFlagSet returns a complete set of flags for node
+
+
+### BuildViper
+
+```go
+func BuildViper(fs *pflag.FlagSet, args []string) (*viper.Viper, error)
+```
+
+BuildViper returns the viper environment from parsing config file from
+default search paths and any parsed command line flags
+
+
+### EnvVarName
+
+```go
+func EnvVarName(prefix string, key string) string
+```
+
+### GPUBackend
+
+```go
+func GPUBackend() string
+```
+
+GPUBackend returns the configured GPU backend.
+
+
+### GetNodeConfig
+
+```go
+func GetNodeConfig(v *viper.Viper) (node.Config, error)
+```
+
+### IsGPUEnabled
+
+```go
+func IsGPUEnabled() bool
+```
+
+IsGPUEnabled returns whether GPU acceleration is enabled globally.
+
+
+### LoadConfigProfile
+
+```go
+func LoadConfigProfile(name string) (map[string]interface{}, error)
+```
+
+LoadConfigProfile loads a predefined configuration profile from embedded files.
+Returns the profile as a map for merging with viper.
+
+
+### SetGlobalGPUConfig
+
+```go
+func SetGlobalGPUConfig(cfg GPUConfig) error
+```
+
+SetGlobalGPUConfig sets the global GPU configuration.
+This should be called once during node initialization before any GPU accelerators are created.
+
+
+## Types
+
+### BenchlistConfig
+
+BenchlistConfig contains configuration for benchlisting
+
+
+### ChainDatabaseConfig
+
+ChainDatabaseConfig holds per-chain database configuration
+
+
+```go
+func (c *ChainDatabaseConfig) GetDatabaseType(chainAlias string) string
+```
+
+```go
+func (c *ChainDatabaseConfig) Validate() error
+```
+
+### GPUConfig
+
+GPUConfig holds GPU acceleration configuration.
+
+
+```go
+func DefaultGPUConfig() GPUConfig
+```
+
+```go
+func GetGlobalGPUConfig() GPUConfig
+```
+
+```go
+func (c GPUConfig) ResolveBackend() string
+```
+
+```go
+func (c GPUConfig) Validate() error
+```
+
+### LowMemoryConfig
+
+LowMemoryConfig holds memory-related configuration for resource-constrained environments.
+Default mode uses standard production settings.
+Low memory mode targets &lt;200MB idle, &lt;500MB under load.
+
+
+```go
+func DefaultLowMemoryConfig() LowMemoryConfig
+```
+
+```go
+func GetLowMemoryConfig(v *viper.Viper) LowMemoryConfig
+```
+
+```go
+func GetMemoryConfigForProfile(profile MemoryProfile) LowMemoryConfig
+```
+
+```go
+func NewLowMemoryConfig() LowMemoryConfig
+```
+
+```go
+func NewMaxMemoryConfig() LowMemoryConfig
+```
+
+```go
+func (c LowMemoryConfig) EstimatedMemoryUsage() (idle, load uint64)
+```
+
+### MemoryProfile
+
+MemoryProfile defines memory usage profiles.
+
+
+### PrismParameters
+
+PrismParameters contains prism protocol parameters
+
+
+### RouterHealthConfig
+
+RouterHealthConfig contains configuration for router health checks
+
+
+### TrackerTargeterConfig
+
+TrackerTargeterConfig contains resource allocation configurations
+
+
+### ZapDBConfig
+
+ZapDB flags for C-Chain
+
+
+```go
+func AddZapDBFlags(fs *flag.FlagSet) *ZapDBConfig
+```
+
+```go
+func (c *ZapDBConfig) Validate(dataDir string) error
+```
+

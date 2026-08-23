@@ -1,0 +1,155 @@
+---
+title: primary
+description: Package primary
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/wallet/network/primary"
+```
+
+## Functions
+
+### AddAllUTXOs
+
+```go
+func AddAllUTXOs(
+	ctx context.Context,
+	utxos walletcommon.UTXOs,
+	client UTXOClient,
+	sourceChainID ids.ID,
+	destinationChainID ids.ID,
+	addrs []ids.ShortID,
+) error
+```
+
+AddAllUTXOs fetches all the UTXOs referenced by [addresses] that were sent
+from [sourceChainID] to [destinationChainID] from the [client] and adds
+them into [utxos]. Each UTXO is decoded by lux.ParseUTXO (ZAP wire). If
+[ctx] expires, the returned error is reported immediately.
+
+
+### NewChainUTXOs
+
+```go
+func NewChainUTXOs(chainID ids.ID, utxos UTXOs) common.ChainUTXOs
+```
+
+## Types
+
+### EVMKeychain
+
+EVMKeychain is the interface for keychains that expose 20-byte
+account addresses used by EVM-runtime chains (Lux C-Chain, Liquid
+EVM, Hanzo EVM, and every EVM-compatible chain).
+
+Naming: the value IS "EVM-runtime account address". The internal
+derivation uses Keccak256 of the secp256k1 pubkey — that's HOW it's
+computed. The data model that consumes it (EVM account) is WHAT it
+is. UTXO vs EVM is the relevant axis in a multi-chain keychain.
+
+
+### EthAccount
+
+EthAccount represents an Ethereum account's state
+
+
+### EthState
+
+```go
+func FetchEthState(
+	ctx context.Context,
+	uri string,
+	addrs set.Set[ethcommon.Address],
+) (*EthState, error)
+```
+
+### KeychainAdapter
+
+KeychainAdapter adapts secp256k1fx.Keychain to BOTH
+wallet/keychain.Keychain (UTXO-side) and EVMKeychain (EVM-side).
+
+
+```go
+func NewKeychainAdapter(kc *secp256k1fx.Keychain) *KeychainAdapter
+```
+
+```go
+func (kc *KeychainAdapter) Addresses() set.Set[ids.ShortID]
+```
+
+```go
+func (kc *KeychainAdapter) EVMAddresses() set.Set[gethcommon.Address]
+```
+
+```go
+func (kc *KeychainAdapter) Get(addr ids.ShortID) (keychain.Signer, bool)
+```
+
+```go
+func (kc *KeychainAdapter) GetByEVM(addr gethcommon.Address) (keychain.Signer, bool)
+```
+
+### LUXState
+
+```go
+func FetchState(
+	ctx context.Context,
+	uri string,
+	addrs set.Set[ids.ShortID],
+) (
+	*LUXState,
+	error,
+)
+```
+
+### UTXOClient
+
+### UTXOs
+
+```go
+func NewUTXOs() UTXOs
+```
+
+### Wallet
+
+Wallet provides chain wallets for the primary network.
+NOTE: C-Chain wallet is disabled - use github.com/luxfi/evm/ethclient directly
+
+
+```go
+func MakeWallet(ctx context.Context, config *WalletConfig) (Wallet, error)
+```
+
+```go
+func NewWallet(pWallet p.Wallet, xWallet x.Wallet) Wallet
+```
+
+```go
+func NewWalletWithOptions(w Wallet, options ...common.Option) Wallet
+```
+
+### WalletConfig
+
+### XClient
+
+XClient is a client for interacting with the X-Chain
+
+
+```go
+func NewXClient(uri, chainAlias string) *XClient
+```
+
+```go
+func (c *XClient) GetAtomicUTXOs(
+	ctx context.Context,
+	addrs []ids.ShortID,
+	sourceChain string,
+	limit uint32,
+	startAddress ids.ShortID,
+	startUTXOID ids.ID,
+	options ...rpc.Option,
+) ([][]byte, ids.ShortID, ids.ID, error)
+```
+

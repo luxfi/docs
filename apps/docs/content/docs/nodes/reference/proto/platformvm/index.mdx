@@ -1,0 +1,40 @@
+---
+title: platformvm
+description: Package platformvm
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/proto/platformvm"
+```
+
+## Functions
+
+### Unmarshal
+
+```go
+func Unmarshal(data []byte, m interface{}) error
+```
+
+Unmarshal decodes a message from bytes. The ZAP codec encodes
+messages via direct field assignment; this entry point is reserved
+for compatibility with callers that thread a generic byte payload
+through the wire types and is a no-op until a concrete consumer
+arrives.
+
+
+## Types
+
+### ChainIDIndex
+
+### L1ValidatorRegistrationJustification
+
+### L1ValidatorRegistrationJustification_ConvertNetworkToL1TxData
+
+### L1ValidatorRegistrationJustification_RegisterL1ValidatorMessage
+
+### L1ValidatorWeightJustification
+
+### L1ValidatorWeightJustification_L1ValidatorWeightMessage
+

@@ -1,0 +1,33 @@
+---
+title: signer
+description: Package signer
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/wallet/chain/x/signer"
+```
+
+## Functions
+
+### SignUnsigned
+
+```go
+func SignUnsigned(
+	ctx context.Context,
+	signer Signer,
+	utx txs.UnsignedTx,
+) (*txs.Tx, error)
+```
+
+## Types
+
+### Backend
+
+### Signer
+
+```go
+func New(kc keychain.Keychain, backend Backend) Signer
+```
+

@@ -1,0 +1,98 @@
+---
+title: info
+description: Package info
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/service/info"
+```
+
+## Functions
+
+### NewService
+
+```go
+func NewService(
+	parameters Parameters,
+	log log.Logger,
+	validators validators.Manager,
+	chainManager chains.Manager,
+	vmManager vms.Manager,
+	myIP *utils.Atomic[netip.AddrPort],
+	network network.Network,
+
+) (http.Handler, error)
+```
+
+## Types
+
+### GetChainsReply
+
+GetChainsReply is the response for info.getChains.
+
+
+### Info
+
+Info is the API service for unprivileged info on a node
+
+
+```go
+func (i *Info) GetBlockchainID(_ *http.Request, args *apiinfo.GetBlockchainIDArgs, reply *apiinfo.GetBlockchainIDReply) error
+```
+
+```go
+func (i *Info) GetChains(_ *http.Request, _ *struct{}, reply *GetChainsReply) error
+```
+
+```go
+func (i *Info) GetNetworkID(_ *http.Request, _ *struct{}, reply *apiinfo.GetNetworkIDReply) error
+```
+
+```go
+func (i *Info) GetNetworkName(_ *http.Request, _ *struct{}, reply *apiinfo.GetNetworkNameReply) error
+```
+
+```go
+func (i *Info) GetNodeID(_ *http.Request, _ *struct{}, reply *apiinfo.GetNodeIDReply) error
+```
+
+```go
+func (i *Info) GetNodeIP(_ *http.Request, _ *struct{}, reply *apiinfo.GetNodeIPReply) error
+```
+
+```go
+func (i *Info) GetNodeVersion(_ *http.Request, _ *struct{}, reply *apiinfo.GetNodeVersionReply) error
+```
+
+```go
+func (i *Info) GetTxFee(_ *http.Request, _ *struct{}, reply *apiinfo.GetTxFeeResponse) error
+```
+
+```go
+func (i *Info) GetVMs(r *http.Request, _ *struct{}, reply *apiinfo.GetVMsReply) error
+```
+
+```go
+func (i *Info) IsBootstrapped(_ *http.Request, args *apiinfo.IsBootstrappedArgs, reply *apiinfo.IsBootstrappedResponse) error
+```
+
+```go
+func (i *Info) Lps(_ *http.Request, _ *struct{}, reply *apiinfo.LPsReply) error
+```
+
+```go
+func (i *Info) Peers(_ *http.Request, args *apiinfo.PeersArgs, reply *apiinfo.PeersReply) error
+```
+
+```go
+func (i *Info) Upgrades(_ *http.Request, _ *struct{}, reply *upgrade.Config) error
+```
+
+```go
+func (i *Info) Uptime(_ *http.Request, _ *struct{}, reply *apiinfo.UptimeResponse) error
+```
+
+### Parameters
+

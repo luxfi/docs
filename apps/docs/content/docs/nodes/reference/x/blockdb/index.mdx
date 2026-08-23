@@ -1,0 +1,93 @@
+---
+title: blockdb
+description: Package blockdb
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/x/blockdb"
+```
+
+## Types
+
+### BlockData
+
+BlockData defines the type for block data.
+
+
+### BlockHeight
+
+BlockHeight defines the type for block heights.
+
+
+### Database
+
+Database stores blockchain blocks on disk and provides methods to read and write blocks.
+
+
+```go
+func New(config DatabaseConfig, log luxlog.Logger) (*Database, error)
+```
+
+```go
+func (s *Database) Close() error
+```
+
+```go
+func (s *Database) HasBlock(height BlockHeight) (bool, error)
+```
+
+```go
+func (s *Database) ReadBlock(height BlockHeight) (BlockData, error)
+```
+
+```go
+func (s *Database) WriteBlock(height BlockHeight, block BlockData) error
+```
+
+### DatabaseConfig
+
+DatabaseConfig contains configuration parameters for BlockDB.
+
+
+```go
+func DefaultConfig() DatabaseConfig
+```
+
+```go
+func (c DatabaseConfig) Validate() error
+```
+
+```go
+func (c DatabaseConfig) WithCheckpointInterval(interval uint64) DatabaseConfig
+```
+
+```go
+func (c DatabaseConfig) WithDataDir(dataDir string) DatabaseConfig
+```
+
+```go
+func (c DatabaseConfig) WithDir(directory string) DatabaseConfig
+```
+
+```go
+func (c DatabaseConfig) WithIndexDir(indexDir string) DatabaseConfig
+```
+
+```go
+func (c DatabaseConfig) WithMaxDataFileSize(maxSize uint64) DatabaseConfig
+```
+
+```go
+func (c DatabaseConfig) WithMaxDataFiles(maxFiles int) DatabaseConfig
+```
+
+```go
+func (c DatabaseConfig) WithMinimumHeight(minHeight uint64) DatabaseConfig
+```
+
+```go
+func (c DatabaseConfig) WithSyncToDisk(syncToDisk bool) DatabaseConfig
+```
+

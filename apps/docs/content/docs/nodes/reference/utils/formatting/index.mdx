@@ -1,0 +1,63 @@
+---
+title: formatting
+description: Package formatting
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/formatting"
+```
+
+## Functions
+
+### Decode
+
+```go
+func Decode(encoding Encoding, str string) ([]byte, error)
+```
+
+Decode [str] to bytes using the given encoding
+If [str] is the empty string, returns a nil byte slice and nil error
+
+
+### Encode
+
+```go
+func Encode(encoding Encoding, bytes []byte) (string, error)
+```
+
+Encode [bytes] to a string using the given encoding format [bytes] may be
+nil, in which case it will be treated the same as an empty slice.
+
+
+### IntFormat
+
+```go
+func IntFormat(maxValue int) string
+```
+
+## Types
+
+### Encoding
+
+Encoding defines how bytes are converted to a string and vice versa
+
+
+```go
+func (enc Encoding) MarshalJSON() ([]byte, error)
+```
+
+```go
+func (enc Encoding) String() string
+```
+
+```go
+func (enc *Encoding) UnmarshalJSON(b []byte) error
+```
+
+### PrefixedStringer
+
+PrefixedStringer extends a stringer that adds a prefix
+
+

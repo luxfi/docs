@@ -1,0 +1,86 @@
+---
+title: genesis
+description: Package genesis builds X-Chain (XVM) genesis bytes from a small, caller-supplied descriptor.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/xvm/genesis"
+```
+
+Package genesis builds X-Chain (XVM) genesis bytes from a small,
+caller-supplied descriptor. It exists so callers (e.g. the node's
+primary-network genesis builder) do not have to import the xvm
+package directly to construct primary-asset genesis blobs — the
+asset shape lives here, in the same module tree as the codec that
+serializes it.
+
+The package is intentionally narrow: it owns the
+AssetDescriptor + Holder + BuildBytes contract, and nothing else.
+Bech32 formatting, allocation sorting, memo composition, and the
+"is X-Chain opt-in for this network?" policy all stay in the
+caller — those are network-level concerns, not XVM concerns.
+
+
+## Functions
+
+### AssetIDFromBytes
+
+```go
+func AssetIDFromBytes(genesisBytes []byte) (ids.ID, error)
+```
+
+AssetIDFromBytes returns the runtime X-Chain native asset ID derived
+from the canonical XVM genesis bytes (the same blob BuildBytes
+produces). This is the value vm.initGenesis assigns to the first
+genesis CreateAssetTx — the ID under which the X-Chain's fee asset is
+indexed in state.
+
+Callers (genesis/builder, config.getGenesisData) use this to derive
+the X-Chain native asset ID from genesis content rather than
+constants.UTXOAssetIDFor(networkID). On sovereign L1s the two values
+differ: the constant is network-id-keyed and identical across every
+L1 sharing a primary-network ID, while the genesis-derived ID
+captures the asset's actual on-chain identity (different per L1).
+
+
+### BuildBytes
+
+```go
+func BuildBytes(
+	networkID uint32,
+	asset AssetDescriptor,
+	holders []Holder,
+	memo []byte,
+) ([]byte, error)
+```
+
+BuildBytes constructs the canonical XVM genesis bytes for a network
+whose primary asset is `asset`, with the supplied initial fixed-cap
+holders and an optional opaque memo. The asset is registered in the
+genesis under `asset.Symbol` (the same key callers use today).
+
+The returned bytes are stable across calls with identical inputs
+because xvm.NewGenesis sorts both the asset set and each asset's
+states deterministically.
+
+
+## Types
+
+### AssetDescriptor
+
+AssetDescriptor is the JSON-shaped primary-asset descriptor that
+callers carry on their network config (e.g. genesiscfg.XChainGenesis).
+The JSON tags mirror the existing on-disk xChainGenesis shard shape:
+
+	&#123;"symbol":"LUX","name":"Lux","denomination":9}
+
+
+### Holder
+
+Holder is one (bech32-address, amount) initial fixed-cap holder.
+Address is the already-formatted bech32 string for the target
+network's HRP — this package does no HRP resolution.
+
+

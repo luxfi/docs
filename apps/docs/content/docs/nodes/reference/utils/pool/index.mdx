@@ -1,0 +1,98 @@
+---
+title: pool
+description: Package pool
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/pool"
+```
+
+## Types
+
+### BufferPool
+
+BufferPool is a pool for bytes.Buffer objects
+
+
+```go
+func NewBufferPool() *BufferPool
+```
+
+```go
+func (p *BufferPool) Get() *bytes.Buffer
+```
+
+```go
+func (p *BufferPool) Put(buf *bytes.Buffer)
+```
+
+### ByteSlicePool
+
+ByteSlicePool is a pool for byte slices of a specific size
+
+
+```go
+func NewByteSlicePool(size int) *ByteSlicePool
+```
+
+```go
+func (p *ByteSlicePool) Get() []byte
+```
+
+```go
+func (p *ByteSlicePool) Put(b []byte)
+```
+
+### MapPool
+
+MapPool provides pooling for maps
+
+
+```go
+func NewMapPool[K comparable, V any]() *MapPool[K, V]
+```
+
+```go
+func (p *MapPool[K, V]) Get() map[K]V
+```
+
+```go
+func (p *MapPool[K, V]) Put(m map[K]V)
+```
+
+### ObjectPool
+
+ObjectPool provides a generic object pool for reducing allocations
+
+
+```go
+func NewObjectPool[T any](new func() T, reset func(T)) *ObjectPool[T]
+```
+
+```go
+func (p *ObjectPool[T]) Get() T
+```
+
+```go
+func (p *ObjectPool[T]) Put(obj T)
+```
+
+### SlicePool
+
+SlicePool provides pooling for slices
+
+
+```go
+func NewSlicePool[T any](initialCap int) *SlicePool[T]
+```
+
+```go
+func (p *SlicePool[T]) Get() []T
+```
+
+```go
+func (p *SlicePool[T]) Put(s []T)
+```
+

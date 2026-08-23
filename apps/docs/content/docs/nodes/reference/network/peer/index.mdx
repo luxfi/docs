@@ -1,0 +1,832 @@
+---
+title: peer
+description: Package peer is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/network/peer"
+```
+
+Package peer is a generated GoMock package.
+
+
+## Functions
+
+### CanonicalHost
+
+```go
+func CanonicalHost(host string) (string, error)
+```
+
+CanonicalHost normalizes and validates a hostname.
+It rejects IP literals, trims whitespace and trailing dots, and lowercases.
+
+
+### GenesisDigest
+
+```go
+func GenesisDigest(record []byte) [32]byte
+```
+
+GenesisDigest is a chain's identity, taken over the creation record exactly as
+delivered.
+
+	keccak256( "lux/chain-genesis/v1" ‖ record )
+
+Opaque end to end: never parsed, normalized, or re-encoded. The live D-Chain
+records prove why — they differ in whether they end with a newline, and they
+spell the em dash as six ASCII characters rather than as UTF-8. Anything that
+decodes and re-encodes the JSON produces different bytes, a different digest,
+and quarantines exactly the fleets this is meant to protect.
+
+The tag names what is hashed, not who hashes it: the same construction covers
+P, C, X, Q and D, and which VM the chain runs is carried by VMID, separately.
+
+
+### IPEndpointFromAddrPort
+
+```go
+func IPEndpointFromAddrPort(addr netip.AddrPort) endpoints.Endpoint
+```
+
+IPEndpointFromAddrPort creates an IP endpoint from netip.AddrPort for convenience.
+
+
+### NoPrecondition
+
+```go
+func NoPrecondition(Peer) bool
+```
+
+### RespondHandshake
+
+```go
+func RespondHandshake(
+	cfg *HandshakeConfig,
+	local *LocalIdentity,
+	init *HandshakeInit,
+) (*HandshakeResp, *HandshakeResult, error)
+```
+
+RespondHandshake is the responder's side. Accepts the parsed INIT,
+validates every cross-axis invariant, encapsulates against the
+initiator's KEM public key, signs the running transcript prefix, and
+returns both the RESP message and the resulting HandshakeResult.
+
+The result's AEADKey is already derived; the caller switches its
+transport to authenticated mode the moment RESP is sent.
+
+
+### RulesDigest
+
+```go
+func RulesDigest(upgrade []byte) [32]byte
+```
+
+RulesDigest is the rule generation a chain is configured with:
+
+	keccak256( "lux/chain-rules/v1" ‖ canonical(upgrade) )
+
+upgrade is the chain's upgrade bytes — which consensus rules it applies and
+when. It is NOT a binary version and NOT a build id: two different binaries can
+implement the same rules and must be able to run together, which is the whole
+reason this is separate from the genesis digest and is never enforced.
+
+Unlike the genesis digest this hashes a canonical form, and the difference is
+the point. A genesis digest answers "are these the same bytes", so the bytes
+are hashed exactly as they arrived. A rules digest answers "do these schedule
+the same thing", so two files that schedule the same activations must agree
+however they were written — key order, indentation and line endings are not
+consensus. Hashing them raw would report a fork every time someone reformatted
+a config.
+
+Canonical form is the JSON re-encoded from parsed values, which sorts object
+keys and drops all whitespace. Numbers keep their exact written form rather
+than passing through float64: an activation height silently rounded is a
+scheduled fork this would then fail to report, and that is a worse failure than
+reporting a cosmetic 1 vs 1.0. Bytes that are not JSON are hashed as they are —
+the value is still stable per node, which is all a reported signal needs.
+
+The chain's config bytes are deliberately excluded. They legitimately differ
+between nodes — listen addresses, log levels, cache sizes — and a signal that
+fires on log level is noise wearing a signal's clothes.
+
+Zero when a chain schedules no rules. That is a real state, not a missing one.
+
+
+### RunPQHandshakeConn
+
+```go
+func RunPQHandshakeConn(conn net.Conn, hs *HandshakeConfig, local *LocalIdentity, isIngress bool, maxClockDifference time.Duration) (ids.NodeID, [32]byte, error)
+```
+
+RunPQHandshakeConn runs the strict-PQ ML-KEM + ML-DSA-65 application
+handshake over conn and returns the handshake-authenticated, key-bound
+peer NodeID and derived AEAD session key. Role is by dial direction — the
+dialer (isIngress=false) initiates, the acceptor (isIngress=true) responds
+— which is well-defined per TCP connection. network.upgrade calls this
+BEFORE connection dedup so both ends of a simultaneous mutual dial
+complete independently (each conn has a distinct dialer/acceptor) and the
+dedup keys on the stable ML-DSA NodeID rather than the ephemeral TLS-cert
+NodeID. Holds no lock; bounded by a MaxClockDifference+30s deadline. Wire
+framing mirrors the peer's 4-byte length-prefix scheme (see pq_frame.go).
+
+The returned NodeID is bound to the peer's ML-DSA-65 key by
+verifyPQIdentityBinding before it is returned — the exact binding the
+in-Start adoptVerifiedPQIdentity path enforces — so a peer cannot present
+one validator's NodeID while signing with a different key.
+
+
+### TLSConfig
+
+```go
+func TLSConfig(cert tls.Certificate, keyLogWriter io.Writer) *tls.Config
+```
+
+TLSConfig returns the TLS config that will allow secure connections to other
+peers.
+
+It is safe, and typically expected, for [keyLogWriter] to be [nil].
+[keyLogWriter] should only be enabled for debugging.
+
+F103 KEM semantics — TLS curve preference:
+
+CurvePreferences pins the IANA-registered hybrid X25519MLKEM768
+(curve ID 0x11ec) as the only acceptable curve. This is STRICTLY
+STRONGER than pure ML-KEM-768: an attacker must break both X25519
+AND ML-KEM-768 to derive the session key. The chain-wide
+ChainSecurityProfile pins KeyExchangeMLKEM768 — the post-quantum
+component required on the wire — and the hybrid satisfies that
+requirement (it CONTAINS ML-KEM-768). ForbidClassicalKEM in the
+profile refuses a pure-classical curve (e.g. X25519 alone) at the
+application layer; it does NOT refuse a hybrid that includes
+ML-KEM-768. See consensus/config.KeyExchangeID for the full
+rationale.
+
+Decision recorded by F103: keep the hybrid as the only TLS-layer
+KEM. Adding a separate "pure vs hybrid" enum byte to the profile
+would multiply downstream verifier obligations without strengthening
+the posture; the audit signed off on the single-byte KeyExchangeID
+surface and the hybrid is mathematically stronger than pure.
+
+
+### ValidateCertificate
+
+```go
+func ValidateCertificate(cs tls.ConnectionState) error
+```
+
+ValidateCertificate validates TLS certificates according their public keys on the leaf certificate in the certification chain.
+
+
+### ValidatePQConnection
+
+```go
+func ValidatePQConnection(cs tls.ConnectionState) error
+```
+
+ValidatePQConnection enforces TLS 1.3 and validates the peer certificate.
+
+
+## Types
+
+### BoundedMessageQueue
+
+BoundedMessageQueue implements a thread-safe bounded message queue with backpressure
+
+
+```go
+func NewBoundedMessageQueue(maxSize int64, maxMessages int, log log.Logger) *BoundedMessageQueue
+```
+
+```go
+func (q *BoundedMessageQueue) ByteSize() int64
+```
+
+```go
+func (q *BoundedMessageQueue) Close()
+```
+
+```go
+func (q *BoundedMessageQueue) Dequeue() (message.OutboundMessage, error)
+```
+
+```go
+func (q *BoundedMessageQueue) DequeueBatch(n int) []message.OutboundMessage
+```
+
+```go
+func (q *BoundedMessageQueue) Enqueue(msg message.OutboundMessage) error
+```
+
+```go
+func (q *BoundedMessageQueue) Metrics() QueueMetrics
+```
+
+```go
+func (q *BoundedMessageQueue) Reset()
+```
+
+```go
+func (q *BoundedMessageQueue) Size() int
+```
+
+```go
+func (q *BoundedMessageQueue) TryDequeue() (message.OutboundMessage, bool)
+```
+
+```go
+func (q *BoundedMessageQueue) TryEnqueue(msg message.OutboundMessage) bool
+```
+
+### ChainIdentity
+
+ChainIdentity is everything two nodes must agree about before they can run a
+blockchain together, plus the one thing they need only compare.
+
+
+```go
+func (c ChainIdentity) Agrees(o ChainIdentity) bool
+```
+
+```go
+func (c ChainIdentity) Disagreement(o ChainIdentity) string
+```
+
+### ChainState
+
+ChainState is what a peer said about ONE chain. It is always read as a pair,
+(peer, chainID) — never as a property of the peer — because the whole value of
+excluding at the chain is that a D-Chain misconfiguration stays a D-Chain
+problem instead of becoming a change in who is connected to whom.
+
+
+```go
+func (s ChainState) String() string
+```
+
+### Chains
+
+Chains is the identity of every blockchain this node runs.
+
+Written by the chain manager as chains start — including long after boot, when
+a CreateChainTx is accepted — and read by every peer goroutine as it builds its
+handshake, so it carries its own lock rather than borrowing the network's.
+
+
+```go
+func (c *Chains) Add(id ChainIdentity)
+```
+
+```go
+func (c *Chains) Get(chainID ids.ID) (ChainIdentity, bool)
+```
+
+```go
+func (c *Chains) List() []ChainIdentity
+```
+
+### Config
+
+### EndpointSigner
+
+EndpointSigner periodically signs the node's endpoint claim.
+Supports both IP and hostname endpoints.
+
+
+```go
+func NewEndpointSigner(
+	endpoint *utils.Atomic[endpoints.Endpoint],
+	tlsSigner crypto.Signer,
+	blsSigner bls.Signer,
+) *EndpointSigner
+```
+
+```go
+func (s *EndpointSigner) GetSignedEndpoint() (*SignedEndpoint, error)
+```
+
+```go
+func (s *EndpointSigner) GetSignedIP() (*SignedIP, error)
+```
+
+```go
+func (s *EndpointSigner) SupportsHostname() bool
+```
+
+### GossipTracker
+
+GossipTracker tracks the validators that we're currently aware of, as well as
+the validators we've told each peers about. This data is stored in a bitset
+to optimize space, where only N (num validators) bits will be used per peer.
+
+This is done by recording some state information of both what validators this
+node is aware of, and what validators  we've told each peer about.
+As an example, say we track three peers and three validators (MSB first):
+
+	trackedPeers:	&#123;
+		p1: [1, 1, 1] // we have already told [p1] about all validators
+		p2: [0, 1, 1] // [p2] doesn't know about [v3]
+		p3: [0, 0, 1] // [p3] knows only about [v3]
+	}
+
+GetUnknown computes the validators we haven't sent to a given peer. Ex:
+
+	GetUnknown(p1) -  [0, 0, 0]
+	GetUnknown(p2) -  [1, 0, 0]
+	GetUnknown(p3) -  [1, 1, 0]
+
+Using the gossipTracker, we can quickly compute the validators each peer
+doesn't know about using GetUnknown so that in subsequent PeerList gossip
+messages we only send information that this peer (most likely) doesn't
+already know about. The only case where we'll send a redundant set of
+bytes is if another remote peer gossips to the same peer we're trying to
+gossip to first.
+
+
+```go
+func NewGossipTracker(
+	registerer metric.Registerer,
+	namespace string,
+) (GossipTracker, error)
+```
+
+### GossipTrackerCallback
+
+GossipTrackerCallback synchronizes GossipTracker's validator state with the
+validator set it's registered to.
+
+
+```go
+func (g *GossipTrackerCallback) OnValidatorAdded(nodeID ids.NodeID, _ uint64)
+```
+
+```go
+func (*GossipTrackerCallback) OnValidatorLightChanged(ids.NodeID, uint64, uint64)
+```
+
+```go
+func (g *GossipTrackerCallback) OnValidatorRemoved(nodeID ids.NodeID, _ uint64)
+```
+
+### HandshakeConfig
+
+HandshakeConfig pins the policy bits the handshake enforces. One value
+per peer connection; the network-level config builds one shared
+HandshakeConfig and hands a pointer to every per-peer goroutine.
+
+
+### HandshakeInit
+
+HandshakeInit is the initiator's first message. Field order is the
+canonical wire order; the running transcript hashes every field in this
+order before the initiator signs the running prefix.
+
+
+```go
+func InitiateHandshake(
+	cfg *HandshakeConfig,
+	local *LocalIdentity,
+) (*HandshakeInit, []byte, error)
+```
+
+### HandshakeResp
+
+HandshakeResp is the responder's reply. Same field shape; KEMCiphertext
+replaces KEMPublicKey.
+
+
+### HandshakeResult
+
+HandshakeResult is what both sides return at the end of a successful
+handshake. KEMSession carries the raw shared secret + bound transcript
+hash; AEADKey is the 256-bit cSHAKE256-derived key for the connection's
+authenticated cipher.
+
+
+```go
+func FinishInitiatorHandshake(
+	cfg *HandshakeConfig,
+	local *LocalIdentity,
+	init *HandshakeInit,
+	resp *HandshakeResp,
+	kemSec []byte,
+) (*HandshakeResult, error)
+```
+
+### HandshakeRole
+
+HandshakeRole is initiator or responder; used only to scope ML-DSA-65
+signature contexts so an initiator's signature cannot be replayed as a
+responder's and vice versa.
+
+
+```go
+func (r HandshakeRole) String() string
+```
+
+### IPSigner
+
+IPSigner will return a signedIP for the current value of our dynamic IP.
+
+Carries up to three signing legs: TLS (classical, staker cert),
+BLS12-381 (classical, proof-of-possession), and ML-DSA-65 (FIPS 204
+post-quantum). The ML-DSA leg is optional at construction time —
+passing mldsaSigner == nil to NewIPSigner produces classical-only
+gossip that strict-PQ verifiers refuse. Strict-PQ chains MUST be wired
+with a real ML-DSA-65 private key.
+
+
+```go
+func NewIPSigner(
+	ip *utils.Atomic[netip.AddrPort],
+	tlsSigner crypto.Signer,
+	blsSigner bls.Signer,
+) *IPSigner
+```
+
+```go
+func NewIPSignerPQ(
+	ip *utils.Atomic[netip.AddrPort],
+	tlsSigner crypto.Signer,
+	blsSigner bls.Signer,
+	mldsaSigner *mldsa.PrivateKey,
+) *IPSigner
+```
+
+```go
+func (s *IPSigner) GetSignedIP() (*SignedIP, error)
+```
+
+```go
+func (s *IPSigner) PublicKey() *bls.PublicKey
+```
+
+### InboundHandler
+
+InboundHandler handles inbound messages
+
+
+### InboundHandlerFunc
+
+InboundHandlerFunc is a function adapter for InboundHandler
+
+
+```go
+func (f InboundHandlerFunc) HandleInbound(ctx context.Context, msg message.InboundMessage)
+```
+
+### Info
+
+### LocalIdentity
+
+LocalIdentity carries this node's ML-DSA-65 keypair and NodeID. The
+keypair is the ONLY long-term secret the PQ handshake holds; the KEM
+keypair is regenerated per-session.
+
+
+```go
+func NewLocalIdentity(nodeID ids.NodeID) (*LocalIdentity, error)
+```
+
+```go
+func NewLocalIdentityFromStakingKey(nodeID ids.NodeID, pubBytes, privBytes []byte) (*LocalIdentity, error)
+```
+
+### MessageQueue
+
+```go
+func NewBlockingMessageQueue(
+	onFailed SendFailedCallback,
+	log log.Logger,
+	bufferSize int,
+) MessageQueue
+```
+
+```go
+func NewThrottledMessageQueue(
+	onFailed SendFailedCallback,
+	id ids.NodeID,
+	log log.Logger,
+	outboundMsgThrottler throttling.OutboundMsgThrottler,
+) MessageQueue
+```
+
+### Metrics
+
+```go
+func NewMetrics(registerer metric.Registerer) (*Metrics, error)
+```
+
+```go
+func (m *Metrics) MultipleSendsFailed(op message.Op, count int)
+```
+
+```go
+func (m *Metrics) Received(msg message.InboundMessage, msgLen uint32)
+```
+
+```go
+func (m *Metrics) SendFailed(msg message.OutboundMessage)
+```
+
+```go
+func (m *Metrics) Sent(msg message.OutboundMessage)
+```
+
+### MockGossipTracker
+
+MockGossipTracker is a mock of GossipTracker interface.
+
+
+```go
+func NewMockGossipTracker(ctrl *gomock.Controller) *MockGossipTracker
+```
+
+```go
+func (m *MockGossipTracker) AddKnown(arg0 ids.NodeID, arg1, arg2 []ids.ID) ([]ids.ID, bool)
+```
+
+```go
+func (m *MockGossipTracker) AddValidator(arg0 ValidatorID) bool
+```
+
+```go
+func (m *MockGossipTracker) EXPECT() *MockGossipTrackerMockRecorder
+```
+
+```go
+func (m *MockGossipTracker) GetNodeID(arg0 ids.ID) (ids.NodeID, bool)
+```
+
+```go
+func (m *MockGossipTracker) GetUnknown(arg0 ids.NodeID) ([]ValidatorID, bool)
+```
+
+```go
+func (m *MockGossipTracker) RemoveValidator(arg0 ids.NodeID) bool
+```
+
+```go
+func (m *MockGossipTracker) ResetValidator(arg0 ids.NodeID) bool
+```
+
+```go
+func (m *MockGossipTracker) StartTrackingPeer(arg0 ids.NodeID) bool
+```
+
+```go
+func (m *MockGossipTracker) StopTrackingPeer(arg0 ids.NodeID) bool
+```
+
+```go
+func (m *MockGossipTracker) Tracked(arg0 ids.NodeID) bool
+```
+
+### MockGossipTrackerMockRecorder
+
+MockGossipTrackerMockRecorder is the mock recorder for MockGossipTracker.
+
+
+```go
+func (mr *MockGossipTrackerMockRecorder) AddKnown(arg0, arg1, arg2 interface{}) *gomock.Call
+```
+
+```go
+func (mr *MockGossipTrackerMockRecorder) AddValidator(arg0 interface{}) *gomock.Call
+```
+
+```go
+func (mr *MockGossipTrackerMockRecorder) GetNodeID(arg0 interface{}) *gomock.Call
+```
+
+```go
+func (mr *MockGossipTrackerMockRecorder) GetUnknown(arg0 interface{}) *gomock.Call
+```
+
+```go
+func (mr *MockGossipTrackerMockRecorder) RemoveValidator(arg0 interface{}) *gomock.Call
+```
+
+```go
+func (mr *MockGossipTrackerMockRecorder) ResetValidator(arg0 interface{}) *gomock.Call
+```
+
+```go
+func (mr *MockGossipTrackerMockRecorder) StartTrackingPeer(arg0 interface{}) *gomock.Call
+```
+
+```go
+func (mr *MockGossipTrackerMockRecorder) StopTrackingPeer(arg0 interface{}) *gomock.Call
+```
+
+```go
+func (mr *MockGossipTrackerMockRecorder) Tracked(arg0 interface{}) *gomock.Call
+```
+
+### Network
+
+Network defines the interface that is used by a peer to help establish a well
+connected p2p network.
+
+
+### PQPreHandshake
+
+PQPreHandshake carries a strict-PQ handshake result computed by the caller
+(network.upgrade) BEFORE connection dedup so Start adopts it instead of
+re-running the handshake. Nil on the legacy bare-TLS path. PeerNodeID is
+the verified, key-bound ML-DSA NodeID; network.upgrade also sets the
+peer's id param to this same value, so Start need only adopt AEADKey.
+
+
+### Peer
+
+Peer encapsulates all of the functionality required to send and receive
+messages with a remote peer.
+
+
+```go
+func Start(
+	config *Config,
+	conn net.Conn,
+	cert *staking.Certificate,
+	id ids.NodeID,
+	messageQueue MessageQueue,
+	isIngress bool,
+	pq *PQPreHandshake,
+) Peer
+```
+
+```go
+func StartTestPeer(
+	ctx context.Context,
+	ip netip.AddrPort,
+	networkID uint32,
+	router InboundHandler,
+) (Peer, error)
+```
+
+### ProfileID
+
+ProfileID is the per-handshake commitment to the chain-wide security
+profile. It mirrors consensus/config.ProfileID, and the byte values below
+ARE the wire commitment: a peer resolves them through that enum, so the two
+must agree byte for byte or the handshake fails on the value alone.
+
+
+```go
+func (p ProfileID) IsStrict() bool
+```
+
+```go
+func (p ProfileID) String() string
+```
+
+### QueueMetrics
+
+QueueMetrics contains queue statistics
+
+
+### SchemeGate
+
+SchemeGate is the chain-scoped policy object that decides whether a
+peer's NodeIDScheme is admissible under the chain's pinned profile.
+One SchemeGate per chain; created at chain-bootstrap from the chain's
+ChainSecurityProfile and pinned for the chain's lifetime (no
+re-derivation in the hot path).
+
+Forward-only PQ: the gate has no transition window and no operator
+classical-compat escape hatch. Every Classify call admits only the
+pinned PQ scheme byte; classical secp256k1 NodeIDs and cross-PQ
+bytes are refused at every height.
+
+
+```go
+func NewSchemeGate(
+	profile *consensusconfig.ChainSecurityProfile,
+	activationHeight uint64,
+) (*SchemeGate, error)
+```
+
+```go
+func (g *SchemeGate) Classify(
+	nodeID ids.NodeID,
+	derivedScheme ids.NodeIDScheme,
+	height uint64,
+	site string,
+) (ids.TypedNodeID, error)
+```
+
+### SendFailedCallback
+
+### SendFailedFunc
+
+```go
+func (f SendFailedFunc) SendFailed(msg message.OutboundMessage)
+```
+
+### Set
+
+Set contains a group of peers.
+
+
+```go
+func NewSet() Set
+```
+
+### SignedEndpoint
+
+SignedEndpoint is a wrapper of UnsignedEndpoint with signatures.
+
+
+```go
+func (e *SignedEndpoint) ToSignedIP() *SignedIP
+```
+
+```go
+func (e *SignedEndpoint) Verify(
+	cert *staking.Certificate,
+	maxTimestamp time.Time,
+) error
+```
+
+### SignedIP
+
+SignedIP is a wrapper of an UnsignedIP with the signature from a signer.
+
+Wire-format note: the ML-DSA leg is append-only on the gossip wire.
+Legacy peers that never set MLDSASignature send an empty bytes field;
+the receiver-side Verify treats absence as "classical-only" and refuses
+it only when a strict-PQ profile is in force (see VerifyUnderProfile).
+This preserves backwards compatibility with non-strict-PQ chains
+(testnet, devnet) while enabling strict-PQ chains to refuse the
+quantum-broken-only path.
+
+
+```go
+func (ip *SignedIP) Verify(
+	cert *staking.Certificate,
+	maxTimestamp time.Time,
+) error
+```
+
+```go
+func (ip *SignedIP) VerifyUnderProfile(
+	cert *staking.Certificate,
+	mldsaPubKey *mldsa.PublicKey,
+	maxTimestamp time.Time,
+	strictPQ bool,
+) error
+```
+
+### UnsignedEndpoint
+
+UnsignedEndpoint is used for a validator to claim an endpoint (IP or hostname).
+The [Timestamp] ensures peers track the most updated endpoint claim.
+
+
+```go
+func (e *UnsignedEndpoint) Sign(tlsSigner crypto.Signer, blsSigner bls.Signer) (*SignedEndpoint, error)
+```
+
+### UnsignedHost
+
+UnsignedHost represents a hostname-based endpoint claim.
+
+
+### UnsignedIP
+
+UnsignedIP is used for a validator to claim an IP. The [Timestamp] is used to
+ensure that the most updated IP claim is tracked by peers for a given
+validator.
+
+
+```go
+func (ip *UnsignedIP) Sign(tlsSigner crypto.Signer, blsSigner bls.Signer) (*SignedIP, error)
+```
+
+```go
+func (ip *UnsignedIP) SignPQ(
+	tlsSigner crypto.Signer,
+	blsSigner bls.Signer,
+	mldsaSigner *mldsa.PrivateKey,
+) (*SignedIP, error)
+```
+
+### Upgrader
+
+```go
+func NewTLSClientUpgrader(config *tls.Config, invalidCerts metric.Counter, gate *SchemeGate) Upgrader
+```
+
+```go
+func NewTLSServerUpgrader(config *tls.Config, invalidCerts metric.Counter, gate *SchemeGate) Upgrader
+```
+
+### ValidatorID
+
+ValidatorID represents a validator that we gossip to other peers
+
+

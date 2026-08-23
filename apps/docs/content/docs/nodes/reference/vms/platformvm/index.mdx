@@ -1,0 +1,750 @@
+---
+title: platformvm
+description: Package platformvm
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm"
+```
+
+## Functions
+
+### AwaitTxAccepted
+
+```go
+func AwaitTxAccepted(
+	c *Client,
+	ctx context.Context,
+	txID ids.ID,
+	freq time.Duration,
+	options ...rpc.Option,
+) error
+```
+
+### GetDeactivationOwners
+
+```go
+func GetDeactivationOwners(
+	c *Client,
+	ctx context.Context,
+	validationIDs ...ids.ID,
+) (map[ids.ID]fx.Owner, error)
+```
+
+GetDeactivationOwners returns a map of validation ID to deactivation owners
+
+
+### GetNetOwners
+
+```go
+func GetNetOwners(
+	c *Client,
+	ctx context.Context,
+	chainIDs ...ids.ID,
+) (map[ids.ID]fx.Owner, error)
+```
+
+GetNetOwners returns a map of chain ID to current chain's owner
+
+
+### GetOwners
+
+```go
+func GetOwners(
+	c *Client,
+	ctx context.Context,
+	chainIDs []ids.ID,
+	validationIDs []ids.ID,
+) (map[ids.ID]fx.Owner, error)
+```
+
+GetOwners returns the union of GetNetOwners and GetDeactivationOwners.
+
+
+## Types
+
+### APIBlockchain
+
+APIBlockchain is the representation of a blockchain used in API calls
+
+
+### APIChain
+
+APIChain is the canonical wire-shape for a chain registered on the
+platform via CreateNetworkTx. Replaces APINet — same fields, named
+after the user-facing concept ("chain") rather than the internal
+canonical naming. The wire encoding is byte-identical so a
+deserializer that targets APIChain reads APINet responses and vice
+versa; no proxies need to translate.
+
+
+### APINet
+
+APINet is a representation of a net used in API calls
+
+
+### Client
+
+```go
+func NewClient(uri string) *Client
+```
+
+```go
+func NewClientWithNetworkID(uri string, networkID uint32) *Client
+```
+
+```go
+func (c *Client) GetAtomicUTXOs(
+	ctx context.Context,
+	addrs []ids.ShortID,
+	sourceChain string,
+	limit uint32,
+	startAddress ids.ShortID,
+	startUTXOID ids.ID,
+	options ...rpc.Option,
+) ([][]byte, ids.ShortID, ids.ID, error)
+```
+
+```go
+func (c *Client) GetBalance(ctx context.Context, addrs []ids.ShortID, options ...rpc.Option) (*GetBalanceResponse, error)
+```
+
+```go
+func (c *Client) GetBlock(ctx context.Context, blockID ids.ID, options ...rpc.Option) ([]byte, error)
+```
+
+```go
+func (c *Client) GetBlockByHeight(ctx context.Context, height uint64, options ...rpc.Option) ([]byte, error)
+```
+
+```go
+func (c *Client) GetBlockchainStatus(ctx context.Context, blockchainID string, options ...rpc.Option) (status.BlockchainStatus, error)
+```
+
+```go
+func (c *Client) GetBlockchains(ctx context.Context, options ...rpc.Option) ([]APIBlockchain, error)
+```
+
+```go
+func (c *Client) GetChains(ctx context.Context, ids []ids.ID, options ...rpc.Option) ([]ClientChain, error)
+```
+
+```go
+func (c *Client) GetCurrentSupply(ctx context.Context, chainID ids.ID, options ...rpc.Option) (uint64, uint64, error)
+```
+
+```go
+func (c *Client) GetCurrentValidators(
+	ctx context.Context,
+	netID ids.ID,
+	nodeIDs []ids.NodeID,
+	options ...rpc.Option,
+) ([]ClientPermissionlessValidator, error)
+```
+
+```go
+func (c *Client) GetFeeConfig(ctx context.Context, options ...rpc.Option) (*gas.Config, error)
+```
+
+```go
+func (c *Client) GetFeeState(ctx context.Context, options ...rpc.Option) (
+	gas.State,
+	gas.Price,
+	time.Time,
+	error,
+)
+```
+
+```go
+func (c *Client) GetHeight(ctx context.Context, options ...rpc.Option) (uint64, error)
+```
+
+```go
+func (c *Client) GetL1Validator(
+	ctx context.Context,
+	validationID ids.ID,
+	options ...rpc.Option,
+) (L1Validator, uint64, error)
+```
+
+```go
+func (c *Client) GetMinStake(ctx context.Context, chainID ids.ID, options ...rpc.Option) (uint64, uint64, error)
+```
+
+```go
+func (c *Client) GetNet(ctx context.Context, chainID ids.ID, options ...rpc.Option) (GetNetClientResponse, error)
+```
+
+```go
+func (c *Client) GetNets(ctx context.Context, ids []ids.ID, options ...rpc.Option) ([]ClientNet, error)
+```
+
+```go
+func (c *Client) GetProposedHeight(ctx context.Context, options ...rpc.Option) (uint64, error)
+```
+
+```go
+func (c *Client) GetRewardUTXOs(ctx context.Context, args *apitypes.GetTxArgs, options ...rpc.Option) ([][]byte, error)
+```
+
+```go
+func (c *Client) GetStake(
+	ctx context.Context,
+	addrs []ids.ShortID,
+	validatorsOnly bool,
+	options ...rpc.Option,
+) (map[ids.ID]uint64, [][]byte, error)
+```
+
+```go
+func (c *Client) GetStakingAssetID(ctx context.Context, chainID ids.ID, options ...rpc.Option) (ids.ID, error)
+```
+
+```go
+func (c *Client) GetTimestamp(ctx context.Context, options ...rpc.Option) (time.Time, error)
+```
+
+```go
+func (c *Client) GetTotalStake(ctx context.Context, netID ids.ID, options ...rpc.Option) (uint64, error)
+```
+
+```go
+func (c *Client) GetTx(ctx context.Context, txID ids.ID, options ...rpc.Option) ([]byte, error)
+```
+
+```go
+func (c *Client) GetTxStatus(ctx context.Context, txID ids.ID, options ...rpc.Option) (*GetTxStatusResponse, error)
+```
+
+```go
+func (c *Client) GetUTXOs(
+	ctx context.Context,
+	addrs []ids.ShortID,
+	limit uint32,
+	startAddress ids.ShortID,
+	startUTXOID ids.ID,
+	options ...rpc.Option,
+) ([][]byte, ids.ShortID, ids.ID, error)
+```
+
+```go
+func (c *Client) GetValidatorFeeConfig(ctx context.Context, options ...rpc.Option) (*fee.Config, error)
+```
+
+```go
+func (c *Client) GetValidatorFeeState(ctx context.Context, options ...rpc.Option) (
+	gas.Gas,
+	gas.Price,
+	time.Time,
+	error,
+)
+```
+
+```go
+func (c *Client) GetValidatorsAt(
+	ctx context.Context,
+	chainID ids.ID,
+	height platformapi.Height,
+	options ...rpc.Option,
+) (map[ids.NodeID]*validators.GetValidatorOutput, error)
+```
+
+```go
+func (c *Client) IssueTx(ctx context.Context, txBytes []byte, options ...rpc.Option) (ids.ID, error)
+```
+
+```go
+func (c *Client) SampleValidators(ctx context.Context, chainID ids.ID, sampleSize uint16, options ...rpc.Option) ([]ids.NodeID, error)
+```
+
+```go
+func (c *Client) SetNetworkID(networkID uint32)
+```
+
+```go
+func (c *Client) ValidatedBy(ctx context.Context, blockchainID ids.ID, options ...rpc.Option) (ids.ID, error)
+```
+
+```go
+func (c *Client) Validates(ctx context.Context, chainID ids.ID, options ...rpc.Option) ([]ids.ID, error)
+```
+
+### ClientChain
+
+ClientChain is the canonical client-side view of a chain registered
+on the platform. Replaces ClientNet with field naming that matches
+the user-facing concept ("chain") rather than the internal "net" /
+canonical naming.
+
+
+### ClientDelegator
+
+ClientDelegator is the repr. of a delegator sent over client
+
+
+### ClientL1Validator
+
+### ClientNet
+
+ClientNet is a representation of a net used in client methods
+
+
+### ClientOwner
+
+ClientOwner is the repr. of a reward owner sent over client
+
+
+### ClientPermissionlessValidator
+
+ClientPermissionlessValidator is the repr. of a permissionless validator sent
+over client
+
+
+### ClientStaker
+
+ClientStaker is the representation of a staker sent via client.
+
+
+### Factory
+
+Factory can create new instances of the Platform Chain
+
+
+```go
+func (f *Factory) New(log.Logger) (interface{}, error)
+```
+
+### GetAllValidatorsAtArgs
+
+GetAllValidatorsAtArgs are the arguments to GetAllValidatorsAt
+
+
+### GetAllValidatorsAtReply
+
+GetAllValidatorsAtReply is the response from GetAllValidatorsAt
+
+
+### GetBalanceRequest
+
+### GetBalanceResponse
+
+Note: We explicitly duplicate LUX out of the maps to ensure backwards
+compatibility.
+
+
+### GetBlockchainStatusArgs
+
+GetBlockchainStatusArgs is the arguments for calling GetBlockchainStatus
+[BlockchainID] is the ID of or an alias of the blockchain to get the status of.
+
+
+### GetBlockchainStatusReply
+
+GetBlockchainStatusReply is the reply from calling GetBlockchainStatus
+[Status] is the blockchain's status.
+
+
+### GetBlockchainsResponse
+
+GetBlockchainsResponse is the response from a call to GetBlockchains
+
+
+### GetChainsArgs
+
+GetChainsArgs are the arguments to GetChains. IDs is the optional
+allowlist filter — empty list returns every chain (including the
+primary network). Same shape as GetNetsArgs.
+
+
+### GetChainsResponse
+
+GetChainsResponse is the response from GetChains. Same shape as
+GetNetsResponse — `Chains` instead of `Nets`. Field names are
+canonical going forward; downstream parsers should target this
+struct.
+
+
+### GetCurrentSupplyArgs
+
+GetCurrentSupplyArgs are the arguments for calling GetCurrentSupply
+
+
+### GetCurrentSupplyReply
+
+GetCurrentSupplyReply are the results from calling GetCurrentSupply
+
+
+### GetCurrentValidatorsArgs
+
+GetCurrentValidatorsArgs are the arguments for calling GetCurrentValidators
+
+
+### GetCurrentValidatorsReply
+
+GetCurrentValidatorsReply are the results from calling GetCurrentValidators.
+Each validator contains a list of delegators to itself.
+
+
+### GetFeeStateReply
+
+### GetL1ValidatorArgs
+
+### GetL1ValidatorReply
+
+### GetMinStakeArgs
+
+GetMinStakeArgs are the arguments for calling GetMinStake.
+
+
+### GetMinStakeReply
+
+GetMinStakeReply is the response from calling GetMinStake.
+
+
+### GetNetArgs
+
+GetNetArgs are the arguments to GetNet
+
+
+### GetNetClientResponse
+
+GetNetClientResponse is the response from calling GetNet on the client
+
+
+### GetNetResponse
+
+GetNetResponse is the response from calling GetNet
+
+
+### GetNetsArgs
+
+GetNetsArgs are the arguments to GetNets
+
+
+### GetNetsResponse
+
+GetNetsResponse is the response from calling GetNets
+
+
+### GetRewardUTXOsReply
+
+GetRewardUTXOsReply defines the GetRewardUTXOs replies returned from the API
+
+
+### GetStakeArgs
+
+### GetStakeReply
+
+GetStakeReply is the response from calling GetStake.
+
+
+### GetStakingAssetIDArgs
+
+GetStakingAssetIDArgs are the arguments to GetStakingAssetID
+
+
+### GetStakingAssetIDResponse
+
+GetStakingAssetIDResponse is the response from calling GetStakingAssetID
+
+
+### GetTimestampReply
+
+GetTimestampReply is the response from GetTimestamp
+
+
+### GetTotalStakeArgs
+
+GetTotalStakeArgs are the arguments for calling GetTotalStake
+
+
+### GetTotalStakeReply
+
+GetTotalStakeReply is the response from calling GetTotalStake.
+
+
+### GetTxStatusArgs
+
+### GetTxStatusResponse
+
+### GetValidatorFeeStateReply
+
+### GetValidatorsAtArgs
+
+GetValidatorsAtArgs is the response from GetValidatorsAt
+
+
+### GetValidatorsAtReply
+
+GetValidatorsAtReply is the response from GetValidatorsAt
+
+
+```go
+func (v *GetValidatorsAtReply) MarshalJSON() ([]byte, error)
+```
+
+```go
+func (v *GetValidatorsAtReply) UnmarshalJSON(b []byte) error
+```
+
+### Index
+
+Index is an address and an associated UTXO.
+Marks a starting or stopping point when fetching UTXOs. Used for pagination.
+
+
+### L1Validator
+
+L1Validator is the response from calling GetL1Validator on the API client.
+
+
+### SampleValidatorsArgs
+
+SampleValidatorsArgs are the arguments for calling SampleValidators
+
+
+### SampleValidatorsReply
+
+SampleValidatorsReply are the results from calling Sample
+
+
+### Service
+
+Service defines the API calls that can be made to the platform chain
+
+
+```go
+func (s *Service) GetAllValidatorsAt(r *http.Request, args *GetAllValidatorsAtArgs, reply *GetAllValidatorsAtReply) error
+```
+
+```go
+func (s *Service) GetBalance(_ *http.Request, args *GetBalanceRequest, response *GetBalanceResponse) error
+```
+
+```go
+func (s *Service) GetBlock(_ *http.Request, args *apitypes.GetBlockArgs, response *apitypes.GetBlockResponse) error
+```
+
+```go
+func (s *Service) GetBlockByHeight(_ *http.Request, args *apitypes.GetBlockByHeightArgs, response *apitypes.GetBlockResponse) error
+```
+
+```go
+func (s *Service) GetBlockchainStatus(r *http.Request, args *GetBlockchainStatusArgs, reply *GetBlockchainStatusReply) error
+```
+
+```go
+func (s *Service) GetBlockchains(_ *http.Request, _ *struct{}, response *GetBlockchainsResponse) error
+```
+
+```go
+func (s *Service) GetChains(r *http.Request, args *GetChainsArgs, response *GetChainsResponse) error
+```
+
+```go
+func (s *Service) GetCurrentSupply(r *http.Request, args *GetCurrentSupplyArgs, reply *GetCurrentSupplyReply) error
+```
+
+```go
+func (s *Service) GetCurrentValidators(request *http.Request, args *GetCurrentValidatorsArgs, reply *GetCurrentValidatorsReply) error
+```
+
+```go
+func (s *Service) GetFeeConfig(_ *http.Request, _ *struct{}, reply *gas.Config) error
+```
+
+```go
+func (s *Service) GetFeeState(_ *http.Request, _ *struct{}, reply *GetFeeStateReply) error
+```
+
+```go
+func (s *Service) GetHeight(r *http.Request, _ *struct{}, response *apitypes.GetHeightResponse) error
+```
+
+```go
+func (s *Service) GetL1Validator(r *http.Request, args *GetL1ValidatorArgs, reply *GetL1ValidatorReply) error
+```
+
+```go
+func (s *Service) GetMinStake(_ *http.Request, args *GetMinStakeArgs, reply *GetMinStakeReply) error
+```
+
+```go
+func (s *Service) GetNet(_ *http.Request, args *GetNetArgs, response *GetNetResponse) error
+```
+
+```go
+func (s *Service) GetNets(_ *http.Request, args *GetNetsArgs, response *GetNetsResponse) error
+```
+
+```go
+func (s *Service) GetProposedHeight(r *http.Request, _ *struct{}, reply *apitypes.GetHeightResponse) error
+```
+
+```go
+func (s *Service) GetRewardUTXOs(_ *http.Request, args *apitypes.GetTxArgs, reply *GetRewardUTXOsReply) error
+```
+
+```go
+func (s *Service) GetStake(_ *http.Request, args *GetStakeArgs, response *GetStakeReply) error
+```
+
+```go
+func (s *Service) GetStakingAssetID(_ *http.Request, args *GetStakingAssetIDArgs, response *GetStakingAssetIDResponse) error
+```
+
+```go
+func (s *Service) GetTimestamp(_ *http.Request, _ *struct{}, reply *GetTimestampReply) error
+```
+
+```go
+func (s *Service) GetTotalStake(_ *http.Request, args *GetTotalStakeArgs, reply *GetTotalStakeReply) error
+```
+
+```go
+func (s *Service) GetTx(_ *http.Request, args *apitypes.GetTxArgs, response *apitypes.GetTxReply) error
+```
+
+```go
+func (s *Service) GetTxStatus(_ *http.Request, args *GetTxStatusArgs, response *GetTxStatusResponse) error
+```
+
+```go
+func (s *Service) GetUTXOs(_ *http.Request, args *apitypes.GetUTXOsArgs, response *apitypes.GetUTXOsReply) error
+```
+
+```go
+func (s *Service) GetValidatorFeeConfig(_ *http.Request, _ *struct{}, reply *fee.Config) error
+```
+
+```go
+func (s *Service) GetValidatorFeeState(_ *http.Request, _ *struct{}, reply *GetValidatorFeeStateReply) error
+```
+
+```go
+func (s *Service) GetValidatorsAt(r *http.Request, args *GetValidatorsAtArgs, reply *GetValidatorsAtReply) error
+```
+
+```go
+func (s *Service) IssueTx(_ *http.Request, args *apitypes.FormattedTx, response *apitypes.JSONTxID) error
+```
+
+```go
+func (s *Service) SampleValidators(_ *http.Request, args *SampleValidatorsArgs, reply *SampleValidatorsReply) error
+```
+
+```go
+func (s *Service) ValidatedBy(r *http.Request, args *ValidatedByArgs, response *ValidatedByResponse) error
+```
+
+```go
+func (s *Service) Validates(_ *http.Request, args *ValidatesArgs, response *ValidatesResponse) error
+```
+
+### VM
+
+```go
+func (vm *VM) BuildBlock(ctx context.Context) (chain.Block, error)
+```
+
+```go
+func (vm *VM) Clock() *mockable.Clock
+```
+
+```go
+func (vm *VM) Connected(ctx context.Context, nodeID ids.NodeID, nodeVersion *chain.VersionInfo) error
+```
+
+```go
+func (vm *VM) CreateHandlers(context.Context) (map[string]http.Handler, error)
+```
+
+```go
+func (vm *VM) Disconnected(ctx context.Context, nodeID ids.NodeID) error
+```
+
+```go
+func (vm *VM) GetBlock(_ context.Context, blkID ids.ID) (chain.Block, error)
+```
+
+```go
+func (vm *VM) GetBlockIDAtHeight(_ context.Context, height uint64) (ids.ID, error)
+```
+
+```go
+func (vm *VM) GetChainID(netID ids.ID) (ids.ID, error)
+```
+
+```go
+func (vm *VM) GetNetworkID(chainID ids.ID) (ids.ID, error)
+```
+
+```go
+func (vm *VM) HealthCheck(context.Context) (chain.HealthResult, error)
+```
+
+```go
+func (vm *VM) Initialize(
+	ctx context.Context,
+	init vmcore.Init,
+) error
+```
+
+```go
+func (vm *VM) LastAccepted(context.Context) (ids.ID, error)
+```
+
+```go
+func (vm *VM) Logger() log.Logger
+```
+
+```go
+func (vm *VM) NewHTTPHandler(ctx context.Context) (http.Handler, error)
+```
+
+```go
+func (vm *VM) ParseBlock(_ context.Context, b []byte) (chain.Block, error)
+```
+
+```go
+func (vm *VM) SetPreference(_ context.Context, blkID ids.ID) error
+```
+
+```go
+func (vm *VM) SetState(_ context.Context, stateNum uint32) error
+```
+
+```go
+func (vm *VM) Shutdown(context.Context) error
+```
+
+```go
+func (*VM) Version(context.Context) (string, error)
+```
+
+```go
+func (vm *VM) WaitForEvent(ctx context.Context) (vmcore.Message, error)
+```
+
+### ValidatedByArgs
+
+ValidatedByArgs is the arguments for calling ValidatedBy
+
+
+### ValidatedByResponse
+
+ValidatedByResponse is the reply from calling ValidatedBy
+
+
+### ValidatesArgs
+
+ValidatesArgs are the arguments to Validates
+
+
+### ValidatesResponse
+
+ValidatesResponse is the response from calling Validates
+
+

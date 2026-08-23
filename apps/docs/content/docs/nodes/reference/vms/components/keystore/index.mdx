@@ -1,0 +1,56 @@
+---
+title: keystore
+description: Package keystore
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/components/keystore"
+```
+
+## Functions
+
+### GetKeychain
+
+```go
+func GetKeychain(u User, addresses set.Set[ids.ShortID]) (*secp256k1fx.Keychain, error)
+```
+
+Keychain returns a new keychain from the [user].
+If [addresses] is non-empty it fetches only the keys in addresses. If a key
+is missing, it will be ignored.
+If [addresses] is empty, then it will create a keychain using every address
+in the provided [user].
+
+
+### NewKey
+
+```go
+func NewKey(u User) (*secp256k1.PrivateKey, error)
+```
+
+Create and store a new key that will be controlled by this user.
+
+
+### NewKeys
+
+```go
+func NewKeys(u User, numKeys int) ([]*secp256k1.PrivateKey, error)
+```
+
+Create and store [numKeys] new keys that will be controlled by this user.
+
+
+## Types
+
+### User
+
+```go
+func NewUserFromDB(db *encdb.Database) User
+```
+
+```go
+func NewUserFromKeystore(ks keystore.BlockchainKeystore, username, password string) (User, error)
+```
+

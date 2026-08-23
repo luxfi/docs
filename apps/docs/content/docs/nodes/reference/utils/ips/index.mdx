@@ -1,0 +1,143 @@
+---
+title: ips
+description: Package ips
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/ips"
+```
+
+## Functions
+
+### AddrFromSlice
+
+```go
+func AddrFromSlice(b []byte) (netip.Addr, bool)
+```
+
+AddrFromSlice returns the IP address from the provided byte slice. If the
+byte slice represents an IPv4 address in an IPv6 address, the IPv4 address is
+returned.
+
+
+### IsPublic
+
+```go
+func IsPublic(addr netip.Addr) bool
+```
+
+IsPublic returns true if the provided address is considered to be a public
+IP.
+
+
+### Lookup
+
+```go
+func Lookup(hostname string) (netip.Addr, error)
+```
+
+Lookup attempts to resolve a hostname to a single IP. If multiple IPs are
+found, then lookup will attempt to return an IPv4 address, otherwise it will
+pick any of the IPs.
+
+Note: IPv4 is preferred because `net.Listen` prefers IPv4.
+
+
+### PackIP
+
+```go
+func PackIP(p *wrappers.Packer, ip IPPort)
+```
+
+PackIP packs an ip port pair to the byte array
+
+
+### ParseAddr
+
+```go
+func ParseAddr(s string) (netip.Addr, error)
+```
+
+ParseAddr returns the IP address from the provided string. If the string
+represents an IPv4 address in an IPv6 address, the IPv4 address is returned.
+
+
+### ParseAddrPort
+
+```go
+func ParseAddrPort(s string) (netip.AddrPort, error)
+```
+
+ParseAddrPort returns the IP:port address from the provided string. If the
+string represents an IPv4 address in an IPv6 address, the IPv4 address is
+returned.
+
+
+## Types
+
+### ClaimedIPPort
+
+A self contained proof that a peer is claiming ownership of an IPPort at a
+given time.
+
+
+```go
+func NewClaimedIPPort(
+	cert *staking.Certificate,
+	ipPort netip.AddrPort,
+	timestamp uint64,
+	signature []byte,
+) *ClaimedIPPort
+```
+
+```go
+func (i *ClaimedIPPort) Size() int
+```
+
+### DynamicIPPort
+
+An IPPort that can change.
+Safe for use by multiple goroutines.
+
+
+```go
+func NewDynamicIPPort(ip net.IP, port uint16) DynamicIPPort
+```
+
+### IPDesc
+
+```go
+func (ipDesc IPDesc) MarshalJSON() ([]byte, error)
+```
+
+```go
+func (ipDesc IPDesc) String() string
+```
+
+```go
+func (ipDesc *IPDesc) UnmarshalJSON(b []byte) error
+```
+
+### IPPort
+
+An IP and a port.
+
+
+```go
+func ToIPPort(str string) (IPPort, error)
+```
+
+```go
+func (ipPort IPPort) Equal(other IPPort) bool
+```
+
+```go
+func (ipPort IPPort) IsZero() bool
+```
+
+```go
+func (ipPort IPPort) String() string
+```
+

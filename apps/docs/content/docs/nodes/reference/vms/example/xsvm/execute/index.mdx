@@ -1,0 +1,68 @@
+---
+title: execute
+description: Package execute
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/example/xsvm/execute"
+```
+
+## Functions
+
+### Block
+
+```go
+func Block(
+	ctx context.Context,
+	chainRuntime *runtime.Runtime,
+	db database.KeyValueReaderWriterDeleter,
+	skipVerify bool,
+	blockContext *runtime.Runtime,
+	blk *xsblock.Stateless,
+) error
+```
+
+### ExpectsContext
+
+```go
+func ExpectsContext(blk *block.Stateless) (bool, error)
+```
+
+### Genesis
+
+```go
+func Genesis(db database.KeyValueReaderWriterDeleter, chainID ids.ID, g *genesis.Genesis) error
+```
+
+## Types
+
+### Tx
+
+```go
+func (t *Tx) Export(e *tx.Export) error
+```
+
+```go
+func (t *Tx) Import(i *tx.Import) error
+```
+
+```go
+func (t *Tx) Transfer(tf *tx.Transfer) error
+```
+
+### TxExpectsContext
+
+```go
+func (*TxExpectsContext) Export(*tx.Export) error
+```
+
+```go
+func (t *TxExpectsContext) Import(*tx.Import) error
+```
+
+```go
+func (*TxExpectsContext) Transfer(*tx.Transfer) error
+```
+

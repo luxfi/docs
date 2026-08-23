@@ -1,0 +1,59 @@
+---
+title: payload
+description: Package payload
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/warp/payload"
+```
+
+## Types
+
+### AddressedCall
+
+AddressedCall defines the format for delivering a call across VMs including a
+source address and a payload.
+
+Note: If a destination address is expected, it should be encoded in the
+payload.
+
+
+```go
+func NewAddressedCall(sourceAddress []byte, payload []byte) (*AddressedCall, error)
+```
+
+```go
+func ParseAddressedCall(b []byte) (*AddressedCall, error)
+```
+
+```go
+func (a *AddressedCall) Bytes() []byte
+```
+
+### Hash
+
+```go
+func NewHash(hash ids.ID) (*Hash, error)
+```
+
+```go
+func ParseHash(b []byte) (*Hash, error)
+```
+
+```go
+func (b *Hash) Bytes() []byte
+```
+
+### Payload
+
+Payload provides a common interface for all payloads implemented by this
+package. Each payload is a native-ZAP struct-is-wire object whose first byte
+is a pkind discriminator (the struct IS the buffer; no codec).
+
+
+```go
+func Parse(bytes []byte) (Payload, error)
+```
+

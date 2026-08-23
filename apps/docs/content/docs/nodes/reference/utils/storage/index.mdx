@@ -1,0 +1,55 @@
+---
+title: storage
+description: Package storage
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/storage"
+```
+
+## Functions
+
+### AvailableBytes
+
+```go
+func AvailableBytes(path string) (uint64, error)
+```
+
+### DirSize
+
+```go
+func DirSize(path string) (uint64, error)
+```
+
+### FileExists
+
+```go
+func FileExists(filePath string) (bool, error)
+```
+
+FileExists checks if a file exists before we
+try using it to prevent further errors.
+
+
+### FolderExists
+
+```go
+func FolderExists(filePath string) (bool, error)
+```
+
+FolderExists checks if a folder exists before we
+try using it to prevent further errors.
+
+
+### ReadFileWithName
+
+```go
+func ReadFileWithName(parentDir string, fileNameNoExt string) ([]byte, error)
+```
+
+ReadFileWithName reads a single file with name fileNameWithoutExt without specifying any extension.
+it errors when there are more than 1 file with the given fileName
+
+

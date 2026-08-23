@@ -1,0 +1,466 @@
+---
+title: wire
+description: Package wire defines P2P message types for network communication.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/message/wire"
+```
+
+Package wire defines P2P message types for network communication.
+This package is wire-format agnostic - encoding is handled by the parent message package.
+
+
+## Functions
+
+### Marshal
+
+```go
+func Marshal(m *Message) ([]byte, error)
+```
+
+Marshal encodes a Message to ZAP wire format
+
+
+## Types
+
+### Accepted
+
+Accepted message
+
+
+```go
+func (m *Accepted) GetChainId() []byte
+```
+
+```go
+func (m *Accepted) GetRequestId() uint32
+```
+
+### AcceptedFrontier
+
+AcceptedFrontier message
+
+
+```go
+func (m *AcceptedFrontier) GetChainId() []byte
+```
+
+```go
+func (m *AcceptedFrontier) GetRequestId() uint32
+```
+
+### AcceptedStateSummary
+
+AcceptedStateSummary message
+
+
+```go
+func (m *AcceptedStateSummary) GetChainId() []byte
+```
+
+```go
+func (m *AcceptedStateSummary) GetRequestId() uint32
+```
+
+### Ancestors
+
+Ancestors message
+
+
+```go
+func (m *Ancestors) GetChainId() []byte
+```
+
+```go
+func (m *Ancestors) GetRequestId() uint32
+```
+
+### BFT
+
+BFT message
+
+
+```go
+func (m *BFT) GetChainId() []byte
+```
+
+### BloomFilter
+
+BloomFilter for peer discovery
+
+
+### Buffer
+
+Buffer for zero-copy encoding
+
+
+```go
+func NewBuffer(size int) *Buffer
+```
+
+```go
+func (b *Buffer) Bytes() []byte
+```
+
+```go
+func (b *Buffer) Reset()
+```
+
+```go
+func (b *Buffer) WriteBytes(data []byte)
+```
+
+```go
+func (b *Buffer) WriteBytesSlice(slices [][]byte)
+```
+
+```go
+func (b *Buffer) WriteString(s string)
+```
+
+```go
+func (b *Buffer) WriteUint16(v uint16)
+```
+
+```go
+func (b *Buffer) WriteUint32(v uint32)
+```
+
+```go
+func (b *Buffer) WriteUint32Slice(vals []uint32)
+```
+
+```go
+func (b *Buffer) WriteUint64(v uint64)
+```
+
+```go
+func (b *Buffer) WriteUint64Slice(vals []uint64)
+```
+
+```go
+func (b *Buffer) WriteUint8(v uint8)
+```
+
+### ChainPingEntry
+
+ChainPingEntry is the per-chain payload in Ping/Pong.
+In Lux's chain model each chain is its own validator set, so the legacy
+(chain, network) pair collapses to a single chain identifier.
+
+
+### Chits
+
+Chits message
+
+
+```go
+func (m *Chits) GetChainId() []byte
+```
+
+```go
+func (m *Chits) GetRequestId() uint32
+```
+
+### ClaimedIpPort
+
+ClaimedIpPort in peer list
+
+
+### Client
+
+Client info in handshake
+
+
+### EngineType
+
+EngineType represents the consensus engine type
+
+
+### Get
+
+Get message
+
+
+```go
+func (m *Get) GetChainId() []byte
+```
+
+```go
+func (m *Get) GetDeadline() uint64
+```
+
+```go
+func (m *Get) GetRequestId() uint32
+```
+
+### GetAccepted
+
+GetAccepted message
+
+
+```go
+func (m *GetAccepted) GetChainId() []byte
+```
+
+```go
+func (m *GetAccepted) GetDeadline() uint64
+```
+
+```go
+func (m *GetAccepted) GetRequestId() uint32
+```
+
+### GetAcceptedFrontier
+
+GetAcceptedFrontier message
+
+
+```go
+func (m *GetAcceptedFrontier) GetChainId() []byte
+```
+
+```go
+func (m *GetAcceptedFrontier) GetDeadline() uint64
+```
+
+```go
+func (m *GetAcceptedFrontier) GetRequestId() uint32
+```
+
+### GetAcceptedStateSummary
+
+GetAcceptedStateSummary message
+
+
+```go
+func (m *GetAcceptedStateSummary) GetChainId() []byte
+```
+
+```go
+func (m *GetAcceptedStateSummary) GetDeadline() uint64
+```
+
+```go
+func (m *GetAcceptedStateSummary) GetRequestId() uint32
+```
+
+### GetAncestors
+
+GetAncestors message
+
+
+```go
+func (m *GetAncestors) GetChainId() []byte
+```
+
+```go
+func (m *GetAncestors) GetDeadline() uint64
+```
+
+```go
+func (m *GetAncestors) GetEngineType() EngineType
+```
+
+```go
+func (m *GetAncestors) GetRequestId() uint32
+```
+
+### GetPeerList
+
+GetPeerList message
+
+
+### GetStateSummaryFrontier
+
+GetStateSummaryFrontier message
+
+
+```go
+func (m *GetStateSummaryFrontier) GetChainId() []byte
+```
+
+```go
+func (m *GetStateSummaryFrontier) GetDeadline() uint64
+```
+
+```go
+func (m *GetStateSummaryFrontier) GetRequestId() uint32
+```
+
+### Gossip
+
+Gossip message (app-level)
+
+
+```go
+func (m *Gossip) GetChainId() []byte
+```
+
+### Handshake
+
+Handshake message
+
+
+### Message
+
+Message is the top-level P2P message container
+
+
+```go
+func Unmarshal(data []byte) (*Message, error)
+```
+
+### PeerList
+
+PeerList message
+
+
+### Ping
+
+Ping message
+
+
+### Pong
+
+Pong message
+
+
+### PullQuery
+
+PullQuery message
+
+
+```go
+func (m *PullQuery) GetChainId() []byte
+```
+
+```go
+func (m *PullQuery) GetDeadline() uint64
+```
+
+```go
+func (m *PullQuery) GetRequestId() uint32
+```
+
+### PushQuery
+
+PushQuery message
+
+
+```go
+func (m *PushQuery) GetChainId() []byte
+```
+
+```go
+func (m *PushQuery) GetDeadline() uint64
+```
+
+```go
+func (m *PushQuery) GetRequestId() uint32
+```
+
+### Put
+
+Put message
+
+
+```go
+func (m *Put) GetChainId() []byte
+```
+
+```go
+func (m *Put) GetRequestId() uint32
+```
+
+### Reader
+
+Reader for zero-copy decoding
+
+
+```go
+func NewReader(data []byte) *Reader
+```
+
+```go
+func (r *Reader) ReadBytes() ([]byte, error)
+```
+
+```go
+func (r *Reader) ReadBytesSlice() ([][]byte, error)
+```
+
+```go
+func (r *Reader) ReadString() (string, error)
+```
+
+```go
+func (r *Reader) ReadUint16() (uint16, error)
+```
+
+```go
+func (r *Reader) ReadUint32() (uint32, error)
+```
+
+```go
+func (r *Reader) ReadUint32Slice() ([]uint32, error)
+```
+
+```go
+func (r *Reader) ReadUint64() (uint64, error)
+```
+
+```go
+func (r *Reader) ReadUint64Slice() ([]uint64, error)
+```
+
+```go
+func (r *Reader) ReadUint8() (uint8, error)
+```
+
+### Request
+
+Request message (app-level)
+
+
+```go
+func (m *Request) GetChainId() []byte
+```
+
+```go
+func (m *Request) GetDeadline() uint64
+```
+
+```go
+func (m *Request) GetRequestId() uint32
+```
+
+### Response
+
+Response message (app-level)
+
+
+```go
+func (m *Response) GetChainId() []byte
+```
+
+```go
+func (m *Response) GetRequestId() uint32
+```
+
+### StateSummaryFrontier
+
+StateSummaryFrontier message
+
+
+```go
+func (m *StateSummaryFrontier) GetChainId() []byte
+```
+
+```go
+func (m *StateSummaryFrontier) GetRequestId() uint32
+```
+

@@ -1,0 +1,155 @@
+---
+title: rpcdb
+description: Package rpcdb is luxd's canonical Layer C home for the rpcdb service: one Service implementation backed by a database.Database, with a transport adapter per supported wire protocol.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/db/rpcdb"
+```
+
+Package rpcdb is luxd's canonical Layer C home for the rpcdb service:
+one Service implementation backed by a database.Database, with a
+transport adapter per supported wire protocol.
+
+Layered topology:
+
+	Layer A — wire framing                   (github.com/luxfi/api/zap)
+	Layer B — service spec (data carriers)   (github.com/luxfi/proto/rpcdb)
+	Layer C — service impl + transports      (this package)
+
+One Service. Many transport adapters. Adding a new transport is a
+new file that wraps `*Service`; the storage logic stays here and
+stays orthogonal to framing concerns.
+
+Files:
+  - service.go      (this) — transport-neutral Service struct + methods
+  - grpc_server.go  (build tag `grpc`) — gRPC adapter
+  - zap_server.go   (default)         — ZAP adapter
+
+
+## Functions
+
+### CodeToErr
+
+```go
+func CodeToErr(code rpcdb.Error) error
+```
+
+CodeToErr maps a wire-typed Error back to a database sentinel. Used
+by remote clients on the receive side; lives here so server and
+client agree on the inverse of errToCode.
+
+
+## Types
+
+### Service
+
+Service is the rpcdb service implementation. It holds one
+`database.Database` and a server-managed iterator pool, and exposes
+every rpcdb operation as a (request → response) method on Go data
+carriers from the proto/rpcdb wire-types package.
+
+Service is transport-agnostic: it knows nothing about gRPC, ZAP, or
+any other framing. Each transport adapter wraps `*Service` and
+translates its own wire format into these method calls.
+
+
+```go
+func NewService(db database.Database) *Service
+```
+
+```go
+func (s *Service) Close(_ context.Context, _ *rpcdb.CloseRequest) (*rpcdb.CloseResponse, error)
+```
+
+```go
+func (s *Service) CloseIterators()
+```
+
+```go
+func (s *Service) Compact(_ context.Context, req *rpcdb.CompactRequest) (*rpcdb.CompactResponse, error)
+```
+
+```go
+func (s *Service) DB() database.Database
+```
+
+```go
+func (s *Service) Delete(_ context.Context, req *rpcdb.DeleteRequest) (*rpcdb.DeleteResponse, error)
+```
+
+```go
+func (s *Service) Get(_ context.Context, req *rpcdb.GetRequest) (*rpcdb.GetResponse, error)
+```
+
+```go
+func (s *Service) Has(_ context.Context, req *rpcdb.HasRequest) (*rpcdb.HasResponse, error)
+```
+
+```go
+func (s *Service) HealthCheck(ctx context.Context) (*rpcdb.HealthCheckResponse, error)
+```
+
+```go
+func (s *Service) IteratorError(_ context.Context, req *rpcdb.IteratorErrorRequest) (*rpcdb.IteratorErrorResponse, error)
+```
+
+```go
+func (s *Service) IteratorNext(_ context.Context, req *rpcdb.IteratorNextRequest) (*rpcdb.IteratorNextResponse, error)
+```
+
+```go
+func (s *Service) IteratorRelease(_ context.Context, req *rpcdb.IteratorReleaseRequest) (*rpcdb.IteratorReleaseResponse, error)
+```
+
+```go
+func (s *Service) NewIteratorWithStartAndPrefix(_ context.Context, req *rpcdb.NewIteratorWithStartAndPrefixRequest) (*rpcdb.NewIteratorWithStartAndPrefixResponse, error)
+```
+
+```go
+func (s *Service) Put(_ context.Context, req *rpcdb.PutRequest) (*rpcdb.PutResponse, error)
+```
+
+```go
+func (s *Service) WriteBatch(_ context.Context, req *rpcdb.WriteBatchRequest) (*rpcdb.WriteBatchResponse, error)
+```
+
+### ZAPServer
+
+ZAPServer is the ZAP transport adapter for the rpcdb Service. It
+owns the listener and the dispatch loop; the actual storage logic
+lives in *Service. To swap the wire format (eg. to add framing
+over a different reliable byte stream) write a new file with a new
+adapter — never edit Service.
+
+
+```go
+func NewZAPServer(db database.Database) *ZAPServer
+```
+
+```go
+func NewZAPServerFromService(svc *Service) *ZAPServer
+```
+
+```go
+func (s *ZAPServer) Addr() net.Addr
+```
+
+```go
+func (s *ZAPServer) Close() error
+```
+
+```go
+func (s *ZAPServer) Listen(addr string) error
+```
+
+```go
+func (s *ZAPServer) ListenOn(raw net.Listener)
+```
+
+```go
+func (s *ZAPServer) Serve(ctx context.Context) error
+```
+

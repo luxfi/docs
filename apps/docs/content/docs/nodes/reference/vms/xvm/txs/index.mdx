@@ -1,0 +1,481 @@
+---
+title: txs
+description: Package txs is the X-chain (xvm) transaction package for the luxfi/node binary.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/xvm/txs"
+```
+
+Package txs is the X-chain (xvm) transaction package for the luxfi/node
+binary. It owns the native-ZAP struct-is-wire tx codec: the signed-tx
+envelope (wire.SignedTx), the per-type unsigned bodies keyed by a 1-byte
+xkind discriminator, and the per-fx Initial-State / Operation accessors the
+X-VM uses to build, sign, and parse on-chain transactions.
+
+There is no pcodecs.Manager, no linearcodec, and no reflection-driven slot
+map. Each tx type serializes itself directly onto a github.com/luxfi/zap
+buffer; polymorphic fx primitives (outputs, inputs, operations, credentials)
+name themselves on the wire via their (TypeKind, ShapeKind) envelope and are
+reconstructed by envelope dispatch (fxwire.go).
+
+Package txs is a generated GoMock package.
+
+
+## Functions
+
+### IsSortedAndUniqueOperations
+
+```go
+func IsSortedAndUniqueOperations(ops []*Operation) bool
+```
+
+### SortOperations
+
+```go
+func SortOperations(ops []*Operation)
+```
+
+### SortOperationsWithSigners
+
+```go
+func SortOperationsWithSigners(ops []*Operation, signers [][]*secp256k1.PrivateKey)
+```
+
+### UnsignedBytes
+
+```go
+func UnsignedBytes(u UnsignedTx) ([]byte, error)
+```
+
+UnsignedBytes returns the canonical native-ZAP wire bytes of an unsigned tx,
+serializing (and caching) them on first use. This is the signing target —
+every fx signature is computed over hash(unsignedBytes).
+
+
+## Types
+
+### BaseTx
+
+BaseTx is the basis of all transactions. It carries the multi-asset spending
+envelope (NetworkID/BlockchainID/Outs/Ins/Memo) as an embedded lux.BaseTx —
+X-Chain is a universal multi-fx settlement layer, so Outs/Ins hold arbitrary
+fx primitives, not the fixed secp256k1 stride the P-Chain uses. The struct
+is the source of truth; Bytes() is the cached native-ZAP wire encoding.
+
+Wire (unsigned): zap object &#123; xkind@0, baseTxEnvelope@8 } where the envelope
+is a wire.XVMBaseTx (each Out/In an fx-typed TransferableOut/In envelope).
+
+
+```go
+func (t *BaseTx) Bytes() []byte
+```
+
+```go
+func (t *BaseTx) InitRuntime(rt *runtime.Runtime)
+```
+
+```go
+func (t *BaseTx) InitializeRuntime(rt *runtime.Runtime) error
+```
+
+```go
+func (t *BaseTx) InitializeWithRuntime(rt *runtime.Runtime) error
+```
+
+```go
+func (t *BaseTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t *BaseTx) InputUTXOs() []*lux.UTXOID
+```
+
+```go
+func (t *BaseTx) NumCredentials() int
+```
+
+```go
+func (t *BaseTx) SetBytes(bytes []byte)
+```
+
+```go
+func (t *BaseTx) Visit(v Visitor) error
+```
+
+### CreateAssetTx
+
+CreateAssetTx is a transaction that creates a new asset.
+
+Wire (unsigned): the shared &#123; xkind@0, baseTxEnvelope@8 } prefix, then
+Name@16 / Symbol@24 (text) + Denomination@32 (u8) + the InitialStates as a
+packed (length list @36, blob @44) of self-delimiting InitialState objects.
+
+
+```go
+func (t *CreateAssetTx) InitRuntime(rt *runtime.Runtime)
+```
+
+```go
+func (t *CreateAssetTx) InitialStates() []*InitialState
+```
+
+```go
+func (t *CreateAssetTx) InitializeRuntime(rt *runtime.Runtime) error
+```
+
+```go
+func (t *CreateAssetTx) InitializeWithRuntime(rt *runtime.Runtime) error
+```
+
+```go
+func (t *CreateAssetTx) Visit(v Visitor) error
+```
+
+### ExportTx
+
+ExportTx is a transaction that exports an asset to another blockchain.
+
+Wire (unsigned): the shared &#123; xkind@0, baseTxEnvelope@8 } prefix, then
+DestinationChain@16 (32B) + the exported outputs as a packed (length list
+@48, blob @56) of self-delimiting wire TransferableOut envelopes.
+
+
+```go
+func (t *ExportTx) InitRuntime(rt *runtime.Runtime)
+```
+
+```go
+func (t *ExportTx) InitializeRuntime(rt *runtime.Runtime) error
+```
+
+```go
+func (t *ExportTx) InitializeWithRuntime(rt *runtime.Runtime) error
+```
+
+```go
+func (t *ExportTx) Visit(v Visitor) error
+```
+
+### FxIndex
+
+FxIndex maps a wire.TypeKind (fx family) to its position in a parser's fx
+list. Array-backed: Get is one bounds-checked load, no hashing. A slot of -1
+means no fx of that family is registered.
+
+
+```go
+func NewFxIndex() *FxIndex
+```
+
+```go
+func (fi *FxIndex) Get(kind wire.TypeKind) (int, bool)
+```
+
+```go
+func (fi *FxIndex) GetFx(val interface{}) (int, bool)
+```
+
+```go
+func (fi *FxIndex) Set(kind wire.TypeKind, idx int)
+```
+
+### ImportTx
+
+ImportTx is a transaction that imports an asset from another blockchain.
+
+Wire (unsigned): the shared &#123; xkind@0, baseTxEnvelope@8 } prefix, then
+SourceChain@16 (32B) + the imported inputs as a packed (length list @48,
+blob @56) of self-delimiting wire TransferableIn envelopes.
+
+
+```go
+func (t *ImportTx) InitRuntime(rt *runtime.Runtime)
+```
+
+```go
+func (t *ImportTx) InitializeRuntime(rt *runtime.Runtime) error
+```
+
+```go
+func (t *ImportTx) InitializeWithRuntime(rt *runtime.Runtime) error
+```
+
+```go
+func (t *ImportTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t *ImportTx) InputUTXOs() []*lux.UTXOID
+```
+
+```go
+func (t *ImportTx) NumCredentials() int
+```
+
+```go
+func (t *ImportTx) Visit(v Visitor) error
+```
+
+### InitialState
+
+InitialState is the per-fx genesis state a CreateAssetTx installs: an fx
+index plus that fx's initial output set. Outs is a heterogeneous slice of fx
+state outputs, each serialized as its own (TypeKind, ShapeKind, ZAP) wire
+envelope — the FxID is recovered from the envelope's TypeKind, so it is not
+stored on the wire.
+
+Wire: zap object &#123; FxIndex@0 (u32), Outs (length list @4, blob @12) }.
+
+
+```go
+func (is *InitialState) Bytes() ([]byte, error)
+```
+
+```go
+func (is *InitialState) Compare(other *InitialState) int
+```
+
+```go
+func (is *InitialState) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (is *InitialState) Sort()
+```
+
+```go
+func (is *InitialState) Verify(numFxs int) error
+```
+
+### MockUnsignedTx
+
+MockUnsignedTx is a mock of UnsignedTx interface.
+
+
+```go
+func NewMockUnsignedTx(ctrl *gomock.Controller) *MockUnsignedTx
+```
+
+```go
+func (m *MockUnsignedTx) Bytes() []byte
+```
+
+```go
+func (m *MockUnsignedTx) EXPECT() *MockUnsignedTxMockRecorder
+```
+
+```go
+func (m *MockUnsignedTx) InitRuntime(arg0 context.Context)
+```
+
+```go
+func (m *MockUnsignedTx) InitializeRuntime(arg0 context.Context) error
+```
+
+```go
+func (m *MockUnsignedTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (m *MockUnsignedTx) InputUTXOs() []*lux.UTXOID
+```
+
+```go
+func (m *MockUnsignedTx) NumCredentials() int
+```
+
+```go
+func (m *MockUnsignedTx) SetBytes(unsignedBytes []byte)
+```
+
+```go
+func (m *MockUnsignedTx) Visit(visitor Visitor) error
+```
+
+### MockUnsignedTxMockRecorder
+
+MockUnsignedTxMockRecorder is the mock recorder for MockUnsignedTx.
+
+
+```go
+func (mr *MockUnsignedTxMockRecorder) Bytes() *gomock.Call
+```
+
+```go
+func (mr *MockUnsignedTxMockRecorder) InitRuntime(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockUnsignedTxMockRecorder) InitializeRuntime(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockUnsignedTxMockRecorder) InputIDs() *gomock.Call
+```
+
+```go
+func (mr *MockUnsignedTxMockRecorder) InputUTXOs() *gomock.Call
+```
+
+```go
+func (mr *MockUnsignedTxMockRecorder) NumCredentials() *gomock.Call
+```
+
+```go
+func (mr *MockUnsignedTxMockRecorder) SetBytes(unsignedBytes any) *gomock.Call
+```
+
+```go
+func (mr *MockUnsignedTxMockRecorder) Visit(visitor any) *gomock.Call
+```
+
+### Operation
+
+Operation runs a single fx operation (mint / NFT transfer / property burn)
+over a set of consumed UTXOs of a given asset.
+
+Wire: zap object &#123; Asset@0 (32B), UTXOIDs@32 (36B-stride list), Op@40 (the
+fx operation's own (TypeKind, ShapeKind, ZAP) envelope) }. FxID is recovered
+from the Op envelope's TypeKind, so it is not stored on the wire.
+
+
+```go
+func (op *Operation) Bytes() ([]byte, error)
+```
+
+```go
+func (op *Operation) Verify() error
+```
+
+### OperationTx
+
+OperationTx is a transaction that runs a set of fx operations over existing
+UTXOs (mint / NFT transfer / property burn ...).
+
+Wire (unsigned): the shared &#123; xkind@0, baseTxEnvelope@8 } prefix, then the
+Operations as a packed (length list @16, blob @24) of self-delimiting
+Operation objects.
+
+
+```go
+func (t *OperationTx) InitRuntime(rt *runtime.Runtime)
+```
+
+```go
+func (t *OperationTx) InitializeRuntime(rt *runtime.Runtime) error
+```
+
+```go
+func (t *OperationTx) InitializeWithRuntime(rt *runtime.Runtime) error
+```
+
+```go
+func (t *OperationTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t *OperationTx) InputUTXOs() []*lux.UTXOID
+```
+
+```go
+func (t *OperationTx) NumCredentials() int
+```
+
+```go
+func (t *OperationTx) Operations() []*Operation
+```
+
+```go
+func (t *OperationTx) Visit(v Visitor) error
+```
+
+### Parser
+
+```go
+func NewCustomParser(
+	fxIndex *FxIndex,
+	clock *mockable.Clock,
+	logger log.Logger,
+	fxList []fxs.Fx,
+) (Parser, error)
+```
+
+```go
+func NewParser(fxs []fxs.Fx) (Parser, error)
+```
+
+### Tx
+
+Tx is the core operation that can be performed. The tx uses the UTXO model.
+Specifically, a txs inputs will consume previous txs outputs. A tx will be
+valid if the inputs have the authority to consume the outputs they are
+attempting to consume and the inputs consume sufficient state to produce the
+outputs.
+
+A signed tx is a wire.SignedTx envelope: the unsigned tx bytes (which carry
+the xkind discriminator at offset 0) followed by a packed list of fx
+credential envelopes. There is no codec.
+
+
+```go
+func Parse(signedBytes []byte) (*Tx, error)
+```
+
+```go
+func (t *Tx) Bytes() []byte
+```
+
+```go
+func (t *Tx) GossipID() ids.ID
+```
+
+```go
+func (t *Tx) ID() ids.ID
+```
+
+```go
+func (t *Tx) Initialize() error
+```
+
+```go
+func (t *Tx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t *Tx) SetBytes(unsignedBytes, signedBytes []byte)
+```
+
+```go
+func (t *Tx) SignNFTFx(signers [][]*secp256k1.PrivateKey) error
+```
+
+```go
+func (t *Tx) SignPropertyFx(signers [][]*secp256k1.PrivateKey) error
+```
+
+```go
+func (t *Tx) SignSECP256K1Fx(signers [][]*secp256k1.PrivateKey) error
+```
+
+```go
+func (t *Tx) Size() int
+```
+
+```go
+func (t *Tx) UTXOs() []*lux.UTXO
+```
+
+### UnsignedTx
+
+```go
+func ParseUnsignedTx(unsignedBytes []byte) (UnsignedTx, error)
+```
+
+### Visitor
+
+Allow vm to execute custom logic against the underlying transaction types.
+
+

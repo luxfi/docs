@@ -1,0 +1,231 @@
+---
+title: executor
+description: Package executor is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/xvm/block/executor"
+```
+
+Package executor is a generated GoMock package.
+
+
+## Functions
+
+### BlockExecutionRoot
+
+```go
+func BlockExecutionRoot(
+	parentExecutionRoot ids.ID,
+	blkTxs []*txs.Tx,
+	postState state.Chain,
+	height uint64,
+) (ids.ID, error)
+```
+
+BlockExecutionRoot resolves the canonical leaf projection for a block and
+returns the execution_root the block must carry at [height]. It is the bridge
+from a stateless block to the pure xvm root computation: the builder calls it
+to stamp the root and the executor calls it to verify the stamped root, so the
+produced root and the verified root are derived by exactly one code path and
+can never disagree.
+
+[parentExecutionRoot] is the parent block's MerkleRoot (the empty root for a
+genesis or pre-activation parent). [postState] is the post-block state (the
+applied state diff) the UTXO/asset families are projected from. The leaf
+projection is the canonical, deterministic, pure-function-of-the-block image
+of the post-block state the root commits to. The tx family is fully realized
+from the block's transactions (TxID = tx.ID(), every tx folded in block
+order, status = accepted); it is identical on the builder and the verifier
+because both observe the same ordered tx set. The UTXO family is enumerated
+from the post-block occupied UTXO set and projected by postBlockUTXOLeaves;
+the asset family is empty (see postBlockAssetLeaves for why xvm's UTXO-only
+executor state has no enumerable asset arena to project).
+
+It returns an error if the post-block state cannot be enumerated or an output
+carries an owner model with no canonical owner_root yet — a wrong root must
+never be stamped or accepted silently.
+
+
+### OwnerRoot
+
+```go
+func OwnerRoot(o owners) [32]byte
+```
+
+OwnerRoot is the CANONICAL Go definition of the execution_root UTXO leaf's
+owner_root field. It is the authority the GPU state-snapshot producer MUST
+match (the GPU/CPU kernels treat owner_root as a host-supplied input —
+xvm_gpu_layout.hpp documents its intent as "keccak over sorted owner address
+set + threshold" but does not derive it; this is where that derivation is
+pinned).
+
+owner_root = keccak256(
+
+	threshold_u32_le ‖ key_count_u32_le ‖ key[0] ‖ key[1] ‖ … ‖ key[k-1] )
+
+where:
+  - threshold is the output's N-of-M spend threshold (binds the M-of-N
+    policy, per the layout's "+ threshold");
+  - key_count is the number of owner keys, little-endian u32 — a length
+    prefix so two owner sets that differ only by a key-set/threshold framing
+    can never collide (no ambiguous concatenation);
+  - each key is an owner key in canonical ascending byte order: for an
+    address-keyed output the 20-byte secp256k1 address; for a bls attestation
+    output the committee public key. The order is the same sorted-and-unique
+    order the output's own Verify enforces, so the preimage is deterministic
+    and independent of the order keys happened to be listed in.
+
+The keccak256 is Ethereum Keccak-256 (the same hash xvmroot/the GPU use for
+every leaf preimage), keeping owner_root in the one hash family the whole
+execution_root is built from. Integers are little-endian to match the
+kernel's absorb_u32.
+
+Locktime is NOT folded into owner_root: the UTXOLeaf binds Locktime in its own
+dedicated field (matching the GPU UTXO struct, which carries locktime and
+owner_root separately), so binding it here too would be redundant. Threshold
+is bound in BOTH owner_root and the leaf's Threshold field, exactly as the GPU
+struct carries threshold both inside the host-computed owner_root and as a
+standalone field.
+
+
+## Types
+
+### Block
+
+Exported for testing in xvm package.
+
+
+```go
+func (b *Block) Accept(ctx context.Context) error
+```
+
+```go
+func (b *Block) EpochBit() bool
+```
+
+```go
+func (b *Block) FPCVotes() [][]byte
+```
+
+```go
+func (b *Block) ParentID() ids.ID
+```
+
+```go
+func (b *Block) Reject(ctx context.Context) error
+```
+
+```go
+func (b *Block) Status() uint8
+```
+
+```go
+func (b *Block) Verify(ctx context.Context) error
+```
+
+### Manager
+
+```go
+func NewManager(
+	mempool mempool.Mempool[*txs.Tx],
+	metrics metrics.Metrics,
+	state state.State,
+	backend *executor.Backend,
+	clk *mockable.Clock,
+	onAccept func(*txs.Tx),
+) Manager
+```
+
+### MockManager
+
+MockManager is a mock of Manager interface.
+
+
+```go
+func NewMockManager(ctrl *gomock.Controller) *MockManager
+```
+
+```go
+func (m *MockManager) EXPECT() *MockManagerMockRecorder
+```
+
+```go
+func (m *MockManager) GetBlock(blkID ids.ID) (chain.Block, error)
+```
+
+```go
+func (m *MockManager) GetState(blkID ids.ID) (state.Chain, bool)
+```
+
+```go
+func (m *MockManager) GetStatelessBlock(blkID ids.ID) (block.Block, error)
+```
+
+```go
+func (m *MockManager) LastAccepted() ids.ID
+```
+
+```go
+func (m *MockManager) NewBlock(arg0 block.Block) chain.Block
+```
+
+```go
+func (m *MockManager) Preferred() ids.ID
+```
+
+```go
+func (m *MockManager) SetPreference(blkID ids.ID)
+```
+
+```go
+func (m *MockManager) VerifyTx(tx *txs.Tx) error
+```
+
+```go
+func (m *MockManager) VerifyUniqueInputs(blkID ids.ID, inputs set.Set[ids.ID]) error
+```
+
+### MockManagerMockRecorder
+
+MockManagerMockRecorder is the mock recorder for MockManager.
+
+
+```go
+func (mr *MockManagerMockRecorder) GetBlock(blkID any) *gomock.Call
+```
+
+```go
+func (mr *MockManagerMockRecorder) GetState(blkID any) *gomock.Call
+```
+
+```go
+func (mr *MockManagerMockRecorder) GetStatelessBlock(blkID any) *gomock.Call
+```
+
+```go
+func (mr *MockManagerMockRecorder) LastAccepted() *gomock.Call
+```
+
+```go
+func (mr *MockManagerMockRecorder) NewBlock(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockManagerMockRecorder) Preferred() *gomock.Call
+```
+
+```go
+func (mr *MockManagerMockRecorder) SetPreference(blkID any) *gomock.Call
+```
+
+```go
+func (mr *MockManagerMockRecorder) VerifyTx(tx any) *gomock.Call
+```
+
+```go
+func (mr *MockManagerMockRecorder) VerifyUniqueInputs(blkID, inputs any) *gomock.Call
+```
+

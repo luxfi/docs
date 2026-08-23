@@ -1,0 +1,31 @@
+---
+title: cachetest
+description: Package cachetest
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/cache/cachetest"
+```
+
+## Functions
+
+### Basic
+
+```go
+func Basic(t *testing.T, cache cache.Cacher[ids.ID, int64])
+```
+
+### Eviction
+
+```go
+func Eviction(t *testing.T, cache cache.Cacher[ids.ID, int64])
+```
+
+### IntSizeFunc
+
+```go
+func IntSizeFunc(ids.ID, int64) int
+```
+

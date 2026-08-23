@@ -1,0 +1,64 @@
+---
+title: lock
+description: Package lock
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/lock"
+```
+
+## Types
+
+### Cond
+
+Cond implements a condition variable. Typically [sync.Cond] should be
+preferred. However, this implementation supports cancellable waits.
+
+
+```go
+func NewCond(l sync.Locker) *Cond
+```
+
+```go
+func (c *Cond) Broadcast()
+```
+
+```go
+func (c *Cond) Signal()
+```
+
+```go
+func (c *Cond) Wait(ctx context.Context) error
+```
+
+### State
+
+State represents a lockable state
+
+
+```go
+func (s *State) Acquire()
+```
+
+```go
+func (s *State) Lock() sync.Locker
+```
+
+```go
+func (s *State) RAcquire()
+```
+
+```go
+func (s *State) RLock() sync.Locker
+```
+
+```go
+func (s *State) RRelease()
+```
+
+```go
+func (s *State) Release()
+```
+

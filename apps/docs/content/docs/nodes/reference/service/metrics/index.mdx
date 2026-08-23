@@ -1,0 +1,64 @@
+---
+title: metrics
+description: Package metrics
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/service/metrics"
+```
+
+## Functions
+
+### MakeAndRegister
+
+```go
+func MakeAndRegister(gatherer MultiGatherer, name string) (metric.Registry, error)
+```
+
+## Types
+
+### Client
+
+Client for requesting metrics from a remote Lux Node instance
+
+
+```go
+func NewClient(uri string) *Client
+```
+
+```go
+func (c *Client) GetMetrics(ctx context.Context) (map[string]*metric.MetricFamily, error)
+```
+
+### MultiGatherer
+
+MultiGatherer extends the Gatherer interface by allowing additional gatherers
+to be registered.
+
+
+```go
+func NewLabelGatherer(labelName string) MultiGatherer
+```
+
+```go
+func NewMultiGatherer() MultiGatherer
+```
+
+```go
+func NewPrefixGatherer() MultiGatherer
+```
+
+### OptionalGatherer
+
+OptionalGatherer extends the Gatherer interface by allowing the optional
+registration of a single gatherer. If no gatherer is registered, Gather will
+return no metrics and no error. If a gatherer is registered, Gather will
+return the results of calling Gather on the provided gatherer.
+
+
+```go
+func NewOptionalGatherer() OptionalGatherer
+```
+

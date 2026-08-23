@@ -1,0 +1,486 @@
+---
+title: metrics
+description: Package metrics
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/evm/metrics"
+```
+
+## Types
+
+### Counter
+
+Counter is a monotonically increasing counter
+
+
+### CounterFloat64
+
+CounterFloat64 is a float64 counter
+
+
+### EWMA
+
+EWMA is an exponentially weighted moving average
+
+
+### Gauge
+
+Gauge holds an int64 value
+
+
+### GaugeFloat64
+
+GaugeFloat64 holds a float64 value
+
+
+### GaugeInfo
+
+GaugeInfo holds string information
+
+
+### GaugeInfoValue
+
+GaugeInfoValue represents gauge info
+
+
+### Healthcheck
+
+Healthcheck tracks health status
+
+
+### Histogram
+
+Histogram tracks the distribution of values
+
+
+### Meter
+
+Meter measures the rate of events
+
+
+### NilCounter
+
+Nil implementations for when metrics are disabled
+
+
+```go
+func (NilCounter) Clear()
+```
+
+```go
+func (NilCounter) Count() int64
+```
+
+```go
+func (NilCounter) Dec(int64)
+```
+
+```go
+func (NilCounter) Inc(int64)
+```
+
+```go
+func (n NilCounter) Snapshot() Counter
+```
+
+### NilCounterFloat64
+
+Nil implementations for when metrics are disabled
+
+
+```go
+func (NilCounterFloat64) Clear()
+```
+
+```go
+func (NilCounterFloat64) Count() float64
+```
+
+```go
+func (NilCounterFloat64) Dec(float64)
+```
+
+```go
+func (NilCounterFloat64) Inc(float64)
+```
+
+```go
+func (n NilCounterFloat64) Snapshot() CounterFloat64
+```
+
+### NilEWMA
+
+Nil implementations for when metrics are disabled
+
+
+```go
+func (NilEWMA) Rate() float64
+```
+
+```go
+func (n NilEWMA) Snapshot() EWMA
+```
+
+```go
+func (NilEWMA) Tick()
+```
+
+```go
+func (NilEWMA) Update(int64)
+```
+
+### NilGauge
+
+Nil implementations for when metrics are disabled
+
+
+```go
+func (n NilGauge) Snapshot() Gauge
+```
+
+```go
+func (NilGauge) Update(int64)
+```
+
+```go
+func (NilGauge) Value() int64
+```
+
+### NilGaugeFloat64
+
+Nil implementations for when metrics are disabled
+
+
+```go
+func (n NilGaugeFloat64) Snapshot() GaugeFloat64
+```
+
+```go
+func (NilGaugeFloat64) Update(float64)
+```
+
+```go
+func (NilGaugeFloat64) Value() float64
+```
+
+### NilGaugeInfo
+
+Nil implementations for when metrics are disabled
+
+
+```go
+func (n NilGaugeInfo) Snapshot() GaugeInfo
+```
+
+```go
+func (NilGaugeInfo) Update(GaugeInfoValue)
+```
+
+```go
+func (NilGaugeInfo) Value() GaugeInfoValue
+```
+
+### NilHealthcheck
+
+Nil implementations for when metrics are disabled
+
+
+```go
+func (NilHealthcheck) Check()
+```
+
+```go
+func (NilHealthcheck) Error() error
+```
+
+```go
+func (NilHealthcheck) Healthy()
+```
+
+```go
+func (NilHealthcheck) Unhealthy(error)
+```
+
+### NilHistogram
+
+Nil implementations for when metrics are disabled
+
+
+```go
+func (NilHistogram) Clear()
+```
+
+```go
+func (NilHistogram) Count() int64
+```
+
+```go
+func (NilHistogram) Max() int64
+```
+
+```go
+func (NilHistogram) Mean() float64
+```
+
+```go
+func (NilHistogram) Min() int64
+```
+
+```go
+func (NilHistogram) Percentile(float64) float64
+```
+
+```go
+func (NilHistogram) Percentiles([]float64) []float64
+```
+
+```go
+func (n NilHistogram) Snapshot() Histogram
+```
+
+```go
+func (NilHistogram) StdDev() float64
+```
+
+```go
+func (NilHistogram) Sum() int64
+```
+
+```go
+func (NilHistogram) Update(int64)
+```
+
+```go
+func (NilHistogram) Variance() float64
+```
+
+### NilMeter
+
+Nil implementations for when metrics are disabled
+
+
+```go
+func (NilMeter) Count() int64
+```
+
+```go
+func (NilMeter) Mark(int64)
+```
+
+```go
+func (NilMeter) Rate1() float64
+```
+
+```go
+func (NilMeter) Rate15() float64
+```
+
+```go
+func (NilMeter) Rate5() float64
+```
+
+```go
+func (NilMeter) RateMean() float64
+```
+
+```go
+func (n NilMeter) Snapshot() Meter
+```
+
+```go
+func (NilMeter) Stop()
+```
+
+### NilResettingTimer
+
+Nil implementations for when metrics are disabled
+
+
+```go
+func (NilResettingTimer) Count() int64
+```
+
+```go
+func (NilResettingTimer) Mean() float64
+```
+
+```go
+func (NilResettingTimer) Percentiles([]float64) []float64
+```
+
+```go
+func (n NilResettingTimer) Snapshot() ResettingTimer
+```
+
+```go
+func (NilResettingTimer) Time(func())
+```
+
+```go
+func (NilResettingTimer) Update(int64)
+```
+
+```go
+func (NilResettingTimer) UpdateSince(int64)
+```
+
+```go
+func (NilResettingTimer) Values() []int64
+```
+
+### NilSample
+
+Nil implementations for when metrics are disabled
+
+
+```go
+func (NilSample) Clear()
+```
+
+```go
+func (NilSample) Count() int64
+```
+
+```go
+func (NilSample) Max() int64
+```
+
+```go
+func (NilSample) Mean() float64
+```
+
+```go
+func (NilSample) Min() int64
+```
+
+```go
+func (NilSample) Percentile(float64) float64
+```
+
+```go
+func (NilSample) Percentiles([]float64) []float64
+```
+
+```go
+func (NilSample) Size() int
+```
+
+```go
+func (n NilSample) Snapshot() Sample
+```
+
+```go
+func (NilSample) StdDev() float64
+```
+
+```go
+func (NilSample) Sum() int64
+```
+
+```go
+func (NilSample) Update(int64)
+```
+
+```go
+func (NilSample) Values() []int64
+```
+
+```go
+func (NilSample) Variance() float64
+```
+
+### NilTimer
+
+Nil implementations for when metrics are disabled
+
+
+```go
+func (NilTimer) Count() int64
+```
+
+```go
+func (NilTimer) Max() int64
+```
+
+```go
+func (NilTimer) Mean() float64
+```
+
+```go
+func (NilTimer) Min() int64
+```
+
+```go
+func (NilTimer) Percentile(float64) float64
+```
+
+```go
+func (NilTimer) Percentiles([]float64) []float64
+```
+
+```go
+func (NilTimer) Rate1() float64
+```
+
+```go
+func (NilTimer) Rate15() float64
+```
+
+```go
+func (NilTimer) Rate5() float64
+```
+
+```go
+func (NilTimer) RateMean() float64
+```
+
+```go
+func (n NilTimer) Snapshot() Timer
+```
+
+```go
+func (NilTimer) StdDev() float64
+```
+
+```go
+func (NilTimer) Stop()
+```
+
+```go
+func (NilTimer) Sum() int64
+```
+
+```go
+func (NilTimer) Time(func())
+```
+
+```go
+func (NilTimer) Update(int64)
+```
+
+```go
+func (NilTimer) UpdateSince(int64)
+```
+
+```go
+func (NilTimer) Variance() float64
+```
+
+### ResettingTimer
+
+ResettingTimer is a timer that resets
+
+
+### Sample
+
+Sample represents a sample
+
+
+### Timer
+
+Timer measures durations
+
+

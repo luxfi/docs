@@ -1,0 +1,36 @@
+---
+title: fee
+description: Package fee
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/validators/fee"
+```
+
+## Types
+
+### Config
+
+Config contains all the static parameters of the dynamic fee mechanism.
+
+
+### State
+
+State represents the current on-chain values used in the dynamic fee
+mechanism.
+
+
+```go
+func (s State) AdvanceTime(target gas.Gas, seconds uint64) State
+```
+
+```go
+func (s State) CostOf(c Config, seconds uint64) uint64
+```
+
+```go
+func (s State) SecondsRemaining(c Config, maxSeconds uint64, fundsRemaining uint64) uint64
+```
+

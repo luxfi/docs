@@ -1,0 +1,63 @@
+---
+title: warp
+description: Package warp
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/warp"
+```
+
+## Types
+
+### ChainIPCs
+
+ChainIPCs maintains IPCs for a set of chains
+
+
+```go
+func NewChainIPCs(
+	log log.Logger,
+	path string,
+	networkID uint32,
+	blockAcceptorGroup nodeconsensus.AcceptorGroup,
+	txAcceptorGroup nodeconsensus.AcceptorGroup,
+	vertexAcceptorGroup nodeconsensus.AcceptorGroup,
+	defaultChainIDs []ids.ID,
+) (*ChainIPCs, error)
+```
+
+```go
+func (cipcs *ChainIPCs) GetPublishedBlockchains() []ids.ID
+```
+
+```go
+func (cipcs *ChainIPCs) Publish(chainID ids.ID) (*EventSockets, error)
+```
+
+```go
+func (cipcs *ChainIPCs) Shutdown() error
+```
+
+```go
+func (cipcs *ChainIPCs) Unpublish(chainID ids.ID) (bool, error)
+```
+
+### EventSockets
+
+EventSockets is a set of named eventSockets
+
+
+```go
+func (ipcs *EventSockets) Accept(ctx context.Context, containerID ids.ID, container []byte) error
+```
+
+```go
+func (ipcs *EventSockets) ConsensusURL() string
+```
+
+```go
+func (ipcs *EventSockets) DecisionsURL() string
+```
+

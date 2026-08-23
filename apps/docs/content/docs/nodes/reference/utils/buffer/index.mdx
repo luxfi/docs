@@ -1,0 +1,39 @@
+---
+title: buffer
+description: Package buffer
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/buffer"
+```
+
+## Types
+
+### BlockingDeque
+
+```go
+func NewUnboundedBlockingDeque[T any](initSize int) BlockingDeque[T]
+```
+
+### Deque
+
+An unbounded deque (double-ended queue).
+See https://en.wikipedia.org/wiki/Double-ended_queue
+Not safe for concurrent access.
+
+
+```go
+func NewUnboundedDeque[T any](initSize int) Deque[T]
+```
+
+### Queue
+
+A FIFO queue.
+
+
+```go
+func NewBoundedQueue[T any](maxSize int, onEvict func(T)) (Queue[T], error)
+```
+

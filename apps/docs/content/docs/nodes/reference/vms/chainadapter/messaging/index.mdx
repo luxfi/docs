@@ -1,0 +1,181 @@
+---
+title: messaging
+description: Package messaging provides FHE-CRDT extensions for private messaging.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/chainadapter/messaging"
+```
+
+Package messaging provides FHE-CRDT extensions for private messaging.
+It enables encrypted CRDTs for conversation metadata, group membership,
+read markers, and rate-limit counters integrated with service node storage.
+
+
+## Functions
+
+### SerializeConversation
+
+```go
+func SerializeConversation(conv *Conversation) ([]byte, error)
+```
+
+SerializeConversation serializes a conversation to ZAP. Replaces the
+legacy JSON codec, which was UTF-8 unsafe (binary OR-Set tags stuffed
+into Go map keys).
+
+
+## Types
+
+### Conversation
+
+Conversation represents an encrypted conversation with CRDT metadata
+
+
+```go
+func DeserializeConversation(data []byte) (*Conversation, error)
+```
+
+```go
+func MergeConversations(local, remote *Conversation) *Conversation
+```
+
+```go
+func (c *Conversation) Hash() [32]byte
+```
+
+### ConversationType
+
+ConversationType defines the type of conversation
+
+
+### Encryptor
+
+Encryptor provides encryption/decryption operations
+
+
+### MemberEntry
+
+MemberEntry represents a member in the membership CRDT
+
+
+### MembershipCRDT
+
+MembershipCRDT tracks group membership using an OR-Set CRDT
+
+
+```go
+func NewMembershipCRDT() *MembershipCRDT
+```
+
+```go
+func (m *MembershipCRDT) Add(accountID [32]byte, role string, addedBy [32]byte) string
+```
+
+```go
+func (m *MembershipCRDT) GetMember(accountID [32]byte) (*MemberEntry, string, error)
+```
+
+```go
+func (m *MembershipCRDT) GetMembers() []*MemberEntry
+```
+
+```go
+func (m *MembershipCRDT) IsMember(accountID [32]byte) bool
+```
+
+```go
+func (m *MembershipCRDT) Merge(other *MembershipCRDT)
+```
+
+```go
+func (m *MembershipCRDT) Remove(tag string)
+```
+
+### MessageStore
+
+MessageStore manages encrypted messages with CRDT semantics
+
+
+```go
+func NewMessageStore(encryptor Encryptor) *MessageStore
+```
+
+```go
+func (s *MessageStore) AddMember(ctx context.Context, conversationID ids.ID, accountID [32]byte, role string, addedBy [32]byte) error
+```
+
+```go
+func (s *MessageStore) CheckRateLimit(accountID [32]byte) error
+```
+
+```go
+func (s *MessageStore) CreateConversation(ctx context.Context, convType ConversationType, creatorID [32]byte, members [][32]byte) (*Conversation, error)
+```
+
+```go
+func (s *MessageStore) GetConversation(conversationID ids.ID) (*Conversation, error)
+```
+
+```go
+func (s *MessageStore) IncrementRateLimit(accountID [32]byte)
+```
+
+```go
+func (s *MessageStore) RemoveMember(ctx context.Context, conversationID ids.ID, accountID [32]byte, removedBy [32]byte) error
+```
+
+```go
+func (s *MessageStore) UpdateReadMarker(ctx context.Context, conversationID ids.ID, accountID [32]byte, lastReadID ids.ID) error
+```
+
+### RateCounter
+
+RateCounter tracks message counts for an account
+
+
+### RateLimiter
+
+RateLimiter provides rate limiting for message sending
+
+
+```go
+func NewRateLimiter(maxPerMinute, maxPerHour, maxPerDay int) *RateLimiter
+```
+
+```go
+func (r *RateLimiter) Check(accountID [32]byte) error
+```
+
+```go
+func (r *RateLimiter) Increment(accountID [32]byte)
+```
+
+### ReadMarker
+
+ReadMarker represents a member's read position
+
+
+### ReadMarkerCRDT
+
+ReadMarkerCRDT tracks read markers using LWW registers
+
+
+```go
+func NewReadMarkerCRDT() *ReadMarkerCRDT
+```
+
+```go
+func (r *ReadMarkerCRDT) Get(accountID [32]byte) *ReadMarker
+```
+
+```go
+func (r *ReadMarkerCRDT) Merge(other *ReadMarkerCRDT)
+```
+
+```go
+func (r *ReadMarkerCRDT) Update(accountID [32]byte, lastReadID ids.ID, lastReadTime time.Time)
+```
+

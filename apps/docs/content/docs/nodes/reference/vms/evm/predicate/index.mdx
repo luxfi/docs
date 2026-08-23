@@ -1,0 +1,71 @@
+---
+title: predicate
+description: Package predicate
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/evm/predicate"
+```
+
+## Functions
+
+### FromAccessList
+
+```go
+func FromAccessList(rules Predicates, list types.AccessList) map[common.Address][]Predicate
+```
+
+FromAccessList extracts predicates from a transaction's access list.
+
+If an address is specified multiple times in the access list, each set of
+storage keys for that address is considered an individual predicate.
+
+
+## Types
+
+### BlockResults
+
+BlockResults maps the transactions in a block to their precompile
+results.
+
+
+```go
+func ParseBlockResults(b []byte) (BlockResults, error)
+```
+
+```go
+func (b *BlockResults) Bytes() ([]byte, error)
+```
+
+```go
+func (b *BlockResults) Get(txHash common.Hash, address common.Address) set.Bits
+```
+
+```go
+func (b *BlockResults) Set(txHash common.Hash, txResults PrecompileResults)
+```
+
+### PrecompileResults
+
+PrecompileResults is a map of results for each precompile address to the
+resulting bitset.
+
+
+### Predicate
+
+Predicate is a message padded with the delimiter and zeros and chunked into
+32-byte chunks.
+
+
+```go
+func New(b []byte) Predicate
+```
+
+```go
+func (p Predicate) Bytes() ([]byte, error)
+```
+
+### Predicates
+

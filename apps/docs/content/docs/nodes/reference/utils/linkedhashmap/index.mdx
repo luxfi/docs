@@ -1,0 +1,38 @@
+---
+title: linkedhashmap
+description: Package linkedhashmap
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/linkedhashmap"
+```
+
+## Types
+
+### Hashmap
+
+Hashmap provides an O(1) mapping from a comparable key to any value.
+Comparable is defined by https://golang.org/ref/spec#Comparison_operators.
+
+
+### Iter
+
+Iterates over the keys and values in a LinkedHashmap
+from oldest to newest elements.
+Assumes the underlying LinkedHashmap is not modified while
+the iterator is in use, except to delete elements that
+have already been iterated over.
+
+
+### LinkedHashmap
+
+LinkedHashmap is a hashmap that keeps track of the oldest pairing an the
+newest pairing.
+
+
+```go
+func New[K comparable, V any]() LinkedHashmap[K, V]
+```
+

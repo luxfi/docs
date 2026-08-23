@@ -1,0 +1,29 @@
+---
+title: metric
+description: Package metric
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/evm/metrics/prometheus"
+```
+
+## Types
+
+### Gatherer
+
+Gatherer implements the [metric.Gatherer] interface by gathering all
+metrics from a [Registry].
+
+
+```go
+func NewGatherer(registry Registry) *Gatherer
+```
+
+```go
+func (g *Gatherer) Gather() ([]*metric.MetricFamily, error)
+```
+
+### Registry
+

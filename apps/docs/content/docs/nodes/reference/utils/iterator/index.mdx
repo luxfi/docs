@@ -1,0 +1,67 @@
+---
+title: iterator
+description: Package iterator
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/iterator"
+```
+
+## Functions
+
+### ToSlice
+
+```go
+func ToSlice[T any](it Iterator[T]) []T
+```
+
+ToSlice returns a slice that contains all of the elements from [it] in order.
+[it] will be released before returning.
+
+
+## Types
+
+### Empty
+
+Empty is an iterator with no elements.
+
+
+```go
+func (Empty[_]) Next() bool
+```
+
+```go
+func (Empty[_]) Release()
+```
+
+```go
+func (Empty[T]) Value() T
+```
+
+### Iterator
+
+Iterator defines an interface for iterating over a set.
+
+
+```go
+func Deduplicate[T comparable](it Iterator[T]) Iterator[T]
+```
+
+```go
+func Filter[T any](it Iterator[T], filter func(T) bool) Iterator[T]
+```
+
+```go
+func FromSlice[T any](elements ...T) Iterator[T]
+```
+
+```go
+func FromTree[T any](btree *btree.BTreeG[T]) Iterator[T]
+```
+
+```go
+func Merge[T any](less btree.LessFunc[T], iterators ...Iterator[T]) Iterator[T]
+```
+

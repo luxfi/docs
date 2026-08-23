@@ -1,0 +1,78 @@
+---
+title: genesis
+description: Package genesis
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/genesis"
+```
+
+## Types
+
+### Allocation
+
+Allocation is a UTXO on the Platform Chain that exists at the chain's genesis
+
+
+```go
+func (a Allocation) Compare(other Allocation) int
+```
+
+### Chain
+
+Chain defines a chain that exists at the network's genesis
+[GenesisData] is the initial state of the chain.
+[VMID] is the ID of the VM this blockchain runs.
+[FxIDs] are the IDs of the Fxs the blockchain supports.
+[Name] is a human-readable, non-unique name for the blockchain.
+[ChainID] is the ID of the chain that validates the blockchain
+
+
+### Genesis
+
+Genesis represents a genesis state of the platform chain
+
+
+```go
+func New(
+	utxoAssetID ids.ID,
+	networkID uint32,
+	allocations []Allocation,
+	validators []PermissionlessValidator,
+	chains []Chain,
+	time uint64,
+	initialSupply uint64,
+	message string,
+) (*Genesis, error)
+```
+
+```go
+func Parse(genesisBytes []byte) (*Genesis, error)
+```
+
+```go
+func (g *Genesis) Bytes() ([]byte, error)
+```
+
+### Owner
+
+Owner is the repr. of a reward owner at genesis
+
+
+### PermissionlessValidator
+
+GenesisPermissionlessValidator represents a permissionless validator at genesis
+
+
+### UTXO
+
+UTXO adds messages to UTXOs
+
+
+### Validator
+
+Validator represents a validator at genesis
+
+

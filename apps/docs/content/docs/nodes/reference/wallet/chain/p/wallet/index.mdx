@@ -1,0 +1,41 @@
+---
+title: wallet
+description: Package wallet
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/wallet/chain/p/wallet"
+```
+
+## Types
+
+### Backend
+
+Backend defines the full interface required to support a P-chain wallet.
+
+
+```go
+func NewBackend(utxos common.ChainUTXOs, owners map[ids.ID]fx.Owner) Backend
+```
+
+### Client
+
+### Wallet
+
+```go
+func New(
+	client Client,
+	builder builder.Builder,
+	signer walletsigner.Signer,
+) Wallet
+```
+
+```go
+func WithOptions(
+	wallet Wallet,
+	options ...common.Option,
+) Wallet
+```
+

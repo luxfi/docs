@@ -1,0 +1,42 @@
+---
+title: lp226
+description: LP-226 implements the dynamic minimum block delay mechanism specified here: https://github.com/luxfi/LPs/blob/main/LPs/226-dynamic-minimum-block-times/README.md
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/evm/lp226/lp226"
+```
+
+LP-226 implements the dynamic minimum block delay mechanism specified here:
+https://github.com/luxfi/LPs/blob/main/LPs/226-dynamic-minimum-block-times/README.md
+
+
+## Functions
+
+### DesiredDelayExcess
+
+```go
+func DesiredDelayExcess(desiredDelay uint64) uint64
+```
+
+DesiredDelayExcess calculates the optimal delay excess given the desired
+delay.
+
+
+## Types
+
+### DelayExcess
+
+DelayExcess represents the excess for delay calculation in the dynamic minimum block delay mechanism.
+
+
+```go
+func (t DelayExcess) Delay() uint64
+```
+
+```go
+func (t *DelayExcess) UpdateDelayExcess(desiredDelayExcess uint64)
+```
+

@@ -1,0 +1,33 @@
+---
+title: cb58
+description: Package cb58
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/cb58"
+```
+
+## Functions
+
+### Decode
+
+```go
+func Decode(str string) ([]byte, error)
+```
+
+Decode [str] to bytes from cb58.
+
+
+### Encode
+
+```go
+func Encode(bytes []byte) (string, error)
+```
+
+Encode [bytes] to a string using cb58 format.
+[bytes] may be nil, in which case it will be treated the same as an empty
+slice.
+
+

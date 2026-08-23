@@ -1,0 +1,126 @@
+---
+title: timer
+description: Package timer
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/timer"
+```
+
+## Functions
+
+### EstimateETA
+
+```go
+func EstimateETA(startTime time.Time, progress, end uint64) time.Duration
+```
+
+EstimateETA attempts to estimate the remaining time for a job to finish given
+the [startTime] and it's current progress.
+
+
+### ProgressFromHash
+
+```go
+func ProgressFromHash(b []byte) uint64
+```
+
+ProgressFromHash returns the progress out of MaxUint64 assuming [b] is a key
+in a uniformly distributed sequence that is being iterated lexicographically.
+
+
+### StoppedTimer
+
+```go
+func StoppedTimer() *time.Timer
+```
+
+StoppedTimer returns a stopped timer so that there is no entry on
+the C channel (and there isn't one scheduled to be added).
+
+This means that after calling Reset there will be no events on the
+channel until the timer fires (at which point there will be exactly
+one event sent to the channel).
+
+It enables re-using the timer across loop iterations without
+needing to have the first loop iteration perform any == nil checks
+to initialize the first invocation.
+
+
+## Types
+
+### AdaptiveTimeoutConfig
+
+AdaptiveTimeoutConfig contains the parameters provided to the
+adaptive timeout manager.
+
+
+### AdaptiveTimeoutManager
+
+```go
+func NewAdaptiveTimeoutManager(
+	config *AdaptiveTimeoutConfig,
+	registry metric.Registry,
+) (AdaptiveTimeoutManager, error)
+```
+
+### EtaTracker
+
+EtaTracker provides exponentially weighted moving average ETA estimates
+
+
+```go
+func NewEtaTracker(samples int, alpha float64) *EtaTracker
+```
+
+```go
+func (e *EtaTracker) AddSample(progress, total uint64, sampleTime time.Time) (*time.Duration, float64)
+```
+
+```go
+func (e *EtaTracker) ETA(progress, total uint64) time.Duration
+```
+
+```go
+func (e *EtaTracker) Update(progress, total uint64)
+```
+
+### Meter
+
+Meter tracks the number of occurrences of a specified event
+
+
+### Timer
+
+Timer wraps a timer object. This allows a user to specify a handler. Once
+specifying the handler, the dispatch thread can be called. The dispatcher
+will only return after calling Stop. SetTimeoutIn will result in calling the
+handler in the specified amount of time.
+
+
+```go
+func NewStagedTimer(f func() (time.Duration, bool)) *Timer
+```
+
+```go
+func NewTimer(handler func()) *Timer
+```
+
+```go
+func (t *Timer) Cancel()
+```
+
+```go
+func (t *Timer) Dispatch()
+```
+
+```go
+func (t *Timer) SetTimeoutIn(duration time.Duration)
+```
+
+```go
+func (t *Timer) Stop()
+```
+

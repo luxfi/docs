@@ -1,0 +1,108 @@
+---
+title: proposer
+description: Package proposer is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/proposervm/proposer"
+```
+
+Package proposer is a generated GoMock package.
+
+
+## Functions
+
+### SetWindowDuration
+
+```go
+func SetWindowDuration(d time.Duration)
+```
+
+SetWindowDuration overrides the proposer-slot spacing. It MUST be called at
+startup, before any chain begins block production: WindowDuration is read by
+both the windower delay math and TimeToSlot, so changing it mid-flight would
+desynchronize the slot mapping across the fleet (a consensus fault). Values
+&lt;= 0 are ignored, so an unset config leaves the safe 5s default in place.
+
+
+### TimeToSlot
+
+```go
+func TimeToSlot(start, now time.Time) uint64
+```
+
+### TimestampGranularity
+
+```go
+func TimestampGranularity() time.Duration
+```
+
+TimestampGranularity is the resolution block timestamps are truncated to. It
+tracks WindowDuration so the proposer-slot clock (TimeToSlot = elapsed /
+WindowDuration) and the block-timestamp clock advance at the SAME rate: with a
+coarser 1s truncation, a sub-second WindowDuration would inflate slot numbers
+without finer time resolution, so blocks could not actually be produced faster
+than 1/s. Capped at 1s so mainnet (WindowDuration >= 1s) keeps the original
+1-second block-time granularity exactly.
+
+
+## Types
+
+### MockWindower
+
+MockWindower is a mock of Windower interface.
+
+
+```go
+func NewMockWindower(ctrl *gomock.Controller) *MockWindower
+```
+
+```go
+func (m *MockWindower) Delay(arg0 context.Context, arg1, arg2 uint64, arg3 ids.NodeID, arg4 int) (time.Duration, error)
+```
+
+```go
+func (m *MockWindower) EXPECT() *MockWindowerMockRecorder
+```
+
+```go
+func (m *MockWindower) ExpectedProposer(arg0 context.Context, arg1, arg2, arg3 uint64) (ids.NodeID, error)
+```
+
+```go
+func (m *MockWindower) MinDelayForProposer(arg0 context.Context, arg1, arg2 uint64, arg3 ids.NodeID, arg4 uint64) (time.Duration, error)
+```
+
+```go
+func (m *MockWindower) Proposers(arg0 context.Context, arg1, arg2 uint64, arg3 int) ([]ids.NodeID, error)
+```
+
+### MockWindowerMockRecorder
+
+MockWindowerMockRecorder is the mock recorder for MockWindower.
+
+
+```go
+func (mr *MockWindowerMockRecorder) Delay(arg0, arg1, arg2, arg3, arg4 any) *gomock.Call
+```
+
+```go
+func (mr *MockWindowerMockRecorder) ExpectedProposer(arg0, arg1, arg2, arg3 any) *gomock.Call
+```
+
+```go
+func (mr *MockWindowerMockRecorder) MinDelayForProposer(arg0, arg1, arg2, arg3, arg4 any) *gomock.Call
+```
+
+```go
+func (mr *MockWindowerMockRecorder) Proposers(arg0, arg1, arg2, arg3 any) *gomock.Call
+```
+
+### Windower
+
+```go
+func New(state validators.State, netID, chainID ids.ID) Windower
+```
+

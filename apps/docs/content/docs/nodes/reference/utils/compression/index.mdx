@@ -1,0 +1,50 @@
+---
+title: compression
+description: Package compression
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/compression"
+```
+
+## Types
+
+### Compressor
+
+Compressor compress and decompresses messages.
+Decompress is the inverse of Compress.
+Decompress(Compress(msg)) == msg.
+
+
+```go
+func NewGzipCompressor(maxSize int64) (Compressor, error)
+```
+
+```go
+func NewNoCompressor() Compressor
+```
+
+```go
+func NewZstdCompressor(maxSize int64) (Compressor, error)
+```
+
+```go
+func NewZstdCompressorWithLevel(maxSize int64, level zstd.EncoderLevel) (Compressor, error)
+```
+
+### Type
+
+```go
+func TypeFromString(s string) (Type, error)
+```
+
+```go
+func (t Type) MarshalJSON() ([]byte, error)
+```
+
+```go
+func (t Type) String() string
+```
+

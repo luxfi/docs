@@ -1,0 +1,88 @@
+---
+title: xsvm
+description: Package xsvm
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/example/xsvm"
+```
+
+## Types
+
+### Factory
+
+```go
+func (*Factory) New(log.Logger) (interface{}, error)
+```
+
+### VM
+
+```go
+func (vm *VM) BuildBlock(ctx context.Context) (smblock.Block, error)
+```
+
+```go
+func (vm *VM) BuildBlockWithRuntime(ctx context.Context, blockContext *runtime.Runtime) (smblock.Block, error)
+```
+
+```go
+func (vm *VM) Connected(ctx context.Context, nodeID ids.NodeID, nodeVersion *smblock.VersionInfo) error
+```
+
+```go
+func (vm *VM) CreateHandlers(context.Context) (map[string]http.Handler, error)
+```
+
+```go
+func (vm *VM) GetBlock(_ context.Context, blkID ids.ID) (smblock.Block, error)
+```
+
+```go
+func (vm *VM) GetBlockIDAtHeight(_ context.Context, height uint64) (ids.ID, error)
+```
+
+```go
+func (*VM) HealthCheck(context.Context) (interface{}, error)
+```
+
+```go
+func (vm *VM) Initialize(
+	_ context.Context,
+	init vmcore.Init,
+) error
+```
+
+```go
+func (vm *VM) LastAccepted(context.Context) (ids.ID, error)
+```
+
+```go
+func (vm *VM) NewHTTPHandler(context.Context) (http.Handler, error)
+```
+
+```go
+func (vm *VM) ParseBlock(_ context.Context, blkBytes []byte) (xschain.Block, error)
+```
+
+```go
+func (vm *VM) SetPreference(_ context.Context, preferred ids.ID) error
+```
+
+```go
+func (vm *VM) SetState(ctx context.Context, newState interfaces.State) error
+```
+
+```go
+func (vm *VM) Shutdown(context.Context) error
+```
+
+```go
+func (*VM) Version(context.Context) (string, error)
+```
+
+```go
+func (vm *VM) WaitForEvent(ctx context.Context) (vmcore.Message, error)
+```
+

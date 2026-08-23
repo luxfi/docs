@@ -1,0 +1,69 @@
+---
+title: rpc
+description: Package rpc
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/rpc"
+```
+
+## Functions
+
+### CleanlyCloseBody
+
+```go
+func CleanlyCloseBody(body io.ReadCloser) error
+```
+
+CleanlyCloseBody drains and closes an HTTP response body to prevent
+HTTP/2 GOAWAY errors caused by closing bodies with unread data.
+See: https://github.com/golang/go/issues/46071
+
+
+### SendJSONRequest
+
+```go
+func SendJSONRequest(
+	ctx context.Context,
+	uri *url.URL,
+	method string,
+	params interface{},
+	reply interface{},
+	options ...Option,
+) error
+```
+
+## Types
+
+### EndpointRequester
+
+```go
+func NewEndpointRequester(uri string) EndpointRequester
+```
+
+### Option
+
+```go
+func WithHeader(key, val string) Option
+```
+
+```go
+func WithQueryParam(key, val string) Option
+```
+
+### Options
+
+```go
+func NewOptions(ops []Option) *Options
+```
+
+```go
+func (o *Options) Headers() http.Header
+```
+
+```go
+func (o *Options) QueryParams() url.Values
+```
+

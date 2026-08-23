@@ -1,0 +1,179 @@
+---
+title: network
+description: Package network
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/network"
+```
+
+## Functions
+
+### NewValidatorsWrapper
+
+```go
+func NewValidatorsWrapper(manager validators.Manager) *validatorsWrapper
+```
+
+NewValidatorsWrapper creates a new validators wrapper
+
+
+## Types
+
+### Config
+
+```go
+func NewTestNetworkConfig(
+	metrics metric.Registerer,
+	networkID uint32,
+	currentValidators validators.Manager,
+	trackedChains set.Set[ids.ID],
+) (*Config, error)
+```
+
+### ConsistentHashPeerSelector
+
+Legacy compatibility: ConsistentHashPeerSelector is an alias for backward compatibility.
+Use ScopedConsistentHashSelector with the PrimaryNetworkID as key for equivalent behavior.
+
+
+```go
+func NewConsistentHashPeerSelector(virtualNodes int) *ConsistentHashPeerSelector
+```
+
+### DelayConfig
+
+### ExternalHandler
+
+ExternalHandler handles incoming messages
+
+
+### ExternalSender
+
+ExternalSender sends messages to peers
+
+
+### HealthConfig
+
+HealthConfig describes parameters for network layer health checks.
+
+
+### Message
+
+Message represents a network message
+
+
+### Network
+
+Network defines the functionality of the networking library.
+
+
+```go
+func NewNetwork(
+	config *Config,
+	minCompatibleTime time.Time,
+	msgCreator message.Creator,
+	metricsRegistry metric.Registry,
+	log log.Logger,
+	listener net.Listener,
+	dialer dialer.EndpointDialer,
+	router ExternalHandler,
+) (Network, error)
+```
+
+```go
+func NewTestNetwork(
+	log log.Logger,
+	registry metric.Registry,
+	cfg *Config,
+	router ExternalHandler,
+) (Network, error)
+```
+
+### PeerListGossipConfig
+
+### ScopedConsistentHashSelector
+
+ScopedConsistentHashSelector maintains independent rings keyed by SelectorKey.
+This enables proper peer selection based on the validator set authority
+(sequencerID) rather than just the chain/execution domain.
+
+
+```go
+func NewScopedConsistentHashSelector(virtualNodes int) *ScopedConsistentHashSelector
+```
+
+```go
+func (s *ScopedConsistentHashSelector) Clear(key SelectorKey)
+```
+
+```go
+func (s *ScopedConsistentHashSelector) ClearAll()
+```
+
+```go
+func (s *ScopedConsistentHashSelector) Contains(key SelectorKey, nodeID ids.NodeID) bool
+```
+
+```go
+func (s *ScopedConsistentHashSelector) Keys() []SelectorKey
+```
+
+```go
+func (s *ScopedConsistentHashSelector) RemovePeer(key SelectorKey, nodeID ids.NodeID)
+```
+
+```go
+func (s *ScopedConsistentHashSelector) SelectDeterministic(
+	key SelectorKey,
+	msgKey []byte,
+	n int,
+	exclude set.Set[ids.NodeID],
+) []ids.NodeID
+```
+
+```go
+func (s *ScopedConsistentHashSelector) SelectPseudoRandom(
+	key SelectorKey,
+	seed []byte,
+	n int,
+	exclude set.Set[ids.NodeID],
+) []ids.NodeID
+```
+
+```go
+func (s *ScopedConsistentHashSelector) Size(key SelectorKey) int
+```
+
+```go
+func (s *ScopedConsistentHashSelector) TopByWeight(key SelectorKey, limit int) []ids.NodeID
+```
+
+```go
+func (s *ScopedConsistentHashSelector) TotalSize() int
+```
+
+```go
+func (s *ScopedConsistentHashSelector) UpsertPeer(key SelectorKey, nodeID ids.NodeID, weight uint64)
+```
+
+### SelectorKey
+
+SelectorKey is the scoping key for peer selection.
+In the Lux model this should be the SequencerID (validator-set identity).
+It can be different from a chainID (execution domain).
+
+
+### SetCallbackListener
+
+SetCallbackListener for validator changes
+
+
+### ThrottlerConfig
+
+### TimeoutConfig
+
+### UptimeResult
+

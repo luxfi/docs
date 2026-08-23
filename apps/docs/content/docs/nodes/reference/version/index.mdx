@@ -1,0 +1,79 @@
+---
+title: version
+description: Package version
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/version"
+```
+
+## Types
+
+### Application
+
+```go
+func (a *Application) Before(o *Application) bool
+```
+
+```go
+func (a *Application) Compare(o *Application) int
+```
+
+```go
+func (a *Application) Compatible(o *Application) error
+```
+
+```go
+func (a *Application) String() string
+```
+
+### Compatibility
+
+Compatibility a utility for checking the compatibility of peer versions
+
+
+```go
+func GetCompatibility(minCompatibleTime time.Time) Compatibility
+```
+
+```go
+func NewCompatibility(
+	version *Application,
+	minCompatible *Application,
+	minCompatibleTime time.Time,
+	prevMinCompatible *Application,
+) Compatibility
+```
+
+### Semantic
+
+```go
+func Parse(s string) (*Semantic, error)
+```
+
+```go
+func (s *Semantic) Compare(o *Semantic) int
+```
+
+```go
+func (s *Semantic) String() string
+```
+
+### Versions
+
+Versions contains the versions relevant to a build of node. In
+addition to supporting construction of the string displayed by
+--version, it is used to produce the output of --version-json and can
+be used to unmarshal that output.
+
+
+```go
+func GetVersions() *Versions
+```
+
+```go
+func (v *Versions) String() string
+```
+

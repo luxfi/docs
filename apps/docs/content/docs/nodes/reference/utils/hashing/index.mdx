@@ -1,0 +1,118 @@
+---
+title: hashing
+description: Package hashing is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/hashing"
+```
+
+Package hashing is a generated GoMock package.
+
+
+## Functions
+
+### Checksum
+
+```go
+func Checksum(bytes []byte, length int) []byte
+```
+
+Checksum creates a checksum of [length] bytes from the 256 bit hash of the
+byte slice.
+
+Returns: the lower [length] bytes of the hash
+Panics if length > 32.
+
+
+### ComputeHash160
+
+```go
+func ComputeHash160(buf []byte) []byte
+```
+
+ComputeHash160 computes a cryptographically strong 160 bit hash of the input
+byte slice.
+
+
+### ComputeHash256
+
+```go
+func ComputeHash256(buf []byte) []byte
+```
+
+ComputeHash256 computes a cryptographically strong 256 bit hash of the input
+byte slice.
+
+
+### PubkeyBytesToAddress
+
+```go
+func PubkeyBytesToAddress(key []byte) []byte
+```
+
+PubkeyBytesToAddress converts a public key to an address using
+Bitcoin-style SHA256+RIPEMD160 hash.
+
+
+## Types
+
+### Hash160
+
+Hash160 A 160 bit long hash value.
+
+
+```go
+func ComputeHash160Array(buf []byte) Hash160
+```
+
+```go
+func ToHash160(bytes []byte) (Hash160, error)
+```
+
+### Hash256
+
+Hash256 A 256 bit long hash value.
+
+
+```go
+func ComputeHash256Array(buf []byte) Hash256
+```
+
+```go
+func ToHash256(bytes []byte) (Hash256, error)
+```
+
+### Hasher
+
+Hasher is an interface to compute a hash value.
+
+
+### MockHasher
+
+MockHasher is a mock of Hasher interface.
+
+
+```go
+func NewMockHasher(ctrl *gomock.Controller) *MockHasher
+```
+
+```go
+func (m *MockHasher) EXPECT() *MockHasherMockRecorder
+```
+
+```go
+func (m *MockHasher) Hash(arg0 []byte) uint64
+```
+
+### MockHasherMockRecorder
+
+MockHasherMockRecorder is the mock recorder for MockHasher.
+
+
+```go
+func (mr *MockHasherMockRecorder) Hash(arg0 any) *gomock.Call
+```
+

@@ -1,0 +1,191 @@
+---
+title: tmpnet
+description: Package tmpnet
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/tests/fixture/tmpnet"
+```
+
+## Functions
+
+### GenerateNodeID
+
+```go
+func GenerateNodeID() (ids.NodeID, error)
+```
+
+GenerateNodeID generates a random NodeID for testing purposes
+
+
+### GetDefaultNetworkID
+
+```go
+func GetDefaultNetworkID() uint32
+```
+
+GetDefaultNetworkID returns the default network ID for testing
+
+
+### NewTestGenesisWithFunds
+
+```go
+func NewTestGenesisWithFunds(
+	networkID uint32,
+	nodes []*Node,
+	fundedKeys []*secp256k1.PrivateKey,
+) ([]byte, error)
+```
+
+NewTestGenesisWithFunds creates a test genesis configuration with funded accounts
+
+
+### ValidateGenesis
+
+```go
+func ValidateGenesis(genesisBytes []byte) error
+```
+
+ValidateGenesis validates a genesis configuration
+
+
+## Types
+
+### Allocation
+
+Allocation represents an initial fund allocation
+
+
+### Chain
+
+Chain represents a blockchain in a net
+
+
+### Flags
+
+Flags is a map of node flags with helper methods
+
+
+```go
+func (f Flags) GetStringVal(key string) string
+```
+
+### GenesisConfig
+
+GenesisConfig represents genesis configuration
+
+
+### Net
+
+Net represents a net (non-primary chain) in the network
+
+
+### Network
+
+Network represents a local test network
+
+
+```go
+func ReadNetwork(ctx context.Context, log log.Logger, networkDir string) (*Network, error)
+```
+
+```go
+func (n *Network) EnsureDefaultConfig(log log.Logger) error
+```
+
+```go
+func (n *Network) EnsureNodeConfig(node *Node) error
+```
+
+```go
+func (n *Network) GetBootstrapIPsAndIDs() ([]string, []string)
+```
+
+```go
+func (n *Network) Start(ctx context.Context, log log.Logger) error
+```
+
+```go
+func (n *Network) Stop(ctx context.Context) error
+```
+
+```go
+func (n *Network) Write() error
+```
+
+### Node
+
+Node represents a node in a local test network
+
+
+```go
+func NewNode() *Node
+```
+
+```go
+func ReadNode(nodeDir string) (*Node, error)
+```
+
+```go
+func (n *Node) EnsureBLSSigningKey() error
+```
+
+```go
+func (n *Node) EnsureKeys() error
+```
+
+```go
+func (n *Node) GetURI() string
+```
+
+```go
+func (n *Node) InitiateStop() error
+```
+
+```go
+func (n *Node) IsRunning() bool
+```
+
+```go
+func (n *Node) Start(ctx context.Context, log log.Logger) error
+```
+
+```go
+func (n *Node) Stop(ctx context.Context) error
+```
+
+```go
+func (n *Node) WaitForStopped(ctx context.Context) error
+```
+
+```go
+func (n *Node) Write() error
+```
+
+### NodeConfig
+
+NodeConfig is the serialized node configuration
+
+
+### NodeRuntimeConfig
+
+NodeRuntimeConfig configures how nodes are run
+
+
+### ProcessRuntimeConfig
+
+ProcessRuntimeConfig configures process execution
+
+
+### Staker
+
+Staker represents an initial staker
+
+
+### UnlockPeriod
+
+UnlockPeriod represents a vesting unlock period
+
+

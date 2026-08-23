@@ -1,0 +1,172 @@
+---
+title: mempool
+description: Package mempool is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/txs/mempool"
+```
+
+Package mempool is a generated GoMock package.
+
+
+## Types
+
+### Mempool
+
+```go
+func New(namespace string, registerer metric.Registerer) (*Mempool, error)
+```
+
+```go
+func (m *Mempool) Add(tx *txs.Tx) error
+```
+
+```go
+func (m *Mempool) DropExpiredStakerTxs(minStartTime time.Time) []ids.ID
+```
+
+```go
+func (m *Mempool) Has(txID ids.ID) bool
+```
+
+```go
+func (m *Mempool) HasTxs() bool
+```
+
+```go
+func (m *Mempool) PeekTxs(n int) []*txs.Tx
+```
+
+```go
+func (m *Mempool) Remove(txs ...*txs.Tx)
+```
+
+```go
+func (m *Mempool) SetAuthPolicy(profile *config.ChainSecurityProfile, registry auth.ClassicalCompatRegistry)
+```
+
+### MockMempool
+
+MockMempool is a mock of Mempool interface.
+
+
+```go
+func NewMockMempool(ctrl *gomock.Controller) *MockMempool
+```
+
+```go
+func (m *MockMempool) Add(arg0 *txs.Tx) error
+```
+
+```go
+func (m *MockMempool) DropExpiredStakerTxs(arg0 time.Time) []ids.ID
+```
+
+```go
+func (m *MockMempool) EXPECT() *MockMempoolMockRecorder
+```
+
+```go
+func (m *MockMempool) Get(arg0 ids.ID) (*txs.Tx, bool)
+```
+
+```go
+func (m *MockMempool) GetDropReason(arg0 ids.ID) error
+```
+
+```go
+func (m *MockMempool) Has(arg0 ids.ID) bool
+```
+
+```go
+func (m *MockMempool) HasTxs() bool
+```
+
+```go
+func (m *MockMempool) Iterate(arg0 func(*txs.Tx) bool)
+```
+
+```go
+func (m *MockMempool) Len() int
+```
+
+```go
+func (m *MockMempool) MarkDropped(arg0 ids.ID, arg1 error)
+```
+
+```go
+func (m *MockMempool) Peek() (*txs.Tx, bool)
+```
+
+```go
+func (m *MockMempool) PeekTxs(arg0 int) []*txs.Tx
+```
+
+```go
+func (m *MockMempool) Remove(arg0 ...*txs.Tx)
+```
+
+```go
+func (m *MockMempool) RequestBuildBlock(arg0 bool)
+```
+
+### MockMempoolMockRecorder
+
+MockMempoolMockRecorder is the mock recorder for MockMempool.
+
+
+```go
+func (mr *MockMempoolMockRecorder) Add(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockMempoolMockRecorder) DropExpiredStakerTxs(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockMempoolMockRecorder) Get(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockMempoolMockRecorder) GetDropReason(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockMempoolMockRecorder) Has(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockMempoolMockRecorder) HasTxs() *gomock.Call
+```
+
+```go
+func (mr *MockMempoolMockRecorder) Iterate(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockMempoolMockRecorder) Len() *gomock.Call
+```
+
+```go
+func (mr *MockMempoolMockRecorder) MarkDropped(arg0, arg1 any) *gomock.Call
+```
+
+```go
+func (mr *MockMempoolMockRecorder) Peek() *gomock.Call
+```
+
+```go
+func (mr *MockMempoolMockRecorder) PeekTxs(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockMempoolMockRecorder) Remove(arg0 ...any) *gomock.Call
+```
+
+```go
+func (mr *MockMempoolMockRecorder) RequestBuildBlock(arg0 any) *gomock.Call
+```
+

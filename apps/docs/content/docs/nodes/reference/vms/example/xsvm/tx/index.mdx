@@ -1,0 +1,89 @@
+---
+title: tx
+description: Package tx
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/example/xsvm/tx"
+```
+
+## Types
+
+### Export
+
+```go
+func (e *Export) Marshal() ([]byte, error)
+```
+
+```go
+func (e *Export) Visit(v Visitor) error
+```
+
+### Import
+
+```go
+func (i *Import) Marshal() ([]byte, error)
+```
+
+```go
+func (i *Import) Visit(v Visitor) error
+```
+
+### Payload
+
+```go
+func NewPayload(
+	sender ids.ShortID,
+	nonce uint64,
+	isReturn bool,
+	amount uint64,
+	to ids.ShortID,
+) (*Payload, error)
+```
+
+```go
+func ParsePayload(bytes []byte) (*Payload, error)
+```
+
+```go
+func (p *Payload) Bytes() []byte
+```
+
+### Transfer
+
+```go
+func (t *Transfer) Marshal() ([]byte, error)
+```
+
+```go
+func (t *Transfer) Visit(v Visitor) error
+```
+
+### Tx
+
+```go
+func Parse(bytes []byte) (*Tx, error)
+```
+
+```go
+func Sign(utx Unsigned, key *secp256k1.PrivateKey) (*Tx, error)
+```
+
+```go
+func (tx *Tx) ID() (ids.ID, error)
+```
+
+```go
+func (tx *Tx) Marshal() ([]byte, error)
+```
+
+```go
+func (tx *Tx) SenderID() (ids.ShortID, error)
+```
+
+### Unsigned
+
+### Visitor
+

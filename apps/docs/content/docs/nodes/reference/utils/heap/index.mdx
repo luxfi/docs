@@ -1,0 +1,123 @@
+---
+title: heap
+description: Package heap
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/heap"
+```
+
+## Functions
+
+### MapValues
+
+```go
+func MapValues[K comparable, V any](m Map[K, V]) []V
+```
+
+## Types
+
+### Map
+
+```go
+func NewMap[K comparable, V any](less func(a, b V) bool) Map[K, V]
+```
+
+```go
+func (m *Map[K, V]) Contains(k K) bool
+```
+
+```go
+func (m *Map[K, V]) Fix(k K)
+```
+
+```go
+func (m *Map[K, V]) Get(k K) (V, bool)
+```
+
+```go
+func (m *Map[K, V]) Len() int
+```
+
+```go
+func (m *Map[K, V]) Peek() (K, V, bool)
+```
+
+```go
+func (m *Map[K, V]) Pop() (K, V, bool)
+```
+
+```go
+func (m *Map[K, V]) Push(k K, v V) (V, bool)
+```
+
+```go
+func (m *Map[K, V]) Remove(k K) (V, bool)
+```
+
+### Queue
+
+```go
+func NewQueue[T any](less func(a, b T) bool) Queue[T]
+```
+
+```go
+func QueueOf[T any](less func(a, b T) bool, entries ...T) Queue[T]
+```
+
+```go
+func (q *Queue[T]) Fix(i int)
+```
+
+```go
+func (q *Queue[T]) Len() int
+```
+
+```go
+func (q *Queue[T]) Peek() (T, bool)
+```
+
+```go
+func (q *Queue[T]) Pop() (T, bool)
+```
+
+```go
+func (q *Queue[T]) Push(t T)
+```
+
+### Set
+
+```go
+func NewSet[T comparable](less func(a, b T) bool) Set[T]
+```
+
+```go
+func (s Set[T]) Contains(t T) bool
+```
+
+```go
+func (s Set[T]) Fix(t T)
+```
+
+```go
+func (s Set[T]) Len() int
+```
+
+```go
+func (s Set[T]) Peek() (T, bool)
+```
+
+```go
+func (s Set[T]) Pop() (T, bool)
+```
+
+```go
+func (s Set[T]) Push(t T) bool
+```
+
+```go
+func (s Set[T]) Remove(t T) bool
+```
+

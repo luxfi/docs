@@ -1,0 +1,282 @@
+---
+title: kem
+description: Package kem implements post-quantum key encapsulation for the Lux node peer handshake.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/network/kem"
+```
+
+Package kem implements post-quantum key encapsulation for the Lux node peer
+handshake. ML-KEM-768 (FIPS 203, NIST PQ Cat 3) is the default session KEM;
+ML-KEM-1024 (NIST PQ Cat 5) is mandatory for high-value validator and DKG
+channels.
+
+The session shared secret is derived through one FIPS 203 encapsulate /
+decapsulate dance and then bound to the handshake transcript via cSHAKE256
+with customization "NODE_AEAD_V1". The bound key is the AEAD session
+key used by every subsequent frame on the connection.
+
+One and only one KEM family is admitted on a strict-PQ profile: ML-KEM.
+Classical X25519 / ECDH are present in the wire enum solely as forbidden
+markers so audit tooling can name a misconfiguration precisely; a strict-PQ
+peer with ForbidClassicalKEM=true refuses to handshake against any peer
+offering KeyExchangeX25519Unsafe.
+
+KeyExchangeID is a type alias of config.KeyExchangeID; the canonical wire
+bytes (0x01 = ML-KEM-768, 0x02 = ML-KEM-1024, 0x90 = X25519Unsafe) live
+in the consensus config package and are shared with protocol/auth. One
+registry, so a KEM id means the same byte to every reader of the wire.
+
+
+## Functions
+
+### AssertDKGCompliance
+
+```go
+func AssertDKGCompliance(sessionScheme, profileHighValueKEM KeyExchangeID) error
+```
+
+AssertDKGCompliance reports nil iff sessionScheme and profileHighValueKEM
+are both ML-KEM-1024. The strict-PQ profile cross-axis check: a profile
+that declares HighValueKEM=ML-KEM-1024 MUST observe ML-KEM-1024 on the
+wire; anything else is a configuration drift that audit tooling rejects
+at boot.
+
+This is the single dispatch point for the "DKG channel scheme matches
+profile high-value KEM" predicate; pulsar / pulsar-m callers route
+through it instead of comparing the bytes locally.
+
+
+### CiphertextSize
+
+```go
+func CiphertextSize(scheme KeyExchangeID) (int, error)
+```
+
+CiphertextSize returns the canonical KEM ciphertext byte width for
+scheme.
+
+
+### GenerateKEMKeypair
+
+```go
+func GenerateKEMKeypair(scheme KeyExchangeID, randSrc io.Reader) (pub, priv []byte, err error)
+```
+
+GenerateKEMKeypair returns a fresh (encapsulation-key, decapsulation-key)
+pair for scheme. randSrc may be nil, in which case crypto/rand.Reader is
+used. Returns ErrUnsupportedScheme for anything outside the supported
+ML-KEM family.
+
+Sizes:
+
+	MLKEM768   pub=1184 priv=2400 bytes
+	MLKEM1024  pub=1568 priv=3168 bytes
+
+
+### HashTranscript
+
+```go
+func HashTranscript(msgs ...[]byte) [TranscriptHashSize]byte
+```
+
+HashTranscript returns the canonical cSHAKE256 / TupleHash256 commitment
+to msgs in the order they appear. Customization is
+"NODE_TRANSCRIPT_V1" so two different handshake protocols cannot
+produce the same hash from the same byte content.
+
+The encoding is SP 800-185 TupleHash256: each input is left-encoded with
+its bit-length prefix, the right-encoded total output bit-length is
+appended, and the result is fed to cSHAKE256 with the function-name
+"TupleHash" and customisation "NODE_TRANSCRIPT_V1". This matches
+the helper used by ChainSecurityProfile.ComputeHash, so the same
+transcript hash byte-encodes identically across the node and consensus.
+
+
+### NISTCategory
+
+```go
+func NISTCategory(scheme KeyExchangeID) uint8
+```
+
+NISTCategory reports the NIST PQ security category for scheme. Cat 3
+targets AES-192 / SHA-384 strength; Cat 5 targets AES-256 / SHA-512.
+Returns 0 for invalid and forbidden markers.
+
+Free function for the same reason as SharedSecretBits.
+
+
+### NewAEAD
+
+```go
+func NewAEAD(id AEADID, key []byte) (cipher.AEAD, error)
+```
+
+NewAEAD constructs a cipher.AEAD bound to key. Caller produces key via
+KEMSession.DeriveAEADKey or KEMSession.DeriveDKGAEADKey. Returns
+ErrUnsupportedAEAD for any byte other than AEADChaCha20Poly1305.
+
+This is the single dispatch point that maps an AEADID byte to a
+concrete cipher; transport code routes through it instead of importing
+chacha20poly1305 directly so a future AEAD addition (e.g. AES-256-GCM
+at 0x02) lands in one place.
+
+
+### PublicKeySize
+
+```go
+func PublicKeySize(scheme KeyExchangeID) (int, error)
+```
+
+PublicKeySize returns the canonical encapsulation-key byte width for
+scheme. Useful for fixed-width framing on the wire.
+
+
+### SharedSecretBits
+
+```go
+func SharedSecretBits(scheme KeyExchangeID) uint16
+```
+
+SharedSecretBits reports the shared-secret width emitted by scheme in
+bits. Both ML-KEM-768 and ML-KEM-1024 emit 256-bit secrets per FIPS 203.
+Returns 0 for invalid and forbidden markers.
+
+Free function rather than a method because KeyExchangeID is a type alias
+of config.KeyExchangeID; methods can only be declared in the package that
+defines the underlying type.
+
+
+## Types
+
+### AEADID
+
+AEADID is the wire byte identifying the authenticated cipher used on
+post-handshake frames. Only FIPS-approved primitives are admitted; the
+production default is ChaCha20-Poly1305 (RFC 8439) because the Lux
+strict-PQ profile pairs lattice KEM with a stream cipher that is not
+vulnerable to the same lattice attack surface.
+
+Numbering:
+
+	0x00 — None (rejected)
+	0x01 — ChaCha20-Poly1305 (RFC 8439, FIPS 140 module-approved)
+
+
+```go
+func (a AEADID) String() string
+```
+
+### ActiveProfile
+
+ActiveProfile is the small subset of strict-PQ profile fields the
+network layer needs at boot to log the active posture and refuse
+peers that disagree. The full ChainSecurityProfile lives in
+consensus/config and is the authoritative source; this struct is the
+network-layer projection of that profile.
+
+
+```go
+func StrictE2EPQ() ActiveProfile
+```
+
+```go
+func (p ActiveProfile) Banner() string
+```
+
+```go
+func (p ActiveProfile) Validate() error
+```
+
+### KEMSession
+
+KEMSession is the result of one successful ML-KEM encapsulate /
+decapsulate. It carries the scheme byte, the raw 256-bit shared secret,
+and the 384-bit running transcript hash (cSHAKE256 / TupleHash256 over
+every handshake message produced before the KEM round, in canonical
+order). The AEAD key is derived from SharedSecret + TranscriptHash via
+cSHAKE256 customisation "NODE_AEAD_V1".
+
+Field invariants enforced by package APIs:
+
+  - SchemeID ∈ &#123;MLKEM768, MLKEM1024}; any other scheme returns
+    ErrUnsupportedScheme at construction time.
+  - SharedSecret is the raw FIPS 203 ML-KEM.Decapsulate / Encapsulate
+    output. Length is always exactly SharedSecretSize.
+  - TranscriptHash is the 48-byte SHA3-384 (cSHAKE256) commitment over
+    the handshake transcript. Two distinct transcripts MUST produce
+    two distinct TranscriptHash values.
+
+KEMSession does not zero its SharedSecret on drop because Go does not
+provide a deterministic destructor; callers that need defensive zeroing
+must do it explicitly after deriving the AEAD key.
+
+
+```go
+func InitiateDKGKEMSession(
+	scheme KeyExchangeID,
+	peerKEMPub []byte,
+	transcript []byte,
+) (*KEMSession, []byte, error)
+```
+
+```go
+func InitiateKEMSession(
+	scheme KeyExchangeID,
+	peerKEMPub []byte,
+	transcript []byte,
+) (*KEMSession, []byte, error)
+```
+
+```go
+func RespondDKGKEMSession(
+	scheme KeyExchangeID,
+	ourKEMSec []byte,
+	peerCiphertext []byte,
+	transcript []byte,
+) (*KEMSession, error)
+```
+
+```go
+func RespondKEMSession(
+	scheme KeyExchangeID,
+	ourKEMSec []byte,
+	peerCiphertext []byte,
+	transcript []byte,
+) (*KEMSession, error)
+```
+
+```go
+func (s *KEMSession) DeriveAEADKey() [AEADKeySize]byte
+```
+
+```go
+func (s *KEMSession) DeriveDKGAEADKey() ([AEADKeySize]byte, error)
+```
+
+### KeyExchangeID
+
+KeyExchangeID is the wire byte that identifies the key-exchange / KEM
+scheme a peer offers for session-key establishment. Type-aliased to
+config.KeyExchangeID so the wire format and predicates (String,
+IsPostQuantum, IsForbiddenInPQMode) are shared with the consensus
+security profile.
+
+Canonical numbering:
+
+	0x00 — Invalid / unspecified (rejected by every strict-PQ verifier)
+	0x01 — ML-KEM-768  (FIPS 203 Cat 3; production default)
+	0x02 — ML-KEM-1024 (FIPS 203 Cat 5; DKG / high-value channels)
+	0x90 — X25519Unsafe (classical; explicit forbidden marker in strict-PQ)
+
+The forbidden markers are NEVER produced by a strict-PQ node; they exist
+solely so a strict-PQ peer that receives one can refuse with a precise
+diagnostic instead of dropping silently.
+
+ML-KEM-512 (NIST Cat 1) is intentionally not exported — it sits below the
+strict-PQ floor; the node does not negotiate Cat 1 sessions.
+
+

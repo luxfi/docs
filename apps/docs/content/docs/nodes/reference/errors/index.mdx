@@ -1,0 +1,133 @@
+---
+title: errors
+description: Package errors provides common error types and utilities for the Lux node.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/errors"
+```
+
+Package errors provides common error types and utilities for the Lux node.
+
+
+## Functions
+
+### IsClosed
+
+```go
+func IsClosed(err error) bool
+```
+
+IsClosed checks if an error indicates a closed resource
+
+
+### IsNotFound
+
+```go
+func IsNotFound(err error) bool
+```
+
+IsNotFound checks if an error is a "not found" error
+
+
+### IsPermanent
+
+```go
+func IsPermanent(err error) bool
+```
+
+IsPermanent checks if an error is permanent and should not be retried
+
+
+### IsTemporary
+
+```go
+func IsTemporary(err error) bool
+```
+
+IsTemporary checks if an error is temporary and can be retried
+
+
+### IsTimeout
+
+```go
+func IsTimeout(err error) bool
+```
+
+IsTimeout checks if an error is a timeout
+
+
+### Join
+
+```go
+func Join(errs ...error) error
+```
+
+Join combines multiple errors into a single error
+
+
+### Wrap
+
+```go
+func Wrap(err error, category Category, message string) error
+```
+
+Wrap creates a new WrappedError with the given category and message
+
+
+### WrapWithContext
+
+```go
+func WrapWithContext(err error, category Category, message string, context map[string]interface{}) error
+```
+
+WrapWithContext creates a new WrappedError with context information
+
+
+## Types
+
+### Category
+
+Error categories for grouping related errors
+
+
+```go
+func GetCategory(err error) Category
+```
+
+### Multi
+
+Multi combines multiple errors into a single error
+
+
+```go
+func (m *Multi) Add(err error)
+```
+
+```go
+func (m *Multi) Err() error
+```
+
+```go
+func (m *Multi) Error() string
+```
+
+### WrappedError
+
+WrappedError provides context around an error
+
+
+```go
+func (e *WrappedError) Error() string
+```
+
+```go
+func (e *WrappedError) Is(target error) bool
+```
+
+```go
+func (e *WrappedError) Unwrap() error
+```
+

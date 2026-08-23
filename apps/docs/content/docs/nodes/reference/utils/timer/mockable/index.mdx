@@ -1,0 +1,39 @@
+---
+title: mockable
+description: Package mockable
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/timer/mockable"
+```
+
+## Types
+
+### Clock
+
+Clock acts as a thin wrapper around global time that allows for easy testing.
+It is safe for concurrent use.
+
+
+```go
+func (c *Clock) Set(t time.Time)
+```
+
+```go
+func (c *Clock) Sync()
+```
+
+```go
+func (c *Clock) Time() time.Time
+```
+
+```go
+func (c *Clock) Unix() uint64
+```
+
+```go
+func (c *Clock) UnixTime() time.Time
+```
+

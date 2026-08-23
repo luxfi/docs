@@ -1,0 +1,61 @@
+---
+title: nets
+description: Package nets
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/nets"
+```
+
+## Functions
+
+### DefaultPOAParameters
+
+```go
+func DefaultPOAParameters() config.Parameters
+```
+
+DefaultPOAParameters returns sampling parameters optimized for POA mode
+
+
+### GetPOAConsensusParameters
+
+```go
+func GetPOAConsensusParameters() config.Parameters
+```
+
+GetPOAConsensusParameters returns sampling parameters optimized for POA mode
+
+
+## Types
+
+### Allower
+
+### Config
+
+```go
+func (c *Config) ApplyPOAConfig(poa POAConfig)
+```
+
+```go
+func (c *Config) Valid() error
+```
+
+### Net
+
+Net keeps track of the currently bootstrapping chains in a chain. If no
+chains in the net are currently bootstrapping, the net is considered
+bootstrapped.
+
+
+```go
+func New(myNodeID ids.NodeID, config Config) Net
+```
+
+### POAConfig
+
+POAConfig provides Proof of Authority configuration for chains
+
+

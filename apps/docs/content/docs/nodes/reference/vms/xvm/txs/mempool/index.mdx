@@ -1,0 +1,31 @@
+---
+title: mempool
+description: Package mempool
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/xvm/txs/mempool"
+```
+
+## Types
+
+### Mempool
+
+```go
+func New(namespace string, registerer metric.Registerer) (*Mempool, error)
+```
+
+```go
+func (m *Mempool) Add(tx *txs.Tx) error
+```
+
+```go
+func (m *Mempool) HasTxs() bool
+```
+
+```go
+func (m *Mempool) SetAuthPolicy(profile *config.ChainSecurityProfile, registry auth.ClassicalCompatRegistry)
+```
+

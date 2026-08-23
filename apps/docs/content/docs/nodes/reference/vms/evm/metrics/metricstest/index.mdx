@@ -1,0 +1,25 @@
+---
+title: metricstest
+description: Package metricstest
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/evm/metrics/metricstest"
+```
+
+## Functions
+
+### WithMetrics
+
+```go
+func WithMetrics(t testing.TB)
+```
+
+WithMetrics enables metrics for the test and prevents any other
+tests with metrics from running concurrently.
+
+Metrics are restored to their original value during testing cleanup.
+
+

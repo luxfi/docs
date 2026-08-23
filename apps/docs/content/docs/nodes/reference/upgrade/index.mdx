@@ -1,0 +1,37 @@
+---
+title: upgrade
+description: Package upgrade publishes the canonical Lux genesis-activation timestamp and the runtime tunables consumed at chain birth.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/upgrade"
+```
+
+Package upgrade publishes the canonical Lux genesis-activation timestamp
+and the runtime tunables consumed at chain birth. Every Lux chain runs the
+full feature-set from genesis (activate-all-implicitly); the fields here
+encode values, not gates.
+
+
+## Types
+
+### Config
+
+Config carries the runtime tunables that survived the upstream upgrade rip.
+
+  - XChainStopVertexID encodes the per-network stop-vertex ID that pins
+    X-Chain genesis state at boot. It is a value, not a gate.
+  - EpochDuration is the LP-181 epoch duration; per-network value
+    (5m on mainnet, 30s on test/dev) tunes consensus pacing.
+
+
+```go
+func GetConfig(networkID uint32) Config
+```
+
+```go
+func (*Config) Validate() error
+```
+

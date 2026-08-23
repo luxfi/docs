@@ -1,0 +1,132 @@
+---
+title: consistent
+description: Package consistent
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/hashing/consistent"
+```
+
+## Types
+
+### Hashable
+
+Hashable is an interface to be implemented by structs that need to be sharded via consistent hashing.
+
+
+### Ring
+
+Ring is an interface for a consistent hashing ring
+(ref: https://en.wikipedia.org/wiki/Consistent_hashing).
+
+Consistent hashing is a method of distributing keys across an arbitrary set
+of destinations.
+
+Consider a naive approach, which uses modulo to map a key to a node to serve
+cached requests. Let N be the number of keys and M is the amount of possible
+hashing destinations. Here, a key would be routed to a node based on
+h(key) % M = node assigned.
+
+With this approach, we can route a key to a node in O(1) time, but this
+results in cache misses as nodes are introduced and removed, which results in
+the keys being reshuffled across nodes, as modulo's output changes with M.
+This approach results in O(N) keys being shuffled, which is undesirable for a
+caching use-case.
+
+Consistent hashing works by hashing all keys into a circle, which can be
+visualized as a clock. Keys are routed to a node by hashing the key, and
+searching for the first clockwise neighbor. This requires O(N) memory to
+maintain the state of the ring and log(N) time to route a key using
+binary-search, but results in O(N/M) amount of keys being shuffled when a
+node is added/removed because the addition/removal of a node results in a
+split/merge of its counter-clockwise neighbor's hash space.
+
+As an example, assume we have a ring that supports hashes from 1-12.
+
+	           12
+	     11          1
+
+	 10                  2
+
+	9                      3
+
+	 8                   4
+
+	     7           5
+	           6
+
+Add node 1 (n1). Let h(n1) = 12.
+First, we compute the hash the node, and insert it into its corresponding
+location on the ring.
+
+	           12 (n1)
+	     11          1
+
+	 10                  2
+
+	9                      3
+
+	 8                   4
+
+	     7           5
+	           6
+
+Now, to see which node a key (k1) should map to, we hash the key and search
+for its closest clockwise neighbor.
+Let h(k1) = 3. Here, we see that since n1 is the closest neighbor, as there
+are no other nodes in the ring.
+
+	           12 (n1)
+	     11          1
+
+	 10                  2
+
+	9                      3 (k1)
+
+	 8                   4
+
+	     7           5
+	           6
+
+Now, let's insert another node (n2), such that h(n2) = 6.
+Here we observe that k1 has shuffled to n2, as n2 is the closest clockwise
+neighbor to k1.
+
+	           12 (n1)
+	     11          1
+
+	 10                  2
+
+	9                      3 (k1)
+
+	 8                   4
+
+	     7           5
+	           6 (n2)
+
+Other optimizations can be made to help reduce blast radius of failures and
+the variance in keys (hot shards). One such optimization is introducing
+virtual nodes, which is to replicate a single node multiple times by salting
+it, (e.g n1-0, n1-1...).
+
+Without virtualization, failures of a node cascade as each node failing
+results in the load of the failed node being shuffled into its clockwise
+neighbor, which can result in a sampling effect across the network.
+
+
+```go
+func NewHashRing(config RingConfig) Ring
+```
+
+### RingConfig
+
+RingConfig configures settings for a Ring.
+
+
+### RingReader
+
+RingReader is an interface to read values from Ring.
+
+

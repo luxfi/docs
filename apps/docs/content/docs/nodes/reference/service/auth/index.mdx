@@ -1,0 +1,50 @@
+---
+title: auth
+description: Package auth
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/service/auth"
+```
+
+## Types
+
+### Auth
+
+```go
+func New(log log.Logger, endpoint, pw string) (Auth, error)
+```
+
+```go
+func NewFromHash(log log.Logger, endpoint string, pw password.Hash) Auth
+```
+
+### ChangePasswordArgs
+
+### NewTokenArgs
+
+### Password
+
+### RevokeTokenArgs
+
+### Service
+
+Service that serves the Auth API functionality.
+
+
+```go
+func (s *Service) ChangePassword(_ *http.Request, args *ChangePasswordArgs, _ *apitypes.EmptyReply) error
+```
+
+```go
+func (s *Service) NewToken(_ *http.Request, args *NewTokenArgs, reply *Token) error
+```
+
+```go
+func (s *Service) RevokeToken(_ *http.Request, args *RevokeTokenArgs, _ *apitypes.EmptyReply) error
+```
+
+### Token
+

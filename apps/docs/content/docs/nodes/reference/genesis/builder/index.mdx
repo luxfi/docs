@@ -1,0 +1,225 @@
+---
+title: builder
+description: Package builder provides genesis byte generation for Lux networks.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/genesis/builder"
+```
+
+Package builder provides genesis byte generation for Lux networks.
+This package depends on node types and is responsible for building
+the actual genesis state from genesis config.
+
+
+## Functions
+
+### Aliases
+
+```go
+func Aliases(genesisBytes []byte) (map[string][]string, map[ids.ID][]string, error)
+```
+
+Aliases returns the default aliases for chains and APIs
+
+
+### AliasesFor
+
+```go
+func AliasesFor(letter string) []string
+```
+
+AliasesFor returns the full chain alias list for a chain by letter.
+The letter itself is prepended, e.g. AliasesFor("D") -> ["D", "dex", "dexvm"].
+Returns nil for unknown letters.
+
+
+### ForDevMode
+
+```go
+func ForDevMode(cfg DevModeConfig, stakingCfg *StakingConfig) ([]byte, ids.ID, error)
+```
+
+ForDevMode creates a genesis configuration suitable for single-node development mode.
+It creates a single validator with far-future stake time and funds the treasury address.
+
+
+### FromConfig
+
+```go
+func FromConfig(config *genesiscfg.Config) ([]byte, ids.ID, error)
+```
+
+FromConfig builds genesis bytes from a config.
+
+X-Chain is opt-in via config.XChainGenesis (a small JSON descriptor like
+
+	&#123;"symbol":"LUX","name":"Lux","denomination":9}
+
+). When set, the builder constructs an XVM genesis whose primary asset
+is that descriptor (initial holders sourced from config.Allocations) and
+emits an X-Chain entry in the primary-network CreateChainTx set. When
+empty, no XVM genesis is built and X-Chain is omitted from the chain
+set — the path used by P-only L2s whose value capture lives on a
+downstream EVM.
+
+The LUX asset ID returned is always the network-wide constant
+(constants.UTXO_ASSET_ID), independent of whether X-Chain is baked.
+This is what decouples the asset from any specific chain's genesis
+bytes — P-Chain stake/UTXO references stay byte-stable across both
+shapes of primary network.
+
+
+### FromDatabase
+
+```go
+func FromDatabase(networkID uint32, dbPath string, dbType string, stakingCfg *StakingConfig) ([]byte, ids.ID, error)
+```
+
+FromDatabase returns genesis data for database replay mode
+
+
+### FromFile
+
+```go
+func FromFile(networkID uint32, filepath string, stakingCfg *StakingConfig) ([]byte, ids.ID, error)
+```
+
+FromFile loads genesis config from file and builds genesis bytes.
+Caller owns the choice — if a genesis file is set, we use it. No
+"is this networkID standard?" guard, no allow-flag. Operator-owned
+chainset.
+
+
+### FromFlag
+
+```go
+func FromFlag(networkID uint32, genesisContent string, stakingCfg *StakingConfig) ([]byte, ids.ID, error)
+```
+
+FromFlag parses base64-encoded genesis content and builds genesis bytes.
+Same contract as FromFile — caller owns the override.
+
+
+### GetConfig
+
+```go
+func GetConfig(networkID uint32) *genesiscfg.Config
+```
+
+GetConfig returns the genesis config for the given network ID
+
+
+### UTXOAssetIDFromGenesisBytes
+
+```go
+func UTXOAssetIDFromGenesisBytes(genesisBytes []byte) (ids.ID, bool, error)
+```
+
+UTXOAssetIDFromGenesisBytes returns the X-Chain native asset ID encoded
+in a platform-genesis blob. It parses the platform genesis, finds the
+X-Chain CreateChainTx (vmID == constants.XVMID), then decodes that
+chain's embedded XVM genesis bytes to recover the runtime asset ID
+(the same value vm.initGenesis assigns to the first GenesisAsset).
+
+Returns (ids.Empty, false, nil) when the platform genesis contains
+no X-Chain (P-only mode) — callers fall back to whatever default
+they prefer (e.g. constants.UTXOAssetIDFor(networkID)).
+
+Returns a non-nil error when the platform genesis is unparseable or
+the X-Chain genesis bytes embedded inside it are malformed; both are
+unrecoverable on a primary-network bootstrap.
+
+Used by config.getGenesisData when it loads genesis via the cached /
+raw paths that skip FromConfig — those paths historically returned
+constants.UTXOAssetIDFor(networkID), but on sovereign L1s that value
+disagrees with what's actually in the genesis bytes. Wiring this
+helper through getGenesisData means the node always reports the
+genesis-derived asset ID via platform.getStakingAssetID regardless
+of which load path was taken.
+
+
+### VMAliasesMap
+
+```go
+func VMAliasesMap() map[ids.ID][]string
+```
+
+VMAliasesMap returns the union of chain VM aliases (from Registry) and
+the static fx VM aliases (from fxVMAliases). This is the map the node's
+VM manager consumes via builder.VMAliases.
+
+The values are fresh slice copies so callers cannot mutate Registry rows
+through the returned map.
+
+
+### VMGenesis
+
+```go
+func VMGenesis(genesisBytes []byte, vmID ids.ID) (*pchaintxs.Tx, error)
+```
+
+VMGenesis returns the genesis tx for a specific VM
+
+
+## Types
+
+### Bootstrapper
+
+Bootstrapper represents a network bootstrap node with parsed types.
+Supports both IP addresses and hostnames for the endpoint.
+
+
+```go
+func GetBootstrappers(networkID uint32) ([]Bootstrapper, error)
+```
+
+```go
+func ParseBootstrapper(b genesiscfg.Bootstrapper) (Bootstrapper, error)
+```
+
+```go
+func SampleBootstrappers(networkID uint32, count int) ([]Bootstrapper, error)
+```
+
+```go
+func (b Bootstrapper) IP() endpoints.Endpoint
+```
+
+### ChainSpec
+
+ChainSpec is one row in the primary-network chain registry.
+
+Registry is the single source of truth for: canonical letter,
+VMID, bech32 chain prefix used in addresses, alias list, and the
+human-readable name. Rebranding or renaming a chain edits one
+row; the prior switch-ladders in Aliases() and var blocks of
+&#123;P,X,C,...}ChainAliases re-derive from this table.
+
+
+### DevModeConfig
+
+DevModeConfig holds configuration for dev mode genesis
+
+
+### StakingConfig
+
+StakingConfig is the staking configuration with time.Duration types
+
+
+```go
+func GetStakingConfig(networkID uint32) StakingConfig
+```
+
+### TxFeeConfig
+
+TxFeeConfig contains transaction fee configuration
+This includes the basic fee config from genesis plus dynamic/validator fees
+
+
+```go
+func GetTxFeeConfig(networkID uint32) TxFeeConfig
+```
+

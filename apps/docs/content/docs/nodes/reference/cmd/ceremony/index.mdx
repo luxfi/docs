@@ -1,0 +1,49 @@
+---
+title: main
+description: Package main
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/cmd/ceremony"
+```
+
+## Types
+
+### CeremonyState
+
+CeremonyState holds the full state of a powers-of-tau ceremony.
+
+
+### Contribution
+
+Contribution records a single participant's contribution.
+
+
+### G1Point
+
+G1Point is a JSON-serializable wrapper for bn254.G1Affine.
+
+
+```go
+func (p G1Point) MarshalJSON() ([]byte, error)
+```
+
+```go
+func (p *G1Point) UnmarshalJSON(data []byte) error
+```
+
+### G2Point
+
+G2Point is a JSON-serializable wrapper for bn254.G2Affine.
+
+
+```go
+func (p G2Point) MarshalJSON() ([]byte, error)
+```
+
+```go
+func (p *G2Point) UnmarshalJSON(data []byte) error
+```
+

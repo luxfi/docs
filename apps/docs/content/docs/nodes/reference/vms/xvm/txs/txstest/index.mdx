@@ -1,0 +1,93 @@
+---
+title: txstest
+description: Package txstest
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/xvm/txs/txstest"
+```
+
+## Types
+
+### Builder
+
+```go
+func New(
+	ctx context.Context,
+	cfg *config.Config,
+	feeAssetID ids.ID,
+	state state.State,
+	sharedMemory atomic.SharedMemory,
+) *Builder
+```
+
+```go
+func (b *Builder) BaseTx(
+	outs []*lux.TransferableOutput,
+	memo []byte,
+	kc *secp256k1fx.Keychain,
+	changeAddr ids.ShortID,
+) (*txs.Tx, error)
+```
+
+```go
+func (b *Builder) CreateAssetTx(
+	name, symbol string,
+	denomination byte,
+	initialStates map[uint32][]verify.State,
+	kc *secp256k1fx.Keychain,
+	changeAddr ids.ShortID,
+) (*txs.Tx, error)
+```
+
+```go
+func (b *Builder) ExportTx(
+	destinationChain ids.ID,
+	to ids.ShortID,
+	exportedAssetID ids.ID,
+	exportedAmt uint64,
+	kc *secp256k1fx.Keychain,
+	changeAddr ids.ShortID,
+) (*txs.Tx, error)
+```
+
+```go
+func (b *Builder) ImportTx(
+	sourceChain ids.ID,
+	to ids.ShortID,
+	kc *secp256k1fx.Keychain,
+) (*txs.Tx, error)
+```
+
+```go
+func (b *Builder) MintFTs(
+	outputs map[ids.ID]*secp256k1fx.TransferOutput,
+	kc *secp256k1fx.Keychain,
+	changeAddr ids.ShortID,
+) (*txs.Tx, error)
+```
+
+```go
+func (b *Builder) MintNFT(
+	assetID ids.ID,
+	payload []byte,
+	owners []*secp256k1fx.OutputOwners,
+	kc *secp256k1fx.Keychain,
+	changeAddr ids.ShortID,
+) (*txs.Tx, error)
+```
+
+```go
+func (b *Builder) Operation(
+	ops []*txs.Operation,
+	kc *secp256k1fx.Keychain,
+	changeAddr ids.ShortID,
+) (*txs.Tx, error)
+```
+
+```go
+func (b *Builder) SetContextIDs(networkID uint32, chainID ids.ID)
+```
+

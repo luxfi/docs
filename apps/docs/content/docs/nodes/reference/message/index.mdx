@@ -1,0 +1,753 @@
+---
+title: message
+description: Package message is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/message"
+```
+
+Package message is a generated GoMock package.
+
+Package message is a generated GoMock package.
+
+
+## Functions
+
+### GetChainID
+
+```go
+func GetChainID(m any) (ids.ID, error)
+```
+
+### GetContainerBytes
+
+```go
+func GetContainerBytes(msg fmt.Stringer) []byte
+```
+
+GetContainerBytes extracts the container/body bytes from various message types
+
+
+### GetDeadline
+
+```go
+func GetDeadline(m any) (time.Duration, bool)
+```
+
+### GetEngineType
+
+```go
+func GetEngineType(m any) (p2p.EngineType, bool)
+```
+
+### GetRequestID
+
+```go
+func GetRequestID(m any) (uint32, bool)
+```
+
+### ToConsensusOp
+
+```go
+func ToConsensusOp(op Op) (byte, bool)
+```
+
+ToConsensusOp maps a wire message Op to the consensus router op the chain
+router (node/chain_router.go) dispatches on, returning false for ops that are
+not consensus-routed (the router drops those as "unhandled message op"). The
+returned values ARE the router constants, so they cannot drift in value; the
+mapping must also stay a bijection onto the router op space [0, router.NumOps)
+— proven by message/ops_test.go. A missing case silently drops that op: that
+is the α-of-K finality wedge, where GossipOp had no case and every vote
+vanished before reaching blockHandler.Gossip -> engine.HandleIncomingVote.
+
+
+### Unwrap
+
+```go
+func Unwrap(m *p2p.Message) (fmt.Stringer, error)
+```
+
+## Types
+
+### Codec
+
+Codec defines the wire format encoding interface for P2P messages.
+Implementations are selected via build tags (proto vs zap).
+
+
+### Connected
+
+```go
+func (m *Connected) String() string
+```
+
+### Creator
+
+```go
+func NewCreator(
+	metrics metric.Registerer,
+	compressionType compression.Type,
+	maxMessageTimeout time.Duration,
+) (Creator, error)
+```
+
+### Disconnected
+
+```go
+func (Disconnected) String() string
+```
+
+### GetAcceptedFailed
+
+```go
+func (m *GetAcceptedFailed) GetChainId() []byte
+```
+
+```go
+func (m *GetAcceptedFailed) GetRequestId() uint32
+```
+
+```go
+func (m *GetAcceptedFailed) String() string
+```
+
+### GetAcceptedFrontierFailed
+
+```go
+func (m *GetAcceptedFrontierFailed) GetChainId() []byte
+```
+
+```go
+func (m *GetAcceptedFrontierFailed) GetRequestId() uint32
+```
+
+```go
+func (m *GetAcceptedFrontierFailed) String() string
+```
+
+### GetAcceptedStateSummaryFailed
+
+```go
+func (m *GetAcceptedStateSummaryFailed) GetChainId() []byte
+```
+
+```go
+func (m *GetAcceptedStateSummaryFailed) GetRequestId() uint32
+```
+
+```go
+func (m *GetAcceptedStateSummaryFailed) String() string
+```
+
+### GetAncestorsFailed
+
+```go
+func (m *GetAncestorsFailed) GetChainId() []byte
+```
+
+```go
+func (m *GetAncestorsFailed) GetEngineType() p2p.EngineType
+```
+
+```go
+func (m *GetAncestorsFailed) GetRequestId() uint32
+```
+
+```go
+func (m *GetAncestorsFailed) String() string
+```
+
+### GetFailed
+
+```go
+func (m *GetFailed) GetChainId() []byte
+```
+
+```go
+func (m *GetFailed) GetRequestId() uint32
+```
+
+```go
+func (m *GetFailed) String() string
+```
+
+### GetStateSummaryFrontierFailed
+
+```go
+func (m *GetStateSummaryFrontierFailed) GetChainId() []byte
+```
+
+```go
+func (m *GetStateSummaryFrontierFailed) GetRequestId() uint32
+```
+
+```go
+func (m *GetStateSummaryFrontierFailed) String() string
+```
+
+### GossipRequest
+
+```go
+func (GossipRequest) String() string
+```
+
+### InboundMessage
+
+InboundMessage represents a set of fields for an inbound message
+
+
+```go
+func InboundAccepted(
+	chainID ids.ID,
+	requestID uint32,
+	containerIDs []ids.ID,
+	nodeID ids.NodeID,
+) InboundMessage
+```
+
+```go
+func InboundAcceptedFrontier(
+	chainID ids.ID,
+	requestID uint32,
+	containerID ids.ID,
+	nodeID ids.NodeID,
+) InboundMessage
+```
+
+```go
+func InboundAcceptedStateSummary(
+	chainID ids.ID,
+	requestID uint32,
+	summaryIDs []ids.ID,
+	nodeID ids.NodeID,
+) InboundMessage
+```
+
+```go
+func InboundBFTMessage(
+	nodeID ids.NodeID,
+	msg *p2p.BFT,
+) InboundMessage
+```
+
+```go
+func InboundChits(
+	chainID ids.ID,
+	requestID uint32,
+	preferredID ids.ID,
+	preferredIDAtHeight ids.ID,
+	acceptedID ids.ID,
+	nodeID ids.NodeID,
+) InboundMessage
+```
+
+```go
+func InboundError(
+	nodeID ids.NodeID,
+	chainID ids.ID,
+	requestID uint32,
+	errorCode int32,
+	errorMessage string,
+) InboundMessage
+```
+
+```go
+func InboundGetAccepted(
+	chainID ids.ID,
+	requestID uint32,
+	deadline time.Duration,
+	containerIDs []ids.ID,
+	nodeID ids.NodeID,
+) InboundMessage
+```
+
+```go
+func InboundGetAcceptedFrontier(
+	chainID ids.ID,
+	requestID uint32,
+	deadline time.Duration,
+	nodeID ids.NodeID,
+) InboundMessage
+```
+
+```go
+func InboundGetAcceptedStateSummary(
+	chainID ids.ID,
+	requestID uint32,
+	heights []uint64,
+	deadline time.Duration,
+	nodeID ids.NodeID,
+) InboundMessage
+```
+
+```go
+func InboundGetStateSummaryFrontier(
+	chainID ids.ID,
+	requestID uint32,
+	deadline time.Duration,
+	nodeID ids.NodeID,
+) InboundMessage
+```
+
+```go
+func InboundGossip(
+	chainID ids.ID,
+	msg []byte,
+	nodeID ids.NodeID,
+) InboundMessage
+```
+
+```go
+func InboundPullQuery(
+	chainID ids.ID,
+	requestID uint32,
+	deadline time.Duration,
+	containerID ids.ID,
+	requestedHeight uint64,
+	nodeID ids.NodeID,
+) InboundMessage
+```
+
+```go
+func InboundPushQuery(
+	chainID ids.ID,
+	requestID uint32,
+	deadline time.Duration,
+	container []byte,
+	requestedHeight uint64,
+	nodeID ids.NodeID,
+) InboundMessage
+```
+
+```go
+func InboundRequest(
+	chainID ids.ID,
+	requestID uint32,
+	deadline time.Duration,
+	msg []byte,
+	nodeID ids.NodeID,
+) InboundMessage
+```
+
+```go
+func InboundResponse(
+	chainID ids.ID,
+	requestID uint32,
+	msg []byte,
+	nodeID ids.NodeID,
+) InboundMessage
+```
+
+```go
+func InboundStateSummaryFrontier(
+	chainID ids.ID,
+	requestID uint32,
+	summary []byte,
+	nodeID ids.NodeID,
+) InboundMessage
+```
+
+```go
+func InternalConnected(nodeID ids.NodeID, nodeVersion *version.Application) InboundMessage
+```
+
+```go
+func InternalDisconnected(nodeID ids.NodeID) InboundMessage
+```
+
+```go
+func InternalGetAcceptedFailed(
+	nodeID ids.NodeID,
+	chainID ids.ID,
+	requestID uint32,
+) InboundMessage
+```
+
+```go
+func InternalGetAcceptedFrontierFailed(
+	nodeID ids.NodeID,
+	chainID ids.ID,
+	requestID uint32,
+) InboundMessage
+```
+
+```go
+func InternalGetAcceptedStateSummaryFailed(
+	nodeID ids.NodeID,
+	chainID ids.ID,
+	requestID uint32,
+) InboundMessage
+```
+
+```go
+func InternalGetAncestorsFailed(
+	nodeID ids.NodeID,
+	chainID ids.ID,
+	requestID uint32,
+	engineType p2p.EngineType,
+) InboundMessage
+```
+
+```go
+func InternalGetFailed(
+	nodeID ids.NodeID,
+	chainID ids.ID,
+	requestID uint32,
+) InboundMessage
+```
+
+```go
+func InternalGetStateSummaryFrontierFailed(
+	nodeID ids.NodeID,
+	chainID ids.ID,
+	requestID uint32,
+) InboundMessage
+```
+
+```go
+func InternalGossipRequest(
+	nodeID ids.NodeID,
+) InboundMessage
+```
+
+```go
+func InternalQueryFailed(
+	nodeID ids.NodeID,
+	chainID ids.ID,
+	requestID uint32,
+) InboundMessage
+```
+
+```go
+func InternalVMMessage(
+	nodeID ids.NodeID,
+	notification uint32,
+) InboundMessage
+```
+
+### InboundMsgBuilder
+
+### MockOutboundMessage
+
+MockOutboundMessage is a mock of OutboundMessage interface.
+
+
+```go
+func NewMockOutboundMessage(ctrl *gomock.Controller) *MockOutboundMessage
+```
+
+```go
+func (m *MockOutboundMessage) BypassThrottling() bool
+```
+
+```go
+func (m *MockOutboundMessage) Bytes() []byte
+```
+
+```go
+func (m *MockOutboundMessage) BytesSavedCompression() int
+```
+
+```go
+func (m *MockOutboundMessage) EXPECT() *MockOutboundMessageMockRecorder
+```
+
+```go
+func (m *MockOutboundMessage) Op() Op
+```
+
+### MockOutboundMessageMockRecorder
+
+MockOutboundMessageMockRecorder is the mock recorder for MockOutboundMessage.
+
+
+```go
+func (mr *MockOutboundMessageMockRecorder) BypassThrottling() *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMessageMockRecorder) Bytes() *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMessageMockRecorder) BytesSavedCompression() *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMessageMockRecorder) Op() *gomock.Call
+```
+
+### MockOutboundMsgBuilder
+
+MockOutboundMsgBuilder is a mock of OutboundMsgBuilder interface.
+
+
+```go
+func NewMockOutboundMsgBuilder(ctrl *gomock.Controller) *MockOutboundMsgBuilder
+```
+
+```go
+func (m *MockOutboundMsgBuilder) Accepted(arg0 ids.ID, arg1 uint32, arg2 []ids.ID) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) AcceptedFrontier(arg0 ids.ID, arg1 uint32, arg2 ids.ID) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) AcceptedStateSummary(arg0 ids.ID, arg1 uint32, arg2 []ids.ID) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) Ancestors(arg0 ids.ID, arg1 uint32, arg2 [][]byte) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) Chits(arg0 ids.ID, arg1 uint32, arg2, arg3, arg4 ids.ID) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) EXPECT() *MockOutboundMsgBuilderMockRecorder
+```
+
+```go
+func (m *MockOutboundMsgBuilder) Error(arg0 ids.ID, arg1 uint32, arg2 int32, arg3 string) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) Get(arg0 ids.ID, arg1 uint32, arg2 time.Duration, arg3 ids.ID) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) GetAccepted(arg0 ids.ID, arg1 uint32, arg2 time.Duration, arg3 []ids.ID) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) GetAcceptedFrontier(arg0 ids.ID, arg1 uint32, arg2 time.Duration) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) GetAcceptedStateSummary(arg0 ids.ID, arg1 uint32, arg2 time.Duration, arg3 []uint64) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) GetAncestors(arg0 ids.ID, arg1 uint32, arg2 time.Duration, arg3 ids.ID, arg4 p2p.EngineType) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) GetPeerList(arg0, arg1 []byte) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) GetStateSummaryFrontier(arg0 ids.ID, arg1 uint32, arg2 time.Duration) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) Gossip(arg0 ids.ID, arg1 []byte) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) Handshake(arg0 uint32, arg1 uint64, arg2 netip.AddrPort, arg3 string, arg4, arg5, arg6 uint32, arg7 uint64, arg8, arg9 []byte, arg10 []ids.ID, arg11, arg12 []uint32, arg13, arg14 []byte) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) PeerList(arg0 []*endpoints.ClaimedIPPort, arg1 bool) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) Ping(arg0 uint32) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) Pong() (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) PullQuery(arg0 ids.ID, arg1 uint32, arg2 time.Duration, arg3 ids.ID, arg4 uint64) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) PushQuery(arg0 ids.ID, arg1 uint32, arg2 time.Duration, arg3 []byte, arg4 uint64) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) Put(arg0 ids.ID, arg1 uint32, arg2 []byte) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) Request(arg0 ids.ID, arg1 uint32, arg2 time.Duration, arg3 []byte) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) Response(arg0 ids.ID, arg1 uint32, arg2 []byte) (OutboundMessage, error)
+```
+
+```go
+func (m *MockOutboundMsgBuilder) StateSummaryFrontier(arg0 ids.ID, arg1 uint32, arg2 []byte) (OutboundMessage, error)
+```
+
+### MockOutboundMsgBuilderMockRecorder
+
+MockOutboundMsgBuilderMockRecorder is the mock recorder for MockOutboundMsgBuilder.
+
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) Accepted(arg0, arg1, arg2 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) AcceptedFrontier(arg0, arg1, arg2 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) AcceptedStateSummary(arg0, arg1, arg2 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) Ancestors(arg0, arg1, arg2 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) Chits(arg0, arg1, arg2, arg3, arg4 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) Error(arg0, arg1, arg2, arg3 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) Get(arg0, arg1, arg2, arg3 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) GetAccepted(arg0, arg1, arg2, arg3 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) GetAcceptedFrontier(arg0, arg1, arg2 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) GetAcceptedStateSummary(arg0, arg1, arg2, arg3 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) GetAncestors(arg0, arg1, arg2, arg3, arg4 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) GetPeerList(arg0, arg1 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) GetStateSummaryFrontier(arg0, arg1, arg2 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) Gossip(arg0, arg1 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) Handshake(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) PeerList(arg0, arg1 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) Ping(arg0, arg1 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) Pong() *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) PullQuery(arg0, arg1, arg2, arg3, arg4 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) PushQuery(arg0, arg1, arg2, arg3, arg4 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) Put(arg0, arg1, arg2 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) Request(arg0, arg1, arg2, arg3 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) Response(arg0, arg1, arg2 any) *gomock.Call
+```
+
+```go
+func (mr *MockOutboundMsgBuilderMockRecorder) StateSummaryFrontier(arg0, arg1, arg2 any) *gomock.Call
+```
+
+### Op
+
+Op is an opcode
+
+
+```go
+func ToOp(m *p2p.Message) (Op, error)
+```
+
+```go
+func (op Op) String() string
+```
+
+### OutboundMessage
+
+OutboundMessage represents a set of fields for an outbound message that can
+be serialized into a byte stream
+
+
+### OutboundMsgBuilder
+
+OutboundMsgBuilder builds outbound messages. Outbound messages are returned
+with a reference count of 1. Once the reference count hits 0, the message
+bytes should no longer be accessed.
+
+
+### P2PMessage
+
+P2PMessage is the top-level message container used by the codec.
+It wraps the inner message type for encoding/decoding.
+
+
+```go
+func (m *P2PMessage) Inner() interface{}
+```
+
+```go
+func (m *P2PMessage) SetInner(v interface{})
+```
+
+### QueryFailed
+
+```go
+func (m *QueryFailed) GetChainId() []byte
+```
+
+```go
+func (m *QueryFailed) GetRequestId() uint32
+```
+
+```go
+func (m *QueryFailed) String() string
+```
+
+### VMMessage
+
+```go
+func (m *VMMessage) String() string
+```
+

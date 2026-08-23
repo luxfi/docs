@@ -1,0 +1,169 @@
+---
+title: chain
+description: Package chain
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/components/chain"
+```
+
+## Types
+
+### BlockWrapper
+
+BlockWrapper wraps a linear Block while adding a smart caching layer to improve
+VM performance.
+
+
+```go
+func (bw *BlockWrapper) Accept(ctx context.Context) error
+```
+
+```go
+func (bw *BlockWrapper) Reject(ctx context.Context) error
+```
+
+```go
+func (bw *BlockWrapper) ShouldVerifyWithRuntime(ctx context.Context) (bool, error)
+```
+
+```go
+func (bw *BlockWrapper) Verify(ctx context.Context) error
+```
+
+```go
+func (bw *BlockWrapper) VerifyWithRuntime(ctx context.Context, blockCtx *runtime.Runtime) error
+```
+
+### Config
+
+Config defines all of the parameters necessary to initialize State
+
+
+### OracleBlock
+
+OracleBlock is a block that can have multiple valid children, and one needs
+to be chosen by an oracle.
+
+
+### State
+
+State implements an efficient caching layer used to wrap a VM
+implementation.
+
+
+```go
+func NewMeteredState(
+	registerer metric.Registerer,
+	config *Config,
+) (*State, error)
+```
+
+```go
+func NewState(config *Config) *State
+```
+
+```go
+func (s *State) BatchedParseBlock(ctx context.Context, blksBytes [][]byte) ([]consensuschain.Block, error)
+```
+
+```go
+func (s *State) BuildBlock(ctx context.Context) (consensuschain.Block, error)
+```
+
+```go
+func (s *State) BuildBlockWithRuntime(ctx context.Context, blockCtx *runtime.Runtime) (consensuschain.Block, error)
+```
+
+```go
+func (s *State) Flush()
+```
+
+```go
+func (s *State) GetBlock(ctx context.Context, blkID ids.ID) (consensuschain.Block, error)
+```
+
+```go
+func (s *State) GetBlockInternal(ctx context.Context, blkID ids.ID) (consensuschain.Block, error)
+```
+
+```go
+func (s *State) IsProcessing(blkID ids.ID) bool
+```
+
+```go
+func (s *State) LastAccepted(context.Context) (ids.ID, error)
+```
+
+```go
+func (s *State) LastAcceptedBlock() *BlockWrapper
+```
+
+```go
+func (s *State) LastAcceptedBlockInternal() consensuschain.Block
+```
+
+```go
+func (s *State) ParseBlock(ctx context.Context, b []byte) (consensuschain.Block, error)
+```
+
+```go
+func (s *State) SetLastAcceptedBlock(lastAcceptedBlock consensuschain.Block) error
+```
+
+### Status
+
+Status represents the status of a block
+
+
+### TestBlock
+
+TestBlock is a test implementation of Block
+
+
+```go
+func (b *TestBlock) Accept(context.Context) error
+```
+
+```go
+func (b *TestBlock) Bytes() []byte
+```
+
+```go
+func (b *TestBlock) Height() uint64
+```
+
+```go
+func (b *TestBlock) ID() ids.ID
+```
+
+```go
+func (b *TestBlock) Parent() ids.ID
+```
+
+```go
+func (b *TestBlock) ParentID() ids.ID
+```
+
+```go
+func (b *TestBlock) Reject(context.Context) error
+```
+
+```go
+func (b *TestBlock) State() state.ReadOnlyChain
+```
+
+```go
+func (b *TestBlock) Status() uint8
+```
+
+```go
+func (b *TestBlock) Timestamp() time.Time
+```
+
+```go
+func (b *TestBlock) Verify(context.Context) error
+```
+

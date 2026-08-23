@@ -1,0 +1,165 @@
+---
+title: common
+description: Package common
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/wallet/network/primary/common"
+```
+
+## Functions
+
+### MatchOwners
+
+```go
+func MatchOwners(
+	owners *secp256k1fx.OutputOwners,
+	addrs set.Set[ids.ShortID],
+	minIssuanceTime uint64,
+) ([]uint32, bool)
+```
+
+MatchOwners attempts to match a list of addresses up to the provided
+threshold.
+
+
+## Types
+
+### ChainUTXOs
+
+```go
+func NewChainUTXOs(chainID ids.ID, utxos UTXOs) ChainUTXOs
+```
+
+### ConfirmationHandler
+
+ConfirmationHandler is called when a transaction is confirmed
+
+
+### ConfirmationReceipt
+
+ConfirmationReceipt contains information about a confirmed transaction
+
+
+### Option
+
+```go
+func UnionOptions(first, second []Option) []Option
+```
+
+```go
+func WithAssumeDecided() Option
+```
+
+```go
+func WithBaseFee(baseFee *big.Int) Option
+```
+
+```go
+func WithChangeOwner(changeOwner *secp256k1fx.OutputOwners) Option
+```
+
+```go
+func WithConfirmationHandler(f ConfirmationHandler) Option
+```
+
+```go
+func WithContext(ctx context.Context) Option
+```
+
+```go
+func WithCustomAddresses(addrs set.Set[ids.ShortID]) Option
+```
+
+```go
+func WithCustomEVMAddresses(addrs set.Set[ethcommon.Address]) Option
+```
+
+```go
+func WithMemo(memo []byte) Option
+```
+
+```go
+func WithMinIssuanceTime(minIssuanceTime uint64) Option
+```
+
+```go
+func WithPollFrequency(pollFrequency time.Duration) Option
+```
+
+```go
+func WithPostIssuanceFunc(f PostIssuanceFunc) Option
+```
+
+```go
+func WithStakeableLocked() Option
+```
+
+### Options
+
+```go
+func NewOptions(ops []Option) *Options
+```
+
+```go
+func (o *Options) Addresses(defaultAddresses set.Set[ids.ShortID]) set.Set[ids.ShortID]
+```
+
+```go
+func (o *Options) AllowStakeableLocked() bool
+```
+
+```go
+func (o *Options) AssumeDecided() bool
+```
+
+```go
+func (o *Options) BaseFee(defaultBaseFee *big.Int) *big.Int
+```
+
+```go
+func (o *Options) ChangeOwner(defaultOwner *secp256k1fx.OutputOwners) *secp256k1fx.OutputOwners
+```
+
+```go
+func (o *Options) ConfirmationHandler() ConfirmationHandler
+```
+
+```go
+func (o *Options) Context() context.Context
+```
+
+```go
+func (o *Options) EVMAddresses(defaultAddresses set.Set[ethcommon.Address]) set.Set[ethcommon.Address]
+```
+
+```go
+func (o *Options) Memo() []byte
+```
+
+```go
+func (o *Options) MinIssuanceTime() uint64
+```
+
+```go
+func (o *Options) PollFrequency() time.Duration
+```
+
+```go
+func (o *Options) PostIssuanceFunc() PostIssuanceFunc
+```
+
+### PostIssuanceFunc
+
+Signature of the function that will be called after a transaction
+has been issued with the ID of the issued transaction.
+
+
+### UTXOs
+
+```go
+func NewUTXOs() UTXOs
+```
+

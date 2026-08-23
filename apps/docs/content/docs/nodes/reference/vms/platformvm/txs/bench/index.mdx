@@ -1,0 +1,179 @@
+---
+title: bench
+description: Package bench holds the reflection codec-vs-native-ZAP benchmark harness for the platformvm txs.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/txs/bench"
+```
+
+Package bench holds the reflection codec-vs-native-ZAP benchmark harness
+for the platformvm txs.
+
+FIXTURE PHILOSOPHY: every tx the harness measures is built with field
+counts representative of mainnet — a typical AddPermissionlessValidator
+in production carries 2 inputs + 2 outputs + 1 stake-out + signer.PoP
+(the most common case as of 2026-06). Empty BaseTx&#123;} fixtures are
+excluded from the headline numbers; they appear only as a "minimal
+payload" floor in the report to bound how much of the speedup is
+fixed-cost.
+
+
+## Functions
+
+### FixtureMap
+
+```go
+func FixtureMap() map[string]txs.UnsignedTx
+```
+
+FixtureMap returns the named fixtures the bench harness iterates
+over. Add new tx types here as Blue lands accessors for them; the
+per-type bench is reflective over this map.
+
+Insertion order matters for table output: this is the order the
+columns appear in RESULTS.md.
+
+
+### MustMarshal
+
+```go
+func MustMarshal(unsigned txs.UnsignedTx) []byte
+```
+
+MustMarshal returns the unsigned tx's canonical bytes. The struct IS the
+wire (native ZAP), so this is just the tx buffer — no codec step.
+
+
+### MustMarshalSignedTx
+
+```go
+func MustMarshalSignedTx(unsigned txs.UnsignedTx) []byte
+```
+
+MustMarshalSignedTx wraps an unsigned in a *txs.Tx with empty creds
+and returns the canonical signed-byte form. This matches the
+mempool/block path: txs on the wire are *txs.Tx, not bare unsigned.
+With no creds, signed bytes == unsigned bytes ‖ (empty) — Initialize
+binds them.
+
+
+### NewAddDelegatorTxFixture
+
+```go
+func NewAddDelegatorTxFixture() *txs.AddDelegatorTx
+```
+
+NewAddDelegatorTxFixture is the delegator counterpart — same shape,
+no DelegationShares (delegators don't carry that field).
+
+
+### NewAddPermissionlessDelegatorTxFixture
+
+```go
+func NewAddPermissionlessDelegatorTxFixture() *txs.AddPermissionlessDelegatorTx
+```
+
+NewAddPermissionlessDelegatorTxFixture is the delegator companion to
+AddPermissionlessValidator. No Signer; no RewardsOwner split; just
+the single DelegationRewardsOwner. Smaller wire footprint than the
+validator fixture by ~200B (no PoP).
+
+
+### NewAddPermissionlessValidatorTxFixture
+
+```go
+func NewAddPermissionlessValidatorTxFixture() *txs.AddPermissionlessValidatorTx
+```
+
+NewAddPermissionlessValidatorTxFixture is the Banff-era primary-net
+validator with a full ProofOfPossession (a real mainnet validator tx
+has this signer). Field count: BaseTx(2/2) + Validator + ChainID +
+Signer(PoP) + StakeOuts(1) + ValidatorRewardsOwner + DelegatorRewardsOwner +
+DelegationShares = 8 top-level fields.
+
+
+### NewAddValidatorTxFixture
+
+```go
+func NewAddValidatorTxFixture() *txs.AddValidatorTx
+```
+
+NewAddValidatorTxFixture returns a legacy primary-network
+AddValidator with a realistic 2-in / 2-out base, 1 stake-out, and a
+rewards owner of size 1.
+
+
+### NewBaseTxFixture
+
+```go
+func NewBaseTxFixture() *txs.BaseTx
+```
+
+NewBaseTxFixture returns the canonical "1 input / 1 output" BaseTx
+the way it appears in real mainnet bytes — the smallest non-trivial
+payload and the unit by which all other fixtures are bounded from
+below.
+
+
+### NewBaseTxWithStakeableFixture
+
+```go
+func NewBaseTxWithStakeableFixture() *txs.BaseTx
+```
+
+NewBaseTxWithStakeableFixture stresses the stakeable.LockOut path
+(slot 22). Real validator deposit txs use this; ignoring it would
+understate the codec cost.
+
+
+### NewCreateChainTxFixture
+
+```go
+func NewCreateChainTxFixture() *txs.CreateChainTx
+```
+
+NewCreateChainTxFixture is the legacy create-blockchain tx.
+
+
+### NewCreateNetworkTxFixture
+
+```go
+func NewCreateNetworkTxFixture() *txs.CreateNetworkTx
+```
+
+NewCreateNetworkTxFixture is the legacy create-network tx.
+
+
+### NewExportTxFixture
+
+```go
+func NewExportTxFixture() *txs.ExportTx
+```
+
+NewExportTxFixture covers the P→X (or P→C) export.
+
+
+### NewImportTxFixture
+
+```go
+func NewImportTxFixture() *txs.ImportTx
+```
+
+NewImportTxFixture covers the cross-chain import path; the
+ImportedInputs slice is what real X→P moves carry. Two imported
+inputs is the modal case (one for amount, one for fee).
+
+
+### NewRewardValidatorTxFixture
+
+```go
+func NewRewardValidatorTxFixture() *txs.RewardValidatorTx
+```
+
+NewRewardValidatorTxFixture is the "reward this validator" tx.
+Carries a single ids.ID. Tiny.
+
+

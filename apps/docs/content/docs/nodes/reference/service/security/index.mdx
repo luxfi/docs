@@ -1,0 +1,159 @@
+---
+title: security
+description: Package security exposes the chain-wide ChainSecurityProfile to operators, dApps, and auditors through the security JSON-RPC namespace at /v1/security and two REST sidecars at /v1/security/profile and /v1/security/block/{n}.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/service/security"
+```
+
+Package security exposes the chain-wide ChainSecurityProfile to operators,
+dApps, and auditors through the security JSON-RPC namespace at
+/v1/security and two REST sidecars at /v1/security/profile and
+/v1/security/block/&#123;n}.
+
+The handlers in this package are read-only: every shape is derived from
+the immutable *consensusconfig.ChainSecurityProfile resolved at node
+bootstrap (Node.initSecurityProfile, F102). There is no per-request
+re-resolution and no profile mutation surface.
+
+One service, one namespace ("security"), one fixed JSON shape. The
+wire vocabulary uses SCREAMING_SNAKE_CASE canonical names
+(renderName) so audit pipelines can grep on stable identifiers; the
+underlying scheme IDs come from consensus/config.
+
+
+## Functions
+
+### NewHandler
+
+```go
+func NewHandler(logger log.Logger, profile *consensusconfig.ChainSecurityProfile) (http.Handler, error)
+```
+
+NewHandler constructs an http.Handler for the security JSON-RPC
+namespace. Profile may be nil — see ErrNoProfile.
+
+The returned handler is suitable for APIServer.AddRoute(handler,
+"security", "") so it lands at /v1/security on the node's HTTP
+listener. REST sidecars are mounted at /profile and /block/&#123;n} on
+the same handler so the full external surface is:
+
+	POST /v1/security                  (JSON-RPC, methods above)
+	GET  /v1/security/profile          (REST sidecar)
+	GET  /v1/security/block/&#123;n}        (REST sidecar)
+
+
+## Types
+
+### BlockSecurityArgs
+
+BlockSecurityArgs is the JSON-RPC argument struct for
+blockSecurity. The block-number argument is forward-compatible
+even though today the reply is chain-wide-constant; explorers wire
+the parameter so the API can evolve without bumping the namespace.
+
+
+### BlockSecurityReply
+
+BlockSecurityReply is the JSON body returned by the blockSecurity
+RPC (POST /v1/security) and the REST endpoint
+/v1/security/block/&#123;n}. It enriches a block lookup with the
+chain-wide security envelope so explorers can show "this block was
+finalised under profile X with backend Y" without reimplementing
+profile lookup.
+
+pulsar_m_signature_valid is true iff the chain-wide FinalitySchemeID
+is a Pulsar-M scheme — the per-block signature is verified by the
+consensus layer before the block is accepted, so a block reachable
+via this API is already known-valid. Explorers that want to
+double-verify can re-fetch the cert envelope; this field is the
+summary boolean.
+
+proof_backend_id reports the chain-wide canonical proof backend
+(first entry of AllowedProofBackends). Per-block backend variance is
+not part of the chain's posture; if a chain accepts multiple
+backends, the explorer should fetch the cert envelope for the exact
+backend used.
+
+
+### Metrics
+
+Metrics owns the Prometheus gauges and counters that expose the
+active ChainSecurityProfile to the o11y stack. Constructed once at
+node bootstrap by NewMetrics; the resulting struct is stamped onto
+the security service and consumed by mempool / bridge call sites
+via accessor methods.
+
+All gauges carry the (profile_id, profile_name) label pair so a
+chain that hot-swaps its profile (forbidden today, but possible in
+future migrations) keeps a stable time series; consumers can group
+by the label set to count the active profile.
+
+Counters carry the call-site label (chain="P|X|C" for mempool drops,
+primitive=... for bridge classical-compat traversals) so a single
+dashboard query slices by the relevant axis.
+
+
+```go
+func NewMetrics(metricsInstance metric.Metrics) *Metrics
+```
+
+```go
+func (m *Metrics) ObserveMempoolClassicalCredential(chain string)
+```
+
+```go
+func (m *Metrics) SetActiveProfile(profile *consensusconfig.ChainSecurityProfile)
+```
+
+```go
+func (m *Metrics) SetZchainProofLagEpochs(epochs float64)
+```
+
+### ProfileReply
+
+ProfileReply is the JSON body returned by the securityProfile RPC
+(POST /v1/security) and the REST sidecar (GET /v1/security/profile).
+
+Stable shape: every field has a fixed JSON tag, no embedded structs.
+Adding a new field requires bumping the major version of the security
+namespace; renaming an existing field is forbidden.
+
+The field order in the struct literal MUST match the field order in
+the locked profile (consensus/config.profiles.go) so a developer
+reviewing a diff against the canonical profile sees the same shape.
+
+
+### Service
+
+Service is the JSON-RPC handler set registered under the security
+namespace at /v1/security. Methods are read-only; the underlying
+profile pointer is set once at construction and never mutated.
+
+Exposed methods:
+
+	securityProfile  → ProfileReply
+	blockSecurity    → BlockSecurityReply
+
+On the wire, gorilla/rpc dispatches these as security_securityProfile
+and security_blockSecurity (namespace_method). Callers using the REST
+sidecars hit /v1/security/profile and /v1/security/block/&#123;n}
+directly. One namespace, two transports, one shape.
+
+The "block" method returns the chain-wide envelope; per-block
+auth-scheme details remain in the VM's own block JSON (the VMs do
+not embed a single canonical block-level scheme byte today, so the
+summary is the most honest thing we can advertise).
+
+
+```go
+func (s *Service) BlockSecurity(_ *http.Request, _ *BlockSecurityArgs, reply *BlockSecurityReply) error
+```
+
+```go
+func (s *Service) SecurityProfile(_ *http.Request, _ *struct{}, reply *ProfileReply) error
+```
+

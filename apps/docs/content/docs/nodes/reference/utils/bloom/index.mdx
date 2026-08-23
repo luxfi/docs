@@ -1,0 +1,157 @@
+---
+title: bloom
+description: Package bloom
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/bloom"
+```
+
+## Functions
+
+### Add
+
+```go
+func Add(f *Filter, key, salt []byte)
+```
+
+### Contains
+
+```go
+func Contains(c Checker, key, salt []byte) bool
+```
+
+### EstimateCount
+
+```go
+func EstimateCount(numHashes, numEntries int, falsePositiveProbability float64) int
+```
+
+EstimateCount estimates the number of additions a bloom filter with
+[numHashes] and [numEntries] must have to reach [falsePositiveProbability].
+This is derived by inversing a lower-bound on the probability of false
+positives. For values where numBits >> numHashes, the predicted probability
+is fairly accurate.
+
+It is guaranteed to return a value in the range [0, MaxInt].
+
+ref: https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=903775
+
+
+### Hash
+
+```go
+func Hash(key, salt []byte) uint64
+```
+
+### OptimalEntries
+
+```go
+func OptimalEntries(count int, falsePositiveProbability float64) int
+```
+
+OptimalEntries calculates the optimal number of entries to use when creating
+a new Bloom filter when targenting a size of [count] with
+[falsePositiveProbability] assuming that the optimal number of hashes is
+used.
+
+It is guaranteed to return a value in the range [minEntries, MaxInt].
+
+ref: https://en.wikipedia.org/wiki/Bloom_filter
+
+
+### OptimalHashes
+
+```go
+func OptimalHashes(numEntries, count int) int
+```
+
+OptimalHashes calculates the number of hashes which will minimize the false
+positive probability of a bloom filter with [numEntries] after [count]
+additions.
+
+It is guaranteed to return a value in the range [minHashes, maxHashes].
+
+ref: https://en.wikipedia.org/wiki/Bloom_filter
+
+
+### OptimalParameters
+
+```go
+func OptimalParameters(count int, falsePositiveProbability float64) (int, int)
+```
+
+OptimalParameters calculates the optimal [numHashes] and [numEntries] that
+should be allocated for a bloom filter which will contain [count] and target
+[falsePositiveProbability].
+
+
+## Types
+
+### BloomFilter
+
+BloomFilter is the interface for bloom filter implementations that support
+adding and checking raw byte slices
+
+
+```go
+func NewMap() BloomFilter
+```
+
+### Checker
+
+### Filter
+
+```go
+func New(numHashes, numEntries int) (*Filter, error)
+```
+
+```go
+func (f *Filter) Add(hash uint64)
+```
+
+```go
+func (f *Filter) Contains(hash uint64) bool
+```
+
+```go
+func (f *Filter) Count() int
+```
+
+```go
+func (f *Filter) Marshal() []byte
+```
+
+### Metrics
+
+Metrics is a collection of commonly useful metrics when using a long-lived
+bloom filter.
+
+
+```go
+func NewMetrics(
+	namespace string,
+	registry metric.Registry,
+) (*Metrics, error)
+```
+
+```go
+func (m *Metrics) Reset(newFilter *Filter, maxCount int)
+```
+
+### ReadFilter
+
+```go
+func Parse(bytes []byte) (*ReadFilter, error)
+```
+
+```go
+func (f *ReadFilter) Contains(hash uint64) bool
+```
+
+```go
+func (f *ReadFilter) Marshal() []byte
+```
+

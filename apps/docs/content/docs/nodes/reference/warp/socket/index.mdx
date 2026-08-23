@@ -1,0 +1,59 @@
+---
+title: socket
+description: Package socket
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/warp/socket"
+```
+
+## Types
+
+### Client
+
+Client is a read-only connection to a socket
+
+
+```go
+func Dial(addr string) (*Client, error)
+```
+
+```go
+func (c *Client) Close() error
+```
+
+```go
+func (c *Client) Recv() ([]byte, error)
+```
+
+```go
+func (c *Client) SetMaxMessageSize(s int64)
+```
+
+### Socket
+
+Socket manages sending messages over a socket to many subscribed clients
+
+
+```go
+func NewSocket(addr string, log log.Logger) *Socket
+```
+
+```go
+func (s *Socket) Close() error
+```
+
+```go
+func (s *Socket) Listen() error
+```
+
+```go
+func (s *Socket) Running() bool
+```
+
+```go
+func (s *Socket) Send(msg []byte)
+```
+

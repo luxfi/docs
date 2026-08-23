@@ -1,0 +1,92 @@
+---
+title: x
+description: Package x
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/wallet/chain/x"
+```
+
+## Functions
+
+### NewContextFromClients
+
+```go
+func NewContextFromClients(
+	ctx context.Context,
+	infoClient *info.Client,
+	utxoAssetID ids.ID,
+	baseTxFee uint64,
+	createAssetTxFee uint64,
+) (*builder.Context, error)
+```
+
+### NewContextFromURI
+
+```go
+func NewContextFromURI(ctx context.Context, uri string, utxoAssetID ids.ID, baseTxFee uint64, createAssetTxFee uint64) (*builder.Context, error)
+```
+
+## Types
+
+### Backend
+
+Backend defines the full interface required to support an X-chain wallet.
+
+
+```go
+func NewBackend(context *builder.Context, utxos common.ChainUTXOs) Backend
+```
+
+### Builder
+
+Builder provides a convenient interface for building unsigned X-chain
+transactions.
+
+
+```go
+func NewBuilder(addrs set.Set[ids.ShortID], backend BuilderBackend) Builder
+```
+
+```go
+func NewBuilderWithOptions(builder Builder, options ...common.Option) Builder
+```
+
+### BuilderBackend
+
+BuilderBackend specifies the required information needed to build unsigned
+X-chain transactions.
+
+
+### Context
+
+Context represents the X-chain context
+
+
+### Signer
+
+```go
+func NewSigner(kc keychain.Keychain, backend SignerBackend) Signer
+```
+
+### SignerBackend
+
+### Wallet
+
+```go
+func NewWallet(
+	builder builder.Builder,
+	signer signer.Signer,
+	backend Backend,
+) Wallet
+```
+
+```go
+func NewWalletWithOptions(
+	wallet Wallet,
+	options ...common.Option,
+) Wallet
+```
+

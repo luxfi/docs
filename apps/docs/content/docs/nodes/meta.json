@@ -1,4 +1,11 @@
 {
   "title": "Run Nodes",
-  "pages": ["index", "full-node", "validator", "archive"]
+  "pages": [
+    "index",
+    "full-node",
+    "validator",
+    "archive",
+    "---Package reference---",
+    "reference"
+  ]
 }

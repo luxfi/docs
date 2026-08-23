@@ -1,0 +1,49 @@
+---
+title: main
+description: Command repair-proposervm is a fail-closed surgical tool to reconcile a proposervm chain-state DB onto a known-canonical outer block at a single height.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/cmd/repair-proposervm"
+```
+
+Command repair-proposervm is a fail-closed surgical tool to reconcile a
+proposervm chain-state DB onto a known-canonical outer block at a single height.
+
+The condition it repairs: a node locally accepted a sub-quorum proposervm
+envelope A while the network finalized the supermajority sibling B, which wraps
+the IDENTICAL inner EVM block. The two siblings differ ONLY in the proposervm
+outer envelope; the inner EVM state is byte-identical, so nothing about the EVM
+diverged. Such a node re-seeds finality from its persisted proposervm
+lastAccepted=A on restart and then fatals on B's cert as equivocation. This tool
+swaps the persisted record of `height` from A to the canonical B, leaving the
+inner EVM completely untouched (no EVM rollback).
+
+It is NOT a blind hex edit: it opens the exact same typed proposervm state
+(luxfi/node/vms/proposervm/state) over the exact same nested keyspace luxd uses
+(chainID -> "vm" -> "proposervm" -> versiondb -> chain/block/height), and writes
+via the state's own PutBlock / SetBlockIDAtHeight / SetLastAccepted so the on-disk
+bytes are identical to what luxd itself wrote for B on the canonical node.
+
+proposervm invariant honored: proLastAcceptedHeight must never be &lt; the inner VM's
+last-accepted height (vm.repairAcceptedChainByHeight). The inner EVM is at `height`
+(it accepted the shared inner block under A), so the recovery target is the
+canonical block AT `height` (B), never height-1 — keeping outer==inner height.
+
+Modes:
+
+	inspect : read-only. Print lastAccepted, height index at H and H-1, and the
+	          outer block currently recorded at H.
+	export  : read-only. Read the outer block recorded at H and write its raw
+	          stateless bytes to --block-file (run against a canonical node's DB).
+	repair  : read-write, fail-closed. Parse --block-file (canonical B), assert it is
+	          the expected block, assert the DB is in the expected bad state (lastAccepted
+	          and heightIndex[H] both == the expected sub-quorum block A, and B's parent
+	          == heightIndex[H-1]); then PutBlock(B), SetBlockIDAtHeight(H,B),
+	          SetLastAccepted(B), Commit. Idempotent: if already on B, it no-ops.
+
+The DB uses an exclusive LOCK; luxd MUST be stopped on the target before `repair`.
+
+

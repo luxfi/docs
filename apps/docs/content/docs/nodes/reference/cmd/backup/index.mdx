@@ -1,0 +1,28 @@
+---
+title: main
+description: Command backup provides CLI tools for database backup and restore operations.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/cmd/backup"
+```
+
+Command backup provides CLI tools for database backup and restore operations.
+
+Usage:
+
+	# Full backup with zstd compression
+	luxd backup --output /path/to/backup.zst --since 0
+
+	# Incremental backup (using version from last backup)
+	luxd backup --output /path/to/backup-incr.zst --since 12345678
+
+	# Restore from backup
+	luxd restore --input /path/to/backup.zst
+
+	# Get last backup metadata
+	luxd backup-info --data-dir ~/.lux/mainnet
+
+

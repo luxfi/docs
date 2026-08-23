@@ -1,0 +1,165 @@
+---
+title: node
+description: Package node
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/node"
+```
+
+## Functions
+
+### NewResourceManagerWrapper
+
+```go
+func NewResourceManagerWrapper(manager resource.Manager) tracker.ResourceManager
+```
+
+NewResourceManagerWrapper creates a new resource manager wrapper
+
+
+## Types
+
+### CoreVM
+
+CoreVM describes a VM that runs in-process (linked into luxd), never loaded
+from PluginDir and never restricted.
+
+Factory is the concrete in-process factory for VMs whose construction needs
+no node runtime state (Q, Z) — registerCoreVMs installs these. It is nil for
+P and X, whose factories must be built with live node dependencies
+(chainManager, validators, security profile, classical-compat registry) and
+are therefore registered explicitly in node.go; RegisteredInNodeGo records
+that ownership so the nil Factory is self-documenting, not a footgun.
+
+
+### HealthConfig
+
+HealthConfig for router health monitoring
+
+
+### Node
+
+Node is an instance of a Lux node.
+
+
+```go
+func New(
+	config *node.Config,
+	logFactory log.Factory,
+	logger log.Logger,
+) (*Node, error)
+```
+
+```go
+func (n *Node) Dispatch() error
+```
+
+```go
+func (n *Node) ExitCode() int
+```
+
+```go
+func (n *Node) SecurityProfile() *consensusconfig.ChainSecurityProfile
+```
+
+```go
+func (n *Node) Shutdown(exitCode int)
+```
+
+### PluginSpec
+
+PluginSpec describes a VM that is loaded ONLY from PluginDir (never linked
+in-process), and whether its chain is restricted to entitled nodes.
+
+
+### Router
+
+Router handles message routing between chains
+
+
+```go
+func NewRouter(logger log.Logger, timeoutManager timer.AdaptiveTimeoutManager) Router
+```
+
+```go
+func NewSimpleRouter(logger log.Logger, timeoutManager timer.AdaptiveTimeoutManager) Router
+```
+
+```go
+func Trace(router Router, name string, tracer trace.Tracer) Router
+```
+
+### Targeter
+
+Type aliases
+
+
+### ValidatorManager
+
+ValidatorManager wraps the consensus router and handles:
+- Validator connection tracking
+- Beacon connection management for bootstrap
+- Sybil protection weight management
+
+
+```go
+func NewValidatorManager(cfg ValidatorManagerConfig) *ValidatorManager
+```
+
+```go
+func (v *ValidatorManager) AddChain(ctx context.Context, chainID ids.ID, h handler.Handler)
+```
+
+```go
+func (v *ValidatorManager) Benched(chainID ids.ID, nodeID ids.NodeID)
+```
+
+```go
+func (v *ValidatorManager) Connected(nodeID ids.NodeID, nodeVersion *version.Application, netID ids.ID)
+```
+
+```go
+func (v *ValidatorManager) Disconnected(nodeID ids.NodeID)
+```
+
+```go
+func (v *ValidatorManager) HandleInbound(ctx context.Context, msg message.InboundMessage)
+```
+
+```go
+func (v *ValidatorManager) HealthCheck(ctx context.Context) (interface{}, error)
+```
+
+```go
+func (v *ValidatorManager) Initialize(
+	nodeID ids.NodeID,
+	logger log.Logger,
+	timeoutManager timer.AdaptiveTimeoutManager,
+	gossipFrequency uint64,
+	harshQuittersTime uint64,
+	harshQuittersSlashingFraction uint64,
+	appGossipValidatorSize uint64,
+	appGossipNonValidatorSize uint64,
+	gossipAcceptedFrontierSize uint64,
+	appSendQueueSize uint64,
+	peerNotConnectedF uint64,
+	connectedPeers ...ids.NodeID,
+) error
+```
+
+```go
+func (v *ValidatorManager) Shutdown(ctx context.Context)
+```
+
+```go
+func (v *ValidatorManager) Unbenched(chainID ids.ID, nodeID ids.NodeID)
+```
+
+### ValidatorManagerConfig
+
+ValidatorManagerConfig configures the validator manager
+
+

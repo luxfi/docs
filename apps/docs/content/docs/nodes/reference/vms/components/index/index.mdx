@@ -1,0 +1,37 @@
+---
+title: index
+description: Package index
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/components/index"
+```
+
+## Types
+
+### AddressTxsIndexer
+
+AddressTxsIndexer maintains information about which transactions changed
+the balances of which addresses. This includes both transactions that
+increase and decrease an address's balance.
+A transaction is said to change an address's balance if either is true:
+1) A UTXO that the transaction consumes was at least partially owned by the address.
+2) A UTXO that the transaction produces is at least partially owned by the address.
+
+
+```go
+func NewIndexer(
+	db database.Database,
+	log log.Logger,
+	metricsNamespace string,
+	metricsRegisterer metric.Registerer,
+	allowIncompleteIndices bool,
+) (AddressTxsIndexer, error)
+```
+
+```go
+func NewNoIndexer(db database.Database, allowIncomplete bool) (AddressTxsIndexer, error)
+```
+

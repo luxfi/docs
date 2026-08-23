@@ -1,0 +1,235 @@
+---
+title: quasar
+description: Package quasar is the node-side integration of the luxfi/consensus Quasar post-quantum finality-certificate layer.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/consensus/quasar"
+```
+
+Package quasar is the node-side integration of the luxfi/consensus Quasar
+post-quantum finality-certificate layer.
+
+luxd finalizes blocks on the classical sampling path (fast, every
+block). On top, at CHECKPOINTS (epoch boundaries — NOT every block), a sampled
+committee produces a QuasarCert over the finalized digest and validators
+VERIFY it. This package wires the VERIFY half: it consumes
+github.com/luxfi/consensus/protocol/quasar.VerifyConsensusCert as an OPTIONAL,
+FORWARD-DATED, DORMANT-BY-DEFAULT check in the block-accept path.
+
+# Safety contract
+
+The forward-dated dormant activation is the whole reason this package has the
+shape it does:
+
+  - Pre-activation (the default): VerifyAccepted is a pure no-op. Classical
+    Snow finality is UNCHANGED. A nil *Gate, a zero Gate, or an unset
+    activation height all mean "dormant" — zero behavior change.
+  - Post-activation (owner sets Activation.Height to a real, forward-dated
+    height): at every checkpoint height the gate REQUIRES a valid QuasarCert
+    bound to the just-finalized block and FAILS CLOSED — a missing or invalid
+    cert returns an error from Accept(), halting the chain rather than
+    finalizing a checkpoint without post-quantum evidence.
+
+Activation is therefore a deliberate switch the owner flips only AFTER the
+cert PRODUCER (the per-validator committee signer) is live and certs flow at
+the checkpoint cadence — otherwise every checkpoint would halt. See
+producer.go.
+
+# Default posture
+
+HYBRID_PQ = Beam(BLS) ∧ Pulsar (standard FIPS-204 threshold ML-DSA), at
+checkpoint cadence. Per the measured policy-tier benchmarks, Pulsar verify
+(~140µs) is cheaper than BLS itself and the cert is compact (~27KB) — the
+right default production finality posture. STRICT_DUAL_PQ (∧ Corona) and the
+POLARIS tiers (∧ Magnetar) are configurable for stricter mainnet finality.
+
+
+## Types
+
+### ActivationConfig
+
+ActivationConfig is the forward-dated activation switch.
+
+The zero value is DORMANT: Height == 0 means "never activate" and the gate is
+a no-op for every block. This mirrors the genesis upgrade discipline (a
+far-future / unset activation point cannot affect live finality).
+
+Activation is by HEIGHT ONLY, deliberately. A block height is agreed by
+consensus, so every honest validator enforces PQ finality at exactly the SAME
+checkpoints — there is no node-local decision. (A wall-clock gate would split
+finalization across validators with skewed clocks: some halting on a missing
+cert while others finalize without one. Timestamp-based forward-dating is
+expressed by choosing the activation HEIGHT at the target time.)
+
+
+### CertStore
+
+CertStore resolves the QuasarCert that certifies a finalized block. In
+production it is filled by the cert gossip/ingest path (the producer
+follow-on, producer.go); the verify gate only READS from it. Keyed by the
+finalized position (chainID, height, blockID) so a cert can never be returned
+for the wrong block.
+
+
+### Checkpoint
+
+Checkpoint is the finalized-block position the accept hook hands the gate. It
+is the binding the cert must match (anti-replay): a valid cert for a DIFFERENT
+block must never satisfy THIS checkpoint. The chain id is gate-level config,
+not a per-block field.
+
+
+### Config
+
+Config is the node-surfaced PQ-finality configuration. Its zero value is
+dormant + HYBRID_PQ + default cadence.
+
+
+### Gate
+
+Gate enforces (or, dormant, ignores) PQ-finality at checkpoints. It is the
+one node-side connection between the classical accept path and the consensus
+Quasar verifier.
+
+
+```go
+func NewGate(cfg Config, store CertStore, validators ValidatorSetProvider) *Gate
+```
+
+```go
+func (g *Gate) Activated(height uint64) bool
+```
+
+```go
+func (g *Gate) IsCheckpoint(height uint64) bool
+```
+
+```go
+func (g *Gate) MaybeProduce(ctx context.Context, producer Producer, cp Checkpoint) (*qcert.ConsensusCert, error)
+```
+
+```go
+func (g *Gate) VerifyAccepted(cp Checkpoint) error
+```
+
+### MemCertStore
+
+MemCertStore is an in-memory CertStore keyed by (chainID, height, blockID). It
+is the ingest sink the cert-gossip handler writes into (Put) and the gate
+reads from (Lookup). Safe for concurrent use.
+
+
+```go
+func NewMemCertStore() *MemCertStore
+```
+
+```go
+func (m *MemCertStore) Lookup(chainID uint32, height uint64, blockID [32]byte) (*qcert.ConsensusCert, bool)
+```
+
+```go
+func (m *MemCertStore) Put(cert *qcert.ConsensusCert)
+```
+
+### Producer
+
+Producer is the committee cert-signing service contract (the per-validator
+"pulsard" committee). At a checkpoint, a producing validator calls Produce to
+obtain the QuasarCert over the finalized subject, then gossips it so peers can
+verify and store it (via a CertStore).
+
+SCAFFOLDING — this is the seam, not the service. This milestone wires the
+VERIFY half (gate.go) and this interface. luxd ships with a nil Producer
+(verify-only): a node VERIFIES certs it receives but does not itself produce
+them. A nil Producer is the correct default — most of the rollout window is
+verify-only, and the producer is brought up before activation is forward-dated.
+
+Implementation path for the follow-on:
+
+  - github.com/luxfi/consensus/protocol/quasar already defines the
+    producer-side abstractions: PWitnessProducer / QWitnessProducer /
+    ZWitnessProducer + NewWitnessSet, and ComposeDualPQEvidence. The concrete
+    committee signer implements Producer over those.
+  - The signer needs the live Pulsar key share + nonce pool + offline
+    preprocessing + one-round sign + verify-before-gossip + nonce-erase (the
+    no-reconstruct hyperball signer), which lands with pulsar v1.7.1.
+  - REQUIRED CONSENSUS EXPORT: the ConsensusCert envelope + per-leg payload
+    ENCODERS are package-private in consensus v1.29.0 (only the verifiers are
+    exported). An external producer — and any end-to-end "valid cert verifies
+    through the gate" test — needs those encoders exported (a small, additive
+    consensus change). The verify path here needs no such export: it consumes
+    a fully-formed *ConsensusCert.
+
+
+### StaticValidatorSetProvider
+
+StaticValidatorSetProvider returns the same committed set for every (chain,
+epoch). It is the single-era / test provider; the production provider resolves
+per-epoch sets from the P-Chain validator manager + KeyEra registry.
+
+
+```go
+func (p StaticValidatorSetProvider) ValidatorSet(_ uint32, _ uint64) (qcert.ConsensusValidatorSet, error)
+```
+
+### Subject
+
+Subject is the finalized-block position a cert must certify — the producer's
+input at a checkpoint. Mirrors Checkpoint (the verify side) so producer and
+verifier bind the SAME tuple.
+
+
+### ValidatorSet
+
+ValidatorSet is a concrete ConsensusValidatorSet for one epoch: the committed
+weighted-validator-set root plus the per-leg verification keys the cert legs
+verify against (the classical BLS aggregate key for the Beam leg and the
+Pulsar ML-DSA threshold group key for the Pulsar leg — the HYBRID_PQ pair).
+
+Production wiring (the activation seam): in production these fields are
+populated from the P-Chain-pinned validator set (Root, Epoch) and the active
+KeyEra group keys for the epoch. That population is era/rotation-coupled and
+lands with the producer + KeyEra-registry wiring (see producer.go). Corona
+(STRICT_DUAL_PQ) and Magnetar/P3Q (POLARIS / RECOVERY) group keys + the
+weighted-sig-set config are populated by that same follow-on; until then this
+set serves the HYBRID_PQ pair and reports "no key" for the other lanes.
+
+
+```go
+func NewValidatorSet(root [48]byte, epoch uint64, blsAggKey, pulsarGroup []byte) *ValidatorSet
+```
+
+```go
+func (v *ValidatorSet) ClassicalAggregateKey(scheme qcert.ClassicalScheme) ([]byte, bool)
+```
+
+```go
+func (v *ValidatorSet) Epoch() uint64
+```
+
+```go
+func (v *ValidatorSet) Root() [48]byte
+```
+
+```go
+func (v *ValidatorSet) ThresholdGroupKey(kind qcert.LegKind) (qcert.ThresholdGroupKey, bool)
+```
+
+```go
+func (v *ValidatorSet) WeightedConfig() qcert.QuorumVerifierConfig
+```
+
+```go
+func (v *ValidatorSet) WeightedEnvelope() qcert.QuorumMessageEnvelope
+```
+
+### ValidatorSetProvider
+
+ValidatorSetProvider resolves the committed validator set the verifier pins a
+cert against, for a (chain, epoch). Post-activation the gate calls this once
+per verified checkpoint.
+
+

@@ -1,0 +1,3011 @@
+---
+title: chainadapter
+description: Package chainadapter provides adapters for verifying data from external blockchains.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/chainadapter"
+```
+
+Package chainadapter provides adapters for verifying data from external blockchains.
+This enables the RelayVM and OracleVM to verify cross-chain messages and oracle feeds
+from major blockchains including Bitcoin, Ethereum, Solana, Cosmos, and others.
+
+Package chainadapter provides AppChain support for fheCRDT-based distributed applications.
+AppChains are user-centric distributed SQL databases with privacy-preserving CRDTs,
+similar to Firestore but for Web3 with end-to-end encryption and verifiable compute.
+
+Package chainadapter provides fheCRDT support for privacy-preserving app chains.
+fheCRDT combines Fully Homomorphic Encryption with Conflict-free Replicated Data Types
+to enable Firestore-like distributed SQL with end-to-end encryption and verifiable compute.
+
+
+## Functions
+
+### AllChainConfigs
+
+```go
+func AllChainConfigs() map[ChainID]*ChainConfig
+```
+
+AllChainConfigs returns configurations for all 200+ supported chains
+with proper EVM chain IDs where applicable
+
+
+### ChainName
+
+```go
+func ChainName(id ChainID) string
+```
+
+ChainName returns the name for a chain ID
+
+
+### DefaultChainConfigs
+
+```go
+func DefaultChainConfigs() map[ChainID]*ChainConfig
+```
+
+DefaultChainConfigs returns default configurations for major chains
+
+
+### GetAddressPrefix
+
+```go
+func GetAddressPrefix(chainID ChainID, chainType ChainType) string
+```
+
+GetAddressPrefix returns the expected address prefix for a chain
+
+
+### GetAllEnrichedConfigs
+
+```go
+func GetAllEnrichedConfigs() map[ChainID]*ChainConfig
+```
+
+GetAllEnrichedConfigs returns all chain configs with ChainType and MPC fields populated
+
+
+### GetChainsByCategory
+
+```go
+func GetChainsByCategory() map[ChainType][]*ChainConfig
+```
+
+GetChainsByCategory returns chains grouped by their ChainType
+
+
+### GetEVMChainID
+
+```go
+func GetEVMChainID(chainID ChainID) (uint64, bool)
+```
+
+GetEVMChainID returns the EVM chain ID for a given internal chain ID
+
+
+### GetMPCCurve
+
+```go
+func GetMPCCurve(chainType ChainType) string
+```
+
+GetMPCCurve returns the MPC signing curve for a chain
+
+
+### InitializeDefaultAdapters
+
+```go
+func InitializeDefaultAdapters(registry *Registry) error
+```
+
+InitializeDefaultAdapters initializes adapters for all supported chains
+
+
+### NewFHECRDTEngine
+
+```go
+func NewFHECRDTEngine(config *AppChainConfig, encryptor Encryptor, daClient DAClient, materializer StateMaterializer) *fheCRDTEngine
+```
+
+NewFHECRDTEngine creates a new fheCRDT engine
+
+
+### SetDefaultChainTaxonomy
+
+```go
+func SetDefaultChainTaxonomy(r ChainTaxonomy)
+```
+
+SetDefaultChainTaxonomy replaces the process-wide taxonomy. Intended for
+tests and operators that want to inject a custom set; passing nil resets
+to the lazy default.
+
+
+## Types
+
+### AddressFormat
+
+AddressFormat describes how addresses are formatted on this chain
+
+
+```go
+func InferAddressFormat(chainID ChainID, chainType ChainType) AddressFormat
+```
+
+### AlgorandAdapter
+
+```go
+func NewAlgorandAdapter() *AlgorandAdapter
+```
+
+```go
+func (a *AlgorandAdapter) ChainID() ChainID
+```
+
+```go
+func (a *AlgorandAdapter) ChainName() string
+```
+
+```go
+func (a *AlgorandAdapter) Close() error
+```
+
+```go
+func (a *AlgorandAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *AlgorandAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *AlgorandAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *AlgorandAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *AlgorandAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *AlgorandAdapter) IsFinalized(ctx context.Context, round uint64) (bool, error)
+```
+
+```go
+func (a *AlgorandAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *AlgorandAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *AlgorandAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *AlgorandAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *AlgorandAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### AlgorandBlock
+
+### AppChain
+
+AppChain represents a user-centric distributed SQL database
+
+
+```go
+func NewAppChain(config *AppChainConfig, dbPath string, daClient DAClient) (*AppChain, error)
+```
+
+```go
+func (a *AppChain) Close() error
+```
+
+```go
+func (a *AppChain) ComputeStateRoot() [32]byte
+```
+
+```go
+func (a *AppChain) CreateCollection(ctx context.Context, schema *CollectionSchema) error
+```
+
+```go
+func (a *AppChain) CreateDocument(ctx context.Context, collection, docID string, domain EncryptionDomain, data []byte) (*Document, error)
+```
+
+```go
+func (a *AppChain) GetDocument(ctx context.Context, collection, docID string) (*Document, error)
+```
+
+```go
+func (a *AppChain) Query(ctx context.Context, sql string, params ...interface{}) ([]map[string]interface{}, error)
+```
+
+```go
+func (a *AppChain) Sync(ctx context.Context) error
+```
+
+### AppChainAdapter
+
+AppChainAdapter implements ChainAdapter for AppChains
+
+
+```go
+func NewAppChainAdapter(appChain *AppChain) *AppChainAdapter
+```
+
+```go
+func (a *AppChainAdapter) ChainID() ChainID
+```
+
+```go
+func (a *AppChainAdapter) ChainName() string
+```
+
+```go
+func (a *AppChainAdapter) Close() error
+```
+
+```go
+func (a *AppChainAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *AppChainAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *AppChainAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *AppChainAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *AppChainAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *AppChainAdapter) IsFinalized(ctx context.Context, blockNumber uint64) (bool, error)
+```
+
+```go
+func (a *AppChainAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *AppChainAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *AppChainAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *AppChainAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *AppChainAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### AppChainConfig
+
+AppChainConfig configures an fheCRDT app chain
+
+
+### AppChainDALayer
+
+AppChainDALayer wraps DA client with AppChain-specific functionality
+
+
+```go
+func NewAppChainDALayer(appChainID ids.ID, config *DAConfig) *AppChainDALayer
+```
+
+```go
+func (l *AppChainDALayer) GetReceipt(ctx context.Context, pointer *DAPointer) (*DAReceipt, error)
+```
+
+```go
+func (l *AppChainDALayer) RetrieveOpBatch(ctx context.Context, pointer *DAPointer) (*OpBatch, error)
+```
+
+```go
+func (l *AppChainDALayer) StoreOpBatch(ctx context.Context, batch *OpBatch) (*DAPointer, error)
+```
+
+```go
+func (l *AppChainDALayer) StoreSnapshot(ctx context.Context, snapshot *StateSnapshot) (*DAPointer, error)
+```
+
+### AppChainState
+
+AppChainState represents the current state of an app chain
+
+
+### AptosAdapter
+
+```go
+func NewAptosAdapter() *AptosAdapter
+```
+
+```go
+func (a *AptosAdapter) ChainID() ChainID
+```
+
+```go
+func (a *AptosAdapter) ChainName() string
+```
+
+```go
+func (a *AptosAdapter) Close() error
+```
+
+```go
+func (a *AptosAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *AptosAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *AptosAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *AptosAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *AptosAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *AptosAdapter) IsFinalized(ctx context.Context, block uint64) (bool, error)
+```
+
+```go
+func (a *AptosAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *AptosAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *AptosAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *AptosAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *AptosAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### AptosBlock
+
+### AptosValidator
+
+### AssetRegistry
+
+AssetRegistry tracks bridgeable assets across chains
+
+
+```go
+func NewAssetRegistry() *AssetRegistry
+```
+
+```go
+func (r *AssetRegistry) GetAsset(assetID ids.ID) (*CrossChainAsset, bool)
+```
+
+```go
+func (r *AssetRegistry) GetAssetsByChain(chainID ChainID) []*CrossChainAsset
+```
+
+```go
+func (r *AssetRegistry) GetWrappedAddress(assetID ids.ID, chainID ChainID) ([]byte, error)
+```
+
+```go
+func (r *AssetRegistry) RegisterAsset(asset *CrossChainAsset)
+```
+
+### BSCAdapter
+
+```go
+func NewBSCAdapter() *BSCAdapter
+```
+
+```go
+func (a *BSCAdapter) ChainID() ChainID
+```
+
+```go
+func (a *BSCAdapter) ChainName() string
+```
+
+```go
+func (a *BSCAdapter) Close() error
+```
+
+```go
+func (a *BSCAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *BSCAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *BSCAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *BSCAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *BSCAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *BSCAdapter) IsFinalized(ctx context.Context, block uint64) (bool, error)
+```
+
+```go
+func (a *BSCAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *BSCAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *BSCAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *BSCAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *BSCAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### BitcoinAdapter
+
+BitcoinAdapter implements SPV verification for Bitcoin
+
+
+```go
+func NewBitcoinAdapter() *BitcoinAdapter
+```
+
+```go
+func (a *BitcoinAdapter) ChainID() ChainID
+```
+
+```go
+func (a *BitcoinAdapter) ChainName() string
+```
+
+```go
+func (a *BitcoinAdapter) Close() error
+```
+
+```go
+func (a *BitcoinAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *BitcoinAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *BitcoinAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *BitcoinAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *BitcoinAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *BitcoinAdapter) IsFinalized(ctx context.Context, blockNumber uint64) (bool, error)
+```
+
+```go
+func (a *BitcoinAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *BitcoinAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *BitcoinAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *BitcoinAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *BitcoinAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### BitcoinCheckpoint
+
+BitcoinCheckpoint represents a known checkpoint
+
+
+### BitcoinForkAdapter
+
+```go
+func NewBitcoinForkAdapter(chainID ChainID, name string, blockTime time.Duration, confs uint64) *BitcoinForkAdapter
+```
+
+```go
+func (a *BitcoinForkAdapter) ChainID() ChainID
+```
+
+```go
+func (a *BitcoinForkAdapter) ChainName() string
+```
+
+```go
+func (a *BitcoinForkAdapter) Close() error
+```
+
+```go
+func (a *BitcoinForkAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *BitcoinForkAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *BitcoinForkAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *BitcoinForkAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *BitcoinForkAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *BitcoinForkAdapter) IsFinalized(ctx context.Context, block uint64) (bool, error)
+```
+
+```go
+func (a *BitcoinForkAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *BitcoinForkAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *BitcoinForkAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *BitcoinForkAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *BitcoinForkAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### BitcoinHeader
+
+BitcoinHeader represents a Bitcoin block header (80 bytes)
+
+
+### Blob
+
+Blob represents data stored in the DA layer
+
+
+```go
+func (b *Blob) ComputeCommitment() [32]byte
+```
+
+### BlockHeader
+
+BlockHeader represents a block header from any chain
+
+
+### BridgeAdapter
+
+BridgeAdapter provides cross-chain bridge functionality using chain adapters
+
+
+```go
+func NewBridgeAdapter(registry *ChainRegistry, wallet MPCWallet) *BridgeAdapter
+```
+
+```go
+func (b *BridgeAdapter) ConfirmDelivery(ctx context.Context, reqID ids.ID, destTxHash [32]byte, destBlock uint64) error
+```
+
+```go
+func (b *BridgeAdapter) GetAdapter(chainID ChainID) (ChainAdapter, bool)
+```
+
+```go
+func (b *BridgeAdapter) GetBridgeRequest(reqID ids.ID) (*BridgeRequest, error)
+```
+
+```go
+func (b *BridgeAdapter) GetMetrics() *BridgeMetrics
+```
+
+```go
+func (b *BridgeAdapter) GetPendingTransfers() []*BridgeRequest
+```
+
+```go
+func (b *BridgeAdapter) GetSupportedRoutes() []*BridgeRoute
+```
+
+```go
+func (b *BridgeAdapter) GetTransfersForChain(chainID ChainID, isSource bool) []*BridgeRequest
+```
+
+```go
+func (b *BridgeAdapter) InitiateBridge(ctx context.Context, req *BridgeRequest) error
+```
+
+```go
+func (b *BridgeAdapter) RegisterAdapter(adapter ChainAdapter) error
+```
+
+```go
+func (b *BridgeAdapter) SignBridgeRequest(ctx context.Context, reqID ids.ID) error
+```
+
+```go
+func (b *BridgeAdapter) VerifySourceTransaction(ctx context.Context, reqID ids.ID) error
+```
+
+### BridgeMetrics
+
+BridgeMetrics contains metrics for the bridge adapter
+
+
+### BridgeRequest
+
+BridgeRequest represents a cross-chain bridge request
+
+
+```go
+func (r *BridgeRequest) Hash() [32]byte
+```
+
+### BridgeRoute
+
+BridgeRoute represents a supported bridge route between two chains
+
+
+### BridgeStatus
+
+BridgeStatus represents the status of a bridge transfer
+
+
+```go
+func (s BridgeStatus) String() string
+```
+
+### BridgeTransfer
+
+BridgeTransfer represents a cross-chain bridge transfer
+
+
+### BridgeWalletAdapter
+
+BridgeWalletAdapter adapts MPCWallet for bridge operations
+
+
+```go
+func NewBridgeWalletAdapter(wallet MPCWallet, registry *ChainRegistry) *BridgeWalletAdapter
+```
+
+```go
+func (b *BridgeWalletAdapter) GetBridgeAddress(chainID ChainID) (string, error)
+```
+
+```go
+func (b *BridgeWalletAdapter) SignBridgeTransfer(ctx context.Context, transfer *BridgeTransfer) (*SignedBridgeTransfer, error)
+```
+
+### CRDTOpType
+
+CRDTOpType defines the operation type within a CRDT
+
+
+### CRDTType
+
+CRDTType defines the type of CRDT operation
+
+
+### CapabilityManager
+
+CapabilityManager manages encryption capabilities
+
+
+```go
+func NewCapabilityManager() *CapabilityManager
+```
+
+```go
+func (m *CapabilityManager) Check(partyID []byte, domain EncryptionDomain) bool
+```
+
+```go
+func (m *CapabilityManager) Delegate(fromParty, toParty []byte, domains []EncryptionDomain) error
+```
+
+```go
+func (m *CapabilityManager) Grant(cap *EncryptionCapability)
+```
+
+```go
+func (m *CapabilityManager) Revoke(partyID []byte)
+```
+
+### CardanoAdapter
+
+```go
+func NewCardanoAdapter() *CardanoAdapter
+```
+
+```go
+func (a *CardanoAdapter) ChainID() ChainID
+```
+
+```go
+func (a *CardanoAdapter) ChainName() string
+```
+
+```go
+func (a *CardanoAdapter) Close() error
+```
+
+```go
+func (a *CardanoAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *CardanoAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *CardanoAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *CardanoAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *CardanoAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *CardanoAdapter) IsFinalized(ctx context.Context, slot uint64) (bool, error)
+```
+
+```go
+func (a *CardanoAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *CardanoAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *CardanoAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *CardanoAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *CardanoAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### CardanoBlock
+
+### CardanoPool
+
+### Chain
+
+Chain is one row of the supported-chain registry. Pure data plus an optional
+per-row adapter factory. Mirrors the precompile/bridge shape so a chain
+becomes one row in the seed rather than a brand-keyed const token in source.
+
+Constructor is the data-driven dispatch seam that replaces the brand-keyed
+switch in NewExtendedAdapter: each row carries its own factory closure, so
+adding a chain with adapter support is one row edit, not a switch edit.
+Rows with nil Constructor have no adapter implementation in this package
+today; lookup returns nil cleanly.
+
+
+```go
+func DefaultChainSeed() []Chain
+```
+
+### ChainAdapter
+
+ChainAdapter is the interface that all chain adapters must implement
+
+
+```go
+func NewAdapter(chainID ChainID) (ChainAdapter, error)
+```
+
+```go
+func NewExtendedAdapter(chainID ChainID) (ChainAdapter, error)
+```
+
+### ChainCategory
+
+ChainCategory groups chains by their use case
+
+
+```go
+func GetChainCategory(chainID ChainID) ChainCategory
+```
+
+### ChainConfig
+
+ChainConfig contains configuration for a chain adapter
+
+
+```go
+func EnrichChainConfig(config *ChainConfig) *ChainConfig
+```
+
+```go
+func GetEVMCompatibleChains() []*ChainConfig
+```
+
+```go
+func GetEnrichedChainConfig(chainID ChainID) *ChainConfig
+```
+
+```go
+func GetNativePrimaryNetworks() []*ChainConfig
+```
+
+### ChainEvent
+
+ChainEvent represents an event/log from a chain
+
+
+### ChainID
+
+ChainID represents a unique blockchain identifier. Values are taxonomic
+(1=Bitcoin family root, 2=Ethereum, ...) and stable; they are NOT EIP-155
+chain IDs. The canonical id&lt;->name binding lives in DefaultChainSeed.
+
+
+```go
+func GetAllSupportedChains() []ChainID
+```
+
+```go
+func GetChainByEVMID(evmChainID uint64) (ChainID, bool)
+```
+
+### ChainKeySet
+
+ChainKeySet holds keys for a specific chain
+
+
+### ChainMetrics
+
+ChainMetrics contains metrics for a chain adapter
+
+
+### ChainRegistry
+
+ChainRegistry manages chain configurations
+
+
+```go
+func NewChainRegistry() *ChainRegistry
+```
+
+```go
+func (r *ChainRegistry) GetAllConfigs() []*ChainConfig
+```
+
+```go
+func (r *ChainRegistry) GetChainsByType(chainType ChainType) []*ChainConfig
+```
+
+```go
+func (r *ChainRegistry) GetConfig(chainID ChainID) *ChainConfig
+```
+
+```go
+func (r *ChainRegistry) GetEVMChains() []*ChainConfig
+```
+
+```go
+func (r *ChainRegistry) GetNativeChains() []*ChainConfig
+```
+
+```go
+func (r *ChainRegistry) Register(config *ChainConfig)
+```
+
+### ChainTaxonomy
+
+ChainTaxonomy resolves chains by id or canonical name and enumerates the
+supported set. Distinct from the adapter Registry (which holds live adapter
+instances) and from ChainRegistry (which holds *ChainConfig values); this
+is the static taxonomy of supported chain rows backing the package's
+internal id&lt;->name mapping.
+
+
+```go
+func DefaultChainTaxonomy() ChainTaxonomy
+```
+
+```go
+func NewStaticChainTaxonomy(chains []Chain) ChainTaxonomy
+```
+
+### ChainType
+
+ChainType categorizes chains by their fundamental architecture
+
+
+```go
+func InferChainType(chainID ChainID) ChainType
+```
+
+```go
+func (ct ChainType) String() string
+```
+
+### CollectionSchema
+
+CollectionSchema defines the schema for a collection
+
+
+### CommitmentScheme
+
+CommitmentScheme defines the commitment scheme used
+
+
+### CommitteeCert
+
+CommitteeCert represents threshold endorsement from a compute committee
+
+
+```go
+func (c *CommitteeCert) Verify(committee *ComputeCommittee) error
+```
+
+### ComputeAnchor
+
+ComputeAnchor anchors compute result to chain
+
+
+```go
+func (a *ComputeAnchor) Hash() [32]byte
+```
+
+### ComputeCommittee
+
+ComputeCommittee is a group that collectively attests to computation
+
+
+### ComputeMode
+
+ComputeMode defines how confidential compute is performed
+
+
+### ComputeProof
+
+ComputeProof represents a ZK proof of correct computation
+
+
+```go
+func (p *ComputeProof) Verify() error
+```
+
+### ComputeRequest
+
+ComputeRequest represents a request for confidential computation
+
+
+### ComputeResult
+
+ComputeResult represents the result of confidential computation
+
+
+### ComputeSession
+
+ComputeSession tracks an active computation
+
+
+### ComputeStatus
+
+ComputeStatus represents the status of a compute request
+
+
+### ConfidentialComputeEngine
+
+ConfidentialComputeEngine handles confidential computation
+
+
+```go
+func NewConfidentialComputeEngine(teeType TEEType) *ConfidentialComputeEngine
+```
+
+```go
+func (e *ConfidentialComputeEngine) Execute(ctx context.Context, reqID ids.ID) (*ComputeResult, error)
+```
+
+```go
+func (e *ConfidentialComputeEngine) GetResult(reqID ids.ID) (*ComputeResult, bool)
+```
+
+```go
+func (e *ConfidentialComputeEngine) RegisterCommittee(committee *ComputeCommittee) error
+```
+
+```go
+func (e *ConfidentialComputeEngine) SubmitRequest(ctx context.Context, req *ComputeRequest) error
+```
+
+```go
+func (e *ConfidentialComputeEngine) VerifyResult(result *ComputeResult) error
+```
+
+### CosmosAdapter
+
+CosmosAdapter implements IBC light client verification for Cosmos chains
+
+
+```go
+func NewCosmosAdapter() *CosmosAdapter
+```
+
+```go
+func (a *CosmosAdapter) ChainID() ChainID
+```
+
+```go
+func (a *CosmosAdapter) ChainName() string
+```
+
+```go
+func (a *CosmosAdapter) Close() error
+```
+
+```go
+func (a *CosmosAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *CosmosAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *CosmosAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *CosmosAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *CosmosAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *CosmosAdapter) IsFinalized(ctx context.Context, height uint64) (bool, error)
+```
+
+```go
+func (a *CosmosAdapter) UpdateClientState(header *CosmosHeader, validatorSet *TendermintValidatorSet) error
+```
+
+```go
+func (a *CosmosAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *CosmosAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *CosmosAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *CosmosAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *CosmosAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### CosmosHeader
+
+CosmosHeader represents a Cosmos/Tendermint block header
+
+
+### CosmosSDKAdapter
+
+```go
+func NewCosmosSDKAdapter(chainID ChainID, name, prefix string, blockTime time.Duration) *CosmosSDKAdapter
+```
+
+```go
+func (a *CosmosSDKAdapter) ChainID() ChainID
+```
+
+```go
+func (a *CosmosSDKAdapter) ChainName() string
+```
+
+```go
+func (a *CosmosSDKAdapter) Close() error
+```
+
+```go
+func (a *CosmosSDKAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *CosmosSDKAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *CosmosSDKAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *CosmosSDKAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *CosmosSDKAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *CosmosSDKAdapter) IsFinalized(ctx context.Context, block uint64) (bool, error)
+```
+
+```go
+func (a *CosmosSDKAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *CosmosSDKAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *CosmosSDKAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *CosmosSDKAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *CosmosSDKAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### CosmosSDKBlock
+
+### CosmosSDKValidator
+
+### CounterOp
+
+CounterOp is the engine-internal counter operation payload.
+
+
+### CrossChainAsset
+
+CrossChainAsset represents an asset that can be bridged
+
+
+### CrossChainMessage
+
+CrossChainMessage represents a message to be relayed between chains
+
+
+### DAClient
+
+DAClient interfaces with the Data Availability layer
+
+
+### DACommitment
+
+DACommitment represents a cryptographic commitment to DA data
+
+
+```go
+func CreateDACommitment(scheme CommitmentScheme, data []byte) *DACommitment
+```
+
+```go
+func (c *DACommitment) Verify(data []byte) error
+```
+
+### DAConfig
+
+DAConfig configures the DA layer
+
+
+### DAGAdapter
+
+```go
+func NewDAGAdapter(chainID ChainID, name, consensusType string, blockTime time.Duration) *DAGAdapter
+```
+
+```go
+func (a *DAGAdapter) ChainID() ChainID
+```
+
+```go
+func (a *DAGAdapter) ChainName() string
+```
+
+```go
+func (a *DAGAdapter) Close() error
+```
+
+```go
+func (a *DAGAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *DAGAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *DAGAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *DAGAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *DAGAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *DAGAdapter) IsFinalized(ctx context.Context, vertex uint64) (bool, error)
+```
+
+```go
+func (a *DAGAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *DAGAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *DAGAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *DAGAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *DAGAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### DAGVertex
+
+### DALayerType
+
+DALayerType defines the type of DA layer
+
+
+### DAMetrics
+
+DAMetrics contains metrics for the DA layer
+
+
+### DANode
+
+DANode represents a node in the DA network
+
+
+### DAPointer
+
+DAPointer references data in the DA layer
+
+
+### DAReceipt
+
+DAReceipt proves data availability
+
+
+### DataRef
+
+DataRef references encrypted data for compute
+
+
+### DefaultDAClient
+
+DefaultDAClient implements DAClient interface
+
+
+```go
+func NewDefaultDAClient(config *DAConfig) *DefaultDAClient
+```
+
+```go
+func (c *DefaultDAClient) GetAvailabilityReceipt(ctx context.Context, pointer *DAPointer) (*DAReceipt, error)
+```
+
+```go
+func (c *DefaultDAClient) GetMetrics() *DAMetrics
+```
+
+```go
+func (c *DefaultDAClient) GetNodes() []*DANode
+```
+
+```go
+func (c *DefaultDAClient) Prune(ctx context.Context, before time.Time) error
+```
+
+```go
+func (c *DefaultDAClient) RegisterNode(node *DANode)
+```
+
+```go
+func (c *DefaultDAClient) Retrieve(ctx context.Context, pointer *DAPointer) ([]byte, error)
+```
+
+```go
+func (c *DefaultDAClient) SetReplicationPolicy(ctx context.Context, pointer *DAPointer, regions []string) error
+```
+
+```go
+func (c *DefaultDAClient) Store(ctx context.Context, data []byte, commitment [32]byte) (*DAPointer, error)
+```
+
+### DefaultEncryptor
+
+DefaultEncryptor provides default encryption implementation
+
+
+```go
+func NewDefaultEncryptor(keyManager *DomainKeyManager, fheEnabled bool, scheme FHEScheme) *DefaultEncryptor
+```
+
+```go
+func (e *DefaultEncryptor) ComputeFHE(ctx context.Context, encrypted []byte, operation string, params []byte) ([]byte, error)
+```
+
+```go
+func (e *DefaultEncryptor) Decrypt(ctx context.Context, ciphertext []byte, domain EncryptionDomain, privateKey []byte) ([]byte, error)
+```
+
+```go
+func (e *DefaultEncryptor) DecryptChaCha(ctx context.Context, ciphertext []byte, key []byte) ([]byte, error)
+```
+
+```go
+func (e *DefaultEncryptor) DecryptFHE(ctx context.Context, encrypted []byte, privateKey []byte) ([]byte, error)
+```
+
+```go
+func (e *DefaultEncryptor) DeriveSharedKey(parties [][]byte, threshold int) ([]byte, error)
+```
+
+```go
+func (e *DefaultEncryptor) Encrypt(ctx context.Context, data []byte, domain EncryptionDomain, recipients [][]byte) ([]byte, error)
+```
+
+```go
+func (e *DefaultEncryptor) EncryptChaCha(ctx context.Context, data []byte, key []byte) ([]byte, error)
+```
+
+```go
+func (e *DefaultEncryptor) EncryptFHE(ctx context.Context, data []byte, scheme string) ([]byte, error)
+```
+
+```go
+func (e *DefaultEncryptor) GenerateDomainKey(domain EncryptionDomain) (publicKey, privateKey []byte, err error)
+```
+
+### Document
+
+Document represents a versioned document in fheCRDT
+
+
+### DocumentID
+
+DocumentID uniquely identifies a document in an app chain
+
+
+```go
+func (d *DocumentID) Hash() [32]byte
+```
+
+### DomainKeyManager
+
+DomainKeyManager manages encryption keys for different domains
+
+
+```go
+func NewDomainKeyManager() *DomainKeyManager
+```
+
+```go
+func (m *DomainKeyManager) GenerateKeys(domain EncryptionDomain) (*DomainKeySet, error)
+```
+
+```go
+func (m *DomainKeyManager) GetKeys(domain EncryptionDomain) (*DomainKeySet, bool)
+```
+
+```go
+func (m *DomainKeyManager) SetupThresholdKey(id string, threshold, totalShares int) (*ThresholdKeySet, error)
+```
+
+### DomainKeySet
+
+DomainKeySet holds keys for a specific encryption domain
+
+
+### EVMHeader
+
+### EVML2Adapter
+
+```go
+func NewArbitrumAdapter() *EVML2Adapter
+```
+
+```go
+func NewBaseAdapter() *EVML2Adapter
+```
+
+```go
+func NewOptimismAdapter() *EVML2Adapter
+```
+
+```go
+func (a *EVML2Adapter) ChainID() ChainID
+```
+
+```go
+func (a *EVML2Adapter) ChainName() string
+```
+
+```go
+func (a *EVML2Adapter) Close() error
+```
+
+```go
+func (a *EVML2Adapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *EVML2Adapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *EVML2Adapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *EVML2Adapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *EVML2Adapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *EVML2Adapter) IsFinalized(ctx context.Context, block uint64) (bool, error)
+```
+
+```go
+func (a *EVML2Adapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *EVML2Adapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *EVML2Adapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *EVML2Adapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *EVML2Adapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### EncryptionCapability
+
+EncryptionCapability represents what a party can do with encrypted data
+
+
+### EncryptionDomain
+
+EncryptionDomain defines the privacy boundary for data
+
+
+```go
+func (d EncryptionDomain) String() string
+```
+
+### Encryptor
+
+Encryptor handles encryption/decryption operations
+
+
+### Endorsement
+
+Endorsement is a single committee member's endorsement
+
+
+### EthereumAdapter
+
+EthereumAdapter implements light client verification for Ethereum
+Uses sync committee signatures for finality verification
+
+
+```go
+func NewEthereumAdapter() *EthereumAdapter
+```
+
+```go
+func (a *EthereumAdapter) ChainID() ChainID
+```
+
+```go
+func (a *EthereumAdapter) ChainName() string
+```
+
+```go
+func (a *EthereumAdapter) Close() error
+```
+
+```go
+func (a *EthereumAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *EthereumAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *EthereumAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *EthereumAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *EthereumAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *EthereumAdapter) IsFinalized(ctx context.Context, slot uint64) (bool, error)
+```
+
+```go
+func (a *EthereumAdapter) ProcessLightClientUpdate(update *LightClientUpdate) error
+```
+
+```go
+func (a *EthereumAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *EthereumAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *EthereumAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *EthereumAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *EthereumAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### EthereumHeader
+
+EthereumHeader represents an Ethereum beacon chain header
+
+
+### FHEOperation
+
+FHEOperation defines supported FHE operations
+
+
+### FHEScheme
+
+FHEScheme defines the FHE scheme in use
+
+
+### FieldSchema
+
+FieldSchema defines a field in a collection
+
+
+### GRANDPAJustification
+
+### GRANDPAPrecommit
+
+### GenericEVMAdapter
+
+```go
+func NewGenericEVMAdapter(chainID ChainID, name string, evmID uint64, blockTime time.Duration, confs uint64, mode VerificationMode) *GenericEVMAdapter
+```
+
+```go
+func (a *GenericEVMAdapter) ChainID() ChainID
+```
+
+```go
+func (a *GenericEVMAdapter) ChainName() string
+```
+
+```go
+func (a *GenericEVMAdapter) Close() error
+```
+
+```go
+func (a *GenericEVMAdapter) EVMChainID() uint64
+```
+
+```go
+func (a *GenericEVMAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *GenericEVMAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *GenericEVMAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *GenericEVMAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *GenericEVMAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *GenericEVMAdapter) IsFinalized(ctx context.Context, block uint64) (bool, error)
+```
+
+```go
+func (a *GenericEVMAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *GenericEVMAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *GenericEVMAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *GenericEVMAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *GenericEVMAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### HeimdallCheckpoint
+
+### IBCClientState
+
+IBCClientState represents IBC light client state
+
+
+### IBCConsensusState
+
+IBCConsensusState represents IBC consensus state
+
+
+### ICPAdapter
+
+```go
+func NewICPAdapter() *ICPAdapter
+```
+
+```go
+func (a *ICPAdapter) ChainID() ChainID
+```
+
+```go
+func (a *ICPAdapter) ChainName() string
+```
+
+```go
+func (a *ICPAdapter) Close() error
+```
+
+```go
+func (a *ICPAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *ICPAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *ICPAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *ICPAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *ICPAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *ICPAdapter) IsFinalized(ctx context.Context, block uint64) (bool, error)
+```
+
+```go
+func (a *ICPAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *ICPAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *ICPAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *ICPAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *ICPAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### ICPBlock
+
+### ICPNet
+
+### IndexSchema
+
+IndexSchema defines an index on a collection
+
+
+### LightClientUpdate
+
+LightClientUpdate represents a light client update
+
+
+### MPCKeyShare
+
+MPCKeyShare represents a threshold key share for MPC signing
+
+
+### MPCSigner
+
+MPCSigner is the interface for MPC signing operations
+
+
+### MPCWallet
+
+MPCWallet represents a multi-chain MPC wallet that can sign for any supported chain
+
+
+### MoneroAdapter
+
+```go
+func NewMoneroAdapter() *MoneroAdapter
+```
+
+```go
+func (a *MoneroAdapter) ChainID() ChainID
+```
+
+```go
+func (a *MoneroAdapter) ChainName() string
+```
+
+```go
+func (a *MoneroAdapter) Close() error
+```
+
+```go
+func (a *MoneroAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *MoneroAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *MoneroAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *MoneroAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *MoneroAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *MoneroAdapter) IsFinalized(ctx context.Context, block uint64) (bool, error)
+```
+
+```go
+func (a *MoneroAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *MoneroAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *MoneroAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *MoneroAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *MoneroAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### MoneroBlock
+
+### MultiChainMPCWallet
+
+MultiChainMPCWallet implements MPCWallet for multi-chain operations
+
+
+```go
+func NewMultiChainMPCWallet(signer MPCSigner, threshold, totalShares int) *MultiChainMPCWallet
+```
+
+```go
+func (w *MultiChainMPCWallet) GetAddress(chainID ChainID) (string, error)
+```
+
+```go
+func (w *MultiChainMPCWallet) GetChainKeySet(chainID ChainID) (*ChainKeySet, error)
+```
+
+```go
+func (w *MultiChainMPCWallet) GetPublicKey(chainID ChainID) ([]byte, error)
+```
+
+```go
+func (w *MultiChainMPCWallet) GetSupportedChains() []ChainID
+```
+
+```go
+func (w *MultiChainMPCWallet) HasKeyForChain(chainID ChainID) bool
+```
+
+```go
+func (w *MultiChainMPCWallet) InitializeChain(config *ChainConfig) error
+```
+
+```go
+func (w *MultiChainMPCWallet) SignMessage(ctx context.Context, chainID ChainID, message []byte) ([]byte, error)
+```
+
+```go
+func (w *MultiChainMPCWallet) SignTransaction(ctx context.Context, chainID ChainID, tx *UnsignedTransaction) (*SignedTransaction, error)
+```
+
+### NEARAdapter
+
+```go
+func NewNEARAdapter() *NEARAdapter
+```
+
+```go
+func (a *NEARAdapter) ChainID() ChainID
+```
+
+```go
+func (a *NEARAdapter) ChainName() string
+```
+
+```go
+func (a *NEARAdapter) Close() error
+```
+
+```go
+func (a *NEARAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *NEARAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *NEARAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *NEARAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *NEARAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *NEARAdapter) IsFinalized(ctx context.Context, block uint64) (bool, error)
+```
+
+```go
+func (a *NEARAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *NEARAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *NEARAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *NEARAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *NEARAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### NEARBlock
+
+### NEARChunkHeader
+
+### NEARValidator
+
+### OpBatch
+
+OpBatch represents a batch of operations committed together
+
+
+```go
+func (b *OpBatch) Hash() [32]byte
+```
+
+### OpLog
+
+OpLog maintains the operation log for a document
+
+
+```go
+func NewOpLog(docID DocumentID) *OpLog
+```
+
+```go
+func (l *OpLog) Append(op *Operation) error
+```
+
+```go
+func (l *OpLog) GetBySeq(seq uint64) (*Operation, bool)
+```
+
+```go
+func (l *OpLog) GetRange(fromSeq, toSeq uint64) []*Operation
+```
+
+### Operation
+
+Operation represents a CRDT operation in the op-log
+
+
+### OracleDataPoint
+
+OracleDataPoint represents a price/data point from an oracle source
+
+
+### ParachainAdapter
+
+```go
+func NewParachainAdapter(chainID ChainID, name string, paraID uint32, blockTime time.Duration) *ParachainAdapter
+```
+
+```go
+func (a *ParachainAdapter) ChainID() ChainID
+```
+
+```go
+func (a *ParachainAdapter) ChainName() string
+```
+
+```go
+func (a *ParachainAdapter) Close() error
+```
+
+```go
+func (a *ParachainAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *ParachainAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *ParachainAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *ParachainAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *ParachainAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *ParachainAdapter) IsFinalized(ctx context.Context, block uint64) (bool, error)
+```
+
+```go
+func (a *ParachainAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *ParachainAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *ParachainAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *ParachainAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *ParachainAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### PolkadotAdapter
+
+PolkadotAdapter implements GRANDPA/BEEFY verification for Polkadot
+
+
+```go
+func NewPolkadotAdapter() *PolkadotAdapter
+```
+
+```go
+func (a *PolkadotAdapter) ChainID() ChainID
+```
+
+```go
+func (a *PolkadotAdapter) ChainName() string
+```
+
+```go
+func (a *PolkadotAdapter) Close() error
+```
+
+```go
+func (a *PolkadotAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *PolkadotAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *PolkadotAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *PolkadotAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *PolkadotAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *PolkadotAdapter) IsFinalized(ctx context.Context, block uint64) (bool, error)
+```
+
+```go
+func (a *PolkadotAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *PolkadotAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *PolkadotAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *PolkadotAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *PolkadotAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### PolkadotAuthority
+
+### PolkadotHeader
+
+### PolygonAdapter
+
+```go
+func NewPolygonAdapter() *PolygonAdapter
+```
+
+```go
+func (a *PolygonAdapter) ChainID() ChainID
+```
+
+```go
+func (a *PolygonAdapter) ChainName() string
+```
+
+```go
+func (a *PolygonAdapter) Close() error
+```
+
+```go
+func (a *PolygonAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *PolygonAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *PolygonAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *PolygonAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *PolygonAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *PolygonAdapter) IsFinalized(ctx context.Context, block uint64) (bool, error)
+```
+
+```go
+func (a *PolygonAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *PolygonAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *PolygonAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *PolygonAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *PolygonAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### Registry
+
+Registry manages chain adapters
+
+
+```go
+func NewRegistry() *Registry
+```
+
+```go
+func (r *Registry) Close() error
+```
+
+```go
+func (r *Registry) Get(chainID ChainID) (ChainAdapter, error)
+```
+
+```go
+func (r *Registry) GetConfig(chainID ChainID) (*ChainConfig, error)
+```
+
+```go
+func (r *Registry) GetMetrics(chainID ChainID) (*ChainMetrics, error)
+```
+
+```go
+func (r *Registry) List() []ChainID
+```
+
+```go
+func (r *Registry) Register(adapter ChainAdapter, config *ChainConfig) error
+```
+
+```go
+func (r *Registry) Unregister(chainID ChainID) error
+```
+
+```go
+func (r *Registry) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+### RippleAdapter
+
+```go
+func NewRippleAdapter() *RippleAdapter
+```
+
+```go
+func (a *RippleAdapter) ChainID() ChainID
+```
+
+```go
+func (a *RippleAdapter) ChainName() string
+```
+
+```go
+func (a *RippleAdapter) Close() error
+```
+
+```go
+func (a *RippleAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *RippleAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *RippleAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *RippleAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *RippleAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *RippleAdapter) IsFinalized(ctx context.Context, block uint64) (bool, error)
+```
+
+```go
+func (a *RippleAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *RippleAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *RippleAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *RippleAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *RippleAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### SQLiteMaterializer
+
+SQLiteMaterializer materializes CRDT state to SQLite
+
+
+```go
+func NewSQLiteMaterializer(dbPath string, appChainID ids.ID, encryptor Encryptor) (*SQLiteMaterializer, error)
+```
+
+```go
+func (m *SQLiteMaterializer) Close() error
+```
+
+```go
+func (m *SQLiteMaterializer) CreateCollection(ctx context.Context, schema *CollectionSchema) error
+```
+
+```go
+func (m *SQLiteMaterializer) GetDocument(ctx context.Context, docID DocumentID) (*Document, error)
+```
+
+```go
+func (m *SQLiteMaterializer) Materialize(ctx context.Context, ops []*Operation) error
+```
+
+```go
+func (m *SQLiteMaterializer) Query(ctx context.Context, sqlQuery string, params []interface{}) ([]map[string]interface{}, error)
+```
+
+```go
+func (m *SQLiteMaterializer) Restore(ctx context.Context, snapshot *StateSnapshot) error
+```
+
+```go
+func (m *SQLiteMaterializer) Snapshot(ctx context.Context) (*StateSnapshot, error)
+```
+
+### SamplingProof
+
+SamplingProof proves data availability through random sampling
+
+
+```go
+func (p *SamplingProof) Verify(blobCommitment [32]byte) error
+```
+
+### SignedBridgeTransfer
+
+SignedBridgeTransfer represents a signed bridge transfer
+
+
+### SignedTransaction
+
+SignedTransaction represents a signed transaction
+
+
+### SigningCurve
+
+SigningCurve represents the elliptic curve used for signing
+
+
+```go
+func GetSigningCurve(chainType ChainType) SigningCurve
+```
+
+### SolanaAdapter
+
+SolanaAdapter implements vote attestation verification for Solana
+
+
+```go
+func NewSolanaAdapter() *SolanaAdapter
+```
+
+```go
+func (a *SolanaAdapter) ChainID() ChainID
+```
+
+```go
+func (a *SolanaAdapter) ChainName() string
+```
+
+```go
+func (a *SolanaAdapter) Close() error
+```
+
+```go
+func (a *SolanaAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *SolanaAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *SolanaAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *SolanaAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *SolanaAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *SolanaAdapter) IsFinalized(ctx context.Context, slot uint64) (bool, error)
+```
+
+```go
+func (a *SolanaAdapter) ProcessVoteAttestation(attestation *SolanaVoteAttestation) error
+```
+
+```go
+func (a *SolanaAdapter) UpdateValidatorSet(validators []*SolanaValidator, epoch uint64) error
+```
+
+```go
+func (a *SolanaAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *SolanaAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *SolanaAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *SolanaAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *SolanaAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### SolanaSlot
+
+SolanaSlot represents a Solana slot (block)
+
+
+### SolanaValidator
+
+SolanaValidator represents a Solana validator
+
+
+### SolanaVote
+
+SolanaVote represents a validator vote
+
+
+### SolanaVoteAttestation
+
+SolanaVoteAttestation contains aggregated votes for a slot
+
+
+### StateMaterializer
+
+StateMaterializer materializes CRDT state to local storage
+
+
+### StateSnapshot
+
+StateSnapshot represents a point-in-time snapshot
+
+
+### StellarAdapter
+
+```go
+func NewStellarAdapter() *StellarAdapter
+```
+
+```go
+func (a *StellarAdapter) ChainID() ChainID
+```
+
+```go
+func (a *StellarAdapter) ChainName() string
+```
+
+```go
+func (a *StellarAdapter) Close() error
+```
+
+```go
+func (a *StellarAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *StellarAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *StellarAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *StellarAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *StellarAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *StellarAdapter) IsFinalized(ctx context.Context, ledger uint64) (bool, error)
+```
+
+```go
+func (a *StellarAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *StellarAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *StellarAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *StellarAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *StellarAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### StellarLedger
+
+### StellarQuorumSet
+
+### SuiAdapter
+
+```go
+func NewSuiAdapter() *SuiAdapter
+```
+
+```go
+func (a *SuiAdapter) ChainID() ChainID
+```
+
+```go
+func (a *SuiAdapter) ChainName() string
+```
+
+```go
+func (a *SuiAdapter) Close() error
+```
+
+```go
+func (a *SuiAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *SuiAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *SuiAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *SuiAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *SuiAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *SuiAdapter) IsFinalized(ctx context.Context, checkpoint uint64) (bool, error)
+```
+
+```go
+func (a *SuiAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *SuiAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *SuiAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *SuiAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *SuiAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### SuiCheckpoint
+
+### SuiValidator
+
+### SyncAggregate
+
+SyncAggregate represents sync committee aggregate signature
+
+
+### SyncCommittee
+
+SyncCommittee represents an Ethereum sync committee
+
+
+### TEEAttestation
+
+TEEAttestation contains attestation evidence from a TEE
+
+
+```go
+func (a *TEEAttestation) Verify() error
+```
+
+### TEEType
+
+TEEType defines the type of Trusted Execution Environment
+
+
+```go
+func (t TEEType) String() string
+```
+
+### TONAdapter
+
+```go
+func NewTONAdapter() *TONAdapter
+```
+
+```go
+func (a *TONAdapter) ChainID() ChainID
+```
+
+```go
+func (a *TONAdapter) ChainName() string
+```
+
+```go
+func (a *TONAdapter) Close() error
+```
+
+```go
+func (a *TONAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *TONAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *TONAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *TONAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *TONAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *TONAdapter) IsFinalized(ctx context.Context, seqno uint64) (bool, error)
+```
+
+```go
+func (a *TONAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *TONAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *TONAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *TONAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *TONAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### TONBlock
+
+### TONValidator
+
+### TRONAdapter
+
+```go
+func NewTRONAdapter() *TRONAdapter
+```
+
+```go
+func (a *TRONAdapter) ChainID() ChainID
+```
+
+```go
+func (a *TRONAdapter) ChainName() string
+```
+
+```go
+func (a *TRONAdapter) Close() error
+```
+
+```go
+func (a *TRONAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *TRONAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *TRONAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *TRONAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *TRONAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *TRONAdapter) IsFinalized(ctx context.Context, block uint64) (bool, error)
+```
+
+```go
+func (a *TRONAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *TRONAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *TRONAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *TRONAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *TRONAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### TRONBlock
+
+### TRONSuperRep
+
+### TendermintCommit
+
+TendermintCommit represents commit signatures
+
+
+### TendermintValidator
+
+TendermintValidator represents a single validator
+
+
+### TendermintValidatorSet
+
+TendermintValidatorSet represents Tendermint validator set
+
+
+### TendermintVote
+
+TendermintVote represents a validator vote
+
+
+### TezosAdapter
+
+```go
+func NewTezosAdapter() *TezosAdapter
+```
+
+```go
+func (a *TezosAdapter) ChainID() ChainID
+```
+
+```go
+func (a *TezosAdapter) ChainName() string
+```
+
+```go
+func (a *TezosAdapter) Close() error
+```
+
+```go
+func (a *TezosAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *TezosAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *TezosAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *TezosAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *TezosAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *TezosAdapter) IsFinalized(ctx context.Context, level uint64) (bool, error)
+```
+
+```go
+func (a *TezosAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *TezosAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *TezosAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *TezosAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *TezosAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+
+### TezosBaker
+
+### TezosBlock
+
+### ThresholdKeySet
+
+ThresholdKeySet holds keys for threshold/MPC access
+
+
+### TxInclusionProof
+
+TxInclusionProof proves a transaction was included in a block
+
+
+### UnsignedTransaction
+
+UnsignedTransaction represents a transaction to be signed
+
+
+### Validator
+
+Validator represents a single validator
+
+
+### ValidatorSet
+
+ValidatorSet represents a validator set for PoS chains
+
+
+### VerificationMode
+
+VerificationMode indicates how chain data is verified
+
+
+### XRPLedger
+
+### XRPValidator
+
+### ZKBatch
+
+### ZKRollupAdapter
+
+```go
+func NewZKRollupAdapter(chainID ChainID, name string, evmID uint64, proofSystem string) *ZKRollupAdapter
+```
+
+```go
+func (a *ZKRollupAdapter) ChainID() ChainID
+```
+
+```go
+func (a *ZKRollupAdapter) ChainName() string
+```
+
+```go
+func (a *ZKRollupAdapter) Close() error
+```
+
+```go
+func (a *ZKRollupAdapter) EVMChainID() uint64
+```
+
+```go
+func (a *ZKRollupAdapter) GetBlockTime() time.Duration
+```
+
+```go
+func (a *ZKRollupAdapter) GetLatestFinalizedBlock(ctx context.Context) (uint64, error)
+```
+
+```go
+func (a *ZKRollupAdapter) GetRequiredConfirmations() uint64
+```
+
+```go
+func (a *ZKRollupAdapter) GetValidatorSet(ctx context.Context) (*ValidatorSet, error)
+```
+
+```go
+func (a *ZKRollupAdapter) Initialize(config *ChainConfig) error
+```
+
+```go
+func (a *ZKRollupAdapter) IsFinalized(ctx context.Context, block uint64) (bool, error)
+```
+
+```go
+func (a *ZKRollupAdapter) VerificationMode() VerificationMode
+```
+
+```go
+func (a *ZKRollupAdapter) VerifyBlockHeader(ctx context.Context, header *BlockHeader) error
+```
+
+```go
+func (a *ZKRollupAdapter) VerifyEvent(ctx context.Context, event *ChainEvent) error
+```
+
+```go
+func (a *ZKRollupAdapter) VerifyMessage(ctx context.Context, msg *CrossChainMessage) error
+```
+
+```go
+func (a *ZKRollupAdapter) VerifyTransaction(ctx context.Context, proof *TxInclusionProof) error
+```
+

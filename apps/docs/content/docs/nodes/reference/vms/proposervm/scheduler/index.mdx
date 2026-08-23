@@ -1,0 +1,73 @@
+---
+title: scheduler
+description: Package scheduler is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/proposervm/scheduler"
+```
+
+Package scheduler is a generated GoMock package.
+
+
+## Types
+
+### AutominingScheduler
+
+AutominingScheduler is a scheduler that continuously produces blocks at a fixed interval
+
+
+```go
+func NewAutomining(log log.Logger, toEngine chan<- vmcore.Message) (AutominingScheduler, chan<- vmcore.Message)
+```
+
+### MockScheduler
+
+MockScheduler is a mock of Scheduler interface.
+
+
+```go
+func NewMockScheduler(ctrl *gomock.Controller) *MockScheduler
+```
+
+```go
+func (m *MockScheduler) Close()
+```
+
+```go
+func (m *MockScheduler) Dispatch(arg0 time.Time)
+```
+
+```go
+func (m *MockScheduler) EXPECT() *MockSchedulerMockRecorder
+```
+
+```go
+func (m *MockScheduler) SetBuildBlockTime(arg0 time.Time)
+```
+
+### MockSchedulerMockRecorder
+
+MockSchedulerMockRecorder is the mock recorder for MockScheduler.
+
+
+```go
+func (mr *MockSchedulerMockRecorder) Close() *gomock.Call
+```
+
+```go
+func (mr *MockSchedulerMockRecorder) Dispatch(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockSchedulerMockRecorder) SetBuildBlockTime(arg0 any) *gomock.Call
+```
+
+### Scheduler
+
+```go
+func New(log log.Logger, toEngine chan<- vmcore.Message) (Scheduler, chan<- vmcore.Message)
+```
+

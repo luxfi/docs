@@ -1,0 +1,171 @@
+---
+title: xvmroot
+description: Package xvmroot computes the xvm execution_root in native Go, byte-identical to the lux-private GPU xvm_root_update kernel (ops/xvm/cuda/xvm_roots.cu) and every backend's CPU oracle.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/xvm/state/xvmroot"
+```
+
+Package xvmroot computes the xvm execution_root in native Go, byte-identical
+to the lux-private GPU xvm_root_update kernel (ops/xvm/cuda/xvm_roots.cu) and
+every backend's CPU oracle. It is the native-Go authority the licensed GPU
+accelerator mirrors: the same leaf preimages, the same per-family skip
+predicates, the same ascending-i ordering, the same RFC-6962 tagged binary
+Merkle fold for the three variable-length sub-roots, and the same fixed-shape
+keccak256 composition for the final execution_root.
+
+The root is a pure function of the canonical leaf FIELD VALUES, not of any
+in-memory struct. The xvm executor's UTXO/Asset/Tx types are UTXO-style
+(output interfaces, codec-serialized) and deliberately do NOT share the GPU's
+flat packed layout; the accelerator hashes a state-snapshot layout. So this
+package consumes that snapshot layout directly — UTXOLeaf, AssetLeaf, TxLeaf
+mirror the GPU structs' hashed fields exactly, in the exact preimage order.
+The leaf/node/empty Merkle combiner lives in github.com/luxfi/crypto/merkle;
+the un-tagged keccak256 (Ethereum Keccak-256, 0x01 pad — NOT FIPS-202 SHA3)
+used for both the leaf-digest preimage and the execution_root compose lives
+in github.com/luxfi/crypto/hash. Integers are little-endian, matching the
+kernel's absorb_u32 / absorb_u64.
+
+Normative spec: lux-private/gpu-kernels/backends/common/lux_merkle_fold.hpp
+and ops/xvm/cuda/xvm_roots.cu. KAT parity is proven in xvmroot_test.go
+against the value all seven GPU backends + the CPU oracle produce.
+
+
+## Functions
+
+### AssetLeafDigest
+
+```go
+func AssetLeafDigest(a AssetLeaf, i uint32) [Size]byte
+```
+
+AssetLeafDigest returns the canonical per-element keccak256 leaf digest d_i for
+the asset at slot index i — the same bytes AssetRoot folds.
+
+
+### AssetRoot
+
+```go
+func AssetRoot(assets []AssetLeaf) [Size]byte
+```
+
+AssetRoot is the tagged binary Merkle root over the occupied assets' leaf
+digests, in ascending slot index. An asset with Occupied == 0 is skipped.
+
+
+### Compose
+
+```go
+func Compose(parentExecutionRoot, utxoRoot, assetRoot, txRoot [Size]byte, height uint64) [Size]byte
+```
+
+Compose returns the execution_root from the three sub-roots and the parent
+root + height, using the fixed-shape un-tagged keccak256 composition (this is
+NOT a Merkle node):
+
+	execution_root = keccak256(
+	    parentExecutionRoot ‖ utxoRoot ‖ assetRoot ‖ txRoot ‖ height_u64_le )
+
+
+### ExecutionRoot
+
+```go
+func ExecutionRoot(
+	parentExecutionRoot [Size]byte,
+	utxos []UTXOLeaf,
+	assets []AssetLeaf,
+	txs []TxLeaf,
+	height uint64,
+) (executionRoot, utxoRoot, assetRoot, txRoot [Size]byte)
+```
+
+ExecutionRoot computes the full xvm execution_root over the round's state:
+the three sub-roots (utxo, asset, tx) folded as RFC-6962 tagged binary Merkle
+trees, then composed with the parent execution root and height. It is
+byte-identical to lux_&lt;backend>_xvm_root_update.
+
+
+### TxLeafDigest
+
+```go
+func TxLeafDigest(t TxLeaf, i uint32) [Size]byte
+```
+
+TxLeafDigest returns the canonical per-element keccak256 leaf digest d_i for
+the tx at slot index i — the same bytes TxRoot folds.
+
+
+### TxRoot
+
+```go
+func TxRoot(txs []TxLeaf) [Size]byte
+```
+
+TxRoot is the tagged binary Merkle root over ALL txs' leaf digests, in
+ascending slot index (no skip predicate).
+
+
+### UTXOLeafDigest
+
+```go
+func UTXOLeafDigest(u UTXOLeaf, i uint32) [Size]byte
+```
+
+UTXOLeafDigest returns the canonical per-element keccak256 leaf digest d_i for
+the UTXO at slot index i — the same bytes UTXORoot folds. It is exported so a
+parallel builder can compute the family's leaf digests across worker
+goroutines from the one canonical preimage definition (no second copy of the
+layout), then merkle.Root-combine to a byte-identical root.
+
+
+### UTXORoot
+
+```go
+func UTXORoot(utxos []UTXOLeaf) [Size]byte
+```
+
+UTXORoot is the tagged binary Merkle root over the occupied UTXOs' leaf
+digests, in ascending slot index. Slot index i is the position in utxos
+(bound into each leaf preimage); a UTXO with (Status & UTXOOccupied) == 0 is
+skipped. An empty occupied set yields keccak256("") (merkle.EmptyRoot).
+
+
+## Types
+
+### AssetLeaf
+
+AssetLeaf is one xvm asset in the accelerator's state-snapshot layout. Its
+fields are hashed, in this exact order, into the leaf preimage:
+
+	AssetID ‖ TotalSupplyLo ‖ TotalSupplyHi ‖ MintAuthorityRoot ‖
+	FreezeFlag ‖ Denomination ‖ index   (integers little-endian)
+
+An asset with Occupied == 0 is skipped, matching the kernel's occupied check.
+
+
+### TxLeaf
+
+TxLeaf is one xvm transaction in the accelerator's state-snapshot layout. Its
+fields are hashed, in this exact order, into the leaf preimage:
+
+	TxID ‖ Kind ‖ Status ‖ RejectReason ‖ ProofDigest ‖ index
+	(integers little-endian)
+
+Every tx is folded — tx_root has no skip predicate.
+
+
+### UTXOLeaf
+
+UTXOLeaf is one xvm UTXO in the accelerator's state-snapshot layout. Its
+fields are hashed, in this exact order, into the leaf preimage:
+
+	UTXOID ‖ AssetID ‖ AmountLo ‖ AmountHi ‖ OwnerRoot ‖ Locktime ‖
+	Threshold ‖ Status ‖ index   (integers little-endian)
+
+A UTXO with (Status & UTXOOccupied) == 0 is skipped (not folded), exactly as
+the kernel skips unoccupied slots.
+
+

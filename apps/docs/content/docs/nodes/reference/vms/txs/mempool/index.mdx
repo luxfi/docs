@@ -1,0 +1,75 @@
+---
+title: mempool
+description: Package mempool
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/txs/mempool"
+```
+
+## Functions
+
+### New
+
+```go
+func New[T Tx](
+	metrics Metrics,
+) *mempool[T]
+```
+
+### NewWithAdmissionVerifier
+
+```go
+func NewWithAdmissionVerifier[T Tx](
+	metrics Metrics,
+	verifier AdmissionVerifier[T],
+) *mempool[T]
+```
+
+NewWithAdmissionVerifier constructs a mempool that runs verifier.VerifyAdmit
+on every Add() after the duplicate / size / space / conflict checks
+succeed. A nil verifier is equivalent to New — no admission gate is
+installed and behavior is byte-identical to the prior API.
+
+This is the entry point for encrypted-payload tx pools per luxfi/node#115:
+validators construct a mempool partition with a verifier that runs
+signature + fee + NIZK checks (sourced from luxfi/precompile/fhe) so
+ciphertexts are admitted without decryption.
+
+
+## Types
+
+### AdmissionVerifier
+
+AdmissionVerifier is an optional admission gate. When configured via
+NewWithAdmissionVerifier the mempool calls VerifyAdmit on every Add()
+after the cheap structural checks (duplicate / size / space / conflict)
+pass and before the tx is inserted. A non-nil return rejects the tx; the
+returned error is wrapped in ErrAdmissionRejected and recorded as the
+drop reason.
+
+Intended consumers: validators that admit encrypted-payload transactions
+(FHE ciphertext + NIZK proof of well-formedness) without decryption, per
+LP-066 / luxfi/precompile/fhe. The verifier runs signature verify + fee
+check + NIZK verify; the actual decryption never happens at admission
+time.
+
+VerifyAdmit MUST be safe to call without holding any mempool lock — the
+mempool holds its own write lock across Add() and the call is made from
+within that critical section. Implementations that need to do expensive
+work (NIZK verification) should not perform additional locking that
+could re-enter the mempool.
+
+
+### Mempool
+
+### Metrics
+
+```go
+func NewMetrics(namespace string, registerer metric.Registerer) (Metrics, error)
+```
+
+### Tx
+

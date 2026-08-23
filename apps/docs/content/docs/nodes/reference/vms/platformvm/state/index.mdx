@@ -1,0 +1,1775 @@
+---
+title: state
+description: Package state is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/state"
+```
+
+Package state is a generated GoMock package.
+
+Package state is a generated GoMock package.
+
+Package state is a generated GoMock package.
+
+Package state is a generated GoMock package.
+
+Package state is a generated GoMock package.
+
+
+## Functions
+
+### GetNextStakerChangeTime
+
+```go
+func GetNextStakerChangeTime(
+	config validatorfee.Config,
+	state Chain,
+	nextTime time.Time,
+) (time.Time, error)
+```
+
+GetNextStakerChangeTime returns the next time a staker will be either added
+to or removed from the validator set. If the next staker change time is
+further in the future than [nextTime], then [nextTime] is returned.
+
+
+### NextBlockTime
+
+```go
+func NextBlockTime(
+	config validatorfee.Config,
+	state Chain,
+	clk *mockable.Clock,
+) (time.Time, bool, error)
+```
+
+### PickFeeCalculator
+
+```go
+func PickFeeCalculator(config *config.Internal, state Chain) txfee.Calculator
+```
+
+PickFeeCalculator returns the dynamic fee calculator; the legacy simple
+(zero-fee) calculator is unreachable under activate-all-implicitly.
+
+PickFeeCalculator does not modify [state].
+
+
+## Types
+
+### Chain
+
+Chain collects all methods to manage the state of the chain for block
+execution.
+
+
+### CurrentStakers
+
+### Diff
+
+```go
+func NewDiff(
+	parentID ids.ID,
+	stateVersions Versions,
+) (Diff, error)
+```
+
+```go
+func NewDiffOn(parentState Chain) (Diff, error)
+```
+
+### Expiry
+
+### ExpiryEntry
+
+```go
+func (e ExpiryEntry) Compare(o ExpiryEntry) int
+```
+
+```go
+func (e ExpiryEntry) Less(o ExpiryEntry) bool
+```
+
+```go
+func (e *ExpiryEntry) Marshal() []byte
+```
+
+```go
+func (e *ExpiryEntry) Unmarshal(data []byte) error
+```
+
+### L1Validator
+
+L1Validator defines an LP-77 validator. For a given ValidationID, it is
+expected for ChainID, NodeID, PublicKey, RemainingBalanceOwner,
+DeactivationOwner, and StartTime to be constant.
+
+
+```go
+func (v L1Validator) Compare(o L1Validator) int
+```
+
+```go
+func (v L1Validator) IsActive() bool
+```
+
+```go
+func (v L1Validator) Less(o L1Validator) bool
+```
+
+### L1Validators
+
+### MockChain
+
+MockChain is a mock of Chain interface.
+
+
+```go
+func NewMockChain(ctrl *gomock.Controller) *MockChain
+```
+
+```go
+func (m *MockChain) AddChain(createChainTx *txs.Tx)
+```
+
+```go
+func (m *MockChain) AddNet(netID ids.ID)
+```
+
+```go
+func (m *MockChain) AddNetTransformation(transformNetTx *txs.Tx)
+```
+
+```go
+func (m *MockChain) AddRewardUTXO(txID ids.ID, arg1 *utxo.UTXO)
+```
+
+```go
+func (m *MockChain) AddTx(tx *txs.Tx, arg1 status.Status)
+```
+
+```go
+func (m *MockChain) AddUTXO(arg0 *utxo.UTXO)
+```
+
+```go
+func (m *MockChain) DeleteCurrentDelegator(staker *Staker)
+```
+
+```go
+func (m *MockChain) DeleteCurrentValidator(staker *Staker)
+```
+
+```go
+func (m *MockChain) DeleteExpiry(arg0 ExpiryEntry)
+```
+
+```go
+func (m *MockChain) DeletePendingDelegator(staker *Staker)
+```
+
+```go
+func (m *MockChain) DeletePendingValidator(staker *Staker)
+```
+
+```go
+func (m *MockChain) DeleteUTXO(utxoID ids.ID)
+```
+
+```go
+func (m *MockChain) EXPECT() *MockChainMockRecorder
+```
+
+```go
+func (m *MockChain) GetAccruedFees() uint64
+```
+
+```go
+func (m *MockChain) GetActiveL1ValidatorsIterator() (iterator.Iterator[L1Validator], error)
+```
+
+```go
+func (m *MockChain) GetChainIDByName(name string) (ids.ID, error)
+```
+
+```go
+func (m *MockChain) GetCurrentDelegatorIterator(chainID ids.ID, nodeID ids.NodeID) (iterator.Iterator[*Staker], error)
+```
+
+```go
+func (m *MockChain) GetCurrentStakerIterator() (iterator.Iterator[*Staker], error)
+```
+
+```go
+func (m *MockChain) GetCurrentSupply(chainID ids.ID) (uint64, error)
+```
+
+```go
+func (m *MockChain) GetCurrentValidator(netID ids.ID, nodeID ids.NodeID) (*Staker, error)
+```
+
+```go
+func (m *MockChain) GetDelegateeReward(netID ids.ID, nodeID ids.NodeID) (uint64, error)
+```
+
+```go
+func (m *MockChain) GetExpiryIterator() (iterator.Iterator[ExpiryEntry], error)
+```
+
+```go
+func (m *MockChain) GetFeeState() gas.State
+```
+
+```go
+func (m *MockChain) GetL1Validator(validationID ids.ID) (L1Validator, error)
+```
+
+```go
+func (m *MockChain) GetL1ValidatorExcess() gas.Gas
+```
+
+```go
+func (m *MockChain) GetNetOwner(netID ids.ID) (fx.Owner, error)
+```
+
+```go
+func (m *MockChain) GetNetToL1Conversion(chainID ids.ID) (NetToL1Conversion, error)
+```
+
+```go
+func (m *MockChain) GetNetTransformation(chainID ids.ID) (*txs.Tx, error)
+```
+
+```go
+func (m *MockChain) GetPendingDelegatorIterator(chainID ids.ID, nodeID ids.NodeID) (iterator.Iterator[*Staker], error)
+```
+
+```go
+func (m *MockChain) GetPendingStakerIterator() (iterator.Iterator[*Staker], error)
+```
+
+```go
+func (m *MockChain) GetPendingValidator(netID ids.ID, nodeID ids.NodeID) (*Staker, error)
+```
+
+```go
+func (m *MockChain) GetTimestamp() time.Time
+```
+
+```go
+func (m *MockChain) GetTx(txID ids.ID) (*txs.Tx, status.Status, error)
+```
+
+```go
+func (m *MockChain) GetUTXO(utxoID ids.ID) (*utxo.UTXO, error)
+```
+
+```go
+func (m *MockChain) HasExpiry(arg0 ExpiryEntry) (bool, error)
+```
+
+```go
+func (m *MockChain) HasL1Validator(chainID ids.ID, nodeID ids.NodeID) (bool, error)
+```
+
+```go
+func (m *MockChain) IsChainNameTaken(name string) bool
+```
+
+```go
+func (m *MockChain) NumActiveL1Validators() int
+```
+
+```go
+func (m *MockChain) PutCurrentDelegator(staker *Staker)
+```
+
+```go
+func (m *MockChain) PutCurrentValidator(staker *Staker) error
+```
+
+```go
+func (m *MockChain) PutExpiry(arg0 ExpiryEntry)
+```
+
+```go
+func (m *MockChain) PutL1Validator(validator L1Validator) error
+```
+
+```go
+func (m *MockChain) PutPendingDelegator(staker *Staker)
+```
+
+```go
+func (m *MockChain) PutPendingValidator(staker *Staker) error
+```
+
+```go
+func (m *MockChain) SetAccruedFees(f uint64)
+```
+
+```go
+func (m *MockChain) SetCurrentSupply(chainID ids.ID, cs uint64)
+```
+
+```go
+func (m *MockChain) SetDelegateeReward(netID ids.ID, nodeID ids.NodeID, amount uint64) error
+```
+
+```go
+func (m *MockChain) SetFeeState(f gas.State)
+```
+
+```go
+func (m *MockChain) SetL1ValidatorExcess(e gas.Gas)
+```
+
+```go
+func (m *MockChain) SetNetOwner(netID ids.ID, owner fx.Owner)
+```
+
+```go
+func (m *MockChain) SetNetToL1Conversion(chainID ids.ID, c NetToL1Conversion)
+```
+
+```go
+func (m *MockChain) SetTimestamp(tm time.Time)
+```
+
+```go
+func (m *MockChain) WeightOfL1Validators(chainID ids.ID) (uint64, error)
+```
+
+### MockChainMockRecorder
+
+MockChainMockRecorder is the mock recorder for MockChain.
+
+
+```go
+func (mr *MockChainMockRecorder) AddChain(createChainTx any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) AddNet(netID any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) AddNetTransformation(transformNetTx any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) AddRewardUTXO(txID, arg1 any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) AddTx(tx, arg1 any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) AddUTXO(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) DeleteCurrentDelegator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) DeleteCurrentValidator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) DeleteExpiry(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) DeletePendingDelegator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) DeletePendingValidator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) DeleteUTXO(utxoID any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetAccruedFees() *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetActiveL1ValidatorsIterator() *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetChainIDByName(name any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetCurrentDelegatorIterator(chainID, nodeID any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetCurrentStakerIterator() *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetCurrentSupply(chainID any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetCurrentValidator(netID, nodeID any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetDelegateeReward(netID, nodeID any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetExpiryIterator() *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetFeeState() *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetL1Validator(validationID any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetL1ValidatorExcess() *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetNetOwner(netID any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetNetToL1Conversion(chainID any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetNetTransformation(chainID any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetPendingDelegatorIterator(chainID, nodeID any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetPendingStakerIterator() *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetPendingValidator(netID, nodeID any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetTimestamp() *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetTx(txID any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) GetUTXO(utxoID any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) HasExpiry(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) HasL1Validator(chainID, nodeID any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) IsChainNameTaken(name any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) NumActiveL1Validators() *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) PutCurrentDelegator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) PutCurrentValidator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) PutExpiry(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) PutL1Validator(validator any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) PutPendingDelegator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) PutPendingValidator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) SetAccruedFees(f any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) SetCurrentSupply(chainID, cs any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) SetDelegateeReward(netID, nodeID, amount any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) SetFeeState(f any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) SetL1ValidatorExcess(e any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) SetNetOwner(netID, owner any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) SetNetToL1Conversion(chainID, c any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) SetTimestamp(tm any) *gomock.Call
+```
+
+```go
+func (mr *MockChainMockRecorder) WeightOfL1Validators(chainID any) *gomock.Call
+```
+
+### MockDiff
+
+MockDiff is a mock of Diff interface.
+
+
+```go
+func NewMockDiff(ctrl *gomock.Controller) *MockDiff
+```
+
+```go
+func (m *MockDiff) AddChain(createChainTx *txs.Tx)
+```
+
+```go
+func (m *MockDiff) AddNet(netID ids.ID)
+```
+
+```go
+func (m *MockDiff) AddNetTransformation(transformNetTx *txs.Tx)
+```
+
+```go
+func (m *MockDiff) AddRewardUTXO(txID ids.ID, arg1 *utxo.UTXO)
+```
+
+```go
+func (m *MockDiff) AddTx(tx *txs.Tx, arg1 status.Status)
+```
+
+```go
+func (m *MockDiff) AddUTXO(arg0 *utxo.UTXO)
+```
+
+```go
+func (m *MockDiff) Apply(arg0 Chain) error
+```
+
+```go
+func (m *MockDiff) DeleteCurrentDelegator(staker *Staker)
+```
+
+```go
+func (m *MockDiff) DeleteCurrentValidator(staker *Staker)
+```
+
+```go
+func (m *MockDiff) DeleteExpiry(arg0 ExpiryEntry)
+```
+
+```go
+func (m *MockDiff) DeletePendingDelegator(staker *Staker)
+```
+
+```go
+func (m *MockDiff) DeletePendingValidator(staker *Staker)
+```
+
+```go
+func (m *MockDiff) DeleteUTXO(utxoID ids.ID)
+```
+
+```go
+func (m *MockDiff) EXPECT() *MockDiffMockRecorder
+```
+
+```go
+func (m *MockDiff) GetAccruedFees() uint64
+```
+
+```go
+func (m *MockDiff) GetActiveL1ValidatorsIterator() (iterator.Iterator[L1Validator], error)
+```
+
+```go
+func (m *MockDiff) GetChainIDByName(name string) (ids.ID, error)
+```
+
+```go
+func (m *MockDiff) GetCurrentDelegatorIterator(chainID ids.ID, nodeID ids.NodeID) (iterator.Iterator[*Staker], error)
+```
+
+```go
+func (m *MockDiff) GetCurrentStakerIterator() (iterator.Iterator[*Staker], error)
+```
+
+```go
+func (m *MockDiff) GetCurrentSupply(chainID ids.ID) (uint64, error)
+```
+
+```go
+func (m *MockDiff) GetCurrentValidator(netID ids.ID, nodeID ids.NodeID) (*Staker, error)
+```
+
+```go
+func (m *MockDiff) GetDelegateeReward(netID ids.ID, nodeID ids.NodeID) (uint64, error)
+```
+
+```go
+func (m *MockDiff) GetExpiryIterator() (iterator.Iterator[ExpiryEntry], error)
+```
+
+```go
+func (m *MockDiff) GetFeeState() gas.State
+```
+
+```go
+func (m *MockDiff) GetL1Validator(validationID ids.ID) (L1Validator, error)
+```
+
+```go
+func (m *MockDiff) GetL1ValidatorExcess() gas.Gas
+```
+
+```go
+func (m *MockDiff) GetNetOwner(netID ids.ID) (fx.Owner, error)
+```
+
+```go
+func (m *MockDiff) GetNetToL1Conversion(chainID ids.ID) (NetToL1Conversion, error)
+```
+
+```go
+func (m *MockDiff) GetNetTransformation(chainID ids.ID) (*txs.Tx, error)
+```
+
+```go
+func (m *MockDiff) GetPendingDelegatorIterator(chainID ids.ID, nodeID ids.NodeID) (iterator.Iterator[*Staker], error)
+```
+
+```go
+func (m *MockDiff) GetPendingStakerIterator() (iterator.Iterator[*Staker], error)
+```
+
+```go
+func (m *MockDiff) GetPendingValidator(netID ids.ID, nodeID ids.NodeID) (*Staker, error)
+```
+
+```go
+func (m *MockDiff) GetTimestamp() time.Time
+```
+
+```go
+func (m *MockDiff) GetTx(txID ids.ID) (*txs.Tx, status.Status, error)
+```
+
+```go
+func (m *MockDiff) GetUTXO(utxoID ids.ID) (*utxo.UTXO, error)
+```
+
+```go
+func (m *MockDiff) HasExpiry(arg0 ExpiryEntry) (bool, error)
+```
+
+```go
+func (m *MockDiff) HasL1Validator(chainID ids.ID, nodeID ids.NodeID) (bool, error)
+```
+
+```go
+func (m *MockDiff) IsChainNameTaken(name string) bool
+```
+
+```go
+func (m *MockDiff) NumActiveL1Validators() int
+```
+
+```go
+func (m *MockDiff) PutCurrentDelegator(staker *Staker)
+```
+
+```go
+func (m *MockDiff) PutCurrentValidator(staker *Staker) error
+```
+
+```go
+func (m *MockDiff) PutExpiry(arg0 ExpiryEntry)
+```
+
+```go
+func (m *MockDiff) PutL1Validator(validator L1Validator) error
+```
+
+```go
+func (m *MockDiff) PutPendingDelegator(staker *Staker)
+```
+
+```go
+func (m *MockDiff) PutPendingValidator(staker *Staker) error
+```
+
+```go
+func (m *MockDiff) SetAccruedFees(f uint64)
+```
+
+```go
+func (m *MockDiff) SetCurrentSupply(chainID ids.ID, cs uint64)
+```
+
+```go
+func (m *MockDiff) SetDelegateeReward(netID ids.ID, nodeID ids.NodeID, amount uint64) error
+```
+
+```go
+func (m *MockDiff) SetFeeState(f gas.State)
+```
+
+```go
+func (m *MockDiff) SetL1ValidatorExcess(e gas.Gas)
+```
+
+```go
+func (m *MockDiff) SetNetOwner(netID ids.ID, owner fx.Owner)
+```
+
+```go
+func (m *MockDiff) SetNetToL1Conversion(chainID ids.ID, c NetToL1Conversion)
+```
+
+```go
+func (m *MockDiff) SetTimestamp(tm time.Time)
+```
+
+```go
+func (m *MockDiff) WeightOfL1Validators(chainID ids.ID) (uint64, error)
+```
+
+### MockDiffMockRecorder
+
+MockDiffMockRecorder is the mock recorder for MockDiff.
+
+
+```go
+func (mr *MockDiffMockRecorder) AddChain(createChainTx any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) AddNet(netID any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) AddNetTransformation(transformNetTx any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) AddRewardUTXO(txID, arg1 any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) AddTx(tx, arg1 any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) AddUTXO(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) Apply(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) DeleteCurrentDelegator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) DeleteCurrentValidator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) DeleteExpiry(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) DeletePendingDelegator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) DeletePendingValidator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) DeleteUTXO(utxoID any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetAccruedFees() *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetActiveL1ValidatorsIterator() *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetChainIDByName(name any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetCurrentDelegatorIterator(chainID, nodeID any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetCurrentStakerIterator() *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetCurrentSupply(chainID any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetCurrentValidator(netID, nodeID any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetDelegateeReward(netID, nodeID any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetExpiryIterator() *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetFeeState() *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetL1Validator(validationID any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetL1ValidatorExcess() *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetNetOwner(netID any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetNetToL1Conversion(chainID any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetNetTransformation(chainID any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetPendingDelegatorIterator(chainID, nodeID any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetPendingStakerIterator() *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetPendingValidator(netID, nodeID any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetTimestamp() *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetTx(txID any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) GetUTXO(utxoID any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) HasExpiry(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) HasL1Validator(chainID, nodeID any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) IsChainNameTaken(name any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) NumActiveL1Validators() *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) PutCurrentDelegator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) PutCurrentValidator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) PutExpiry(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) PutL1Validator(validator any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) PutPendingDelegator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) PutPendingValidator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) SetAccruedFees(f any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) SetCurrentSupply(chainID, cs any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) SetDelegateeReward(netID, nodeID, amount any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) SetFeeState(f any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) SetL1ValidatorExcess(e any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) SetNetOwner(netID, owner any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) SetNetToL1Conversion(chainID, c any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) SetTimestamp(tm any) *gomock.Call
+```
+
+```go
+func (mr *MockDiffMockRecorder) WeightOfL1Validators(chainID any) *gomock.Call
+```
+
+### MockStakerIterator
+
+MockStakerIterator is a mock of StakerIterator interface.
+
+
+```go
+func NewMockStakerIterator(ctrl *gomock.Controller) *MockStakerIterator
+```
+
+```go
+func (m *MockStakerIterator) EXPECT() *MockStakerIteratorMockRecorder
+```
+
+```go
+func (m *MockStakerIterator) Next() bool
+```
+
+```go
+func (m *MockStakerIterator) Release()
+```
+
+```go
+func (m *MockStakerIterator) Value() *Staker
+```
+
+### MockStakerIteratorMockRecorder
+
+MockStakerIteratorMockRecorder is the mock recorder for MockStakerIterator.
+
+
+```go
+func (mr *MockStakerIteratorMockRecorder) Next() *gomock.Call
+```
+
+```go
+func (mr *MockStakerIteratorMockRecorder) Release() *gomock.Call
+```
+
+```go
+func (mr *MockStakerIteratorMockRecorder) Value() *gomock.Call
+```
+
+### MockState
+
+MockState is a mock of State interface.
+
+
+```go
+func NewMockState(ctrl *gomock.Controller) *MockState
+```
+
+```go
+func (m *MockState) Abort()
+```
+
+```go
+func (m *MockState) AddChain(createChainTx *txs.Tx)
+```
+
+```go
+func (m *MockState) AddNet(netID ids.ID)
+```
+
+```go
+func (m *MockState) AddNetTransformation(transformNetTx *txs.Tx)
+```
+
+```go
+func (m *MockState) AddRewardUTXO(txID ids.ID, arg1 *utxo.UTXO)
+```
+
+```go
+func (m *MockState) AddStatelessBlock(arg0 block.Block)
+```
+
+```go
+func (m *MockState) AddTx(tx *txs.Tx, arg1 status.Status)
+```
+
+```go
+func (m *MockState) AddUTXO(arg0 *utxo.UTXO)
+```
+
+```go
+func (m *MockState) ApplyValidatorPublicKeyDiffs(ctx context.Context, arg1 map[ids.NodeID]*validators.GetValidatorOutput, startHeight, endHeight uint64, chainID ids.ID) error
+```
+
+```go
+func (m *MockState) ApplyValidatorWeightDiffs(ctx context.Context, arg1 map[ids.NodeID]*validators.GetValidatorOutput, startHeight, endHeight uint64, netID ids.ID) error
+```
+
+```go
+func (m *MockState) Checksum() ids.ID
+```
+
+```go
+func (m *MockState) Close() error
+```
+
+```go
+func (m *MockState) Commit() error
+```
+
+```go
+func (m *MockState) CommitBatch() (database.Batch, error)
+```
+
+```go
+func (m *MockState) DeleteCurrentDelegator(staker *Staker)
+```
+
+```go
+func (m *MockState) DeleteCurrentValidator(staker *Staker)
+```
+
+```go
+func (m *MockState) DeleteExpiry(arg0 ExpiryEntry)
+```
+
+```go
+func (m *MockState) DeletePendingDelegator(staker *Staker)
+```
+
+```go
+func (m *MockState) DeletePendingValidator(staker *Staker)
+```
+
+```go
+func (m *MockState) DeleteUTXO(utxoID ids.ID)
+```
+
+```go
+func (m *MockState) EXPECT() *MockStateMockRecorder
+```
+
+```go
+func (m *MockState) GetAccruedFees() uint64
+```
+
+```go
+func (m *MockState) GetActiveL1ValidatorsIterator() (iterator.Iterator[L1Validator], error)
+```
+
+```go
+func (m *MockState) GetBlockIDAtHeight(height uint64) (ids.ID, error)
+```
+
+```go
+func (m *MockState) GetChainIDByName(name string) (ids.ID, error)
+```
+
+```go
+func (m *MockState) GetChainIDs() ([]ids.ID, error)
+```
+
+```go
+func (m *MockState) GetChains(netID ids.ID) ([]*txs.Tx, error)
+```
+
+```go
+func (m *MockState) GetCurrentDelegatorIterator(chainID ids.ID, nodeID ids.NodeID) (iterator.Iterator[*Staker], error)
+```
+
+```go
+func (m *MockState) GetCurrentStakerIterator() (iterator.Iterator[*Staker], error)
+```
+
+```go
+func (m *MockState) GetCurrentSupply(chainID ids.ID) (uint64, error)
+```
+
+```go
+func (m *MockState) GetCurrentValidator(netID ids.ID, nodeID ids.NodeID) (*Staker, error)
+```
+
+```go
+func (m *MockState) GetCurrentValidators(ctx context.Context, chainID ids.ID) ([]*Staker, []L1Validator, uint64, error)
+```
+
+```go
+func (m *MockState) GetDelegateeReward(netID ids.ID, nodeID ids.NodeID) (uint64, error)
+```
+
+```go
+func (m *MockState) GetExpiryIterator() (iterator.Iterator[ExpiryEntry], error)
+```
+
+```go
+func (m *MockState) GetFeeState() gas.State
+```
+
+```go
+func (m *MockState) GetL1Validator(validationID ids.ID) (L1Validator, error)
+```
+
+```go
+func (m *MockState) GetL1ValidatorExcess() gas.Gas
+```
+
+```go
+func (m *MockState) GetLastAccepted() ids.ID
+```
+
+```go
+func (m *MockState) GetNetOwner(netID ids.ID) (fx.Owner, error)
+```
+
+```go
+func (m *MockState) GetNetToL1Conversion(chainID ids.ID) (NetToL1Conversion, error)
+```
+
+```go
+func (m *MockState) GetNetTransformation(chainID ids.ID) (*txs.Tx, error)
+```
+
+```go
+func (m *MockState) GetPendingDelegatorIterator(chainID ids.ID, nodeID ids.NodeID) (iterator.Iterator[*Staker], error)
+```
+
+```go
+func (m *MockState) GetPendingStakerIterator() (iterator.Iterator[*Staker], error)
+```
+
+```go
+func (m *MockState) GetPendingValidator(netID ids.ID, nodeID ids.NodeID) (*Staker, error)
+```
+
+```go
+func (m *MockState) GetRewardUTXOs(txID ids.ID) ([]*utxo.UTXO, error)
+```
+
+```go
+func (m *MockState) GetStartTime(nodeID ids.NodeID, netID ids.ID) (time.Time, error)
+```
+
+```go
+func (m *MockState) GetStatelessBlock(blockID ids.ID) (block.Block, error)
+```
+
+```go
+func (m *MockState) GetTimestamp() time.Time
+```
+
+```go
+func (m *MockState) GetTx(txID ids.ID) (*txs.Tx, status.Status, error)
+```
+
+```go
+func (m *MockState) GetUTXO(utxoID ids.ID) (*utxo.UTXO, error)
+```
+
+```go
+func (m *MockState) GetUptime(nodeID ids.NodeID, netID ids.ID) (time.Duration, time.Duration, error)
+```
+
+```go
+func (m *MockState) HasExpiry(arg0 ExpiryEntry) (bool, error)
+```
+
+```go
+func (m *MockState) HasL1Validator(chainID ids.ID, nodeID ids.NodeID) (bool, error)
+```
+
+```go
+func (m *MockState) IsChainNameTaken(name string) bool
+```
+
+```go
+func (m *MockState) NumActiveL1Validators() int
+```
+
+```go
+func (m *MockState) PutCurrentDelegator(staker *Staker)
+```
+
+```go
+func (m *MockState) PutCurrentValidator(staker *Staker) error
+```
+
+```go
+func (m *MockState) PutExpiry(arg0 ExpiryEntry)
+```
+
+```go
+func (m *MockState) PutL1Validator(validator L1Validator) error
+```
+
+```go
+func (m *MockState) PutPendingDelegator(staker *Staker)
+```
+
+```go
+func (m *MockState) PutPendingValidator(staker *Staker) error
+```
+
+```go
+func (m *MockState) ReindexBlocks(lock sync.Locker, arg1 log.Logger) error
+```
+
+```go
+func (m *MockState) SetAccruedFees(f uint64)
+```
+
+```go
+func (m *MockState) SetCurrentSupply(chainID ids.ID, cs uint64)
+```
+
+```go
+func (m *MockState) SetDelegateeReward(netID ids.ID, nodeID ids.NodeID, amount uint64) error
+```
+
+```go
+func (m *MockState) SetFeeState(f gas.State)
+```
+
+```go
+func (m *MockState) SetHeight(height uint64)
+```
+
+```go
+func (m *MockState) SetL1ValidatorExcess(e gas.Gas)
+```
+
+```go
+func (m *MockState) SetLastAccepted(blkID ids.ID)
+```
+
+```go
+func (m *MockState) SetNetOwner(netID ids.ID, owner fx.Owner)
+```
+
+```go
+func (m *MockState) SetNetToL1Conversion(chainID ids.ID, c NetToL1Conversion)
+```
+
+```go
+func (m *MockState) SetTimestamp(tm time.Time)
+```
+
+```go
+func (m *MockState) SetUptime(nodeID ids.NodeID, netID ids.ID, uptime time.Duration, lastUpdated time.Time) error
+```
+
+```go
+func (m *MockState) UTXOIDs(addr []byte, previous ids.ID, limit int) ([]ids.ID, error)
+```
+
+```go
+func (m *MockState) WeightOfL1Validators(chainID ids.ID) (uint64, error)
+```
+
+### MockStateMockRecorder
+
+MockStateMockRecorder is the mock recorder for MockState.
+
+
+```go
+func (mr *MockStateMockRecorder) Abort() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) AddChain(createChainTx any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) AddNet(netID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) AddNetTransformation(transformNetTx any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) AddRewardUTXO(txID, arg1 any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) AddStatelessBlock(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) AddTx(tx, arg1 any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) AddUTXO(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) ApplyValidatorPublicKeyDiffs(ctx, arg1, startHeight, endHeight, chainID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) ApplyValidatorWeightDiffs(ctx, arg1, startHeight, endHeight, netID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) Checksum() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) Close() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) Commit() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) CommitBatch() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) DeleteCurrentDelegator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) DeleteCurrentValidator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) DeleteExpiry(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) DeletePendingDelegator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) DeletePendingValidator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) DeleteUTXO(utxoID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetAccruedFees() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetActiveL1ValidatorsIterator() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetBlockIDAtHeight(height any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetChainIDByName(name any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetChainIDs() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetChains(netID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetCurrentDelegatorIterator(chainID, nodeID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetCurrentStakerIterator() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetCurrentSupply(chainID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetCurrentValidator(netID, nodeID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetCurrentValidators(ctx, chainID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetDelegateeReward(netID, nodeID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetExpiryIterator() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetFeeState() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetL1Validator(validationID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetL1ValidatorExcess() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetLastAccepted() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetNetOwner(netID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetNetToL1Conversion(chainID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetNetTransformation(chainID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetPendingDelegatorIterator(chainID, nodeID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetPendingStakerIterator() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetPendingValidator(netID, nodeID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetRewardUTXOs(txID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetStartTime(nodeID, netID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetStatelessBlock(blockID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetTimestamp() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetTx(txID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetUTXO(utxoID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetUptime(nodeID, netID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) HasExpiry(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) HasL1Validator(chainID, nodeID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) IsChainNameTaken(name any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) NumActiveL1Validators() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) PutCurrentDelegator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) PutCurrentValidator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) PutExpiry(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) PutL1Validator(validator any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) PutPendingDelegator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) PutPendingValidator(staker any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) ReindexBlocks(lock, arg1 any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) SetAccruedFees(f any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) SetCurrentSupply(chainID, cs any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) SetDelegateeReward(netID, nodeID, amount any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) SetFeeState(f any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) SetHeight(height any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) SetL1ValidatorExcess(e any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) SetLastAccepted(blkID any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) SetNetOwner(netID, owner any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) SetNetToL1Conversion(chainID, c any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) SetTimestamp(tm any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) SetUptime(nodeID, netID, uptime, lastUpdated any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) UTXOIDs(addr, previous, limit any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) WeightOfL1Validators(chainID any) *gomock.Call
+```
+
+### MockVersions
+
+MockVersions is a mock of Versions interface.
+
+
+```go
+func NewMockVersions(ctrl *gomock.Controller) *MockVersions
+```
+
+```go
+func (m *MockVersions) EXPECT() *MockVersionsMockRecorder
+```
+
+```go
+func (m *MockVersions) GetState(blkID ids.ID) (Chain, bool)
+```
+
+### MockVersionsMockRecorder
+
+MockVersionsMockRecorder is the mock recorder for MockVersions.
+
+
+```go
+func (mr *MockVersionsMockRecorder) GetState(blkID any) *gomock.Call
+```
+
+### NetToL1Conversion
+
+### PendingStakers
+
+### Staker
+
+Staker contains all information required to represent a validator or
+delegator in the current and pending validator sets.
+Invariant: Staker's size is bounded to prevent OOM DoS attacks.
+
+
+```go
+func NewCurrentStaker(
+	txID ids.ID,
+	staker txs.Staker,
+	startTime time.Time,
+	potentialReward uint64,
+) (*Staker, error)
+```
+
+```go
+func NewPendingStaker(txID ids.ID, staker txs.ScheduledStaker) (*Staker, error)
+```
+
+```go
+func (s *Staker) Less(than *Staker) bool
+```
+
+### StakerDiffIterator
+
+StakerDiffIterator is an iterator that iterates over the events that will be
+performed on the current staker set.
+
+There are two event types affecting current staker set, removal of an
+existing staker and addition of a new staker from the pending set.
+
+The ordering of operations is:
+  - Staker operations are performed in order of their [NextTime].
+  - If operations have the same [NextTime], stakers are first added to the
+    current staker set, then removed.
+  - Further ties are broken by *Staker.Less(), returning the lesser staker
+    first.
+
+
+```go
+func NewStakerDiffIterator(currentIterator, pendingIterator iterator.Iterator[*Staker]) StakerDiffIterator
+```
+
+### StakerIterator
+
+StakerIterator is an iterator for Staker objects.
+Iterators should be released when they are no longer needed.
+
+
+```go
+func NewMaskedIterator(parentIterator StakerIterator, maskedStakers map[ids.ID]*Staker) StakerIterator
+```
+
+```go
+func NewMergedIterator(stakers ...StakerIterator) StakerIterator
+```
+
+```go
+func NewTreeIterator(tree *btree.BTreeG[*Staker]) StakerIterator
+```
+
+### Stakers
+
+### State
+
+```go
+func New(
+	db database.Database,
+	genesisBytes []byte,
+	metricsReg metric.Registerer,
+	validators validators.Manager,
+	upgrades upgrade.Config,
+	execCfg *config.Config,
+	rt *runtime.Runtime,
+	metrics metrics.Metrics,
+	rewards reward.Calculator,
+) (State, error)
+```
+
+### ValidatorWeightDiff
+
+```go
+func (v *ValidatorWeightDiff) Add(amount uint64) error
+```
+
+```go
+func (v *ValidatorWeightDiff) Sub(amount uint64) error
+```
+
+### Versions
+

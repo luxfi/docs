@@ -1,0 +1,88 @@
+---
+title: auth
+description: Package auth is the canonical credential-policy gate for P-chain and X-chain mempool admission.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/txs/auth"
+```
+
+Package auth is the canonical credential-policy gate for P-chain and
+X-chain mempool admission.
+
+Under a strict-PQ ChainSecurityProfile (RequireTypedTxAuth=true) a
+classical secp256k1 credential is not admissible unless the originator
+address is on the ClassicalCompatRegistry allow-list. The registry
+exists so a chain mid-migration can carry over a small, named set of
+legacy operators (signed by chain governance) without weakening the
+post-quantum bar for everyone else.
+
+One package, one entry point: EnforceCredentialPolicy. Callers (the
+P-chain and X-chain mempool Add hooks) invoke it once per inbound tx;
+admitting a tx that doesn't satisfy the policy returns
+ErrLegacyCredentialUnderStrictPQ so the caller can drop it with a
+specific reason.
+
+This package is intentionally small — it owns the gate, nothing else.
+The PQ tx-type variants, the mldsafx signer visitors, and the
+validator-registration changes live in their own packages; they all
+route through this gate at the mempool boundary so the rule is
+enforced exactly once.
+
+
+## Functions
+
+### EnforceCredentialPolicy
+
+```go
+func EnforceCredentialPolicy(
+	creds []verify.Verifiable,
+	profile *config.ChainSecurityProfile,
+	registry ClassicalCompatRegistry,
+	originator ids.ShortID,
+) error
+```
+
+EnforceCredentialPolicy is the canonical mempool gate. Returns nil iff
+the credential set is admissible under profile. Otherwise returns the
+specific error so the mempool can record the drop reason.
+
+  - profile == nil → ErrNilProfile (programmer error, fail loud).
+  - profile.RequireTypedTxAuth == false → admit unconditionally
+    (the classical-compat profile path).
+  - profile.RequireTypedTxAuth == true:
+      - every credential is a PQ credential (mldsafx.Credential or
+        any non-secp256k1fx.Credential type) → admit.
+      - at least one credential is *secp256k1fx.Credential and
+        registry == nil → refuse (no allow-list configured).
+      - at least one credential is *secp256k1fx.Credential and
+        registry.IsAllowed(originator) == false → refuse.
+      - otherwise → admit.
+
+The `originator` argument is the address bound to the tx by the chain
+(P-chain: first input's address; X-chain: first input owner). Callers
+MUST resolve it before invoking; this function does not parse tx
+structure.
+
+
+## Types
+
+### ClassicalCompatRegistry
+
+ClassicalCompatRegistry is the allow-list of addresses that may still
+sign with classical (secp256k1) credentials on a chain that otherwise
+pins RequireTypedTxAuth=true. The registry is OPT-IN: a chain that
+supplies nil refuses every classical credential outright.
+
+Implementations MUST be safe for concurrent reads. Writers are the
+chain governance pathway (a typed admin tx that mutates the registry
+atomically); this interface intentionally exposes only the read path
+so a misbehaving caller cannot widen the allow-list at mempool time.
+
+
+```go
+func NewStaticClassicalCompatRegistry(addrs []ids.ShortID) ClassicalCompatRegistry
+```
+

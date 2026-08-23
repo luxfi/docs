@@ -1,0 +1,50 @@
+---
+title: nat
+description: Package nat
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/nat"
+```
+
+## Types
+
+### Mapper
+
+Mapper attempts to open a set of ports on a router
+
+
+```go
+func NewPortMapper(log log.Logger, r Router) *Mapper
+```
+
+```go
+func (m *Mapper) Map(
+	intPort uint16,
+	extPort uint16,
+	desc string,
+	ip *utils.Atomic[netip.AddrPort],
+	updateTime time.Duration,
+)
+```
+
+```go
+func (m *Mapper) UnmapAllPorts()
+```
+
+### Router
+
+Router describes the functionality that a network device must support to be
+able to open ports to an external IP.
+
+
+```go
+func GetRouter() Router
+```
+
+```go
+func NewNoRouter() Router
+```
+

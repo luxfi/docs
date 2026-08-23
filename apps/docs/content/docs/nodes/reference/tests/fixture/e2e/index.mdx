@@ -1,0 +1,59 @@
+---
+title: e2e
+description: Package e2e provides testing infrastructure for end-to-end tests
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/tests/fixture/e2e"
+```
+
+Package e2e provides testing infrastructure for end-to-end tests
+
+
+## Types
+
+### FlagVars
+
+FlagVars holds test configuration flags
+
+
+```go
+func RegisterFlags() *FlagVars
+```
+
+### TestContext
+
+TestContext holds test context
+
+
+```go
+func NewTestContext() *TestContext
+```
+
+```go
+func (tc *TestContext) DefaultContext() context.Context
+```
+
+### TestEnvironment
+
+TestEnvironment holds test environment state
+
+
+```go
+func NewTestEnvironment(tc *TestContext, flagVars *FlagVars, network *tmpnet.Network) *TestEnvironment
+```
+
+```go
+func (te *TestEnvironment) GetNetwork() *tmpnet.Network
+```
+
+```go
+func (te *TestEnvironment) Marshal() []byte
+```
+
+```go
+func (te *TestEnvironment) Unmarshal(data []byte) error
+```
+

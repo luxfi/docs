@@ -1,0 +1,40 @@
+---
+title: dynamicip
+description: Package dynamicip
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/dynamicip"
+```
+
+## Types
+
+### Resolver
+
+Resolver resolves our public IP
+
+
+```go
+func NewResolver(resolverName string) (Resolver, error)
+```
+
+### Updater
+
+Updater periodically updates this node's public IP.
+Dispatch() and Stop() should only be called once.
+
+
+```go
+func NewNoUpdater() Updater
+```
+
+```go
+func NewUpdater(
+	dynamicIP *luxatomic.Atomic[netip.AddrPort],
+	resolver Resolver,
+	updateFreq time.Duration,
+) Updater
+```
+

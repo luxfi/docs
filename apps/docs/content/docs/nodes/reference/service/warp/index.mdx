@@ -1,0 +1,34 @@
+---
+title: warp
+description: Package warp
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/service/warp"
+```
+
+## Types
+
+### Service
+
+Service implements api/warp.Service.
+
+
+```go
+func New(log log.Logger, chainManager chains.Manager, ipcs *warp.ChainIPCs) *Service
+```
+
+```go
+func (s *Service) GetPublishedBlockchains(ctx context.Context) (*apiwarp.GetPublishedBlockchainsReply, error)
+```
+
+```go
+func (s *Service) PublishBlockchain(ctx context.Context, args *apiwarp.PublishBlockchainArgs) (*apiwarp.PublishBlockchainReply, error)
+```
+
+```go
+func (s *Service) UnpublishBlockchain(ctx context.Context, args *apiwarp.UnpublishBlockchainArgs) (*apiwarp.EmptyReply, error)
+```
+

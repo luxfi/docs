@@ -1,0 +1,41 @@
+---
+title: validators
+description: Package validators
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/validators"
+```
+
+## Functions
+
+### NewLockedState
+
+```go
+func NewLockedState(lock sync.Locker, state validators.State) validators.State
+```
+
+NewLockedState creates a new locked validator state
+
+
+## Types
+
+### Manager
+
+Manager adds the ability to introduce newly accepted blocks IDs to the State
+interface.
+
+
+```go
+func NewManager(
+	cfg config.Internal,
+	state State,
+	metrics metrics.Metrics,
+	clk *mockable.Clock,
+) Manager
+```
+
+### State
+

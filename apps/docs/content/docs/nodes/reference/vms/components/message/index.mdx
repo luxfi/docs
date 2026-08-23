@@ -1,0 +1,45 @@
+---
+title: message
+description: Package message
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/components/message"
+```
+
+## Functions
+
+### Build
+
+```go
+func Build(msg Message) ([]byte, error)
+```
+
+## Types
+
+### Handler
+
+### Message
+
+```go
+func Parse(bytes []byte) (Message, error)
+```
+
+### NoopHandler
+
+```go
+func (h NoopHandler) HandleTx(nodeID ids.NodeID, requestID uint32, _ *Tx) error
+```
+
+### Tx
+
+```go
+func (m *Tx) Bytes() []byte
+```
+
+```go
+func (msg *Tx) Handle(handler Handler, nodeID ids.NodeID, requestID uint32) error
+```
+

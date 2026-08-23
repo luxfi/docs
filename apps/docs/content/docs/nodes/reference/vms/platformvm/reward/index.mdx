@@ -1,0 +1,34 @@
+---
+title: reward
+description: Package reward
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/reward"
+```
+
+## Functions
+
+### Split
+
+```go
+func Split(totalAmount uint64, shares uint32) (uint64, uint64)
+```
+
+Split [totalAmount] into [totalAmount * shares percentage] and the remainder.
+
+Invariant: [shares] &lt;= [PercentDenominator]
+
+
+## Types
+
+### Calculator
+
+```go
+func NewCalculator(c Config) Calculator
+```
+
+### Config
+

@@ -1,0 +1,326 @@
+---
+title: proposervm
+description: height_backfill.go — RECOVERY for a proposervm finality index that sits BELOW the inner VM's accepted tip.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/proposervm"
+```
+
+height_backfill.go — RECOVERY for a proposervm finality index that sits BELOW
+the inner VM's accepted tip.
+
+THE INVARIANT. A post-fork accept first commits the inner execution block and
+then commits the outer envelope, height index, and last-accepted pointer in one
+versiondb batch (postForkBlock.Accept). A failure can therefore leave the outer
+index behind, but it must never leave the outer index ahead of execution.
+
+HOW IT BREAKS ANYWAY. The proposervm has one accept path that advances the inner
+VM while leaving the outer index untouched: preForkBlock.Accept, whose
+acceptOuterBlk() is a no-op by construction. Post-fork that path was reachable
+because BOTH of the proposervm's block constructors fall back to it silently —
+ParseBlock() falls back to parsePreForkBlock when the outer envelope does not
+parse, and getBlock() falls back to getPreForkBlock when the id is not an outer
+id (which is exactly what the CANONICAL id recorded by the consensus ledger is:
+postForkCommonComponents.CanonicalID() == innerBlk.ID()). Either fallback hands
+the engine a preForkBlock wrapping a post-fork inner block; accepting it moves
+the inner VM and NOT the index. Nothing complained, because nothing asserted the
+invariant at the moment it was violated — it was only ever checked at the NEXT
+boot, by which point the node could not start. That is why the lag looked like
+a mysterious "persistence" problem: the writes were never issued at all.
+
+The prevention half lives at the two fallbacks + preForkBlock.acceptOuterBlk
+(see pre_fork_block.go and vm.getPreForkBlock): post-fork, a pre-fork block is
+never constructed and never accepted.
+
+THE RECOVERY half lives here, and it must work for nodes that are ALREADY
+damaged. It is two escalating steps, both OUTER-ONLY — they never re-execute,
+re-verify or re-accept an inner block, so a node whose EVM is already at the tip
+is repaired without touching the EVM:
+
+ 1. rebuildOuterIndexFromStore: re-derive the height index and last-accepted
+    pointer from the outer envelopes ALREADY in this node's block store, binding
+    each candidate to the inner block this node itself accepted at that height.
+    Fully local, no network, no operator. This is what turns "refuses to start"
+    into "starts, repairs itself, and keeps its finality pointer".
+
+ 2. If step 1 cannot reach the inner tip, the node still STARTS, in an explicit
+    backfill-pending state: loud and fail-safe (it will not BUILD a block while
+    its finality index is incomplete). The normal quorum-certificate-gated
+    Accept path then replays the missing wrappers oldest-first. The inner VM
+    recognizes only its exact historical canonical blocks as idempotent, and
+    each successful outer accept advances this marker. There is no separate
+    unsigned repair admission path.
+
+WHAT IS NEVER DONE, and why: the finality pointer is never dropped
+(DeleteLastAccepted). proposervm.LastAccepted would then fall back to an
+INNER-namespace id whose ParentID is contiguity-incompatible with the network's
+OUTER wrappers, permanently wedging bootstrap, catch-up and live Verify at the
+inner tip — a silent wedge strictly worse than the loud stop it would replace.
+Every path below only ever moves the pointer FORWARD, onto an envelope that was
+proven to wrap the inner block this node already accepted at that height.
+
+Package proposervm is a generated GoMock package.
+
+
+## Functions
+
+### NewHTTPHandler
+
+```go
+func NewHTTPHandler(vm *VM) (http.Handler, error)
+```
+
+NewHTTPHandler returns an HTTP handler to serve proposervm API endpoints
+
+
+## Types
+
+### Block
+
+### Config
+
+### GetProposedHeightArgs
+
+GetProposedHeightArgs are the arguments for GetProposedHeight
+
+
+### GetProposedHeightReply
+
+GetProposedHeightReply is the response from GetProposedHeight
+
+
+### MockPostForkBlock
+
+MockPostForkBlock is a mock of PostForkBlock interface.
+
+
+```go
+func NewMockPostForkBlock(ctrl *gomock.Controller) *MockPostForkBlock
+```
+
+```go
+func (m *MockPostForkBlock) Accept(arg0 context.Context) error
+```
+
+```go
+func (m *MockPostForkBlock) Bytes() []byte
+```
+
+```go
+func (m *MockPostForkBlock) EXPECT() *MockPostForkBlockMockRecorder
+```
+
+```go
+func (m *MockPostForkBlock) Height() uint64
+```
+
+```go
+func (m *MockPostForkBlock) ID() ids.ID
+```
+
+```go
+func (m *MockPostForkBlock) Parent() ids.ID
+```
+
+```go
+func (m *MockPostForkBlock) ParentID() ids.ID
+```
+
+```go
+func (m *MockPostForkBlock) Reject(arg0 context.Context) error
+```
+
+```go
+func (m *MockPostForkBlock) Status() uint8
+```
+
+```go
+func (m *MockPostForkBlock) Timestamp() time.Time
+```
+
+```go
+func (m *MockPostForkBlock) Verify(arg0 context.Context) error
+```
+
+### MockPostForkBlockMockRecorder
+
+MockPostForkBlockMockRecorder is the mock recorder for MockPostForkBlock.
+
+
+```go
+func (mr *MockPostForkBlockMockRecorder) Accept(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockPostForkBlockMockRecorder) Bytes() *gomock.Call
+```
+
+```go
+func (mr *MockPostForkBlockMockRecorder) Height() *gomock.Call
+```
+
+```go
+func (mr *MockPostForkBlockMockRecorder) ID() *gomock.Call
+```
+
+```go
+func (mr *MockPostForkBlockMockRecorder) Parent() *gomock.Call
+```
+
+```go
+func (mr *MockPostForkBlockMockRecorder) ParentID() *gomock.Call
+```
+
+```go
+func (mr *MockPostForkBlockMockRecorder) Reject(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockPostForkBlockMockRecorder) Status() *gomock.Call
+```
+
+```go
+func (mr *MockPostForkBlockMockRecorder) Timestamp() *gomock.Call
+```
+
+```go
+func (mr *MockPostForkBlockMockRecorder) Verify(arg0 any) *gomock.Call
+```
+
+### OracleBlock
+
+OracleBlock is a block that can return multiple child options
+
+
+### PostForkBlock
+
+### Service
+
+Service wraps proposervm for RPC/JSON-RPC access
+
+
+```go
+func (s *Service) GetProposedHeight(r *http.Request, _ *GetProposedHeightArgs, reply *GetProposedHeightReply) error
+```
+
+### VM
+
+```go
+func New(
+	vm vmchain.ChainVM,
+	config Config,
+) *VM
+```
+
+```go
+func (vm *VM) BatchedParseBlock(ctx context.Context, blks [][]byte) ([]chain.Block, error)
+```
+
+```go
+func (vm *VM) BuildBlock(ctx context.Context) (vmchain.Block, error)
+```
+
+```go
+func (vm *VM) Commit() error
+```
+
+```go
+func (vm *VM) CreateHandlers(ctx context.Context) (map[string]http.Handler, error)
+```
+
+```go
+func (vm *VM) GetAncestors(
+	ctx context.Context,
+	blkID ids.ID,
+	maxBlocksNum int,
+	maxBlocksSize int,
+	maxBlocksRetrievalTime time.Duration,
+) ([][]byte, error)
+```
+
+```go
+func (vm *VM) GetBlock(ctx context.Context, id ids.ID) (vmchain.Block, error)
+```
+
+```go
+func (vm *VM) GetBlockIDAtHeight(ctx context.Context, height uint64) (ids.ID, error)
+```
+
+```go
+func (vm *VM) GetFullPostForkBlock(ctx context.Context, blkID ids.ID) (chain.Block, error)
+```
+
+```go
+func (vm *VM) GetLastStateSummary(ctx context.Context) (chain.StateSummary, error)
+```
+
+```go
+func (vm *VM) GetOngoingSyncStateSummary(ctx context.Context) (chain.StateSummary, error)
+```
+
+```go
+func (vm *VM) GetStateSummary(ctx context.Context, height uint64) (chain.StateSummary, error)
+```
+
+```go
+func (vm *VM) Initialize(
+	ctx context.Context,
+	init vmcore.Init,
+) error
+```
+
+```go
+func (vm *VM) InnerLastAccepted(ctx context.Context) (ids.ID, error)
+```
+
+```go
+func (vm *VM) InnerLastAcceptedHeight(ctx context.Context) (uint64, error)
+```
+
+```go
+func (vm *VM) LastAccepted(ctx context.Context) (ids.ID, error)
+```
+
+```go
+func (vm *VM) NeedsOuterBackfill() (from uint64, to uint64, pending bool)
+```
+
+```go
+func (vm *VM) ParseBlock(ctx context.Context, b []byte) (vmchain.Block, error)
+```
+
+```go
+func (vm *VM) ParseLocalBlock(ctx context.Context, b []byte) (vmchain.Block, error)
+```
+
+```go
+func (vm *VM) ParseStateSummary(ctx context.Context, summaryBytes []byte) (chain.StateSummary, error)
+```
+
+```go
+func (vm *VM) SetPreference(ctx context.Context, preferred ids.ID) error
+```
+
+```go
+func (vm *VM) SetQuasarGate(g *pqfinality.Gate)
+```
+
+```go
+func (vm *VM) SetState(ctx context.Context, newState uint32) error
+```
+
+```go
+func (vm *VM) Shutdown(ctx context.Context) error
+```
+
+```go
+func (vm *VM) StateSyncEnabled(ctx context.Context) (bool, error)
+```
+
+```go
+func (vm *VM) WaitForEvent(ctx context.Context) (vmcore.Message, error)
+```
+

@@ -1,0 +1,159 @@
+---
+title: message
+description: Package message
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/warp/message"
+```
+
+## Functions
+
+### ChainToL1ConversionID
+
+```go
+func ChainToL1ConversionID(data ChainToL1ConversionData) (ids.ID, error)
+```
+
+ChainToL1ConversionID creates a chain conversion ID from the provided
+chain conversion data. The preimage is exactly ChainToL1ConversionData.Marshal.
+
+
+## Types
+
+### ChainToL1Conversion
+
+ChainToL1Conversion reports the summary of the chain conversion that
+occurred on the P-chain.
+
+Wire: mkind u8 @0, ID 32B @1 = 33 bytes.
+
+
+```go
+func NewChainToL1Conversion(id ids.ID) (*ChainToL1Conversion, error)
+```
+
+```go
+func ParseChainToL1Conversion(b []byte) (*ChainToL1Conversion, error)
+```
+
+```go
+func (p ChainToL1Conversion) Bytes() []byte
+```
+
+### ChainToL1ConversionData
+
+```go
+func (d *ChainToL1ConversionData) Marshal() ([]byte, error)
+```
+
+### ChainToL1ConversionValidatorData
+
+### L1ValidatorRegistration
+
+L1ValidatorRegistration reports if a validator is registered on the P-chain.
+
+Wire: mkind u8 @0, ValidationID 32B @1, Registered u8 @33 = 34 bytes.
+
+
+```go
+func NewL1ValidatorRegistration(
+	validationID ids.ID,
+	registered bool,
+) (*L1ValidatorRegistration, error)
+```
+
+```go
+func ParseL1ValidatorRegistration(b []byte) (*L1ValidatorRegistration, error)
+```
+
+```go
+func (p L1ValidatorRegistration) Bytes() []byte
+```
+
+### L1ValidatorWeight
+
+L1ValidatorWeight is both received and sent by the P-chain.
+
+If the P-chain is receiving this message, it is treated as a command to
+update the weight of the validator.
+
+If the P-chain is sending this message, it is reporting the current nonce and
+weight of the validator.
+
+Wire: mkind u8 @0, ValidationID 32B @1, Nonce u64 @33, Weight u64 @41 = 49B.
+
+
+```go
+func NewL1ValidatorWeight(
+	validationID ids.ID,
+	nonce uint64,
+	weight uint64,
+) (*L1ValidatorWeight, error)
+```
+
+```go
+func ParseL1ValidatorWeight(b []byte) (*L1ValidatorWeight, error)
+```
+
+```go
+func (p L1ValidatorWeight) Bytes() []byte
+```
+
+```go
+func (s *L1ValidatorWeight) Verify() error
+```
+
+### PChainOwner
+
+### Payload
+
+Payload provides a common interface for all payloads implemented by this
+package. Each payload is a native-ZAP struct-is-wire object whose first byte
+is an mkind discriminator (the struct IS the buffer; no codec).
+
+
+```go
+func Parse(bytes []byte) (Payload, error)
+```
+
+### RegisterL1Validator
+
+RegisterL1Validator adds a validator to the chain.
+
+Wire: mkind u8 @0, ChainID 32B @1, BLSPublicKey 48B @33, Expiry u64 @81,
+Weight u64 @89, NodeID bytes @97, RemainingBalanceOwner&#123;threshold u32 @105,
+addrs 20B-stride list @109}, DisableOwner&#123;threshold u32 @117, addrs @121}
+= 129-byte object header.
+
+
+```go
+func NewRegisterL1Validator(
+	chainID ids.ID,
+	nodeID ids.NodeID,
+	blsPublicKey [bls.PublicKeyLen]byte,
+	expiry uint64,
+	remainingBalanceOwner PChainOwner,
+	disableOwner PChainOwner,
+	weight uint64,
+) (*RegisterL1Validator, error)
+```
+
+```go
+func ParseRegisterL1Validator(b []byte) (*RegisterL1Validator, error)
+```
+
+```go
+func (p RegisterL1Validator) Bytes() []byte
+```
+
+```go
+func (r *RegisterL1Validator) ValidationID() ids.ID
+```
+
+```go
+func (r *RegisterL1Validator) Verify() error
+```
+

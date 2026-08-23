@@ -1,0 +1,72 @@
+---
+title: rpcchainvm
+description: Package rpcchainvm
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/rpcchainvm"
+```
+
+## Functions
+
+### NewFactory
+
+```go
+func NewFactory(
+	path string,
+	processTracker resource.ProcessTracker,
+	runtimeTracker runtime.Tracker,
+	metricsGatherer metric.MultiGatherer,
+) vms.Factory
+```
+
+NewFactory creates a new factory. VM subprocesses are spawned and
+communication uses ZAP — the one and only wire protocol for rpcchainvm.
+
+
+## Types
+
+### Message
+
+Message represents a notification message type
+
+
+```go
+func (m Message) String() string
+```
+
+### NotificationForwarder
+
+NotificationForwarder is a component that listens for notifications from a Subscription,
+and forwards them to a Notifier.
+When CheckForEvent is called mid-subscription, it retries the subscription.
+After Notify is called, it waits for CheckForEvent to be called before subscribing again.
+
+
+```go
+func NewNotificationForwarder(
+	engine Notifier,
+	subscribe Subscription,
+	log log.Logger,
+) *NotificationForwarder
+```
+
+```go
+func (nf *NotificationForwarder) CheckForEvent()
+```
+
+```go
+func (nf *NotificationForwarder) Close()
+```
+
+### Notifier
+
+### Subscription
+
+Subscription is a function that blocks until either the given context is cancelled, or a message is returned.
+It is used to receive messages from a VM such as Pending transactions, state sync completion, etc.
+The function returns the message received, or an error if the context is cancelled.
+
+

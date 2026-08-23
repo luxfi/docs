@@ -1,0 +1,41 @@
+---
+title: factory
+description: Package factory
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/internal/database/factory"
+```
+
+## Functions
+
+### New
+
+```go
+func New(
+	name string,
+	path string,
+	readOnly bool,
+	config []byte,
+	gatherer metrics.MultiGatherer,
+	logger log.Logger,
+	metricsPrefix string,
+	meterDBRegName string,
+) (database.Database, error)
+```
+
+New creates a new database instance based on the provided configuration.
+
+This is a thin wrapper around luxfi/database/factory.New that adapts
+the node's MultiGatherer to the database factory's expected interface.
+
+dbName is the name of the database: zapdb, pebbledb, or memdb.
+dbPath is the path to the database folder.
+readOnly indicates if the database should be read-only.
+dbConfig is the database configuration in JSON format.
+dbMetricsPrefix is used to create a new metrics registerer for the database.
+meterDBRegName is used to create a new metrics registerer for the meter DB.
+
+

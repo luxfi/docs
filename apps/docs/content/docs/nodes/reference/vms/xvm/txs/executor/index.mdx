@@ -1,0 +1,90 @@
+---
+title: executor
+description: Package executor
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/xvm/txs/executor"
+```
+
+## Types
+
+### Backend
+
+```go
+func (b *Backend) ToChainContext() *verify.ChainContext
+```
+
+### Executor
+
+```go
+func (e *Executor) BaseTx(tx *txs.BaseTx) error
+```
+
+```go
+func (e *Executor) CreateAssetTx(tx *txs.CreateAssetTx) error
+```
+
+```go
+func (e *Executor) ExportTx(tx *txs.ExportTx) error
+```
+
+```go
+func (e *Executor) ImportTx(tx *txs.ImportTx) error
+```
+
+```go
+func (e *Executor) OperationTx(tx *txs.OperationTx) error
+```
+
+### SemanticVerifier
+
+```go
+func (v *SemanticVerifier) BaseTx(tx *txs.BaseTx) error
+```
+
+```go
+func (v *SemanticVerifier) CreateAssetTx(tx *txs.CreateAssetTx) error
+```
+
+```go
+func (v *SemanticVerifier) ExportTx(tx *txs.ExportTx) error
+```
+
+```go
+func (v *SemanticVerifier) ImportTx(tx *txs.ImportTx) error
+```
+
+```go
+func (v *SemanticVerifier) OperationTx(tx *txs.OperationTx) error
+```
+
+### SharedMemory
+
+SharedMemory interface for cross-chain operations
+
+
+### SyntacticVerifier
+
+```go
+func (v *SyntacticVerifier) BaseTx(tx *txs.BaseTx) error
+```
+
+```go
+func (v *SyntacticVerifier) CreateAssetTx(tx *txs.CreateAssetTx) error
+```
+
+```go
+func (v *SyntacticVerifier) ExportTx(tx *txs.ExportTx) error
+```
+
+```go
+func (v *SyntacticVerifier) ImportTx(tx *txs.ImportTx) error
+```
+
+```go
+func (v *SyntacticVerifier) OperationTx(tx *txs.OperationTx) error
+```
+

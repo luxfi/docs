@@ -1,0 +1,86 @@
+---
+title: filesystem
+description: Package filesystem is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/filesystem"
+```
+
+Package filesystem is a generated GoMock package.
+
+
+## Functions
+
+### RenameIfExists
+
+```go
+func RenameIfExists(a, b string) (renamed bool, err error)
+```
+
+Renames the file "a" to "b" iff "a" exists.
+It returns "true" and no error, if rename were successful.
+It returns "false" and no error, if the file "a" does not exist.
+It returns "false" and an error, if rename failed.
+
+
+## Types
+
+### MockFile
+
+MockFile is an implementation of fs.File for unit testing.
+
+
+```go
+func (m MockFile) Info() (fs.FileInfo, error)
+```
+
+```go
+func (m MockFile) IsDir() bool
+```
+
+```go
+func (m MockFile) Name() string
+```
+
+```go
+func (m MockFile) Type() fs.FileMode
+```
+
+### MockReader
+
+MockReader is a mock of Reader interface.
+
+
+```go
+func NewMockReader(ctrl *gomock.Controller) *MockReader
+```
+
+```go
+func (m *MockReader) EXPECT() *MockReaderMockRecorder
+```
+
+```go
+func (m *MockReader) ReadDir(arg0 string) ([]fs.DirEntry, error)
+```
+
+### MockReaderMockRecorder
+
+MockReaderMockRecorder is the mock recorder for MockReader.
+
+
+```go
+func (mr *MockReaderMockRecorder) ReadDir(arg0 any) *gomock.Call
+```
+
+### Reader
+
+Reader is an interface for reading the filesystem.
+
+
+```go
+func NewReader() Reader
+```
+

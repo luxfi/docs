@@ -1,0 +1,38 @@
+---
+title: meter
+description: Package meter
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/math/meter"
+```
+
+## Types
+
+### ContinuousFactory
+
+ContinuousFactory implements the Factory interface by returning a continuous
+time meter.
+
+
+```go
+func (ContinuousFactory) New(halflife time.Duration) Meter
+```
+
+### Factory
+
+Factory returns new meters.
+
+
+### Meter
+
+Meter tracks a continuous exponential moving average of the % of time this
+meter has been running.
+
+
+```go
+func NewMeter(halflife time.Duration) Meter
+```
+

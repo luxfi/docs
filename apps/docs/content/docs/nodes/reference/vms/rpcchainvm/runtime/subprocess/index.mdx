@@ -1,0 +1,46 @@
+---
+title: subprocess
+description: Package subprocess
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/rpcchainvm/runtime/subprocess"
+```
+
+## Functions
+
+### NewCmd
+
+```go
+func NewCmd(path string, args ...string) *exec.Cmd
+```
+
+### NewStopper
+
+```go
+func NewStopper(logger log.Logger, cmd *exec.Cmd) runtime.Stopper
+```
+
+## Types
+
+### Config
+
+Config contains subprocess configuration.
+
+
+### Status
+
+Status contains subprocess status after successful bootstrap.
+
+
+```go
+func Bootstrap(
+	ctx context.Context,
+	listener net.Listener,
+	cmd *exec.Cmd,
+	config *Config,
+) (*Status, runtime.Stopper, error)
+```
+

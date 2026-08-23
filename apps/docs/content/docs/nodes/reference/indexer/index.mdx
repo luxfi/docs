@@ -1,0 +1,86 @@
+---
+title: indexer
+description: Package indexer
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/indexer"
+```
+
+## Types
+
+### Client
+
+```go
+func NewClient(uri string) *Client
+```
+
+```go
+func (c *Client) GetContainerByID(ctx context.Context, id ids.ID, options ...rpc.Option) (Container, uint64, error)
+```
+
+```go
+func (c *Client) GetContainerByIndex(ctx context.Context, index uint64, options ...rpc.Option) (Container, error)
+```
+
+```go
+func (c *Client) GetContainerRange(ctx context.Context, startIndex uint64, numToFetch int, options ...rpc.Option) ([]Container, error)
+```
+
+```go
+func (c *Client) GetIndex(ctx context.Context, id ids.ID, options ...rpc.Option) (uint64, error)
+```
+
+```go
+func (c *Client) GetLastAccepted(ctx context.Context, options ...rpc.Option) (Container, uint64, error)
+```
+
+```go
+func (c *Client) IsAccepted(ctx context.Context, id ids.ID, options ...rpc.Option) (bool, error)
+```
+
+### Config
+
+Config for an indexer
+
+
+### Container
+
+Container is something that gets accepted
+(a block, transaction or vertex)
+
+
+### FormattedContainer
+
+### GetContainerByIDArgs
+
+### GetContainerByIndexArgs
+
+### GetContainerRangeArgs
+
+### GetContainerRangeResponse
+
+### GetIndexArgs
+
+### GetIndexResponse
+
+### GetLastAcceptedArgs
+
+### Indexer
+
+Indexer causes accepted containers for a given chain
+to be indexed by their ID and by the order in which
+they were accepted by this node.
+Indexer is threadsafe.
+
+
+```go
+func NewIndexer(config Config) (Indexer, error)
+```
+
+### IsAcceptedArgs
+
+### IsAcceptedResponse
+

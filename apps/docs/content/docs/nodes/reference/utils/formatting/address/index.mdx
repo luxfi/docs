@@ -1,0 +1,65 @@
+---
+title: address
+description: Package address
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/formatting/address"
+```
+
+## Functions
+
+### Format
+
+```go
+func Format(chainIDAlias string, hrp string, addr []byte) (string, error)
+```
+
+Format takes in a chain prefix, HRP, and byte slice to produce a string for
+an address.
+
+
+### FormatBech32
+
+```go
+func FormatBech32(hrp string, payload []byte) (string, error)
+```
+
+FormatBech32 takes an address's bytes as input and returns a bech32 address
+
+
+### Parse
+
+```go
+func Parse(addrStr string) (string, string, []byte, error)
+```
+
+Parse takes in an address string and splits returns the corresponding parts.
+This returns the chain ID alias, bech32 HRP, address bytes, and an error if
+it occurs.
+
+
+### ParseBech32
+
+```go
+func ParseBech32(addrStr string) (string, []byte, error)
+```
+
+ParseBech32 takes a bech32 address as input and returns the HRP and data
+section of a bech32 address
+
+
+### ParseToID
+
+```go
+func ParseToID(addrStr string) (ids.ShortID, error)
+```
+
+### ParseToIDs
+
+```go
+func ParseToIDs(addrStrs []string) ([]ids.ShortID, error)
+```
+

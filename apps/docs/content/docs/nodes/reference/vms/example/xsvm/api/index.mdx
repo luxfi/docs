@@ -1,0 +1,149 @@
+---
+title: api
+description: Package api
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/example/xsvm/api"
+```
+
+## Functions
+
+### AwaitTxAccepted
+
+```go
+func AwaitTxAccepted(
+	ctx context.Context,
+	c *Client,
+	address ids.ShortID,
+	nonce uint64,
+	freq time.Duration,
+	options ...rpc.Option,
+) error
+```
+
+## Types
+
+### BalanceArgs
+
+### BalanceReply
+
+### BlockArgs
+
+### BlockReply
+
+### Client
+
+```go
+func NewClient(uri, chain string) *Client
+```
+
+```go
+func (c *Client) Balance(
+	ctx context.Context,
+	address ids.ShortID,
+	assetID ids.ID,
+	options ...rpc.Option,
+) (uint64, error)
+```
+
+```go
+func (c *Client) Block(
+	ctx context.Context,
+	blkID ids.ID,
+	options ...rpc.Option,
+) (*block.Stateless, error)
+```
+
+```go
+func (c *Client) Genesis(
+	ctx context.Context,
+	options ...rpc.Option,
+) (*genesis.Genesis, error)
+```
+
+```go
+func (c *Client) IssueTx(
+	ctx context.Context,
+	newTx *tx.Tx,
+	options ...rpc.Option,
+) (ids.ID, error)
+```
+
+```go
+func (c *Client) LastAccepted(
+	ctx context.Context,
+	options ...rpc.Option,
+) (ids.ID, *block.Stateless, error)
+```
+
+```go
+func (c *Client) Loan(
+	ctx context.Context,
+	chainID ids.ID,
+	options ...rpc.Option,
+) (uint64, error)
+```
+
+```go
+func (c *Client) Message(
+	ctx context.Context,
+	txID ids.ID,
+	options ...rpc.Option,
+) (*warp.UnsignedMessage, []byte, error)
+```
+
+```go
+func (c *Client) Network(
+	ctx context.Context,
+	options ...rpc.Option,
+) (uint32, ids.ID, ids.ID, error)
+```
+
+```go
+func (c *Client) Nonce(
+	ctx context.Context,
+	address ids.ShortID,
+	options ...rpc.Option,
+) (uint64, error)
+```
+
+### GenesisReply
+
+### IssueTxArgs
+
+### IssueTxReply
+
+### LastAcceptedReply
+
+### LoanArgs
+
+### LoanReply
+
+### MessageArgs
+
+### MessageReply
+
+### NetworkReply
+
+### NonceArgs
+
+### NonceReply
+
+### Server
+
+Server defines the xsvm API server.
+
+
+```go
+func NewServer(
+	rt *runtime.Runtime,
+	genesis *genesis.Genesis,
+	state database.KeyValueReader,
+	chain chain.Chain,
+	builder builder.Builder,
+) Server
+```
+

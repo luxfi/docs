@@ -1,0 +1,410 @@
+---
+title: merkledb
+description: Package merkledb is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/x/merkledb"
+```
+
+Package merkledb is a generated GoMock package.
+
+
+## Types
+
+### BranchFactor
+
+```go
+func (b BranchFactor) Valid() error
+```
+
+### ChangeProof
+
+ChangeProof proves that a set of key-value changes occurred
+between two trie roots, where each key-value pair's key is
+between some lower and upper bound (inclusive).
+
+
+```go
+func (proof *ChangeProof) Empty() bool
+```
+
+```go
+func (proof *ChangeProof) ToProto() *syncpb.ChangeProof
+```
+
+```go
+func (proof *ChangeProof) UnmarshalProto(pbProof *syncpb.ChangeProof) error
+```
+
+### ChangeProofer
+
+### Clearer
+
+### Config
+
+```go
+func NewConfig() Config
+```
+
+### Hasher
+
+### Key
+
+```go
+func ToKey(keyBytes []byte) Key
+```
+
+```go
+func ToToken(val byte, tokenSize int) Key
+```
+
+```go
+func (k Key) Bytes() []byte
+```
+
+```go
+func (k Key) Compare(other Key) int
+```
+
+```go
+func (k Key) Extend(keys ...Key) Key
+```
+
+```go
+func (k Key) Greater(other Key) bool
+```
+
+```go
+func (k Key) HasPrefix(prefix Key) bool
+```
+
+```go
+func (k Key) HasStrictPrefix(prefix Key) bool
+```
+
+```go
+func (k Key) Length() int
+```
+
+```go
+func (k Key) Less(other Key) bool
+```
+
+```go
+func (k Key) Skip(bitsToSkip int) Key
+```
+
+```go
+func (k Key) Take(bitsToTake int) Key
+```
+
+```go
+func (k Key) Token(bitIndex int, tokenSize int) byte
+```
+
+### KeyChange
+
+### MerkleDB
+
+```go
+func New(ctx context.Context, db database.Database, config Config) (MerkleDB, error)
+```
+
+### MerkleRootGetter
+
+### MockMerkleDB
+
+MockMerkleDB is a mock of MerkleDB interface.
+
+
+```go
+func NewMockMerkleDB(ctrl *gomock.Controller) *MockMerkleDB
+```
+
+```go
+func (m *MockMerkleDB) Clear() error
+```
+
+```go
+func (m *MockMerkleDB) Close() error
+```
+
+```go
+func (m *MockMerkleDB) CommitChangeProof(ctx context.Context, proof *ChangeProof) error
+```
+
+```go
+func (m *MockMerkleDB) CommitRangeProof(ctx context.Context, start, end maybe.Maybe[[]byte], proof *RangeProof) error
+```
+
+```go
+func (m *MockMerkleDB) Compact(start, limit []byte) error
+```
+
+```go
+func (m *MockMerkleDB) Delete(key []byte) error
+```
+
+```go
+func (m *MockMerkleDB) EXPECT() *MockMerkleDBMockRecorder
+```
+
+```go
+func (m *MockMerkleDB) Get(key []byte) ([]byte, error)
+```
+
+```go
+func (m *MockMerkleDB) GetChangeProof(ctx context.Context, startRootID, endRootID ids.ID, start, end maybe.Maybe[[]byte], maxLength int) (*ChangeProof, error)
+```
+
+```go
+func (m *MockMerkleDB) GetMerkleRoot(ctx context.Context) (ids.ID, error)
+```
+
+```go
+func (m *MockMerkleDB) GetProof(ctx context.Context, keyBytes []byte) (*Proof, error)
+```
+
+```go
+func (m *MockMerkleDB) GetRangeProof(ctx context.Context, start, end maybe.Maybe[[]byte], maxLength int) (*RangeProof, error)
+```
+
+```go
+func (m *MockMerkleDB) GetRangeProofAtRoot(ctx context.Context, rootID ids.ID, start, end maybe.Maybe[[]byte], maxLength int) (*RangeProof, error)
+```
+
+```go
+func (m *MockMerkleDB) GetValue(ctx context.Context, key []byte) ([]byte, error)
+```
+
+```go
+func (m *MockMerkleDB) GetValues(ctx context.Context, keys [][]byte) ([][]byte, []error)
+```
+
+```go
+func (m *MockMerkleDB) Has(key []byte) (bool, error)
+```
+
+```go
+func (m *MockMerkleDB) HealthCheck(arg0 context.Context) (any, error)
+```
+
+```go
+func (m *MockMerkleDB) NewBatch() database.Batch
+```
+
+```go
+func (m *MockMerkleDB) NewIterator() database.Iterator
+```
+
+```go
+func (m *MockMerkleDB) NewIteratorWithPrefix(prefix []byte) database.Iterator
+```
+
+```go
+func (m *MockMerkleDB) NewIteratorWithStart(start []byte) database.Iterator
+```
+
+```go
+func (m *MockMerkleDB) NewIteratorWithStartAndPrefix(start, prefix []byte) database.Iterator
+```
+
+```go
+func (m *MockMerkleDB) NewView(ctx context.Context, changes ViewChanges) (View, error)
+```
+
+```go
+func (m *MockMerkleDB) PrefetchPath(key []byte) error
+```
+
+```go
+func (m *MockMerkleDB) PrefetchPaths(keys [][]byte) error
+```
+
+```go
+func (m *MockMerkleDB) Put(key, value []byte) error
+```
+
+```go
+func (m *MockMerkleDB) VerifyChangeProof(ctx context.Context, proof *ChangeProof, start, end maybe.Maybe[[]byte], expectedEndRootID ids.ID) error
+```
+
+### MockMerkleDBMockRecorder
+
+MockMerkleDBMockRecorder is the mock recorder for MockMerkleDB.
+
+
+```go
+func (mr *MockMerkleDBMockRecorder) Clear() *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) Close() *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) CommitChangeProof(ctx, proof any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) CommitRangeProof(ctx, start, end, proof any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) Compact(start, limit any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) Delete(key any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) Get(key any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) GetChangeProof(ctx, startRootID, endRootID, start, end, maxLength any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) GetMerkleRoot(ctx any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) GetProof(ctx, keyBytes any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) GetRangeProof(ctx, start, end, maxLength any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) GetRangeProofAtRoot(ctx, rootID, start, end, maxLength any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) GetValue(ctx, key any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) GetValues(ctx, keys any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) Has(key any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) HealthCheck(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) NewBatch() *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) NewIterator() *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) NewIteratorWithPrefix(prefix any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) NewIteratorWithStart(start any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) NewIteratorWithStartAndPrefix(start, prefix any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) NewView(ctx, changes any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) PrefetchPath(key any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) PrefetchPaths(keys any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) Put(key, value any) *gomock.Call
+```
+
+```go
+func (mr *MockMerkleDBMockRecorder) VerifyChangeProof(ctx, proof, start, end, expectedEndRootID any) *gomock.Call
+```
+
+### Prefetcher
+
+### Proof
+
+Proof represents an inclusion/exclusion proof of a key.
+
+
+```go
+func (proof *Proof) ToProto() *syncpb.Proof
+```
+
+```go
+func (proof *Proof) UnmarshalProto(pbProof *syncpb.Proof) error
+```
+
+```go
+func (proof *Proof) Verify(
+	ctx context.Context,
+	expectedRootID ids.ID,
+	tokenSize int,
+	hasher Hasher,
+) error
+```
+
+### ProofGetter
+
+### ProofNode
+
+```go
+func (node *ProofNode) ToProto() *syncpb.ProofNode
+```
+
+```go
+func (node *ProofNode) UnmarshalProto(pbNode *syncpb.ProofNode) error
+```
+
+### RangeProof
+
+```go
+func (proof *RangeProof) ToProto() *syncpb.RangeProof
+```
+
+```go
+func (proof *RangeProof) UnmarshalProto(pbProof *syncpb.RangeProof) error
+```
+
+```go
+func (proof *RangeProof) Verify(
+	ctx context.Context,
+	start maybe.Maybe[[]byte],
+	end maybe.Maybe[[]byte],
+	expectedRootID ids.ID,
+	tokenSize int,
+	hasher Hasher,
+) error
+```
+
+### RangeProofer
+
+### TraceLevel
+
+### Trie
+
+### View
+
+### ViewChanges
+

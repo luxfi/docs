@@ -1,0 +1,218 @@
+---
+title: blocktest
+description: Package blocktest
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/components/chain/blocktest"
+```
+
+## Functions
+
+### MakeLastAcceptedBlockF
+
+```go
+func MakeLastAcceptedBlockF(blocks []*Block) func(context.Context) (ids.ID, error)
+```
+
+MakeLastAcceptedBlockF creates a LastAcceptedF function that returns the last block in the chain
+
+
+## Types
+
+### BatchedVM
+
+BatchedVM is a test VM that supports batch operations
+
+
+```go
+func (vm *BatchedVM) BatchedParseBlock(ctx context.Context, blks [][]byte) ([]consensuschain.Block, error)
+```
+
+```go
+func (vm *BatchedVM) GetAncestors(ctx context.Context, blkID ids.ID, maxBlocksNum int, maxBlocksSize int, maxBlocksRetrievalTime time.Duration) ([][]byte, error)
+```
+
+```go
+func (vm *BatchedVM) GetBlockIDAtHeight(ctx context.Context, height uint64) (ids.ID, error)
+```
+
+### Block
+
+Block is a test block that implements block.Block
+
+
+```go
+func BuildChild(parent *Block) *Block
+```
+
+```go
+func (b *Block) Accept(context.Context) error
+```
+
+```go
+func (b *Block) Bytes() []byte
+```
+
+```go
+func (b *Block) Height() uint64
+```
+
+```go
+func (b *Block) ID() ids.ID
+```
+
+```go
+func (b *Block) Parent() ids.ID
+```
+
+```go
+func (b *Block) ParentID() ids.ID
+```
+
+```go
+func (b *Block) Reject(context.Context) error
+```
+
+```go
+func (b *Block) State() state.ReadOnlyChain
+```
+
+```go
+func (b *Block) Status() uint8
+```
+
+```go
+func (b *Block) Timestamp() time.Time
+```
+
+```go
+func (b *Block) Verify(context.Context) error
+```
+
+### ChainVM
+
+ChainVM is a type alias for VM to maintain compatibility
+
+
+### StateSummary
+
+StateSummary is a test state summary that implements consensuschain.StateSummary
+
+
+```go
+func (s *StateSummary) Accept(ctx context.Context) (consensuschain.StateSyncMode, error)
+```
+
+```go
+func (s *StateSummary) Bytes() []byte
+```
+
+```go
+func (s *StateSummary) Height() uint64
+```
+
+```go
+func (s *StateSummary) ID() ids.ID
+```
+
+### StateSyncableVM
+
+StateSyncableVM is a test VM that supports state sync
+
+
+```go
+func (vm *StateSyncableVM) GetLastStateSummary(ctx context.Context) (consensuschain.StateSummary, error)
+```
+
+```go
+func (vm *StateSyncableVM) GetOngoingSyncStateSummary(ctx context.Context) (consensuschain.StateSummary, error)
+```
+
+```go
+func (vm *StateSyncableVM) GetStateSummary(ctx context.Context, height uint64) (consensuschain.StateSummary, error)
+```
+
+```go
+func (vm *StateSyncableVM) ParseStateSummary(ctx context.Context, summaryBytes []byte) (consensuschain.StateSummary, error)
+```
+
+```go
+func (vm *StateSyncableVM) StateSyncEnabled(ctx context.Context) (bool, error)
+```
+
+### VM
+
+VM is a test VM that can be used for testing
+
+
+```go
+func (vm *VM) BuildBlock(ctx context.Context) (consensuschain.Block, error)
+```
+
+```go
+func (vm *VM) Connected(ctx context.Context, nodeID ids.NodeID, nodeVersion *consensuschain.VersionInfo) error
+```
+
+```go
+func (vm *VM) Disconnected(ctx context.Context, nodeID ids.NodeID) error
+```
+
+```go
+func (vm *VM) GetBlock(ctx context.Context, blkID ids.ID) (consensuschain.Block, error)
+```
+
+```go
+func (vm *VM) GetBlockIDAtHeight(ctx context.Context, height uint64) (ids.ID, error)
+```
+
+```go
+func (vm *VM) GetStatelessBlock(ctx context.Context, blkID ids.ID) (consensuschain.Block, error)
+```
+
+```go
+func (vm *VM) HealthCheck(ctx context.Context) (consensuschain.HealthResult, error)
+```
+
+```go
+func (vm *VM) Initialize(ctx context.Context, chainRuntime interface{}, db interface{}, genesisBytes []byte, upgradeBytes []byte, configBytes []byte, msgSender interface{}, validators []interface{}, registry interface{}) error
+```
+
+```go
+func (vm *VM) LastAccepted(ctx context.Context) (ids.ID, error)
+```
+
+```go
+func (vm *VM) NewHTTPHandler(ctx context.Context) (http.Handler, error)
+```
+
+```go
+func (vm *VM) ParseBlock(ctx context.Context, blockBytes []byte) (consensuschain.Block, error)
+```
+
+```go
+func (vm *VM) SetPreference(ctx context.Context, blkID ids.ID) error
+```
+
+```go
+func (vm *VM) SetState(ctx context.Context, state uint32) error
+```
+
+```go
+func (vm *VM) Shutdown(ctx context.Context) error
+```
+
+```go
+func (vm *VM) VerifyHeightIndex(ctx context.Context) error
+```
+
+```go
+func (vm *VM) Version(ctx context.Context) (string, error)
+```
+
+```go
+func (vm *VM) WaitForEvent(ctx context.Context) (vmcore.Message, error)
+```
+

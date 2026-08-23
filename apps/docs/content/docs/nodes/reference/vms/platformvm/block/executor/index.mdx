@@ -1,0 +1,197 @@
+---
+title: executor
+description: Package executor is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/block/executor"
+```
+
+Package executor is a generated GoMock package.
+
+
+## Functions
+
+### VerifyWarpMessages
+
+```go
+func VerifyWarpMessages(
+	ctx context.Context,
+	networkID uint32,
+	validatorState validators.State,
+	pChainHeight uint64,
+	b block.Block,
+) error
+```
+
+VerifyWarpMessages verifies every warp message the block carries. If any of
+them is invalid, an error is returned.
+
+Every transaction means every transaction: the decision txs a block charges
+for, and — on a proposal block — the tx the chain emitted about itself. A
+warp message is an assertion about another chain no matter who put it in the
+block, so which of the two sets it arrived in cannot decide whether its
+signature is checked.
+
+When GPU acceleration is available and the block contains multiple BLS
+warp signatures, verification is batched through the GPU for throughput.
+Otherwise falls back to sequential CPU verification.
+
+
+## Types
+
+### Block
+
+Exported for testing in platformvm package.
+
+
+```go
+func (b *Block) Accept(context.Context) error
+```
+
+```go
+func (b *Block) EpochBit() bool
+```
+
+```go
+func (b *Block) FPCVotes() [][]byte
+```
+
+```go
+func (b *Block) Options(context.Context) ([2]chain.Block, error)
+```
+
+```go
+func (b *Block) ParentID() ids.ID
+```
+
+```go
+func (b *Block) Reject(context.Context) error
+```
+
+```go
+func (*Block) ShouldVerifyWithRuntime(context.Context) (bool, error)
+```
+
+```go
+func (b *Block) Status() uint8
+```
+
+```go
+func (b *Block) Timestamp() time.Time
+```
+
+```go
+func (b *Block) Verify(ctx context.Context) error
+```
+
+```go
+func (b *Block) VerifyWithRuntime(ctx context.Context, blockContext *runtime.Runtime) error
+```
+
+### Manager
+
+```go
+func NewManager(
+	mempool mempool.Mempool[*txs.Tx],
+	metrics metrics.Metrics,
+	s state.State,
+	txExecutorBackend *executor.Backend,
+	validatorManager validators.Manager,
+
+	stateLock *sync.Mutex,
+) Manager
+```
+
+### MockManager
+
+MockManager is a mock of Manager interface.
+
+
+```go
+func NewMockManager(ctrl *gomock.Controller) *MockManager
+```
+
+```go
+func (m *MockManager) EXPECT() *MockManagerMockRecorder
+```
+
+```go
+func (m *MockManager) GetBlock(blkID ids.ID) (chain.Block, error)
+```
+
+```go
+func (m *MockManager) GetState(blkID ids.ID) (state.Chain, bool)
+```
+
+```go
+func (m *MockManager) GetStatelessBlock(blkID ids.ID) (block.Block, error)
+```
+
+```go
+func (m *MockManager) LastAccepted() ids.ID
+```
+
+```go
+func (m *MockManager) NewBlock(arg0 block.Block) chain.Block
+```
+
+```go
+func (m *MockManager) Preferred() ids.ID
+```
+
+```go
+func (m *MockManager) SetPreference(blkID ids.ID) bool
+```
+
+```go
+func (m *MockManager) VerifyTx(tx *txs.Tx) error
+```
+
+```go
+func (m *MockManager) VerifyUniqueInputs(blkID ids.ID, inputs set.Set[ids.ID]) error
+```
+
+### MockManagerMockRecorder
+
+MockManagerMockRecorder is the mock recorder for MockManager.
+
+
+```go
+func (mr *MockManagerMockRecorder) GetBlock(blkID any) *gomock.Call
+```
+
+```go
+func (mr *MockManagerMockRecorder) GetState(blkID any) *gomock.Call
+```
+
+```go
+func (mr *MockManagerMockRecorder) GetStatelessBlock(blkID any) *gomock.Call
+```
+
+```go
+func (mr *MockManagerMockRecorder) LastAccepted() *gomock.Call
+```
+
+```go
+func (mr *MockManagerMockRecorder) NewBlock(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockManagerMockRecorder) Preferred() *gomock.Call
+```
+
+```go
+func (mr *MockManagerMockRecorder) SetPreference(blkID any) *gomock.Call
+```
+
+```go
+func (mr *MockManagerMockRecorder) VerifyTx(tx any) *gomock.Call
+```
+
+```go
+func (mr *MockManagerMockRecorder) VerifyUniqueInputs(blkID, inputs any) *gomock.Call
+```
+

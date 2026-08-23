@@ -1,0 +1,87 @@
+---
+title: health
+description: Package health
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/service/health"
+```
+
+## Functions
+
+### NewGetAndPostHandler
+
+```go
+func NewGetAndPostHandler(log log.Logger, reporter Reporter) (http.Handler, error)
+```
+
+NewGetAndPostHandler returns a health handler that supports GET and jsonrpc
+POST requests.
+
+
+### NewGetHandler
+
+```go
+func NewGetHandler(reporter func(tags ...string) (map[string]apihealth.Result, bool)) http.Handler
+```
+
+NewGetHandler return a health handler that supports GET requests reporting
+the result of the provided [reporter].
+
+
+## Types
+
+### Checker
+
+Checker can have its health checked
+
+
+### CheckerFunc
+
+```go
+func (f CheckerFunc) HealthCheck(ctx context.Context) (interface{}, error)
+```
+
+### Health
+
+Health defines the full health service interface for registering, reporting
+and refreshing health checks.
+
+
+```go
+func New(log log.Logger, registerer metric.Registerer) (Health, error)
+```
+
+### Registerer
+
+Registerer defines how to register new components to check the health of.
+
+
+### Reporter
+
+Reporter returns the current health status.
+
+
+### Service
+
+Service implements the health API with gorilla/rpc-compatible signatures.
+
+
+```go
+func NewService(log log.Logger, reporter Reporter) *Service
+```
+
+```go
+func (s *Service) Health(_ *http.Request, args *apihealth.APIArgs, reply *apihealth.APIReply) error
+```
+
+```go
+func (s *Service) Liveness(_ *http.Request, args *apihealth.APIArgs, reply *apihealth.APIReply) error
+```
+
+```go
+func (s *Service) Readiness(_ *http.Request, args *apihealth.APIArgs, reply *apihealth.APIReply) error
+```
+

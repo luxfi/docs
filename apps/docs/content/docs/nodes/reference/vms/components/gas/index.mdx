@@ -1,0 +1,74 @@
+---
+title: gas
+description: The gas package implements dynamic gas pricing specified in LP-103: https://github.com/luxfi/LPs/tree/main/LPs/103-dynamic-fees
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/components/gas"
+```
+
+The gas package implements dynamic gas pricing specified in LP-103:
+https://github.com/luxfi/LPs/tree/main/LPs/103-dynamic-fees
+
+
+## Types
+
+### Config
+
+### Dimension
+
+### Dimensions
+
+```go
+func (d Dimensions) Add(os ...*Dimensions) (Dimensions, error)
+```
+
+```go
+func (d Dimensions) Sub(os ...*Dimensions) (Dimensions, error)
+```
+
+```go
+func (d Dimensions) ToGas(weights Dimensions) (Gas, error)
+```
+
+### Gas
+
+```go
+func (g Gas) AddPerSecond(gasPerSecond Gas, seconds uint64) Gas
+```
+
+```go
+func (g Gas) Cost(price Price) (uint64, error)
+```
+
+```go
+func (g Gas) SubPerSecond(gasPerSecond Gas, seconds uint64) Gas
+```
+
+### Price
+
+```go
+func CalculatePrice(
+	minPrice Price,
+	excess Gas,
+	excessConversionConstant Gas,
+) Price
+```
+
+### State
+
+```go
+func (s State) AdvanceTime(
+	maxCapacity Gas,
+	maxPerSecond Gas,
+	targetPerSecond Gas,
+	duration uint64,
+) State
+```
+
+```go
+func (s State) ConsumeGas(gas Gas) (State, error)
+```
+

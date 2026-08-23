@@ -1,0 +1,145 @@
+---
+title: server
+description: Package server is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/server/http"
+```
+
+Package server is a generated GoMock package.
+
+
+## Functions
+
+### TraceHandler
+
+```go
+func TraceHandler(h http.Handler, name string, tracer trace.Tracer) http.Handler
+```
+
+## Types
+
+### HTTPConfig
+
+### MockServer
+
+MockServer is a mock of Server interface.
+
+
+```go
+func NewMockServer(ctrl *gomock.Controller) *MockServer
+```
+
+```go
+func (m *MockServer) AddAliases(arg0 string, arg1 ...string) error
+```
+
+```go
+func (m *MockServer) AddAliasesWithReadLock(arg0 string, arg1 ...string) error
+```
+
+```go
+func (m *MockServer) AddRoute(arg0 http.Handler, arg1, arg2 string) error
+```
+
+```go
+func (m *MockServer) AddRouteWithReadLock(arg0 http.Handler, arg1, arg2 string) error
+```
+
+```go
+func (m *MockServer) Dispatch() error
+```
+
+```go
+func (m *MockServer) EXPECT() *MockServerMockRecorder
+```
+
+```go
+func (m *MockServer) RegisterChain(arg0 string, arg1 *runtime.Runtime, arg2 vm.VM)
+```
+
+```go
+func (m *MockServer) Shutdown() error
+```
+
+### MockServerMockRecorder
+
+MockServerMockRecorder is the mock recorder for MockServer.
+
+
+```go
+func (mr *MockServerMockRecorder) AddAliases(arg0 any, arg1 ...any) *gomock.Call
+```
+
+```go
+func (mr *MockServerMockRecorder) AddAliasesWithReadLock(arg0 any, arg1 ...any) *gomock.Call
+```
+
+```go
+func (mr *MockServerMockRecorder) AddRoute(arg0, arg1, arg2 any) *gomock.Call
+```
+
+```go
+func (mr *MockServerMockRecorder) AddRouteWithReadLock(arg0, arg1, arg2 any) *gomock.Call
+```
+
+```go
+func (mr *MockServerMockRecorder) Dispatch() *gomock.Call
+```
+
+```go
+func (mr *MockServerMockRecorder) RegisterChain(arg0, arg1, arg2 any) *gomock.Call
+```
+
+```go
+func (mr *MockServerMockRecorder) Shutdown() *gomock.Call
+```
+
+### PathAdder
+
+```go
+func PathWriterFromWithReadLock(pather PathAdderWithReadLock) PathAdder
+```
+
+### PathAdderWithReadLock
+
+### RootInfo
+
+RootInfo contains information returned at the root endpoint
+
+
+### RootInfoProvider
+
+RootInfoProvider provides node information for the root endpoint
+
+
+### Server
+
+Server maintains the HTTP router
+
+
+```go
+func New(
+	log log.Logger,
+	listener net.Listener,
+	allowedOrigins []string,
+	shutdownTimeout time.Duration,
+	nodeID ids.NodeID,
+	tracingEnabled bool,
+	tracer trace.Tracer,
+	registerer metric.Registerer,
+	httpConfig HTTPConfig,
+	allowedHosts []string,
+) (Server, error)
+```
+
+### StateGetter
+
+StateGetter interface for getting chain state
+
+
+### Wrapper
+

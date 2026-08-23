@@ -1,0 +1,49 @@
+---
+title: config
+description: Package config
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/config"
+```
+
+## Types
+
+### Config
+
+Config contains all of the user-configurable parameters of the PlatformVM.
+
+
+```go
+func GetConfig(b []byte) (*Config, error)
+```
+
+### ExecutionConfig
+
+ExecutionConfig provides execution parameters of PlatformVM
+
+
+```go
+func GetExecutionConfig(b []byte) (*ExecutionConfig, error)
+```
+
+### Internal
+
+Internal contains all of the parameters for the PlatformVM that are
+internally set by the node.
+
+
+```go
+func (c *Internal) CreateChain(blockchainID ids.ID, tx *txs.CreateChainTx)
+```
+
+```go
+func (c *Internal) StakingPolicyAt(t int64) stakingparams.Params
+```
+
+### Network
+
+### NetworkConfig
+

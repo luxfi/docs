@@ -1,0 +1,120 @@
+---
+title: throttling
+description: Package throttling
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/network/throttling"
+```
+
+## Functions
+
+### NewThrottledListener
+
+```go
+func NewThrottledListener(listener net.Listener, maxConnsPerSec float64) net.Listener
+```
+
+Wraps [listener] and returns a net.Listener that will accept at most
+[maxConnsPerSec] connections per second.
+[maxConnsPerSec] must be non-negative.
+
+
+## Types
+
+### BandwidthThrottlerConfig
+
+### DialThrottler
+
+```go
+func NewDialThrottler(throttleLimit int) DialThrottler
+```
+
+```go
+func NewNoDialThrottler() DialThrottler
+```
+
+### InboundConnUpgradeThrottler
+
+InboundConnUpgradeThrottler returns whether we should upgrade an inbound connection from IP [ipStr].
+If ShouldUpgrade(ipStr) returns false, the connection to that IP should be closed.
+Note that InboundConnUpgradeThrottler rate-limits _upgrading_ of
+inbound connections, whereas throttledListener rate-limits
+_acceptance_ of inbound connections.
+
+
+```go
+func NewInboundConnUpgradeThrottler(config InboundConnUpgradeThrottlerConfig) InboundConnUpgradeThrottler
+```
+
+### InboundConnUpgradeThrottlerConfig
+
+### InboundMsgThrottler
+
+InboundMsgThrottler rate-limits inbound messages from the network.
+
+
+```go
+func NewInboundMsgThrottler(
+	log log.Logger,
+	registerer metric.Registerer,
+	vdrs validators.Manager,
+	throttlerConfig InboundMsgThrottlerConfig,
+	resourceTracker tracker.ResourceTracker,
+	cpuTargeter tracker.Targeter,
+	diskTargeter tracker.Targeter,
+) (InboundMsgThrottler, error)
+```
+
+```go
+func NewNoInboundThrottler() InboundMsgThrottler
+```
+
+### InboundMsgThrottlerConfig
+
+### MsgByteThrottlerConfig
+
+Used by the sybil-safe inbound and outbound message throttlers
+
+
+### OutboundMsgThrottler
+
+Rate-limits outgoing messages
+
+
+```go
+func NewNoOutboundThrottler() OutboundMsgThrottler
+```
+
+```go
+func NewSybilOutboundMsgThrottler(
+	log log.Logger,
+	registerer metric.Registerer,
+	vdrs validators.Manager,
+	config MsgByteThrottlerConfig,
+) (OutboundMsgThrottler, error)
+```
+
+### ReleaseFunc
+
+### SystemThrottler
+
+SystemThrottler rate-limits based on the system metrics usage caused by each
+peer. We will not read messages from peers whose messages cause excessive
+usage until the usage caused by the peer drops to an acceptable level.
+
+
+```go
+func NewSystemThrottler(
+	namespace string,
+	reg metric.Registerer,
+	config SystemThrottlerConfig,
+	tracker tracker.Tracker,
+	targeter tracker.Targeter,
+) (SystemThrottler, error)
+```
+
+### SystemThrottlerConfig
+

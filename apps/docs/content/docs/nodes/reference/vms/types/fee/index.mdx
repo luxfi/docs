@@ -1,0 +1,106 @@
+---
+title: fee
+description: Package fee defines the unified FeePolicy interface that every Lux VM accepting user-submitted transactions MUST satisfy.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/types/fee"
+```
+
+Package fee defines the unified FeePolicy interface that every Lux VM
+accepting user-submitted transactions MUST satisfy.
+
+Background. A 2026-05 audit of vms/* found five chains accepting user
+txs while charging nothing (dexvm, bridgevm, keyvm, zkvm, aivm) and one
+charging 1,000x too little (quantumvm). The root cause was that fee
+policy lived as ad-hoc fields on each VM's Config — there was no shared
+surface to enforce a non-zero floor, and no sentinel for chains that
+legitimately accept no user txs (mpcvm, oraclevm, relayvm —
+committee-driven, no user mempool).
+
+This package provides exactly one way to declare a fee policy:
+
+  - vms.Policy is the interface every VM Manager calls into.
+  - FlatPolicy is the canonical implementation for "burn a fixed
+    amount of LUX per tx".
+  - NoUserTxPolicy is the explicit sentinel for committee-only chains.
+    Manager wiring uses this to distinguish "explicitly no user fees"
+    from "forgot to set policy".
+  - Validate(p) is the boot-time check Manager runs against each VM's
+    declared policy to refuse zero-fee user-facing chains before they
+    ever accept a block.
+
+Migration plan (per audit follow-up): each offending VM declares a
+FlatPolicy in its Config, the VM's mempool calls Policy.ValidateFee at
+the same point it currently does (or fails to do) the fee check, and
+Manager runs Validate at chain bootstrap. No new abstraction layers,
+no per-VM bespoke fee structs — one interface, one validator.
+
+
+## Functions
+
+### Validate
+
+```go
+func Validate(p Policy) error
+```
+
+Validate is the boot-time check Manager runs against each VM's
+declared Policy. Returns ErrZeroMinFee if a non-sentinel policy
+declares MinTxFee() == 0. Returns nil for NoUserTxPolicy regardless
+of fee (it's the explicit opt-out). Returns nil if MinTxFee > 0.
+
+
+## Types
+
+### FlatPolicy
+
+FlatPolicy charges a fixed fee per user tx. The canonical
+implementation for VMs without dynamic gas pricing — dexvm, bridgevm,
+keyvm, zkvm, aivm use this (quantumvm is NoUserTxPolicy per LP-0130 §6).
+
+
+```go
+func (p FlatPolicy) FeeAssetID() ids.ID
+```
+
+```go
+func (p FlatPolicy) MinTxFee() uint64
+```
+
+```go
+func (p FlatPolicy) ValidateFee(paid uint64, asset ids.ID) error
+```
+
+### NoUserTxPolicy
+
+NoUserTxPolicy is the sentinel policy for chains that accept no
+user-submitted txs — committee-driven only (mpcvm, oraclevm,
+relayvm). Distinguishing this from "policy not set" is what makes
+Manager's boot-time Validate able to refuse zero-fee user-facing
+chains without false-positive-ing the committee chains.
+
+
+```go
+func (NoUserTxPolicy) FeeAssetID() ids.ID
+```
+
+```go
+func (NoUserTxPolicy) MinTxFee() uint64
+```
+
+```go
+func (NoUserTxPolicy) ValidateFee(uint64, ids.ID) error
+```
+
+### Policy
+
+Policy defines how a VM charges for user-submitted txs. Every chain
+that accepts user txs MUST declare a non-nil Policy whose MinTxFee()
+returns a value > 0. Chains that accept no user txs declare a
+NoUserTxPolicy sentinel instead — this is the only legal way to opt
+out of charging.
+
+

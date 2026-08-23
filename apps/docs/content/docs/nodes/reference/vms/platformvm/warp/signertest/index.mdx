@@ -1,0 +1,40 @@
+---
+title: signertest
+description: Package signertest
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/warp/signertest"
+```
+
+## Functions
+
+### TestVerifies
+
+```go
+func TestVerifies(t *testing.T, s warp.Signer, sk bls.Signer, networkID uint32, chainID ids.ID)
+```
+
+Test that a signature generated with the signer verifies correctly
+
+
+### TestWrongChainID
+
+```go
+func TestWrongChainID(t *testing.T, s warp.Signer, _ bls.Signer, _ uint32, _ ids.ID)
+```
+
+Test that using a random SourceChainID results in an error
+
+
+### TestWrongNetworkID
+
+```go
+func TestWrongNetworkID(t *testing.T, s warp.Signer, _ bls.Signer, networkID uint32, blockchainID ids.ID)
+```
+
+Test that using a different networkID results in an error
+
+

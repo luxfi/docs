@@ -1,0 +1,215 @@
+---
+title: da
+description: Package da provides Data Availability layer infrastructure for the Lux blockchain.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/da"
+```
+
+Package da provides Data Availability layer infrastructure for the Lux blockchain.
+DA is consensus-critical: validators must certify availability before block finalization.
+
+
+## Functions
+
+### ComputeDARoot
+
+```go
+func ComputeDARoot(commitments []*DACommitment) []byte
+```
+
+ComputeDARoot computes the DA root from commitments
+
+
+## Types
+
+### BlockDAInfo
+
+BlockDAInfo contains DA-related information for a block header
+
+
+### Chunk
+
+Chunk represents a chunk of data with its proof
+
+
+### DABlob
+
+DABlob represents a data availability blob
+
+
+```go
+func NewDABlob(data []byte, submitter ids.ID, height uint64) (*DABlob, error)
+```
+
+```go
+func (b *DABlob) CreateCommitment() *DACommitment
+```
+
+```go
+func (b *DABlob) GetChunk(index uint32) (*Chunk, error)
+```
+
+```go
+func (b *DABlob) VerifyChunk(chunk *Chunk) bool
+```
+
+### DACert
+
+DACert represents a Data Availability Certificate
+
+
+### DACommitment
+
+DACommitment represents a commitment to data availability
+
+
+### ErasureCodedBlob
+
+ErasureCodedBlob represents an erasure-coded blob
+
+
+```go
+func ApplyErasureCoding(blob *DABlob, config *ErasureConfig) (*ErasureCodedBlob, error)
+```
+
+```go
+func (e *ErasureCodedBlob) CanRecover(availableIndices []uint32) bool
+```
+
+### ErasureConfig
+
+ErasureConfig configures erasure coding parameters
+
+
+```go
+func DefaultErasureConfig() *ErasureConfig
+```
+
+### Sample
+
+Sample represents a random sample for availability verification
+
+
+### Sampler
+
+Sampler handles data availability sampling
+
+
+```go
+func NewSampler(config *SamplingConfig) *Sampler
+```
+
+```go
+func (s *Sampler) GenerateSampleIndices(blobID ids.ID, chunkCount uint32, seed []byte) []uint32
+```
+
+```go
+func (s *Sampler) VerifySamples(blob *DABlob, samples []*Sample) *SamplingResult
+```
+
+### SamplingConfig
+
+SamplingConfig configures DA sampling parameters
+
+
+```go
+func DefaultSamplingConfig() *SamplingConfig
+```
+
+### SamplingResult
+
+SamplingResult represents the result of data availability sampling
+
+
+### Store
+
+Store manages DA blob storage and retrieval
+
+
+```go
+func NewStore(db database.Database, config *StoreConfig) *Store
+```
+
+```go
+func (s *Store) DeleteBlob(ctx context.Context, blobID ids.ID) error
+```
+
+```go
+func (s *Store) GetBlob(ctx context.Context, blobID ids.ID) (*DABlob, error)
+```
+
+```go
+func (s *Store) GetCert(ctx context.Context, blobID ids.ID) (*DACert, error)
+```
+
+```go
+func (s *Store) GetChunks(ctx context.Context, blobID ids.ID, indices []uint32) ([]*Chunk, error)
+```
+
+```go
+func (s *Store) PruneExpired(ctx context.Context) (int, error)
+```
+
+```go
+func (s *Store) Stats() map[string]interface{}
+```
+
+```go
+func (s *Store) StoreBlob(ctx context.Context, blob *DABlob) error
+```
+
+```go
+func (s *Store) StoreCert(ctx context.Context, cert *DACert) error
+```
+
+### StoreConfig
+
+StoreConfig configures the DA store
+
+
+```go
+func DefaultStoreConfig() *StoreConfig
+```
+
+### Validator
+
+Validator handles DA validation and certification
+
+
+```go
+func NewValidator(store *Store, config *ValidatorConfig) *Validator
+```
+
+```go
+func (v *Validator) CalculateConfidence(sampleCount int, successRate float64) float64
+```
+
+```go
+func (v *Validator) CertifyAvailability(ctx context.Context, commitment *DACommitment, signature []byte) (*DACert, error)
+```
+
+```go
+func (v *Validator) SampleAndVerify(ctx context.Context, blobID ids.ID, seed []byte) (*SamplingResult, error)
+```
+
+```go
+func (v *Validator) ValidateBlob(ctx context.Context, blob *DABlob) (*DACommitment, error)
+```
+
+```go
+func (v *Validator) VerifyCert(ctx context.Context, cert *DACert) (bool, error)
+```
+
+### ValidatorConfig
+
+ValidatorConfig configures the DA validator
+
+
+```go
+func DefaultValidatorConfig() *ValidatorConfig
+```
+

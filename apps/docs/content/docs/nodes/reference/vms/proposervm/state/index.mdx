@@ -1,0 +1,225 @@
+---
+title: state
+description: Package state is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/proposervm/state"
+```
+
+Package state is a generated GoMock package.
+
+
+## Functions
+
+### ScanBlocks
+
+```go
+func ScanBlocks(db *versiondb.Database, visit func(block.Block) error) error
+```
+
+ScanBlocks visits every OUTER proposervm block persisted in the block store of
+[db], in key order.
+
+It is a REPAIR-PATH reader, deliberately kept OUT of the State interface: the
+hot path addresses blocks by id, and only the boot-time index rebuild
+(proposervm.rebuildOuterIndexFromStore) needs to enumerate them. Keeping it a
+free function over the same [blockStatePrefix] the store writes under means the
+prefix stays defined exactly once, and no mock/interface churn is imposed on
+callers that will never scan.
+
+Records that fail to decode are SKIPPED, not fatal: a rebuild must extract every
+usable wrapper from a store that may be partially damaged — that is the whole
+point of running it. Only an iterator-level error aborts the scan.
+
+
+## Types
+
+### BlockState
+
+```go
+func NewBlockState(db database.Database) BlockState
+```
+
+```go
+func NewMeteredBlockState(db database.Database, namespace string, metrics metric.Registerer) (BlockState, error)
+```
+
+### ChainState
+
+```go
+func NewChainState(db database.Database) ChainState
+```
+
+### HeightIndex
+
+HeightIndex contains mapping of blockHeights to accepted proposer block IDs
+along with some metadata (fork height and checkpoint).
+
+
+```go
+func NewHeightIndex(db database.Database, commitable versiondb.Commitable) HeightIndex
+```
+
+### HeightIndexGetter
+
+### HeightIndexWriter
+
+### MockState
+
+MockState is a mock of State interface.
+
+
+```go
+func NewMockState(ctrl *gomock.Controller) *MockState
+```
+
+```go
+func (m *MockState) Commit() error
+```
+
+```go
+func (m *MockState) DeleteBlock(arg0 ids.ID) error
+```
+
+```go
+func (m *MockState) DeleteBlockIDAtHeight(arg0 uint64) error
+```
+
+```go
+func (m *MockState) DeleteCheckpoint() error
+```
+
+```go
+func (m *MockState) DeleteLastAccepted() error
+```
+
+```go
+func (m *MockState) EXPECT() *MockStateMockRecorder
+```
+
+```go
+func (m *MockState) GetBlock(arg0 ids.ID) (block.Block, choices.Status, error)
+```
+
+```go
+func (m *MockState) GetBlockIDAtHeight(arg0 uint64) (ids.ID, error)
+```
+
+```go
+func (m *MockState) GetCheckpoint() (ids.ID, error)
+```
+
+```go
+func (m *MockState) GetForkHeight() (uint64, error)
+```
+
+```go
+func (m *MockState) GetLastAccepted() (ids.ID, error)
+```
+
+```go
+func (m *MockState) GetMinimumHeight() (uint64, error)
+```
+
+```go
+func (m *MockState) PutBlock(arg0 block.Block, arg1 choices.Status) error
+```
+
+```go
+func (m *MockState) SetBlockIDAtHeight(arg0 uint64, arg1 ids.ID) error
+```
+
+```go
+func (m *MockState) SetCheckpoint(arg0 ids.ID) error
+```
+
+```go
+func (m *MockState) SetForkHeight(arg0 uint64) error
+```
+
+```go
+func (m *MockState) SetLastAccepted(arg0 ids.ID) error
+```
+
+### MockStateMockRecorder
+
+MockStateMockRecorder is the mock recorder for MockState.
+
+
+```go
+func (mr *MockStateMockRecorder) Commit() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) DeleteBlock(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) DeleteBlockIDAtHeight(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) DeleteCheckpoint() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) DeleteLastAccepted() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetBlock(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetBlockIDAtHeight(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetCheckpoint() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetForkHeight() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetLastAccepted() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) GetMinimumHeight() *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) PutBlock(arg0, arg1 any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) SetBlockIDAtHeight(arg0, arg1 any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) SetCheckpoint(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) SetForkHeight(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockStateMockRecorder) SetLastAccepted(arg0 any) *gomock.Call
+```
+
+### State
+
+```go
+func New(db *versiondb.Database) State
+```
+
+```go
+func NewMetered(db *versiondb.Database, namespace string, metrics metric.Registerer) (State, error)
+```
+

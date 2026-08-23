@@ -1,0 +1,33 @@
+---
+title: packages
+description: Package packages
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/packages"
+```
+
+## Functions
+
+### GetDependencies
+
+```go
+func GetDependencies(packageName string) (set.Set[string], error)
+```
+
+GetDependencies takes a fully qualified package name and returns a map of all
+its recursive package imports (including itself) in the same format.
+
+
+### GetDirectImports
+
+```go
+func GetDirectImports(packageName string) (set.Set[string], error)
+```
+
+GetDirectImports takes a fully qualified package name and returns a set of
+its direct package imports (non-recursive) in the same format.
+
+

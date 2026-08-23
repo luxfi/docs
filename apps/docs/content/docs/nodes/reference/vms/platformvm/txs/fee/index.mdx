@@ -1,0 +1,100 @@
+---
+title: fee
+description: Package fee implements gas complexity calculations for platform transactions.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/txs/fee"
+```
+
+Package fee implements gas complexity calculations for platform transactions.
+LP-103 compliance is enforced by the dynamic fee calculator.
+
+
+## Functions
+
+### AuthComplexity
+
+```go
+func AuthComplexity(authIntf verify.Verifiable) (gas.Dimensions, error)
+```
+
+AuthComplexity returns the complexity an authorization adds to a transaction.
+It does not include the typeID of the authorization.
+It does includes the complexity that the corresponding credential will add.
+It does not include the typeID of the credential.
+
+
+### InputComplexity
+
+```go
+func InputComplexity(ins ...*lux.TransferableInput) (gas.Dimensions, error)
+```
+
+InputComplexity returns the complexity inputs add to a transaction.
+It includes the complexity that the corresponding credentials will add.
+
+
+### OutputComplexity
+
+```go
+func OutputComplexity(outs ...*lux.TransferableOutput) (gas.Dimensions, error)
+```
+
+OutputComplexity returns the complexity outputs add to a transaction.
+
+
+### OwnerComplexity
+
+```go
+func OwnerComplexity(ownerIntf fx.Owner) (gas.Dimensions, error)
+```
+
+OwnerComplexity returns the complexity an owner adds to a transaction.
+It does not include the typeID of the owner.
+
+
+### SignerComplexity
+
+```go
+func SignerComplexity(s signer.Signer) (gas.Dimensions, error)
+```
+
+SignerComplexity returns the complexity a signer adds to a transaction.
+It does not include the typeID of the signer.
+
+
+### TxComplexity
+
+```go
+func TxComplexity(txs ...txs.UnsignedTx) (gas.Dimensions, error)
+```
+
+### WarpComplexity
+
+```go
+func WarpComplexity(message []byte) (gas.Dimensions, error)
+```
+
+WarpComplexity returns the complexity a warp message adds to a transaction.
+
+
+## Types
+
+### Calculator
+
+Calculator calculates the minimum required fee, in µLUX, that an unsigned
+transaction must pay for valid inclusion into a block.
+
+
+```go
+func NewDynamicCalculator(
+	weights gas.Dimensions,
+	price gas.Price,
+) Calculator
+```
+
+### StaticConfig
+

@@ -1,0 +1,109 @@
+---
+title: mldsafx
+description: Package mldsafx is the node-side bridge for the ML-DSA (FIPS 204) feature extension.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/mldsafx"
+```
+
+Package mldsafx is the node-side bridge for the ML-DSA (FIPS 204)
+feature extension. It re-exports the canonical ML-DSA types from
+github.com/luxfi/utxo/mldsafx so the platformvm and xvm package
+trees see a single import path:
+
+	github.com/luxfi/node/vms/mldsafx
+
+One feature extension. One import path. The underlying types live in
+the cross-chain utxo package because both X-chain UTXO ownership and
+P-chain validator/staker authorisation share the same wire shape.
+
+The post-quantum signature primitive is ML-DSA-65 (NIST PQ Cat 3,
+FIPS 204). Wire-compatible with the existing tx-type machinery: an
+MLDSACredential carries N signatures matching N owners exactly the
+same way secp256k1fx.Credential does — the difference is signature
+size (~3309 bytes per sig vs 65 bytes for secp256k1+v).
+
+This package is OPT-IN. secp256k1fx remains the classical-compat
+default. Under a strict-PQ ChainSecurityProfile (RequireTypedTxAuth
+== true), mempool admission refuses secp256k1fx credentials unless
+the originator is in the ClassicalCompatRegistry.
+
+
+## Types
+
+### Credential
+
+Credential carries N ML-DSA signatures for spending an output that
+names N owners.
+
+
+```go
+func NewCredential(level SecurityLevel, sigs [][]byte) (*Credential, error)
+```
+
+```go
+func NewCredential65(sigs [][]byte) (*Credential, error)
+```
+
+### Factory
+
+Factory produces Fx instances for codec/feature-extension wiring.
+
+
+### Fx
+
+Fx is the ML-DSA feature extension. It implements both the X-chain
+Fx interface (VerifyTransfer + VerifyOperation) and the platformvm
+Fx interface (VerifyTransfer + VerifyPermission + CreateOutput).
+
+
+### Input
+
+Input is the canonical input shape (signature indices) used by
+TransferInput and MintOperation.
+
+
+### MintOperation
+
+MintOperation is the operation that consumes a MintOutput.
+
+
+### MintOutput
+
+MintOutput represents PQ-controlled mint authority.
+
+
+### OutputOwners
+
+OutputOwners is the ML-DSA equivalent of secp256k1fx.OutputOwners.
+Addrs are full ML-DSA public keys (1952 bytes for ML-DSA-65), not
+20-byte hash-addresses, because PQ verification needs the full key.
+
+
+```go
+func NewOutputOwners(level SecurityLevel, locktime uint64, threshold uint32, addrs [][]byte) (*OutputOwners, error)
+```
+
+### SecurityLevel
+
+SecurityLevel is the ML-DSA parameter set indicator.
+
+
+### TransferInput
+
+TransferInput references a PQ-owned output by signature index.
+
+
+### TransferOutput
+
+TransferOutput is a PQ-owned token output.
+
+
+### VM
+
+VM is the minimal VM contract the Fx depends on.
+
+

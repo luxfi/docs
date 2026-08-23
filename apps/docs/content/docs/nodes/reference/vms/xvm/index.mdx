@@ -1,0 +1,634 @@
+---
+title: xvm
+description: Package xvm
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/xvm"
+```
+
+## Functions
+
+### AssetIDFromGenesisBytes
+
+```go
+func AssetIDFromGenesisBytes(genesisBytes []byte) (ids.ID, error)
+```
+
+AssetIDFromGenesisBytes returns the first genesis asset's runtime
+asset ID — the ID vm.initGenesis assigns to genesis.Txs[0]. This is
+the X-Chain native fee asset by convention (the same asset the
+platform-vm reports via platform.getStakingAssetID and the wallet
+builder context's UTXOAssetID).
+
+Returns an error when genesisBytes is malformed or contains zero
+assets — both are unrecoverable on a primary-network bootstrap.
+
+
+### AwaitTxAccepted
+
+```go
+func AwaitTxAccepted(
+	c *Client,
+	ctx context.Context,
+	txID ids.ID,
+	freq time.Duration,
+	options ...rpc.Option,
+) error
+```
+
+AwaitTxAccepted waits for a transaction to be accepted
+
+
+### NewPubSubFilterer
+
+```go
+func NewPubSubFilterer(tx *txs.Tx) pubsub.Filterer
+```
+
+## Types
+
+### AssetDefinition
+
+### AssetIDChangeAddr
+
+AssetIDChangeAddr is an asset ID and a change address
+
+
+### AssetInitialState
+
+AssetInitialState describes the initial state of an asset
+
+
+### BCLookup
+
+BCLookup provides blockchain alias lookup
+
+
+### Balance
+
+### BuildGenesisArgs
+
+BuildGenesisArgs are arguments for BuildGenesis
+
+
+### BuildGenesisReply
+
+BuildGenesisReply is the reply from BuildGenesis
+
+
+### Client
+
+Client for interacting with the Exchange VM (X-Chain)
+
+
+```go
+func NewClient(uri, chain string) *Client
+```
+
+```go
+func (c *Client) GetAllBalances(
+	ctx context.Context,
+	addr ids.ShortID,
+	includePartial bool,
+	options ...rpc.Option,
+) ([]Balance, error)
+```
+
+```go
+func (c *Client) GetAssetDescription(ctx context.Context, assetID string, options ...rpc.Option) (*GetAssetDescriptionReply, error)
+```
+
+```go
+func (c *Client) GetAtomicUTXOs(
+	ctx context.Context,
+	addrs []ids.ShortID,
+	sourceChain string,
+	limit uint32,
+	startAddress ids.ShortID,
+	startUTXOID ids.ID,
+	options ...rpc.Option,
+) ([][]byte, ids.ShortID, ids.ID, error)
+```
+
+```go
+func (c *Client) GetBalance(
+	ctx context.Context,
+	addr ids.ShortID,
+	assetID string,
+	includePartial bool,
+	options ...rpc.Option,
+) (*GetBalanceReply, error)
+```
+
+```go
+func (c *Client) GetBlock(ctx context.Context, blkID ids.ID, options ...rpc.Option) ([]byte, error)
+```
+
+```go
+func (c *Client) GetBlockByHeight(ctx context.Context, height uint64, options ...rpc.Option) ([]byte, error)
+```
+
+```go
+func (c *Client) GetHeight(ctx context.Context, options ...rpc.Option) (uint64, error)
+```
+
+```go
+func (c *Client) GetTx(ctx context.Context, txID ids.ID, options ...rpc.Option) ([]byte, error)
+```
+
+```go
+func (c *Client) GetTxFee(ctx context.Context, options ...rpc.Option) (uint64, uint64, error)
+```
+
+```go
+func (c *Client) GetTxStatus(ctx context.Context, txID ids.ID, options ...rpc.Option) (choices.Status, error)
+```
+
+```go
+func (c *Client) GetUTXOs(
+	ctx context.Context,
+	addrs []ids.ShortID,
+	limit uint32,
+	startAddress ids.ShortID,
+	startUTXOID ids.ID,
+	options ...rpc.Option,
+) ([][]byte, ids.ShortID, ids.ID, error)
+```
+
+```go
+func (c *Client) IssueTx(ctx context.Context, txBytes []byte, options ...rpc.Option) (ids.ID, error)
+```
+
+### Config
+
+```go
+func ParseConfig(configBytes []byte) (Config, error)
+```
+
+### CreateAssetArgs
+
+CreateAssetArgs are arguments for passing into CreateAsset
+
+
+### CreateNFTAssetArgs
+
+CreateNFTAssetArgs are arguments for passing into CreateNFTAsset requests
+
+
+### ExportArgs
+
+ExportArgs are arguments for passing into ExportAVA requests
+
+
+### ExportKeyArgs
+
+ExportKeyArgs are arguments for ExportKey
+
+
+### ExportKeyReply
+
+ExportKeyReply is the response for ExportKey
+
+
+### Factory
+
+```go
+func (f *Factory) New(log.Logger) (interface{}, error)
+```
+
+### FormattedAssetID
+
+FormattedAssetID defines a JSON formatted struct containing an assetID as a string
+
+
+### Genesis
+
+Genesis represents the genesis state of the XVM
+
+
+```go
+func NewGenesis(
+	networkID uint32,
+	genesisData map[string]GenesisAssetDefinition,
+) (*Genesis, error)
+```
+
+```go
+func ParseGenesisBytes(genesisBytes []byte) (*Genesis, error)
+```
+
+```go
+func (g *Genesis) Bytes() ([]byte, error)
+```
+
+### GenesisAsset
+
+GenesisAsset represents an asset in the genesis block
+
+
+```go
+func (g *GenesisAsset) Compare(other *GenesisAsset) int
+```
+
+### GenesisAssetDefinition
+
+GenesisAssetDefinition describes a genesis asset and its initial state
+
+
+### GenesisHolder
+
+GenesisHolder describes how much asset is owned by an address
+
+
+### GenesisOwners
+
+GenesisOwners describes who can perform an action
+
+
+### GetAddressTxsArgs
+
+### GetAddressTxsReply
+
+### GetAllBalancesArgs
+
+### GetAllBalancesReply
+
+GetAllBalancesReply is the response from a call to GetAllBalances
+
+
+### GetAssetDescriptionArgs
+
+GetAssetDescriptionArgs are arguments for passing into GetAssetDescription requests
+
+
+### GetAssetDescriptionReply
+
+GetAssetDescriptionReply defines the GetAssetDescription replies returned from the API
+
+
+### GetBalanceArgs
+
+GetBalanceArgs are arguments for passing into GetBalance requests
+
+
+### GetBalanceReply
+
+GetBalanceReply defines the GetBalance replies returned from the API
+
+
+### GetCurrentValidatorOutput
+
+GetCurrentValidatorOutput represents current validator info
+
+
+### GetTxFeeReply
+
+GetTxFeeReply is the response from a GetTxFee call
+
+
+### GetTxStatusReply
+
+GetTxStatusReply defines the GetTxStatus replies returned from the API
+
+
+### Holder
+
+Holder describes how much an address owns of an asset
+
+
+### ImportArgs
+
+ImportArgs are arguments for passing into Import requests
+
+
+### ImportKeyArgs
+
+ImportKeyArgs are arguments for ImportKey
+
+
+### ImportKeyReply
+
+ImportKeyReply is the response for ImportKey
+
+
+### JSONChangeAddr
+
+JSONChangeAddr contains the change address
+
+
+### JSONFromAddrs
+
+JSONFromAddrs contains the addresses to spend from
+
+
+### JSONSpendHeader
+
+JSONSpendHeader includes common fields for spend transactions
+
+
+### JSONTxIDChangeAddr
+
+JSONTxIDChangeAddr contains a transaction ID and a change address
+
+
+### MintArgs
+
+MintArgs are arguments for passing into Mint requests
+
+
+### MintNFTArgs
+
+MintNFTArgs are arguments for passing into MintNFT requests
+
+
+### Owners
+
+Owners describes who can perform an action
+
+
+### SendArgs
+
+SendArgs are arguments for passing into Send requests
+
+
+### SendMultipleArgs
+
+SendMultipleArgs are arguments for passing into SendMultiple requests
+
+
+### SendNFTArgs
+
+SendNFTArgs are arguments for passing into SendNFT requests
+
+
+### SendOutput
+
+SendOutput specifies that [Amount] of asset [AssetID] be sent to [To]
+
+
+### Service
+
+Service defines the base service for the asset vm
+
+
+```go
+func (s *Service) CreateAddress(_ *http.Request, args *apitypes.UserPass, reply *apitypes.JSONAddress) error
+```
+
+```go
+func (s *Service) CreateAsset(_ *http.Request, args *CreateAssetArgs, reply *AssetIDChangeAddr) error
+```
+
+```go
+func (s *Service) CreateFixedCapAsset(r *http.Request, args *CreateAssetArgs, reply *AssetIDChangeAddr) error
+```
+
+```go
+func (s *Service) CreateNFTAsset(_ *http.Request, args *CreateNFTAssetArgs, reply *AssetIDChangeAddr) error
+```
+
+```go
+func (s *Service) CreateVariableCapAsset(r *http.Request, args *CreateAssetArgs, reply *AssetIDChangeAddr) error
+```
+
+```go
+func (s *Service) Export(_ *http.Request, args *ExportArgs, reply *JSONTxIDChangeAddr) error
+```
+
+```go
+func (s *Service) ExportKey(_ *http.Request, args *ExportKeyArgs, reply *ExportKeyReply) error
+```
+
+```go
+func (s *Service) GetAddressTxs(_ *http.Request, args *GetAddressTxsArgs, reply *GetAddressTxsReply) error
+```
+
+```go
+func (s *Service) GetAllBalances(_ *http.Request, args *GetAllBalancesArgs, reply *GetAllBalancesReply) error
+```
+
+```go
+func (s *Service) GetAssetDescription(_ *http.Request, args *GetAssetDescriptionArgs, reply *GetAssetDescriptionReply) error
+```
+
+```go
+func (s *Service) GetBalance(_ *http.Request, args *GetBalanceArgs, reply *GetBalanceReply) error
+```
+
+```go
+func (s *Service) GetBlock(_ *http.Request, args *apitypes.GetBlockArgs, reply *apitypes.GetBlockResponse) error
+```
+
+```go
+func (s *Service) GetBlockByHeight(_ *http.Request, args *apitypes.GetBlockByHeightArgs, reply *apitypes.GetBlockResponse) error
+```
+
+```go
+func (s *Service) GetHeight(_ *http.Request, _ *struct{}, reply *apitypes.GetHeightResponse) error
+```
+
+```go
+func (s *Service) GetTx(_ *http.Request, args *apitypes.GetTxArgs, reply *apitypes.GetTxReply) error
+```
+
+```go
+func (s *Service) GetTxStatus(_ *http.Request, args *apitypes.JSONTxID, reply *GetTxStatusReply) error
+```
+
+```go
+func (s *Service) GetUTXOs(_ *http.Request, args *apitypes.GetUTXOsArgs, reply *apitypes.GetUTXOsReply) error
+```
+
+```go
+func (s *Service) Import(_ *http.Request, args *ImportArgs, reply *apitypes.JSONTxID) error
+```
+
+```go
+func (s *Service) ImportKey(_ *http.Request, args *ImportKeyArgs, reply *apitypes.JSONAddress) error
+```
+
+```go
+func (s *Service) IssueTx(_ *http.Request, args *apitypes.FormattedTx, reply *apitypes.JSONTxID) error
+```
+
+```go
+func (s *Service) ListAddresses(_ *http.Request, args *apitypes.UserPass, response *apitypes.JSONAddresses) error
+```
+
+```go
+func (s *Service) Mint(_ *http.Request, args *MintArgs, reply *JSONTxIDChangeAddr) error
+```
+
+```go
+func (s *Service) MintNFT(_ *http.Request, args *MintNFTArgs, reply *JSONTxIDChangeAddr) error
+```
+
+```go
+func (s *Service) Send(r *http.Request, args *SendArgs, reply *JSONTxIDChangeAddr) error
+```
+
+```go
+func (s *Service) SendMultiple(_ *http.Request, args *SendMultipleArgs, reply *JSONTxIDChangeAddr) error
+```
+
+```go
+func (s *Service) SendNFT(_ *http.Request, args *SendNFTArgs, reply *JSONTxIDChangeAddr) error
+```
+
+### SharedMemory
+
+SharedMemory provides cross-chain shared memory
+
+
+### StaticClient
+
+StaticClient for interacting with the XVM static api
+
+
+```go
+func NewStaticClient(uri string) StaticClient
+```
+
+### StaticService
+
+StaticService defines the base service for the asset vm
+
+
+```go
+func CreateStaticService() *StaticService
+```
+
+```go
+func (*StaticService) BuildGenesis(_ *http.Request, args *BuildGenesisArgs, reply *BuildGenesisReply) error
+```
+
+### VM
+
+```go
+func (vm *VM) Clock() *mockable.Clock
+```
+
+```go
+func (vm *VM) Connected(ctx context.Context, nodeID ids.NodeID, nodeVersion *consensusversion.Application) error
+```
+
+```go
+func (vm *VM) CreateHandlers(context.Context) (map[string]http.Handler, error)
+```
+
+```go
+func (vm *VM) CreateStaticHandlers(context.Context) (map[string]http.Handler, error)
+```
+
+```go
+func (vm *VM) Disconnected(ctx context.Context, nodeID ids.NodeID) error
+```
+
+```go
+func (vm *VM) GetBlock(_ context.Context, blkID ids.ID) (chain.Block, error)
+```
+
+```go
+func (vm *VM) GetBlockIDAtHeight(_ context.Context, height uint64) (ids.ID, error)
+```
+
+```go
+func (vm *VM) GetUTXOs(addrs set.Set[ids.ShortID]) ([]*lux.UTXO, error)
+```
+
+```go
+func (vm *VM) HealthCheck(context.Context) (chain.HealthResult, error)
+```
+
+```go
+func (vm *VM) Initialize(
+	ctx context.Context,
+	init vmcore.Init,
+) error
+```
+
+```go
+func (vm *VM) LastAccepted(context.Context) (ids.ID, error)
+```
+
+```go
+func (vm *VM) Linearize(ctx context.Context, stopVertexID ids.ID, toEngine chan<- vmcore.Message) error
+```
+
+```go
+func (vm *VM) LoadUser(
+	username string,
+	password string,
+	addresses set.Set[ids.ShortID],
+) ([]*lux.UTXO, *secp256k1fx.Keychain, error)
+```
+
+```go
+func (vm *VM) Logger() log.Logger
+```
+
+```go
+func (vm *VM) NewHTTPHandler(ctx context.Context) (http.Handler, error)
+```
+
+```go
+func (vm *VM) ParseAddress(addrStr string) (ids.ID, ids.ShortID, error)
+```
+
+```go
+func (vm *VM) ParseBlock(_ context.Context, blkBytes []byte) (chain.Block, error)
+```
+
+```go
+func (vm *VM) SetPreference(_ context.Context, blkID ids.ID) error
+```
+
+```go
+func (vm *VM) SetState(_ context.Context, stateNum uint32) error
+```
+
+```go
+func (vm *VM) Shutdown(context.Context) error
+```
+
+```go
+func (*VM) Version(context.Context) (string, error)
+```
+
+```go
+func (vm *VM) WaitForEvent(ctx context.Context) (vmcore.Message, error)
+```
+
+### WalletClient
+
+WalletClient for interacting with exchangevm managed wallet.
+
+Deprecated: Transactions should be issued using the
+`luxfi/node/wallet/chain/x.Wallet` utility.
+
+
+```go
+func NewWalletClient(uri, chain string) *WalletClient
+```
+
+```go
+func (c *WalletClient) IssueTx(ctx context.Context, txBytes []byte, options ...rpc.Option) (ids.ID, error)
+```
+
+### WalletService
+
+```go
+func (w *WalletService) IssueTx(_ *http.Request, args *apitypes.FormattedTx, reply *apitypes.JSONTxID) error
+```
+
+```go
+func (w *WalletService) Send(r *http.Request, args *SendArgs, reply *JSONTxIDChangeAddr) error
+```
+
+```go
+func (w *WalletService) SendMultiple(_ *http.Request, args *SendMultipleArgs, reply *JSONTxIDChangeAddr) error
+```
+

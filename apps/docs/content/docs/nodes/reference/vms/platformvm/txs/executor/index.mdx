@@ -1,0 +1,261 @@
+---
+title: executor
+description: Package executor
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/txs/executor"
+```
+
+## Functions
+
+### AdvanceTimeTo
+
+```go
+func AdvanceTimeTo(
+	backend *Backend,
+	parentState state.Chain,
+	newChainTime time.Time,
+) (bool, error)
+```
+
+AdvanceTimeTo applies all state changes to [parentState] resulting from
+advancing the chain time to [newChainTime].
+
+Returns true iff the validator set changed.
+
+
+### AtomicTx
+
+```go
+func AtomicTx(
+	backend *Backend,
+	feeCalculator fee.Calculator,
+	parentID ids.ID,
+	stateVersions state.Versions,
+	tx *txs.Tx,
+) (state.Diff, set.Set[ids.ID], map[ids.ID]*atomic.Requests, error)
+```
+
+AtomicTx executes the atomic transaction [tx] and returns the resulting state
+modifications.
+
+This is only used to execute atomic transactions pre-AP5. After AP5 the
+execution was moved to [StandardTx].
+
+
+### GetMaxWeight
+
+```go
+func GetMaxWeight(
+	chainState state.Chain,
+	validator *state.Staker,
+	startTime time.Time,
+	endTime time.Time,
+) (uint64, error)
+```
+
+GetMaxWeight returns the maximum total weight of the [validator], including
+its own weight, between [startTime] and [endTime].
+The weight changes are applied in the order they will be applied as chain
+time advances.
+Invariant:
+- [validator.StartTime] &lt;= [startTime] &lt; [endTime] &lt;= [validator.EndTime]
+
+
+### GetRewardsCalculator
+
+```go
+func GetRewardsCalculator(
+	backend *Backend,
+	parentState state.Chain,
+	netID ids.ID,
+) (reward.Calculator, error)
+```
+
+### GetTransformChainTx
+
+```go
+func GetTransformChainTx(chain state.Chain, netID ids.ID) (*txs.TransformChainTx, error)
+```
+
+### GetValidator
+
+```go
+func GetValidator(state state.Chain, netID ids.ID, nodeID ids.NodeID) (*state.Staker, error)
+```
+
+GetValidator returns information about the given validator, which may be a
+current validator or pending validator.
+
+
+### ProposalTx
+
+```go
+func ProposalTx(
+	backend *Backend,
+	tx *txs.Tx,
+	onCommitState state.Diff,
+	onAbortState state.Diff,
+) error
+```
+
+ProposalTx executes the proposal transaction [tx] — the one the chain emits
+about itself. No fee is charged and no calculator is consulted: neither will
+price a chain-emitted tx, so this path never asks.
+
+[onCommitState] will be modified to reflect the changes made to the state if
+the proposal is committed.
+
+[onAbortState] will be modified to reflect the changes made to the state if
+the proposal is aborted.
+
+Invariant: It is assumed that [onCommitState] and [onAbortState] represent
+the same state when passed into this function.
+
+
+### StandardTx
+
+```go
+func StandardTx(
+	backend *Backend,
+	feeCalculator fee.Calculator,
+	tx *txs.Tx,
+	state state.Diff,
+) (set.Set[ids.ID], map[ids.ID]*atomic.Requests, func(), error)
+```
+
+StandardTx executes the standard transaction [tx].
+
+[state] is modified to represent the state of the chain after the execution
+of [tx].
+
+Returns:
+  - The IDs of any import UTXOs consumed.
+  - The, potentially nil, atomic requests that should be performed against
+    shared memory when this transaction is accepted.
+  - A, potentially nil, function that should be called when this transaction
+    is accepted.
+
+
+### VerifyNewChainTime
+
+```go
+func VerifyNewChainTime(
+	config fee.Config,
+	newChainTime time.Time,
+	now time.Time,
+	currentState state.Chain,
+) error
+```
+
+VerifyNewChainTime returns nil if the [newChainTime] is a valid chain time.
+Requires:
+  - [newChainTime] >= [currentChainTime]: to ensure chain time advances
+    monotonically.
+  - [newChainTime] &lt;= [now] + [SyncBound]: to ensure chain time approximates
+    "real" time.
+  - [newChainTime] &lt;= [nextStakerChangeTime]: so that no staking set changes
+    are skipped.
+
+
+### VerifyWarpMessages
+
+```go
+func VerifyWarpMessages(
+	ctx context.Context,
+	networkID uint32,
+	validatorState validators.State,
+	pChainHeight uint64,
+	tx txs.UnsignedTx,
+) error
+```
+
+VerifyWarpMessages verifies all warp messages in the tx. If any of the warp
+messages are invalid, an error is returned.
+
+
+## Types
+
+### Backend
+
+### MempoolTxVerifier
+
+```go
+func (v *MempoolTxVerifier) AddChainValidatorTx(tx *txs.AddChainValidatorTx) error
+```
+
+```go
+func (v *MempoolTxVerifier) AddDelegatorTx(tx *txs.AddDelegatorTx) error
+```
+
+```go
+func (v *MempoolTxVerifier) AddPermissionlessDelegatorTx(tx *txs.AddPermissionlessDelegatorTx) error
+```
+
+```go
+func (v *MempoolTxVerifier) AddPermissionlessValidatorTx(tx *txs.AddPermissionlessValidatorTx) error
+```
+
+```go
+func (v *MempoolTxVerifier) AddValidatorTx(tx *txs.AddValidatorTx) error
+```
+
+```go
+func (v *MempoolTxVerifier) BaseTx(tx *txs.BaseTx) error
+```
+
+```go
+func (v *MempoolTxVerifier) ConvertNetworkTx(tx *txs.ConvertNetworkTx) error
+```
+
+```go
+func (v *MempoolTxVerifier) CreateChainTx(tx *txs.CreateChainTx) error
+```
+
+```go
+func (v *MempoolTxVerifier) CreateNetworkTx(tx *txs.CreateNetworkTx) error
+```
+
+```go
+func (v *MempoolTxVerifier) DisableL1ValidatorTx(tx *txs.DisableL1ValidatorTx) error
+```
+
+```go
+func (v *MempoolTxVerifier) ExportTx(tx *txs.ExportTx) error
+```
+
+```go
+func (v *MempoolTxVerifier) ImportTx(tx *txs.ImportTx) error
+```
+
+```go
+func (v *MempoolTxVerifier) IncreaseL1ValidatorBalanceTx(tx *txs.IncreaseL1ValidatorBalanceTx) error
+```
+
+```go
+func (v *MempoolTxVerifier) RegisterL1ValidatorTx(tx *txs.RegisterL1ValidatorTx) error
+```
+
+```go
+func (v *MempoolTxVerifier) RemoveChainValidatorTx(tx *txs.RemoveChainValidatorTx) error
+```
+
+```go
+func (*MempoolTxVerifier) RewardValidatorTx(*txs.RewardValidatorTx) error
+```
+
+```go
+func (v *MempoolTxVerifier) SetL1ValidatorWeightTx(tx *txs.SetL1ValidatorWeightTx) error
+```
+
+```go
+func (v *MempoolTxVerifier) TransferChainOwnershipTx(tx *txs.TransferChainOwnershipTx) error
+```
+
+```go
+func (v *MempoolTxVerifier) TransformChainTx(tx *txs.TransformChainTx) error
+```
+

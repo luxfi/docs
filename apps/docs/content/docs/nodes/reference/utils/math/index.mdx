@@ -1,0 +1,99 @@
+---
+title: math
+description: Package math
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/math"
+```
+
+## Functions
+
+### AbsDiff
+
+```go
+func AbsDiff[T Unsigned](a, b T) T
+```
+
+### Add
+
+```go
+func Add[T Unsigned](a, b T) (T, error)
+```
+
+Add returns:
+1) a + b
+2) If there is overflow, an error
+
+
+### MaxUint
+
+```go
+func MaxUint[T Unsigned]() T
+```
+
+MaxUint returns the maximum value of an unsigned integer of type T.
+
+
+### Mul
+
+```go
+func Mul[T Unsigned](a, b T) (T, error)
+```
+
+Mul returns:
+1) a * b
+2) If there is overflow, an error
+
+
+### Sub
+
+```go
+func Sub[T Unsigned](a, b T) (T, error)
+```
+
+Sub returns:
+1) a - b
+2) If there is underflow, an error
+
+
+## Types
+
+### Averager
+
+Averager tracks a continuous time exponential moving average of the provided
+values.
+
+
+```go
+func NewAverager(
+	initialPrediction float64,
+	halflife time.Duration,
+	currentTime time.Time,
+) Averager
+```
+
+```go
+func NewSyncAverager(averager Averager) Averager
+```
+
+```go
+func NewUninitializedAverager(halfLife time.Duration) Averager
+```
+
+### AveragerHeap
+
+AveragerHeap maintains a heap of the averagers.
+
+
+```go
+func NewMaxAveragerHeap() AveragerHeap
+```
+
+### Unsigned
+
+Unsigned is a constraint that permits any unsigned integer type.
+
+

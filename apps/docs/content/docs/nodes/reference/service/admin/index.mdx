@@ -1,0 +1,109 @@
+---
+title: admin
+description: Package admin
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/service/admin"
+```
+
+## Types
+
+### ChainTracker
+
+ChainTracker is the interface for tracking chains at runtime.
+
+
+### Config
+
+### Service
+
+Service implements api/admin.Service.
+
+
+```go
+func New(config Config) *Service
+```
+
+```go
+func (a *Service) Alias(ctx context.Context, args *apiadmin.AliasArgs) (*apiadmin.EmptyReply, error)
+```
+
+```go
+func (a *Service) AliasChain(ctx context.Context, args *apiadmin.AliasChainArgs) (*apiadmin.EmptyReply, error)
+```
+
+```go
+func (a *Service) CreateHandler() (http.Handler, error)
+```
+
+```go
+func (a *Service) DbGet(ctx context.Context, args *apiadmin.DBGetArgs) (*apiadmin.DBGetReply, error)
+```
+
+```go
+func (a *Service) GetBackupMetadata(ctx context.Context) (*backup.Metadata, error)
+```
+
+```go
+func (a *Service) GetChainAliases(ctx context.Context, args *apiadmin.GetChainAliasesArgs) (*apiadmin.GetChainAliasesReply, error)
+```
+
+```go
+func (a *Service) GetConfig(ctx context.Context) (any, error)
+```
+
+```go
+func (a *Service) GetLoggerLevel(ctx context.Context, args *apiadmin.GetLoggerLevelArgs) (*apiadmin.LoggerLevelReply, error)
+```
+
+```go
+func (a *Service) GetTrackedChains(ctx context.Context) (*apiadmin.GetTrackedChainsReply, error)
+```
+
+```go
+func (a *Service) ListVMs(ctx context.Context) (*apiadmin.ListVMsReply, error)
+```
+
+```go
+func (a *Service) Load(ctx context.Context, args *apiadmin.LoadArgs) (*apiadmin.EmptyReply, error)
+```
+
+```go
+func (a *Service) LoadVMs(ctx context.Context) (*apiadmin.LoadVMsReply, error)
+```
+
+```go
+func (a *Service) LockProfile(ctx context.Context) (*apiadmin.EmptyReply, error)
+```
+
+```go
+func (a *Service) MemoryProfile(ctx context.Context) (*apiadmin.EmptyReply, error)
+```
+
+```go
+func (a *Service) SetLoggerLevel(ctx context.Context, args *apiadmin.SetLoggerLevelArgs) (*apiadmin.EmptyReply, error)
+```
+
+```go
+func (a *Service) SetTrackedChains(ctx context.Context, args *apiadmin.SetTrackedChainsArgs) (*apiadmin.SetTrackedChainsReply, error)
+```
+
+```go
+func (a *Service) Snapshot(ctx context.Context, args *apiadmin.SnapshotArgs) (*apiadmin.SnapshotReply, error)
+```
+
+```go
+func (a *Service) Stacktrace(ctx context.Context) (*apiadmin.EmptyReply, error)
+```
+
+```go
+func (a *Service) StartCPUProfiler(ctx context.Context) (*apiadmin.EmptyReply, error)
+```
+
+```go
+func (a *Service) StopCPUProfiler(ctx context.Context) (*apiadmin.EmptyReply, error)
+```
+

@@ -1,0 +1,39 @@
+---
+title: metercacher
+description: Package metercacher
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/cache/metercacher"
+```
+
+## Types
+
+### Cache
+
+```go
+func New[K comparable, V any](
+	namespace string,
+	registry metric.Registry,
+	cache cache.Cacher[K, V],
+) (*Cache[K, V], error)
+```
+
+```go
+func (c *Cache[K, _]) Evict(key K)
+```
+
+```go
+func (c *Cache[_, _]) Flush()
+```
+
+```go
+func (c *Cache[K, V]) Get(key K) (V, bool)
+```
+
+```go
+func (c *Cache[K, V]) Put(key K, value V)
+```
+

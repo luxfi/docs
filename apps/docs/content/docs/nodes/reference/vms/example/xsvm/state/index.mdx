@@ -1,0 +1,151 @@
+---
+title: state
+description: Package state
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/example/xsvm/state"
+```
+
+## Functions
+
+### AddBlock
+
+```go
+func AddBlock(db database.KeyValueWriter, height uint64, blkID ids.ID, blk []byte) error
+```
+
+### AddLoanID
+
+```go
+func AddLoanID(db database.KeyValueWriter, chainID ids.ID, loanID ids.ID) error
+```
+
+### DecreaseBalance
+
+```go
+func DecreaseBalance(db database.KeyValueReaderWriterDeleter, address ids.ShortID, chainID ids.ID, amount uint64) error
+```
+
+### DecreaseLoan
+
+```go
+func DecreaseLoan(db database.KeyValueReaderWriterDeleter, chainID ids.ID, amount uint64) error
+```
+
+### Flatten
+
+```go
+func Flatten[T any](slices ...[]T) []T
+```
+
+### GetBalance
+
+```go
+func GetBalance(db database.KeyValueReader, address ids.ShortID, chainID ids.ID) (uint64, error)
+```
+
+### GetBlock
+
+```go
+func GetBlock(db database.KeyValueReader, blkID ids.ID) ([]byte, error)
+```
+
+### GetBlockIDByHeight
+
+```go
+func GetBlockIDByHeight(db database.KeyValueReader, height uint64) (ids.ID, error)
+```
+
+### GetLastAccepted
+
+```go
+func GetLastAccepted(db database.KeyValueReader) (ids.ID, error)
+```
+
+### GetLoan
+
+```go
+func GetLoan(db database.KeyValueReader, chainID ids.ID) (uint64, error)
+```
+
+### GetMessage
+
+```go
+func GetMessage(db database.KeyValueReader, txID ids.ID) (*warp.UnsignedMessage, error)
+```
+
+### GetNonce
+
+```go
+func GetNonce(db database.KeyValueReader, address ids.ShortID) (uint64, error)
+```
+
+### HasLoanID
+
+```go
+func HasLoanID(db database.KeyValueReader, chainID ids.ID, loanID ids.ID) (bool, error)
+```
+
+### IncreaseBalance
+
+```go
+func IncreaseBalance(db database.KeyValueReaderWriterDeleter, address ids.ShortID, chainID ids.ID, amount uint64) error
+```
+
+### IncreaseLoan
+
+```go
+func IncreaseLoan(db database.KeyValueReaderWriterDeleter, chainID ids.ID, amount uint64) error
+```
+
+### IncrementNonce
+
+```go
+func IncrementNonce(db database.KeyValueReaderWriter, address ids.ShortID, nonce uint64) error
+```
+
+### IsInitialized
+
+```go
+func IsInitialized(db database.KeyValueReader) (bool, error)
+```
+
+### SetBalance
+
+```go
+func SetBalance(db database.KeyValueWriterDeleter, address ids.ShortID, chainID ids.ID, balance uint64) error
+```
+
+### SetInitialized
+
+```go
+func SetInitialized(db database.KeyValueWriter) error
+```
+
+### SetLastAccepted
+
+```go
+func SetLastAccepted(db database.KeyValueWriter, blkID ids.ID) error
+```
+
+### SetLoan
+
+```go
+func SetLoan(db database.KeyValueWriterDeleter, chainID ids.ID, balance uint64) error
+```
+
+### SetMessage
+
+```go
+func SetMessage(db database.KeyValueWriter, txID ids.ID, message *warp.UnsignedMessage) error
+```
+
+### SetNonce
+
+```go
+func SetNonce(db database.KeyValueWriter, address ids.ShortID, nonce uint64) error
+```
+

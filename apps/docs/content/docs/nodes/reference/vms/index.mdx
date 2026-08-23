@@ -1,0 +1,56 @@
+---
+title: vms
+description: Package vms
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms"
+```
+
+## Functions
+
+### DelegateHandlers
+
+```go
+func DelegateHandlers(ctx context.Context, vm interface{}) (map[string]http.Handler, error)
+```
+
+DelegateHandlers delegates the CreateHandlers call to the underlying VM
+
+
+## Types
+
+### Factory
+
+Factory creates new instances of a VM
+
+
+### HandlerDelegator
+
+HandlerDelegator wraps a VM and delegates handler creation
+
+
+```go
+func NewHandlerDelegator[T any](vm T) *HandlerDelegator[T]
+```
+
+```go
+func (h *HandlerDelegator[T]) CreateHandlers(ctx context.Context) (map[string]http.Handler, error)
+```
+
+```go
+func (h *HandlerDelegator[T]) CreateStaticHandlers(ctx context.Context) (map[string]http.Handler, error)
+```
+
+### HandlerProvider
+
+HandlerProvider is the interface that VMs must implement to provide HTTP handlers
+
+
+### Manager
+
+Manager tracks a collection of VM factories, their aliases, and their versions.
+
+

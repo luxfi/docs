@@ -1,0 +1,327 @@
+---
+title: artifacts
+description: Package artifacts defines canonical artifact types for cross-chain settlement per the v1.1 Unified Quantum-Safe PoS Ecosystem specification.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/artifacts"
+```
+
+Package artifacts defines canonical artifact types for cross-chain settlement
+per the v1.1 Unified Quantum-Safe PoS Ecosystem specification.
+
+Each chain emits exactly one artifact type that X-Chain accepts:
+  - C → CReceipt
+  - D → DSettlementReceipt
+  - O → OracleAttestation
+  - R → VerifiedMessage
+  - I → CredentialProof
+  - T → Cert (OracleCert, RelayCert, DACert)
+  - Z → ZKProofCommitment
+
+
+## Types
+
+### Artifact
+
+Artifact is the base interface for all cross-chain artifacts
+
+
+### CReceipt
+
+CReceipt is the canonical artifact emitted by C-Chain for X-Chain settlement
+
+
+```go
+func (r *CReceipt) ArtifactID() ids.ID
+```
+
+```go
+func (r *CReceipt) Bytes() []byte
+```
+
+```go
+func (r *CReceipt) DomainID() ids.ID
+```
+
+```go
+func (r *CReceipt) Expiry() time.Time
+```
+
+```go
+func (r *CReceipt) SchemaVersion() uint32
+```
+
+```go
+func (r *CReceipt) SignatureSuite() SignatureSuite
+```
+
+### CredentialProof
+
+CredentialProof is the canonical artifact for identity credentials
+
+
+```go
+func (c *CredentialProof) ArtifactID() ids.ID
+```
+
+```go
+func (c *CredentialProof) Bytes() []byte
+```
+
+```go
+func (c *CredentialProof) DomainID() ids.ID
+```
+
+```go
+func (c *CredentialProof) Expiry() time.Time
+```
+
+```go
+func (c *CredentialProof) SchemaVersion() uint32
+```
+
+```go
+func (c *CredentialProof) SignatureSuite() SignatureSuite
+```
+
+### DACert
+
+DACert aggregates DA sampling evidence
+
+
+```go
+func (c *DACert) ArtifactID() ids.ID
+```
+
+```go
+func (c *DACert) Bytes() []byte
+```
+
+```go
+func (c *DACert) DomainID() ids.ID
+```
+
+```go
+func (c *DACert) Expiry() time.Time
+```
+
+```go
+func (c *DACert) SchemaVersion() uint32
+```
+
+```go
+func (c *DACert) SignatureSuite() SignatureSuite
+```
+
+### DSettlementReceipt
+
+DSettlementReceipt is the canonical artifact for D-Chain escrow settlement
+
+
+```go
+func (r *DSettlementReceipt) ArtifactID() ids.ID
+```
+
+```go
+func (r *DSettlementReceipt) Bytes() []byte
+```
+
+```go
+func (r *DSettlementReceipt) DomainID() ids.ID
+```
+
+```go
+func (r *DSettlementReceipt) Expiry() time.Time
+```
+
+```go
+func (r *DSettlementReceipt) SchemaVersion() uint32
+```
+
+```go
+func (r *DSettlementReceipt) SignatureSuite() SignatureSuite
+```
+
+### EscrowRef
+
+EscrowRef references an escrow UTXO on X-Chain
+
+
+### FeePayment
+
+FeePayment represents a fee payment to be settled on X
+
+
+### MessageStatus
+
+MessageStatus represents the delivery status
+
+
+### OracleAttestation
+
+OracleAttestation is the canonical artifact for oracle data feeds
+
+
+```go
+func (a *OracleAttestation) ArtifactID() ids.ID
+```
+
+```go
+func (a *OracleAttestation) Bytes() []byte
+```
+
+```go
+func (a *OracleAttestation) DomainID() ids.ID
+```
+
+```go
+func (a *OracleAttestation) Expiry() time.Time
+```
+
+```go
+func (a *OracleAttestation) SchemaVersion() uint32
+```
+
+```go
+func (a *OracleAttestation) SignatureSuite() SignatureSuite
+```
+
+### OracleCert
+
+OracleCert attests that a quorum signed an oracle attestation
+
+
+```go
+func (c *OracleCert) ArtifactID() ids.ID
+```
+
+```go
+func (c *OracleCert) Bytes() []byte
+```
+
+```go
+func (c *OracleCert) DomainID() ids.ID
+```
+
+```go
+func (c *OracleCert) Expiry() time.Time
+```
+
+```go
+func (c *OracleCert) SchemaVersion() uint32
+```
+
+```go
+func (c *OracleCert) SignatureSuite() SignatureSuite
+```
+
+### RelayCert
+
+RelayCert attests that a quorum verified a message batch
+
+
+```go
+func (c *RelayCert) ArtifactID() ids.ID
+```
+
+```go
+func (c *RelayCert) Bytes() []byte
+```
+
+```go
+func (c *RelayCert) DomainID() ids.ID
+```
+
+```go
+func (c *RelayCert) Expiry() time.Time
+```
+
+```go
+func (c *RelayCert) SchemaVersion() uint32
+```
+
+```go
+func (c *RelayCert) SignatureSuite() SignatureSuite
+```
+
+### SignatureSuite
+
+SignatureSuite defines the cryptographic suite used
+
+
+### TradeNetting
+
+TradeNetting represents netted trade outcomes
+
+
+### VerificationMode
+
+VerificationMode defines how an artifact is verified
+
+
+### VerifiedMessage
+
+VerifiedMessage is the canonical artifact for cross-chain messages
+
+
+```go
+func (m *VerifiedMessage) ArtifactID() ids.ID
+```
+
+```go
+func (m *VerifiedMessage) Bytes() []byte
+```
+
+```go
+func (m *VerifiedMessage) DomainID() ids.ID
+```
+
+```go
+func (m *VerifiedMessage) Expiry() time.Time
+```
+
+```go
+func (m *VerifiedMessage) SchemaVersion() uint32
+```
+
+```go
+func (m *VerifiedMessage) SignatureSuite() SignatureSuite
+```
+
+### Withdrawal
+
+Withdrawal represents an asset withdrawal from C to X
+
+
+### ZKProofCommitment
+
+ZKProofCommitment is the canonical artifact for ZK proofs
+
+
+```go
+func (z *ZKProofCommitment) ArtifactID() ids.ID
+```
+
+```go
+func (z *ZKProofCommitment) Bytes() []byte
+```
+
+```go
+func (z *ZKProofCommitment) DomainID() ids.ID
+```
+
+```go
+func (z *ZKProofCommitment) Expiry() time.Time
+```
+
+```go
+func (z *ZKProofCommitment) SchemaVersion() uint32
+```
+
+```go
+func (z *ZKProofCommitment) SignatureSuite() SignatureSuite
+```
+

@@ -1,0 +1,78 @@
+---
+title: utxo
+description: Package utxo is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/utxo"
+```
+
+Package utxo is a generated GoMock package.
+
+
+## Functions
+
+### NewVerifier
+
+```go
+func NewVerifier(clk *mockable.Clock, fx fx.Fx) *verifier
+```
+
+NewVerifier creates a new UTXO verifier
+
+
+## Types
+
+### Handler
+
+```go
+func NewHandler(
+	ctx context.Context,
+	clk *mockable.Clock,
+	fx fx.Fx,
+) Handler
+```
+
+### MockVerifier
+
+MockVerifier is a mock of Verifier interface.
+
+
+```go
+func NewMockVerifier(ctrl *gomock.Controller) *MockVerifier
+```
+
+```go
+func (m *MockVerifier) EXPECT() *MockVerifierMockRecorder
+```
+
+```go
+func (m *MockVerifier) VerifySpend(arg0 txs.UnsignedTx, arg1 lux.UTXOGetter, arg2 []*lux.TransferableInput, arg3 []*lux.TransferableOutput, arg4 []verify.Verifiable, arg5 map[ids.ID]uint64) error
+```
+
+```go
+func (m *MockVerifier) VerifySpendUTXOs(arg0 txs.UnsignedTx, arg1 []*lux.UTXO, arg2 []*lux.TransferableInput, arg3 []*lux.TransferableOutput, arg4 []verify.Verifiable, arg5 map[ids.ID]uint64) error
+```
+
+### MockVerifierMockRecorder
+
+MockVerifierMockRecorder is the mock recorder for MockVerifier.
+
+
+```go
+func (mr *MockVerifierMockRecorder) VerifySpend(arg0, arg1, arg2, arg3, arg4, arg5 any) *gomock.Call
+```
+
+```go
+func (mr *MockVerifierMockRecorder) VerifySpendUTXOs(arg0, arg1, arg2, arg3, arg4, arg5 any) *gomock.Call
+```
+
+### Spender
+
+Spender selects UTXOs and produces inputs/outputs for staking transactions.
+
+
+### Verifier
+

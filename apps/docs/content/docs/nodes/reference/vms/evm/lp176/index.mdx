@@ -1,0 +1,69 @@
+---
+title: lp176
+description: LP176 implements the fee logic specified here: https://github.com/luxfi/lps/blob/main/LPs/176-dynamic-evm-gas-limit-and-price-discovery-updates/README.md
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/evm/lp176"
+```
+
+LP176 implements the fee logic specified here:
+https://github.com/luxfi/lps/blob/main/LPs/176-dynamic-evm-gas-limit-and-price-discovery-updates/README.md
+
+
+## Functions
+
+### DesiredTargetExcess
+
+```go
+func DesiredTargetExcess(desiredTarget gas.Gas) gas.Gas
+```
+
+DesiredTargetExcess calculates the optimal desiredTargetExcess given the
+desired target.
+
+
+## Types
+
+### State
+
+State represents the current state of the gas pricing and constraints.
+
+
+```go
+func ParseState(bytes []byte) (State, error)
+```
+
+```go
+func (s *State) AdvanceTime(seconds uint64)
+```
+
+```go
+func (s *State) Bytes() []byte
+```
+
+```go
+func (s *State) ConsumeGas(
+	gasUsed uint64,
+	extraGasUsed *big.Int,
+) error
+```
+
+```go
+func (s *State) GasPrice() gas.Price
+```
+
+```go
+func (s *State) MaxCapacity() gas.Gas
+```
+
+```go
+func (s *State) Target() gas.Gas
+```
+
+```go
+func (s *State) UpdateTargetExcess(desiredTargetExcess gas.Gas)
+```
+

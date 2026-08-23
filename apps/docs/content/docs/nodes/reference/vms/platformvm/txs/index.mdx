@@ -1,0 +1,2027 @@
+---
+title: txs
+description: Package txs is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/txs"
+```
+
+Package txs is a generated GoMock package.
+
+
+## Functions
+
+### BoundedBy
+
+```go
+func BoundedBy(stakerStart, stakerEnd, lowerBound, upperBound time.Time) bool
+```
+
+BoundedBy returns true iff staker start and end are a
+(non-strict) subset of the provided time bound
+
+
+### MarshalOwner
+
+```go
+func MarshalOwner(o any) ([]byte, error)
+```
+
+MarshalOwner is the ONE canonical byte encoding of an owner — same layout as
+the owner embedded in every tx, lifted to a standalone buffer. Used wherever
+a stable owner identity is needed off the tx wire (e.g. lock-owner hash keys
+in utxo verification, the L1-validator balance/deactivation owner blobs
+stored in P-Chain state). Takes `any` to match the fx.Owned.Owners() surface
+it serves. One encoding everywhere; no codec.
+
+
+### UnmarshalOwner
+
+```go
+func UnmarshalOwner(b []byte) (*secp256k1fx.OutputOwners, error)
+```
+
+UnmarshalOwner is the exact inverse of MarshalOwner — it parses the canonical
+standalone owner buffer back into *secp256k1fx.OutputOwners. Same layout, no
+codec; the marshal/unmarshal pair is the one owner byte codec every consumer
+(executor, service, state-owner blobs) shares.
+
+
+## Types
+
+### AddChainValidatorTx
+
+AddChainValidatorTx is the legacy per-chain validator registration tx.
+The struct IS the wire: it holds the zap buffer and reads its fields by
+offset. No codec, no marshal.
+
+Wire: zap header + object&#123; envelope@0..76, Validator@77, Chain@121,
+ChainAuth@153 }.
+
+Deprecated: Use AddValidatorTx. Retained for one release cycle for
+wire/codec compat with pre-LP-018 binaries.
+
+
+```go
+func NewAddChainValidatorTx(base *lux.BaseTx, validator Validator, chain ids.ID, chainAuth verify.Verifiable) (*AddChainValidatorTx, error)
+```
+
+```go
+func (t AddChainValidatorTx) BlockchainID() ids.ID
+```
+
+```go
+func (t AddChainValidatorTx) Bytes() []byte
+```
+
+```go
+func (tx *AddChainValidatorTx) Chain() ids.ID
+```
+
+```go
+func (tx *AddChainValidatorTx) ChainAuth() verify.Verifiable
+```
+
+```go
+func (tx *AddChainValidatorTx) ChainID() ids.ID
+```
+
+```go
+func (*AddChainValidatorTx) CurrentPriority() Priority
+```
+
+```go
+func (tx *AddChainValidatorTx) EndTime() time.Time
+```
+
+```go
+func (AddChainValidatorTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (tx *AddChainValidatorTx) Initialize(ctx context.Context) error
+```
+
+```go
+func (t AddChainValidatorTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t AddChainValidatorTx) Inputs() []*lux.TransferableInput
+```
+
+```go
+func (t AddChainValidatorTx) Memo() []byte
+```
+
+```go
+func (t AddChainValidatorTx) NetworkID() uint32
+```
+
+```go
+func (tx *AddChainValidatorTx) NodeID() ids.NodeID
+```
+
+```go
+func (t AddChainValidatorTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (*AddChainValidatorTx) PendingPriority() Priority
+```
+
+```go
+func (*AddChainValidatorTx) PublicKey() (*bls.PublicKey, bool, error)
+```
+
+```go
+func (t *AddChainValidatorTx) SetBytes(b []byte)
+```
+
+```go
+func (tx *AddChainValidatorTx) StartTime() time.Time
+```
+
+```go
+func (tx *AddChainValidatorTx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *AddChainValidatorTx) Validator() Validator
+```
+
+```go
+func (tx *AddChainValidatorTx) Visit(visitor Visitor) error
+```
+
+```go
+func (tx *AddChainValidatorTx) Weight() uint64
+```
+
+### AddDelegatorTx
+
+AddDelegatorTx is an unsigned addDelegatorTx. The struct IS the wire: it
+holds the zap buffer and reads its fields by offset. No codec, no marshal.
+
+Wire: zap header + object&#123; envelope@0..76, Validator@77, StakeOuts@121,
+DelegationRewardsOwner@137 }.
+
+
+```go
+func NewAddDelegatorTx(base *lux.BaseTx, validator Validator, stakeOuts []*lux.TransferableOutput, delegationRewardsOwner fx.Owner) (*AddDelegatorTx, error)
+```
+
+```go
+func (t AddDelegatorTx) BlockchainID() ids.ID
+```
+
+```go
+func (t AddDelegatorTx) Bytes() []byte
+```
+
+```go
+func (*AddDelegatorTx) ChainID() ids.ID
+```
+
+```go
+func (*AddDelegatorTx) CurrentPriority() Priority
+```
+
+```go
+func (tx *AddDelegatorTx) DelegationRewardsOwner() fx.Owner
+```
+
+```go
+func (tx *AddDelegatorTx) EndTime() time.Time
+```
+
+```go
+func (AddDelegatorTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (tx *AddDelegatorTx) Initialize(ctx context.Context) error
+```
+
+```go
+func (t AddDelegatorTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t AddDelegatorTx) Inputs() []*lux.TransferableInput
+```
+
+```go
+func (t AddDelegatorTx) Memo() []byte
+```
+
+```go
+func (t AddDelegatorTx) NetworkID() uint32
+```
+
+```go
+func (tx *AddDelegatorTx) NodeID() ids.NodeID
+```
+
+```go
+func (t AddDelegatorTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (*AddDelegatorTx) PendingPriority() Priority
+```
+
+```go
+func (*AddDelegatorTx) PublicKey() (*bls.PublicKey, bool, error)
+```
+
+```go
+func (tx *AddDelegatorTx) RewardsOwner() fx.Owner
+```
+
+```go
+func (t *AddDelegatorTx) SetBytes(b []byte)
+```
+
+```go
+func (tx *AddDelegatorTx) Stake() []*lux.TransferableOutput
+```
+
+```go
+func (tx *AddDelegatorTx) StakeOuts() []*lux.TransferableOutput
+```
+
+```go
+func (tx *AddDelegatorTx) StartTime() time.Time
+```
+
+```go
+func (tx *AddDelegatorTx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *AddDelegatorTx) Validator() Validator
+```
+
+```go
+func (tx *AddDelegatorTx) Visit(visitor Visitor) error
+```
+
+```go
+func (tx *AddDelegatorTx) Weight() uint64
+```
+
+### AddPermissionlessDelegatorTx
+
+AddPermissionlessDelegatorTx is an unsigned addPermissionlessDelegatorTx.
+The struct IS the wire: it holds the zap buffer and reads its fields by
+offset. No codec, no marshal.
+
+Wire: zap header + object&#123; envelope@0..76, Validator@77, Chain@121,
+StakeOuts@153, DelegationRewardsOwner@169 }.
+
+
+```go
+func NewAddPermissionlessDelegatorTx(base *lux.BaseTx, validator Validator, chain ids.ID, stakeOuts []*lux.TransferableOutput, delegationRewardsOwner fx.Owner) (*AddPermissionlessDelegatorTx, error)
+```
+
+```go
+func (t AddPermissionlessDelegatorTx) BlockchainID() ids.ID
+```
+
+```go
+func (t AddPermissionlessDelegatorTx) Bytes() []byte
+```
+
+```go
+func (tx *AddPermissionlessDelegatorTx) Chain() ids.ID
+```
+
+```go
+func (tx *AddPermissionlessDelegatorTx) ChainID() ids.ID
+```
+
+```go
+func (tx *AddPermissionlessDelegatorTx) CurrentPriority() Priority
+```
+
+```go
+func (tx *AddPermissionlessDelegatorTx) DelegationRewardsOwner() fx.Owner
+```
+
+```go
+func (tx *AddPermissionlessDelegatorTx) EndTime() time.Time
+```
+
+```go
+func (AddPermissionlessDelegatorTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (tx *AddPermissionlessDelegatorTx) Initialize(ctx context.Context) error
+```
+
+```go
+func (t AddPermissionlessDelegatorTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t AddPermissionlessDelegatorTx) Inputs() []*lux.TransferableInput
+```
+
+```go
+func (t AddPermissionlessDelegatorTx) Memo() []byte
+```
+
+```go
+func (t AddPermissionlessDelegatorTx) NetworkID() uint32
+```
+
+```go
+func (tx *AddPermissionlessDelegatorTx) NodeID() ids.NodeID
+```
+
+```go
+func (t AddPermissionlessDelegatorTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (tx *AddPermissionlessDelegatorTx) PendingPriority() Priority
+```
+
+```go
+func (*AddPermissionlessDelegatorTx) PublicKey() (*bls.PublicKey, bool, error)
+```
+
+```go
+func (tx *AddPermissionlessDelegatorTx) RewardsOwner() fx.Owner
+```
+
+```go
+func (t *AddPermissionlessDelegatorTx) SetBytes(b []byte)
+```
+
+```go
+func (tx *AddPermissionlessDelegatorTx) Stake() []*lux.TransferableOutput
+```
+
+```go
+func (tx *AddPermissionlessDelegatorTx) StakeOuts() []*lux.TransferableOutput
+```
+
+```go
+func (tx *AddPermissionlessDelegatorTx) StartTime() time.Time
+```
+
+```go
+func (tx *AddPermissionlessDelegatorTx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *AddPermissionlessDelegatorTx) Validator() Validator
+```
+
+```go
+func (tx *AddPermissionlessDelegatorTx) Visit(visitor Visitor) error
+```
+
+```go
+func (tx *AddPermissionlessDelegatorTx) Weight() uint64
+```
+
+### AddPermissionlessValidatorTx
+
+AddPermissionlessValidatorTx is an unsigned addPermissionlessValidatorTx.
+The struct IS the wire: it holds the zap buffer and reads its fields by
+offset. No codec, no marshal.
+
+Wire: zap header + object&#123; envelope@0..76, Validator@77, Chain@121,
+Signer@153, StakeOuts@298, ValidatorRewardsOwner@314,
+DelegatorRewardsOwner@334, DelegationShares@354 }.
+
+
+```go
+func NewAddPermissionlessValidatorTx(base *lux.BaseTx, validator Validator, chain ids.ID, sig signer.Signer, stakeOuts []*lux.TransferableOutput, validatorRewardsOwner fx.Owner, delegatorRewardsOwner fx.Owner, delegationShares uint32) (*AddPermissionlessValidatorTx, error)
+```
+
+```go
+func (t AddPermissionlessValidatorTx) BlockchainID() ids.ID
+```
+
+```go
+func (t AddPermissionlessValidatorTx) Bytes() []byte
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) Chain() ids.ID
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) ChainID() ids.ID
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) CurrentPriority() Priority
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) DelegationRewardsOwner() fx.Owner
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) DelegationShares() uint32
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) DelegatorRewardsOwner() fx.Owner
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) EndTime() time.Time
+```
+
+```go
+func (AddPermissionlessValidatorTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) Initialize(ctx context.Context) error
+```
+
+```go
+func (t AddPermissionlessValidatorTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t AddPermissionlessValidatorTx) Inputs() []*lux.TransferableInput
+```
+
+```go
+func (t AddPermissionlessValidatorTx) Memo() []byte
+```
+
+```go
+func (t AddPermissionlessValidatorTx) NetworkID() uint32
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) NodeID() ids.NodeID
+```
+
+```go
+func (t AddPermissionlessValidatorTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) PendingPriority() Priority
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) PublicKey() (*bls.PublicKey, bool, error)
+```
+
+```go
+func (t *AddPermissionlessValidatorTx) SetBytes(b []byte)
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) Shares() uint32
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) Signer() signer.Signer
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) Stake() []*lux.TransferableOutput
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) StakeOuts() []*lux.TransferableOutput
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) StartTime() time.Time
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) ValidationRewardsOwner() fx.Owner
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) Validator() Validator
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) ValidatorRewardsOwner() fx.Owner
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) Visit(visitor Visitor) error
+```
+
+```go
+func (tx *AddPermissionlessValidatorTx) Weight() uint64
+```
+
+### AddValidatorTx
+
+AddValidatorTx is an unsigned addValidatorTx. The struct IS the wire: it
+holds the zap buffer and reads its fields by offset. No codec, no marshal.
+
+Wire: zap header + object&#123; envelope@0..76, Validator@77, StakeOuts@121,
+RewardsOwner@137, DelegationShares@157 }.
+
+
+```go
+func NewAddValidatorTx(base *lux.BaseTx, validator Validator, stakeOuts []*lux.TransferableOutput, rewardsOwner fx.Owner, delegationShares uint32) (*AddValidatorTx, error)
+```
+
+```go
+func (t AddValidatorTx) BlockchainID() ids.ID
+```
+
+```go
+func (t AddValidatorTx) Bytes() []byte
+```
+
+```go
+func (*AddValidatorTx) ChainID() ids.ID
+```
+
+```go
+func (*AddValidatorTx) CurrentPriority() Priority
+```
+
+```go
+func (tx *AddValidatorTx) DelegationRewardsOwner() fx.Owner
+```
+
+```go
+func (tx *AddValidatorTx) DelegationShares() uint32
+```
+
+```go
+func (tx *AddValidatorTx) EndTime() time.Time
+```
+
+```go
+func (AddValidatorTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (tx *AddValidatorTx) Initialize(ctx context.Context) error
+```
+
+```go
+func (t AddValidatorTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t AddValidatorTx) Inputs() []*lux.TransferableInput
+```
+
+```go
+func (t AddValidatorTx) Memo() []byte
+```
+
+```go
+func (t AddValidatorTx) NetworkID() uint32
+```
+
+```go
+func (tx *AddValidatorTx) NodeID() ids.NodeID
+```
+
+```go
+func (t AddValidatorTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (*AddValidatorTx) PendingPriority() Priority
+```
+
+```go
+func (*AddValidatorTx) PublicKey() (*bls.PublicKey, bool, error)
+```
+
+```go
+func (tx *AddValidatorTx) RewardsOwner() fx.Owner
+```
+
+```go
+func (t *AddValidatorTx) SetBytes(b []byte)
+```
+
+```go
+func (tx *AddValidatorTx) Shares() uint32
+```
+
+```go
+func (tx *AddValidatorTx) Stake() []*lux.TransferableOutput
+```
+
+```go
+func (tx *AddValidatorTx) StakeOuts() []*lux.TransferableOutput
+```
+
+```go
+func (tx *AddValidatorTx) StartTime() time.Time
+```
+
+```go
+func (tx *AddValidatorTx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *AddValidatorTx) ValidationRewardsOwner() fx.Owner
+```
+
+```go
+func (tx *AddValidatorTx) Validator() Validator
+```
+
+```go
+func (tx *AddValidatorTx) Visit(visitor Visitor) error
+```
+
+```go
+func (tx *AddValidatorTx) Weight() uint64
+```
+
+### BaseTx
+
+BaseTx is the bare spending envelope: kind + NetworkID/BlockchainID/Outs/
+Ins/Memo, no delta fields. The struct IS the wire — it embeds spendingTx,
+which holds the zap buffer and serves the whole envelope surface (Bytes/
+NetworkID/Outputs/InputIDs/Memo/...). Delta-carrying tx types embed
+spendingTx the same way and add their own field accessors.
+
+Wire: zap header + object&#123; envelope@0..76 } (kind=kindBase).
+
+
+```go
+func NewBaseTx(base *lux.BaseTx) (*BaseTx, error)
+```
+
+```go
+func (t BaseTx) BlockchainID() ids.ID
+```
+
+```go
+func (t BaseTx) Bytes() []byte
+```
+
+```go
+func (BaseTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (tx *BaseTx) Initialize(context.Context) error
+```
+
+```go
+func (t BaseTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t BaseTx) Inputs() []*lux.TransferableInput
+```
+
+```go
+func (t BaseTx) Memo() []byte
+```
+
+```go
+func (t BaseTx) NetworkID() uint32
+```
+
+```go
+func (t BaseTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (t *BaseTx) SetBytes(b []byte)
+```
+
+```go
+func (tx *BaseTx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *BaseTx) Visit(visitor Visitor) error
+```
+
+### ChainValidator
+
+ChainValidator is the legacy per-chain validator descriptor used by
+AddChainValidatorTx. The Chain field is the network ID this validator
+registers under (pre-LP-018: L1 ID).
+
+Deprecated: Use Validator with AddValidatorTx. Under LP-018
+sovereign-L1, validators validate networks — not chains. Chains live
+on networks (created via CreateChainTx); validators no longer
+register per-chain. Retained for one release cycle for wire/codec
+compat with pre-LP-018 binaries.
+
+
+```go
+func (v *ChainValidator) ChainID() ids.ID
+```
+
+```go
+func (v *ChainValidator) Verify() error
+```
+
+### ConvertNetworkTx
+
+ConvertNetworkTx PROMOTES an existing network: it changes the network's
+security from inherited (restaked from parent) to sovereign (its own
+validator set + on-chain manager) and re-anchors its Parent. This is the
+endomorphism `Network → Network` — distinct from CreateNetworkTx (the
+`∅ → Network` constructor). Examples: an L2 (parent = an L1, inherited)
+converts to an L1 (parent = Primary, sovereign); an L3 promotes to L1.
+
+Requires the existing network owner's authorization (Auth). The genesis
+validator set is established here (shared NetworkValidator component); the
+manager lives on an existing chain (ManagerChainID) of the network.
+
+
+```go
+func NewConvertNetworkTx(
+	base *lux.BaseTx,
+	network, parent, managerChainID ids.ID,
+	sec security.Mode,
+	managerAddress []byte,
+	validators []*NetworkValidator,
+	auth verify.Verifiable,
+) (*ConvertNetworkTx, error)
+```
+
+```go
+func (tx *ConvertNetworkTx) Auth() verify.Verifiable
+```
+
+```go
+func (t ConvertNetworkTx) BlockchainID() ids.ID
+```
+
+```go
+func (t ConvertNetworkTx) Bytes() []byte
+```
+
+```go
+func (ConvertNetworkTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (t ConvertNetworkTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t ConvertNetworkTx) Inputs() []*lux.TransferableInput
+```
+
+```go
+func (tx *ConvertNetworkTx) ManagerAddress() []byte
+```
+
+```go
+func (tx *ConvertNetworkTx) ManagerChainID() ids.ID
+```
+
+```go
+func (t ConvertNetworkTx) Memo() []byte
+```
+
+```go
+func (tx *ConvertNetworkTx) Network() ids.ID
+```
+
+```go
+func (t ConvertNetworkTx) NetworkID() uint32
+```
+
+```go
+func (t ConvertNetworkTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (tx *ConvertNetworkTx) Parent() ids.ID
+```
+
+```go
+func (tx *ConvertNetworkTx) Security() security.Mode
+```
+
+```go
+func (t *ConvertNetworkTx) SetBytes(b []byte)
+```
+
+```go
+func (tx *ConvertNetworkTx) Sovereign() bool
+```
+
+```go
+func (tx *ConvertNetworkTx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *ConvertNetworkTx) Validators() []*NetworkValidator
+```
+
+```go
+func (tx *ConvertNetworkTx) Visit(visitor Visitor) error
+```
+
+### CreateChainTx
+
+CreateChainTx creates a blockchain on a chain. The struct IS the wire: it
+embeds the spending envelope and reads its delta fields by offset.
+
+Delta layout (fixed section, after the 77-byte spending envelope):
+
+	ChainID        32B @ 77   (id: chain that validates this blockchain)
+	VMID           32B @ 109  (id: VM running on the new blockchain)
+	BlockchainName 8B  @ 141  (text ptr: human readable name)
+	FxIDs          8B  @ 149  (id list ptr: feature extensions)
+	GenesisData    8B  @ 157  (bytes ptr: genesis state)
+	ChainAuth      8B  @ 165  (auth ptr: sig-index list)
+
+
+```go
+func NewCreateChainTx(base *lux.BaseTx, chainID ids.ID, blockchainName string, vmID ids.ID, fxIDs []ids.ID, genesisData []byte, chainAuth verify.Verifiable) (*CreateChainTx, error)
+```
+
+```go
+func (t CreateChainTx) BlockchainID() ids.ID
+```
+
+```go
+func (tx *CreateChainTx) BlockchainName() string
+```
+
+```go
+func (t CreateChainTx) Bytes() []byte
+```
+
+```go
+func (tx *CreateChainTx) ChainAuth() verify.Verifiable
+```
+
+```go
+func (tx *CreateChainTx) ChainID() ids.ID
+```
+
+```go
+func (tx *CreateChainTx) FxIDs() []ids.ID
+```
+
+```go
+func (tx *CreateChainTx) GenesisData() []byte
+```
+
+```go
+func (CreateChainTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (tx *CreateChainTx) Initialize(ctx context.Context) error
+```
+
+```go
+func (t CreateChainTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t CreateChainTx) Inputs() []*lux.TransferableInput
+```
+
+```go
+func (t CreateChainTx) Memo() []byte
+```
+
+```go
+func (t CreateChainTx) NetworkID() uint32
+```
+
+```go
+func (t CreateChainTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (t *CreateChainTx) SetBytes(b []byte)
+```
+
+```go
+func (tx *CreateChainTx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *CreateChainTx) VMID() ids.ID
+```
+
+```go
+func (tx *CreateChainTx) Visit(visitor Visitor) error
+```
+
+### CreateNetworkTx
+
+```go
+func NewCreateNetworkTx(
+	base *lux.BaseTx,
+	parent ids.ID,
+	owner fx.Owner,
+	sec security.Mode,
+	validators []*NetworkValidator,
+	managerChainID ids.ID,
+	managerAddress []byte,
+) (*CreateNetworkTx, error)
+```
+
+```go
+func (t CreateNetworkTx) BlockchainID() ids.ID
+```
+
+```go
+func (t CreateNetworkTx) Bytes() []byte
+```
+
+```go
+func (CreateNetworkTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (t CreateNetworkTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t CreateNetworkTx) Inputs() []*lux.TransferableInput
+```
+
+```go
+func (tx *CreateNetworkTx) ManagerAddress() []byte
+```
+
+```go
+func (tx *CreateNetworkTx) ManagerChainID() ids.ID
+```
+
+```go
+func (t CreateNetworkTx) Memo() []byte
+```
+
+```go
+func (t CreateNetworkTx) NetworkID() uint32
+```
+
+```go
+func (t CreateNetworkTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (tx *CreateNetworkTx) Owner() fx.Owner
+```
+
+```go
+func (tx *CreateNetworkTx) Parent() ids.ID
+```
+
+```go
+func (tx *CreateNetworkTx) Security() security.Mode
+```
+
+```go
+func (t *CreateNetworkTx) SetBytes(b []byte)
+```
+
+```go
+func (tx *CreateNetworkTx) Sovereign() bool
+```
+
+```go
+func (tx *CreateNetworkTx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *CreateNetworkTx) Validators() []*NetworkValidator
+```
+
+```go
+func (tx *CreateNetworkTx) Visit(visitor Visitor) error
+```
+
+### DelegatorTx
+
+### DisableL1ValidatorTx
+
+DisableL1ValidatorTx disables an L1 validator, proving authorization with a
+credential. The struct IS the wire: it embeds spendingTx (the envelope) and
+adds the validation id plus an auth sig-index list.
+
+Wire: zap header + object&#123; envelope@0..76, ValidationID:32B@77,
+DisableAuth:listptr@109 } (kind=kindDisableL1Validator).
+
+
+```go
+func NewDisableL1ValidatorTx(base *lux.BaseTx, validationID ids.ID, disableAuth verify.Verifiable) (*DisableL1ValidatorTx, error)
+```
+
+```go
+func (t DisableL1ValidatorTx) BlockchainID() ids.ID
+```
+
+```go
+func (t DisableL1ValidatorTx) Bytes() []byte
+```
+
+```go
+func (tx *DisableL1ValidatorTx) DisableAuth() verify.Verifiable
+```
+
+```go
+func (DisableL1ValidatorTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (t DisableL1ValidatorTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t DisableL1ValidatorTx) Inputs() []*lux.TransferableInput
+```
+
+```go
+func (t DisableL1ValidatorTx) Memo() []byte
+```
+
+```go
+func (t DisableL1ValidatorTx) NetworkID() uint32
+```
+
+```go
+func (t DisableL1ValidatorTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (t *DisableL1ValidatorTx) SetBytes(b []byte)
+```
+
+```go
+func (tx *DisableL1ValidatorTx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *DisableL1ValidatorTx) ValidationID() ids.ID
+```
+
+```go
+func (tx *DisableL1ValidatorTx) Visit(visitor Visitor) error
+```
+
+### ExportTx
+
+ExportTx sends funds to another chain. The struct IS the wire: it embeds the
+spending envelope and reads its delta fields by offset.
+
+Delta layout (fixed section, after the 77-byte spending envelope):
+
+	DestinationChain 32B @ 77   (id: chain to send the funds to)
+	ExportedOutputs  8B  @ 109  (output list ptr)
+	OwnerAddrs       8B  @ 117  (shared owner-address array ptr)
+
+
+```go
+func NewExportTx(base *lux.BaseTx, destinationChain ids.ID, exportedOutputs []*lux.TransferableOutput) (*ExportTx, error)
+```
+
+```go
+func (t ExportTx) BlockchainID() ids.ID
+```
+
+```go
+func (t ExportTx) Bytes() []byte
+```
+
+```go
+func (tx *ExportTx) DestinationChain() ids.ID
+```
+
+```go
+func (tx *ExportTx) ExportedOutputs() []*lux.TransferableOutput
+```
+
+```go
+func (ExportTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (tx *ExportTx) Initialize(ctx context.Context) error
+```
+
+```go
+func (t ExportTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t ExportTx) Inputs() []*lux.TransferableInput
+```
+
+```go
+func (t ExportTx) Memo() []byte
+```
+
+```go
+func (t ExportTx) NetworkID() uint32
+```
+
+```go
+func (t ExportTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (t *ExportTx) SetBytes(b []byte)
+```
+
+```go
+func (tx *ExportTx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *ExportTx) Visit(visitor Visitor) error
+```
+
+### ImportTx
+
+ImportTx consumes funds produced on another chain. The struct IS the wire:
+it embeds the spending envelope and reads its delta fields by offset.
+
+Delta layout (fixed section, after the 77-byte spending envelope):
+
+	SourceChain    32B @ 77   (id: chain to consume the funds from)
+	ImportedInputs 8B  @ 109  (input list ptr)
+	SigIndices     8B  @ 117  (shared input sig-index array ptr)
+
+
+```go
+func NewImportTx(base *lux.BaseTx, sourceChain ids.ID, importedInputs []*lux.TransferableInput) (*ImportTx, error)
+```
+
+```go
+func (t ImportTx) BlockchainID() ids.ID
+```
+
+```go
+func (t ImportTx) Bytes() []byte
+```
+
+```go
+func (tx *ImportTx) ImportedInputs() []*lux.TransferableInput
+```
+
+```go
+func (ImportTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (tx *ImportTx) Initialize(ctx context.Context) error
+```
+
+```go
+func (tx *ImportTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (tx *ImportTx) InputUTXOs() set.Set[ids.ID]
+```
+
+```go
+func (t ImportTx) Inputs() []*lux.TransferableInput
+```
+
+```go
+func (t ImportTx) Memo() []byte
+```
+
+```go
+func (t ImportTx) NetworkID() uint32
+```
+
+```go
+func (t ImportTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (t *ImportTx) SetBytes(b []byte)
+```
+
+```go
+func (tx *ImportTx) SourceChain() ids.ID
+```
+
+```go
+func (tx *ImportTx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *ImportTx) Visit(visitor Visitor) error
+```
+
+### IncreaseL1ValidatorBalanceTx
+
+IncreaseL1ValidatorBalanceTx tops up an L1 validator's continuous-fee
+balance. The struct IS the wire: it embeds spendingTx (the envelope) and
+adds two delta fields read by offset.
+
+Wire: zap header + object&#123; envelope@0..76, ValidationID:32B@77,
+Balance:u64@109 } (kind=kindIncreaseL1ValidatorBalance).
+
+
+```go
+func NewIncreaseL1ValidatorBalanceTx(base *lux.BaseTx, validationID ids.ID, balance uint64) (*IncreaseL1ValidatorBalanceTx, error)
+```
+
+```go
+func (tx *IncreaseL1ValidatorBalanceTx) Balance() uint64
+```
+
+```go
+func (t IncreaseL1ValidatorBalanceTx) BlockchainID() ids.ID
+```
+
+```go
+func (t IncreaseL1ValidatorBalanceTx) Bytes() []byte
+```
+
+```go
+func (IncreaseL1ValidatorBalanceTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (t IncreaseL1ValidatorBalanceTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t IncreaseL1ValidatorBalanceTx) Inputs() []*lux.TransferableInput
+```
+
+```go
+func (t IncreaseL1ValidatorBalanceTx) Memo() []byte
+```
+
+```go
+func (t IncreaseL1ValidatorBalanceTx) NetworkID() uint32
+```
+
+```go
+func (t IncreaseL1ValidatorBalanceTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (t *IncreaseL1ValidatorBalanceTx) SetBytes(b []byte)
+```
+
+```go
+func (tx *IncreaseL1ValidatorBalanceTx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *IncreaseL1ValidatorBalanceTx) ValidationID() ids.ID
+```
+
+```go
+func (tx *IncreaseL1ValidatorBalanceTx) Visit(visitor Visitor) error
+```
+
+### MockScheduledStaker
+
+MockScheduledStaker is a mock of ScheduledStaker interface.
+
+
+```go
+func NewMockScheduledStaker(ctrl *gomock.Controller) *MockScheduledStaker
+```
+
+```go
+func (m *MockScheduledStaker) ChainID() ids.ID
+```
+
+```go
+func (m *MockScheduledStaker) CurrentPriority() Priority
+```
+
+```go
+func (m *MockScheduledStaker) EXPECT() *MockScheduledStakerMockRecorder
+```
+
+```go
+func (m *MockScheduledStaker) EndTime() time.Time
+```
+
+```go
+func (m *MockScheduledStaker) NodeID() ids.NodeID
+```
+
+```go
+func (m *MockScheduledStaker) PendingPriority() Priority
+```
+
+```go
+func (m *MockScheduledStaker) PublicKey() (*bls.PublicKey, bool, error)
+```
+
+```go
+func (m *MockScheduledStaker) StartTime() time.Time
+```
+
+```go
+func (m *MockScheduledStaker) Weight() uint64
+```
+
+### MockScheduledStakerMockRecorder
+
+MockScheduledStakerMockRecorder is the mock recorder for MockScheduledStaker.
+
+
+```go
+func (mr *MockScheduledStakerMockRecorder) ChainID() *gomock.Call
+```
+
+```go
+func (mr *MockScheduledStakerMockRecorder) CurrentPriority() *gomock.Call
+```
+
+```go
+func (mr *MockScheduledStakerMockRecorder) EndTime() *gomock.Call
+```
+
+```go
+func (mr *MockScheduledStakerMockRecorder) NodeID() *gomock.Call
+```
+
+```go
+func (mr *MockScheduledStakerMockRecorder) PendingPriority() *gomock.Call
+```
+
+```go
+func (mr *MockScheduledStakerMockRecorder) PublicKey() *gomock.Call
+```
+
+```go
+func (mr *MockScheduledStakerMockRecorder) StartTime() *gomock.Call
+```
+
+```go
+func (mr *MockScheduledStakerMockRecorder) Weight() *gomock.Call
+```
+
+### NetworkValidator
+
+NetworkValidator is a genesis validator value (shared component; encoded
+into / decoded from the tx buffer).
+
+
+```go
+func (v *NetworkValidator) Compare(o *NetworkValidator) int
+```
+
+```go
+func (v *NetworkValidator) Verify() error
+```
+
+### PermissionlessStaker
+
+### Priority
+
+```go
+func (p Priority) IsCurrentDelegator() bool
+```
+
+```go
+func (p Priority) IsCurrentValidator() bool
+```
+
+```go
+func (p Priority) IsPendingDelegator() bool
+```
+
+```go
+func (p Priority) IsPendingValidator() bool
+```
+
+```go
+func (p Priority) IsPermissionedValidator() bool
+```
+
+```go
+func (p Priority) IsValidator() bool
+```
+
+### RegisterL1ValidatorTx
+
+RegisterL1ValidatorTx registers an L1 validator. The struct IS the wire: it
+embeds the spending envelope and reads its delta fields by offset.
+
+Delta layout (fixed section, after the 77-byte spending envelope):
+
+	Balance           u64  @ 77   (Balance &lt;= sum($LUX inputs) - sum($LUX outputs) - TxFee)
+	ProofOfPossession 96B  @ 85   (fixed, BLS PoP of the key in the Message)
+	Message           8B   @ 181  (bytes ptr: signed Warp AddressedCall payload)
+
+
+```go
+func NewRegisterL1ValidatorTx(base *lux.BaseTx, balance uint64, proofOfPossession [bls.SignatureLen]byte, message []byte) (*RegisterL1ValidatorTx, error)
+```
+
+```go
+func (tx *RegisterL1ValidatorTx) Balance() uint64
+```
+
+```go
+func (t RegisterL1ValidatorTx) BlockchainID() ids.ID
+```
+
+```go
+func (t RegisterL1ValidatorTx) Bytes() []byte
+```
+
+```go
+func (RegisterL1ValidatorTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (t RegisterL1ValidatorTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t RegisterL1ValidatorTx) Inputs() []*lux.TransferableInput
+```
+
+```go
+func (t RegisterL1ValidatorTx) Memo() []byte
+```
+
+```go
+func (tx *RegisterL1ValidatorTx) Message() []byte
+```
+
+```go
+func (t RegisterL1ValidatorTx) NetworkID() uint32
+```
+
+```go
+func (t RegisterL1ValidatorTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (tx *RegisterL1ValidatorTx) ProofOfPossession() [bls.SignatureLen]byte
+```
+
+```go
+func (t *RegisterL1ValidatorTx) SetBytes(b []byte)
+```
+
+```go
+func (tx *RegisterL1ValidatorTx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *RegisterL1ValidatorTx) Visit(visitor Visitor) error
+```
+
+### RemoveChainValidatorTx
+
+RemoveChainValidatorTx removes a validator from a chain. The struct IS the
+wire: it embeds spendingTx (the envelope) and adds the node id, chain id,
+and an auth sig-index list.
+
+Wire: zap header + object&#123; envelope@0..76, NodeID:20B@77, Chain:32B@97,
+ChainAuth:listptr@129 } (kind=kindRemoveChainValidator).
+
+
+```go
+func NewRemoveChainValidatorTx(base *lux.BaseTx, nodeID ids.NodeID, chain ids.ID, chainAuth verify.Verifiable) (*RemoveChainValidatorTx, error)
+```
+
+```go
+func (t RemoveChainValidatorTx) BlockchainID() ids.ID
+```
+
+```go
+func (t RemoveChainValidatorTx) Bytes() []byte
+```
+
+```go
+func (tx *RemoveChainValidatorTx) Chain() ids.ID
+```
+
+```go
+func (tx *RemoveChainValidatorTx) ChainAuth() verify.Verifiable
+```
+
+```go
+func (RemoveChainValidatorTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (tx *RemoveChainValidatorTx) Initialize(context.Context) error
+```
+
+```go
+func (t RemoveChainValidatorTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t RemoveChainValidatorTx) Inputs() []*lux.TransferableInput
+```
+
+```go
+func (t RemoveChainValidatorTx) Memo() []byte
+```
+
+```go
+func (t RemoveChainValidatorTx) NetworkID() uint32
+```
+
+```go
+func (tx *RemoveChainValidatorTx) NodeID() ids.NodeID
+```
+
+```go
+func (t RemoveChainValidatorTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (t *RemoveChainValidatorTx) SetBytes(b []byte)
+```
+
+```go
+func (tx *RemoveChainValidatorTx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *RemoveChainValidatorTx) Visit(visitor Visitor) error
+```
+
+### RewardValidatorTx
+
+RewardValidatorTx is a transaction that represents a proposal to
+remove a validator that is currently validating from the validator set.
+
+If this transaction is accepted and the next block accepted is a Commit
+block, the validator is removed and the address that the validator specified
+receives the staked LUX as well as a validating reward.
+
+If this transaction is accepted and the next block accepted is an Abort
+block, the validator is removed and the address that the validator specified
+receives the staked LUX but no reward.
+
+The struct IS the wire: it holds the zap buffer and reads its field by
+offset. No codec, no marshal.
+
+Wire: zap header + object&#123; kind:u8@0, TxID:32B@1 }.
+
+
+```go
+func NewRewardValidatorTx(txID ids.ID) *RewardValidatorTx
+```
+
+```go
+func (tx *RewardValidatorTx) Bytes() []byte
+```
+
+```go
+func (*RewardValidatorTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (tx *RewardValidatorTx) Initialize(context.Context) error
+```
+
+```go
+func (*RewardValidatorTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (*RewardValidatorTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (tx *RewardValidatorTx) SetBytes(b []byte)
+```
+
+```go
+func (*RewardValidatorTx) SyntacticVerify(*runtime.Runtime) error
+```
+
+```go
+func (tx *RewardValidatorTx) TxID() ids.ID
+```
+
+```go
+func (tx *RewardValidatorTx) Visit(visitor Visitor) error
+```
+
+### RuntimeInitializable
+
+RuntimeInitializable defines the interface for initializing context
+
+
+### ScheduledStaker
+
+### SetL1ValidatorWeightTx
+
+SetL1ValidatorWeightTx carries a signed Warp message that sets an L1
+validator's weight. The struct IS the wire: it embeds spendingTx (the
+envelope) and adds the Warp Message as a variable-length bytes tail.
+
+Wire: zap header + object&#123; envelope@0..76, Message:bytesptr@77 }
+(kind=kindSetL1ValidatorWeight).
+
+
+```go
+func NewSetL1ValidatorWeightTx(base *lux.BaseTx, message []byte) (*SetL1ValidatorWeightTx, error)
+```
+
+```go
+func (t SetL1ValidatorWeightTx) BlockchainID() ids.ID
+```
+
+```go
+func (t SetL1ValidatorWeightTx) Bytes() []byte
+```
+
+```go
+func (SetL1ValidatorWeightTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (t SetL1ValidatorWeightTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t SetL1ValidatorWeightTx) Inputs() []*lux.TransferableInput
+```
+
+```go
+func (t SetL1ValidatorWeightTx) Memo() []byte
+```
+
+```go
+func (tx *SetL1ValidatorWeightTx) Message() []byte
+```
+
+```go
+func (t SetL1ValidatorWeightTx) NetworkID() uint32
+```
+
+```go
+func (t SetL1ValidatorWeightTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (t *SetL1ValidatorWeightTx) SetBytes(b []byte)
+```
+
+```go
+func (tx *SetL1ValidatorWeightTx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *SetL1ValidatorWeightTx) Visit(visitor Visitor) error
+```
+
+### Staker
+
+### StakerTx
+
+### TransferChainOwnershipTx
+
+TransferChainOwnershipTx re-owns a chain. The struct IS the wire: it embeds
+the spending envelope and reads its delta fields by offset.
+
+Delta layout (fixed section, after the 77-byte spending envelope):
+
+	Chain           32B @ 77   (id)
+	ChainAuth       8B  @ 109  (auth ptr: sig-index list)
+	Owner.Threshold u32 @ 117
+	Owner.Locktime  u64 @ 121
+	Owner.Addrs     8B  @ 129  (addr list ptr)
+
+
+```go
+func NewTransferChainOwnershipTx(base *lux.BaseTx, chain ids.ID, chainAuth verify.Verifiable, owner fx.Owner) (*TransferChainOwnershipTx, error)
+```
+
+```go
+func (t TransferChainOwnershipTx) BlockchainID() ids.ID
+```
+
+```go
+func (t TransferChainOwnershipTx) Bytes() []byte
+```
+
+```go
+func (tx *TransferChainOwnershipTx) Chain() ids.ID
+```
+
+```go
+func (tx *TransferChainOwnershipTx) ChainAuth() verify.Verifiable
+```
+
+```go
+func (TransferChainOwnershipTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (tx *TransferChainOwnershipTx) Initialize(ctx context.Context) error
+```
+
+```go
+func (t TransferChainOwnershipTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t TransferChainOwnershipTx) Inputs() []*lux.TransferableInput
+```
+
+```go
+func (t TransferChainOwnershipTx) Memo() []byte
+```
+
+```go
+func (t TransferChainOwnershipTx) NetworkID() uint32
+```
+
+```go
+func (t TransferChainOwnershipTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (tx *TransferChainOwnershipTx) Owner() fx.Owner
+```
+
+```go
+func (t *TransferChainOwnershipTx) SetBytes(b []byte)
+```
+
+```go
+func (tx *TransferChainOwnershipTx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *TransferChainOwnershipTx) Visit(visitor Visitor) error
+```
+
+### TransformChainTx
+
+TransformChainTx transforms a chain into a permissionless one. The struct IS
+the wire: it embeds the spending envelope and reads its delta fields by
+offset.
+
+Delta layout (fixed section, after the 77-byte spending envelope):
+
+	Chain                    32B @ 77
+	AssetID                  32B @ 109
+	InitialSupply            u64 @ 141
+	MaximumSupply            u64 @ 149
+	MinConsumptionRate       u64 @ 157
+	MaxConsumptionRate       u64 @ 165
+	MinValidatorStake        u64 @ 173
+	MaxValidatorStake        u64 @ 181
+	MinStakeDuration         u32 @ 189
+	MaxStakeDuration         u32 @ 193
+	MinDelegationFee         u32 @ 197
+	MinDelegatorStake        u64 @ 201
+	MaxValidatorWeightFactor u8  @ 209
+	UptimeRequirement        u32 @ 210
+	ChainAuth                8B  @ 214  (auth ptr: sig-index list)
+
+
+```go
+func NewTransformChainTx(
+	base *lux.BaseTx,
+	chain ids.ID,
+	assetID ids.ID,
+	initialSupply uint64,
+	maximumSupply uint64,
+	minConsumptionRate uint64,
+	maxConsumptionRate uint64,
+	minValidatorStake uint64,
+	maxValidatorStake uint64,
+	minStakeDuration uint32,
+	maxStakeDuration uint32,
+	minDelegationFee uint32,
+	minDelegatorStake uint64,
+	maxValidatorWeightFactor byte,
+	uptimeRequirement uint32,
+	chainAuth verify.Verifiable,
+) (*TransformChainTx, error)
+```
+
+```go
+func (tx *TransformChainTx) AssetID() ids.ID
+```
+
+```go
+func (t TransformChainTx) BlockchainID() ids.ID
+```
+
+```go
+func (t TransformChainTx) Bytes() []byte
+```
+
+```go
+func (tx *TransformChainTx) Chain() ids.ID
+```
+
+```go
+func (tx *TransformChainTx) ChainAuth() verify.Verifiable
+```
+
+```go
+func (TransformChainTx) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (tx *TransformChainTx) InitialSupply() uint64
+```
+
+```go
+func (tx *TransformChainTx) Initialize(ctx context.Context) error
+```
+
+```go
+func (t TransformChainTx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (t TransformChainTx) Inputs() []*lux.TransferableInput
+```
+
+```go
+func (tx *TransformChainTx) MaxConsumptionRate() uint64
+```
+
+```go
+func (tx *TransformChainTx) MaxStakeDuration() uint32
+```
+
+```go
+func (tx *TransformChainTx) MaxValidatorStake() uint64
+```
+
+```go
+func (tx *TransformChainTx) MaxValidatorWeightFactor() byte
+```
+
+```go
+func (tx *TransformChainTx) MaximumSupply() uint64
+```
+
+```go
+func (t TransformChainTx) Memo() []byte
+```
+
+```go
+func (tx *TransformChainTx) MinConsumptionRate() uint64
+```
+
+```go
+func (tx *TransformChainTx) MinDelegationFee() uint32
+```
+
+```go
+func (tx *TransformChainTx) MinDelegatorStake() uint64
+```
+
+```go
+func (tx *TransformChainTx) MinStakeDuration() uint32
+```
+
+```go
+func (tx *TransformChainTx) MinValidatorStake() uint64
+```
+
+```go
+func (t TransformChainTx) NetworkID() uint32
+```
+
+```go
+func (t TransformChainTx) Outputs() []*lux.TransferableOutput
+```
+
+```go
+func (t *TransformChainTx) SetBytes(b []byte)
+```
+
+```go
+func (tx *TransformChainTx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *TransformChainTx) UptimeRequirement() uint32
+```
+
+```go
+func (tx *TransformChainTx) Visit(visitor Visitor) error
+```
+
+### Tx
+
+Tx is a signed transaction: an unsigned tx (itself a zap buffer) plus its
+credentials. The signed bytes are unsigned ‖ creds; there is no codec.
+
+
+```go
+func NewSigned(unsigned UnsignedTx, signers [][]*secp256k1.PrivateKey) (*Tx, error)
+```
+
+```go
+func Parse(signedBytes []byte) (*Tx, error)
+```
+
+```go
+func (tx *Tx) Bytes() []byte
+```
+
+```go
+func (tx *Tx) GossipID() ids.ID
+```
+
+```go
+func (tx *Tx) ID() ids.ID
+```
+
+```go
+func (tx *Tx) Initialize() error
+```
+
+```go
+func (tx *Tx) InputIDs() set.Set[ids.ID]
+```
+
+```go
+func (tx *Tx) SetBytes(signedBytes []byte)
+```
+
+```go
+func (tx *Tx) Sign(signers [][]*secp256k1.PrivateKey) error
+```
+
+```go
+func (tx *Tx) Size() int
+```
+
+```go
+func (tx *Tx) SyntacticVerify(rt *runtime.Runtime) error
+```
+
+```go
+func (tx *Tx) UTXOs() []*lux.UTXO
+```
+
+### UnsignedTx
+
+UnsignedTx is an unsigned transaction
+
+
+### Validator
+
+Validator is a validator.
+
+
+```go
+func (v *Validator) EndTime() time.Time
+```
+
+```go
+func (v *Validator) StartTime() time.Time
+```
+
+```go
+func (v *Validator) Verify() error
+```
+
+```go
+func (v *Validator) Weight() uint64
+```
+
+### ValidatorTx
+
+ValidatorTx defines the interface for a validator transaction that supports
+delegation.
+
+
+### Visitor
+
+Allow vm to execute custom logic against the underlying transaction types.
+
+

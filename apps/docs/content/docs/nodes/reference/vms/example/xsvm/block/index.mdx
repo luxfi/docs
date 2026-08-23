@@ -1,0 +1,36 @@
+---
+title: block
+description: Package block
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/example/xsvm/block"
+```
+
+## Types
+
+### Stateless
+
+Stateless blocks are blocks as they are marshalled/unmarshalled and sent over
+the p2p network. The stateful blocks which can be executed are built from
+Stateless blocks.
+
+
+```go
+func Parse(bytes []byte) (*Stateless, error)
+```
+
+```go
+func (b *Stateless) ID() (ids.ID, error)
+```
+
+```go
+func (b *Stateless) Marshal() ([]byte, error)
+```
+
+```go
+func (b *Stateless) Time() time.Time
+```
+

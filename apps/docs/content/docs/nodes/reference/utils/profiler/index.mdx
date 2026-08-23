@@ -1,0 +1,37 @@
+---
+title: profiler
+description: Package profiler
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/profiler"
+```
+
+## Types
+
+### Config
+
+Config that is used to describe the options of the continuous profiler.
+
+
+### ContinuousProfiler
+
+ContinuousProfiler periodically captures CPU, memory, and lock profiles
+
+
+```go
+func NewContinuous(dir string, freq time.Duration, maxNumFiles int) ContinuousProfiler
+```
+
+### Profiler
+
+Profiler provides helper methods for measuring the current performance of
+this process
+
+
+```go
+func New(dir string) Profiler
+```
+

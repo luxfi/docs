@@ -1,0 +1,133 @@
+---
+title: api
+description: Package api
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/api"
+```
+
+## Types
+
+### APIL1Validator
+
+APIL1Validator is the representation of a L1 validator sent over APIs.
+
+
+### BaseL1Validator
+
+BaseL1Validator is the representation of a base L1 validator without the common parts with a staker.
+
+
+### BuildGenesisArgs
+
+BuildGenesisArgs are the arguments used to create
+the genesis data of the Platform Chain.
+[NetworkID] is the ID of the network
+[UTXOs] are the UTXOs on the Platform Chain that exist at genesis.
+[Validators] are the validators of the primary network at genesis.
+[Chains] are the chains that exist at genesis.
+[Time] is the Platform Chain's time at network genesis.
+
+
+### BuildGenesisReply
+
+BuildGenesisReply is the reply from BuildGenesis
+
+
+### Chain
+
+Chain defines a chain that exists
+at the network's genesis.
+[GenesisData] is the initial state of the chain.
+[VMID] is the ID of the VM this chain runs.
+[FxIDs] are the IDs of the Fxs the chain supports.
+[Name] is a human-readable, non-unique name for the chain.
+[ChainID] is the ID of the net that validates the chain
+
+
+### GenesisPermissionlessValidator
+
+GenesisPermissionlessValidator should to be used for genesis validators only.
+
+
+### GenesisValidator
+
+GenesisValidator should to be used for genesis validators only.
+
+
+### Height
+
+```go
+func (h Height) IsProposed() bool
+```
+
+```go
+func (h Height) MarshalJSON() ([]byte, error)
+```
+
+```go
+func (h *Height) UnmarshalJSON(b []byte) error
+```
+
+### Owner
+
+Owner is the repr. of a reward owner sent over APIs.
+
+
+### PermissionedValidator
+
+PermissionedValidator is the repr. of a permissioned validator sent over APIs.
+
+
+### PermissionlessValidator
+
+PermissionlessValidator is the repr. of a permissionless validator sent over
+APIs.
+
+
+### PrimaryDelegator
+
+PrimaryDelegator is the repr. of a primary network delegator sent over APIs.
+
+
+### Staker
+
+APIStaker is the representation of a staker sent via APIs.
+[TxID] is the txID of the transaction that added this staker.
+[Amount] is the amount of tokens being staked.
+[StartTime] is the Unix time when they start staking
+[Endtime] is the Unix time repr. of when they are done staking
+[NodeID] is the node ID of the staker
+[Uptime] is the observed uptime of this staker
+
+
+### StaticClient
+
+StaticClient for interacting with the platformvm static api
+
+
+```go
+func NewStaticClient(uri string) StaticClient
+```
+
+### StaticService
+
+StaticService defines the static API methods exposed by the platform VM
+
+
+```go
+func (*StaticService) BuildGenesis(_ *http.Request, args *BuildGenesisArgs, reply *BuildGenesisReply) error
+```
+
+### UTXO
+
+UTXO is a UTXO on the Platform Chain that exists at the chain's genesis.
+
+
+```go
+func (utxo UTXO) Compare(other UTXO) int
+```
+

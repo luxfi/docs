@@ -1,0 +1,154 @@
+---
+title: stakingparams
+description: Package stakingparams is the node-policy the validator set governs, plus the pure rule that decides whether a proposed change is admissible.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/stakingparams"
+```
+
+Package stakingparams is the node-policy the validator set governs, plus the
+pure rule that decides whether a proposed change is admissible. It is one
+small, orthogonal definition — values only, no wire, state or config
+dependencies — composed by the three consumers that need it: the P-Chain tx
+executor (admission), the block executor (reward gate), and state.
+
+It is the sibling of package security: security says how a network's set is
+ADMITTED, stakingparams says on what TERMS.
+
+# What is here, and what is deliberately not
+
+Here: validator admission thresholds, stake durations, the delegation-fee
+floor, and the uptime requirement. These are operational policy — a
+legitimate collective choice of the people running the network.
+
+NOT here, and never to be added: MinConsumptionRate, MaxConsumptionRate,
+MintingPeriod, SupplyCap, and the fee-split ratio. Those are money. A votable
+emission schedule is a capture surface, not a feature; predictable money is
+the product. They stay compiled into the node and change only the way
+Bitcoin's rules change — by users and validators voluntarily adopting a new
+release. TestParamsGovernsNoMonetaryField enforces this at build time.
+
+# Who decides
+
+Nobody. There is no admin key, owner, council, guardian or upgrader in this
+package or in the mechanism it serves — no field to hold one and no argument
+to pass one. Accept is a pure function of (current state, proposal,
+compiled-in bounds). Every node runs it independently and the stake-weighted
+consensus resolves the outcome, exactly as it already does for the
+commit/abort decision on a validator's reward. A dissenting node cannot veto,
+only vote and lose; a proposing node holds no privilege, because its
+preference binds no one.
+
+# The one invariant worth remembering
+
+Moving toward MORE permissionless is free and instant. Moving toward LESS
+permissionless is bounded and rate-limited. A cartel that captures a stake
+majority therefore cannot ambush the minority out of the validator set: every
+exclusionary step is small, capped, and visible for the interval it takes,
+which is the window in which the excluded fork. That asymmetry is the whole
+security argument, and it is one rule applied uniformly to every field.
+
+
+## Functions
+
+### Accept
+
+```go
+func Accept(cur, next Params, b Bounds, r Rate, elapsed time.Duration) error
+```
+
+Accept is the entire governance decision, as a pure function.
+
+It takes no key, no caller identity, no role and no owner — there is nothing
+to hold and nothing to compromise. Given the same (cur, next, b, r, elapsed)
+every node on earth reaches the same verdict, which is what lets the existing
+stake-weighted commit/abort machinery settle it with no leader.
+
+elapsed is the chain time since the last accepted change. Pass a duration at
+or above r.MinInterval when no change has been made yet.
+
+
+## Types
+
+### Bounds
+
+Bounds is the constitution: the closed interval outside which no proposal is
+ever admissible, whatever the vote. Lo and Hi are corner Params — each field
+of a proposal must lie between the same field of Lo and of Hi.
+
+Bounds is compiled in. Changing it requires a node release that operators
+choose to run — the Bitcoin path — and is the only route by which the
+governable envelope itself can move. That is intentional: the envelope is the
+thing a stake majority must not be able to widen for itself.
+
+
+```go
+func (b Bounds) Clamp(p Params) Params
+```
+
+```go
+func (b Bounds) Contains(p Params) error
+```
+
+```go
+func (b Bounds) Valid() error
+```
+
+### Entry
+
+Entry is one activation of a policy: the params, and the chain time from
+which they bind.
+
+
+### History
+
+History is the append-only record of every policy that has been in force,
+oldest first. It exists for one reason: a validator must be judged on the
+terms it agreed to when it bonded, never on terms voted in afterwards.
+
+Without it, UptimeRequirement — the one governed field read at REWARD time
+rather than at admission time — would be retroactive, and a stake majority
+could raise it the day before a rival's stake matures and confiscate the
+reward. With it, governance can only bind the future, which is the difference
+between setting policy and expropriating people.
+
+
+```go
+func (h History) At(t int64) Params
+```
+
+```go
+func (h History) Current() Params
+```
+
+```go
+func (h History) Valid() error
+```
+
+### Params
+
+Params is the node-level staking policy in force.
+
+Percent-scaled fields use reward.PercentDenominator (1_000_000), so 800_000
+is 80%. Durations are seconds, matching the P-Chain wire.
+
+
+```go
+func (p Params) Valid() error
+```
+
+### Rate
+
+Rate limits how fast policy may move against the participants it governs.
+
+MaxStep is expressed in reward.PercentDenominator units of the CURRENT value
+(100_000 = 10% of current per change). MinInterval is the minimum chain-time
+spacing between two accepted changes. Together they set the cost of a
+squeeze-out: reaching a target from a starting value takes
+ceil(log(target/start) / log(1+step)) changes, each MinInterval apart, all of
+it on-chain and observable.
+
+

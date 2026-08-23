@@ -1,0 +1,57 @@
+---
+title: sampler
+description: Package sampler
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/sampler"
+```
+
+## Types
+
+### Source
+
+### Uniform
+
+Uniform samples values without replacement in the provided range
+
+
+```go
+func NewBestUniform(expectedSampleSize int) Uniform
+```
+
+```go
+func NewDeterministicUniform(source Source) Uniform
+```
+
+```go
+func NewUniform() Uniform
+```
+
+### Weighted
+
+Weighted defines how to sample a specified valued based on a provided
+weighted distribution
+
+
+```go
+func NewWeighted() Weighted
+```
+
+### WeightedWithoutReplacement
+
+WeightedWithoutReplacement defines how to sample weight without replacement.
+Note that the behavior is to sample the weight without replacement, not the
+indices. So duplicate indices can be returned.
+
+
+```go
+func NewDeterministicWeightedWithoutReplacement(source Source) WeightedWithoutReplacement
+```
+
+```go
+func NewWeightedWithoutReplacement() WeightedWithoutReplacement
+```
+

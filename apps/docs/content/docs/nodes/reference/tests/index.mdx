@@ -1,0 +1,192 @@
+---
+title: tests
+description: Package tests
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/tests"
+```
+
+## Functions
+
+### ContextWithTimeout
+
+```go
+func ContextWithTimeout(tc TestContext, duration time.Duration) context.Context
+```
+
+Helper simplifying use of a timed context by canceling the context with the test context.
+
+
+### DefaultContext
+
+```go
+func DefaultContext(tc TestContext) context.Context
+```
+
+Helper simplifying use of a timed context configured with the default timeout.
+
+
+### DefaultNotifyContext
+
+```go
+func DefaultNotifyContext(duration time.Duration, cleanup func(func())) context.Context
+```
+
+DefaultNotifyContext returns a context that is marked done when signals indicating
+process termination are received. If a non-zero duration is provided, the parent to the
+notify context will be a context with a timeout for that duration.
+
+
+### GetMetricValue
+
+```go
+func GetMetricValue(metrics NodeMetrics, name string, labels metric.Labels) (float64, bool)
+```
+
+GetMetricValue returns the value of the specified metric which has the
+required labels.
+
+If multiple metrics match the provided labels, the first metric found is
+returned.
+
+Only Counter and Gauge metrics are supported.
+
+
+### NewDefaultLogger
+
+```go
+func NewDefaultLogger(prefix string) log.Logger
+```
+
+### Outf
+
+```go
+func Outf(format string, args ...interface{})
+```
+
+Outputs to stdout.
+
+Examples:
+
+  - Out("&#123;&#123;green}}&#123;&#123;bold}}hi there %q&#123;&#123;/}}", "aa")
+  - Out("&#123;&#123;magenta}}&#123;&#123;bold}}hi therea&#123;&#123;/}} &#123;&#123;cyan}}&#123;&#123;underline}}b&#123;&#123;/}}")
+
+See https://github.com/onsi/ginkgo/blob/v2.0.0/formatter/formatter.go#L52-L73
+for an exhaustive list of color options.
+
+
+### WithDefaultContext
+
+```go
+func WithDefaultContext(tc TestContext) common.Option
+```
+
+Helper simplifying use via an option of a timed context configured with the default timeout.
+
+
+## Types
+
+### NodeMetrics
+
+"metric name" -> "metric value"
+
+
+```go
+func GetNodeMetrics(ctx context.Context, nodeURI string) (NodeMetrics, error)
+```
+
+### NodesMetrics
+
+URI -> "metric name" -> "metric value"
+
+
+```go
+func GetNodesMetrics(ctx context.Context, nodeURIs []string) (NodesMetrics, error)
+```
+
+### SimpleNodeMetrics
+
+"metric name" -> "metric value"
+
+
+```go
+func GetMetricsValue(url string, metrics ...string) (SimpleNodeMetrics, error)
+```
+
+```go
+func GetSimpleNodeMetrics(nodeURI string, metricNames ...string) (SimpleNodeMetrics, error)
+```
+
+### SimpleNodesMetrics
+
+URI -> "metric name" -> "metric value"
+
+
+```go
+func GetSimpleNodesMetrics(nodeURIs []string, metricNames ...string) (SimpleNodesMetrics, error)
+```
+
+### SimpleTestContext
+
+```go
+func NewTestContext(log log.Logger) *SimpleTestContext
+```
+
+```go
+func NewTestContextWithArgs(
+	_ context.Context,
+	log log.Logger,
+	errorfHandler func(format string, args ...any),
+	panicHandler func(r any),
+) *SimpleTestContext
+```
+
+```go
+func (tc *SimpleTestContext) By(_ string, _ ...func())
+```
+
+```go
+func (tc *SimpleTestContext) Cleanup()
+```
+
+```go
+func (tc *SimpleTestContext) ContextWithTimeout(duration time.Duration) context.Context
+```
+
+```go
+func (tc *SimpleTestContext) DefaultContext() context.Context
+```
+
+```go
+func (tc *SimpleTestContext) DeferCleanup(cleanup func())
+```
+
+```go
+func (tc *SimpleTestContext) Errorf(format string, args ...interface{})
+```
+
+```go
+func (tc *SimpleTestContext) Eventually(condition func() bool, waitFor time.Duration, tick time.Duration, msg string)
+```
+
+```go
+func (*SimpleTestContext) FailNow()
+```
+
+```go
+func (tc *SimpleTestContext) Log() log.Logger
+```
+
+```go
+func (tc *SimpleTestContext) Recover()
+```
+
+```go
+func (tc *SimpleTestContext) WithDefaultContext() common.Option
+```
+
+### TestContext
+

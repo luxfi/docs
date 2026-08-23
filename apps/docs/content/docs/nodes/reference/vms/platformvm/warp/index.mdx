@@ -1,0 +1,495 @@
+---
+title: warp
+description: Package warp
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/warp"
+```
+
+## Functions
+
+### AggregateCoronaPublicKeys
+
+```go
+func AggregateCoronaPublicKeys(publicKeys [][]byte) ([]byte, error)
+```
+
+AggregateCoronaPublicKeys aggregates multiple Corona public keys
+into a single combined public key for threshold verification.
+This uses the threshold package's SchemeCorona.
+
+
+### AggregatePublicKeys
+
+```go
+func AggregatePublicKeys(vdrs []*Validator) (*bls.PublicKey, error)
+```
+
+AggregatePublicKeys returns the public key of the provided validators.
+
+Invariant: All of the public keys in [vdrs] are valid.
+
+
+### BatchVerifyAggregateSignatures
+
+```go
+func BatchVerifyAggregateSignatures(aggPubKeys []*bls.PublicKey, aggSigs []*bls.Signature, messages [][]byte) ([]bool, error)
+```
+
+BatchVerifyAggregateSignatures verifies multiple aggregate signatures in parallel.
+Each signature is an aggregated BLS signature over the same message by different key sets.
+
+
+### BatchVerifyBLSSignatures
+
+```go
+func BatchVerifyBLSSignatures(publicKeys []*bls.PublicKey, messages [][]byte, signatures []*bls.Signature) ([]bool, error)
+```
+
+BatchVerifyBLSSignatures verifies multiple BLS signatures using GPU acceleration
+when available. Falls back to sequential CPU verification if GPU is unavailable.
+
+Parameters:
+  - publicKeys: Slice of BLS public keys (48 bytes each, compressed G1 points)
+  - messages: Slice of messages to verify
+  - signatures: Slice of BLS signatures (96 bytes each, G2 points)
+
+Returns:
+  - results: Slice of booleans indicating validity of each signature
+  - error: Error if batch verification setup fails
+
+
+### SumWeight
+
+```go
+func SumWeight(vdrs []*Validator) (uint64, error)
+```
+
+SumWeight returns the total weight of the provided validators.
+
+
+### VerifyBLSAggregateWithGPU
+
+```go
+func VerifyBLSAggregateWithGPU(aggPubKey *bls.PublicKey, aggSig *bls.Signature, message []byte) bool
+```
+
+VerifyBLSAggregateWithGPU verifies an aggregate BLS signature with GPU acceleration.
+This is used by BitSetSignature.Verify() for high-throughput scenarios.
+
+
+### VerifyCoronaSignature
+
+```go
+func VerifyCoronaSignature(publicKey []byte, message []byte, signature []byte) bool
+```
+
+VerifyCoronaSignature verifies a Corona lattice-based signature.
+This uses the threshold package's SchemeCorona verifier.
+
+
+### VerifyWeight
+
+```go
+func VerifyWeight(
+	sigWeight uint64,
+	totalWeight uint64,
+	quorumNum uint64,
+	quorumDen uint64,
+) error
+```
+
+VerifyWeight returns [nil] if [sigWeight] is at least [quorumNum]/[quorumDen]
+of [totalWeight].
+If [sigWeight >= totalWeight * quorumNum / quorumDen] then return [nil]
+
+
+## Types
+
+### BitSetSignature
+
+```go
+func (s *BitSetSignature) NumSigners() (int, error)
+```
+
+```go
+func (s *BitSetSignature) String() string
+```
+
+```go
+func (s *BitSetSignature) Verify(
+	msg *UnsignedMessage,
+	networkID uint32,
+	validators CanonicalValidatorSet,
+	quorumNum uint64,
+	quorumDen uint64,
+) error
+```
+
+### CachedValidatorState
+
+CachedValidatorState wraps ValidatorState with an LRU cache
+
+
+```go
+func NewCachedValidatorState(
+	state ValidatorState,
+	upgradeConfig *upgrade.Config,
+	networkID uint32,
+	registerer metric.Registerer,
+) (*CachedValidatorState, error)
+```
+
+```go
+func (c *CachedValidatorState) GetValidatorSet(
+	ctx context.Context,
+	height uint64,
+	chainID ids.ID,
+) (map[ids.NodeID]*ValidatorData, error)
+```
+
+### CanonicalValidatorSet
+
+```go
+func FlattenValidatorSet(vdrSet map[ids.NodeID]*ValidatorData) (CanonicalValidatorSet, error)
+```
+
+```go
+func GetCanonicalValidatorSetFromChainID(ctx context.Context,
+	pChainState validators.State,
+	pChainHeight uint64,
+	sourceChainID ids.ID,
+) (CanonicalValidatorSet, error)
+```
+
+```go
+func GetCanonicalValidatorSetFromSubchainID(
+	ctx context.Context,
+	pChainState ValidatorState,
+	pChainHeight uint64,
+	subchainID ids.ID,
+) (CanonicalValidatorSet, error)
+```
+
+### CoronaSignature
+
+CoronaSignature is the Warp 1.5 quantum-safe signature type.
+This is the recommended signature type for all new Warp messages.
+It uses Corona (LWE-based) threshold signatures for post-quantum security.
+
+Corona properties:
+- Native threshold support (no need for separate TSS layer)
+- Two-round signing protocol
+- Post-quantum secure (based on LWE hardness)
+- Paper: https://eprint.iacr.org/2024/1113
+
+Replaces: BitSetSignature (BLS), HybridBLSCoronaSignature
+Security: Post-quantum secure (LWE-based)
+Size: Variable based on threshold parameters
+
+
+```go
+func (s *CoronaSignature) NumSigners() (int, error)
+```
+
+```go
+func (s *CoronaSignature) String() string
+```
+
+```go
+func (s *CoronaSignature) Verify(
+	msg *UnsignedMessage,
+	networkID uint32,
+	validators CanonicalValidatorSet,
+	quorumNum uint64,
+	quorumDen uint64,
+) error
+```
+
+### EncryptedWarpPayload
+
+EncryptedWarpPayload provides quantum-safe encryption for confidential
+cross-chain messages using ML-KEM (FIPS 203) key encapsulation.
+
+Use cases:
+- Private bridge transfers (hidden amounts/recipients)
+- Sealed-bid cross-chain auctions
+- Confidential governance votes
+- MEV protection (encrypt intent until committed)
+
+Encryption: ML-KEM-768 (NIST Level 3) + AES-256-GCM
+Security: 192-bit post-quantum for key exchange, 256-bit symmetric
+
+
+```go
+func EncryptWarpPayload(plaintext []byte, recipientPubKey []byte, recipientKeyID []byte) (*EncryptedWarpPayload, error)
+```
+
+```go
+func (e *EncryptedWarpPayload) Decrypt(recipientPrivKey []byte) ([]byte, error)
+```
+
+```go
+func (e *EncryptedWarpPayload) Size() int
+```
+
+```go
+func (e *EncryptedWarpPayload) String() string
+```
+
+### HybridBLSCoronaSignature
+
+HybridBLSCoronaSignature implements a quantum-safe hybrid signature combining:
+- BLS aggregate signatures (classical security, compact)
+- Corona lattice signatures (post-quantum security, larger)
+
+Both signatures MUST verify for the message to be considered valid.
+This provides security against both classical and quantum attackers.
+
+Migration path:
+1. Pre-quantum: BLS-only (BitSetSignature)
+2. Transition: HybridBLSCoronaSignature (both required)
+3. Post-quantum: Corona-only (future)
+
+Wire format: this type is the 4th type registered in the warp codec
+(codec.go), which assigns it codec typeID 0x03. The typeID, field
+order, and field encodings are part of the on-chain wire format and
+MUST NOT change. The Go-side type name is metadata only and was renamed
+from HybridBLSRTSignature in the threshold sweep; wire bytes are
+byte-equal pre/post rename.
+
+
+```go
+func (s *HybridBLSCoronaSignature) NumSigners() (int, error)
+```
+
+```go
+func (s *HybridBLSCoronaSignature) String() string
+```
+
+```go
+func (s *HybridBLSCoronaSignature) Verify(
+	msg *UnsignedMessage,
+	networkID uint32,
+	validators CanonicalValidatorSet,
+	quorumNum uint64,
+	quorumDen uint64,
+) error
+```
+
+### Message
+
+Message defines the standard format for a Warp message.
+
+Wire (native ZAP): one object holding the self-delimiting unsigned-message
+buffer and the wkind-tagged signature buffer as two opaque byte fields —
+unsigned bytes @0, signature bytes @8 = 16-byte object header. Message is
+the container shape, so it needs no kind of its own; the signature it
+carries is dispatched by ITS wkind at offset 0.
+
+
+```go
+func NewMessage(
+	unsignedMsg *UnsignedMessage,
+	signature Signature,
+) (*Message, error)
+```
+
+```go
+func ParseMessage(b []byte) (*Message, error)
+```
+
+```go
+func (m *Message) Bytes() []byte
+```
+
+```go
+func (m *Message) Initialize() error
+```
+
+```go
+func (m *Message) String() string
+```
+
+### Signature
+
+### SignatureType
+
+SignatureType indicates which signature algorithm to use
+
+
+```go
+func RecommendedSignatureType() SignatureType
+```
+
+```go
+func (s SignatureType) IsQuantumSafe() bool
+```
+
+```go
+func (s SignatureType) String() string
+```
+
+### Signer
+
+```go
+func NewSigner(sk bls.Signer, networkID uint32, chainID ids.ID) Signer
+```
+
+### TeleportAttestPayload
+
+TeleportAttestPayload represents an attestation (oracle data)
+
+
+```go
+func ParseAttestPayload(data []byte) (*TeleportAttestPayload, error)
+```
+
+```go
+func (p *TeleportAttestPayload) Bytes() ([]byte, error)
+```
+
+### TeleportMessage
+
+TeleportMessage wraps a Warp message for cross-chain bridging operations.
+This is the high-level abstraction for Teleport cross-chain messaging.
+
+Warp 1.5 supports three signature types:
+- BitSetSignature: Classical BLS (legacy)
+- CoronaSignature: Quantum-safe (recommended)
+- HybridBLSCoronaSignature: BLS+Corona hybrid (deprecated)
+
+
+```go
+func NewPrivateTeleportMessage(
+	sourceChainID ids.ID,
+	destChainID ids.ID,
+	nonce uint64,
+	payload []byte,
+	recipientPubKey []byte,
+	recipientKeyID []byte,
+) (*TeleportMessage, error)
+```
+
+```go
+func NewTeleportMessage(
+	messageType TeleportType,
+	sourceChainID ids.ID,
+	destChainID ids.ID,
+	nonce uint64,
+	payload []byte,
+) *TeleportMessage
+```
+
+```go
+func ParseTeleportMessage(data []byte) (*TeleportMessage, error)
+```
+
+```go
+func (t *TeleportMessage) DecryptPayload(recipientPrivKey []byte) ([]byte, error)
+```
+
+```go
+func (t *TeleportMessage) String() string
+```
+
+```go
+func (t *TeleportMessage) ToWarpMessage(networkID uint32) (*UnsignedMessage, error)
+```
+
+```go
+func (t *TeleportMessage) Validate() error
+```
+
+### TeleportTransferPayload
+
+TeleportTransferPayload represents a cross-chain asset transfer
+
+
+```go
+func NewTransferPayload(
+	assetID ids.ID,
+	amount uint64,
+	sender []byte,
+	recipient []byte,
+	fee uint64,
+	memo []byte,
+) *TeleportTransferPayload
+```
+
+```go
+func ParseTransferPayload(data []byte) (*TeleportTransferPayload, error)
+```
+
+```go
+func (p *TeleportTransferPayload) Bytes() ([]byte, error)
+```
+
+### TeleportType
+
+TeleportType represents the type of cross-chain operation
+
+
+### UnsignedMessage
+
+UnsignedMessage defines the standard format for an unsigned Warp message.
+
+Wire (native ZAP, no kind byte — always parsed in context): NetworkID u32
+@0, SourceChainID 32B @4, Payload bytes @36 = 44-byte object header.
+
+
+```go
+func NewUnsignedMessage(
+	networkID uint32,
+	sourceChainID ids.ID,
+	payload []byte,
+) (*UnsignedMessage, error)
+```
+
+```go
+func ParseUnsignedMessage(b []byte) (*UnsignedMessage, error)
+```
+
+```go
+func (m *UnsignedMessage) Bytes() []byte
+```
+
+```go
+func (m *UnsignedMessage) ID() ids.ID
+```
+
+```go
+func (m *UnsignedMessage) Initialize() error
+```
+
+```go
+func (m *UnsignedMessage) String() string
+```
+
+### Validator
+
+```go
+func FilterValidators(
+	indices set.Bits,
+	vdrs []*Validator,
+) ([]*Validator, error)
+```
+
+```go
+func (v *Validator) Compare(o *Validator) int
+```
+
+### ValidatorData
+
+ValidatorData contains the data for a single validator
+
+
+### ValidatorState
+
+ValidatorState defines the functions that must be implemented to get
+the canonical validator set for warp message validation.
+
+

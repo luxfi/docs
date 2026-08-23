@@ -1,0 +1,234 @@
+---
+title: bridgevmroot
+description: Package bridgevmroot computes the bridgevm_state_root in native Go, byte-identical to the lux-private GPU bridgevm_transition kernel (ops/bridgevm/cuda/bridgevm_transition.cu + bridgevm_kernels_common.cuh) and every backend's CPU oracle.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/bridgevm/state/bridgevmroot"
+```
+
+Package bridgevmroot computes the bridgevm_state_root in native Go,
+byte-identical to the lux-private GPU bridgevm_transition kernel
+(ops/bridgevm/cuda/bridgevm_transition.cu + bridgevm_kernels_common.cuh) and
+every backend's CPU oracle. It is the native-Go authority the licensed GPU
+accelerator mirrors: the same five family leaf preimages, the same per-family
+skip predicates, the same ascending-i compacted-occupied ordering, the same
+RFC-6962 tagged binary Merkle fold for the five variable-length sub-roots, and
+the same fixed-shape keccak256 composition for the final bridgevm_state_root.
+
+It is the symmetric peer of vms/xvm/state/xvmroot (xvm execution_root): same
+crypto, same combiner, same value-struct decoupling. Where xvmroot has three
+families (utxo / asset / tx), bridgevm has five (signer_set / liquidity /
+inbox / outbox / daily_limit).
+
+The root is a pure function of the canonical leaf FIELD VALUES, not of any
+in-memory struct. So this package consumes the accelerator's state-snapshot
+layout directly — SignerLeaf, LiquidityLeaf, MessageLeaf, DailyLeaf mirror the
+GPU structs' hashed fields exactly, in the exact preimage order. The leaves
+are the POST-transition values (the GPU's K1 mutates signer status / resets
+daily limits before hashing); callers supply the already-mutated field values,
+exactly as the GPU hashes them.
+
+The leaf/node/empty Merkle combiner lives in github.com/luxfi/crypto/merkle
+(RFC-6962: leaf=keccak256(0x00‖d), node=keccak256(0x01‖L‖R), lone-right
+promotion, empty=keccak256("")). The un-tagged keccak256 (Ethereum Keccak-256,
+0x01 pad — NOT FIPS-202 SHA3, i.e. sha3.NewLegacyKeccak256) used for both the
+leaf-digest preimage and the bridgevm_state_root compose lives in
+github.com/luxfi/crypto/hash. Integers are little-endian, matching the
+kernel's absorb_u32 / absorb_u64.
+
+CRITICAL: the active-bond aggregate is a FULL 128-bit value (BondLo + BondHi
+with carry) — the GPU was fixed (MED-1 / "FIX 4") to accumulate both limbs and
+commit BondHi into both the signer leaf and the compose preimage. This package
+matches that: it accumulates the full 128-bit sum and binds both BondLo and
+BondHi into the composed root. Dropping BondHi would diverge from the GPU.
+
+Normative spec: lux-private/gpu-kernels/backends/common/lux_merkle_fold.hpp,
+ops/bridgevm/cuda/bridgevm_transition.cu, and the CPU oracle in
+backends/vulkan/tests/test_bridgevm_transition_kat.cpp. KAT parity is proven
+in bridgevmroot_test.go against the values all GPU backends + the CPU oracle
+produce.
+
+
+## Functions
+
+### ActiveBond
+
+```go
+func ActiveBond(signers []SignerLeaf) (bondLo, bondHi uint64, active uint32)
+```
+
+ActiveBond returns the FULL 128-bit aggregate Σ(BondLo : BondHi) over active
+signers (Active set, Jailed clear, Tombstoned clear), as a (lo, hi) pair with
+carry, alongside the active-signer count. This is the GPU's post-FIX-4
+accumulation: BondHi is carried, never dropped. Used by Compose and surfaced
+for callers that need the epoch counters. Occupied == 0 slots do not
+contribute.
+
+
+### Compose
+
+```go
+func Compose(
+	parentStateRoot, signerSetRoot, liquidityRoot, inboxRoot, outboxRoot, dailyLimitRoot [Size]byte,
+	epoch, bondLo, bondHi uint64,
+	active uint32,
+) [Size]byte
+```
+
+Compose returns the bridgevm_state_root from the parent root, the five
+sub-roots, and the epoch counters, using the fixed-shape un-tagged keccak256
+composition (this is NOT a Merkle node):
+
+	bridgevm_state_root = keccak256(
+	    parentStateRoot ‖ signerSetRoot ‖ liquidityRoot ‖ inboxRoot ‖
+	    outboxRoot ‖ dailyLimitRoot ‖ epoch_u64_le ‖ bondLo_u64_le ‖
+	    bondHi_u64_le ‖ active_u32_le )
+
+epoch is the finalized current epoch (target epoch on a closing round, else the
+unchanged current epoch). bondLo/bondHi are the full 128-bit active-bond
+aggregate; active is the active-signer count.
+
+
+### DailyLimitRoot
+
+```go
+func DailyLimitRoot(entries []DailyLeaf) [Size]byte
+```
+
+DailyLimitRoot is the tagged binary Merkle root over the active daily-limit
+entries' leaf digests, in ascending slot index. An entry with Status == 0 is
+skipped.
+
+
+### InboxRoot
+
+```go
+func InboxRoot(inbox []MessageLeaf) [Size]byte
+```
+
+InboxRoot is the tagged binary Merkle root over the live inbox messages' leaf
+digests, in ascending slot index. A free slot (Status == 0 && MsgID all-zero)
+is skipped.
+
+
+### LiquidityRoot
+
+```go
+func LiquidityRoot(entries []LiquidityLeaf) [Size]byte
+```
+
+LiquidityRoot is the tagged binary Merkle root over the active liquidity
+entries' leaf digests, in ascending slot index. An entry with Status == 0 is
+skipped.
+
+
+### OutboxRoot
+
+```go
+func OutboxRoot(outbox []MessageLeaf) [Size]byte
+```
+
+OutboxRoot is the tagged binary Merkle root over the live outbox messages' leaf
+digests, in ascending slot index. A free slot (Status == 0 && MsgID all-zero)
+is skipped.
+
+
+### SignerSetRoot
+
+```go
+func SignerSetRoot(signers []SignerLeaf) [Size]byte
+```
+
+SignerSetRoot is the tagged binary Merkle root over the occupied signers' leaf
+digests, in ascending slot index. A signer with Occupied == 0 is skipped. An
+empty occupied set yields keccak256("") (merkle.EmptyRoot).
+
+
+### StateRoot
+
+```go
+func StateRoot(
+	parentStateRoot [Size]byte,
+	signers []SignerLeaf,
+	liquidity []LiquidityLeaf,
+	inbox []MessageLeaf,
+	outbox []MessageLeaf,
+	daily []DailyLeaf,
+	epoch uint64,
+) (stateRoot, signerSetRoot, liquidityRoot, inboxRoot, outboxRoot, dailyLimitRoot [Size]byte, bondLo, bondHi uint64, active uint32)
+```
+
+StateRoot computes the full bridgevm_state_root over the round's POST-transition
+state: the five sub-roots (signer_set, liquidity, inbox, outbox, daily_limit)
+folded as RFC-6962 tagged binary Merkle trees, the full 128-bit active-bond
+aggregate computed over the signer set, then composed with the parent state
+root and finalized epoch. It is byte-identical to lux_&lt;backend>_bridgevm_transition.
+
+epoch is the finalized current epoch the GPU writes into the compose preimage
+(target_epoch = desc.epoch + closing_flag, used as current_epoch on a closing
+round; otherwise the carried current_epoch). The caller resolves it from the
+round descriptor exactly as the kernel does.
+
+
+## Types
+
+### DailyLeaf
+
+DailyLeaf is one bridgevm daily-limit entry in the accelerator's
+state-snapshot layout, holding the POST-reset field values. Its fields are
+hashed, in this exact order, into the leaf preimage:
+
+	AssetID ‖ Status ‖ DailyCapLo ‖ DailyCapHi ‖ UsedTodayLo ‖ UsedTodayHi ‖
+	index   (integers little-endian)
+
+An entry with Status == 0 is skipped, matching the kernel's status-occupied
+check.
+
+
+### LiquidityLeaf
+
+LiquidityLeaf is one bridgevm liquidity entry in the accelerator's
+state-snapshot layout. Its fields are hashed, in this exact order, into the
+leaf preimage:
+
+	ProviderAddr[20] ‖ 0u32 ‖ AssetID ‖ Status ‖ AmountLo ‖ AmountHi ‖
+	FeeAccrualLo ‖ FeeAccrualHi ‖ index   (integers little-endian)
+
+An entry with Status == 0 is skipped, matching the kernel's status-occupied
+check. The 0u32 after ProviderAddr is the GPU struct's _pad_addr.
+
+
+### MessageLeaf
+
+MessageLeaf is one bridgevm message (inbox or outbox) in the accelerator's
+state-snapshot layout. Its fields are hashed, in this exact order, into the
+leaf preimage:
+
+	MsgID[32] ‖ PayloadRoot[32] ‖ Nonce ‖ SrcChain ‖ DstChain ‖ Kind ‖
+	Status ‖ AmountLo ‖ AmountHi ‖ index   (integers little-endian)
+
+A message that is FREE — Status == 0 AND MsgID is all-zero — is skipped,
+matching the kernel's free-slot predicate. (A nonzero MsgID OR a nonzero
+Status makes the slot live and folded.) The agg_signature, signers_bitmap,
+asset_id, signer_count and arrival_height fields of the GPU Message struct are
+NOT part of the leaf preimage and so are absent here.
+
+
+### SignerLeaf
+
+SignerLeaf is one bridgevm signer in the accelerator's state-snapshot layout,
+holding the POST-transition field values. Its fields are hashed, in this exact
+order, into the leaf preimage:
+
+	SignerID ‖ UTXOAddr[20] ‖ 0u32 ‖ BondLo ‖ BondHi ‖ OptInHeight ‖
+	ExitEpoch ‖ SignCount ‖ BLSPubkey[48] ‖ CoronaPubkey[32] ‖ MLDSAPubkey[32] ‖
+	Status ‖ JailUntilEpoch ‖ SlashCount ‖ index   (integers little-endian)
+
+A signer with Occupied == 0 is skipped (not folded), exactly as the kernel
+skips unoccupied slots. The 0u32 after UTXOAddr is the GPU struct's
+_pad_addr, committed as four zero bytes.
+
+

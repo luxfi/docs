@@ -1,0 +1,180 @@
+---
+title: block
+description: Package block is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/xvm/block"
+```
+
+Package block is a generated GoMock package.
+
+
+## Types
+
+### Block
+
+Block defines the common stateless interface for all blocks. There is no
+codec: a block is a self-describing native-ZAP buffer whose bytes are
+authoritative (ID = hash(bytes)); see Parser.ParseBlock.
+
+
+### MockBlock
+
+MockBlock is a mock of Block interface.
+
+
+```go
+func NewMockBlock(ctrl *gomock.Controller) *MockBlock
+```
+
+```go
+func (m *MockBlock) Bytes() []byte
+```
+
+```go
+func (m *MockBlock) EXPECT() *MockBlockMockRecorder
+```
+
+```go
+func (m *MockBlock) Height() uint64
+```
+
+```go
+func (m *MockBlock) ID() ids.ID
+```
+
+```go
+func (m *MockBlock) MerkleRoot() ids.ID
+```
+
+```go
+func (m *MockBlock) Parent() ids.ID
+```
+
+```go
+func (m *MockBlock) Timestamp() time.Time
+```
+
+```go
+func (m *MockBlock) Txs() []*txs.Tx
+```
+
+### MockBlockMockRecorder
+
+MockBlockMockRecorder is the mock recorder for MockBlock.
+
+
+```go
+func (mr *MockBlockMockRecorder) Bytes() *gomock.Call
+```
+
+```go
+func (mr *MockBlockMockRecorder) Height() *gomock.Call
+```
+
+```go
+func (mr *MockBlockMockRecorder) ID() *gomock.Call
+```
+
+```go
+func (mr *MockBlockMockRecorder) MerkleRoot() *gomock.Call
+```
+
+```go
+func (mr *MockBlockMockRecorder) Parent() *gomock.Call
+```
+
+```go
+func (mr *MockBlockMockRecorder) Timestamp() *gomock.Call
+```
+
+```go
+func (mr *MockBlockMockRecorder) Txs() *gomock.Call
+```
+
+### Parser
+
+Parser parses both X-chain txs and blocks. It embeds the codec-free
+txs.Parser (for ParseTx / ParseGenesisTx) and adds native-ZAP block parsing.
+
+
+```go
+func NewCustomParser(
+	fxIndex *txs.FxIndex,
+	clock *mockable.Clock,
+	log log.Logger,
+	fxs []fxs.Fx,
+) (Parser, error)
+```
+
+```go
+func NewParser(fxs []fxs.Fx) (Parser, error)
+```
+
+### StandardBlock
+
+StandardBlock is the X-chain block. The struct is the source of truth; bytes
+is the cached native-ZAP wire encoding. Txs are self-describing via their own
+tx.Bytes(), so a block stores the per-tx byte lengths as a u32 list plus the
+concatenated tx bytes, and Parse re-splits them through txs.Parse (zero copy).
+
+Object fixed section (all offsets object-relative):
+
+	ParentID  32B @ 0
+	Height    u64 @ 32
+	Time      u64 @ 40
+	Root      32B @ 48   (merkle execution root; ids.Empty pre-activation)
+	TxLengths 8B  @ 80   (u32 list ptr — one entry per tx)
+	TxBlob    8B  @ 88   (bytes ptr — concat of each tx.Bytes())
+
+
+```go
+func NewStandardBlock(
+	parentID ids.ID,
+	height uint64,
+	timestamp time.Time,
+	txList []*txs.Tx,
+) (*StandardBlock, error)
+```
+
+```go
+func NewStandardBlockWithRoot(
+	parentID ids.ID,
+	height uint64,
+	timestamp time.Time,
+	root ids.ID,
+	txList []*txs.Tx,
+) (*StandardBlock, error)
+```
+
+```go
+func (b *StandardBlock) Bytes() []byte
+```
+
+```go
+func (b *StandardBlock) Height() uint64
+```
+
+```go
+func (b *StandardBlock) ID() ids.ID
+```
+
+```go
+func (b *StandardBlock) MerkleRoot() ids.ID
+```
+
+```go
+func (b *StandardBlock) Parent() ids.ID
+```
+
+```go
+func (b *StandardBlock) Timestamp() time.Time
+```
+
+```go
+func (b *StandardBlock) Txs() []*txs.Tx
+```
+

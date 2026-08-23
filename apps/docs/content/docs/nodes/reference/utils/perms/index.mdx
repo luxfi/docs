@@ -1,0 +1,43 @@
+---
+title: perms
+description: Package perms
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/perms"
+```
+
+## Functions
+
+### ChmodR
+
+```go
+func ChmodR(dir string, dirOnly bool, perm os.FileMode) error
+```
+
+ChmodR sets the permissions of all directories and optionally files to [perm]
+permissions.
+
+
+### Create
+
+```go
+func Create(filename string, perm os.FileMode) (*os.File, error)
+```
+
+Create a file at [filename] that has [perm] permissions.
+
+
+### WriteFile
+
+```go
+func WriteFile(filename string, data []byte, perm os.FileMode) error
+```
+
+WriteFile writes [data] to [filename] and ensures that [filename] has [perm]
+permissions. Will write atomically on linux/macos and fall back to non-atomic
+ioutil.WriteFile on windows.
+
+

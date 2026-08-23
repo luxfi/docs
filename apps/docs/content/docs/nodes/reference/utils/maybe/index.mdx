@@ -1,0 +1,63 @@
+---
+title: maybe
+description: Package maybe
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/maybe"
+```
+
+## Functions
+
+### Equal
+
+```go
+func Equal[T any](m1 Maybe[T], m2 Maybe[T], equalFunc func(T, T) bool) bool
+```
+
+Equal returns true if both m1 and m2 are nothing or have the same value according to [equalFunc].
+
+
+## Types
+
+### Maybe
+
+Maybe T = Some T | Nothing.
+A data wrapper that allows values to be something [Some T] or nothing [Nothing].
+Invariant: If [hasValue] is false, then [value] is the zero value of type T.
+Maybe is used to wrap types:
+* That can't be represented by nil.
+* That use nil as a valid value instead of an indicator of a missing value.
+For more info see https://en.wikipedia.org/wiki/Option_type
+
+
+```go
+func Bind[T, U any](m Maybe[T], f func(T) U) Maybe[U]
+```
+
+```go
+func Nothing[T any]() Maybe[T]
+```
+
+```go
+func Some[T any](val T) Maybe[T]
+```
+
+```go
+func (m Maybe[T]) HasValue() bool
+```
+
+```go
+func (m Maybe[T]) IsNothing() bool
+```
+
+```go
+func (m Maybe[T]) String() string
+```
+
+```go
+func (m Maybe[T]) Value() T
+```
+

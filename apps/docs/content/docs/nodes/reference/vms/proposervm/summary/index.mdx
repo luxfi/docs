@@ -1,0 +1,27 @@
+---
+title: summary
+description: Package summary
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/proposervm/summary"
+```
+
+## Types
+
+### StateSummary
+
+```go
+func Build(
+	forkHeight uint64,
+	block []byte,
+	coreSummary []byte,
+) (StateSummary, error)
+```
+
+```go
+func Parse(bytes []byte) (StateSummary, error)
+```
+

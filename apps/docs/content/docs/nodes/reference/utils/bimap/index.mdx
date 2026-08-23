@@ -1,0 +1,71 @@
+---
+title: bimap
+description: Package bimap is an in-memory bi-directional map.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/bimap"
+```
+
+Package bimap is an in-memory bi-directional map. Serialization is the
+caller's concern — this type is generic over comparable K/V, and the
+internal Lux wire format is ZAP, which is element-typed. Use a typed
+ZAP schema (or a typed snapshot struct) at the call site to persist a
+bimap; do not bolt a generic marshaler onto BiMap itself.
+
+
+## Types
+
+### BiMap
+
+BiMap is a bi-directional map.
+
+
+```go
+func New[K, V comparable]() *BiMap[K, V]
+```
+
+```go
+func (m *BiMap[K, V]) DeleteKey(key K) (V, bool)
+```
+
+```go
+func (m *BiMap[K, V]) DeleteValue(val V) (K, bool)
+```
+
+```go
+func (m *BiMap[K, V]) GetKey(val V) (K, bool)
+```
+
+```go
+func (m *BiMap[K, V]) GetValue(key K) (V, bool)
+```
+
+```go
+func (m *BiMap[K, _]) HasKey(key K) bool
+```
+
+```go
+func (m *BiMap[_, V]) HasValue(val V) bool
+```
+
+```go
+func (m *BiMap[K, _]) Keys() []K
+```
+
+```go
+func (m *BiMap[K, V]) Len() int
+```
+
+```go
+func (m *BiMap[K, V]) Put(key K, val V) []Entry[K, V]
+```
+
+```go
+func (m *BiMap[_, V]) Values() []V
+```
+
+### Entry
+

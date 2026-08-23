@@ -1,0 +1,39 @@
+---
+title: importtx
+description: Package importtx
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/example/xsvm/cmd/issue/importtx"
+```
+
+## Functions
+
+### AddFlags
+
+```go
+func AddFlags(flags *pflag.FlagSet)
+```
+
+### Command
+
+```go
+func Command() *cobra.Command
+```
+
+### Import
+
+```go
+func Import(ctx context.Context, config *Config) (*status.TxIssuance, error)
+```
+
+## Types
+
+### Config
+
+```go
+func ParseFlags(flags *pflag.FlagSet, args []string) (*Config, error)
+```
+

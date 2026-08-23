@@ -1,0 +1,85 @@
+---
+title: sender
+description: Package sender provides p2p.Sender implementations over ZAP and gRPC transports.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/rpcchainvm/sender"
+```
+
+Package sender provides p2p.Sender implementations over ZAP and gRPC transports.
+
+ZAP is the default transport with zero-copy serialization and minimal overhead.
+gRPC support can be added with the grpc build tag for testing compatibility.
+
+Build tags:
+
+	go build                  # ZAP only (default, production)
+	go build -tags=grpc       # gRPC support (for testing/compatibility)
+
+Usage:
+
+	// ZAP transport (default)
+	s := sender.ZAP(zapConn)
+
+	// gRPC transport (requires -tags=grpc)
+	s := sender.GRPC(senderpb.NewSenderClient(grpcConn))
+
+Both return p2p.Sender with identical behavior, just different wire protocol.
+ZAP provides ~5-10x faster serialization and ~30-50% lower CPU usage.
+
+
+## Functions
+
+### NewZAPClient
+
+```go
+func NewZAPClient(conn *zapwire.Conn) p2p.Sender
+```
+
+NewZAPClient is an alias for ZAP for backwards compatibility.
+Deprecated: Use ZAP() instead.
+
+
+### ZAP
+
+```go
+func ZAP(conn *zapwire.Conn) p2p.Sender
+```
+
+ZAP returns a p2p.Sender using ZAP transport.
+
+
+## Types
+
+### ZAPServer
+
+ZAPServer handles incoming ZAP sender messages and forwards them to warp.Sender
+
+
+```go
+func NewZAPServer(sender warp.Sender) *ZAPServer
+```
+
+```go
+func (s *ZAPServer) Handle(ctx context.Context, msgType zapwire.MessageType, payload []byte) error
+```
+
+```go
+func (s *ZAPServer) HandleSendError(ctx context.Context, payload []byte) error
+```
+
+```go
+func (s *ZAPServer) HandleSendGossip(ctx context.Context, payload []byte) error
+```
+
+```go
+func (s *ZAPServer) HandleSendRequest(ctx context.Context, payload []byte) error
+```
+
+```go
+func (s *ZAPServer) HandleSendResponse(ctx context.Context, payload []byte) error
+```
+

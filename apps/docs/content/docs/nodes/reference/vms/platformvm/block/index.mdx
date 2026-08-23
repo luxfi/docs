@@ -1,0 +1,312 @@
+---
+title: block
+description: Package block is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/block"
+```
+
+Package block is a generated GoMock package.
+
+
+## Types
+
+### AbortBlock
+
+AbortBlock is the canonical P-Chain abort outcome of a ProposalBlock. It
+carries a timestamp and no txs; the struct is the zap buffer.
+
+
+```go
+func NewAbortBlock(
+	timestamp time.Time,
+	parentID ids.ID,
+	height uint64,
+) (*AbortBlock, error)
+```
+
+```go
+func (b AbortBlock) Bytes() []byte
+```
+
+```go
+func (*AbortBlock) DecisionTxs() []*txs.Tx
+```
+
+```go
+func (b AbortBlock) Height() uint64
+```
+
+```go
+func (b AbortBlock) ID() ids.ID
+```
+
+```go
+func (b AbortBlock) InitRuntime(rt *runtime.Runtime)
+```
+
+```go
+func (b AbortBlock) Parent() ids.ID
+```
+
+```go
+func (b AbortBlock) Timestamp() time.Time
+```
+
+```go
+func (b *AbortBlock) Visit(v Visitor) error
+```
+
+### Block
+
+Block is the common stateless interface for all P-chain blocks. Every block
+is a single native-ZAP object; there is no codec and no initialize step —
+the bytes are authoritative and blocks are built by New*Block or read by
+Parse, both of which bind ID = hash(bytes).
+
+
+```go
+func Parse(b []byte) (Block, error)
+```
+
+### CommitBlock
+
+CommitBlock is the canonical P-Chain commit outcome of a ProposalBlock. It
+carries a timestamp and no txs; the struct is the zap buffer.
+
+
+```go
+func NewCommitBlock(
+	timestamp time.Time,
+	parentID ids.ID,
+	height uint64,
+) (*CommitBlock, error)
+```
+
+```go
+func (b CommitBlock) Bytes() []byte
+```
+
+```go
+func (*CommitBlock) DecisionTxs() []*txs.Tx
+```
+
+```go
+func (b CommitBlock) Height() uint64
+```
+
+```go
+func (b CommitBlock) ID() ids.ID
+```
+
+```go
+func (b CommitBlock) InitRuntime(rt *runtime.Runtime)
+```
+
+```go
+func (b CommitBlock) Parent() ids.ID
+```
+
+```go
+func (b CommitBlock) Timestamp() time.Time
+```
+
+```go
+func (b *CommitBlock) Visit(v Visitor) error
+```
+
+### MockBlock
+
+MockBlock is a mock of Block interface.
+
+
+```go
+func NewMockBlock(ctrl *gomock.Controller) *MockBlock
+```
+
+```go
+func (m *MockBlock) Bytes() []byte
+```
+
+```go
+func (m *MockBlock) DecisionTxs() []*txs.Tx
+```
+
+```go
+func (m *MockBlock) EXPECT() *MockBlockMockRecorder
+```
+
+```go
+func (m *MockBlock) Height() uint64
+```
+
+```go
+func (m *MockBlock) ID() ids.ID
+```
+
+```go
+func (m *MockBlock) InitRuntime(rt *runtime.Runtime)
+```
+
+```go
+func (m *MockBlock) Parent() ids.ID
+```
+
+```go
+func (m *MockBlock) Visit(visitor Visitor) error
+```
+
+### MockBlockMockRecorder
+
+MockBlockMockRecorder is the mock recorder for MockBlock.
+
+
+```go
+func (mr *MockBlockMockRecorder) Bytes() *gomock.Call
+```
+
+```go
+func (mr *MockBlockMockRecorder) DecisionTxs() *gomock.Call
+```
+
+```go
+func (mr *MockBlockMockRecorder) Height() *gomock.Call
+```
+
+```go
+func (mr *MockBlockMockRecorder) ID() *gomock.Call
+```
+
+```go
+func (mr *MockBlockMockRecorder) InitRuntime(rt any) *gomock.Call
+```
+
+```go
+func (mr *MockBlockMockRecorder) Parent() *gomock.Call
+```
+
+```go
+func (mr *MockBlockMockRecorder) Visit(visitor any) *gomock.Call
+```
+
+### ProposalBlock
+
+ProposalBlock is the canonical P-Chain proposal block. It carries a
+per-block timestamp, a tail of decision txs (stored as the u32 length list +
+blob), and a single proposal Tx that commits atomically with them.
+
+
+```go
+func NewProposalBlock(
+	timestamp time.Time,
+	parentID ids.ID,
+	height uint64,
+	proposalTx *txs.Tx,
+	decisionTxs []*txs.Tx,
+) (*ProposalBlock, error)
+```
+
+```go
+func (b ProposalBlock) Bytes() []byte
+```
+
+```go
+func (b *ProposalBlock) DecisionTxs() []*txs.Tx
+```
+
+```go
+func (b ProposalBlock) Height() uint64
+```
+
+```go
+func (b ProposalBlock) ID() ids.ID
+```
+
+```go
+func (b ProposalBlock) InitRuntime(rt *runtime.Runtime)
+```
+
+```go
+func (b ProposalBlock) Parent() ids.ID
+```
+
+```go
+func (b ProposalBlock) Timestamp() time.Time
+```
+
+```go
+func (b *ProposalBlock) Tx() *txs.Tx
+```
+
+```go
+func (b *ProposalBlock) Visit(v Visitor) error
+```
+
+### RuntimeInitializable
+
+RuntimeInitializable binds a runtime into a block's embedded txs.
+
+
+### StandardBlock
+
+StandardBlock is the canonical P-Chain standard block. It carries a
+per-block timestamp and an ordered list of decision txs, stored as a u32
+length list + concatenated tx blob in the zap buffer.
+
+
+```go
+func NewStandardBlock(
+	timestamp time.Time,
+	parentID ids.ID,
+	height uint64,
+	txs []*txs.Tx,
+) (*StandardBlock, error)
+```
+
+```go
+func (b StandardBlock) Bytes() []byte
+```
+
+```go
+func (b *StandardBlock) DecisionTxs() []*txs.Tx
+```
+
+```go
+func (b StandardBlock) Height() uint64
+```
+
+```go
+func (b StandardBlock) ID() ids.ID
+```
+
+```go
+func (b StandardBlock) InitRuntime(rt *runtime.Runtime)
+```
+
+```go
+func (b StandardBlock) Parent() ids.ID
+```
+
+```go
+func (b StandardBlock) Timestamp() time.Time
+```
+
+```go
+func (b *StandardBlock) Visit(v Visitor) error
+```
+
+### TimestampedBlock
+
+TimestampedBlock is a Block that carries a per-block timestamp. Every
+canonical P-chain block kind is timestamped.
+
+
+### Visitor
+
+Visitor dispatches by the canonical P-Chain block type. Under
+carries a timestamp and is one of the four canonical kinds.
+
+

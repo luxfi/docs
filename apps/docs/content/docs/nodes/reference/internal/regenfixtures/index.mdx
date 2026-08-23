@@ -1,0 +1,52 @@
+---
+title: main
+description: Command regenfixtures regenerates wire-byte-anchored test fixtures after a wire-format change.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/internal/regenfixtures"
+```
+
+Command regenfixtures regenerates wire-byte-anchored test fixtures
+after a wire-format change.
+
+Usage:
+
+	go run ./internal/regenfixtures -pkg ./p/block
+	go run ./internal/regenfixtures -pkg ./p/block -dry-run
+	go run ./internal/regenfixtures -pkg ./p/block,./p/state
+
+Algorithm:
+
+ 1. Run `go test -v -count=1 &lt;pkg>` and capture stderr+stdout.
+ 2. Parse each failure for `expected: []byte&#123;...}` and `actual: []byte&#123;...}`
+    pairs (testify produces both in Not-equal failures).
+ 3. For each `(expected, actual)` pair, scan the test files in &lt;pkg>
+    using go/parser to find every `[]byte&#123;...}` composite literal.
+    Decode each literal's byte values. If they match `expected`,
+    rewrite that literal in-place with `actual`'s byte values
+    formatted in canonical 16-bytes-per-line layout.
+ 4. Emit a `// Regenerated post-LP-023 ZAP cutover` comment above
+    each rewritten literal (idempotent — skip if already present).
+
+Design notes:
+
+  - AST-based identification means comments inside the original
+    literal (e.g. `// Codec version`) are dropped on regenerate.
+    This is correct: the byte boundaries change with the wire
+    format, so the prior comments would lie.
+
+  - go/printer is not used to write the new literal because we want
+    deterministic 16-bytes-per-line layout. We render the literal
+    ourselves and string-splice it into the source.
+
+  - We disambiguate composite literals by their byte payload, not
+    their position. If the same expected bytes appear in multiple
+    literals in the same file, all are rewritten to the same actual
+    bytes. This is correct iff the test cases are uniquely keyed
+    by their fixture — which is the case for every package we
+    touch (a fixture is one block-or-tx's wire encoding).
+
+

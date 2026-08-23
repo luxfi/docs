@@ -1,0 +1,121 @@
+---
+title: tracker
+description: Package tracker
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/network/tracker"
+```
+
+## Types
+
+### MockTargeter
+
+MockTargeter is a mock implementation of Targeter
+
+
+```go
+func NewMockTargeter(ctrl *gomock.Controller) *MockTargeter
+```
+
+```go
+func (m *MockTargeter) EXPECT() *MockTargeterMockRecorder
+```
+
+```go
+func (m *MockTargeter) TargetUsage() uint64
+```
+
+### MockTargeterMockRecorder
+
+MockTargeterMockRecorder is the mock recorder for MockTargeter
+
+
+```go
+func (mr *MockTargeterMockRecorder) TargetUsage() *gomock.Call
+```
+
+### MockTracker
+
+MockTracker is a mock implementation of Tracker
+
+
+```go
+func NewMockTracker(ctrl *gomock.Controller) *MockTracker
+```
+
+```go
+func (m *MockTracker) EXPECT() *MockTrackerMockRecorder
+```
+
+```go
+func (m *MockTracker) TimeUntilUsage(nodeID ids.NodeID, now time.Time, value float64) time.Duration
+```
+
+```go
+func (m *MockTracker) TotalUsage() float64
+```
+
+```go
+func (m *MockTracker) Usage(nodeID ids.NodeID, now time.Time) float64
+```
+
+### MockTrackerMockRecorder
+
+MockTrackerMockRecorder is the mock recorder for MockTracker
+
+
+```go
+func (mr *MockTrackerMockRecorder) TimeUntilUsage(nodeID, now, value interface{}) *gomock.Call
+```
+
+```go
+func (mr *MockTrackerMockRecorder) TotalUsage() *gomock.Call
+```
+
+```go
+func (mr *MockTrackerMockRecorder) Usage(nodeID, now interface{}) *gomock.Call
+```
+
+### ResourceManager
+
+ResourceManager provides system resource usage metrics
+
+
+```go
+func Manager() ResourceManager
+```
+
+### ResourceTracker
+
+ResourceTracker manages CPU and disk resource tracking
+
+
+```go
+func NewResourceTracker(
+	manager ResourceManager,
+	frequency time.Duration,
+) (ResourceTracker, error)
+```
+
+### Targeter
+
+Targeter determines target resource usage thresholds
+
+
+```go
+func NewTargeter(config *TargeterConfig) Targeter
+```
+
+### TargeterConfig
+
+TargeterConfig defines resource allocation configuration
+
+
+### Tracker
+
+Tracker tracks system resource usage caused by each peer
+
+

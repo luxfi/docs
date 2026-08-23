@@ -1,0 +1,113 @@
+---
+title: lru
+description: Package lru
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/cache/lru"
+```
+
+## Types
+
+### Cache
+
+Cache is a key value store with bounded size. If the size is attempted to be
+exceeded, then an element is removed from the cache before the insertion is
+done, based on evicting the least recently used value.
+
+
+```go
+func NewCache[K comparable, V any](size int) *Cache[K, V]
+```
+
+```go
+func NewCacheWithOnEvict[K comparable, V any](size int, onEvict func(K, V)) *Cache[K, V]
+```
+
+```go
+func (c *Cache[K, _]) Evict(key K)
+```
+
+```go
+func (c *Cache[_, _]) Flush()
+```
+
+```go
+func (c *Cache[K, V]) Get(key K) (V, bool)
+```
+
+```go
+func (c *Cache[_, _]) Len() int
+```
+
+```go
+func (c *Cache[_, _]) PortionFilled() float64
+```
+
+```go
+func (c *Cache[K, V]) Put(key K, value V)
+```
+
+### Deduplicator
+
+Deduplicator is an LRU cache that notifies the objects when they are evicted.
+
+Deprecated: Remove this once the vertex state no longer uses it.
+
+
+```go
+func NewDeduplicator[K comparable, V Evictable[K]](size int) *Deduplicator[K, V]
+```
+
+```go
+func (d *Deduplicator[_, V]) Deduplicate(value V) V
+```
+
+```go
+func (d *Deduplicator[_, _]) Flush()
+```
+
+### Evictable
+
+Evictable allows the object to be notified when it is evicted
+
+Deprecated: Remove this once the vertex state no longer uses it.
+
+
+### SizedCache
+
+SizedCache is a key value store with bounded size. If the size is attempted
+to be exceeded, then elements are removed from the cache until the bound is
+honored, based on evicting the least recently used value.
+
+
+```go
+func NewSizedCache[K comparable, V any](maxSize int, size func(K, V) int) *SizedCache[K, V]
+```
+
+```go
+func (c *SizedCache[K, V]) Evict(key K)
+```
+
+```go
+func (c *SizedCache[K, V]) Flush()
+```
+
+```go
+func (c *SizedCache[K, V]) Get(key K) (V, bool)
+```
+
+```go
+func (c *SizedCache[_, _]) Len() int
+```
+
+```go
+func (c *SizedCache[_, _]) PortionFilled() float64
+```
+
+```go
+func (c *SizedCache[K, V]) Put(key K, value V)
+```
+

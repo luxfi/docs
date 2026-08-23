@@ -1,0 +1,199 @@
+---
+title: linked
+description: Package linked
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/linked"
+```
+
+## Functions
+
+### InsertAfter
+
+```go
+func InsertAfter[T any](l *List[T], v T, location *ListElement[T])
+```
+
+InsertAfter inserts v into a new element immediately after location.
+If location is not in l, l is not modified.
+
+
+### InsertBefore
+
+```go
+func InsertBefore[T any](l *List[T], v T, location *ListElement[T])
+```
+
+InsertBefore inserts v into a new element immediately before location.
+If location is not in l, l is not modified.
+
+
+### PushBack
+
+```go
+func PushBack[T any](l *List[T], v T)
+```
+
+PushBack inserts v into a new element at the back of l.
+
+
+### PushFront
+
+```go
+func PushFront[T any](l *List[T], v T)
+```
+
+PushFront inserts v into a new element at the front of l.
+
+
+## Types
+
+### Hashmap
+
+Hashmap provides an ordered O(1) mapping from keys to values.
+
+Entries are tracked by insertion order.
+
+
+```go
+func NewHashmap[K comparable, V any]() *Hashmap[K, V]
+```
+
+```go
+func NewHashmapWithSize[K comparable, V any](initialSize int) *Hashmap[K, V]
+```
+
+```go
+func (lh *Hashmap[K, V]) Clear()
+```
+
+```go
+func (lh *Hashmap[K, V]) Delete(key K) bool
+```
+
+```go
+func (lh *Hashmap[K, V]) Get(key K) (V, bool)
+```
+
+```go
+func (lh *Hashmap[K, V]) Len() int
+```
+
+```go
+func (lh *Hashmap[K, V]) NewIterator() *Iterator[K, V]
+```
+
+```go
+func (lh *Hashmap[K, V]) Newest() (K, V, bool)
+```
+
+```go
+func (lh *Hashmap[K, V]) Oldest() (K, V, bool)
+```
+
+```go
+func (lh *Hashmap[K, V]) Put(key K, value V)
+```
+
+### Iterator
+
+Iterates over the keys and values in a LinkedHashmap from oldest to newest.
+Assumes the underlying LinkedHashmap is not modified while the iterator is in
+use, except to delete elements that have already been iterated over.
+
+
+```go
+func (it *Iterator[K, V]) Key() K
+```
+
+```go
+func (it *Iterator[K, V]) Next() bool
+```
+
+```go
+func (it *Iterator[K, V]) Value() V
+```
+
+### List
+
+List implements a doubly linked list with a sentinel node.
+
+See: https://en.wikipedia.org/wiki/Doubly_linked_list
+
+This datastructure is designed to be an almost complete drop-in replacement
+for the standard library's "container/list".
+
+The primary design change is to remove all memory allocations from the list
+definition. This allows these lists to be used in performance critical paths.
+Additionally the zero value is not useful. Lists must be created with the
+NewList method.
+
+
+```go
+func NewList[T any]() *List[T]
+```
+
+```go
+func (l *List[T]) Back() *ListElement[T]
+```
+
+```go
+func (l *List[T]) Front() *ListElement[T]
+```
+
+```go
+func (l *List[T]) InsertAfter(e *ListElement[T], location *ListElement[T])
+```
+
+```go
+func (l *List[T]) InsertBefore(e *ListElement[T], location *ListElement[T])
+```
+
+```go
+func (l *List[_]) Len() int
+```
+
+```go
+func (l *List[T]) MoveAfter(e, location *ListElement[T])
+```
+
+```go
+func (l *List[T]) MoveBefore(e, location *ListElement[T])
+```
+
+```go
+func (l *List[T]) MoveToBack(e *ListElement[T])
+```
+
+```go
+func (l *List[T]) MoveToFront(e *ListElement[T])
+```
+
+```go
+func (l *List[T]) PushBack(e *ListElement[T])
+```
+
+```go
+func (l *List[T]) PushFront(e *ListElement[T])
+```
+
+```go
+func (l *List[T]) Remove(e *ListElement[T])
+```
+
+### ListElement
+
+ListElement is an element of a linked list.
+
+
+```go
+func (e *ListElement[T]) Next() *ListElement[T]
+```
+
+```go
+func (e *ListElement[T]) Prev() *ListElement[T]
+```
+

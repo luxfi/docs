@@ -1,0 +1,207 @@
+---
+title: zap
+description: Package zap provides ZAP transport implementation for VM RPC.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/rpcchainvm/zap"
+```
+
+Package zap provides ZAP transport implementation for VM RPC.
+
+
+## Functions
+
+### Dial
+
+```go
+func Dial(ctx context.Context, addr string, config *zapwire.Config) (*zapwire.Conn, error)
+```
+
+Dial connects to a ZAP VM server
+
+
+### NewListener
+
+```go
+func NewListener() (net.Listener, error)
+```
+
+NewListener creates the listener a plugin VM dials back on during ZAP
+handshake bootstrap.
+
+The same-host fast path is a unix-domain socket — no TCP/UDP stack, no
+ephemeral-port exhaustion, filesystem-namespaced. The api/zap Dial infers
+"unix" from the socket-path addr, so a plugin rebuilt against that api
+connects back over the socket with zero code change on its side.
+
+It is OPT-IN via LUXD_VM_UNIX_SOCKET=1 because a plugin binary built against
+an older api/zap still dials "tcp" and would fail on a socket-path addr —
+activating the socket transport is a coordinated node+plugin rebuild. Default
+stays TCP loopback so existing /data/plugins keep working across the upgrade.
+Windows always uses TCP (no unix sockets).
+
+
+## Types
+
+### Client
+
+Client implements chain.ChainVM over ZAP transport
+
+
+```go
+func NewClient(conn *zapwire.Conn, logger log.Logger) *Client
+```
+
+```go
+func (c *Client) BuildBlock(ctx context.Context) (block.Block, error)
+```
+
+```go
+func (c *Client) Close() error
+```
+
+```go
+func (c *Client) Connected(ctx context.Context, nodeID ids.NodeID, nodeVersion *version.Application) error
+```
+
+```go
+func (c *Client) CreateHandlers(ctx context.Context) (map[string]http.Handler, error)
+```
+
+```go
+func (c *Client) Disconnected(ctx context.Context, nodeID ids.NodeID) error
+```
+
+```go
+func (c *Client) GetBlock(ctx context.Context, blkID ids.ID) (block.Block, error)
+```
+
+```go
+func (c *Client) GetBlockIDAtHeight(ctx context.Context, height uint64) (ids.ID, error)
+```
+
+```go
+func (c *Client) GetLastStateSummary(ctx context.Context) (chain.StateSummary, error)
+```
+
+```go
+func (c *Client) GetOngoingSyncStateSummary(ctx context.Context) (chain.StateSummary, error)
+```
+
+```go
+func (c *Client) GetStateSummary(ctx context.Context, height uint64) (chain.StateSummary, error)
+```
+
+```go
+func (c *Client) HealthCheck(ctx context.Context) (block.HealthCheckResult, error)
+```
+
+```go
+func (c *Client) Initialize(ctx context.Context, init block.Init) error
+```
+
+```go
+func (c *Client) LastAccepted(ctx context.Context) (ids.ID, error)
+```
+
+```go
+func (c *Client) LastQuasarHeight() uint64
+```
+
+```go
+func (c *Client) NewHTTPHandler(ctx context.Context) (http.Handler, error)
+```
+
+```go
+func (c *Client) ParseBlock(ctx context.Context, blockBytes []byte) (block.Block, error)
+```
+
+```go
+func (c *Client) ParseStateSummary(ctx context.Context, summaryBytes []byte) (chain.StateSummary, error)
+```
+
+```go
+func (c *Client) SetLastQuasarFinalized(height uint64)
+```
+
+```go
+func (c *Client) SetPreference(ctx context.Context, blkID ids.ID) error
+```
+
+```go
+func (c *Client) SetState(ctx context.Context, state uint32) error
+```
+
+```go
+func (c *Client) Shutdown(ctx context.Context) error
+```
+
+```go
+func (c *Client) StateSyncEnabled(ctx context.Context) (bool, error)
+```
+
+```go
+func (c *Client) SupportsQuasarExport() bool
+```
+
+```go
+func (c *Client) Version(ctx context.Context) (string, error)
+```
+
+```go
+func (c *Client) WaitForEvent(ctx context.Context) (block.Message, error)
+```
+
+### Sender
+
+Sender implements p2p.Sender over ZAP transport
+
+
+```go
+func NewSender(conn *zapwire.Conn) *Sender
+```
+
+```go
+func (s *Sender) SendError(ctx context.Context, nodeID ids.NodeID, requestID uint32, errorCode int32, errorMessage string) error
+```
+
+```go
+func (s *Sender) SendGossip(ctx context.Context, config p2p.SendConfig, msg []byte) error
+```
+
+```go
+func (s *Sender) SendRequest(ctx context.Context, nodeIDs set.Set[ids.NodeID], requestID uint32, request []byte) error
+```
+
+```go
+func (s *Sender) SendResponse(ctx context.Context, nodeID ids.NodeID, requestID uint32, response []byte) error
+```
+
+### Server
+
+Server wraps a VM and serves it over ZAP transport
+
+
+```go
+func NewServer(v vm.VM, logger log.Logger) *Server
+```
+
+```go
+func (s *Server) Addr() net.Addr
+```
+
+```go
+func (s *Server) Close() error
+```
+
+```go
+func (s *Server) Listen(addr string, config *zapwire.Config) error
+```
+
+```go
+func (s *Server) Serve(ctx context.Context) error
+```
+

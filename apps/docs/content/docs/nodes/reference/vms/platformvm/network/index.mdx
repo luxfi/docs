@@ -1,0 +1,67 @@
+---
+title: network
+description: Package network
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/network"
+```
+
+## Types
+
+### Config
+
+### LockedTxVerifier
+
+```go
+func NewLockedTxVerifier(lock sync.Locker, txVerifier TxVerifier) *LockedTxVerifier
+```
+
+```go
+func (l *LockedTxVerifier) VerifyTx(tx *txs.Tx) error
+```
+
+### Network
+
+```go
+func New(
+	log log.Logger,
+	nodeID ids.NodeID,
+	netID ids.ID,
+	vdrs validators.State,
+	txVerifier TxVerifier,
+	mempool mempool.Mempool[*txs.Tx],
+	partialSyncPrimaryNetwork bool,
+	appSender extwarp.Sender,
+	stateLock sync.Locker,
+	state state.Chain,
+	signer warp.Signer,
+	registerer metric.Registerer,
+	config config.Network,
+) (*Network, error)
+```
+
+```go
+func (n *Network) Gossip(ctx context.Context, nodeID ids.NodeID, msgBytes []byte) error
+```
+
+```go
+func (n *Network) IssueTxFromRPC(tx *txs.Tx) error
+```
+
+```go
+func (n *Network) PullGossip(ctx context.Context)
+```
+
+```go
+func (n *Network) PushGossip(ctx context.Context)
+```
+
+### TxVerifier
+
+```go
+func NewZapNativeAdmissionGate(inner TxVerifier) TxVerifier
+```
+

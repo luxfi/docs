@@ -1,0 +1,147 @@
+---
+title: fx
+description: Package fx is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/fx"
+```
+
+Package fx is a generated GoMock package.
+
+
+## Types
+
+### Fx
+
+Fx is the interface a feature extension must implement to support the
+Platform Chain.
+
+
+### MockFx
+
+MockFx is a mock of Fx interface.
+
+
+```go
+func NewMockFx(ctrl *gomock.Controller) *MockFx
+```
+
+```go
+func (m *MockFx) Bootstrapped() error
+```
+
+```go
+func (m *MockFx) Bootstrapping() error
+```
+
+```go
+func (m *MockFx) CreateOutput(arg0 uint64, arg1 any) (any, error)
+```
+
+```go
+func (m *MockFx) EXPECT() *MockFxMockRecorder
+```
+
+```go
+func (m *MockFx) Initialize(arg0 any) error
+```
+
+```go
+func (m *MockFx) VerifyOperation(arg0, arg1, arg2 any, arg3 []any) error
+```
+
+```go
+func (m *MockFx) VerifyPermission(arg0, arg1, arg2, arg3 any) error
+```
+
+```go
+func (m *MockFx) VerifyTransfer(arg0, arg1, arg2, arg3 any) error
+```
+
+### MockFxMockRecorder
+
+MockFxMockRecorder is the mock recorder for MockFx.
+
+
+```go
+func (mr *MockFxMockRecorder) Bootstrapped() *gomock.Call
+```
+
+```go
+func (mr *MockFxMockRecorder) Bootstrapping() *gomock.Call
+```
+
+```go
+func (mr *MockFxMockRecorder) CreateOutput(arg0, arg1 any) *gomock.Call
+```
+
+```go
+func (mr *MockFxMockRecorder) Initialize(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockFxMockRecorder) VerifyOperation(arg0, arg1, arg2, arg3 any) *gomock.Call
+```
+
+```go
+func (mr *MockFxMockRecorder) VerifyPermission(arg0, arg1, arg2, arg3 any) *gomock.Call
+```
+
+```go
+func (mr *MockFxMockRecorder) VerifyTransfer(arg0, arg1, arg2, arg3 any) *gomock.Call
+```
+
+### MockOwner
+
+MockOwner is a mock of Owner interface.
+
+
+```go
+func NewMockOwner(ctrl *gomock.Controller) *MockOwner
+```
+
+```go
+func (m *MockOwner) EXPECT() *MockOwnerMockRecorder
+```
+
+```go
+func (m *MockOwner) InitRuntime(arg0 *runtime.Runtime)
+```
+
+```go
+func (m *MockOwner) InitializeRuntime(arg0 context.Context) error
+```
+
+```go
+func (m *MockOwner) Verify() error
+```
+
+### MockOwnerMockRecorder
+
+MockOwnerMockRecorder is the mock recorder for MockOwner.
+
+
+```go
+func (mr *MockOwnerMockRecorder) InitRuntime(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockOwnerMockRecorder) InitializeRuntime(arg0 any) *gomock.Call
+```
+
+```go
+func (mr *MockOwnerMockRecorder) Verify() *gomock.Call
+```
+
+### OutputOwnersWrapper
+
+OutputOwnersWrapper wraps secp256k1fx.OutputOwners to implement Owner
+
+
+### Owned
+
+### Owner
+

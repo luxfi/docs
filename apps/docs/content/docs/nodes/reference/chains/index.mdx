@@ -1,0 +1,497 @@
+---
+title: chains
+description: bootstrap_sync.go — the node-side wiring for INITIAL SYNC.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/chains"
+```
+
+bootstrap_sync.go — the node-side wiring for INITIAL SYNC. The blockHandler is both
+the fetch transport (chainbootstrap.BlockSource) and the execute sink
+(chainbootstrap.Chain) the engine/chain/bootstrap loop drives, so an EMPTY or BEHIND
+node converges from its local last-accepted to the network frontier by fetch+execute.
+On a quorum chain, every fetched block must carry the same signed certificate used
+by live catch-up; only the sole-validator topology uses the legacy cert-less path.
+When the loop reaches the frontier the driver ends the engine's bootstrap phase and
+flips bootstrapDone, the REAL ready
+signal monitorBootstrap gates the chain on. Decomplected from the live cert/vote
+path: when bsActive is false every method below is inert and the handler behaves
+exactly as it did before initial sync existed.
+
+bootstrap_trust.go — the SEPARATE trust object for INITIAL SYNC, decomplected from
+consensus finality.
+
+The mass-recovery DEADLOCK this fixes: the prior FrontierTip required a ⅔-by-stake quorum
+of the CURRENT total validator set to be CONNECTED before it would name a sync frontier.
+When the recovery TARGETS are themselves validators (a node that crashed IS one of the 5),
+taking them down drops connected stake below ⅔ of the whole set — so on a network of 5
+equal-weight validators, losing 2 leaves 3 (60% &lt; ⅔) and NO node can ever name a frontier
+to recover from. Bootstrap trust was braided into consensus finality, and finality's ⅔ rule
+is mathematically unsatisfiable during a mass outage.
+
+The fix is a type split, NOT a renamed threshold. Consensus keeps deciding FINALITY
+(> ⅔ of CURRENT stake — UNCHANGED). BootstrapTrust decides whether a fetched frontier is
+SAFE TO BEGIN SYNC FROM: a quorum of AUTHENTICATED CONFIGURED beacons that RESPOND, gated by
+a response FLOOR (MinResponses) and an agreement threshold over the RESPONDERS (not over the
+whole set). 3 of 5 reachable beacons all agreeing is a valid sync anchor even though 3 of 5
+stake is not a finalizing supermajority. The two decisions have different threat models and
+are different objects.
+
+nova_poll.go — the NOVA poll-response path, held STRUCTURALLY apart from the
+QUASAR (signed-vote) path.
+
+A Chits message carries NO signature: the wire type is (ChainId, RequestId,
+PreferredId, PreferredIdAtHeight, AcceptedId) and there is no field for one.
+It is a peer saying "this is my preference" — nothing more.
+
+Quasar finality counts only SIGNED votes. The engine authenticates every vote
+before tallying it,
+
+	if len(vote.Signature) == 0 || !voteVerifier.VerifyVote(...) &#123; return }
+
+and a VoteVerifier is wired for exactly the chains with K>1 (see the K>1 arm
+of buildChain). So on any multi-validator chain a Chits-derived Vote is
+dropped BEFORE pending.VoteCount++ — alpha is unreachable by construction and
+the chain polls K-of-K forever with every node-side counter healthy.
+
+The old path braided the two concerns: it synthesised an Accept bit from a
+LOCAL re-Verify, attributed that answer to the sending peer, and handed the
+resulting signature-less consensuschain.Vote to the engine, which threw it
+away. This file makes the braid unrepresentable. A poll response is a
+NovaPollResponse — no Signature field, no Accept field — so it cannot be
+widened into a Quasar vote by assignment, conversion, or a forgotten field.
+The one remaining conversion is unsignedVoteForSoleValidatorChain, and
+receivePollResponse returns before it on any chain that requires signed votes.
+
+pchain_height_vm.go — the node-layer boundary that delivers the REAL P-CHAIN
+EPOCH HEIGHT to the consensus chain engine (the b2 wiring; the LAST
+QUORUM_FINALITY blocker).
+
+THE BUG IT FIXES. The chain engine pins a block's weighted validator set to a
+P-CHAIN height (engine/chain: pChainHeightOf → epochHeightLocked → the SINGLE
+height the set-root commitment, the ⅔-by-stake tally, AND the per-voter pubkey
+resolution are read at). It reads that height by asserting the VM block to a
+`PChainHeight() uint64` (consensus block.SignedBlock). A bare VM block — every
+block the node's plugin VMs (C-Chain EVM, dexvm, …) produce — does NOT expose
+one, so pChainHeightOf returns 0 and the engine resolves the set at P-chain
+height 0: the GENESIS set. That is SAFE (non-empty, identical on every node,
+≤ current) and UNBRICKS finality, but it FREEZES the epoch at genesis: a
+validator that JOINED after genesis is absent from set@0, so its vote is
+dropped and its stake is not counted — finality cannot track a DYNAMIC
+validator set (a departed genesis majority could even collude). This is the
+frozen-set caveat Gate D must sign away.
+
+THE FIX. pChainHeightVM wraps the chain's BlockBuilder (the VM the engine
+builds/parses blocks through) and makes the block the engine sees carry the
+proposer's P-chain epoch height — WITHOUT changing the inner VM's block format,
+IDs, or ledger state:
+
+  - BuildBlock (proposer): build the inner block, then stamp the proposer's
+    live P-chain epoch height H = max(GetCurrentHeight, parentH) (the
+    proposervm selectChildPChainHeight rule — monotone, ≤ current). Return a
+    pChainHeightBlock whose Bytes() are [magic|H|innerBytes] and whose
+    PChainHeight() is H. Every other method (ID, ParentID, Height, Verify,
+    Accept, …) delegates to the inner block — so the block's IDENTITY and the
+    VM's state are the inner VM's, unchanged.
+  - ParseBlock (follower): split [magic|H|innerBytes], parse the inner bytes
+    through the inner VM, and re-attach H. Bytes WITHOUT the magic (a raw inner
+    block from a pre-wrapper peer, GetAncestors, or genesis) parse with H=0 →
+    the SAFE genesis-set fallback — never worse than today.
+
+DETERMINISM is the whole point and is why H must travel IN the gossiped bytes.
+The engine gossips only blk.Bytes(); a follower recovers the block solely via
+ParseBlock(those bytes). The proposer STAMPS H; every follower ADOPTS the
+identical H from the envelope — it never recomputes H from its own (skewing)
+current P-chain view. So every honest node derives the SAME epoch height from
+the SAME signed block, which is the invariant the engine's cert verifier
+requires (engine/chain HandleIncomingCert cross-checks the cert's set-root
+against the set-root WE recompute at OUR epoch height for the block: equal H ⟹
+equal root ⟹ the cert verifies; a post-genesis validator's vote+stake now
+count). A build-time-only stamp would give the proposer a real H but leave
+followers computing a DIFFERENT root from their own height → the cert is
+dropped → finality STALLS on a dynamic set (strictly worse than the genesis
+fallback). That is why the height is carried, not recomputed.
+
+This is a consensus-TRANSPORT framing (an 8-byte height + 4-byte magic prefix
+on the gossiped bytes), NOT a chain/ledger fork: the inner VM's bytes, block
+IDs, and execution state are byte-identical, so there is no re-genesis — only a
+coordinated node upgrade (the whole validator set ships together).
+
+quorum.go — the node-layer wiring that makes the consensus engine's α-of-K
+quorum-cert finality LIVE. The consensus engine (luxfi/consensus
+engine/chain) defines the quorum RULE and the vote/cert topology interfaces;
+THIS file supplies the concrete node implementations the engine needs:
+
+  - blsVoteVerifier  — verifies a validator's BLS signature over the canonical
+    vote message against the chain's validator set (the engine is scheme-
+    agnostic; the node injects BLS).
+  - blsVoteSigner    — signs THIS node's accept votes with its staking BLS key
+    so its signature can be collected into a cert.
+  - validatorStakeSource — supplies per-validator stake so finality is a
+    ⅔-by-STAKE supermajority, not a raw voter count.
+  - networkGossiper.BroadcastVote / GossipCert — the QuorumGossiper transport:
+    a follower broadcasts its signed vote to ALL validators and any node that
+    collects α distinct signed votes gossips the assembled cert, so finality
+    never hinges on one node's inbound Chits (liveness; no proposer-freeze).
+
+Inbound votes/certs arrive as app-gossip and are demuxed in blockHandler.Gossip
+(see manager.go) into engine.HandleIncomingVote / HandleIncomingCert.
+
+statesync_client.go — the wire under state-summary adoption.
+
+The adoption round itself lives in consensus (engine/chain/summary): it decides
+which summary the network stands behind and hands it to the VM. It carries no
+transport at all — no request ids, no pending sets, no timeouts — the same
+division bootstrap draws at BlockSource. This file is the other side of that
+line: it asks the beacons and returns what arrived before the window closed.
+
+Two rounds, two questions. Discovery asks what each beacon holds and carries no
+threshold, because a wrong height there costs one extra entry in the next
+request. Ratification asks the WHOLE beacon set which of those heights it holds
+and attaches each beacon's stake, because that is where the decision is made and
+a sample would let whoever is over-represented in it choose the node's state.
+
+
+## Functions
+
+### CanonicalCheckpointMessage
+
+```go
+func CanonicalCheckpointMessage(id ids.ID, height uint64) []byte
+```
+
+CanonicalCheckpointMessage is the exact byte string a checkpoint authority signs and
+CheckpointVerifier authenticates: a domain-separated, fixed-layout encoding of (id, height) so a
+signature can never be transplanted from another context. 8-byte big-endian height after the
+32-byte id, under a distinct domain tag.
+
+
+### PruneNamingProgress
+
+```go
+func PruneNamingProgress(progress map[ids.ID]*NamingProgress, reported map[ids.ID]StakeWeight, maxRefs int)
+```
+
+PruneNamingProgress drops descents for anchors no longer reported, and — if what
+remains still exceeds maxRefs — the least-progressed of those, until it fits.
+
+Retention is what crosses a wide gap, so it cannot simply be capped at one attempt's
+worth; but it cannot grow without limit either. Anchors nobody reports any more are
+pure cost: no tip's credit walk can reach their refs. Beyond that, keeping the
+descents that have got FURTHEST preserves the most recovery progress per byte.
+
+
+## Types
+
+### AcceptanceSource
+
+AcceptanceSource asks beacons which of `candidates` they have ACCEPTED, injected so the trust
+DECISION stays free of the transport exactly as AncestrySource is. `from` is who to ask: the
+beacons that answered the first question, since they are the ones whose tips the candidates are.
+An implementation returns one reply per answering beacon and returns nothing — rather than
+blocking — when there is nobody to ask.
+
+
+### AcceptedReply
+
+AcceptedReply is one authenticated configured beacon's answer to the SECOND question: which of
+the candidate tips it has ACCEPTED.
+
+The first question asks each beacon for ONE tip, and on a live chain those answers legitimately
+disagree — the chain moves while the answers are in flight, so healthy honest peers name
+different blocks and no set of them clears an agreement threshold. Acceptance does not disagree
+that way: peers at different heights have all accepted the lower tips, so a quorum exists in
+these answers when it does not exist in the tips.
+
+NodeID is authenticated at the transport handshake, so "which beacon said this" is unforgeable;
+the weight applied is that beacon's CONFIGURED stake (TrustedBeacons), never a self-reported one.
+
+
+### AncestrySource
+
+AncestrySource resolves a tip's CONTENT-ADDRESSED ancestry for the ancestor-tolerant tally —
+the SAME parent-linked descent the sync loop trusts. Injected so the trust DECISION (which
+beacons count, the response floor, the agreement threshold) stays separate from the transport.
+
+
+### BeaconReply
+
+BeaconReply is one authenticated configured beacon's report of its accepted frontier tip
+during initial sync. NodeID is authenticated at the transport handshake (a peer cannot forge
+another's identity); Weight is the beacon's CONFIGURED stake from the trust anchor — NOT a
+self-reported value. A reply whose NodeID is not in the policy's TrustedBeacons is ignored.
+
+
+### BlockRef
+
+BlockRef is a parsed block's CONTENT-ADDRESSED identity (id, height, parent) — the only thing
+the ancestor-tolerant tally needs. Decouples the policy from the VM/block types.
+
+
+### BootstrapPolicy
+
+BootstrapPolicy is the default BootstrapTrust: a CONFIGURED-BEACON quorum with a response
+FLOOR and an agreement threshold over the RESPONDERS — a SEPARATE decision from consensus
+finality, with a SEPARATE threat model. It does NOT pass "reachable stake" into the ⅔-of-current-stake
+finality rule (that conflation IS the mass-recovery deadlock). It reuses the ancestor-tolerant
+common-ancestor tally only for HOW to find the agreed frontier; the ACCEPTANCE gate is the
+response floor + responder agreement here.
+
+The three invariants:
+  - INVARIANT 1 (non-circular beacon eligibility): only NodeIDs in TrustedBeacons count, and
+    TrustedBeacons comes from the configured/checkpointed/genesis anchor — NEVER peer
+    self-report. A recovering node never lets arbitrary peers define who is a beacon.
+  - INVARIANT 2 (a floor prevents partition-capture): MinResponses authenticated beacons must
+    respond before any frontier is named; an attacker who partitions the node down to a few
+    beacons cannot capture the frontier. Below the floor, REJECT (or use Checkpoint).
+  - INVARIANT 3 (acceptance ≠ finality): the named Frontier is "safe to begin sync from", not
+    finalized. The node independently re-executes the descent before re-entering consensus.
+
+
+```go
+func (p *BootstrapPolicy) AcceptsFrontier(ctx context.Context, replies []BeaconReply) (*Frontier, error)
+```
+
+```go
+func (p *BootstrapPolicy) CaughtUp(replies []BeaconReply, lastAccepted uint64, heightOf func(ids.ID) (uint64, bool)) bool
+```
+
+### BootstrapTrust
+
+BootstrapTrust is not a consensus-finality oracle.
+It selects a weak-subjective sync frontier from authenticated configured beacons.
+Live block acceptance remains governed exclusively by the consensus ⅔ rule.
+
+
+### ChainConfig
+
+ChainConfig is configuration settings for the current execution.
+[Config] is the user-provided config blob for the chain.
+[Upgrade] is a chain-specific blob for coordinating upgrades.
+
+
+### ChainDBManager
+
+ChainDBManager manages chain database access using a single global ZapDB.
+All chains share one ZapDB instance with prefix-based isolation:
+1. Single database - easier to manage, backup, and query across chains
+2. Prefix isolation - each chain's data is prefixed by its chainID
+3. G-Chain compatible - dgraph can index the entire database for GraphQL queries
+
+
+```go
+func NewChainDBManager(config ChainDBManagerConfig) *ChainDBManager
+```
+
+```go
+func (m *ChainDBManager) GetVMDatabase(chainID ids.ID, chainAlias string) (database.Database, error)
+```
+
+### ChainDBManagerConfig
+
+ChainDBManagerConfig holds configuration for the chain database manager
+
+
+### ChainInfo
+
+ChainInfo is the public view of a locally running chain.
+Returned by Manager.GetChains() and exposed via info.GetChains API.
+
+
+### ChainParameters
+
+ChainParameters defines the chain being created
+
+
+### ChainRouter
+
+ChainRouter is the interface for routing messages to chains.
+This is defined here to avoid circular imports with the node package.
+
+
+### Checkpoint
+
+Checkpoint is an operator-pinned (id, height) the recovering node may anchor to when too few
+beacons respond to form a quorum — the EXPLICIT override for INVARIANT 2's "1 of N reachable"
+case. Absent (nil) ⇒ the default policy REJECTS rather than trusting a captured minority.
+
+INVARIANT 4 (a checkpoint is a SIGNED weak-subjectivity anchor, not a bare config value): the
+checkpoint carries a cryptographic Signature by the configured checkpoint AUTHORITY over its
+(id, height), and AcceptsFrontier trusts it ONLY when CheckpointVerifier authenticates that
+signature. A (id,height) present in a flag/config but UNSIGNED — or signed by a non-authority key
+— is REJECTED (fail closed). This is the crucial hardening: the checkpoint is the one path that
+bypasses the beacon quorum, so a compromised flag must NOT be able to inject a false sync anchor
+without ALSO forging the authority's signature. It is a cryptographic vouch, NEVER a ⅔-live-stake
+tally (that conflation is the very deadlock BootstrapTrust exists to avoid).
+
+
+### CheckpointVerifier
+
+CheckpointVerifier authenticates a Checkpoint's Signature against the configured checkpoint
+AUTHORITY key(s). The node injects a real implementation backed by a PROVEN primitive (Ed25519 /
+BLS — never custom crypto); the policy stays free of any crypto dependency, exactly like
+AncestrySource and heightOf. A nil verifier means no signed anchor is configured, so any
+Checkpoint is untrusted and the below-floor case fails closed.
+
+
+### ConsensusOverrides
+
+ConsensusOverrides carries the consensus parameters an operator set EXPLICITLY
+on the command line. A nil field means "not set", so the network default from
+selectConsensusParams stands.
+
+It exists because parameter selection used to be a pure function of
+(sybilProtection, networkID) and consulted NO operator input, which stranded
+Hanzo L1 36963: a five-validator value network falls to the default branch and
+gets DefaultParams — K=20, α=14, BetaVirtuous=14 — so an uncontested block
+needed FOURTEEN consecutive clean polls and the chain froze at height 3248
+while --consensus-sample-size=5 --consensus-quorum-size=4
+--consensus-commit-threshold=2 sat in the node config reaching nothing. That is
+the same arithmetic isLocalDevNetwork already carves devnet/localnet out for
+("α=14 affirmative votes are unreachable with 3-4 validators"); the carve-out
+keys on networkID, so it cannot help a sovereign L1 whose networkID is its
+chainID.
+
+Separating the two concerns keeps the policy honest: the networkID switch is
+the DEFAULT (mainnet and testnet keep their tuned sets untouched), and an
+explicit operator value is the OVERRIDE. Nothing changes for a node that
+passes no consensus flags.
+
+
+```go
+func (o *ConsensusOverrides) ApplyTo(p consensusconfig.Parameters) consensusconfig.Parameters
+```
+
+### Engine
+
+Engine represents a consensus engine
+
+
+### Frontier
+
+Frontier is the weak-subjective sync anchor BootstrapTrust selects: the block a node descends
+to and re-executes. It is NOT a consensus certificate (see BootstrapTrust). Height is the
+tallied height when named via the ancestor-tolerant path, and 0 (unknown) when named from the
+tips or from acceptance, neither of which fetches the block — the sync loop uses ID; Height is
+diagnostic.
+
+
+### Manager
+
+Manager manages the chains running on this node.
+It can:
+  - Create a chain
+  - Add a registrant. When a chain is created, each registrant calls
+    RegisterChain with the new chain as the argument.
+  - Manage the aliases of chains
+
+
+```go
+func New(config *ManagerConfig) (Manager, error)
+```
+
+### ManagerConfig
+
+### NamingBudget
+
+NamingBudget bounds ONE attempt of the ancestor-tolerant walk. Every field is a
+resource bound and none of them is a safety property: safety comes from the
+verified chunk above, the distinct-voter floor, the agreement threshold over
+responder stake, and the full re-verify each block gets on the descent.
+
+
+### NamingProgress
+
+NamingProgress is one anchor's descent, carried ACROSS attempts.
+
+The depth budget it replaces was a RECOVERABILITY CEILING: a fleet whose straggler
+sat further below the highest tip than the budget allowed could never resolve its
+common ancestor, however many times it retried, because every attempt restarted the
+descent from the tip and ran out at the same place. A budget that resets and a
+cursor that does not are different things; only the second one recovers.
+
+So a budget now bounds ONE ATTEMPT, and the cursor persists. An attempt that runs
+out saves where it stopped and reports incomplete; the next resumes from there and
+gets that much further down. Progress is monotonic, so an arbitrarily large gap is
+crossed in a bounded number of attempts with a bounded cost each.
+
+
+### Nets
+
+Nets holds the currently running chains on this node
+
+
+```go
+func NewNets(
+	nodeID ids.NodeID,
+	configs map[ids.ID]nets.Config,
+) (*Nets, error)
+```
+
+```go
+func (s *Nets) Bootstrapping() []ids.ID
+```
+
+```go
+func (s *Nets) GetOrCreate(chainID ids.ID) (nets.Net, bool)
+```
+
+```go
+func (s *Nets) IsChainBootstrapped(chainID ids.ID) bool
+```
+
+### NovaPollResponse
+
+NovaPollResponse is a peer's UNSIGNED answer to a poll — the normalized
+internal form of an inbound Chits (router op handler.Vote).
+
+It has NO Signature field and NO Accept field, BY CONSTRUCTION. Both omissions
+carry weight:
+
+  - No Signature. A Chits cannot carry one, so a struct with the field would
+    be a lie that the tally path acts on — which is exactly how an unsigned
+    preference used to reach ReceiveVote.
+  - No Accept. The peer never said "accept". The prior code derived that bit
+    from THIS node's re-Verify and then attributed it to the peer, so a
+    systematic local verify failure (already-verified, missing parent, state
+    conflict) manufactured a NEGATIVE vote from an honest validator.
+
+PreferredID is the only payload that survives the router: inbound *p2p.Chits
+is flattened through message.GetContainerBytes, which returns
+m.GetPreferredId() alone — AcceptedId and AcceptedHeight are computed by both
+poll responders and then discarded before any handler sees them. Fields for
+values that can never arrive are omitted rather than shipped as permanent
+zeros; carrying them requires stopping that flattening first.
+
+
+### Ratio
+
+Ratio is an exact rational threshold (e.g. 2/3, 3/4). A value clears it iff
+value > floorOf(whole) — strictly greater, matching the consensus ⅔ floor's semantics.
+
+
+### Registrant
+
+Registrant can register the existence of a chain
+
+
+### StakeWeight
+
+StakeWeight is validator stake in the units the validator manager reports (Weight/Light).
+
+
+### VerifiedAncestryChunk
+
+VerifiedAncestryChunk is one Ancestry response that passed every structural rule.
+It exists so that "verified" is a TYPE rather than a comment: a []BlockRef can be
+anything a peer sent, and only a VerifiedAncestryChunk may reach the index.
+
+WIRE ORDER IS OLDEST-FIRST. GetAncestors frames up to `max` blocks ENDING at the
+requested block, ascending, so the block asked about is the LAST element and the
+deepest ancestor served is the first. The rules below are written against that
+order, not against a guess about it.
+
+

@@ -1,0 +1,93 @@
+---
+title: block
+description: Package block
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/proposervm/block"
+```
+
+## Types
+
+### Block
+
+```go
+func BuildOption(
+	parentID ids.ID,
+	innerBytes []byte,
+) (Block, error)
+```
+
+```go
+func Parse(bytes []byte, chainID ids.ID) (Block, error)
+```
+
+```go
+func ParseWithoutVerification(bytes []byte) (Block, error)
+```
+
+### Epoch
+
+Epoch represents a P-Chain epoch for validator set coordination
+
+
+### Header
+
+```go
+func BuildHeader(
+	chainID ids.ID,
+	parentID ids.ID,
+	bodyID ids.ID,
+) (Header, error)
+```
+
+```go
+func ParseHeader(bytes []byte) (Header, error)
+```
+
+### ParseResult
+
+```go
+func ParseBlocks(blks [][]byte, chainID ids.ID) []ParseResult
+```
+
+### SignedBlock
+
+```go
+func Build(
+	parentID ids.ID,
+	timestamp time.Time,
+	pChainHeight uint64,
+	epoch Epoch,
+	cert *staking.Certificate,
+	blockBytes []byte,
+	chainID ids.ID,
+	key crypto.Signer,
+) (SignedBlock, error)
+```
+
+```go
+func BuildMLDSA(
+	parentID ids.ID,
+	timestamp time.Time,
+	pChainHeight uint64,
+	epoch Epoch,
+	mldsaPub []byte,
+	blockBytes []byte,
+	chainID ids.ID,
+	key *mldsa.PrivateKey,
+) (SignedBlock, error)
+```
+
+```go
+func BuildUnsigned(
+	parentID ids.ID,
+	timestamp time.Time,
+	pChainHeight uint64,
+	epoch Epoch,
+	blockBytes []byte,
+) (SignedBlock, error)
+```
+

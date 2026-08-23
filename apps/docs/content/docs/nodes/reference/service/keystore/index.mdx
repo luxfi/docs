@@ -1,0 +1,41 @@
+---
+title: keystore
+description: Package keystore
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/service/keystore"
+```
+
+## Types
+
+### BlockchainKeystore
+
+### Client
+
+Client interface for Lux Keystore API Endpoint
+
+Deprecated: The Keystore API is deprecated. Dedicated wallets should be used
+instead.
+
+
+```go
+func NewClient(uri string) Client
+```
+
+### ExportUserArgs
+
+### ExportUserReply
+
+### ImportUserArgs
+
+### Keystore
+
+```go
+func New(log log.Logger, db database.Database) Keystore
+```
+
+### ListUsersReply
+

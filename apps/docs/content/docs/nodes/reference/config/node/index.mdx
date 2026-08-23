@@ -1,0 +1,48 @@
+---
+title: node
+description: Package node
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/config/node"
+```
+
+## Types
+
+### APIConfig
+
+### APIIndexerConfig
+
+### BootstrapConfig
+
+### Config
+
+Config contains all of the configurations of a Lux node.
+
+
+### DatabaseConfig
+
+### HTTPConfig
+
+### IPConfig
+
+### ProcessContext
+
+### StakingConfig
+
+```go
+func (c *StakingConfig) DeriveNodeID(chainID ids.ID) (ids.NodeID, error)
+```
+
+```go
+func (c *StakingConfig) DeriveTypedNodeID(chainID ids.ID) (ids.TypedNodeID, error)
+```
+
+```go
+func (c *StakingConfig) IsStrictPQ() bool
+```
+
+### StateSyncConfig
+

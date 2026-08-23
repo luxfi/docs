@@ -1,0 +1,100 @@
+---
+title: pubsub
+description: Package pubsub
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/pubsub"
+```
+
+## Types
+
+### AddAddresses
+
+AddAddresses command to add addresses
+
+Deprecated: The pubsub server is deprecated.
+
+
+### Command
+
+Command execution command
+
+Deprecated: The pubsub server is deprecated.
+
+
+```go
+func (c *Command) String() string
+```
+
+### Filter
+
+### FilterParam
+
+```go
+func NewFilterParam() *FilterParam
+```
+
+```go
+func (f *FilterParam) Add(bl ...[]byte) error
+```
+
+```go
+func (f *FilterParam) Check(addr []byte) bool
+```
+
+```go
+func (f *FilterParam) Filter() bloom.Filter
+```
+
+```go
+func (f *FilterParam) Len() int
+```
+
+```go
+func (f *FilterParam) NewSet()
+```
+
+```go
+func (f *FilterParam) SetFilter(filter bloom.Filter) bloom.Filter
+```
+
+### Filterer
+
+### NewBloom
+
+NewBloom command for a new bloom filter
+
+Deprecated: The pubsub server is deprecated.
+
+
+```go
+func (c *NewBloom) IsParamsValid() bool
+```
+
+### NewSet
+
+NewSet command for a new map set
+
+Deprecated: The pubsub server is deprecated.
+
+
+### Server
+
+Server maintains the set of active clients and sends messages to the clients.
+
+
+```go
+func New(log log.Logger) *Server
+```
+
+```go
+func (s *Server) Publish(parser Filterer)
+```
+
+```go
+func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request)
+```
+

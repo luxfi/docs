@@ -1,0 +1,68 @@
+---
+title: setmap
+description: Package setmap
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/setmap"
+```
+
+## Types
+
+### Entry
+
+### SetMap
+
+SetMap is a map to a set where all sets are non-overlapping.
+
+
+```go
+func New[K, V comparable]() *SetMap[K, V]
+```
+
+```go
+func (m *SetMap[K, V]) DeleteKey(key K) (set.Set[V], bool)
+```
+
+```go
+func (m *SetMap[K, V]) DeleteOverlapping(set set.Set[V]) []Entry[K, V]
+```
+
+```go
+func (m *SetMap[K, V]) DeleteValue(val V) (K, set.Set[V], bool)
+```
+
+```go
+func (m *SetMap[K, V]) GetKey(val V) (K, bool)
+```
+
+```go
+func (m *SetMap[K, V]) GetSet(key K) (set.Set[V], bool)
+```
+
+```go
+func (m *SetMap[K, _]) HasKey(key K) bool
+```
+
+```go
+func (m *SetMap[_, V]) HasOverlap(set set.Set[V]) bool
+```
+
+```go
+func (m *SetMap[_, V]) HasValue(val V) bool
+```
+
+```go
+func (m *SetMap[K, V]) Len() int
+```
+
+```go
+func (m *SetMap[K, V]) LenValues() int
+```
+
+```go
+func (m *SetMap[K, V]) Put(key K, set set.Set[V]) []Entry[K, V]
+```
+

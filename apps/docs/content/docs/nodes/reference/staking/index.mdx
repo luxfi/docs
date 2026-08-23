@@ -1,0 +1,190 @@
+---
+title: staking
+description: Package staking includes a thin HTTP client to the external Lux KMS service (~/work/lux/kms, github.com/luxfi/kms).
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/staking"
+```
+
+Package staking includes a thin HTTP client to the external Lux KMS
+service (~/work/lux/kms, github.com/luxfi/kms). The KMS service speaks
+JSON over HTTP as its public contract — this file therefore stays on
+json/v2 by design. Do NOT migrate to ZAP: the wire format here is
+defined by the external service, not by us. Internal Lux paths that
+consume the keys MUST hash or copy the result into typed Go values
+before any internal codec.
+
+Not to be confused with Hanzo KMS (~/work/hanzo/kms) which serves
+Hanzoai apps — Lux blockchain node staking uses Lux KMS only.
+
+
+## Functions
+
+### CheckHybridSignature
+
+```go
+func CheckHybridSignature(cert *Certificate, pqPubKey []byte, msg []byte, classicalSig, pqSig []byte) error
+```
+
+CheckHybridSignature verifies both classical (ECDSA/RSA) and post-quantum (ML-DSA) signatures.
+This provides defense-in-depth: if either algorithm is broken, the other still protects.
+
+
+### CheckSignature
+
+```go
+func CheckSignature(cert *Certificate, msg []byte, signature []byte) error
+```
+
+CheckSignature verifies that the signature is a valid signature over signed
+from the certificate.
+
+Ref: https://github.com/golang/go/blob/go1.19.12/src/crypto/x509/x509.go#L793-L797
+Ref: https://github.com/golang/go/blob/go1.19.12/src/crypto/x509/x509.go#L816-L879
+
+
+### InitNodePQKeyPair
+
+```go
+func InitNodePQKeyPair(keyPath, pubKeyPath string) error
+```
+
+InitNodePQKeyPair generates and stores an ML-DSA key pair for hybrid staking.
+The keys will be placed at [keyPath] and [pubKeyPath].
+If there is already a file at [keyPath], returns nil (no-op).
+
+
+### InitNodeStakingKeyPair
+
+```go
+func InitNodeStakingKeyPair(keyPath, certPath string) error
+```
+
+InitNodeStakingKeyPair generates a self-signed TLS key/cert pair to use in
+staking. The key and files will be placed at [keyPath] and [certPath],
+respectively. If there is already a file at [keyPath], returns nil.
+
+
+### LoadTLSCertFromBytes
+
+```go
+func LoadTLSCertFromBytes(keyBytes, certBytes []byte) (*tls.Certificate, error)
+```
+
+### LoadTLSCertFromFiles
+
+```go
+func LoadTLSCertFromFiles(keyPath, certPath string) (*tls.Certificate, error)
+```
+
+### NewCertAndKeyBytes
+
+```go
+func NewCertAndKeyBytes() ([]byte, []byte, error)
+```
+
+Creates a new staking private key / staking certificate pair.
+Returns the PEM byte representations of both.
+
+
+### NewCertAndKeyBytesFromKey
+
+```go
+func NewCertAndKeyBytesFromKey(key *ecdsa.PrivateKey) ([]byte, []byte, error)
+```
+
+NewCertAndKeyBytesFromKey creates a staking cert from an existing ECDSA P-256 private key.
+This allows deterministic NodeID generation from a seed.
+IMPORTANT: Uses deterministic signing for reproducible certificates.
+
+
+### NewTLSCert
+
+```go
+func NewTLSCert() (*tls.Certificate, error)
+```
+
+### ValidateRSAPublicKeyIsWellFormed
+
+```go
+func ValidateRSAPublicKeyIsWellFormed(pub *rsa.PublicKey) error
+```
+
+ValidateRSAPublicKeyIsWellFormed validates the given RSA public key
+
+
+### VerifyPQSignature
+
+```go
+func VerifyPQSignature(pubKeyBytes, msg, sig []byte) error
+```
+
+VerifyPQSignature verifies an ML-DSA signature given a public key
+
+
+## Types
+
+### Certificate
+
+Certificate is an alias to ids.Certificate
+
+
+```go
+func ParseCertificate(bytes []byte) (*Certificate, error)
+```
+
+### KMSConfig
+
+KMSConfig for staking key retrieval
+
+
+### KMSStakingKeys
+
+KMSStakingKeys holds the staking key material from KMS
+
+
+```go
+func FetchFromKMS(cfg KMSConfig) (*KMSStakingKeys, error)
+```
+
+```go
+func FetchFromKMSEnv() (*KMSStakingKeys, error)
+```
+
+### MLDSAPublicKey
+
+MLDSAPublicKey wraps an ML-DSA public key to satisfy the crypto.PublicKey interface
+
+
+### PQKeyPair
+
+PQKeyPair represents a post-quantum ML-DSA key pair for hybrid staking
+
+
+```go
+func LoadPQKeyPair(keyPath, pubKeyPath string) (*PQKeyPair, error)
+```
+
+```go
+func NewPQKeyPair() (*PQKeyPair, error)
+```
+
+```go
+func (kp *PQKeyPair) PrivateKeyBytes() []byte
+```
+
+```go
+func (kp *PQKeyPair) PublicKeyBytes() []byte
+```
+
+```go
+func (kp *PQKeyPair) Sign(msg []byte) ([]byte, error)
+```
+
+```go
+func (kp *PQKeyPair) Verify(msg, sig []byte) bool
+```
+

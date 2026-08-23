@@ -1,0 +1,659 @@
+---
+title: dialer
+description: Package dialer
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/network/dialer"
+```
+
+## Functions
+
+### DestinationFromPublicKeys
+
+```go
+func DestinationFromPublicKeys(edPublicKey, xPublicKey []byte) ([endpoints.RNSDestinationLen]byte, error)
+```
+
+DestinationFromPublicKeys computes the destination hash from public keys.
+This is useful for computing destinations without creating full identity objects.
+
+
+### VerifyWithPubKey
+
+```go
+func VerifyWithPubKey(publicKey, message, signature []byte) bool
+```
+
+VerifyWithPubKey is an alias for VerifyWithPublicKey.
+Used by the RNS link protocol.
+
+
+### VerifyWithPublicKey
+
+```go
+func VerifyWithPublicKey(publicKey, message, signature []byte) bool
+```
+
+VerifyWithPublicKey verifies a signature using an external public key.
+This is a static method for verifying signatures from other identities.
+
+
+## Types
+
+### Announce
+
+Announce represents a Reticulum destination announcement.
+
+
+```go
+func UnmarshalAnnounce(data []byte) (*Announce, error)
+```
+
+```go
+func (a *Announce) Marshal() []byte
+```
+
+```go
+func (a *Announce) Sign(priv ed25519.PrivateKey)
+```
+
+```go
+func (a *Announce) SignableBytes() []byte
+```
+
+```go
+func (a *Announce) Verify() bool
+```
+
+```go
+func (a *Announce) VerifyDestination() bool
+```
+
+### AnnounceEntry
+
+AnnounceEntry contains information about a known destination.
+
+
+### AnnounceHandler
+
+AnnounceHandler receives validated announcements.
+
+
+### AnnounceHandlerFunc
+
+AnnounceHandlerFunc adapts a function to AnnounceHandler.
+
+
+```go
+func (f AnnounceHandlerFunc) OnAnnounce(a *Announce) error
+```
+
+### Announcer
+
+Announcer manages announcement creation, validation, and propagation.
+
+
+```go
+func NewAnnouncer(config AnnouncerConfig, logger log.Logger) *Announcer
+```
+
+```go
+func (a *Announcer) AddHandler(h AnnounceHandler)
+```
+
+```go
+func (a *Announcer) CreateAnnounce() (*Announce, error)
+```
+
+```go
+func (a *Announcer) DestTable() *DestTable
+```
+
+```go
+func (a *Announcer) HandleReceived(data []byte) (*Announce, error)
+```
+
+```go
+func (a *Announcer) Lookup(dest [AnnounceDestLen]byte) *Announce
+```
+
+```go
+func (a *Announcer) SetBroadcastFunc(fn func(*Announce) error)
+```
+
+```go
+func (a *Announcer) SetIdentity(identity *RNSIdentity, appData []byte)
+```
+
+```go
+func (a *Announcer) Start()
+```
+
+```go
+func (a *Announcer) Stop()
+```
+
+```go
+func (a *Announcer) Validate(ann *Announce) error
+```
+
+### AnnouncerConfig
+
+AnnouncerConfig configures the Announcer.
+
+
+```go
+func DefaultAnnouncerConfig() AnnouncerConfig
+```
+
+### Config
+
+### DNSCacheConfig
+
+DNSCacheConfig configures the DNS resolution cache.
+
+
+```go
+func DefaultDNSCacheConfig() DNSCacheConfig
+```
+
+### DestTable
+
+DestTable tracks destinations with LRU eviction and expiry.
+
+
+```go
+func NewDestTable(maxSize int, expiry time.Duration) *DestTable
+```
+
+```go
+func (t *DestTable) All() []*Announce
+```
+
+```go
+func (t *DestTable) Get(dest [AnnounceDestLen]byte) *Announce
+```
+
+```go
+func (t *DestTable) Len() int
+```
+
+```go
+func (t *DestTable) Prune() int
+```
+
+```go
+func (t *DestTable) Put(a *Announce) bool
+```
+
+```go
+func (t *DestTable) Remove(dest [AnnounceDestLen]byte)
+```
+
+### Dialer
+
+Dialer attempts to create a connection with the provided IP/port pair
+
+
+```go
+func NewDialer(network string, dialerConfig Config, logger log.Logger) Dialer
+```
+
+### EndpointDialer
+
+EndpointDialer attempts to create a connection with IP:port, hostname:port, or RNS destination.
+
+
+```go
+func NewEndpointDialer(network string, config EndpointDialerConfig, logger log.Logger) EndpointDialer
+```
+
+### EndpointDialerConfig
+
+EndpointDialerConfig extends Config with DNS and RNS settings.
+
+
+### HybridIdentity
+
+HybridIdentity represents a post-quantum hybrid RNS identity.
+It combines classical (Ed25519/X25519) and post-quantum (ML-DSA-65/ML-KEM-768)
+algorithms for TLS 1.3-like hybrid security.
+
+
+```go
+func LoadHybridIdentity(path string) (*HybridIdentity, error)
+```
+
+```go
+func LoadOrGenerateHybridIdentity(path string) (*HybridIdentity, error)
+```
+
+```go
+func NewHybridIdentity() (*HybridIdentity, error)
+```
+
+```go
+func (id *HybridIdentity) Close() error
+```
+
+```go
+func (id *HybridIdentity) Destination() [endpoints.RNSDestinationLen]byte
+```
+
+```go
+func (id *HybridIdentity) Hash() [endpoints.RNSDestinationLen]byte
+```
+
+```go
+func (id *HybridIdentity) HybridDecapsulate(ciphertext []byte) ([]byte, error)
+```
+
+```go
+func (id *HybridIdentity) HybridEncapsulate(recipientPub *HybridPublicIdentity) ([]byte, []byte, error)
+```
+
+```go
+func (id *HybridIdentity) HybridKEMPublicKey() []byte
+```
+
+```go
+func (id *HybridIdentity) IsHybrid() bool
+```
+
+```go
+func (id *HybridIdentity) MLDSAPublicKey() []byte
+```
+
+```go
+func (id *HybridIdentity) PublicIdentity() (*HybridPublicIdentity, error)
+```
+
+```go
+func (id *HybridIdentity) Save(path string) error
+```
+
+```go
+func (id *HybridIdentity) Sign(message []byte) ([]byte, error)
+```
+
+```go
+func (id *HybridIdentity) SignEd25519(message []byte) []byte
+```
+
+```go
+func (id *HybridIdentity) SignMLDSA(message []byte) ([]byte, error)
+```
+
+```go
+func (id *HybridIdentity) SigningPublicKey() []byte
+```
+
+```go
+func (id *HybridIdentity) ToClassicalIdentity() (*RNSIdentity, error)
+```
+
+```go
+func (id *HybridIdentity) Verify(message, signature []byte) bool
+```
+
+```go
+func (id *HybridIdentity) X25519PublicKey() [x25519KeySize]byte
+```
+
+### HybridPublicIdentity
+
+HybridPublicIdentity represents the public portion of a hybrid identity.
+Used for verifying signatures and encapsulating secrets to remote peers.
+
+
+```go
+func NewHybridPublicIdentity(
+	edPubKey, xPubKey []byte,
+	mldsaPubKey *mldsa.PublicKey,
+	hybridKEMPubKey kem.PublicKey,
+) (*HybridPublicIdentity, error)
+```
+
+```go
+func UnmarshalHybridPublicIdentity(data []byte) (*HybridPublicIdentity, error)
+```
+
+```go
+func (pub *HybridPublicIdentity) Destination() [endpoints.RNSDestinationLen]byte
+```
+
+```go
+func (pub *HybridPublicIdentity) HybridKEMPublicKey() []byte
+```
+
+```go
+func (pub *HybridPublicIdentity) MLDSAPublicKey() []byte
+```
+
+```go
+func (pub *HybridPublicIdentity) MarshalBinary() ([]byte, error)
+```
+
+```go
+func (pub *HybridPublicIdentity) SigningPublicKey() []byte
+```
+
+```go
+func (pub *HybridPublicIdentity) Verify(message, signature []byte) bool
+```
+
+```go
+func (pub *HybridPublicIdentity) X25519PublicKey() [x25519KeySize]byte
+```
+
+### PublicIdentity
+
+PublicIdentity represents a read-only identity from public keys.
+This is used to verify signatures and encrypt messages to a remote identity.
+
+
+```go
+func NewPublicIdentity(edPublicKey, xPublicKey []byte) (*PublicIdentity, error)
+```
+
+```go
+func UnmarshalPublicIdentity(data []byte) (*PublicIdentity, error)
+```
+
+```go
+func (pi *PublicIdentity) Destination() [endpoints.RNSDestinationLen]byte
+```
+
+```go
+func (pi *PublicIdentity) EncryptionPublicKey() []byte
+```
+
+```go
+func (pi *PublicIdentity) MarshalBinary() ([]byte, error)
+```
+
+```go
+func (pi *PublicIdentity) PublicKey() []byte
+```
+
+```go
+func (pi *PublicIdentity) Verify(message, signature []byte) bool
+```
+
+### RNSAnnouncer
+
+RNSAnnouncer wraps Announcer with the interface expected by rns_transport.go.
+
+
+```go
+func NewRNSAnnouncer(identity *RNSIdentity, config RNSAnnouncerConfig, loggers ...log.Logger) *RNSAnnouncer
+```
+
+```go
+func (a *RNSAnnouncer) AddEntry(entry *AnnounceEntry)
+```
+
+```go
+func (a *RNSAnnouncer) Announce() error
+```
+
+```go
+func (a *RNSAnnouncer) GetTable() map[[endpoints.RNSDestinationLen]byte]*AnnounceEntry
+```
+
+```go
+func (a *RNSAnnouncer) Lookup(dest [endpoints.RNSDestinationLen]byte) *Announce
+```
+
+```go
+func (a *RNSAnnouncer) LookupEntry(dest [endpoints.RNSDestinationLen]byte) (*AnnounceEntry, error)
+```
+
+```go
+func (a *RNSAnnouncer) ProcessAnnouncement(packet []byte, transportAddr netip.AddrPort) error
+```
+
+```go
+func (a *RNSAnnouncer) RegisterHandler(handler interface{})
+```
+
+```go
+func (a *RNSAnnouncer) Size() int
+```
+
+```go
+func (a *RNSAnnouncer) Start() error
+```
+
+### RNSAnnouncerConfig
+
+RNSAnnouncerConfig configures the RNS announcer.
+
+
+```go
+func DefaultRNSAnnouncerConfig() RNSAnnouncerConfig
+```
+
+### RNSConfig
+
+RNSConfig configures the Reticulum Network Stack transport.
+
+
+```go
+func DefaultRNSConfig() RNSConfig
+```
+
+### RNSIdentity
+
+RNSIdentity represents a Reticulum Network Stack identity.
+It consists of an Ed25519 keypair for signing and an X25519 keypair for encryption.
+The destination hash is derived from the public keys.
+
+
+```go
+func LoadOrGenerateIdentity(path string) (*RNSIdentity, error)
+```
+
+```go
+func LoadRNSIdentity(path string) (*RNSIdentity, error)
+```
+
+```go
+func NewRNSIdentity() (*RNSIdentity, error)
+```
+
+```go
+func (id *RNSIdentity) Close() error
+```
+
+```go
+func (id *RNSIdentity) Decrypt(ephemeralPublicKey []byte) (sharedSecret []byte, err error)
+```
+
+```go
+func (id *RNSIdentity) Destination() [endpoints.RNSDestinationLen]byte
+```
+
+```go
+func (id *RNSIdentity) Encrypt(recipientXPublicKey []byte) (ephemeralPub []byte, sharedSecret []byte, err error)
+```
+
+```go
+func (id *RNSIdentity) EncryptionPublicKey() []byte
+```
+
+```go
+func (id *RNSIdentity) Hash() [endpoints.RNSDestinationLen]byte
+```
+
+```go
+func (id *RNSIdentity) PublicKey() []byte
+```
+
+```go
+func (id *RNSIdentity) Save(path string) error
+```
+
+```go
+func (id *RNSIdentity) Sign(message []byte) []byte
+```
+
+```go
+func (id *RNSIdentity) SigningPublicKey() []byte
+```
+
+```go
+func (id *RNSIdentity) Verify(message, signature []byte) bool
+```
+
+```go
+func (id *RNSIdentity) X25519Exchange(peerPublicKey [x25519KeySize]byte) ([x25519KeySize]byte, error)
+```
+
+```go
+func (id *RNSIdentity) X25519PublicKey() [x25519KeySize]byte
+```
+
+### RNSLink
+
+RNSLink represents an encrypted bidirectional link between two RNS identities.
+Supports both classical (X25519-only) and hybrid (X25519 + ML-KEM-768) modes.
+
+
+```go
+func NewHybridRNSLink(conn net.Conn, identity *HybridIdentity) *RNSLink
+```
+
+```go
+func NewRNSLink(conn net.Conn, identity *RNSIdentity) *RNSLink
+```
+
+```go
+func (l *RNSLink) Close() error
+```
+
+```go
+func (l *RNSLink) Handshake(initiator bool, peerDestination [endpoints.RNSDestinationLen]byte) error
+```
+
+```go
+func (l *RNSLink) IsEstablished() bool
+```
+
+```go
+func (l *RNSLink) IsHybrid() bool
+```
+
+```go
+func (l *RNSLink) LocalAddr() net.Addr
+```
+
+```go
+func (l *RNSLink) PeerDestination() [endpoints.RNSDestinationLen]byte
+```
+
+```go
+func (l *RNSLink) PeerIdentity() *HybridPublicIdentity
+```
+
+```go
+func (l *RNSLink) Read(b []byte) (int, error)
+```
+
+```go
+func (l *RNSLink) RemoteAddr() net.Addr
+```
+
+```go
+func (l *RNSLink) SetDeadline(t time.Time) error
+```
+
+```go
+func (l *RNSLink) SetReadDeadline(t time.Time) error
+```
+
+```go
+func (l *RNSLink) SetWriteDeadline(t time.Time) error
+```
+
+```go
+func (l *RNSLink) Write(b []byte) (int, error)
+```
+
+### RNSTransport
+
+RNSTransport provides connectivity over Reticulum Network Stack.
+Implementations wrap RNS Links as net.Conn interfaces.
+
+
+```go
+func NewRNSTransport(config RNSConfig, logger log.Logger) RNSTransport
+```
+
+### ZWingDialer
+
+ZWingDialer wraps an underlying `EndpointDialer` so every produced
+`net.Conn` is upgraded with a Z-Wing 1-RTT mutual-auth handshake.
+
+The base dialer is responsible for picking the transport (plain TCP
+or RNS mesh link); the Z-Wing layer is identical in both cases —
+the secure channel rides byte-for-byte over whatever bytes the base
+transport delivers.
+
+
+```go
+func NewZWingDialer(base EndpointDialer, cfg ZWingDialerConfig, logger log.Logger) (*ZWingDialer, error)
+```
+
+```go
+func (z *ZWingDialer) Dial(
+	ctx context.Context,
+	ip netip.AddrPort,
+	expectedRemote *zwing.IdentityPublic,
+) (net.Conn, error)
+```
+
+```go
+func (z *ZWingDialer) DialEndpoint(
+	ctx context.Context,
+	endpoint endpoints.Endpoint,
+	expectedRemote *zwing.IdentityPublic,
+) (net.Conn, error)
+```
+
+```go
+func (z *ZWingDialer) Wrap(raw net.Conn, expectedRemote *zwing.IdentityPublic) (net.Conn, error)
+```
+
+### ZWingDialerConfig
+
+ZWingDialerConfig configures a Z-Wing-secured dialer.
+
+
+### ZWingListener
+
+ZWingListener wraps a raw TCP/RNS listener so every accepted
+connection is post-handshake by the time the caller sees it. The
+listener spec mirrors `zwing.Listen` but is built on top of any
+`net.Listener` to reuse the existing RNS / TCP listener plumbing.
+
+
+```go
+func NewZWingListener(raw net.Listener, cfg ZWingDialerConfig, logger log.Logger) (*ZWingListener, error)
+```
+
+```go
+func (l *ZWingListener) Accept() (net.Conn, error)
+```
+
+```go
+func (l *ZWingListener) Addr() net.Addr
+```
+
+```go
+func (l *ZWingListener) Close() error
+```
+

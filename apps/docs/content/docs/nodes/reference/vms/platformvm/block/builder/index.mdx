@@ -1,0 +1,23 @@
+---
+title: builder
+description: Package builder
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/platformvm/block/builder"
+```
+
+## Types
+
+### Builder
+
+```go
+func New(
+	mempool mempool.Mempool[*txs.Tx],
+	txExecutorBackend *txexecutor.Backend,
+	blkManager blockexecutor.Manager,
+) Builder
+```
+

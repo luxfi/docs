@@ -1,0 +1,118 @@
+---
+title: trace
+description: Package trace provides tracing primitives.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/trace"
+```
+
+Package trace provides tracing primitives. The package ships a
+no-op tracer suitable for ZAP-native production builds; a real
+exporter implementation lives outside the node tree and plugs in
+via the Tracer interface.
+
+
+## Types
+
+### Config
+
+Config holds tracing configuration
+
+
+### EventOption
+
+EventOption configures events
+
+
+### ExporterConfig
+
+ExporterConfig holds exporter configuration
+
+
+### ExporterType
+
+ExporterType represents the type of trace exporter
+
+
+```go
+func ExporterTypeFromString(s string) (ExporterType, error)
+```
+
+```go
+func (t ExporterType) MarshalJSON() ([]byte, error)
+```
+
+```go
+func (t ExporterType) String() string
+```
+
+```go
+func (t *ExporterType) UnmarshalJSON(b []byte) error
+```
+
+### KeyValue
+
+KeyValue represents a key-value attribute pair (otel compatible name)
+
+
+```go
+func Bool(key string, value bool) KeyValue
+```
+
+```go
+func Int(key string, value int) KeyValue
+```
+
+```go
+func Int64(key string, value int64) KeyValue
+```
+
+```go
+func String(key, value string) KeyValue
+```
+
+```go
+func Stringer(key string, value interface{ String() string }) KeyValue
+```
+
+### Span
+
+Span represents a trace span
+
+
+### SpanEndOption
+
+SpanEndOption configures span ending
+
+
+### SpanStartOption
+
+SpanStartOption configures span creation
+
+
+```go
+func WithAttributes(...KeyValue) SpanStartOption
+```
+
+### StatusCode
+
+StatusCode represents span status
+
+
+### Tracer
+
+Tracer interface for tracing operations
+
+
+```go
+func New(Config) (Tracer, error)
+```
+
+### Value
+
+Value wraps attribute values
+
+

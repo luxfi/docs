@@ -1,0 +1,53 @@
+---
+title: builder
+description: Package builder
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/wallet/chain/p/builder"
+```
+
+## Functions
+
+### NewConsensusRuntime
+
+```go
+func NewConsensusRuntime(networkID uint32, utxoAssetID ids.ID) (*runtime.Runtime, error)
+```
+
+### NewConsensusRuntimeWithChainID
+
+```go
+func NewConsensusRuntimeWithChainID(networkID uint32, chainID ids.ID, utxoAssetID ids.ID) (*runtime.Runtime, error)
+```
+
+## Types
+
+### Backend
+
+### Builder
+
+Builder provides a convenient interface for building unsigned P-chain
+transactions.
+
+
+```go
+func New(
+	addrs set.Set[ids.ShortID],
+	context *Context,
+	backend Backend,
+) Builder
+```
+
+```go
+func NewWithOptions(builder Builder, options ...common.Option) Builder
+```
+
+```go
+func WithOptions(builder Builder, options ...common.Option) Builder
+```
+
+### Context
+

@@ -1,0 +1,552 @@
+---
+title: lux
+description: Package lux owns the luxd-side ZAP wire dispatcher for the cross-fx UTXO factory.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/components/lux"
+```
+
+Package lux owns the luxd-side ZAP wire dispatcher for the cross-fx
+UTXO factory. The root utxo package cannot import the per-fx wire
+adapters (cycle), so each consumer registers an fx-aware
+utxo.ParseUTXOFunc at boot via utxo.RegisterParseUTXO.
+
+This file is the luxd consumer's registration site: an init() that
+wires in the full secp256k1fx / mldsafx / slhdsafx / ed25519fx /
+secp256r1fx / schnorrfx / bls12381fx output set. The dispatcher
+runs in O(1) on (TypeKind, ShapeKind) and stays in its lane —
+each fx package's WrapXxxOutput is the only thing that knows the
+fx-specific shape.
+
+
+## Functions
+
+### Consume
+
+```go
+func Consume(utxoDB UTXODeleter, ins []*TransferableInput)
+```
+
+Removes the UTXOs consumed by [ins] from the UTXO set
+
+
+### GetBalance
+
+```go
+func GetBalance(db UTXOReader, addrs set.Set[ids.ShortID]) (uint64, error)
+```
+
+GetBalance returns the current balance of [addrs]
+
+
+### IsSortedTransferableOutputs
+
+```go
+func IsSortedTransferableOutputs(outs []*TransferableOutput) bool
+```
+
+IsSortedTransferableOutputs returns true if output objects are sorted
+
+
+### MarshalOwner
+
+```go
+func MarshalOwner(o any) ([]byte, error)
+```
+
+MarshalOwner is the ONE canonical byte encoding of an owner: the fx's
+own native ZAP OutputOwners envelope (TypeKindReserved,
+ShapeKindOutputOwners). Takes `any` to match the fx.Owned.Owners()
+surface. Same wire the fx TransferOutput embeds — no second encoding.
+
+
+### ParseLocalAddresses
+
+```go
+func ParseLocalAddresses(a AddressManager, addrStrs []string) (set.Set[ids.ShortID], error)
+```
+
+### ParseServiceAddress
+
+```go
+func ParseServiceAddress(a AddressManager, addrStr string) (ids.ShortID, error)
+```
+
+ParseServiceAddress get address ID from address string, being it either localized (using address manager,
+doing also components validations), or not localized.
+If both attempts fail, reports error from localized address parsing
+
+
+### ParseServiceAddresses
+
+```go
+func ParseServiceAddresses(a AddressManager, addrStrs []string) (set.Set[ids.ShortID], error)
+```
+
+ParseServiceAddress get addresses IDs from addresses strings, being them either localized or not
+
+
+### Produce
+
+```go
+func Produce(
+	utxoDB UTXOAdder,
+	txID ids.ID,
+	outs []*TransferableOutput,
+)
+```
+
+Adds the UTXOs created by [outs] to the UTXO set.
+[txID] is the ID of the tx that created [outs].
+
+
+### RegisterLockedOutputHandler
+
+```go
+func RegisterLockedOutputHandler(h LockedOutputHandler)
+```
+
+RegisterLockedOutputHandler installs the locked-output wire handler.
+Called from platformvm/stakeable.init(). Panics on double-install so a
+duplicate registration during test fixture setup is loud, not silent.
+
+
+### SortTransferableInputsWithSigners
+
+```go
+func SortTransferableInputsWithSigners(ins []*TransferableInput, signers [][]*secp256k1.PrivateKey)
+```
+
+SortTransferableInputsWithSigners sorts the inputs and signers based on the
+input's utxo ID
+
+
+### SortTransferableOutputs
+
+```go
+func SortTransferableOutputs(outs []*TransferableOutput)
+```
+
+SortTransferableOutputs sorts output objects by (AssetID, inner-output
+ZAP wire bytes). ZAP-native — no codec.Manager needed.
+
+
+### UnmarshalOwner
+
+```go
+func UnmarshalOwner(b []byte) (*secp256k1fx.OutputOwners, error)
+```
+
+UnmarshalOwner is the exact inverse of MarshalOwner: parses the
+canonical OutputOwners envelope back into *secp256k1fx.OutputOwners.
+
+
+### VerifyMemoFieldLength
+
+```go
+func VerifyMemoFieldLength(memo types.JSONByteSlice, _ bool) error
+```
+
+VerifyMemoFieldLength enforces the Lux memo-field length rule: under
+activate-all-implicitly the memo field must be empty on every tx.
+
+
+### VerifyTx
+
+```go
+func VerifyTx(
+	feeAmount uint64,
+	feeAssetID ids.ID,
+	allIns [][]*TransferableInput,
+	allOuts [][]*TransferableOutput,
+) error
+```
+
+VerifyTx verifies that the inputs and outputs flowcheck, including a fee.
+Additionally, this verifies that the inputs and outputs are sorted.
+
+
+### WrapOutputBytes
+
+```go
+func WrapOutputBytes(b []byte) (verify.State, error)
+```
+
+WrapOutputBytes is the public entry to the fx-aware output dispatcher
+for composite shapes that recurse on a child envelope. Reads the
+envelope's (TypeKind, ShapeKind) prefix and routes through wrapOutput.
+
+The LockedOutput handler uses this on its inner TransferOutBytes —
+since the lock is fx-agnostic (TypeKind=Reserved) the inner envelope
+carries the actual fx discriminator.
+
+
+## Types
+
+### AddressManager
+
+```go
+func NewAddressManager(rt *runtime.Runtime) AddressManager
+```
+
+### Addressable
+
+Addressable is the interface a feature extension must provide to be able to
+be tracked as a part of the utxo set for a set of addresses
+
+
+### Amounter
+
+Amounter is a data structure that has an amount of something associated with it
+
+
+### Asset
+
+```go
+func (asset *Asset) AssetID() ids.ID
+```
+
+```go
+func (a *Asset) Marshal() ([]byte, error)
+```
+
+```go
+func (a *Asset) Unmarshal(bytes []byte) error
+```
+
+```go
+func (asset *Asset) Verify() error
+```
+
+### AtomicUTXOManager
+
+AtomicUTXOManager defines the interface for managing atomic UTXOs
+
+
+```go
+func NewAtomicUTXOManager(sm atomic.SharedMemory) AtomicUTXOManager
+```
+
+### BCLookup
+
+BCLookup provides blockchain alias lookup
+
+
+### BaseTx
+
+BaseTx is the basis of all standard transactions.
+
+
+```go
+func (t *BaseTx) InputUTXOs() []*UTXOID
+```
+
+```go
+func (t *BaseTx) Marshal() ([]byte, error)
+```
+
+```go
+func (t *BaseTx) NumCredentials() int
+```
+
+```go
+func (t *BaseTx) Unmarshal(bytes []byte) error
+```
+
+```go
+func (t *BaseTx) Verify(rt *runtime.Runtime) error
+```
+
+### Coster
+
+Coster is a data structure that has a cost associated with it
+
+
+### FlowChecker
+
+```go
+func NewFlowChecker() *FlowChecker
+```
+
+```go
+func (fc *FlowChecker) Consume(assetID ids.ID, amount uint64)
+```
+
+```go
+func (fc *FlowChecker) Produce(assetID ids.ID, amount uint64)
+```
+
+```go
+func (fc *FlowChecker) Verify() error
+```
+
+### LockedOutputHandler
+
+LockedOutputHandler reconstructs the cross-fx LockedOutput composite
+(stakeable.LockOut on the platformvm side) from its wire envelope.
+stakeable.LockOut embeds lux.TransferableOut so this package cannot
+import it without a cycle — instead the platformvm/stakeable package
+registers a handler in its init() that knows how to:
+
+ 1. wire.WrapLockedOutput(b) to surface (Locktime, TransferOutBytes)
+ 2. WrapOutputBytes(TransferOutBytes) to recursively dispatch the
+    inner output through the same fx-aware dispatcher
+ 3. construct a *stakeable.LockOut&#123;Locktime, TransferableOut: inner}
+
+Without a registration, locked-output UTXOs (the canonical shape for
+vesting allocations in mainnet/testnet genesis) decode as
+"unknown (TypeKind=0x00, ShapeKind=0x0F)" and silently disappear
+from address balances — observed live as `platform.getBalance = 0`
+for every genesis-funded P-chain address.
+
+
+### Metadata
+
+```go
+func (md *Metadata) Bytes() []byte
+```
+
+```go
+func (md *Metadata) ID() ids.ID
+```
+
+```go
+func (md *Metadata) Initialize(unsignedBytes, bytes []byte)
+```
+
+```go
+func (md *Metadata) Marshal() ([]byte, error)
+```
+
+```go
+func (md *Metadata) SignedBytes() []byte
+```
+
+```go
+func (md *Metadata) Unmarshal(bytes []byte) error
+```
+
+```go
+func (md *Metadata) Verify() error
+```
+
+### RuntimeInitializable
+
+RuntimeInitializable can be initialized with a context
+
+
+### TestAddressable
+
+```go
+func (a *TestAddressable) Addresses() [][]byte
+```
+
+### TestState
+
+```go
+func (*TestState) InitRuntime(*runtime.Runtime)
+```
+
+```go
+func (v *TestState) Verify() error
+```
+
+### TestTransferable
+
+```go
+func (t *TestTransferable) Amount() uint64
+```
+
+```go
+func (*TestTransferable) Cost() (uint64, error)
+```
+
+```go
+func (*TestTransferable) InitRuntime(*runtime.Runtime)
+```
+
+### TransferableIn
+
+TransferableIn is the interface a feature extension must provide to transfer
+value between features extensions.
+
+
+```go
+func WrapInputBytes(b []byte) (TransferableIn, error)
+```
+
+### TransferableInput
+
+```go
+func (in *TransferableInput) Compare(other *TransferableInput) int
+```
+
+```go
+func (in *TransferableInput) InitRuntime(rt *runtime.Runtime)
+```
+
+```go
+func (in *TransferableInput) Input() TransferableIn
+```
+
+```go
+func (in *TransferableInput) Marshal() ([]byte, error)
+```
+
+```go
+func (in *TransferableInput) Unmarshal(bytes []byte) error
+```
+
+```go
+func (in *TransferableInput) Verify() error
+```
+
+### TransferableOut
+
+TransferableOut is the interface a feature extension must provide to transfer
+value between features extensions.
+
+
+### TransferableOutput
+
+```go
+func (out *TransferableOutput) InitRuntime(rt *runtime.Runtime)
+```
+
+```go
+func (out *TransferableOutput) Marshal() ([]byte, error)
+```
+
+```go
+func (out *TransferableOutput) Output() TransferableOut
+```
+
+```go
+func (out *TransferableOutput) Unmarshal(bytes []byte) error
+```
+
+```go
+func (out *TransferableOutput) Verify() error
+```
+
+### UTXO
+
+```go
+func GetAllUTXOs(db UTXOReader, addrs set.Set[ids.ShortID]) ([]*UTXO, error)
+```
+
+```go
+func GetAtomicUTXOs(
+	sharedMemory atomic.SharedMemory,
+	chainID ids.ID,
+	addrs set.Set[ids.ShortID],
+	startAddr ids.ShortID,
+	startUTXOID ids.ID,
+	limit int,
+) ([]*UTXO, ids.ShortID, ids.ID, error)
+```
+
+```go
+func GetPaginatedUTXOs(
+	db UTXOReader,
+	addrs set.Set[ids.ShortID],
+	lastAddr ids.ShortID,
+	lastUTXOID ids.ID,
+	limit int,
+) ([]*UTXO, ids.ShortID, ids.ID, error)
+```
+
+```go
+func (utxo *UTXO) Marshal() ([]byte, error)
+```
+
+```go
+func (utxo *UTXO) Unmarshal(bytes []byte) error
+```
+
+```go
+func (utxo *UTXO) Verify() error
+```
+
+### UTXOAdder
+
+### UTXODeleter
+
+### UTXOGetter
+
+UTXOGetter is a thin wrapper around a database to provide fetching of a UTXO.
+
+
+### UTXOID
+
+```go
+func UTXOIDFromString(s string) (*UTXOID, error)
+```
+
+```go
+func (utxo *UTXOID) Compare(other *UTXOID) int
+```
+
+```go
+func (utxo *UTXOID) InputID() ids.ID
+```
+
+```go
+func (utxo *UTXOID) InputSource() (ids.ID, uint32)
+```
+
+```go
+func (u *UTXOID) Marshal() ([]byte, error)
+```
+
+```go
+func (utxo *UTXOID) String() string
+```
+
+```go
+func (utxo *UTXOID) Symbolic() bool
+```
+
+```go
+func (u *UTXOID) Unmarshal(bytes []byte) error
+```
+
+```go
+func (utxo *UTXOID) Verify() error
+```
+
+### UTXOReader
+
+UTXOReader is a thin wrapper around a database to provide fetching of UTXOs.
+
+
+### UTXOState
+
+UTXOState is a thin wrapper around a database to provide, caching,
+serialization, and de-serialization for UTXOs.
+
+
+```go
+func NewMeteredUTXOState(
+	db database.Database,
+	metrics metric.Registerer,
+	trackChecksum bool,
+) (UTXOState, error)
+```
+
+```go
+func NewUTXOState(
+	db database.Database,
+	trackChecksum bool,
+) (UTXOState, error)
+```
+
+### UTXOWriter
+
+UTXOWriter is a thin wrapper around a database to provide storage and
+deletion of UTXOs.
+
+

@@ -1,0 +1,54 @@
+---
+title: password
+description: Package password
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/utils/password"
+```
+
+## Functions
+
+### IsValid
+
+```go
+func IsValid(password string, minimumStrength Strength) error
+```
+
+IsValid returns nil if [password] is a reasonable length and has strength
+greater than or equal to [minimumStrength]
+
+
+### SufficientlyStrong
+
+```go
+func SufficientlyStrong(password string, minimumStrength Strength) bool
+```
+
+SufficientlyStrong returns true if [password] has strength greater than or
+equal to [minimumStrength], scored by zxcvbn. This is the only
+implementation: a build tag must not decide how strong a password has to be.
+
+
+## Types
+
+### Hash
+
+Hash of a password
+
+
+```go
+func (h *Hash) Check(password string) bool
+```
+
+```go
+func (h *Hash) Set(password string) error
+```
+
+### Strength
+
+Strength is the strength of a password
+
+

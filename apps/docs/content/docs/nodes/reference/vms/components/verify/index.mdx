@@ -1,0 +1,100 @@
+---
+title: verify
+description: Package verify is a generated GoMock package.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/vms/components/verify"
+```
+
+Package verify is a generated GoMock package.
+
+
+## Functions
+
+### All
+
+```go
+func All(verifiables ...Verifiable) error
+```
+
+All returns nil if all the verifiables were verified with no errors
+
+
+### SameChain
+
+```go
+func SameChain(ctx context.Context, consensusRuntime *runtime.Runtime, peerChainID ids.ID) error
+```
+
+SameChain verifies that the peerChainID is in the same network as the chain
+represented by consensusRuntime, but not the same chain. This is a convenience
+wrapper for EVM compatibility that accepts *runtime.Runtime directly.
+With the simplified NetworkID model (1=mainnet, 2=testnet), chains on the
+same network are always in the same "chain".
+
+
+### SameNet
+
+```go
+func SameNet(ctx context.Context, chainRuntime *ChainContext, peerChainID ids.ID) error
+```
+
+SameNet verifies that the provided [ctx] was provided to a chain in the
+same chain as [peerChainID], but not the same chain. If this verification
+fails, a non-nil error will be returned.
+
+
+## Types
+
+### ChainContext
+
+ChainContext provides context for chain operations
+
+
+### ConsensusValidatorState
+
+ConsensusValidatorState wraps the Runtime ValidatorState interface
+
+
+### IsNotState
+
+### IsState
+
+### MockVerifiable
+
+MockVerifiable is a mock of Verifiable interface.
+
+
+```go
+func NewMockVerifiable(ctrl *gomock.Controller) *MockVerifiable
+```
+
+```go
+func (m *MockVerifiable) EXPECT() *MockVerifiableMockRecorder
+```
+
+```go
+func (m *MockVerifiable) Verify() error
+```
+
+### MockVerifiableMockRecorder
+
+MockVerifiableMockRecorder is the mock recorder for MockVerifiable.
+
+
+```go
+func (mr *MockVerifiableMockRecorder) Verify() *gomock.Call
+```
+
+### State
+
+### ValidatorState
+
+ValidatorState provides validator state lookups
+
+
+### Verifiable
+

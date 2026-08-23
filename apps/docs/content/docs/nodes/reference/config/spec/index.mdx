@@ -1,0 +1,67 @@
+---
+title: spec
+description: Package spec provides a machine-readable specification of all luxd configuration flags.
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/config/spec"
+```
+
+Package spec provides a machine-readable specification of all luxd configuration flags.
+This is the single source of truth for configuration - all consumers (CLI, SDK, netrunner)
+should derive their flag knowledge from this spec.
+
+
+## Types
+
+### Category
+
+Category groups related configuration flags.
+
+
+### ConfigSpec
+
+ConfigSpec is the complete specification of all luxd configuration flags.
+
+
+```go
+func Spec() *ConfigSpec
+```
+
+```go
+func (s *ConfigSpec) DeprecatedFlags() []FlagSpec
+```
+
+```go
+func (s *ConfigSpec) FlagsByCategory(cat Category) []FlagSpec
+```
+
+```go
+func (s *ConfigSpec) GetFlag(key string) *FlagSpec
+```
+
+```go
+func (s *ConfigSpec) JSON() ([]byte, error)
+```
+
+### Constraints
+
+Constraints defines validation rules for a flag.
+
+
+### FlagSpec
+
+FlagSpec describes a single configuration flag.
+
+
+```go
+func (f *FlagSpec) ValidateValue(value interface{}) error
+```
+
+### FlagType
+
+FlagType represents the type of a configuration flag.
+
+

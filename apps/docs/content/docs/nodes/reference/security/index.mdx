@@ -1,0 +1,121 @@
+---
+title: security
+description: Package security provides security validation and protection utilities
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/security"
+```
+
+Package security provides security validation and protection utilities
+
+
+## Functions
+
+### ConstantTimeCompare
+
+```go
+func ConstantTimeCompare(a, b string) bool
+```
+
+ConstantTimeCompare performs constant-time comparison of two strings
+Returns true if strings are equal, false otherwise
+
+
+### SafeIntConversion
+
+```go
+func SafeIntConversion(value int64, bitSize int) (int64, error)
+```
+
+SafeIntConversion safely converts between integer types checking for overflow
+
+
+### SafeUintConversion
+
+```go
+func SafeUintConversion(value int64, bitSize int) (uint64, error)
+```
+
+SafeUintConversion safely converts to unsigned integer checking for overflow
+
+
+### SanitizeSQL
+
+```go
+func SanitizeSQL(input string) string
+```
+
+SanitizeSQL performs basic SQL injection prevention
+This is a basic implementation - use prepared statements for production
+
+
+### ValidateAlphanumeric
+
+```go
+func ValidateAlphanumeric(s string) error
+```
+
+ValidateAlphanumeric checks if a string contains only alphanumeric characters
+
+
+### ValidateEmail
+
+```go
+func ValidateEmail(email string) error
+```
+
+ValidateEmail performs basic email validation
+
+
+### ValidateURL
+
+```go
+func ValidateURL(url string) error
+```
+
+ValidateURL performs basic URL validation
+
+
+## Types
+
+### InputValidator
+
+InputValidator provides methods for validating and sanitizing user input
+
+
+```go
+func NewInputValidator() *InputValidator
+```
+
+```go
+func (v *InputValidator) ValidateFilePath(path string) error
+```
+
+```go
+func (v *InputValidator) ValidateIPAddress(addr string) error
+```
+
+```go
+func (v *InputValidator) ValidatePort(port int) error
+```
+
+```go
+func (v *InputValidator) ValidateStringLength(s string) error
+```
+
+### RateLimiter
+
+RateLimiter provides basic rate limiting functionality
+
+
+```go
+func NewRateLimiter(limit int, windowSeconds int64) *RateLimiter
+```
+
+```go
+func (r *RateLimiter) Allow(clientID string, now int64) bool
+```
+

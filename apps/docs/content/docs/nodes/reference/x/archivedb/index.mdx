@@ -1,0 +1,95 @@
+---
+title: archivedb
+description: Package archivedb
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/node/x/archivedb"
+```
+
+## Types
+
+### Database
+
+Database implements an ArchiveDB on top of a database.Database. An ArchiveDB
+is an append only database which stores all state changes happening at every
+height. Each record is stored in such way to perform both fast insertions and
+lookups.
+
+The API is quite simple, it has two main functions, one to create a Batch
+write with a given height, inside this batch entries can be added with a
+given value or they can be deleted.
+
+	The way it works is as follows:
+		- NewBatch(10)
+			batch.Put(foo, "foo's value is bar")
+			batch.Put(bar, "bar's value is bar")
+		- NewBatch(100)
+			batch.Put(foo, "updatedfoo's value is bar")
+		- NewBatch(1000)
+			batch.Put(bar, "updated bar's value is bar")
+			batch.Delete(foo)
+
+The other primary function is to read data at a given height.
+
+	The way it works is as follows:
+		- Open(10)
+			reader.Get(foo)
+			reader.Get(bar)
+		- Open(99)
+			reader.GetHeight(foo)
+		- Open(100)
+			reader.Get(foo)
+		- Open(1000)
+			reader.Get(foo)
+
+Requesting `reader.Get(foo)` at height 1000 will return ErrNotFound because
+foo was deleted at height 1000. When calling `reader.GetHeight(foo)` at
+height 99 it will return a tuple `("foo's value is bar", 10)` returning the
+value of `foo` at height 99 (which was set at height 10).
+
+
+```go
+func New(db database.Database) *Database
+```
+
+```go
+func (db *Database) Close() error
+```
+
+```go
+func (db *Database) Compact(start []byte, limit []byte) error
+```
+
+```go
+func (db *Database) HealthCheck(ctx context.Context) (interface{}, error)
+```
+
+```go
+func (db *Database) Height() (uint64, error)
+```
+
+```go
+func (db *Database) NewBatch(height uint64) *batch
+```
+
+```go
+func (db *Database) Open(height uint64) *Reader
+```
+
+### Reader
+
+```go
+func (r *Reader) Get(key []byte) ([]byte, error)
+```
+
+```go
+func (r *Reader) GetEntry(key []byte) ([]byte, uint64, bool, error)
+```
+
+```go
+func (r *Reader) Has(key []byte) (bool, error)
+```
+
