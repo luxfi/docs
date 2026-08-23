@@ -1,0 +1,279 @@
+---
+title: "quic"
+description: "Package quic implements the QUIC transport for the ZAP messaging substrate."
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/quic"
+```
+
+Package quic implements the QUIC transport for the ZAP messaging substrate.
+
+QUIC offers, compared to ZAP's existing TCP+TLS transport:
+
+  - Stream multiplexing: N concurrent RPCs over one connection without
+    head-of-line blocking.
+  - Connection migration: the connection survives client-IP changes
+    (Wi-Fi-to-LTE, NAT rebinding, etc.) because the QUIC connection ID
+    is independent of the 5-tuple.
+  - 0-RTT resumption: cached session tickets let the second handshake to
+    a peer complete without a round trip before app data flows.
+  - TLS 1.3 with the X25519MLKEM768 hybrid post-quantum key exchange
+    (IANA NamedGroup 0x11ec) baked in.
+
+# Wire format
+
+One ZAP message is one length-prefixed Cap'n Proto frame on a QUIC stream.
+The frame format is identical to the TCP transport:
+
+	[4-byte little-endian length][ZAP message bytes]
+
+Two stream patterns are used:
+
+  - Bidirectional streams carry one request/response exchange. After the
+    response is written the server side closes its half of the stream and
+    the client closes its half on Recv, freeing the stream ID. This maps
+    onto Node.Call.
+  - Unidirectional streams from the server carry one-way notifications
+    and subscription deliveries. The receiver routes each frame through
+    the same handler dispatch as the TCP path.
+
+The control stream (the first bidirectional stream opened by the dialer)
+carries the 64-byte ZAP node-identity handshake exchanged before any RPC.
+
+# Cryptography
+
+The default TLS 1.3 configuration prefers X25519MLKEM768. That is the
+IANA-registered hybrid: the shared secret is HKDF-Extract of X25519_ss
+concatenated with ML-KEM-768 ciphertext-derived ss. The Go runtime
+performs the combination internally — this package does not roll its
+own KEM combiner. See ../papers/pq-hybrid-kem/main.pdf.
+
+The server certificate signature is still classical (ECDSA or RSA);
+post-quantum signature schemes are not yet wired into Go's stdlib TLS.
+The threat model that motivates X25519MLKEM768 is harvest-now /
+decrypt-later against the confidentiality of the key-exchange, not
+forgery against a trusted-today certificate authority.
+
+# 0-RTT replay
+
+QUIC permits 0-RTT application data, which can be replayed by a network
+adversary. The server defaults to accepting 0-RTT data, but application
+handlers MUST treat 0-RTT-carried RPCs as either idempotent or rejected.
+Use ServerConfig.RejectEarlyData to force a full 1-RTT handshake for
+every connection.
+
+
+## Functions
+
+### GenerateSelfSignedCert
+
+```go
+func GenerateSelfSignedCert(hosts ...string) (tls.Certificate, error)
+```
+
+GenerateSelfSignedCert generates a short-lived self-signed ECDSA-P256
+certificate suitable for testing. NOT for production use: production
+deployments must supply real certificates via tls.Config.Certificates
+or GetCertificate, signed by a trusted CA.
+
+Exposed as a public helper because tests in other packages may want
+to spin up a real ZAP-QUIC server.
+
+
+## Types
+
+### Client
+
+Client is a QUIC dialer with optional connection migration and
+0-RTT support.
+
+One Client may be shared across many goroutines and used to Dial
+multiple peers concurrently. The Client owns one *quic.Transport
+which is bound to a single UDP socket — every Dial uses the same
+local socket, so a connection migration of the local side will
+affect all connections owned by this Client (this matches QUIC
+semantics).
+
+
+```go
+func NewClient(cfg ClientConfig) (*Client, error)
+```
+
+```go
+func (c *Client) Close() error
+```
+
+```go
+func (c *Client) Dial(ctx context.Context, addr string) (*Conn, error)
+```
+
+```go
+func (c *Client) DialEarly(ctx context.Context, addr string) (*Conn, error)
+```
+
+```go
+func (c *Client) LocalAddr() net.Addr
+```
+
+```go
+func (c *Client) Transport() *quicgo.Transport
+```
+
+### ClientConfig
+
+ClientConfig configures a QUIC dialer.
+
+
+### Config
+
+Config is the user-facing knob that the zap parent package's
+NodeConfig.QUICConfig accepts. It's a thin wrapper so callers
+don't have to import quic-go just to flip RejectEarlyData; they
+can supply nil for QUIC if defaults are fine.
+
+Typical use:
+
+	cfg := zap.NodeConfig&#123;
+	    NodeID:    "node-a",
+	    Port:      9999,
+	    TLS:       tlsCfg,
+	    Transport: zap.TransportQUIC,
+	    QUICConfig: &quic.Config&#123;RejectEarlyData: true},
+	}
+
+
+### Conn
+
+Conn is a multiplexed ZAP connection over QUIC.
+
+Conn is the transport-level connection abstraction shared between the
+dialer (client.go) and the listener (server.go). It exposes the same
+shape as ZAP's TCP *Conn (Send, Recv, Close, peer identity) and adds
+stream-level primitives that the underlying TCP transport cannot
+efficiently express.
+
+Conn is safe for concurrent use. Send serializes onto the control
+stream; concurrent callers may instead OpenStream to get independent
+per-RPC streams.
+
+
+```go
+func (c *Conn) AcceptStream(ctx context.Context) (*Stream, error)
+```
+
+```go
+func (c *Conn) AcceptUniStream(ctx context.Context) (*UniReceiveStream, error)
+```
+
+```go
+func (c *Conn) Close() error
+```
+
+```go
+func (c *Conn) ConnectionState() tls.ConnectionState
+```
+
+```go
+func (c *Conn) Context() context.Context
+```
+
+```go
+func (c *Conn) IsZeroRTT() bool
+```
+
+```go
+func (c *Conn) OpenStream(ctx context.Context) (*Stream, error)
+```
+
+```go
+func (c *Conn) OpenUniStream(ctx context.Context) (*UniStream, error)
+```
+
+```go
+func (c *Conn) QUIC() *quicgo.Conn
+```
+
+```go
+func (c *Conn) Recv() ([]byte, error)
+```
+
+```go
+func (c *Conn) Send(frame []byte) error
+```
+
+### Server
+
+Server is a QUIC listener that yields *Conn instances ready for
+ZAP-frame exchange.
+
+Server is the QUIC analogue of net.Listener. The outer ZAP Node
+drives the accept loop; this type does not spawn its own goroutines.
+
+
+```go
+func Listen(cfg ServerConfig) (*Server, error)
+```
+
+```go
+func (s *Server) Accept(ctx context.Context) (*Conn, error)
+```
+
+```go
+func (s *Server) Addr() net.Addr
+```
+
+```go
+func (s *Server) Close() error
+```
+
+### ServerConfig
+
+ServerConfig configures a QUIC listener.
+
+
+### Stream
+
+Stream is a bidirectional QUIC stream carrying ZAP frames.
+
+
+```go
+func (s *Stream) Close() error
+```
+
+```go
+func (s *Stream) CloseWrite() error
+```
+
+```go
+func (s *Stream) ReadFrame() ([]byte, error)
+```
+
+```go
+func (s *Stream) WriteFrame(frame []byte) error
+```
+
+### UniReceiveStream
+
+UniReceiveStream is a unidirectional receive-only QUIC stream.
+
+
+```go
+func (u *UniReceiveStream) ReadFrame() ([]byte, error)
+```
+
+### UniStream
+
+UniStream is a unidirectional send-only QUIC stream.
+
+
+```go
+func (u *UniStream) Close() error
+```
+
+```go
+func (u *UniStream) WriteFrame(frame []byte) error
+```
+

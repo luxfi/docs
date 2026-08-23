@@ -1,0 +1,78 @@
+---
+title: "zkvmwire"
+description: "Package zkvmwire"
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/v1/codegen/testpkg/lp186_zkvmwire"
+```
+
+## Functions
+
+### NewZKVMUTXO
+
+```go
+func NewZKVMUTXO(outputIndex uint32, height uint64, commitmentOff uint32, commitmentLen uint32, ciphertextOff uint32, ciphertextLen uint32, ephemeralPKOff uint32, ephemeralPKLen uint32, txID [32]byte) (zapv1.View[ZKVMUTXOSchema], []byte)
+```
+
+NewZKVMUTXO builds a fresh ZKVMUTXO in a ZAP buffer.
+
+Hand-rolled fast path: inlines v1 primitives ([zap.NewBuilder],
+[*Builder.StartObject], [*ObjectBuilder.Set*], [*Builder.Finish])
+so the entire build expands at the call site. Result: 1 heap
+alloc (the buffer), zero overhead vs v1.
+
+
+### WrapZKVMUTXO
+
+```go
+func WrapZKVMUTXO(b []byte) (zapv1.View[ZKVMUTXOSchema], error)
+```
+
+WrapZKVMUTXO parses a ZAP buffer into a typed
+[zapv1.View[ZKVMUTXO]]. Validates the wire frame and the kind
+discriminator at offset 0; returns [*zapv1.SchemaError] on kind
+mismatch.
+
+Hand-rolled fast path: inlines [zap.Parse] (which is itself
+inlineable). Zero heap allocs on the happy path; matches v1
+hand-rolled performance.
+
+
+### ZKVMUTXOTxID
+
+```go
+func ZKVMUTXOTxID(v zapv1.View[ZKVMUTXOSchema]) [32]byte
+```
+
+ZKVMUTXOTxID reads the 32-byte inline TxID field of ZKVMUTXO.
+
+Zero-copy on the read side (v1's Object.BytesFixedSlice returns
+a sub-slice of the underlying buffer); the returned [32]byte is a
+value copy so the caller's slot owns the bytes after the View's
+buffer is freed.
+
+
+## Types
+
+### ZKVMUTXOSchema
+
+ZKVMUTXOSchema is the v2 schema marker for ZKVMUTXO. Methods are constant-
+returning so concrete-typed [zapv1.Wrap[ZKVMUTXOSchema]] calls fold to
+literals at the call site.
+
+
+```go
+func (ZKVMUTXOSchema) Kind() zapv1.KindByte
+```
+
+```go
+func (ZKVMUTXOSchema) Name() string
+```
+
+```go
+func (ZKVMUTXOSchema) Size() int
+```
+

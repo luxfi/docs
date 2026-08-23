@@ -1,0 +1,143 @@
+---
+title: "nestwire"
+description: "Package nestwire"
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/v1/codegen/testpkg/nestwire"
+```
+
+## Functions
+
+### InnerLabel
+
+```go
+func InnerLabel(v zapv1.View[InnerSchema]) string
+```
+
+InnerLabel reads the variable-length Label string field of Inner.
+
+Zero-copy: v1's Object.Text returns a string over a sub-slice of the
+underlying buffer. Valid only while the View's buffer is alive.
+
+
+### NewInner
+
+```go
+func NewInner(iD uint64, label string) (zapv1.View[InnerSchema], []byte)
+```
+
+NewInner builds a fresh Inner in a ZAP buffer.
+
+Hand-rolled fast path: inlines v1 primitives ([zap.NewBuilder],
+[*Builder.StartObject], [*ObjectBuilder.Set*], [*Builder.Finish])
+so the entire build expands at the call site. Scalars and fixed byte
+arrays live in the fixed payload; variable-length string/bytes go in
+the object tail (the fixed payload holds their 8-byte pointers).
+
+
+### NewOuter
+
+```go
+func NewOuter(seq uint64, inner *Inner) (zapv1.View[OuterSchema], []byte)
+```
+
+NewOuter builds a fresh Outer in a ZAP buffer.
+
+Hand-rolled fast path: inlines v1 primitives ([zap.NewBuilder],
+[*Builder.StartObject], [*ObjectBuilder.Set*], [*Builder.Finish])
+so the entire build expands at the call site. Scalars and fixed byte
+arrays live in the fixed payload; variable-length string/bytes go in
+the object tail (the fixed payload holds their 8-byte pointers).
+
+
+### OuterInner
+
+```go
+func OuterInner(v zapv1.View[OuterSchema]) zapv1.View[InnerSchema]
+```
+
+OuterInner returns the singular Inner nested object of Outer as a
+zero-copy [zapv1.View][InnerSchema]. An unset (null) nested field yields the zero
+View — test it with [zapv1.View.IsZero].
+
+
+### WrapInner
+
+```go
+func WrapInner(b []byte) (zapv1.View[InnerSchema], error)
+```
+
+WrapInner parses a ZAP buffer into a typed
+[zapv1.View[Inner]]. Validates the wire frame and the kind
+discriminator at offset 0; returns [*zapv1.SchemaError] on kind
+mismatch.
+
+Hand-rolled fast path: inlines [zap.Parse] (which is itself
+inlineable). Zero heap allocs on the happy path; matches v1
+hand-rolled performance.
+
+
+### WrapOuter
+
+```go
+func WrapOuter(b []byte) (zapv1.View[OuterSchema], error)
+```
+
+WrapOuter parses a ZAP buffer into a typed
+[zapv1.View[Outer]]. Validates the wire frame and the kind
+discriminator at offset 0; returns [*zapv1.SchemaError] on kind
+mismatch.
+
+Hand-rolled fast path: inlines [zap.Parse] (which is itself
+inlineable). Zero heap allocs on the happy path; matches v1
+hand-rolled performance.
+
+
+## Types
+
+### Inner
+
+Inner is the value input for the singular Outer.Inner nested object.
+
+
+### InnerSchema
+
+InnerSchema is the v1 schema marker for Inner. Methods are constant-
+returning so concrete-typed [zapv1.Wrap[InnerSchema]] calls fold to
+literals at the call site.
+
+
+```go
+func (InnerSchema) Kind() zapv1.KindByte
+```
+
+```go
+func (InnerSchema) Name() string
+```
+
+```go
+func (InnerSchema) Size() int
+```
+
+### OuterSchema
+
+OuterSchema is the v1 schema marker for Outer. Methods are constant-
+returning so concrete-typed [zapv1.Wrap[OuterSchema]] calls fold to
+literals at the call site.
+
+
+```go
+func (OuterSchema) Kind() zapv1.KindByte
+```
+
+```go
+func (OuterSchema) Name() string
+```
+
+```go
+func (OuterSchema) Size() int
+```
+

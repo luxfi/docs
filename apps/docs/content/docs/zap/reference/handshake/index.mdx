@@ -1,0 +1,540 @@
+---
+title: "handshake"
+description: "Package handshake implements SPEC-ZAP-PQ-v1: the native post-quantum handshake and AEAD framing for ZAP."
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/handshake"
+```
+
+Package handshake implements SPEC-ZAP-PQ-v1: the native post-quantum
+handshake and AEAD framing for ZAP. See docs/SPEC-ZAP-PQ-v1.md for the
+authoritative wire specification.
+
+The package decomposes the protocol along value/behaviour lines:
+
+  - Identity, Profile, SuiteID            : values (data, no behaviour)
+  - Transcript, SessionKeys               : derived values
+  - Frame&#123;Hello, KEMInit, ...}            : wire codecs
+  - Initiator, Responder                  : state machines
+  - Session                               : the post-handshake AEAD stream
+  - ReplayCache, PSKStore                 : independent storage policies
+
+Nothing in this package imports net.Conn — it works against any
+io.ReadWriter so it can be exercised over in-memory pipes in tests.
+
+
+## Functions
+
+### PSKID
+
+```go
+func PSKID(psk [PSKKeyLen]byte) [PSKIDLen]byte
+```
+
+PSKID derives the §12.1 psk_id (16-byte truncation of SHA3-256 of
+the resumption_psk). Pinned in code so issuance and lookup agree.
+
+
+### Ratchet
+
+```go
+func Ratchet(kPrev [AEADKeyLen]byte, epoch uint8) (kNext [AEADKeyLen]byte, saltNext [NonceSaltLen]byte)
+```
+
+Ratchet implements §13 — derive the next per-direction key and
+nonce salt from the current key.
+
+	info_key  = LBL_REKEY ∥ 0x00 ∥ epoch_n ∥ 0x00
+	info_salt = LBL_REKEY ∥ 0x00 ∥ epoch_n ∥ 0x01
+	k_&#123;n+1}    = HKDF-Expand(k_n, info_key,  32)
+	salt_&#123;n+1} = HKDF-Expand(k_n, info_salt, 4)
+
+Two distinct Expand calls (not a single 36-byte read) — the
+info bytes differ so the output streams are independent.
+
+The caller is responsible for zeroising the old k_n / salt_n.
+
+
+## Types
+
+### AlertCode
+
+AlertCode is the §14 error code carried in ALERT frame bodies.
+Each code maps 1:1 to a sentinel error so callers can branch with
+errors.Is on the named sentinel rather than parsing the byte.
+
+
+```go
+func (c AlertCode) String() string
+```
+
+### AlertFrame
+
+```go
+func DecodeAlert(body []byte) (*AlertFrame, error)
+```
+
+```go
+func (a *AlertFrame) Encode() []byte
+```
+
+### AuthFrame
+
+```go
+func DecodeAuth(body []byte) (*AuthFrame, error)
+```
+
+```go
+func (a *AuthFrame) Encode() ([]byte, error)
+```
+
+### AuthRole
+
+AuthRole is the §6.4 role byte signed by each side.
+
+
+```go
+func (r AuthRole) Label() []byte
+```
+
+### ClientPSK
+
+ClientPSK is the value the initiator caches after a successful full
+handshake. It is the §12.1 record minus the server-side state.
+
+PeerID is the verified responder identity from the ORIGINAL full
+handshake. The resumed handshake re-derives session keys but does
+NOT re-verify the responder's static_pk (possession of the PSK is
+the authentication, §12.2), so the trust anchor must be carried
+forward from when the responder's signature was last checked.
+
+Callers reading [Session.PeerID] after a resumed handshake see this
+value, ensuring authorization decisions remain anchored to the
+identity that the initiator originally pinned.
+
+Fields are exported ONLY to support persistence / serialization
+(KMS round-trip, sticky-session cache). Do NOT construct ClientPSK
+literals by hand — populating PeerID with a value that wasn't
+verified during the original handshake silently corrupts the
+resumed Session.PeerID() return. Always go through MakeClientPSK
+or copy a struct returned by Session.ResumptionPSK().
+
+
+```go
+func MakeClientPSK(psk [PSKKeyLen]byte, peerID [IDLen]byte, now time.Time) ClientPSK
+```
+
+### DataFrame
+
+```go
+func DecodeData(body []byte) (*DataFrame, error)
+```
+
+```go
+func (d *DataFrame) Encode() []byte
+```
+
+### FrameType
+
+FrameType encodes the outer envelope type byte (§5, §6).
+
+
+### HelloFrame
+
+```go
+func DecodeHello(body []byte) (*HelloFrame, error)
+```
+
+```go
+func (h *HelloFrame) Encode() ([]byte, error)
+```
+
+### HelloPSKFrame
+
+```go
+func DecodeHelloPSK(body []byte) (*HelloPSKFrame, error)
+```
+
+```go
+func (h *HelloPSKFrame) Encode() []byte
+```
+
+### Identity
+
+Identity holds a node's or VM's static ML-DSA-65 keypair.
+
+The PrivateKey field is non-nil for our own identity; for a pinned
+peer identity (Initiator.Expected, Responder.Local), PrivateKey is
+nil and only PublicKey is consulted.
+
+
+```go
+func GenerateIdentity() (*Identity, error)
+```
+
+```go
+func GenerateIdentityFrom(r io.Reader) (*Identity, error)
+```
+
+```go
+func IdentityFromPrivate(priv *mldsa.PrivateKey) (*Identity, error)
+```
+
+```go
+func IdentityFromPublicBytes(pub []byte) (*Identity, error)
+```
+
+```go
+func (id *Identity) ID() [IDLen]byte
+```
+
+```go
+func (id *Identity) PublicBytes() []byte
+```
+
+```go
+func (id *Identity) Sign(rand io.Reader, h2 [TranscriptLen]byte, role AuthRole, suite SuiteID) ([]byte, error)
+```
+
+```go
+func (id *Identity) SignDeterministic(h2 [TranscriptLen]byte, role AuthRole, suite SuiteID) ([]byte, error)
+```
+
+```go
+func (id *Identity) VerifyAuth(
+	h2 [TranscriptLen]byte,
+	role AuthRole,
+	suite SuiteID,
+	sig []byte,
+) error
+```
+
+### Initiator
+
+Initiator runs the §4 client side of the handshake.
+
+Required fields:
+
+  - Local: this side's static ML-DSA-65 identity (must have a
+    private key).
+
+Optional fields:
+
+  - Expected: pin the responder's identity. If non-nil, the
+    handshake aborts with ErrVMIdentityMismatch when
+    SHA3-256(responder_static_pk) ≠ Expected.ID().
+  - Profile: chain-security stance. Affects only what the wrapper
+    does on magic-prefix mismatch; once the handshake is engaged
+    the profile is enforced through PQMode + OfferedSchemes.
+  - PQMode: HELLO.pq_mode byte. Defaults to PQModePQOnly under
+    StrictPQ / FIPS, PQModeClassicalPermitted otherwise.
+  - Suite: ciphersuite byte. Defaults to SuiteX25519MLKEM (0x01).
+  - OfferedSchemes: HELLO.offered_schemes. Defaults to [Suite].
+  - Resume: cached PSK to attempt resumption with. If nil or
+    expired, Initiator runs a full handshake.
+  - Rand: entropy source for ephemerals + signing nonces. Defaults
+    to crypto/rand.Reader. KAT tests inject a deterministic reader.
+  - Now: clock for HELLO timestamps. Defaults to time.Now.
+
+
+```go
+func (i *Initiator) Run(conn io.ReadWriter) (*Session, error)
+```
+
+### KEMInitFrame
+
+```go
+func DecodeKEMInit(body []byte) (*KEMInitFrame, error)
+```
+
+```go
+func (k *KEMInitFrame) Encode() []byte
+```
+
+### KEMReplyFrame
+
+```go
+func DecodeKEMReply(body []byte) (*KEMReplyFrame, error)
+```
+
+```go
+func (k *KEMReplyFrame) Encode() ([]byte, error)
+```
+
+### PQMode
+
+PQMode encodes HELLO.pq_mode (§6.1).
+
+
+### PSKStore
+
+PSKStore implements §12 PSK issuance and lookup on the responder.
+
+  - Issue records a fresh (psk_id, resumption_psk, client_id) at the
+    end of a full handshake.
+  - Redeem looks up a psk_id presented in HELLO_PSK; on hit it
+    atomically marks the entry consumed (single-use, §12.2).
+
+PSKs expire after PSKLifetimeSec. Expired or unknown lookups
+return (nil, false) and the caller MUST send ALERT 0x08.
+
+An ABSENT store (PSKStore == nil) disables resumption. The
+responder treats every HELLO_PSK as ErrPSKUnknown.
+
+
+```go
+func NewPSKStore() *PSKStore
+```
+
+```go
+func (s *PSKStore) Issue(psk [PSKKeyLen]byte, clientID [IDLen]byte) [PSKIDLen]byte
+```
+
+```go
+func (s *PSKStore) Len() int
+```
+
+```go
+func (s *PSKStore) Redeem(id [PSKIDLen]byte) (psk [PSKKeyLen]byte, clientID [IDLen]byte, ok bool)
+```
+
+```go
+func (s *PSKStore) Sweep()
+```
+
+### Profile
+
+Profile is the chain-security stance applied at the wire boundary
+(§6.0). It is intentionally local — callers map their richer
+notions (lux/pq.Mode, ChainConfig) onto this small enum.
+
+
+### RekeyFrame
+
+```go
+func DecodeRekey(body []byte) (*RekeyFrame, error)
+```
+
+```go
+func (r *RekeyFrame) Encode() []byte
+```
+
+### ReplayCache
+
+ReplayCache holds the §11 nonce-cache state for a Responder.
+
+Two independent gates protect against replay:
+
+ 1. Timestamp window: |now - timestamp_ns| ≤ 30s
+ 2. Nonce cache: dedup on (client_id, client_random)
+
+Implementation: a two-generation map rotated every TTL window.
+New entries land in `active`; on insert we also probe `frozen`
+(the previous generation, still inside its TTL). When `now -
+frozenAt >= ttl`, `frozen` is dropped wholesale and the current
+`active` becomes the new `frozen`. This is O(1) per insert and
+O(1) per generation-flip (just rebind the map pointers). The
+worst-case admission window is between ttl and 2×ttl — any
+(id, rand) tuple is remembered for AT LEAST ttl seconds after
+its first appearance, which is what §11 requires.
+
+Memory bound: 2× maxLen entries (one ttl-window of each
+generation). At the §3 design budget of 2^20 entries per
+generation, that's ~6 MiB of `(clientID, clientRandom)` tuples in
+memory — within the 4 MiB Cuckoo target order-of-magnitude, with
+the operational advantage of O(1) flush instead of O(N) sweep.
+
+The previous implementation (single map + inline sweep at
+maxLen) was correct but degraded to O(N) per insert once the cap
+was reached, which a fuzzer or attacker can drive into the slow
+path. The two-generation rotation eliminates that.
+
+
+```go
+func NewReplayCache() *ReplayCache
+```
+
+```go
+func (c *ReplayCache) CheckTimestamp(timestampNS uint64) error
+```
+
+```go
+func (c *ReplayCache) Len() int
+```
+
+```go
+func (c *ReplayCache) SeenOrAdd(clientID [IDLen]byte, clientRandom [ClientRandLen]byte) bool
+```
+
+```go
+func (c *ReplayCache) Sweep()
+```
+
+### Responder
+
+Responder runs the §4 server side of the handshake.
+
+Required fields:
+
+  - Local: server's static ML-DSA-65 identity (must have a
+    private key).
+
+Optional fields:
+
+  - Profile: chain-security stance. Under StrictPQ / FIPS the
+    responder refuses HELLOs that advertise PQModeClassicalPermitted
+    or offered_schemes lists containing non-PQ suites.
+  - AcceptedSuites: server-side ciphersuite allowlist. Empty means
+    &#123;SuiteX25519MLKEM}.
+  - ReplayCache: §11 replay state. nil disables cache lookups
+    (timestamp-only protection — production must supply a cache).
+  - PSKStore: §12 PSK issuer + redeemer. nil disables resumption.
+
+Rand / Now: deterministic overrides for KAT testing.
+
+
+```go
+func (rs *Responder) Run(conn io.ReadWriter) (*Session, error)
+```
+
+### Session
+
+Session is the post-handshake AEAD-keyed stream specified by §9, §13.
+
+Send → produces one DATA frame on the wire.
+Recv → consumes one DATA (or REKEY) frame and returns the
+
+	plaintext payload of a DATA frame.
+
+Send and Recv are independently safe to call concurrently against
+the same Session, each under their own mutex.
+
+A Session is NOT net.Conn directly — the package-level conn_pq.go
+adapter wraps it with Read/Write semantics for legacy callers.
+
+
+```go
+func (s *Session) Close() error
+```
+
+```go
+func (s *Session) Epoch() uint8
+```
+
+```go
+func (s *Session) PeerID() [IDLen]byte
+```
+
+```go
+func (s *Session) Recv() ([]byte, error)
+```
+
+```go
+func (s *Session) Rekey() error
+```
+
+```go
+func (s *Session) ResumptionPSK() *ClientPSK
+```
+
+```go
+func (s *Session) Role() AuthRole
+```
+
+```go
+func (s *Session) Send(payload []byte) error
+```
+
+### SessionKeys
+
+SessionKeys is §8.3's five-expand output — the post-handshake
+secrets every Session is keyed from.
+
+
+```go
+func DeriveResumed(
+	h2psk [TranscriptLen]byte,
+	x25519Shared [X25519SharedLen]byte,
+	resumptionPSK [PSKKeyLen]byte,
+) SessionKeys
+```
+
+```go
+func DeriveSession(
+	h2 [TranscriptLen]byte,
+	x25519Shared [X25519SharedLen]byte,
+	mlkemShared [MLKEM768SharedLen]byte,
+) SessionKeys
+```
+
+```go
+func (k *SessionKeys) Zeroize()
+```
+
+### SuiteID
+
+§3 / §3.2 ciphersuite registry. Only 0x01 is wire-callable today.
+
+
+```go
+func (s SuiteID) IsValid() bool
+```
+
+### Transcript
+
+Transcript chains SHA3-256 over every handshake byte (§7).
+
+The state machine:
+
+	NewTranscript(suite)
+	AbsorbHello(helloBody)         -> commits H_0
+	AbsorbKEM(initBody, replyBody) -> commits H_1
+	FinishFull(pkI, pkR, schemes)  -> returns H_2          (full handshake)
+	  -- OR --
+	FinishPSK(serverEphX25519Pub)  -> returns H_2_psk      (resumed handshake)
+
+Each step replaces the internal SHA3-256 state with the digest of
+the previous chain ∥ new material. This matches the spec's
+definition of H_n as `SHA3-256(H_&#123;n-1} ∥ &lt;new bytes>)`.
+
+The encoded body of each frame is whatever is between the outer
+type/length fields — i.e. the slice the codec returns / consumes.
+Callers MUST feed exactly those bytes (not the outer envelope) so
+both sides agree on the transcript without re-running the codec.
+
+
+```go
+func NewTranscript(suite SuiteID) *Transcript
+```
+
+```go
+func (t *Transcript) AbsorbHello(hello []byte)
+```
+
+```go
+func (t *Transcript) AbsorbKEM(init, reply []byte)
+```
+
+```go
+func (t *Transcript) FinishFull(pkI, pkR []byte, schemes []SuiteID) [TranscriptLen]byte
+```
+
+```go
+func (t *Transcript) FinishPSK(serverEphX25519Pub []byte) [TranscriptLen]byte
+```
+
+```go
+func (t *Transcript) H0() [TranscriptLen]byte
+```
+
+```go
+func (t *Transcript) H1() [TranscriptLen]byte
+```
+
+```go
+func (t *Transcript) H2() [TranscriptLen]byte
+```
+

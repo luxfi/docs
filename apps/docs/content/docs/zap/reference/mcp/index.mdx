@@ -1,0 +1,84 @@
+---
+title: "mcp"
+description: "Package mcp provides a bridge between MCP (Model Context Protocol) servers and ZAP for high-performance tool calling."
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/mcp"
+```
+
+Package mcp provides a bridge between MCP (Model Context Protocol) servers
+and ZAP for high-performance tool calling.
+
+This bridge auto-discovers MCP servers and exposes their capabilities via ZAP,
+providing 10-30x performance improvement over native MCP JSON-RPC.
+
+
+## Types
+
+### Bridge
+
+Bridge manages multiple MCP servers and exposes them via ZAP
+
+
+```go
+func NewBridge(node *zap.Node) *Bridge
+```
+
+```go
+func (b *Bridge) AddServer(name, command string, args ...string) error
+```
+
+```go
+func (b *Bridge) AddServerConfig(cfg ServerConfig) error
+```
+
+```go
+func (b *Bridge) CallTool(ctx context.Context, toolID uint32, args map[string]interface{}) (interface{}, error)
+```
+
+```go
+func (b *Bridge) CallToolByName(ctx context.Context, name string, args map[string]interface{}) (interface{}, error)
+```
+
+```go
+func (b *Bridge) GetTools() []Tool
+```
+
+```go
+func (b *Bridge) Stop()
+```
+
+### MCPServer
+
+MCPServer represents a connection to an MCP server
+
+
+```go
+func (s *MCPServer) CallTool(name string, args map[string]interface{}) (interface{}, error)
+```
+
+```go
+func (s *MCPServer) ListTools() ([]Tool, error)
+```
+
+```go
+func (s *MCPServer) Start() error
+```
+
+```go
+func (s *MCPServer) Stop()
+```
+
+### ServerConfig
+
+ServerConfig configures an MCP server
+
+
+### Tool
+
+Tool represents an MCP tool capability
+
+

@@ -1,0 +1,64 @@
+---
+title: "consensuswire"
+description: "Package consensuswire"
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/v1/codegen/testpkg/lp182_consensuswire"
+```
+
+## Functions
+
+### NewQuasarCert
+
+```go
+func NewQuasarCert(epoch uint64, finalityUnixNano int64, validators uint32, bLSOff uint32, bLSLen uint32, coronaOff uint32, coronaLen uint32, pulsarOff uint32, pulsarLen uint32, magnetarOff uint32, magnetarLen uint32, mLDSARollupOff uint32, mLDSARollupLen uint32) (zapv1.View[QuasarCertSchema], []byte)
+```
+
+NewQuasarCert builds a fresh QuasarCert in a ZAP buffer.
+
+Hand-rolled fast path: inlines v1 primitives ([zap.NewBuilder],
+[*Builder.StartObject], [*ObjectBuilder.Set*], [*Builder.Finish])
+so the entire build expands at the call site. Result: 1 heap
+alloc (the buffer), zero overhead vs v1.
+
+
+### WrapQuasarCert
+
+```go
+func WrapQuasarCert(b []byte) (zapv1.View[QuasarCertSchema], error)
+```
+
+WrapQuasarCert parses a ZAP buffer into a typed
+[zapv1.View[QuasarCert]]. Validates the wire frame and the kind
+discriminator at offset 0; returns [*zapv1.SchemaError] on kind
+mismatch.
+
+Hand-rolled fast path: inlines [zap.Parse] (which is itself
+inlineable). Zero heap allocs on the happy path; matches v1
+hand-rolled performance.
+
+
+## Types
+
+### QuasarCertSchema
+
+QuasarCertSchema is the v2 schema marker for QuasarCert. Methods are constant-
+returning so concrete-typed [zapv1.Wrap[QuasarCertSchema]] calls fold to
+literals at the call site.
+
+
+```go
+func (QuasarCertSchema) Kind() zapv1.KindByte
+```
+
+```go
+func (QuasarCertSchema) Name() string
+```
+
+```go
+func (QuasarCertSchema) Size() int
+```
+

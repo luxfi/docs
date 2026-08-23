@@ -1,0 +1,749 @@
+---
+title: "zapv1"
+description: "Package zapv1 is the elegant, generic, idiomatic Go reference implementation of the ZAP wire format."
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/v1"
+```
+
+Package zapv1 is the elegant, generic, idiomatic Go reference
+implementation of the ZAP wire format.
+
+Where the v1 [github.com/luxfi/zap] package exposes a C-shaped API
+(one hand-rolled Wrap/Build/accessor block per schema, runtime offset
+constants, runtime kind-byte switch), v2 expresses the same wire
+format through Go 1.23+ generics so that every schema gets:
+
+  - One typed [View] over the buffer.
+  - One typed [Field] per offset, with the field's value type
+    enforced at compile time. A [Field][SchemaA, uint64] cannot be
+    read from a [View][SchemaB]; the compiler rejects it.
+  - One generic [List] with [iter.Seq] range-over-func iteration.
+  - One generic [Pool] for reuse.
+  - One generic [Registry] for kind-byte dispatch (reflection at
+    boot, none in the hot path).
+
+# Wire compatibility
+
+v2 reads and writes the exact same bytes as v1. Both APIs ship
+side-by-side and may share buffers freely; nothing about the on-wire
+encoding has changed. v2 is purely an ergonomic upgrade.
+
+# Threat model
+
+All wire-level safety properties of v1 are inherited verbatim by v2
+(Magic check, version check, bounds-checked offsets, signed-but-
+non-header-aliasing Object/List pointers, RED-HIGH-1 length clamp,
+RED-HIGH-2 header-alias rejection). v2 adds compile-time type safety
+on top — it does not loosen any runtime check.
+
+# Hickey-style decomposition
+
+  - A schema is a value (something implementing [Schema]), not a
+    place. It carries a kind byte, a fixed size, and a name. Schemas
+    are qualified by package, not by prefix.
+  - A view is a value ([View]) — a typed reference into a buffer.
+    View[S] and View[T] are distinct at compile time.
+  - A field is a value ([Field]) — a phantom-typed offset, qualified
+    by the schema it belongs to and the wire type it reads/writes.
+  - A list is a value ([List]) — its element type is the schema for
+    that element; iteration is generic via [iter.Seq].
+
+One and only one way to express any of these. No braiding of policy
+with primitive, no inheritance, no duplication.
+
+
+## Functions
+
+### Collect
+
+```go
+func Collect[T any](src iter.Seq[T]) []T
+```
+
+Collect drains src into a freshly allocated slice. Useful in tests
+where the caller wants to assert on the materialized list; not
+recommended in the hot path because it defeats the zero-copy
+property of [List].
+
+
+### Count
+
+```go
+func Count[T any](src iter.Seq[T]) int
+```
+
+Count returns the number of elements yielded by src. Drains the
+sequence — do not call on infinite sequences.
+
+
+### Filter
+
+```go
+func Filter[T any](src iter.Seq[T], pred func(T) bool) iter.Seq[T]
+```
+
+Filter returns an iter.Seq yielding only those elements of src for
+which pred returns true. Constant memory; one allocation per call
+(the closure), zero per element.
+
+
+### Map
+
+```go
+func Map[T, U any](src iter.Seq[T], f func(T) U) iter.Seq[U]
+```
+
+Map returns an iter.Seq[U] obtained by applying f to each element of
+src. Constant memory per element.
+
+
+### Read
+
+```go
+func Read[S Schema, T FieldKind](v View[S], f Field[S, T]) T
+```
+
+Read reads the field f's value from view v.
+
+Compile-time safety: the type parameters S and T are inferred from
+the (view, field) pair. Passing a Field for a different schema to a
+View[S] fails to type-check because Field[OtherSchema, T] is not
+assignable to Field[S, T].
+
+Zero copy, zero allocation. Out-of-range offsets return the zero
+value of T (matches the audited v1 [zap.Object] bounds-check
+behaviour: degrade gracefully to zero rather than panic).
+
+Performance: this function reads bytes directly from the View's
+pre-sliced payload via [unsafe.Pointer], folding to a single load
+instruction per concrete T after generic instantiation. Verified by
+[bench_test.go]: matches hand-rolled v1 [zap.Object.Uint64] to
+within compiler-noise.
+
+Wire format: ZAP integers are little-endian. On little-endian hosts
+(every Lux target — amd64, arm64, aarch64) the load is a direct
+cast. The pkg builds only on little-endian platforms; a future big-
+endian port would need a per-type byteswap (see init()).
+
+
+### ReadPayload
+
+```go
+func ReadPayload[S Schema, T FieldKind](payload []byte, f Field[S, T]) T
+```
+
+ReadPayload reads a field directly from a payload byte slice (as
+yielded by [List.Payloads]). This is the hot-path counterpart to
+[Read] — equivalent wire semantics, but the input is a 24-byte
+slice header (registers-friendly) rather than a 56-byte [View[S]]
+(stack-spilling).
+
+Use ReadPayload inside a for-range over [List.Payloads] when
+iterating large lists with fixed-field reads only. For full View
+operations (Bytes, sub-objects, lists) use [Read] with [List.All].
+
+Compile-time safety: same as [Read] — Field[S, T] is phantom-typed
+against schema S, so the compiler rejects cross-schema misuse even
+though the payload slice itself is plain []byte. The S type
+parameter is what ties the field to its declared schema.
+
+
+### Register
+
+```go
+func Register[S Schema](r *Registry)
+```
+
+Register registers schema S in r. It is safe to call from multiple
+goroutines, but the typical pattern is init():
+
+	func init() &#123;
+	    zapv1.Register[AdvanceTimeSchema](DefaultRegistry)
+	}
+
+Register panics if two schemas declare the same kind byte — that
+would be a wire-protocol bug, not a runtime condition.
+
+
+### RootOff
+
+```go
+func RootOff[S Schema](v View[S]) int32
+```
+
+RootOff returns the absolute byte offset of the root object within
+the underlying buffer. Exposed for codegen'd byte-array accessors
+that need to re-anchor a [zap.Object] at the root to call v1's
+out-of-line byte-slice readers ([zap.Object.BytesFixedSlice]).
+Application code typically does not need this — use the typed
+accessors emitted alongside each schema.
+
+
+### Take
+
+```go
+func Take[T any](src iter.Seq[T], n int) iter.Seq[T]
+```
+
+Take returns an iter.Seq yielding at most n elements from src. If
+src yields fewer than n, all of them are passed through; if more,
+the iteration stops after n.
+
+Constant memory: Take does not buffer. It counts and short-circuits.
+
+
+### Write
+
+```go
+func Write[S Schema, T FieldKind](s Setter[S], f Field[S, T], val T)
+```
+
+Write writes value val into field f of setter s.
+
+Compile-time safety: as with [Read], passing a Field declared for a
+different schema fails to type-check.
+
+Zero allocation. The write goes through the underlying v1
+[zap.ObjectBuilder] for the fixed payload — its bounds-check
+(ensureField) is inherited verbatim. After generic instantiation +
+inlining, this collapses to a direct little-endian store at the
+computed offset, matching v1 hand-rolled SetUint64 performance —
+verified by [bench_test.go].
+
+Implementation note: writing through the ObjectBuilder (rather than
+a direct unsafe store into the underlying buffer) preserves v1's
+audited "ensureField" semantics — fields past the currently-written
+region get the buffer growth + zero-fill that the builder
+guarantees. A bare unsafe write would bypass that and corrupt the
+builder's invariant.
+
+
+### WriteB
+
+```go
+func WriteB[S Schema, T FieldKind](bb Builder[S], f Field[S, T], val T)
+```
+
+WriteB is the [Builder]-receiver counterpart to [Write]. Used in
+the imperative-style build path:
+
+	bb := zapv1.NewBuilderFor[Schema]()
+	zapv1.WriteB(bb, Fields.Time, ts)
+	view, buf := bb.Finish()
+
+Identical wire semantics to Write — the difference is only that
+passing a Builder[S] (by value) instead of a Setter[S] (through a
+closure) keeps the wrapper on the caller's stack. The underlying
+v1 *zap.Builder still escapes (its buffer is what goes on the
+wire), so the imperative form does not eliminate all v2 overhead —
+it eliminates only the closure-captured pointer allocation.
+
+
+### WriteBytes
+
+```go
+func WriteBytes[S Schema](s Setter[S], byteOffset uint32, v []byte)
+```
+
+WriteBytes writes a variable-length byte slice to the object tail and
+stores its &#123;relOffset, length} pointer at byteOffset. The typed peer
+of [zap.ObjectBuilder.SetBytes]. Zero-copy on read via Object.Bytes.
+
+
+### WriteList
+
+```go
+func WriteList[S, E Schema](s Setter[S], byteOffset uint32, each func(*ElemSetter[E]))
+```
+
+WriteList writes a homogeneous list of element-schema E into the
+list-pointer field at byteOffset within schema S. The `each` closure
+is called once with an [*ElemSetter[E]] handle that writes one
+element per call to [ElemSetter.Append]; the list pointer in S's
+fixed payload is patched with the final (relOffset, length) when
+each returns.
+
+Example (BatchTx.Items, see examples/batch_tx.go):
+
+	zapv1.Build[BatchSchema](func(s zapv1.Setter[BatchSchema]) &#123;
+	    zapv1.Write(s, BatchFields.ID, batchID)
+	    zapv1.WriteList[BatchSchema, ItemSchema](s, OffsetBatchItems,
+	        func(items *zapv1.ElemSetter[ItemSchema]) &#123;
+	            for _, it := range source &#123;
+	                items.Append(func(e zapv1.Setter[ItemSchema]) &#123;
+	                    zapv1.Write(e, ItemFields.ID, it.id)
+	                    zapv1.Write(e, ItemFields.Value, it.val)
+	                })
+	            }
+	        })
+	})
+
+Stride is taken from E&#123;}.Size(). The list lives in the variable
+section of the parent message, after the fixed payload — the exact
+wire layout that v1 [zap.Builder.StartList]/SetList produces.
+
+Wire encoding: the list-pointer field at byteOffset holds (relOffset,
+length); length is the number of elements (NOT bytes), matching v1's
+[zap.List.Object] indexing convention.
+
+
+### WriteListNested
+
+```go
+func WriteListNested[S, N Schema](s Setter[S], byteOffset uint32, each func(*NestedElemSetter[N]))
+```
+
+WriteListNested writes a repeated nested-object field: each element is
+built as a flat out-of-line object in the parent tail (with its own
+scalars/strings/lists), then a contiguous stride-4 pointer array is laid
+down and the list field patched to it. The pointer-array peer of
+[WriteList] (which inlines fixed-stride elements). An empty list writes a
+null pointer.
+
+
+### WriteNested
+
+```go
+func WriteNested[S, N Schema](s Setter[S], byteOffset uint32, init func(Setter[N]))
+```
+
+WriteNested builds a singular nested object of schema N into the parent
+object's tail and stores its 4-byte object pointer at byteOffset in the
+parent's fixed payload. The init closure populates the nested object's
+fields (via [Write]/[WriteString]/[WriteBytes]/[WriteList]/[WriteNested]
+— it composes recursively). The singular peer of [WriteList].
+
+Omitting the call entirely leaves the pointer field zero — a null
+pointer — which [NestedAt] reads back as the zero View[N]. This is how
+codegen encodes an unset proto3 message field: emit the WriteNested only
+inside an `if msg != nil` guard.
+
+Wire layout matches the singular case of [WriteList]: the parent's
+fixed payload is reserved first (so the nested object cannot overwrite
+the still-unwritten pointer field), then the nested object is appended
+to the tail and the pointer patched with its relative offset.
+
+
+### WriteString
+
+```go
+func WriteString[S Schema](s Setter[S], byteOffset uint32, v string)
+```
+
+WriteString writes a variable-length UTF-8 string field to the object
+tail and stores its &#123;relOffset, length} pointer at byteOffset in the
+fixed payload. The typed peer of [zap.ObjectBuilder.SetText] for the
+Setter-based build path. Read it back with the generated string
+accessor (which calls v1's zero-copy Object.Text).
+
+
+## Types
+
+### Builder
+
+Builder is the imperative-style construction API for schema S.
+Where [Build] takes a closure (more readable, more allocations
+because the closure escapes), Builder gives the caller direct
+control over the build sequence — at the cost of three lines
+instead of one. Use it on hot paths that match the v1 hand-rolled
+allocation profile (1 alloc per Finish: the buffer itself).
+
+Usage:
+
+	bb := zapv1.NewBuilderFor[AdvanceTimeSchema]()
+	zapv1.WriteB(bb, examples.AdvanceTimeFields.Time, ts)
+	view, buf := bb.Finish()
+
+WriteB is the explicit-receiver counterpart to [Write] — both take
+a (Field, value) pair, but WriteB writes through a [Builder][S]
+instead of a [Setter][S], allowing escape analysis to keep the
+builder on the stack.
+
+Builder is NOT safe for concurrent use; each goroutine should
+allocate its own.
+
+Layout: Builder holds two pointers (b, ob) into the v1 builder
+state. Both pointers' targets are heap-allocated by v1, but the
+Builder[S] struct itself stays on the caller's stack because it's
+passed by value.
+
+
+```go
+func NewBuilderFor[S Schema]() Builder[S]
+```
+
+```go
+func (bb Builder[S]) AsSetter() Setter[S]
+```
+
+```go
+func (bb Builder[S]) Finish() (View[S], []byte)
+```
+
+### ElemSetter
+
+ElemSetter writes one element at a time into a list of schema E.
+Always passed by pointer so [WriteList] observes the final count
+after [each] returns.
+
+
+```go
+func (es *ElemSetter[E]) Append(init func(Setter[E]))
+```
+
+### Entry
+
+Entry describes how to handle one schema. The Wrap closure parses
+a buffer and returns the validated data slice + root offset,
+reflection-free.
+
+Name and Kind are duplicated from the Schema for convenient
+inspection without instantiating the Schema receiver.
+
+
+### Field
+
+Field is a phantom-typed accessor for a fixed-size field within
+schema S. The type parameter T is the field's wire type (one of the
+[FieldKind] union). At compile time:
+
+  - Read[S, T](View[S], Field[S, T]) returns a T.
+  - Read[S, T](View[S], Field[OtherSchema, T]) is a compile error.
+  - Write[S, T](Setter[S], Field[S, T], v) writes v at the field's
+    offset.
+  - Write[S, T](Setter[OtherSchema], ...) is a compile error.
+
+The runtime representation of Field is just an offset; the compile-
+time tag is free. This is what gives v2 zero abstraction cost
+versus the v1 hand-rolled offset constants.
+
+Construct Field values once at package init (see the canary
+AdvanceTime schema in examples/advance_time_tx.go for the pattern).
+Reusing Field values across goroutines is safe — they are immutable
+after declaration.
+
+Implementation note: Go 1.23+ does not allow type parameters on
+methods of generic types ([View[S].Read[T] would be illegal]). v2
+therefore exposes Read and Write as top-level generic functions
+rather than methods on [View] / [Setter]. The call site is at least
+as terse as a method call: `zapv1.Read(view, F.Time)`.
+
+
+```go
+func At[S Schema, T FieldKind](offset uint32) Field[S, T]
+```
+
+### FieldKind
+
+FieldKind is the type-level constraint a [Field]'s value type must
+satisfy: any Go value type that can be stored in a fixed-size slot.
+The exhaustive set is the integer + float + Address + Hash + bool
+family; variable-length values (bytes, text, lists, sub-objects)
+have their own accessors because their wire representation is a
+pointer pair, not a primitive.
+
+We use a comparable union so the generic [Field] type is constrained
+at compile time. Users who add new fixed-size element types extend
+this constraint; no other API surface changes.
+
+
+### KindByte
+
+KindByte is the one-byte discriminator at offset 0 of every v2
+object payload. It identifies the schema concretely.
+
+In v1 this lived as `TxKind uint8` per-package; v2 lifts it into
+the ZAP layer so the generic [View], [Wrap] and [Registry] code can
+reason about kind without importing every consumer.
+
+
+```go
+func PeekKind(b []byte) (KindByte, error)
+```
+
+### List
+
+List is a typed, zero-copy view into a homogeneous list of objects
+of schema E. List[E] and List[F] are distinct types at compile time;
+you cannot accidentally iterate a list of Outputs as if it were a
+list of Inputs.
+
+The element type E identifies the schema for each entry. Each call
+to [List.At] returns a View[E] over the corresponding fixed-size
+slot, and [List.All] returns an [iter.Seq] for range-over-func.
+
+Layout: like [View], List is value-typed and contains no pointers
+other than the slice header for `data`. It carries the absolute byte
+offset of the first element and the wire-encoded length. Stride
+derives from E&#123;}.Size() at call time.
+
+
+```go
+func ListAt[S, E Schema](v View[S], offset uint32) List[E]
+```
+
+```go
+func (l List[E]) All() iter.Seq[View[E]]
+```
+
+```go
+func (l List[E]) At(i int) View[E]
+```
+
+```go
+func (l List[E]) Indexed() iter.Seq2[int, View[E]]
+```
+
+```go
+func (l List[E]) IsZero() bool
+```
+
+```go
+func (l List[E]) Len() int
+```
+
+```go
+func (l List[E]) Payloads() iter.Seq[[]byte]
+```
+
+### ListNested
+
+ListNested is a typed, zero-copy view into a repeated nested-object
+field. Each element is reached by following a 4-byte pointer slot to an
+out-of-line [View[N]]; elements may carry their own variable-length
+tails. Distinct compile-time type from [List[E]] so an inline-element
+list and a pointer-element list can never be confused.
+
+
+```go
+func ListNestedAt[S, N Schema](v View[S], offset uint32) ListNested[N]
+```
+
+```go
+func (l ListNested[N]) All() iter.Seq[View[N]]
+```
+
+```go
+func (l ListNested[N]) At(i int) View[N]
+```
+
+```go
+func (l ListNested[N]) IsZero() bool
+```
+
+```go
+func (l ListNested[N]) Len() int
+```
+
+### NestedElemSetter
+
+NestedElemSetter builds the elements of a repeated nested-object field,
+one out-of-line object per [Append]. It records each object's position
+so [WriteListNested] can emit the pointer array after the last element.
+
+
+```go
+func (es *NestedElemSetter[N]) Append(init func(Setter[N]))
+```
+
+### Pool
+
+Pool is a generic, type-safe sync.Pool wrapper. Instead of writing a
+dedicated sync.Pool + Get + Put per type as v1 did, register a
+constructor once:
+
+	var ViewPool = zapv1.NewPool(func() *View[AdvanceTimeSchema] &#123;
+	    return &View[AdvanceTimeSchema]&#123;}
+	})
+
+	v := ViewPool.Get()
+	defer ViewPool.Put(v)
+
+Get returns a *T; Put returns it to the pool. The generic guarantees
+that a value pulled from Pool[A] cannot be returned to Pool[B]
+(would not type-check).
+
+Pool itself is safe for concurrent use (delegated to [sync.Pool]).
+
+
+```go
+func NewPool[T any](new func() *T) *Pool[T]
+```
+
+```go
+func (p *Pool[T]) Get() *T
+```
+
+```go
+func (p *Pool[T]) Put(t *T)
+```
+
+### Raw
+
+Raw is the non-generic shape of [View]: same three fields, no
+schema type parameter. It exists as the value-shape that the per-
+schema Wrap shims construct in their hot path. Construction is via
+[WrapRaw] / [WrapRawUnchecked]; the public typed View[S] wraps a
+Raw with one struct cast.
+
+Treat Raw as an implementation detail of the per-schema shim
+constructors — application code uses [View[S]] / [Wrap].
+
+
+```go
+func RawFromSlices(data []byte, rootOff, end int) Raw
+```
+
+```go
+func WrapRaw(b []byte, wantKind uint8, size int, name string) (Raw, error)
+```
+
+```go
+func WrapRawUnchecked(b []byte, size int) (Raw, error)
+```
+
+### Registry
+
+Registry is a kind-byte → schema-typed wrapper dispatcher. Each
+registered schema produces an [Entry] that knows, at runtime, how
+to wrap a buffer as the right typed View. The Entry itself was
+generated at compile time when [Register] was called, so dispatch
+requires no reflection and no per-call allocation — only a map
+lookup.
+
+Registry is safe for concurrent reads; Register is intended for use
+at package init and is guarded by a mutex against concurrent
+init-time races.
+
+Hickey decomposition: Registry is a value (map of values). The
+"what kind is this?" question is answered by looking at a byte;
+the "how do I parse it?" question is answered by an Entry value;
+there is no inheritance, no interface tower, no "TxFactory".
+
+
+```go
+func NewRegistry() *Registry
+```
+
+```go
+func (r *Registry) Entries() []Entry
+```
+
+```go
+func (r *Registry) Lookup(kind KindByte) (Entry, bool)
+```
+
+### Schema
+
+Schema describes a v2 message shape. A type implements Schema by
+declaring its kind byte, its fixed object size (in bytes within the
+data segment), and a human-readable name.
+
+A schema is a value, not a place. Implementations are typically
+zero-sized marker structs whose name documents the wire shape:
+
+	type AdvanceTimeSchema struct&#123;}
+	func (AdvanceTimeSchema) Kind() KindByte &#123; return 0x14 }
+	func (AdvanceTimeSchema) Size() int      &#123; return 9 }
+	func (AdvanceTimeSchema) Name() string   &#123; return "AdvanceTimeTx" }
+
+Implementations MUST be safe to use as the zero value of their type
+— the methods consult only the receiver type, never any state.
+This invariant is what lets Registry.Register and reflect-free
+generic dispatch work.
+
+
+### SchemaError
+
+SchemaError is returned when a buffer does not match the expected
+schema (wrong kind byte, undersized object payload, etc).
+
+
+```go
+func NewSchemaError(want, got KindByte, name string) *SchemaError
+```
+
+```go
+func (e *SchemaError) Error() string
+```
+
+### Setter
+
+Setter is the write-side counterpart to [View]. A Setter[S] writes
+fields into the buffer for schema S. Like View, Setter is phantom-
+typed: a Field[S, uint64] cannot be written through Setter[T].
+
+Setter holds two pointers (ob, b) — both into the active builder.
+These pointers' targets always outlive the Setter (the builder owns
+them and is itself reachable from the caller's stack). Setter values
+are NOT safe to retain after the builder's Finish returns.
+
+
+```go
+func SetterFrom[S Schema](ob zap.ObjectBuilder, b *zap.Builder) Setter[S]
+```
+
+### View
+
+View is a typed, zero-copy reference into a ZAP buffer. The type
+parameter S identifies the schema; a View[A] and a View[B] are
+distinct types and the compiler refuses to mix them. This is what
+makes [Field] accessors safe: the compiler will not let you pass a
+Field[A, uint64] to a View[B].Read.
+
+View carries no per-instance schema state — the schema's identity
+lives in the type parameter, and S&#123;}'s methods (Kind/Size/Name) are
+queried only at boundaries (Wrap, Build, Registry). Inside the hot
+path the type parameter is purely a compile-time tag; no boxing, no
+interface dispatch.
+
+View is safe to copy. The underlying buffer must outlive every View
+that references it.
+
+Layout: a View holds two slice headers — `data` aliases the full ZAP
+buffer (used by variable-length tail accessors: list, bytes), and
+`payload` aliases the fixed section of the root object (used by
+Read/Write for direct unsafe-pointer indexing). Neither field is a
+pointer to a heap-allocated `*zap.Message` — that was the v1.0 design
+and forced a heap allocation per Wrap because the *Message escaped
+from the View's lifetime. The v1.1 redesign keeps everything in slice
+headers; View[S] is 56 bytes (3 slice headers + an int32 offset);
+stack-allocatable; escape-analysis-friendly.
+
+
+```go
+func AsView[S Schema](r Raw) View[S]
+```
+
+```go
+func Build[S Schema](init func(Setter[S])) (View[S], []byte)
+```
+
+```go
+func NestedAt[S, N Schema](v View[S], offset uint32) View[N]
+```
+
+```go
+func Wrap[S Schema](b []byte) (View[S], error)
+```
+
+```go
+func WrapAs[S Schema](b []byte) (View[S], error)
+```
+
+```go
+func WrapUnchecked[S Schema](b []byte) (View[S], error)
+```
+
+```go
+func (v View[S]) Bytes() []byte
+```
+
+```go
+func (v View[S]) IsZero() bool
+```
+

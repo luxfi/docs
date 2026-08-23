@@ -1,6 +1,8 @@
 {
   "pages": [
     "index",
-    "api"
+    "api",
+    "---Package reference---",
+    "reference"
   ]
 }

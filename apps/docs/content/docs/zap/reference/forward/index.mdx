@@ -1,0 +1,227 @@
+---
+title: "forward"
+description: "Package forward is the canonical HIP-0110 'HTTP-over-ZAP' contract."
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/forward"
+```
+
+Package forward is the canonical HIP-0110 "HTTP-over-ZAP" contract.
+
+It is the single source of truth for the gateway↔backend boundary,
+replacing the two inconsistent ad-hoc encodings that previously lived
+in the gateway repo (zap_wire.go and zap_backend.go). Three envelopes
+cover the entire boundary:
+
+	Forward  — gateway → backend, one per inbound HTTP request, carrying
+	           the edge-validated identity (so the backend trusts the edge).
+	Response — backend → gateway, the buffered HTTP response for a Forward.
+	Push     — backend → gateway, one per server-initiated stream frame
+	           (SSE / WebSocket), correlated to a Forward by ConnID.
+
+On-wire bytes are github.com/luxfi/zap Objects. Every field is packed
+at an explicit byte offset within the object's fixed payload.
+
+# Offset discipline
+
+luxfi/zap's ObjectBuilder.SetBytes / SetText write an 8-byte slot at
+the field offset: &#123;relOffset uint32, length uint32}. The variable-
+length data tail is appended after the fixed section in Finish(), and
+the relOffset is patched to point at it. Consequently EVERY text or
+bytes field consumes 8 bytes of fixed payload — adjacent text fields
+MUST be spaced 8 bytes apart or their slots overlap and corrupt each
+other (proven empirically: a 4-byte-spaced layout drops the body).
+
+Fixed scalars use their natural width (bool=1, uint32=4, int64=8) and
+are placed on a natural boundary. These offsets are the contract;
+changing one is a wire break.
+
+
+## Functions
+
+### BuildForward
+
+```go
+func BuildForward(f Forward) (*zaplib.Message, error)
+```
+
+BuildForward serializes f into a ZAP message tagged MsgTypeForward.
+
+
+### BuildPush
+
+```go
+func BuildPush(p Push) (*zaplib.Message, error)
+```
+
+BuildPush serializes p into a ZAP message tagged MsgTypePush.
+
+
+### BuildResponse
+
+```go
+func BuildResponse(r Response) (*zaplib.Message, error)
+```
+
+BuildResponse serializes r into a ZAP message. Status rides as a
+uint32; body and headers-JSON follow, matching the Response read order.
+
+
+### HandleReversePush
+
+```go
+func HandleReversePush(ctx context.Context, from string, msg *zaplib.Message) (*zaplib.Message, error)
+```
+
+HandleReversePush is the zaplib.Handler for MsgTypePush. It decodes the
+Push, looks up the sink for its ConnID, and delivers. An unknown ConnID
+(client already gone) is a silent no-op. A delivery error drops the sink.
+
+
+### RegisterReversePush
+
+```go
+func RegisterReversePush(connID string, sink PushSink)
+```
+
+RegisterReversePush records the sink for an active SSE / WS subscription.
+
+
+### RegisterReversePushHandler
+
+```go
+func RegisterReversePushHandler(node *zaplib.Node)
+```
+
+RegisterReversePushHandler installs HandleReversePush on node so a
+Forwarder's node receives backend-initiated Push frames.
+
+
+### Relay
+
+```go
+func Relay(node *zaplib.Node, gate Gate, pick PeerPicker)
+```
+
+Relay registers the gateway relay handler on node for MsgTypeForward.
+
+On each inbound Forward the relay:
+
+ 1. ReadForward(msg) — decodes the envelope (Body stays a sub-slice;
+    it is not decoded).
+ 2. gate(ctx, &f) — runs auth + the balance gate on the envelope. A
+    non-nil deny Response short-circuits: the relay returns it
+    immediately via BuildResponse and NEVER touches a backend. A
+    non-nil error is returned to the ZAP layer. Otherwise the gate has
+    mutated f's identity fields in place and the request is allowed.
+ 3. BuildForward(f) — re-emits the Forward carrying the injected
+    identity (the single per-request envelope re-encode; see the
+    budget note above), then node.Call(ctx, pick(f.Path), augmented)
+    forwards it to the chosen backend.
+ 4. returns the backend's reply *zaplib.Message VERBATIM — no
+    ReadResponse/BuildResponse round-trip, the response bytes pass
+    through unchanged.
+
+
+### Serve
+
+```go
+func Serve(node *zaplib.Node, h http.Handler)
+```
+
+Serve registers the canonical MsgTypeForward handler on node, dispatching
+each Forward envelope to h. The handler reconstructs the *http.Request,
+injects the edge-validated identity as X-* headers (so the backend trusts
+the edge), serves it through h, and returns a Response envelope carrying
+the captured status, headers, and body.
+
+Streaming (SSE / chunked) is not yet emitted as Push frames: the full
+response is buffered and returned as one Response. The extension point is
+marked below.
+
+
+### UnregisterReversePush
+
+```go
+func UnregisterReversePush(connID string)
+```
+
+UnregisterReversePush drops the sink when the client connection closes.
+
+
+## Types
+
+### Forward
+
+Forward is the typed view of the gateway→backend envelope. Path
+includes the raw query string (there is no separate query field).
+
+
+```go
+func ReadForward(msg *zaplib.Message) Forward
+```
+
+### Forwarder
+
+Forwarder is the gateway-side client: it tunnels an *http.Request to a
+backend Peer over ZAP and returns the *http.Response. It is an
+http.RoundTripper, so it drops into any http.Client/transport chain.
+
+
+```go
+func (f *Forwarder) RoundTrip(req *http.Request) (*http.Response, error)
+```
+
+### Gate
+
+Gate is the gateway-supplied policy run on each inbound Forward
+ENVELOPE. It reads f.Headers (to find and validate the JWT) and
+f.Path, runs the prepaid balance gate, and EITHER:
+
+  - mutates f's identity fields in place — f.TenantID, f.UserID,
+    f.IsAdmin, f.Permissions — and returns (nil, nil) to ALLOW, or
+  - returns a non-nil *Response to short-circuit (deny), e.g.
+    &#123;Status: 401} for a bad token or &#123;Status: 402, Body:
+    insufficient_balance JSON} when the balance gate trips.
+
+A Gate MUST NOT read or copy f.Body. It operates on the envelope only.
+If it returns a non-nil error the relay surfaces it to the ZAP layer
+(the caller's Call fails); use a deny *Response for ordinary policy
+rejections so the client sees a clean HTTP status.
+
+
+### PeerPicker
+
+PeerPicker chooses the backend node for a request path. It mirrors
+pickBackend from the gateway: /v1/base/* routes to the base peer,
+everything else routes to the cloud peer (which fans out to the
+per-subsystem services). It is given the Forward's Path (raw query
+included) and returns the backend NodeID to Call.
+
+
+### Push
+
+Push is the typed view of the backend→gateway reverse-push envelope.
+
+
+```go
+func ReadPush(msg *zaplib.Message) Push
+```
+
+### PushSink
+
+PushSink delivers a Push frame to a live client connection.
+
+
+### Response
+
+Response is the typed view of the backend→gateway response envelope.
+
+
+```go
+func ReadResponse(msg *zaplib.Message) Response
+```
+

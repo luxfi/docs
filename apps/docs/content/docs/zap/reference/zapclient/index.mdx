@@ -1,0 +1,281 @@
+---
+title: "zapclient"
+description: "Package zapclient"
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/zapclient"
+```
+
+## Functions
+
+### MustOpcode
+
+```go
+func MustOpcode(name string) uint16
+```
+
+MustOpcode is ProcedureOpcode that panics on error. Use in
+package-level var initialisers where a bad procedure name is a
+build-time bug.
+
+
+### ProcedureOpcode
+
+```go
+func ProcedureOpcode(name string) (uint16, error)
+```
+
+ProcedureOpcode returns the uint16 opcode for a procedure name.
+The lower 8 bits are zero (matching the existing MsgType&lt;&lt;8 shape
+in lux/zap); the upper 8 bits are FNV-1a(name) modulo 254 + 1.
+
+Returns ErrReservedOpcode if the hash lands on 0x00 or 0xFF.
+
+
+## Types
+
+### AllowListVerifier
+
+AllowListVerifier accepts only peers whose NodeID appears in
+Allowed[procedure]. Empty Allowed[procedure] means the procedure is
+not exposed.
+
+
+```go
+func (a AllowListVerifier) Verify(ctx context.Context, peer PeerInfo, procedure string) error
+```
+
+### Client
+
+Client is a native ZAP RPC client. Created by Connect; closed by
+Close (or returned stop function from MustConnect).
+
+
+```go
+func Connect(ctx context.Context, serviceType string, opts ...ClientOption) (*Client, error)
+```
+
+```go
+func MustConnect(ctx context.Context, serviceType string, opts ...ClientOption) *Client
+```
+
+```go
+func (c *Client) Broadcast(ctx context.Context, procedure string, req *zap.Message) map[string]error
+```
+
+```go
+func (c *Client) Call(ctx context.Context, procedure string, req *zap.Message) (*zap.Message, error)
+```
+
+```go
+func (c *Client) Close() error
+```
+
+```go
+func (c *Client) Peers() []Peer
+```
+
+```go
+func (c *Client) Send(ctx context.Context, procedure string, req *zap.Message) error
+```
+
+### ClientOption
+
+ClientOption is the functional-option constructor knob.
+
+
+```go
+func WithBrowseInterval(d time.Duration) ClientOption
+```
+
+```go
+func WithCallTimeout(d time.Duration) ClientOption
+```
+
+```go
+func WithDiscoverTimeout(d time.Duration) ClientOption
+```
+
+```go
+func WithDiscovery(d Discovery) ClientOption
+```
+
+```go
+func WithLogger(l *slog.Logger) ClientOption
+```
+
+```go
+func WithMinPeers(n int) ClientOption
+```
+
+```go
+func WithNodeID(id string) ClientOption
+```
+
+```go
+func WithPicker(p Picker) ClientOption
+```
+
+```go
+func WithStaticPeers(addrs ...string) ClientOption
+```
+
+```go
+func WithTLS(cfg *tls.Config) ClientOption
+```
+
+### ClientOptions
+
+ClientOptions configure Connect. Construct via WithX options.
+
+
+### Discovery
+
+Discovery is the peer-enumeration contract.
+
+Implementations MUST be goroutine-safe; the client may call Peers()
+from every in-flight Call and Send.
+
+
+### LocalTrustVerifier
+
+LocalTrustVerifier accepts any peer presenting a valid mTLS cert
+from the cluster CA. The underlying TLS handshake already verified
+the chain; this verifier returns nil for every authenticated peer.
+
+Use when:
+  - the peer is on the cluster-private network
+  - the listener was constructed with the cluster CA in ClientCAs
+  - all in-cluster services should be allowed to call all
+    procedures (apply per-procedure RBAC in the handler if needed)
+
+
+```go
+func (LocalTrustVerifier) Verify(ctx context.Context, peer PeerInfo, procedure string) error
+```
+
+### Peer
+
+Peer is the discovery view of one reachable instance of a service.
+
+NodeID uniquely identifies the peer within ServiceType across
+discovery cycles. Address is the dial target (host:port). For
+in-cluster peers under mTLS, the authenticated peer identity comes
+from the TLS session — NodeID is a hint, not a trust anchor.
+
+
+### PeerInfo
+
+PeerInfo is the authenticated peer identity surfaced to server-side
+handlers and PeerVerifier.
+
+
+### PeerVerifier
+
+PeerVerifier is the server-side authorisation hook. Runs on every
+inbound message before procedure dispatch — return non-nil to
+reject the call.
+
+The PeerInfo carries the authenticated peer identity (NodeID +
+mTLS cert chain if present). Procedure is the procedure name the
+caller requested. PeerVerifier should compare the (peer, procedure)
+pair against the service's authorisation policy.
+
+
+### Picker
+
+Picker selects one peer from a Discovery snapshot for a single
+Call or Send. Implementations MUST be cheap (sub-microsecond) and
+goroutine-safe; the client invokes Pick from every concurrent op.
+
+
+### ProcedureHandler
+
+ProcedureHandler runs server-side for one inbound procedure call.
+Return nil + nil-err to ack a fire-and-forget Send. Return a
+response + nil-err to reply to a Call. Return nil + non-nil err to
+signal failure; the client side observes the err on its Call.
+
+
+### RoundRobinPicker
+
+RoundRobinPicker rotates through peers in registration order.
+Zero-value is ready to use; goroutine-safe.
+
+
+```go
+func (p *RoundRobinPicker) Pick(peers []Peer) (Peer, error)
+```
+
+### Server
+
+Server is the native ZAP server side: procedure-name dispatch on
+top of *zap.Node. Construct with NewServer, Register procedures,
+Start to begin accepting, Stop to release.
+
+
+```go
+func NewServer(serviceType string, opts ...ServerOption) (*Server, error)
+```
+
+```go
+func (s *Server) Dispatch(ctx context.Context, from string, msg *zap.Message) (*zap.Message, error)
+```
+
+```go
+func (s *Server) NodeID() string
+```
+
+```go
+func (s *Server) Register(procedure string, h ProcedureHandler) error
+```
+
+```go
+func (s *Server) Start() error
+```
+
+```go
+func (s *Server) Stop()
+```
+
+### ServerOption
+
+ServerOption is a functional-option knob.
+
+
+```go
+func WithNoDiscovery() ServerOption
+```
+
+```go
+func WithServerLogger(l *slog.Logger) ServerOption
+```
+
+```go
+func WithServerMetadata(m map[string]string) ServerOption
+```
+
+```go
+func WithServerNodeID(id string) ServerOption
+```
+
+```go
+func WithServerPort(p int) ServerOption
+```
+
+```go
+func WithServerTLS(cfg *tls.Config) ServerOption
+```
+
+```go
+func WithVerifier(v PeerVerifier) ServerOption
+```
+
+### ServerOptions
+
+ServerOptions configure NewServer.
+
+

@@ -1,0 +1,25 @@
+---
+title: "main"
+description: "Command zapgen emits per-schema ZAP v2 accessors from a declarative schema description."
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/v1/codegen/cmd/zapgen"
+```
+
+Command zapgen emits per-schema ZAP v2 accessors from a declarative
+schema description.
+
+Usage:
+
+	zapgen -name AdvanceTimeTx -go-name AdvanceTimeSchema -kind 1 \
+	       -size 9 -package examples -field Time:uint64:1 \
+	       -out v2/examples/advance_time_zap.go
+
+The emitted file's Wrap/New functions use v1 primitives directly so
+the Go compiler inlines them into the caller — matching v1
+hand-rolled performance to within compiler noise.
+
+

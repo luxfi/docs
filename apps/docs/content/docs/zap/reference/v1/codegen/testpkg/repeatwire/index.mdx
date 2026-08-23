@@ -1,0 +1,147 @@
+---
+title: "repeatwire"
+description: "Package repeatwire"
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/v1/codegen/testpkg/repeatwire"
+```
+
+## Functions
+
+### ChildName
+
+```go
+func ChildName(v zapv1.View[ChildSchema]) string
+```
+
+ChildName reads the variable-length Name string field of Child.
+
+Zero-copy: v1's Object.Text returns a string over a sub-slice of the
+underlying buffer. Valid only while the View's buffer is alive.
+
+
+### NewChild
+
+```go
+func NewChild(iD uint64, name string) (zapv1.View[ChildSchema], []byte)
+```
+
+NewChild builds a fresh Child in a ZAP buffer.
+
+Hand-rolled fast path: inlines v1 primitives ([zap.NewBuilder],
+[*Builder.StartObject], [*ObjectBuilder.Set*], [*Builder.Finish])
+so the entire build expands at the call site. Scalars and fixed byte
+arrays live in the fixed payload; variable-length string/bytes go in
+the object tail (the fixed payload holds their 8-byte pointers).
+
+
+### NewParent
+
+```go
+func NewParent(count uint64, children []Child) (zapv1.View[ParentSchema], []byte)
+```
+
+NewParent builds a fresh Parent in a ZAP buffer.
+
+Hand-rolled fast path: inlines v1 primitives ([zap.NewBuilder],
+[*Builder.StartObject], [*ObjectBuilder.Set*], [*Builder.Finish])
+so the entire build expands at the call site. Scalars and fixed byte
+arrays live in the fixed payload; variable-length string/bytes go in
+the object tail (the fixed payload holds their 8-byte pointers).
+
+
+### ParentChildren
+
+```go
+func ParentChildren(v zapv1.View[ParentSchema]) zapv1.ListNested[ChildSchema]
+```
+
+ParentChildren returns the variable-length Children list of Parent as a
+range-over-func-ready [zapv1.ListNested][ChildSchema]. Zero-copy: each element view
+indexes straight into the underlying buffer.
+
+	for it := range ParentChildren(view).All() &#123;
+	    // zapv1.Read(it, ChildSchemaFields.X)
+	}
+
+
+### WrapChild
+
+```go
+func WrapChild(b []byte) (zapv1.View[ChildSchema], error)
+```
+
+WrapChild parses a ZAP buffer into a typed
+[zapv1.View[Child]]. Validates the wire frame and the kind
+discriminator at offset 0; returns [*zapv1.SchemaError] on kind
+mismatch.
+
+Hand-rolled fast path: inlines [zap.Parse] (which is itself
+inlineable). Zero heap allocs on the happy path; matches v1
+hand-rolled performance.
+
+
+### WrapParent
+
+```go
+func WrapParent(b []byte) (zapv1.View[ParentSchema], error)
+```
+
+WrapParent parses a ZAP buffer into a typed
+[zapv1.View[Parent]]. Validates the wire frame and the kind
+discriminator at offset 0; returns [*zapv1.SchemaError] on kind
+mismatch.
+
+Hand-rolled fast path: inlines [zap.Parse] (which is itself
+inlineable). Zero heap allocs on the happy path; matches v1
+hand-rolled performance.
+
+
+## Types
+
+### Child
+
+Child is the per-element input for the Parent.Children list.
+
+
+### ChildSchema
+
+ChildSchema is the v1 schema marker for Child. Methods are constant-
+returning so concrete-typed [zapv1.Wrap[ChildSchema]] calls fold to
+literals at the call site.
+
+
+```go
+func (ChildSchema) Kind() zapv1.KindByte
+```
+
+```go
+func (ChildSchema) Name() string
+```
+
+```go
+func (ChildSchema) Size() int
+```
+
+### ParentSchema
+
+ParentSchema is the v1 schema marker for Parent. Methods are constant-
+returning so concrete-typed [zapv1.Wrap[ParentSchema]] calls fold to
+literals at the call site.
+
+
+```go
+func (ParentSchema) Kind() zapv1.KindByte
+```
+
+```go
+func (ParentSchema) Name() string
+```
+
+```go
+func (ParentSchema) Size() int
+```
+

@@ -1,0 +1,1167 @@
+---
+title: "zap"
+description: "Package zap (v1) is deprecated for new schema authoring."
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap"
+```
+
+Package zap (v1) is deprecated for new schema authoring.
+
+New schemas MUST be authored via codegen (~/work/lux/zap/v2/codegen)
+which emits v1-equivalent fast paths from a declarative .zap source.
+
+Consumer dispatch for ad-hoc / dynamic schemas goes through the v2
+generic API (github.com/luxfi/zap/v1).
+
+The v1 hand-rolled code in this package remains for in-flight
+migration of legacy callers (luxfi/node/vms/platformvm/txs/zap_native,
+parts of luxfi/consensus/protocol/quasar, etc.); no new v1 schemas
+are accepted.
+
+The wire format is unchanged across v1 and v2 — this is a code-level
+decomplection of the authoring surface only. Existing v1 buffers
+remain parseable by both v1 and v2.
+
+See ~/work/lux/zap/v2/README.md for the canonical authoring path.
+
+Package zap implements the Zero-copy Application Protocol (ZAP) for Lux.
+
+ZAP is a binary serialization format designed for high-performance
+inter-process and network communication. Like Cap'n Proto and FlatBuffers,
+ZAP enables zero-copy reads - data can be accessed directly from the
+underlying byte buffer without parsing or allocation.
+
+Transport security: set NodeConfig.TLS to a *tls.Config to wrap all
+TCP connections with TLS. This supports PQ-TLS 1.3 when the Go runtime
+and configured cipher suites provide post-quantum key exchange (e.g.
+X25519Kyber768). When TLS is nil (the default), connections are plaintext.
+
+Wire Format:
+
+	┌─────────────────────────────────────────────────┐
+	│ Header (16 bytes)                               │
+	│  ├─ Magic (4 bytes): "ZAP\x00"                  │
+	│  ├─ Version (2 bytes): 1 (legacy) or 2 (current)│
+	│  ├─ Flags (2 bytes): compression, etc.          │
+	│  ├─ Root Offset (4 bytes): offset to root       │
+	│  └─ Size (4 bytes): total message size          │
+	├─────────────────────────────────────────────────┤
+	│ Data Segment (variable)                         │
+	│  └─ Structs, lists, text, bytes...             │
+	└─────────────────────────────────────────────────┘
+
+All multi-byte integers are little-endian. Offsets are relative to
+the position of the offset field itself.
+
+
+## Functions
+
+### AsPQConn
+
+```go
+func AsPQConn(c net.Conn) (*pqConn, error)
+```
+
+AsPQConn type-asserts an interface&#123;} into a ZAP-PQ wrapper so
+callers can fetch PeerID without import cycles.
+
+
+### DecodeNodeIDHandshake
+
+```go
+func DecodeNodeIDHandshake(data []byte) (string, bool)
+```
+
+DecodeNodeIDHandshake reads a NodeID exchange message and returns
+the peer's nodeID. An empty string (with ok=false) indicates a
+malformed or out-of-range length field.
+
+
+### EncodeNodeIDHandshake
+
+```go
+func EncodeNodeIDHandshake(nodeID string) []byte
+```
+
+EncodeNodeIDHandshake builds the NodeID exchange message.
+nodeIDs longer than maxNodeIDLen are truncated; the receiver
+validates length on Decode.
+
+
+### Network
+
+```go
+func Network(addr string) string
+```
+
+Network returns the net package's network name for addr: a filesystem
+path names a unix socket, anything else is a host:port TCP address.
+
+It is the ONE rule the listener and the dialer both use, so a node can
+never bind one transport and be dialled on another. An address is a
+path when it is absolute, explicitly relative, or in Linux's abstract
+namespace ("@name") — none of which is a legal host:port.
+
+
+### ParseHeader
+
+```go
+func ParseHeader(data []byte) ([]byte, int, error)
+```
+
+ParseHeader validates a ZAP wire frame and returns the (validated
+data slice, root offset) WITHOUT allocating a [*Message]. Same checks
+as [Parse] — magic, version, size — but the result is two values, not
+a pointer. Intended for generic wrappers (zapv1) that build their own
+value-typed accessors and never need a *Message.
+
+Returns (data[:size], rootOff, nil) on success.
+
+The wire validation steps mirror [Parse] exactly (magic + version +
+size + bounds). The implementation is intentionally written as one
+linear sequence (no intermediate function calls) so the inliner
+folds the whole body into the caller. Combined with the value-
+typed [zapv1.View], this is what makes the v2 read path match v1's
+2 ns hand-rolled per-Read cost — zero function calls, zero heap.
+
+
+### PutBuilder
+
+```go
+func PutBuilder(b *Builder)
+```
+
+PutBuilder returns a Builder to the pool. The slice previously returned by
+b.Finish() must no longer be referenced (it aliases b's buffer).
+
+
+### RegisterTransport
+
+```go
+func RegisterTransport(t Transport, f TransportFactory)
+```
+
+RegisterTransport plugs a TransportFactory into the registry. The
+quic subpackage calls this in its init function.
+
+Registration is idempotent — re-registering the same Transport
+overwrites — but in practice each Transport has exactly one
+factory linked into the binary.
+
+
+### TLSCertFingerprintFromBytes
+
+```go
+func TLSCertFingerprintFromBytes(certDER []byte) [32]byte
+```
+
+TLSCertFingerprintFromBytes returns sha256(certBytes) sized for
+the AttestationContext field. Helper so callers don't need to
+reach into crypto/sha256 separately.
+
+
+### TranscriptHash
+
+```go
+func TranscriptHash(ctx *AttestationContext) [48]byte
+```
+
+TranscriptHash returns the 48-byte SHAKE256-384 commitment a
+PQ Attestation signature MUST cover. Domain-separated with the
+"ZAP-PQ-V1" string so a signature produced for ZAP cannot be
+replayed on any other ML-DSA-signed transcript (warp envelopes,
+validator-set commitments, etc.).
+
+SP 800-185 left_encode framing on each field so a malicious
+transcript field whose first bytes spell another field's
+payload cannot collide with a legitimate transcript.
+
+
+### TypeSize
+
+```go
+func TypeSize(t Type) int
+```
+
+TypeSize returns the size of a type in bytes.
+
+
+### UnwrapCorrelated
+
+```go
+func UnwrapCorrelated(data []byte) (reqID uint32, flag uint32, body []byte, ok bool)
+```
+
+UnwrapCorrelated reads the correlation header off `data` and
+returns (reqID, flag, body, ok). If `data` is shorter than the
+header or the flag isn't a recognised value, ok is false and
+the caller should treat the message as uncorrelated.
+
+
+### VerifyRegistration
+
+```go
+func VerifyRegistration(
+	reg *VMRegistration,
+	chainAuthority *mldsa.PublicKey,
+	mode RegistrationMode,
+) (*mldsa.PublicKey, error)
+```
+
+VerifyRegistration checks AuthoritySig — and PrevVMSig under
+ModeRotation — against the chain authority public key. Returns the
+verified VM public key on success.
+
+Signing context for both signatures is the §6.4 SignCtx
+("lux-zap-pq-v1") so the same audited verifier handles them.
+Payload is `VMID ∥ VMPubKey` so a signature over one (VMID, pubkey)
+pair cannot be re-used for a different pair.
+
+
+### WrapCorrelated
+
+```go
+func WrapCorrelated(reqID uint32, flag uint32, body []byte) []byte
+```
+
+WrapCorrelated prepends the Call/response correlation header to
+`body`. The result is what writeMessage emits onto the wire.
+
+
+### WrapPQ
+
+```go
+func WrapPQ(conn net.Conn, sess *handshake.Session) net.Conn
+```
+
+WrapPQ wraps an established net.Conn with ZAP-PQ-v1 AEAD framing
+after a completed handshake. The returned net.Conn implements
+stream Read/Write on top of the record-oriented Session — one
+Write becomes one DATA frame (chunked at MaxRecord), reads buffer
+across frames so callers see the byte stream they expect.
+
+Close closes the Session (which zeros the keys and closes the
+underlying TCP conn). LocalAddr / RemoteAddr / SetDeadline*
+delegate to the wrapped conn.
+
+Drop-in usage:
+
+	tcp, _ := net.Dial("tcp", "...")
+	sess, _ := (&handshake.Initiator&#123;Local: id}).Run(tcp)
+	pq := zap.WrapPQ(tcp, sess)
+	// use pq as any net.Conn from here on
+
+
+## Types
+
+### Address
+
+Address is a 20-byte EVM address (zero-copy view).
+
+
+```go
+func AddressFromHex(s string) (Address, error)
+```
+
+```go
+func (a Address) Hex() string
+```
+
+```go
+func (a Address) IsZero() bool
+```
+
+```go
+func (a Address) String() string
+```
+
+### Attestation
+
+Attestation is the wire shape a ZAP peer presents after the
+TLS handshake completes. PubKey + Sig are opaque bytes from
+zap's perspective; the AttestationVerifier owns the format
+(FIPS 204 ML-DSA-65 pubkey 1952 bytes, signature 3293 bytes
+for Liquid; ML-DSA-87 with different byte counts for
+high-value Zoo chains).
+
+
+```go
+func (a *Attestation) HasPQEvidence() bool
+```
+
+### AttestationContext
+
+AttestationContext bundles the inputs a verifier needs to
+rebuild the transcript hash. Same inputs on both peers; the
+PQ signature anchors the binding.
+
+
+### Bloom
+
+Bloom is a 256-byte bloom filter.
+
+
+### Builder
+
+Builder constructs ZAP messages.
+
+
+```go
+func GetBuilder() *Builder
+```
+
+```go
+func NewBuilder(capacity int) *Builder
+```
+
+```go
+func NewBuilderV1(capacity int) *Builder
+```
+
+```go
+func (b *Builder) Finish() []byte
+```
+
+```go
+func (b *Builder) FinishWithFlags(flags uint16) []byte
+```
+
+```go
+func (b *Builder) Reset()
+```
+
+```go
+func (b *Builder) StartList(elemSize int) ListBuilder
+```
+
+```go
+func (b *Builder) StartObject(dataSize int) ObjectBuilder
+```
+
+```go
+func (b *Builder) WriteBytes(data []byte) int
+```
+
+```go
+func (b *Builder) WriteText(s string) int
+```
+
+### Conn
+
+Conn is a ZAP connection to a peer.
+
+
+```go
+func (c *Conn) Recv() (*Message, error)
+```
+
+```go
+func (c *Conn) Send(msg *Message) error
+```
+
+### Destination
+
+Destination names WHO/WHAT a message is for, decoupled from HOW it is reached.
+In P1 it is a dotted capability aspect ("hanzo.o11y.traces"); the announce-
+routed PQ-identity destination hash (multi-hop) refines this in the transport
+HIP WITHOUT changing this call site — that is the whole point of the seam.
+
+
+### Enum
+
+Enum describes a ZAP enum.
+
+
+### Field
+
+Field describes a struct field.
+
+
+### Handler
+
+Handler handles incoming ZAP messages.
+
+
+### Hash
+
+Hash is a 32-byte hash (zero-copy view).
+
+
+```go
+func HashFromHex(s string) (Hash, error)
+```
+
+```go
+func (h Hash) Bytes32() [32]byte
+```
+
+```go
+func (h Hash) Hex() string
+```
+
+```go
+func (h Hash) IsZero() bool
+```
+
+```go
+func (h Hash) String() string
+```
+
+### InProcessInterface
+
+InProcessInterface is the cost-0 interface: it delivers to destinations that
+live in THIS address space by calling their handler directly. No serialization,
+no copy, no socket, no loopback TCP — a call is a call. It is the primitive
+behind "if the sink is in my own binary, don't touch the network."
+
+A Payload's live Value is handed straight to the LocalHandler; the payload's
+Encode (the wire form) is never invoked on this path, so an in-process delivery
+pays nothing for encoding. When sender and receiver are folded into one binary
+(the unified-cloud monolith), this is the interface that always wins the Cost
+race, and the ZAP wire never enters the picture.
+
+
+```go
+func NewInProcessInterface() *InProcessInterface
+```
+
+```go
+func (p *InProcessInterface) CanReach(dst Destination) bool
+```
+
+```go
+func (p *InProcessInterface) Cost() int
+```
+
+```go
+func (p *InProcessInterface) Deliver(ctx context.Context, dst Destination, pl Payload) (Payload, error)
+```
+
+```go
+func (p *InProcessInterface) Name() string
+```
+
+```go
+func (p *InProcessInterface) Register(dst Destination, h LocalHandler)
+```
+
+### Interface
+
+Interface moves a Payload one hop toward a Destination over a single medium.
+Interfaces are ranked by Cost; Router always prefers the cheapest one that
+can currently reach the destination. Implementations are the ONLY place a
+transport detail (a socket, a serial line, a memory handoff) lives.
+
+
+### List
+
+List is a zero-copy view into a ZAP list.
+
+
+```go
+func (l List) Address(i int) Address
+```
+
+```go
+func (l List) Bytes() []byte
+```
+
+```go
+func (l List) Hash(i int) Hash
+```
+
+```go
+func (l List) IsNull() bool
+```
+
+```go
+func (l List) Len() int
+```
+
+```go
+func (l List) Object(i int, elemSize int) Object
+```
+
+```go
+func (l List) ObjectPtr(i int) Object
+```
+
+```go
+func (l List) Uint32(i int) uint32
+```
+
+```go
+func (l List) Uint64(i int) uint64
+```
+
+```go
+func (l List) Uint8(i int) uint8
+```
+
+### ListBuilder
+
+ListBuilder builds a ZAP list.
+
+
+```go
+func (lb *ListBuilder) AddBytes(data []byte)
+```
+
+```go
+func (lb *ListBuilder) AddObjectPtr(targetPos int)
+```
+
+```go
+func (lb *ListBuilder) AddUint32(v uint32)
+```
+
+```go
+func (lb *ListBuilder) AddUint64(v uint64)
+```
+
+```go
+func (lb *ListBuilder) AddUint8(v uint8)
+```
+
+```go
+func (lb *ListBuilder) Finish() (offset int, length int)
+```
+
+### LocalHandler
+
+LocalHandler consumes a Payload delivered IN-PROCESS. It receives the live
+Value (type-assert to the concrete type the aspect defines) and may return a
+reply Payload (nil Value ⇒ no reply). This is the handler an InProcessInterface
+dispatches to — distinct from Node's wire Handler, which decodes bytes first.
+
+
+### Message
+
+Message is a ZAP message that can be read zero-copy.
+
+When the message's backing storage was sourced from the pooled read
+buffer (see bufpool.go), refs is non-nil and Release returns the
+slab to its pool. For messages built via Builder.Finish() / Parse()
+of caller-owned bytes, refs is nil and Release is a no-op — those
+buffers are GC-managed as before.
+
+
+```go
+func Parse(data []byte) (*Message, error)
+```
+
+```go
+func WrapBuffer(data []byte) *Message
+```
+
+```go
+func (m *Message) Bytes() []byte
+```
+
+```go
+func (m *Message) Flags() uint16
+```
+
+```go
+func (m *Message) Release()
+```
+
+```go
+func (m *Message) Retain()
+```
+
+```go
+func (m *Message) Root() Object
+```
+
+```go
+func (m *Message) RootObjectAt(off int) Object
+```
+
+```go
+func (m *Message) Size() int
+```
+
+```go
+func (m *Message) Version() uint16
+```
+
+### Node
+
+Node is a ZAP node that combines mDNS discovery with zero-copy RPC.
+
+
+```go
+func NewNode(cfg NodeConfig) *Node
+```
+
+```go
+func (n *Node) Broadcast(ctx context.Context, msg *Message) map[string]error
+```
+
+```go
+func (n *Node) Call(ctx context.Context, peerID string, msg *Message) (*Message, error)
+```
+
+```go
+func (n *Node) ConnectDirect(addr string) error
+```
+
+```go
+func (n *Node) ConnectDirectID(addr string) (string, error)
+```
+
+```go
+func (n *Node) Handle(msgType uint16, handler Handler)
+```
+
+```go
+func (n *Node) NodeID() string
+```
+
+```go
+func (n *Node) Peers() []string
+```
+
+```go
+func (n *Node) Send(ctx context.Context, peerID string, msg *Message) error
+```
+
+```go
+func (n *Node) Start() error
+```
+
+```go
+func (n *Node) Stop()
+```
+
+### NodeConfig
+
+NodeConfig configures a ZAP node.
+
+
+### NodeInterface
+
+NodeInterface adapts the existing *Node (TCP/QUIC + conn_pq PQ session + mDNS
+discovery) to the Interface seam, WITHOUT changing Node. It is the network
+fallback: whenever a destination is not served in-process, Router routes here
+and the Node discovers/dials the peer and ships the ZAP wire Message.
+
+This is where the wire actually happens — and ONLY here. The Payload's live
+Value never crosses a socket; Deliver calls Payload.Encode() to materialize the
+zero-copy Message exactly once, at the moment a network hop is unavoidable.
+
+P1 scope: one-way delivery (Node.Send) — sufficient for telemetry and event
+fan-out, which is what folds first. Request/reply over the wire (Node.Call) and
+announce-driven multi-hop reachability are P2 refinements that slot in behind
+this same Interface without moving the Router.Send call site.
+
+
+```go
+func NewNodeInterface(n *Node) *NodeInterface
+```
+
+```go
+func (i *NodeInterface) CanReach(dst Destination) bool
+```
+
+```go
+func (i *NodeInterface) ConnectedOnly() *NodeInterface
+```
+
+```go
+func (i *NodeInterface) Cost() int
+```
+
+```go
+func (i *NodeInterface) Deliver(ctx context.Context, dst Destination, p Payload) (Payload, error)
+```
+
+```go
+func (i *NodeInterface) Name() string
+```
+
+```go
+func (i *NodeInterface) WithCost(c int) *NodeInterface
+```
+
+### Object
+
+Object is a zero-copy view into a ZAP struct.
+
+
+```go
+func (o Object) Address(fieldOffset int) Address
+```
+
+```go
+func (o Object) AddressSlice(fieldOffset int) []byte
+```
+
+```go
+func (o Object) Bool(fieldOffset int) bool
+```
+
+```go
+func (o Object) Bytes(fieldOffset int) []byte
+```
+
+```go
+func (o Object) BytesFixedSlice(fieldOffset, n int) []byte
+```
+
+```go
+func (o Object) Float32(fieldOffset int) float32
+```
+
+```go
+func (o Object) Float64(fieldOffset int) float64
+```
+
+```go
+func (o Object) Hash(fieldOffset int) Hash
+```
+
+```go
+func (o Object) HashSlice(fieldOffset int) []byte
+```
+
+```go
+func (o Object) Int16(fieldOffset int) int16
+```
+
+```go
+func (o Object) Int32(fieldOffset int) int32
+```
+
+```go
+func (o Object) Int64(fieldOffset int) int64
+```
+
+```go
+func (o Object) Int8(fieldOffset int) int8
+```
+
+```go
+func (o Object) IsNull() bool
+```
+
+```go
+func (o Object) List(fieldOffset int) List
+```
+
+```go
+func (o Object) ListStride(fieldOffset int, minStride uint32) List
+```
+
+```go
+func (o Object) Message() *Message
+```
+
+```go
+func (o Object) Object(fieldOffset int) Object
+```
+
+```go
+func (o Object) Offset() int
+```
+
+```go
+func (o Object) Signature(fieldOffset int) Signature
+```
+
+```go
+func (o Object) Text(fieldOffset int) string
+```
+
+```go
+func (o Object) Uint16(fieldOffset int) uint16
+```
+
+```go
+func (o Object) Uint32(fieldOffset int) uint32
+```
+
+```go
+func (o Object) Uint64(fieldOffset int) uint64
+```
+
+```go
+func (o Object) Uint8(fieldOffset int) uint8
+```
+
+### ObjectBuilder
+
+ObjectBuilder builds a ZAP object (struct).
+
+
+```go
+func (ob ObjectBuilder) Finish() int
+```
+
+```go
+func (ob ObjectBuilder) FinishAsRoot() int
+```
+
+```go
+func (ob ObjectBuilder) ReserveFixed(dataSize int)
+```
+
+```go
+func (ob *ObjectBuilder) SetAddress(fieldOffset int, addr Address)
+```
+
+```go
+func (ob ObjectBuilder) SetBool(fieldOffset int, v bool)
+```
+
+```go
+func (ob ObjectBuilder) SetBytes(fieldOffset int, v []byte)
+```
+
+```go
+func (ob ObjectBuilder) SetBytesFixed(fieldOffset int, v []byte)
+```
+
+```go
+func (ob ObjectBuilder) SetFloat32(fieldOffset int, v float32)
+```
+
+```go
+func (ob ObjectBuilder) SetFloat64(fieldOffset int, v float64)
+```
+
+```go
+func (ob *ObjectBuilder) SetHash(fieldOffset int, h Hash)
+```
+
+```go
+func (ob ObjectBuilder) SetInt16(fieldOffset int, v int16)
+```
+
+```go
+func (ob ObjectBuilder) SetInt32(fieldOffset int, v int32)
+```
+
+```go
+func (ob ObjectBuilder) SetInt64(fieldOffset int, v int64)
+```
+
+```go
+func (ob ObjectBuilder) SetInt8(fieldOffset int, v int8)
+```
+
+```go
+func (ob ObjectBuilder) SetList(fieldOffset int, listOffset int, length int)
+```
+
+```go
+func (ob ObjectBuilder) SetObject(fieldOffset int, objOffset int)
+```
+
+```go
+func (ob *ObjectBuilder) SetSignature(fieldOffset int, sig Signature)
+```
+
+```go
+func (ob ObjectBuilder) SetText(fieldOffset int, v string)
+```
+
+```go
+func (ob ObjectBuilder) SetUint16(fieldOffset int, v uint16)
+```
+
+```go
+func (ob ObjectBuilder) SetUint32(fieldOffset int, v uint32)
+```
+
+```go
+func (ob ObjectBuilder) SetUint64(fieldOffset int, v uint64)
+```
+
+```go
+func (ob ObjectBuilder) SetUint8(fieldOffset int, v uint8)
+```
+
+### Payload
+
+Payload is the value a Router delivers. It is deliberately dual-form so the
+interface the router picks pays only for what that medium needs:
+
+  - Value is the LIVE native value. The in-process interface hands it to the
+    local handler by pointer — zero serialization, zero copy, zero TCP. This
+    is the "skip the wire entirely when we share an address space" fast path.
+  - Encode lazily produces the zero-copy wire Message; a NETWORK interface
+    calls it (and only then, so an in-process delivery never encodes). A nil
+    Encode means the payload is in-process-only and cannot cross a wire.
+
+
+### RegistrationMode
+
+RegistrationMode selects which signatures VerifyRegistration
+requires. The chain-state loader decides which to pass based on
+whether the registry already holds an entry for this VMID.
+
+Passing the wrong mode is a contract bug detectable at the call
+site: ModeInitial refuses any registration that carries a
+PrevVMSig; ModeRotation requires both PrevVMSig and PrevVMPubKey.
+A loader that always calls ModeInitial would let a compromised
+chain authority overwrite an existing VM key without the old
+key's consent — which §10.2 forbids.
+
+
+### Router
+
+Router is ZAP's locality-adaptive router: ONE Send API over many interfaces.
+
+The complected thing in classic RPC is `Send(host:port, msg)` — WHO you are
+talking to, HOW the bytes travel, and WHERE the peer lives are braided into a
+single address. Router pulls them apart (Reticulum's model, made
+post-quantum and zero-copy):
+
+  - Destination — WHO/WHAT (a capability aspect, later a PQ-identity hash).
+  - Interface   — HOW one hop travels (in-process memory, TCP, UDP, radio…).
+  - Payload     — the message, dual-form so each medium pays only for itself.
+  - Router      — routes: the cheapest Interface that can currently reach dst.
+
+"If in-process, skip TCP; else use the network" is therefore NOT a branch any
+caller writes — it is the Cost table (InProcess 0 &lt; UDS 1 &lt; TCP 10 &lt; routed
+100+). A caller only ever says:
+
+	router.Send(ctx, dst, payload)
+
+and never names a port or a transport again. Router is distinct from the
+wire-level Transport enum (TransportTCP/TransportQUIC), which selects HOW one
+Node's socket speaks; a NodeInterface adapts such a Node into this router.
+
+
+```go
+func NewRouter() *Router
+```
+
+```go
+func (t *Router) Interfaces() []Interface
+```
+
+```go
+func (t *Router) Register(i Interface)
+```
+
+```go
+func (t *Router) Send(ctx context.Context, dst Destination, p Payload) (Payload, error)
+```
+
+### Schema
+
+Schema describes a complete ZAP schema.
+
+
+```go
+func NewSchema(name string) *Schema
+```
+
+```go
+func (s *Schema) AddEnum(e *Enum)
+```
+
+```go
+func (s *Schema) AddStruct(st *Struct)
+```
+
+### Signature
+
+Signature is a 65-byte ECDSA signature.
+
+
+### StaticVMRegistry
+
+StaticVMRegistry is an in-memory map implementation of VMRegistry
+suitable for genesis-loaded registrations. Production deployments
+will typically back this with an indexed chain-state cache, but
+the interface stays the same.
+
+
+```go
+func NewStaticVMRegistry() *StaticVMRegistry
+```
+
+```go
+func (r *StaticVMRegistry) Add(reg *VMRegistration)
+```
+
+```go
+func (r *StaticVMRegistry) Lookup(vmID [32]byte) (*VMRegistration, bool)
+```
+
+### Struct
+
+Struct describes a ZAP struct.
+
+
+### StructBuilder
+
+StructBuilder helps build struct definitions.
+
+
+```go
+func NewStructBuilder(name string) *StructBuilder
+```
+
+```go
+func (sb *StructBuilder) Address(name string) *StructBuilder
+```
+
+```go
+func (sb *StructBuilder) Bool(name string) *StructBuilder
+```
+
+```go
+func (sb *StructBuilder) Build() *Struct
+```
+
+```go
+func (sb *StructBuilder) Bytes(name string) *StructBuilder
+```
+
+```go
+func (sb *StructBuilder) Float64(name string) *StructBuilder
+```
+
+```go
+func (sb *StructBuilder) Hash(name string) *StructBuilder
+```
+
+```go
+func (sb *StructBuilder) Int32(name string) *StructBuilder
+```
+
+```go
+func (sb *StructBuilder) Int64(name string) *StructBuilder
+```
+
+```go
+func (sb *StructBuilder) List(name string, elemType Type) *StructBuilder
+```
+
+```go
+func (sb *StructBuilder) Signature(name string) *StructBuilder
+```
+
+```go
+func (sb *StructBuilder) Struct(name string, structName string) *StructBuilder
+```
+
+```go
+func (sb *StructBuilder) Text(name string) *StructBuilder
+```
+
+```go
+func (sb *StructBuilder) Uint32(name string) *StructBuilder
+```
+
+```go
+func (sb *StructBuilder) Uint64(name string) *StructBuilder
+```
+
+### Transport
+
+Transport selects which network transport a Node uses.
+
+The default zero value, TransportTCP, preserves the historical
+behavior of NewNode (TCP + optional TLS via NodeConfig.TLS) so every
+existing caller keeps working untouched.
+
+TransportQUIC selects the QUIC transport defined in the quic
+subpackage. The quic subpackage must be imported anonymously by the
+process for TransportQUIC to be available; otherwise NewNode returns
+ErrTransportUnavailable.
+
+
+### TransportConn
+
+TransportConn is the transport-level abstraction over a single
+peer connection. It mirrors the existing TCP *Conn semantics
+(Send/Recv/Close) and is used by the transport-aware Node code
+path in node.go.
+
+
+### TransportFactory
+
+TransportFactory is the extension point the quic subpackage uses
+to register itself with this package at init time, avoiding an
+import cycle.
+
+A TransportFactory wraps the existing Node so all the higher-level
+APIs (Handle, Send, Call, Broadcast) work identically regardless of
+transport. The factory is responsible for:
+
+  - Binding a listener on n.port (cfg.Port).
+  - Yielding accepted connections via the supplied dispatch hook.
+  - Implementing outbound dial via the supplied dispatch hook.
+
+Today only QUIC uses this hook; TCP is wired directly in node.go
+because the original Node embeds the TCP listener fields. This is
+pragmatic — once QUIC ships we can refactor TCP onto the same
+factory shape without a single user-visible change.
+
+
+### TransportStream
+
+TransportStream is one per-Call stream. Stream lifecycle:
+
+	WriteFrame(req)   // single request
+	ReadFrame()       // single response
+	Close()           // release stream ID back to the QUIC pool
+
+Both directions are length-prefixed ZAP frames identical to the
+control-stream wire format — so byte-for-byte interop with the
+TCP transport and with control-stream Call paths is preserved.
+
+
+### TransportStreamer
+
+TransportStreamer is an optional capability extension to
+TransportConn for transports that natively multiplex independent
+bidirectional streams (notably QUIC). When a TransportConn also
+implements TransportStreamer, Node.Call routes each request onto a
+fresh per-Call stream instead of serializing on the shared control
+stream — this lets concurrent Calls progress in parallel up to the
+peer-advertised stream limit (1024 for ZAP's QUIC config).
+
+TCP transport does NOT implement TransportStreamer; Node.Call
+transparently falls back to control-stream serialization on TCP.
+
+
+### Type
+
+Type represents a ZAP type.
+
+
+### VMRegistration
+
+VMRegistration is the §10.2 chain-authority-signed record binding
+a VM plugin's ML-DSA-65 identity to its VMID.
+
+  - VMID          : SHA3-256(VMPubKey) — the canonical handle
+  - VMPubKey      : ML-DSA-65 public key bytes (MLDSA65PubLen)
+  - AuthoritySig  : chain-authority ML-DSA-65 signature over
+    (VMID ∥ VMPubKey)
+  - PrevVMSig     : optional — prior VM key's signature over the
+    same payload. Required for rotation; nil/empty for the
+    initial registration.
+
+
+### VMRegistry
+
+VMRegistry is loaded from a signed chain config and consulted by
+the node side of every ZAP-PQ handshake to a VM plugin (§10.2).
+
+A node holds one VMRegistry per chain it serves; the registry is
+populated from on-chain VMRegistration records each of which is
+signed by the chain authority.
+
+

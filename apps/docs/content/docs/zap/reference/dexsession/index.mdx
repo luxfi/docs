@@ -1,0 +1,881 @@
+---
+title: "dexsession"
+description: "Package dexsession is the ZAP/Cap'n-Proto orchestration layer for the Lux DEX."
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/dexsession"
+```
+
+Package dexsession is the ZAP/Cap'n-Proto orchestration layer for the Lux DEX.
+
+It makes the native C&lt;->D atomic settlement flow FEEL synchronous (capability
+transport + promise pipelining) while keeping the value boundary 100% native.
+
+# The hard invariant (the whole point)
+
+A ZAP response is NEVER sufficient to move money. Money moves ONLY when:
+
+	C  consumes a real D->C atomic shared-memory export object, OR
+	D  consumes a real C->D atomic export object.
+
+Even a fully malicious or stale ZAP layer cannot mint, credit, or substitute
+value: it can only POINT the precompile/keeper at an atomic object that the
+chain independently verifies (asset / owner / amount / one-time bound). This
+package therefore traffics in VALUES — quotes (estimates), calldata (bytes to
+sign), and POINTERS (DExportRef) — never in authority over a balance.
+
+# Why the invariant holds structurally, not just by policy
+
+The C-side value boundary (luxfi/precompile/dex/native_dchain_client.go) and
+the D-side value boundary (luxfi/dex/pkg/dchain/atomic.go) both operate on EVM
+host capabilities (a StateDB and an AtomicState / shared memory). This package
+holds NONE of those: it has no StateDB, no AtomicState, no shared memory, and
+— by deliberate module discipline — no compile-time edge to the precompile or
+the EVM at all. It cannot import the C Verify path, and the C Verify path does
+not import it. The only things crossing the boundary are bytes:
+
+  - prepareSwapIntent returns CALLDATA (hookData for 0x9999) the USER signs;
+    it reserves no funds and returns no amountOut the chain trusts.
+  - notifyIntent tells D to SCAN/import a C->D object the user's signed C tx
+    already created; it cannot make a D match valid without a committed D
+    block.
+  - importSettlement returns finalization CALLDATA / submits a C tx that
+    merely POINTS at a DExportRef; the chain's ImportSettlement re-reads the
+    real D->C object and binds recipient/asset/amount to it.
+
+So "no capability moves money" is provable by EXHAUSTION over the API surface:
+there is no creditBalance / settleFill / overrideMatch / adminWithdraw method
+to call (see capability.go). The capability gate is defence in depth on top of
+a surface that is already value-free by construction.
+
+# Capabilities (Cap'n-Proto style)
+
+FullServiceNode.Bootstrap returns a RESTRICTED DexSession. From the session a
+caller derives narrowly-scoped, unforgeable capabilities — QuoteCap (read),
+IntentCap (request a C->D intent + notify), WatchCap (subscribe to a D
+result), SettlementCap (ask C to import an EXISTING D->C object), AdminCap
+(halt/status only, separately gated). A capability cannot grant authority the
+session was not bootstrapped with, and none of them can mint or credit a C
+balance.
+
+# Promise pipelining (the latency win)
+
+Dependent calls issue before each prior resolves:
+
+	quote  := dex.Quote(req)
+	intent := dex.PrepareSwapIntent(req, quote)   // takes the quote promise
+	watch  := dex.NotifyIntent(intent)            // takes the intent promise
+	settle := watch.OnCommitted().ImportSettlement()
+
+The client overlaps network latency (each call dispatches the instant its
+inputs resolve), and a Pipeline batch collapses a whole dependency chain into
+a single round trip. The consensus path stays native atomic throughout.
+
+
+## Functions
+
+### DecodeAtomicObject
+
+```go
+func DecodeAtomicObject(v []byte) (owner Account, asset ID, amount uint64, ok bool)
+```
+
+DecodeAtomicObject is the inverse. ok=false for any value that is not exactly
+the canonical width, so a corrupt record is never reinterpreted — the same
+defence the precompile and dexvm decoders apply. A consumer binds the credited
+owner/asset/amount to THIS recorded value, never to a declared claim.
+
+
+### EncodeAtomicObject
+
+```go
+func EncodeAtomicObject(owner Account, asset ID, amount uint64) []byte
+```
+
+EncodeAtomicObject serializes a cross-chain value object as the shared-memory
+value: owner(20) | asset(32) | amount(8). Byte-identical with the precompile
+and dexvm encoders. This is the ONLY value-bearing identity the atomic
+conservation binds; dexsession reproduces the encoding so a watcher can derive
+the object key it points at — it NEVER writes one into shared memory (it has
+no shared memory).
+
+
+### EncodeIntentHookData
+
+```go
+func EncodeIntentHookData(deadline, nonce uint64) []byte
+```
+
+EncodeIntentHookData builds an explicit Phase-A hookData carrying the deadline and the
+intent NONCE. BYTE-IDENTICAL to precompile/dex EncodeIntentHookData — both sides MUST
+produce the same calldata for the same (deadline, nonce) or the off-chain-derived
+intent id would diverge from the on-chain one (the watch-correlation contract). The
+encoding is MINIMAL-WIDTH (the precompile decodes all three widths):
+  - deadline==0 && nonce==0 -> tag only (4 bytes)
+  - nonce==0                -> tag | deadline[32]
+  - else                    -> tag | deadline[32] | nonce[32]
+
+
+### EncodeModifyLiquidityCalldata
+
+```go
+func EncodeModifyLiquidityCalldata(pk PoolKeyArgs, args ModifyLiquidityArgs, hookData []byte) []byte
+```
+
+EncodeModifyLiquidityCalldata builds the full 0x9999 modifyLiquidity calldata:
+
+	selector(4) || PoolKey(5 words) || ModifyParams(4 words: tickLower, tickUpper,
+	liquidityDelta, salt) || offset(1 word) || hookData(length word + padded bytes)
+
+Standard Solidity ABI encoding of the modifyLiquidity signature. The dynamic
+`bytes hookData` is tail-encoded with a head offset word. hookData selects the
+phase exactly as for swap: empty / DI01 for the commit intent, DS01 for settling a
+removal's D->C export (though a removal's settlement is built via the swap-shaped
+EncodeSwapCalldata + DS01, since the credit kernel is the swap path — see
+v4session.go collect/cancel).
+
+
+### EncodeSettlementHookData
+
+```go
+func EncodeSettlementHookData(outputID ID, amount uint64, intentID ID) []byte
+```
+
+EncodeSettlementHookData builds a Phase-B hookData: tag + outputID + amount + intentID.
+Byte-identical to precompile/dex EncodeSettlementHookData (the INVERSE of its
+decodeSettlementBody). amount is right-aligned in a uint256 word (the low 8 bytes),
+matching the precompile's binary.BigEndian.PutUint64(amt[24:32], amount). intentID names
+the originating C->D intent the settlement draws against — the precompile binds the credit
+to that taker's intent record (the per-taker cap + the deadline gate), so it is REQUIRED;
+a body without it is the wrong width and the on-chain decode reverts.
+
+CRITICAL: the body carries outputID + amount + intentID, but NOT the output ASSET or the
+RECIPIENT — on-chain the asset is derived from the swap direction and the recipient is the
+CALLER. So this calldata cannot name a victim's recipient or a re-denominated asset;
+ImportSettlement binds outputID/amount/intentID against the RECORDED object + the recorded
+owner's intent. (This is why a tampered DExportRef cannot substitute recipient/asset/amount
+— see the package invariant.)
+
+
+### EncodeSwapCalldata
+
+```go
+func EncodeSwapCalldata(pk PoolKeyArgs, zeroForOne bool, amountIn uint64, hookData []byte) []byte
+```
+
+EncodeSwapCalldata builds the full 0x9999 swap calldata:
+
+	selector(4) || PoolKey(5 words) || SwapParams(3 words) || offset(1 word) ||
+	hookData(length word + padded bytes)
+
+This is the standard Solidity ABI encoding of
+swap((address,address,uint24,int24,address),(bool,int256,uint160),bytes). The
+dynamic `bytes hookData` is tail-encoded with a head offset word.
+
+zeroForOne + amountSpecified come from the request; amountSpecified is encoded
+as -AmountIn (exact input). The hookData selects the phase: pass
+EncodeIntentHookData()/empty for Phase A, EncodeSettlementHookData(...) for
+Phase B.
+
+
+### NewSession
+
+```go
+func NewSession(cfg SessionConfig) *clientSession
+```
+
+NewSession builds a client session. Bootstrap (server.go) is the canonical
+entry; this is the explicit constructor for a node that already has a peer.
+
+
+## Types
+
+### Account
+
+Account is a 20-byte EVM account (taker / recipient / owner). Byte-identical
+to the low 20 bytes of an EVM address; the precompile binds it as the atomic
+object owner.
+
+
+### AdminCap
+
+AdminCap permits halt/status only, and is granted SEPARATELY (AuthAdmin is not
+in AuthorityPublic). It cannot withdraw, credit, or override a match.
+
+
+```go
+func (c AdminCap) Authority() Authority
+```
+
+### Authority
+
+Authority is a bitmask of the operation classes a capability permits. Each bit
+maps to exactly one capability type; a bit grants ONLY the read/build/point/
+subscribe operations of that class — never a credit.
+
+
+### CollectRequest
+
+CollectRequest is the off-chain request to COLLECT/DECREASE (negative-delta) or
+CANCEL a position/order. Both produce a D->C export (collected fees / withdrawn
+liquidity / cancelled-order refund) consumed by the ONE DS01 credit path. Cancel is
+the same shape with the cancel marker; the credit is identical.
+
+
+### DExportRef
+
+DExportRef points at a D->C atomic export object. It is deliberately NOT a
+DFillReceipt: it carries no amount the chain trusts and no signature C honours.
+The chain re-reads the actual object (asset/owner/amount/one-time) on import.
+
+	SourceChainID — the D chain whose export the object lives under.
+	SourceTxID    — the D tx that produced the export.
+	OutputIndex   — which exported output (deriveUTXOID(SourceTxID, OutputIndex)).
+	IntentID      — the originating C->D intent (correlation only).
+
+
+```go
+func (r DExportRef) ObjectKey() ID
+```
+
+### DexSession
+
+DexSession is the RESTRICTED capability a FullServiceNode.Bootstrap returns. It
+exposes ONLY the orchestration surface — quote/getState/prepareSwapIntent/
+notifyIntent/importSettlement — and derives narrowly-scoped capabilities. There
+is no creditBalance / settleFill / overrideMatch / adminWithdraw: the surface is
+value-free by construction (see capability.go).
+
+
+### FlowStages
+
+FlowStages is the set of promises a SwapFlow produces, exposed so a caller can
+observe intermediate artifacts (e.g. show the user the estimate, the intent id,
+the watch) without re-issuing calls. Each is a value/pointer, never authority.
+
+
+### FullServiceConfig
+
+FullServiceConfig configures the server node.
+
+
+### FullServiceNode
+
+FullServiceNode wraps a zap.Node and a Venue, exposing Bootstrap. It is the
+server-side object the spec's `FullServiceNode.bootstrap() -> DexSession`
+describes.
+
+
+```go
+func NewFullServiceNode(cfg FullServiceConfig) *FullServiceNode
+```
+
+```go
+func (fsn *FullServiceNode) Bootstrap(peerID string, grant Authority) DexSession
+```
+
+### ID
+
+ID is a 32-byte identifier (chain id, tx id, market id, intent id, asset id).
+Byte-identical to luxfi/ids ids.ID and to an EVM bytes32. Native asset == the
+all-zero ID (mirrors ids.Empty in the dexvm ledger).
+
+
+```go
+func DeriveIntentID(
+	networkID uint32,
+	cChainID, dChainID ID,
+	account Account,
+	assetIn ID,
+	amountIn uint64,
+	marketID ID,
+	nonce uint64,
+) ID
+```
+
+```go
+func DeriveLiquidityParamsHash(tickLower, tickUpper int32, liquidityDelta int64, salt ID) ID
+```
+
+```go
+func DerivePoolKeyHash(pk PoolKeyArgs) ID
+```
+
+```go
+func DeriveRoutePathHash(path []ID) ID
+```
+
+```go
+func DeriveSessionID(s V4ActionScope) ID
+```
+
+```go
+func DeriveSwapParamsHash(zeroForOne bool, amountIn uint64) ID
+```
+
+```go
+func DeriveUTXOID(sourceTxID ID, outputIndex uint32) ID
+```
+
+### IntentCap
+
+IntentCap permits requesting a C->D intent (build calldata) and notifying D to
+scan/import the resulting object. It cannot reserve funds, claim a fill, credit,
+or settle.
+
+
+```go
+func (c IntentCap) Authority() Authority
+```
+
+### IntentPhase
+
+IntentPhase is the lifecycle of a notified intent as the off-chain watcher
+observes it. NONE of these phases moves value — Committed merely means the
+watcher SAW a D export object; the user still imports it on C.
+
+
+### IntentStatus
+
+IntentStatus is one poll/push of a watch. When Phase==PhaseCommitted the Ref
+points at the produced D->C object. A malicious server can set Phase=Committed
+with a bogus Ref, but importSettlement of that Ref reverts on-chain (the object
+is missing or binds to a different owner/asset/amount).
+
+MatchedOut is an ESTIMATE the venue reports when D has matched (PhaseMatching/
+Committed): the orchestration "you'll receive ~N" figure the bidirectional
+MatchResult read surfaces. It is INFORMATIONAL ONLY — exactly the QuotedOut
+discipline extended to the match phase. The chain NEVER trusts it: the credit is
+the recorded D->C object's amount, bound on-chain at settlement. A lying venue can
+set MatchedOut to anything; it changes no balance (proven by the RED suite).
+
+
+### IntentWatch
+
+IntentWatch is the subscription handle a NotifyIntent returns. Poll observes the
+current phase; OnCommitted yields a Promise that resolves to the DExportRef when
+(and only when) the watch observes a committed D export.
+
+
+```go
+func (w IntentWatch) IntentID() ID
+```
+
+```go
+func (w IntentWatch) OnCommitted(ctx context.Context) *Promise[DExportRef]
+```
+
+```go
+func (w IntentWatch) Poll(ctx context.Context) (IntentStatus, error)
+```
+
+### IntentWatchRef
+
+IntentWatchRef is the server-side handle a notifyIntent returns: the intent id
+the watch tracks. The client polls it (MsgWatchPoll) or receives a Push
+(MsgWatchPush). It is a subscription token, not authority.
+
+
+### LiquidityRequest
+
+LiquidityRequest is the off-chain request to COMMIT (open/increase) a funded
+position. LiquidityDelta MUST be positive for a commit (it funds the position from
+C); the negative-delta (collect/decrease/cancel) path is V4CollectSession /
+openCancel, whose credit rides the DS01 settlement.
+
+
+### ModifyLiquidityArgs
+
+ModifyLiquidityArgs are the V4 ModifyLiquidityParams tuple fields. LiquidityDelta
+is signed: >0 add, &lt;0 remove. The session sets the sign per action (commit vs
+collect/cancel); the SIGN is what distinguishes a funding C->D commit from a
+value-returning D->C removal — both ride this one selector, exactly as the
+position facade does.
+
+
+### PoolKeyArgs
+
+PoolKeyArgs are the V4 PoolKey tuple fields the swap selector takes:
+(currency0, currency1, fee uint24, tickSpacing int24, hooks address). For the
+native seam the pool is identified by these; the keeper/market binds them to a
+D market. dexsession fills them from the request's market mapping.
+
+
+### PreparedIntent
+
+PreparedIntent is the OUTPUT of prepareSwapIntent: everything the user needs to
+sign a normal C tx to 0x9999 that creates the funded C->D intent. It is bytes,
+not authority:
+
+  - To      — the 0x9999 settlement address (the precompile).
+  - Calldata — selector + ABI-encoded args for the on-chain swap entry.
+  - HookData — the V4 hookData the 0x9999 handler consumes (routing payload).
+  - IntentID — the deterministic id the on-chain SubmitSwapIntent will mint
+    (derived identically here; lets the watch locate the D result).
+  - QuotedOut — the ESTIMATE used to build it (informational, not enforceable).
+
+MUST NOT: reserve funds off-chain, claim a fill final, return an amountOut the
+chain trusts. The QuotedOut is explicitly informational; the enforceable floor
+is MinAmountOut baked into Calldata, which the chain/D check.
+
+
+### Promise
+
+Promise is a future for an async DexSession call result of type T. It is safe
+for one producer (the dispatching goroutine) and many consumers (Await is
+idempotent and concurrent-safe).
+
+
+```go
+func (p *Promise[T]) Await(ctx context.Context) (T, error)
+```
+
+### QuoteCap
+
+QuoteCap permits read-only book/state queries. It can quote and observe; it
+cannot build an intent, notify, settle, or administer.
+
+
+```go
+func (c QuoteCap) Authority() Authority
+```
+
+### QuoteRequest
+
+QuoteRequest asks the D book for an estimated output. Read-only.
+
+
+### QuoteResult
+
+QuoteResult is an ESTIMATE. AmountOut is informational only: the chain never
+trusts it. The user still encodes their own MinAmountOut in the signed C tx,
+and D enforces slippage at match. A stale or malicious quote can only mislead
+a UI — it cannot move value, and a bad quote that misses MinAmountOut makes
+the on-chain swap revert (TestZAP_StaleResponse_BadQuoteMissesMinOutOrReverts).
+
+
+### RoutePhase
+
+RoutePhase is the lifecycle of a route as the off-chain watcher observes it. Like
+IntentPhase, NONE of these moves value; Committed means the watcher saw the ONE
+final D->C export, Refunded means it saw the ONE refund export.
+
+
+### RouteRequest
+
+RouteRequest is the off-chain request to PREPARE a multi-hop route intent. Like a
+SwapIntentRequest it reserves no funds and returns calldata; the difference is
+Path — the ordered list of marketIDs D walks (A->B->C). AmountIn is the SINGLE
+input the user locks on C; MinAmountOut is the floor on the FINAL output, enforced
+by D at the end of the route (a route that cannot deliver MinAmountOut of the final
+asset refunds the input — it never partially settles an intermediate asset).
+
+
+### RouteStatus
+
+RouteStatus is one poll/push of a route watch. HopIndex/HopAmountOut describe the
+CURRENT hop (orchestration ESTIMATES). Ref is the FINAL export POINTER, valid only
+when Phase==RouteCommitted (the final output) or RouteRefunded (the refund). There
+is no per-hop Ref field — by construction there is no per-hop settleable object.
+
+
+### RouteVenue
+
+RouteVenue is the route backend a Venue MAY ALSO implement. It is a SEPARATE
+interface (composition, not interface-expansion) so the base Venue — and every
+existing implementation — stays unchanged: a server type-asserts for RouteVenue
+and serves routes only when the backend provides it. Like Venue, it has NO
+credit/settle method: it reports route progress and the final export POINTER; it
+never moves value. Exactly TWO methods — one trigger, one status — keeps it DRY.
+
+
+### RouteWatch
+
+RouteWatch is the subscription a route NotifyCToDExport returns. Poll observes the
+current route phase + hop progress; streamUntilFinal resolves the ONE final (or
+refund) export pointer. It NEVER moves value — the terminal pointer feeds the one
+DS01 settlement, which the chain judges.
+
+
+```go
+func (w RouteWatch) IntentID() ID
+```
+
+```go
+func (w RouteWatch) Poll(ctx context.Context) (RouteStatus, error)
+```
+
+### SessionConfig
+
+SessionConfig configures a client session (normally produced by Bootstrap, but
+exported so a node can construct one directly against a known peer).
+
+
+### SettlementCap
+
+SettlementCap permits asking C to import an EXISTING D->C object (build the
+finalization calldata / submit a pointing tx). It cannot credit C through RPC,
+nor substitute recipient/asset/amount — the chain binds those to the object.
+
+
+```go
+func (c SettlementCap) Authority() Authority
+```
+
+### SettlementMode
+
+SettlementMode tells the caller HOW the settlement is realised. In both modes
+the credit happens ON-CHAIN by consuming the real object — never via this RPC.
+
+
+### SettlementSubmitResult
+
+SettlementSubmitResult is the OUTPUT of importSettlement. It NEVER credits C; it
+returns the calldata to consume the object (or the hash of a tx that points at
+it). The on-chain ImportSettlement is the sole credit path.
+
+
+### StateKind
+
+StateKind selects which read-only view getState returns.
+
+
+### StateRequest
+
+StateRequest is a read-only DEX state query.
+
+
+### StateResult
+
+StateResult is the read-only answer. Like a quote it is informational: a
+balance reported here is NOT a spendable claim the chain honours — only a
+consumed D->C object credits C.
+
+
+### SwapIntentRequest
+
+SwapIntentRequest is the off-chain request to PREPARE a C->D swap intent. The
+session validates params, estimates a quote, derives the intent id, and
+returns a PreparedIntent (calldata). It reserves NO funds and returns NO
+enforceable amountOut.
+
+
+### V4Action
+
+V4Action is the kind of V4 action a session capability is scoped to. A scoped
+capability is confined to exactly one kind — a swap cap cannot drive a liquidity
+action and vice versa.
+
+
+```go
+func (a V4Action) String() string
+```
+
+### V4ActionScope
+
+V4ActionScope binds a session capability to ONE V4 action. Every field that
+distinguishes one action from another is here; DeriveSessionID hashes them into a
+stable id. Two sessions for different intents/pools/params/kinds derive different
+ids and their capabilities cannot be cross-used.
+
+	NetworkID    — the Lux network the action runs on.
+	CChainID     — the C-Chain (EVM balance authority).
+	DChainID     — the D-Chain (matching authority).
+	Addr9999     — the on-chain settlement authority (the precompile address).
+	Account      — the caller / account the action is for (bound as the object owner).
+	PoolKeyHash  — hash of the V4 PoolKey (which market). For a route, hash of the
+	               whole path (see DeriveRoutePathHash).
+	ParamsHash   — hash of the action params (direction+amount for a swap; tick range
+	               +delta for liquidity; the collected/cancelled selector for those).
+	Kind         — the V4Action this scope permits.
+	IntentID     — the deterministic intent id (for swap/route) the action targets.
+	               Zero for actions whose object is not an intent (a position commit
+	               binds by PoolKeyHash+ParamsHash+Account instead).
+
+
+### V4CollectSession
+
+V4CollectSession is the removal lifecycle (collect/decrease/cancel). It requests the
+removal, watches for the ONE D->C export, and settles it via the DS01 credit path.
+
+
+```go
+func (s *V4CollectSession) Close()
+```
+
+```go
+func (s *V4CollectSession) IntentID() ID
+```
+
+```go
+func (s *V4CollectSession) OnExportReady(ctx context.Context, watch IntentWatch) *Promise[DExportRef]
+```
+
+```go
+func (s *V4CollectSession) SessionID() ID
+```
+
+```go
+func (s *V4CollectSession) WriteNotify(ctx context.Context, intent *Promise[PreparedIntent]) *Promise[IntentWatch]
+```
+
+```go
+func (s *V4CollectSession) WritePrepareCSettlement(ctx context.Context, ref *Promise[DExportRef]) *Promise[SettlementSubmitResult]
+```
+
+```go
+func (s *V4CollectSession) WriteRequest(ctx context.Context) *Promise[PreparedIntent]
+```
+
+### V4Config
+
+V4Config configures the V4 precompile session. The chain identifiers and the 0x9999
+address are fixed for the deployment; they bind every action's scope.
+
+
+### V4Dir
+
+V4Dir classifies a message by who originates it on the bidirectional plane.
+
+
+### V4Event
+
+V4Event is the typed D->C read a session surfaces to the caller (the orchestration
+stream). It is a VALUE: a label + the orchestration payload + an OPTIONAL pointer.
+It NEVER carries authority over a balance:
+
+  - Type        — the V4MsgType (always a DirDToC read).
+  - SessionID   — the action the event belongs to (binds it to its session).
+  - IntentID    — the originating intent (correlation).
+  - EstAmount   — an ESTIMATE (quote / matched-out / hop-out). NOT a credit; the
+    chain never trusts it. Exactly the QuotedOut discipline, extended to matches.
+  - HopIndex    — the route hop this event describes (route events only).
+  - Ref         — the D->C export POINTER, set ONLY on *_EXPORT_READY / REFUND_READY.
+    The credit still happens on-chain when the real object behind Ref is consumed.
+  - Reason      — human text for ERROR / HALTED / REFUND.
+
+
+```go
+func (e V4Event) HasRef() bool
+```
+
+### V4LiquiditySession
+
+V4LiquiditySession is the position-commit lifecycle. It builds modifyLiquidity
+(+delta) calldata the user signs to fund the position, notifies D, and observes the
+position opening. It has NO settlement method (a commit credits nothing).
+
+
+```go
+func (s *V4LiquiditySession) Close()
+```
+
+```go
+func (s *V4LiquiditySession) IntentID() ID
+```
+
+```go
+func (s *V4LiquiditySession) SessionID() ID
+```
+
+```go
+func (s *V4LiquiditySession) WriteNotifyCToDExport(ctx context.Context, intent *Promise[PreparedIntent]) *Promise[IntentWatch]
+```
+
+```go
+func (s *V4LiquiditySession) WritePrepareCommit(ctx context.Context) *Promise[PreparedIntent]
+```
+
+### V4MsgType
+
+V4MsgType is a control-plane message-type. The constants below are the V4-native
+SEMANTIC names the spec mandates. Each maps to an underlying wire frame (Msg* in
+wire.go) or to a LOCAL lifecycle transition (no wire frame — e.g. *_OPEN mints a
+scoped capability client-side). A session is a state machine that emits/consumes
+these; the mapping (v4Wire) keeps the wire the single source of transport truth.
+
+
+```go
+func (t V4MsgType) CreditsValue() bool
+```
+
+```go
+func (t V4MsgType) Dir() V4Dir
+```
+
+```go
+func (t V4MsgType) String() string
+```
+
+### V4PrecompileSession
+
+V4PrecompileSession is the per-action session factory the spec mandates. It wraps a
+restricted DexSession (the bootstrap grant) and opens a NARROWLY-SCOPED session per
+V4 action. Each open* mints a scopedCap confined to &#123;networkID, cChainID, dChainID,
+0x9999, account, poolKeyHash, paramsHash, intentID} for exactly that action, so a
+session cannot drive any other intent/pool/params/kind.
+
+
+```go
+func NewV4PrecompileSession(cfg V4Config) (*V4PrecompileSession, error)
+```
+
+```go
+func (v *V4PrecompileSession) OpenCancel(req CollectRequest) (*V4CollectSession, error)
+```
+
+```go
+func (v *V4PrecompileSession) OpenCollect(req CollectRequest) (*V4CollectSession, error)
+```
+
+```go
+func (v *V4PrecompileSession) OpenModifyLiquidity(req LiquidityRequest) (*V4LiquiditySession, error)
+```
+
+```go
+func (v *V4PrecompileSession) OpenRoute(req RouteRequest) (*V4RouteSession, error)
+```
+
+```go
+func (v *V4PrecompileSession) OpenState(account Account, marketID ID) (*V4StateSession, error)
+```
+
+```go
+func (v *V4PrecompileSession) OpenSwap(req SwapIntentRequest) (*V4SwapSession, error)
+```
+
+### V4RouteSession
+
+V4RouteSession is the multi-hop route lifecycle state machine. It prepares EXACTLY
+ONE C->D input intent (carrying the path), streams hop progress as orchestration,
+and settles the ONE final D->C export. It NEVER produces an intermediate-asset
+settlement.
+
+
+```go
+func (s *V4RouteSession) Close()
+```
+
+```go
+func (s *V4RouteSession) IntentID() ID
+```
+
+```go
+func (s *V4RouteSession) OnFinalExport(ctx context.Context, watch RouteWatch) *Promise[DExportRef]
+```
+
+```go
+func (s *V4RouteSession) Path() []ID
+```
+
+```go
+func (s *V4RouteSession) ReadStream(ctx context.Context, watch RouteWatch) <-chan V4Event
+```
+
+```go
+func (s *V4RouteSession) SessionID() ID
+```
+
+```go
+func (s *V4RouteSession) WriteNotifyCToDExport(ctx context.Context, intent *Promise[PreparedIntent]) *Promise[RouteWatch]
+```
+
+```go
+func (s *V4RouteSession) WritePrepareCSettlement(ctx context.Context, ref *Promise[DExportRef]) *Promise[SettlementSubmitResult]
+```
+
+```go
+func (s *V4RouteSession) WritePrepareIntent(ctx context.Context) *Promise[PreparedIntent]
+```
+
+### V4StateSession
+
+V4StateSession is the read-only streaming session: quotes and book/state. It cannot
+build calldata, notify, or settle — it observes.
+
+
+```go
+func (s *V4StateSession) Close()
+```
+
+```go
+func (s *V4StateSession) ReadQuote(ctx context.Context, amountIn uint64, zeroForOne bool) *Promise[QuoteResult]
+```
+
+```go
+func (s *V4StateSession) ReadState(ctx context.Context, kind StateKind, account Account, asset ID) *Promise[StateResult]
+```
+
+```go
+func (s *V4StateSession) SessionID() ID
+```
+
+```go
+func (s *V4StateSession) StreamQuotes(ctx context.Context, amountIn uint64, zeroForOne bool) <-chan V4Event
+```
+
+### V4SwapSession
+
+V4SwapSession is the single-swap lifecycle state machine. It exposes the
+bidirectional message set as typed methods that compose the clientSession ops and
+pipeline via Promise. It holds a scopedCap confined to ONE swap.
+
+
+```go
+func (s *V4SwapSession) Close()
+```
+
+```go
+func (s *V4SwapSession) IntentID() ID
+```
+
+```go
+func (s *V4SwapSession) OnExportReady(ctx context.Context, watch IntentWatch) *Promise[DExportRef]
+```
+
+```go
+func (s *V4SwapSession) ReadStream(ctx context.Context, watch IntentWatch) <-chan V4Event
+```
+
+```go
+func (s *V4SwapSession) Run(ctx context.Context) FlowStages
+```
+
+```go
+func (s *V4SwapSession) SessionID() ID
+```
+
+```go
+func (s *V4SwapSession) WriteNotifyCToDExport(ctx context.Context, intent *Promise[PreparedIntent]) *Promise[IntentWatch]
+```
+
+```go
+func (s *V4SwapSession) WritePrepareCSettlement(ctx context.Context, ref *Promise[DExportRef]) *Promise[SettlementSubmitResult]
+```
+
+```go
+func (s *V4SwapSession) WritePrepareIntent(ctx context.Context) *Promise[PreparedIntent]
+```
+
+### Venue
+
+Venue is the read + trigger backend a DexSession server delegates to. It is the
+D-Chain CLOB venue and a C/D state reader. CRITICALLY, it has no credit/settle
+method: the orchestration server cannot move value because its backend cannot
+either. (A real deployment backs Venue with the lux/dex ZAP CLOB client over the
+existing clob_* transport for quotes, plus a chain-state reader for exports.)
+
+
+### WatchCap
+
+WatchCap permits subscribing to a notified intent's D result. It cannot move
+value; OnCommitted yields a POINTER (DExportRef), not a credit.
+
+
+```go
+func (c WatchCap) Authority() Authority
+```
+

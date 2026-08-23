@@ -1,0 +1,78 @@
+---
+title: "lcwire"
+description: "Package lcwire"
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/v1/codegen/testpkg"
+```
+
+## Functions
+
+### LightClientBlockHeaderRequestBlockContentHash
+
+```go
+func LightClientBlockHeaderRequestBlockContentHash(v zapv1.View[LCBlockHeaderReqSchema]) [32]byte
+```
+
+LightClientBlockHeaderRequestBlockContentHash reads the 32-byte inline BlockContentHash field of LightClientBlockHeaderRequest.
+
+Zero-copy on the read side (v1's Object.BytesFixedSlice returns
+a sub-slice of the underlying buffer); the returned [32]byte is a
+value copy so the caller's slot owns the bytes after the View's
+buffer is freed.
+
+
+### NewLightClientBlockHeaderRequest
+
+```go
+func NewLightClientBlockHeaderRequest(version uint8, chainID uint32, blockHeight uint64, certMinTier uint8, requestID uint32, blockContentHash [32]byte) (zapv1.View[LCBlockHeaderReqSchema], []byte)
+```
+
+NewLightClientBlockHeaderRequest builds a fresh LightClientBlockHeaderRequest in a ZAP buffer.
+
+Hand-rolled fast path: inlines v1 primitives ([zap.NewBuilder],
+[*Builder.StartObject], [*ObjectBuilder.Set*], [*Builder.Finish])
+so the entire build expands at the call site. Result: 1 heap
+alloc (the buffer), zero overhead vs v1.
+
+
+### WrapLightClientBlockHeaderRequest
+
+```go
+func WrapLightClientBlockHeaderRequest(b []byte) (zapv1.View[LCBlockHeaderReqSchema], error)
+```
+
+WrapLightClientBlockHeaderRequest parses a ZAP buffer into a typed
+[zapv1.View[LightClientBlockHeaderRequest]]. Validates the wire frame and the kind
+discriminator at offset 0; returns [*zapv1.SchemaError] on kind
+mismatch.
+
+Hand-rolled fast path: inlines [zap.Parse] (which is itself
+inlineable). Zero heap allocs on the happy path; matches v1
+hand-rolled performance.
+
+
+## Types
+
+### LCBlockHeaderReqSchema
+
+LCBlockHeaderReqSchema is the v2 schema marker for LightClientBlockHeaderRequest. Methods are constant-
+returning so concrete-typed [zapv1.Wrap[LCBlockHeaderReqSchema]] calls fold to
+literals at the call site.
+
+
+```go
+func (LCBlockHeaderReqSchema) Kind() zapv1.KindByte
+```
+
+```go
+func (LCBlockHeaderReqSchema) Name() string
+```
+
+```go
+func (LCBlockHeaderReqSchema) Size() int
+```
+

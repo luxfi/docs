@@ -1,0 +1,78 @@
+---
+title: "zapweb"
+description: "Package zapweb serves ZAP procedures over WebSocket so browser clients — which cannot open a raw TCP/QUIC socket — reach the EXACT same zapclient.Server procedure dispatch as native in-cluster peers."
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/zapweb"
+```
+
+Package zapweb serves ZAP procedures over WebSocket so browser clients
+— which cannot open a raw TCP/QUIC socket — reach the EXACT same
+zapclient.Server procedure dispatch as native in-cluster peers.
+
+One dispatch path, two transports:
+
+  - native ZAP (TCP/QUIC), via zap.Node, for service-to-service calls
+  - zapweb (WebSocket), via this package, for browser ↔ service calls
+
+There is no REST here. The WebSocket handshake is an HTTP/1.1 Upgrade;
+everything after it is binary ZAP frames, dispatched through
+zapclient.Server.Dispatch (the same opcode routing + PeerVerifier the
+native node uses).
+
+# Wire format (one WebSocket BINARY message per call)
+
+	[ reqID  uint32 LE ]   correlation id — echoed on the reply
+	[ flag   uint32 LE ]   zap.ReqFlagReq on request, zap.ReqFlagResp on
+	                       reply, FlagErr on a dispatch-level failure
+	[ zap.Message bytes ]  the procedure message; its Flags() header
+	                       carries the procedure opcode, identical to the
+	                       native transport. On a FlagErr reply the tail
+	                       is a UTF-8 error string instead.
+
+The JS/TS client builds byte-identical frames (see zapweb/ts), so the
+browser and a Go caller speak the same protocol to the same handlers.
+
+
+## Functions
+
+### Handler
+
+```go
+func Handler(srv *zapclient.Server, opts Options) http.Handler
+```
+
+Handler returns an http.Handler that upgrades to WebSocket and bridges
+each binary frame to srv.Dispatch. Mount it on the daemon's listener
+(e.g. at "/zap"); the same zapclient.Server already serves native ZAP
+peers, so browsers and services share one procedure registry.
+
+
+## Types
+
+### Client
+
+Client is a zapweb (ZAP-over-WebSocket) client. Construct with Dial,
+always Close.
+
+
+```go
+func Dial(ctx context.Context, url string) (*Client, error)
+```
+
+```go
+func (c *Client) Call(ctx context.Context, procedure string, req *zap.Message) (*zap.Message, error)
+```
+
+```go
+func (c *Client) Close() error
+```
+
+### Options
+
+Options configure Handler.
+
+

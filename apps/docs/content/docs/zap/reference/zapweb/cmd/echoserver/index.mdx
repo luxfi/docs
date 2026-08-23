@@ -1,0 +1,20 @@
+---
+title: "main"
+description: "Command echoserver runs a zapweb (ZAP-over-WebSocket) echo service for cross-language integration testing."
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/zapweb/cmd/echoserver"
+```
+
+Command echoserver runs a zapweb (ZAP-over-WebSocket) echo service for
+cross-language integration testing. It registers test.echo (prefixes
+its text@0 argument with "echo:") and serves it at /zap, so the
+TypeScript client in zapweb/ts can prove the browser path is wire-
+compatible end to end.
+
+	go run ./zapweb/cmd/echoserver   # serves :8089/zap
+
+

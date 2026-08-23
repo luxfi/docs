@@ -1,0 +1,135 @@
+---
+title: "listwire"
+description: "Package listwire"
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/v1/codegen/testpkg/listwire"
+```
+
+## Functions
+
+### BatchTxItems
+
+```go
+func BatchTxItems(v zapv1.View[BatchSchema]) zapv1.List[ItemSchema]
+```
+
+BatchTxItems returns the variable-length Items list of BatchTx as a
+range-over-func-ready [zapv1.List][ItemSchema]. Zero-copy: each element view
+indexes straight into the underlying buffer.
+
+	for it := range BatchTxItems(view).All() &#123;
+	    // zapv1.Read(it, ItemSchemaFields.X)
+	}
+
+
+### NewBatchItem
+
+```go
+func NewBatchItem(iD uint64, value uint64) (zapv1.View[ItemSchema], []byte)
+```
+
+NewBatchItem builds a fresh BatchItem in a ZAP buffer.
+
+Hand-rolled fast path: inlines v1 primitives ([zap.NewBuilder],
+[*Builder.StartObject], [*ObjectBuilder.Set*], [*Builder.Finish])
+so the entire build expands at the call site. Scalars and fixed byte
+arrays live in the fixed payload; variable-length string/bytes go in
+the object tail (the fixed payload holds their 8-byte pointers).
+
+
+### NewBatchTx
+
+```go
+func NewBatchTx(iD uint64, items []Item) (zapv1.View[BatchSchema], []byte)
+```
+
+NewBatchTx builds a fresh BatchTx in a ZAP buffer.
+
+Hand-rolled fast path: inlines v1 primitives ([zap.NewBuilder],
+[*Builder.StartObject], [*ObjectBuilder.Set*], [*Builder.Finish])
+so the entire build expands at the call site. Scalars and fixed byte
+arrays live in the fixed payload; variable-length string/bytes go in
+the object tail (the fixed payload holds their 8-byte pointers).
+
+
+### WrapBatchItem
+
+```go
+func WrapBatchItem(b []byte) (zapv1.View[ItemSchema], error)
+```
+
+WrapBatchItem parses a ZAP buffer into a typed
+[zapv1.View[BatchItem]]. Validates the wire frame and the kind
+discriminator at offset 0; returns [*zapv1.SchemaError] on kind
+mismatch.
+
+Hand-rolled fast path: inlines [zap.Parse] (which is itself
+inlineable). Zero heap allocs on the happy path; matches v1
+hand-rolled performance.
+
+
+### WrapBatchTx
+
+```go
+func WrapBatchTx(b []byte) (zapv1.View[BatchSchema], error)
+```
+
+WrapBatchTx parses a ZAP buffer into a typed
+[zapv1.View[BatchTx]]. Validates the wire frame and the kind
+discriminator at offset 0; returns [*zapv1.SchemaError] on kind
+mismatch.
+
+Hand-rolled fast path: inlines [zap.Parse] (which is itself
+inlineable). Zero heap allocs on the happy path; matches v1
+hand-rolled performance.
+
+
+## Types
+
+### BatchSchema
+
+BatchSchema is the v2 schema marker for BatchTx. Methods are constant-
+returning so concrete-typed [zapv1.Wrap[BatchSchema]] calls fold to
+literals at the call site.
+
+
+```go
+func (BatchSchema) Kind() zapv1.KindByte
+```
+
+```go
+func (BatchSchema) Name() string
+```
+
+```go
+func (BatchSchema) Size() int
+```
+
+### Item
+
+Item is the per-element input for the BatchTx.Items list.
+
+
+### ItemSchema
+
+ItemSchema is the v2 schema marker for BatchItem. Methods are constant-
+returning so concrete-typed [zapv1.Wrap[ItemSchema]] calls fold to
+literals at the call site.
+
+
+```go
+func (ItemSchema) Kind() zapv1.KindByte
+```
+
+```go
+func (ItemSchema) Name() string
+```
+
+```go
+func (ItemSchema) Size() int
+```
+

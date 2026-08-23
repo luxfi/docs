@@ -1,0 +1,50 @@
+---
+title: "zapmdns"
+description: "Package zapmdns publishes and browses _hanzo._tcp.local."
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/mdns/go"
+```
+
+Package zapmdns publishes and browses _hanzo._tcp.local. services per
+HIP-0069. Single source of truth for the service-type, TXT key list and
+role enum across every Go service in the Hanzo stack (kms, mpc, base,
+ingress, gateway, static).
+
+
+## Types
+
+### PublishOptions
+
+PublishOptions captures the TXT keys defined by HIP-0069.
+
+
+### Publisher
+
+Publisher retracts the announcement on Close.
+
+
+```go
+func Publish(opts PublishOptions) (*Publisher, error)
+```
+
+```go
+func (p *Publisher) Close() error
+```
+
+### Service
+
+Service is one peer found on the LAN.
+
+
+```go
+func Browse(ctx context.Context, role string, timeout time.Duration) ([]Service, error)
+```
+
+```go
+func (s Service) URL() string
+```
+

@@ -1,0 +1,195 @@
+---
+title: "codegen"
+description: "Package codegen emits per-schema ZAP v2 accessors that match v1's hand-rolled inline-everything performance."
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/v1/codegen"
+```
+
+Package codegen emits per-schema ZAP v2 accessors that match v1's
+hand-rolled inline-everything performance.
+
+# Why codegen
+
+Go's generic dispatch and inlining cost budget combine to put a
+hard ceiling on how fast a generic API can be: any function whose
+body is larger than the inliner's 80-cost budget cannot inline
+into its caller, so the call site pays a function-call cost (~5-7
+ns on modern hardware). The work performed by a "Wrap" function
+(parse the ZAP wire frame, validate the kind discriminator, build
+a typed view) exceeds that budget. The generic [zapv1.Wrap[S]]
+function therefore costs one function call per Wrap, even when
+every other primitive in its body would inline.
+
+Hand-written per-schema [WrapX] shims (e.g. [examples.WrapAdvanceTime])
+have the same problem — even though they pin S&#123;}.Kind() and
+S&#123;}.Size() as constants, the body is still too large to inline.
+
+Codegen solves this by emitting Wrap/Build/Read/Write functions
+that DON'T live inside a function at all — they expand inline at
+the call site through Go templates instantiated at build time.
+The user writes a single schema declaration; the codegen tool
+produces a *_zap.go file whose functions match v1's hand-rolled
+pattern byte-for-byte.
+
+# Output shape
+
+For a schema declared as:
+
+	type AdvanceTimeSchema struct&#123;}
+	func (AdvanceTimeSchema) Kind() zapv1.KindByte &#123; return 1 }
+	func (AdvanceTimeSchema) Size() int            &#123; return 9 }
+	func (AdvanceTimeSchema) Name() string         &#123; return "AdvanceTimeTx" }
+
+	//zap:field Time uint64 @1
+
+the codegen tool emits a sibling file (advance_time_zap.go) with:
+
+	const sizeAdvanceTimeTx = 9
+	const kindAdvanceTimeTx uint8 = 1
+	const offsetAdvanceTimeTx_Time = 1
+
+	func WrapAdvanceTime(b []byte) (zapv1.View[AdvanceTimeSchema], error) &#123;
+	    msg, err := zap.Parse(b)
+	    ...
+	}
+
+The emitted code uses v1 primitives directly (zap.Parse, msg.Root,
+root.Uint8) so that the inliner folds them into the caller's frame,
+matching v1 hand-rolled performance.
+
+# When to use codegen
+
+- Hot-path schemas where the function-call overhead matters
+  (per-tx assembly, per-block validation).
+- When you have a schema description in a declarative form (a YAML
+  file, a Cap'n-Proto-style schema file, struct tags) and want
+  ZAP v2 accessors emitted automatically.
+
+For cold paths and ad-hoc schemas, the generic [zapv1.Wrap[S]] /
+[zapv1.Build[S]] are equally correct and one extra function call
+slower — which is rarely the bottleneck.
+
+# Status
+
+This package is the entry point. The current implementation emits
+the canonical AdvanceTimeTx fast-path file (used as the canary in
+the bench suite); adding new schemas means feeding the codegen
+tool a schema declaration in one of the supported forms.
+
+
+## Functions
+
+### Emit
+
+```go
+func Emit(w io.Writer, s Schema) error
+```
+
+Emit writes the per-schema *.go file to w. Returns an error if the
+schema is invalid (unknown field type, offset overlap, fields past
+declared Size, etc.).
+
+The emitted code follows the v1 hand-rolled pattern: every step
+(Parse, Root, Uint reads, kind check, View compose) uses v1
+primitives that inline into the caller's frame. The result matches
+v1 hand-rolled performance to within compiler noise — verified by
+the bench suite.
+
+Scalar fields go through the [zapv1.Field][S, T] generic handle
+(declared in the per-schema &lt;GoName>Fields var). Fixed-width
+byte-array fields ("bytes&lt;N>") are emitted as standalone typed
+accessor functions that call v1's SetBytesFixed / BytesFixedSlice
+— they do NOT appear in the Fields struct because [N]byte is not a
+[zapv1.FieldKind] member. Both forms produce the same wire layout.
+
+
+## Types
+
+### Field
+
+Field describes one fixed-size field in a schema.
+
+Two field kinds are supported:
+
+ 1. Scalar fields. Type is one of the [zapv1.FieldKind] members
+    (bool, int8/16/32/64, uint8/16/32/64, float32/64). The emitted
+    code uses a [zapv1.Field][S, T] handle and the standard
+    zapv1.Read/Write generic functions.
+
+ 2. Fixed-width byte-array fields. Type is "bytes&lt;N>" where N is a
+    positive integer (e.g., "bytes20" for NodeID, "bytes32" for
+    hashes, "bytes16" for session IDs). The emitted code uses the
+    v1 ObjectBuilder.SetBytesFixed / Object.BytesFixedSlice
+    accessors and returns the value as a [N]byte. Byte-array fields
+    do NOT use the zapv1.Field generic handle because [N]byte is
+    not a [zapv1.FieldKind] member; instead they get a typed
+    accessor function emitted alongside the schema.
+
+ 3. Variable-length tail fields. Type is "string" or "bytes" (no
+    &lt;N> suffix). These occupy an 8-byte tail pointer &#123;relOffset
+    uint32, length uint32} in the fixed payload; the data lives in
+    the object tail after the fixed section. The constructor uses v1
+    ObjectBuilder.SetText / SetBytes; reads go through a standalone
+    accessor over v1's Object.Text / Object.Bytes (zero-copy
+    sub-slice of the buffer). Like byte-array fields, they do NOT use
+    the zapv1.Field generic handle (string/[]byte are not FieldKind
+    members).
+
+List and nested-object tail fields are still hand-written (the
+generic [zapv1.ListAt] / out-of-line pointer machinery).
+
+
+```go
+func (f Field) IsBytes() (int, bool)
+```
+
+```go
+func (f Field) IsList() (*ListElem, bool)
+```
+
+```go
+func (f Field) IsNested() (*NestedMsg, bool)
+```
+
+```go
+func (f Field) IsVarBytes() bool
+```
+
+```go
+func (f Field) IsVarString() bool
+```
+
+```go
+func (f Field) IsVariable() bool
+```
+
+### ListElem
+
+ListElem describes the element type of a list field. The element must
+be a FIXED-SIZE schema (scalars + fixed byte arrays only — no
+variable-length tails of its own), so every element is a flat
+Stride-byte slot the list machinery can index in O(1).
+
+
+### NestedMsg
+
+NestedMsg describes a singular nested-object field — the proto3 message
+field. The nested object must be a FIXED-SIZE (flat, no-kind) Element
+schema, reached through a 4-byte object pointer; its flat payload lives
+in the parent's object tail. The singular peer of [ListElem].
+
+
+### Schema
+
+Schema is the declarative description of a ZAP v1 schema. The
+codegen tool consumes a [Schema] and emits a per-schema *.go file
+with the Wrap/Build/Read/Write functions hand-rolled to inline.
+
+One schema description, one emitted file, one and only one way to
+access the wire format from Go code — Hickey-style.
+
+

@@ -1,0 +1,52 @@
+---
+title: "main"
+description: "Command zapgen-all bulk-emits per-schema ZAP v2 accessor files from a directory of JSON schema declarations."
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/v1/codegen/cmd/zapgen-all"
+```
+
+Command zapgen-all bulk-emits per-schema ZAP v2 accessor files
+from a directory of JSON schema declarations.
+
+Each *.json file in the schemas directory declares one or more
+schemas in a single LP-aligned bundle. The bundle's top-level
+"schemas" array contains entries with the same fields as a
+codegen.Schema plus an "out" field naming the relative output path:
+
+	&#123;
+	  "lp": "lp-201",
+	  "description": "ZAP P2P transport (LP-201 §Wire schemas)",
+	  "schemas": [
+	    &#123;
+	      "wire_name": "ConsensusVote",
+	      "go_name":   "ConsensusVoteSchema",
+	      "kind":      "0xD0",
+	      "size":      62,
+	      "package":   "p2pwire",
+	      "out":       "lp-201/consensus_vote_zap.go",
+	      "fields": [
+	        &#123; "name": "Round",     "type": "uint64",  "offset": 1  },
+	        &#123; "name": "BlockID",   "type": "bytes32", "offset": 9  },
+	        &#123; "name": "SignerID",  "type": "bytes20", "offset": 41 },
+	        &#123; "name": "SigOff",    "type": "uint32",  "offset": 61 }
+	      ]
+	    }
+	  ]
+	}
+
+Usage:
+
+	zapgen-all -schemas ./schemas -out ./generated
+
+The tool walks schemas/, parses every *.json file, validates every
+schema, and emits one *.go file per schema under -out at the path
+declared by the schema's "out" field. Existing files are overwritten.
+
+Exit codes: 0 = all schemas emitted; 1 = at least one schema failed
+to parse/validate/emit.
+
+

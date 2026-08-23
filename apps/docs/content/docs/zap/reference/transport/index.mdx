@@ -1,0 +1,86 @@
+---
+title: "transport"
+description: "Package transport is the pluggable GPU-aware ZAP transport."
+---
+
+{/* Generated from godoc by tools/docgen — edit the Go source, not this file. */}
+
+```go
+import "github.com/luxfi/zap/transport"
+```
+
+Package transport is the pluggable GPU-aware ZAP transport.
+
+Three transports are implemented:
+
+	default — standard Go net (CPU parsing). Always available.
+	uma     — Apple Silicon / NVIDIA Grace unified-memory. cgo + darwin.
+	          Network packets land in shared RAM; GPU kernels read them
+	          at GPU memory speed without a copy.
+	gpudirect — NVIDIA + Mellanox CX-6/7 (GPUDirect RDMA). cgo + linux.
+	          NIC DMA into VRAM, ZAP parsed by GPU kernel, no CPU touch.
+	dpdk    — Linux DPDK + GPU-mapped hugepages. cgo + linux.
+	          Kernel-bypass packet ingestion, GPU reads from mapped huge-
+	          pages. Best for non-Mellanox NICs.
+
+All four implement the same Transport interface. Pick() chooses the
+best available implementation at runtime, honoring a caller-supplied
+preference and falling through gracefully when a preferred path is
+unavailable. There is no `gpu` build tag — cgo is the only gate, and
+the OS gate selects which native transports can compile in.
+
+
+## Functions
+
+### Registered
+
+```go
+func Registered() []string
+```
+
+Registered returns the list of transports that this binary can attempt
+to instantiate (i.e. the platform-and-build-tag matrix). Used by tools
+like `zap-info` and the boot-time diagnostic in lqd.
+
+
+## Types
+
+### Buffer
+
+Buffer is one slab of managed memory handed out by a BufferAllocator.
+For the UMA transport on Linux+CUDA, the underlying pointer is
+cudaMallocManaged memory — the same bytes the GPU sees. Calling Bytes()
+gives a Go slice that shares the storage; calling DevicePtr() gives the
+raw device pointer for CUDA kernel launches.
+
+Release returns the buffer to its allocator. Double-Release is a no-op
+(allocators detect and ignore it).
+
+
+### BufferAllocator
+
+BufferAllocator hands out managed buffers. Transports that can deliver
+GPU-resident bytes (UMA Linux+CUDA, UMA Darwin+Metal) implement this;
+transports that can't (default TCP) return ErrNotAvailable from
+AllocBuffer so the caller knows to fall back to heap allocation.
+
+Capacity in bytes is the operator-configurable pool size (default 4
+GiB); allocations from a full pool block until a buffer is Released.
+
+
+### Capabilities
+
+Capabilities describes what a Transport implementation supports.
+
+
+### Transport
+
+Transport is the wire-level surface multichain gossip uses to ship
+sealed MultiChainBlocks between validators. The interface is sized for
+one ZAP message per Send/Recv — batching happens above this layer.
+
+
+```go
+func Pick(preferred string) (Transport, error)
+```
+
