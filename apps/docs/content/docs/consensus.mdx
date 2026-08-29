@@ -171,6 +171,33 @@ without degrading finality or cert size.
 | M-Chain | MPC ceremonies (CGGMP21 / FROST) | Bridge custody for external wallets (per LP-134) |
 | F-Chain | FHE compute + TFHE bootstrap-key generation | Encrypted EVM, encrypted ML inference (per LP-134) |
 
+## Implementations
+
+Quasar exists in three languages. `luxfi/consensus` (Go) is the one that runs
+on every live network, and the other two conform to it rather than to the spec
+independently — a spec has room for two readings, a running chain does not.
+
+| Language | Module | State |
+|---|---|---|
+| Go | `luxfi/consensus` | The network. `protocol/` covers Photon, Wave, Focus, Prism, Horizon, Flare, Ray, Field, Quasar and Pulsar. |
+| Rust | `lux-consensus` (in `luxfi/consensus/pkg/rust`) | The FPC threshold and luminance planes are byte-exact to Go, checked against the corpus. Used by `hanzod`. |
+| C++ | `luxfi/consensus2` | A leaderless finality gate with real BLS12-381 verification, embedded by `node2d`. Its canonical vote message is byte-identical to Go's. |
+
+Two properties every implementation has to preserve, because getting either
+wrong looks like a rounding difference and is not one:
+
+- **α is derived, never assumed.** FPC picks θ per phase and α is `ceil(θ·k)`.
+  Two implementations that derive θ with hashes that merely resemble each other
+  will disagree on how many votes accept a round — one finalizes what the other
+  refuses.
+- **The stake floor and the signer floor are one definition.** The verifier
+  re-derives both from the live validator set rather than reading a
+  certificate's claim about itself, so a set of votes relabelled to a higher
+  tier dies on the floor it did not meet.
+
+See [Implementations](/implementations) for the full picture and
+[Conformance](/conformance) for how these are checked.
+
 ## Further reading
 
 - [Post-Quantum Security](/post-quantum) — Pulsar (TALUS) and Corona (Ringtail) in depth

@@ -1,0 +1,194 @@
+---
+title: Build from source
+description: Native build recipes for the Go, Rust and C++ implementations
+---
+
+Every recipe on this page is the one the repository itself uses. If you only
+want to *run* a node, take a release instead — [Run Nodes](/nodes) starts there.
+Build from source when you are changing an implementation or checking one
+against [the corpus](/conformance).
+
+<Callout>
+Toolchain versions below are the ones these recipes are known to work on, not
+minimums discovered by bisection. Older ones may work; nobody has checked.
+</Callout>
+
+| Stack | Toolchain | Build | Test |
+|---|---|---|---|
+| Go | Go 1.26 | `./scripts/build.sh` | `go test ./...` |
+| Rust | rustc 1.97, cargo 1.97 | `cargo build --release` | `cargo test` |
+| C++ | CMake 3.28, Ninja 1.11, GCC 13 or Clang 18 | `cmake --build build` | `ctest --test-dir build` |
+
+## Go — `luxd`
+
+```bash
+git clone https://github.com/luxfi/node
+cd node
+./scripts/build.sh
+./build/luxd --version
+```
+
+The build takes its Go experiment flags and its FIPS settings from
+`scripts/constants.sh`, and the `Makefile` sources the same file. That is
+deliberate: `make` and the scripts cannot compile different things, and a flag
+combination that is known to break gets refused in one place rather than
+producing a binary that fails at startup.
+
+`make build` is the same build. Profiles trade size for symbols:
+
+| Profile | Command | Result |
+|---|---|---|
+| minimal | `./scripts/build.sh` | ZAP transport, all VMs, stripped |
+| core | `./scripts/build.sh -p core` | P/X/C only, stripped, plugin-ready |
+| dev | `./scripts/build.sh -p dev` | all VMs with debug symbols |
+| tiny | `./scripts/build.sh -p tiny` | all VMs, compressed |
+| race | `./scripts/build.sh -r` | minimal with the race detector |
+
+**cgo matters here.** `CGO_ENABLED=1` is the default and selects the assembly
+BLS implementation; `CGO_ENABLED=0` selects a pure-Go one. They are two
+different implementations of a consensus-critical primitive, so a suite run
+with one flag has not exercised the other. The race detector also needs cgo, so
+`CGO_ENABLED=0` silently disables `-race` as well.
+
+### Consensus and the EVM on their own
+
+```bash
+git clone https://github.com/luxfi/consensus && cd consensus
+go build ./... && go test ./protocol/...
+```
+
+```bash
+git clone https://github.com/luxfi/evmgpu && cd evmgpu
+CGO_ENABLED=0 go build ./...          # pure Go
+go build ./...                        # needs luxgpu on PKG_CONFIG_PATH
+```
+
+`evmgpu` links the C++ GPU stack through pkg-config. Without `luxgpu.pc` on
+`PKG_CONFIG_PATH` the cgo build fails at configure time; build with
+`CGO_ENABLED=0` or [build `luxcpp/gpu` first](#the-gpu-stack).
+
+### Verifying the node you built
+
+A node serves everything under `/v1/`. There is no `/ext/` and no `/api/`. The
+default ports are **9630** for HTTP and **9631** for staking.
+
+```bash
+./build/luxd &
+
+curl -s -X POST -H 'content-type: application/json' \
+  --data '{"jsonrpc":"2.0","id":1,"method":"info.getNodeVersion","params":{}}' \
+  http://127.0.0.1:9630/v1/info
+
+curl -s http://127.0.0.1:9630/v1/health
+
+curl -s -X POST -H 'content-type: application/json' \
+  --data '{"jsonrpc":"2.0","id":1,"method":"eth_chainId","params":[]}' \
+  http://127.0.0.1:9630/v1/bc/C/rpc
+```
+
+`info.getNodeVersion` returns the version **and the git commit** the binary was
+built from. That commit is what pins a corpus, so record it whenever you capture
+one.
+
+To serve the same handler chain over the ZAP transport instead of HTTP/1.1, set
+a bind address — it is off unless you ask for it:
+
+```bash
+ZAP_RPC_LISTEN=:9651 ./build/luxd
+```
+
+## Rust — `hanzod` and the crates
+
+```bash
+cargo build --release --bin hanzod
+./target/release/hanzod --version
+```
+
+The consensus crate builds and tests standalone, and is the crate the harness
+puts questions to:
+
+```bash
+cd consensus/pkg/rust     # the lux-consensus crate lives inside luxfi/consensus
+cargo test
+```
+
+<Callout type="warn">
+`hanzod`'s consensus crate currently depends on `lux-consensus` by a **relative
+path** into a sibling checkout of `luxfi/consensus`, not by a published version.
+A clean checkout of `hanzo/node` on its own will not resolve it. Until that is a
+version dependency, clone both repositories side by side.
+</Callout>
+
+Building is not participating. `hanzod` starts and runs the Quasar engine; it
+has no block source and no vote transport, so it does not yet take part in a
+network. Treat a successful build as a successful build.
+
+## C++ — the daemon and the finality gate
+
+Both C++ repositories are out-of-source CMake builds and both find their
+dependencies through `LUXCPP_ROOT`.
+
+### `consensus2` — the finality gate
+
+```bash
+git clone https://github.com/luxfi/consensus2 && cd consensus2
+cmake -S . -B build \
+      -DLUXCPP_ROOT=/path/to/luxcpp \
+      -DZAP_DIR=/path/to/luxcpp/zap-cpp-core/include \
+      -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j"$(nproc)"
+ctest --test-dir build --output-on-failure
+```
+
+Sanitizers instrument `consensus2`'s own code and leave the reused assembly
+crypto alone: `-DCONSENSUS2_SANITIZE=address,undefined` or `=thread`.
+
+ThreadSanitizer aborts with `unexpected memory mapping` on kernels that hand out
+32 bits of mmap randomness — its shadow mapping does not fit. That is the
+loader, not the code. Run it with randomization off:
+
+```bash
+setarch -R ctest --test-dir build
+```
+
+### `node2` — the daemon
+
+```bash
+git clone https://github.com/luxfi/node2 && cd node2
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j"$(nproc)"
+ctest --test-dir build --output-on-failure
+```
+
+`node2` finds `consensus2` and `luxcpp` automatically when they sit beside it;
+`-DCONSENSUS2_DIR` and `-DLUXCPP_ROOT` override. Its suite includes the reused
+`consensus2` tests, so a green `node2` run covers both.
+
+A real multi-process cluster over loopback TCP, rather than threads in one
+process:
+
+```bash
+./scripts/cluster.sh build/node2d 19310 5      # five validators
+./scripts/cluster.sh build/node2d 19310 5 4    # ...with validator 4 held down
+```
+
+### `cevm` — the C++ EVM
+
+```bash
+cmake -S . -B build/release -DCMAKE_BUILD_TYPE=Release
+cmake --build build/release
+ctest --test-dir build/release --output-on-failure
+```
+
+### The GPU stack
+
+`luxcpp/gpu` picks its backend at compile time or at runtime, in the order
+CUDA → Metal → WebGPU → CPU. `LUX_GPU_BACKEND` overrides the choice. The Go
+bindings in `luxfi/gpu` link it through pkg-config; see [GPU](/gpu).
+
+## Cross-checking what you built
+
+Building three implementations proves three compilers agree with themselves. It
+proves nothing about whether they agree with each other — that is what the
+[conformance harness](/conformance) is for, and it is the gate an
+implementation passes before it goes anywhere near a live network.

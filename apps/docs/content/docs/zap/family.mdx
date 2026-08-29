@@ -1,0 +1,116 @@
+---
+title: The ZAP family
+description: Four layers answer to the name ZAP — the arena codec, the frame RPC, HTTP over ZAP, and zip
+---
+
+Four different things in this stack answer to "ZAP". They are layers, not
+versions: none of them is an upgrade of another, and two of them cannot read a
+single byte the other writes. Saying "the ZAP format" identifies nothing.
+
+This page names them apart. Everywhere else in these docs, the unqualified word
+**ZAP** means the arena codec — layer 1.
+
+| Layer | Module | Header | What it does |
+|---|---|---|---|
+| 1 · **arena codec** | `luxfi/zap` | 16 bytes, little-endian, magic `ZAP\0` | Turns a struct into bytes you can read fields out of without parsing |
+| 2 · **frame RPC** | `luxfi/api/zap` · `luxcpp/zap-cpp-core` | 5 bytes, big-endian, + a 4-byte request id | Multiplexes request/response over one connection |
+| 3 · **HTTP over ZAP** | `zap-proto/http` | layer 2 | `net/http` semantics on the ZAP transport |
+| 4 · **zip** | `zap-proto/zip` | layer 3 | Declares an operation once and projects it onto every interface |
+
+A fifth framing, unrelated to all of these, carries the post-quantum peer
+handshake: a bare 4-byte big-endian length prefix in `luxfi/node`'s
+`network/peer`, capped at 16 KiB. It has no type byte, no magic and no request
+id. It is not part of this family and only looks like layer 2 from a distance.
+
+## Layer 1 — the arena codec
+
+Zero-copy: a field read is a pointer offset, not a parse. Every multi-byte
+integer is little-endian and offsets are relative to the offset field itself.
+Full detail, including the header rules a decoder must enforce, is on the
+[ZAP page](/zap).
+
+Implementations: Go (`luxfi/zap`), Rust (`hanzo-zap`), Python, TypeScript.
+**There is no C++ arena codec.** A C++ service speaks layer 2.
+
+## Layer 2 — the frame RPC
+
+A different protocol with the same name, and the one C++ implements.
+
+```
+[ 4-byte BE length ][ 1-byte type ][ 4-byte BE request id ][ body ]
+```
+
+The type byte carries two flags in its high bits, so a service id has to fit in
+the low six:
+
+| Field | Value |
+|---|---|
+| Header size | 5 bytes |
+| Request-id size | 4 bytes |
+| Maximum message | 16 MiB |
+| Response flag | `0x80` |
+| Error flag | `0x40` |
+| Type mask | `0x3F` |
+
+A service id at or above `0x40` sets a flag bit, and both ends will read it as
+a flag and dispatch to the wrong handler. Ids stay in `1..63`.
+
+Payload scalars here are **big-endian** — the opposite of layer 1 — and bytes
+and strings carry a `u32` length prefix. This is the clearest reason the two
+layers cannot be treated as one protocol with a version field.
+
+Implementations: Go (`luxfi/api/zap`), C++ (`luxcpp/zap-cpp-core`). The C++
+constants — header size, request-id size, message cap, both flags, the mask —
+match Go's exactly. **There is no Rust frame RPC.**
+
+## Layer 3 — HTTP over ZAP
+
+`zap-proto/http` gives `net/http` request/response semantics over the ZAP
+transport, so an existing handler and an existing client work unchanged while
+the wire underneath changes. Confidentiality comes from an X-Wing hybrid key
+exchange (X25519 + ML-KEM-768) at the transport layer rather than from a bearer
+token at the application layer.
+
+`luxd` serves its entire `/v1/*` handler chain — the same CORS, host filter and
+router as the HTTP listener — over this layer, so a gateway can reach a node
+over native ZAP instead of HTTP/1.1. It is opt-in and additive: the listener
+starts only when `ZAP_RPC_LISTEN` names a bind address, and a failure to start
+it is a warning, never fatal. A node upgrade never silently opens a port.
+
+```bash
+ZAP_RPC_LISTEN=:9651 ./build/luxd
+```
+
+## Layer 4 — zip
+
+`zap-proto/zip` is the ZAP-native Go service framework, built on Fiber v3 and
+fasthttp. It is **not a serialization format** — that is layer 1, and the
+confusion is the reason this page exists.
+
+The idea is one declaration and no second copy of it. A route is declared once
+as a typed operation, with its input and output types as the contract, and zip
+projects that one declaration into:
+
+- a REST route,
+- an OpenAPI description,
+- an MCP tool,
+- a CLI verb,
+- a by-name call plane,
+
+with ZAP as the primary transport and HTTP as a secondary view of the same
+operations. Nothing in that list is written twice, so none of them can drift
+from the others.
+
+`luxd` does not use zip today; it serves `/v1/` through its own router over
+layer 3. zip is where Lux services that are not the node itself declare their
+surface.
+
+## Why the names have to be fixed
+
+The corpus records both layer 1 and layer 2 side by side, not because an
+implementation needs both, but so the name stops being an argument in review. A
+sentence like "our ZAP decoder rejects that frame" is true of one layer and
+false of the other, and there is no way to tell which from the sentence.
+
+One name per format. Until the modules are renamed, qualify it: *arena codec*
+or *frame RPC*, never bare "ZAP" in a place where it could be either.

@@ -6,6 +6,29 @@ icon: Cpu
 
 Go bindings for `luxcpp/gpu`, providing GPU-accelerated array operations for crypto, ZK, and ML workloads. Used by `github.com/luxfi/accel` for high-level blockchain acceleration.
 
+## Where the GPU stack lives
+
+Unlike the other planes, this one is **not** three implementations of one thing.
+There is one implementation — C++ — and everything else is a binding to it.
+
+| Language | Role |
+|---|---|
+| C++ (`luxcpp/gpu`, `luxcpp/accel`) | The kernels and the launchers. The whole stack. |
+| Go (`luxfi/gpu`, `luxfi/accel`) | cgo bindings. Passes Go-heap pointers across the boundary. |
+| Rust | None. |
+
+Two consequences follow, and both matter more here than for a pure library:
+
+- **The cgo boundary is a consensus surface.** A launcher that reads a length a
+  peer supplied, or that adopts a stale error from an unrelated caller sharing
+  its thread, does not crash — it hashes something else. Two nodes on different
+  hardware then compute different state roots from identical input, which is a
+  fork rather than an outage.
+- **A launcher without a numeric oracle is untested.** Checking that a kernel
+  file exists and starts with the right magic number is a file test. The test
+  that counts compares the launcher's output against a CPU computation of the
+  same thing.
+
 ## Backend Support
 
 | Backend | Platform | Dependencies | Priority |
@@ -17,12 +40,24 @@ Go bindings for `luxcpp/gpu`, providing GPU-accelerated array operations for cry
 
 Backend is auto-detected at runtime in priority order. Override with `LUX_GPU_BACKEND` env var (`cuda`, `metal`, `webgpu`, `cpu`).
 
+<Callout type="warn">
+**CUDA is not cleared for consensus work.** Its launchers do not yet observe the
+same host/device pointer contract as HIP, and the Go binding calls them through a
+signature they do not all declare. Use `LUX_GPU_BACKEND=cpu` for anything whose
+output enters a state root, until the CUDA launchers are ported and have CPU
+oracles of their own.
+</Callout>
+
 ## Build Modes
 
 | Mode | Command | GPU Support |
 |------|---------|-------------|
 | **CPU only** | `CGO_ENABLED=0 go build ./...` | No (pure Go fallback) |
 | **GPU enabled** | `CGO_ENABLED=1 go build ./...` | Yes (requires luxcpp/gpu) |
+
+The GPU build needs `luxgpu.pc` on `PKG_CONFIG_PATH`; without it the cgo build
+fails at configure time rather than falling back. See
+[Build from source](/build#the-gpu-stack).
 
 ## Data Types
 

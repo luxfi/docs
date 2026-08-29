@@ -1,0 +1,145 @@
+---
+title: Implementations
+description: One protocol, three implementations — Go is the network, Rust and C++ conform to it
+---
+
+Lux is one protocol with three implementations. They are not three products.
+They are three programs that must produce the same answer to the same question,
+and one of them is the answer.
+
+**`luxfi/node` (Go) is the network.** It is what runs on mainnet, testnet and
+devnet. When Rust or C++ disagrees with it, Rust or C++ is wrong — not because
+Go is better written, but because a chain has exactly one history and Go is
+already keeping it. An implementation is correct only insofar as it reproduces,
+byte for byte, what the Go node produces.
+
+<Callout>
+Nothing here is a roadmap. Each row below is a state you can check today by
+building the thing and running the [conformance harness](/conformance) against
+the corpus. A claim with no vector behind it is not a claim.
+</Callout>
+
+## The three
+
+| | Language | Repository | Binary | What it is |
+|---|---|---|---|---|
+| **luxd** | Go | `luxfi/node` | `luxd` | The network. Every live chain. The oracle every other row is measured against. |
+| **hanzod** | Rust | `hanzo/node` | `hanzod` | The Rust node. Runs the Quasar engine through the `lux-consensus` crate. |
+| **node2** | C++ | `luxfi/node2` | `node2d` | The C++ daemon. Embeds `luxfi/consensus2` as its finality gate. |
+
+Supporting crates and libraries, one concern each:
+
+| Plane | Go | Rust | C++ |
+|---|---|---|---|
+| Consensus | `luxfi/consensus` | `lux-consensus` (`luxfi/consensus/pkg/rust`) | `luxfi/consensus2` |
+| EVM | `luxfi/geth`, `luxfi/evm`, `luxfi/evmgpu` | `lux-evm` — `revm` as the machine, `alloy` for the encodings | `cevm` |
+| Wire — arena codec | `luxfi/zap` | `hanzo-zap` | — |
+| Wire — frame RPC | `luxfi/api/zap` | — | `luxcpp/zap-cpp-core` |
+| HTTP over ZAP | `zap-proto/http` | — | — |
+| Service framework | `zap-proto/zip` | — | — |
+| GPU | `luxfi/gpu` (bindings) | — | `luxcpp/gpu`, `luxcpp/accel` |
+
+## The six planes
+
+A "plane" is a place where two implementations can disagree and produce two
+chains. There are six, and each has its own page.
+
+<Cards>
+  <Card title="Node" href="/nodes">
+    Bootstrapping, P2P, the RPC surface, the VM registry. Every path is under `/v1/`.
+  </Card>
+  <Card title="Consensus" href="/consensus">
+    Quasar — Photon, Wave, Focus, and the compact-certificate envelope.
+  </Card>
+  <Card title="EVM" href="/chains/cchain">
+    The C-Chain. Header preimage, transaction signing, state root, gas.
+  </Card>
+  <Card title="ZAP" href="/zap">
+    The arena codec. Sixteen-byte header, zero-copy field access, pinned to Go's bytes.
+  </Card>
+  <Card title="zip and the ZAP family" href="/zap/family">
+    Four layers answer to one name. `zip` declares an operation once and projects it onto every transport.
+  </Card>
+  <Card title="GPU" href="/gpu">
+    Kernels and launchers. Only C++ has a full stack.
+  </Card>
+</Cards>
+
+## Where each stack stands
+
+Building and passing your own tests is the easy half. What the tables below
+record is the harder half — whether the thing agrees with Go. `—` means it does
+not exist in that language and is not meant to.
+
+### Go — `luxfi/*`
+
+| Plane | State |
+|---|---|
+| node | The oracle. `./scripts/build.sh` on `luxfi/node` produces `luxd`; the local devnet answers `/v1/info` and `/v1/health`. |
+| consensus | The oracle. `go test ./protocol/...` green across Photon, Wave, Focus, Prism, Horizon, Flare, Ray, Field, Quasar, Pulsar. |
+| EVM | The oracle, with a **split to settle**: `luxfi/geth`'s `Hash19` and `luxfi/evm`'s `HeaderSerializable` encode the same header to different byte lengths. One block, one hash — one of the two shapes has to go, and until it does no other language can conform to "the" preimage. |
+| ZAP | The oracle. `luxfi/zap` emits version word `2` and accepts `1` and `2`. |
+| zip | `zap-proto/zip`. Go only — it is the service framework, not a wire format. |
+| GPU | `luxfi/gpu` is a cgo binding over the C++ stack, not an independent implementation. |
+
+### Rust — `hanzo/node`, `lux-rs/*`
+
+| Plane | State |
+|---|---|
+| node | `hanzod` builds and runs. It is **not yet a network participant**: the Quasar engine is wired, the block source and vote transport are not. Do not read "runs" as "validates". |
+| consensus | `lux-consensus` builds, tests green, and the FPC threshold and luminance planes are byte-exact to Go. The aggregate-certificate path is being **removed**, not fixed: Go's `QuorumCert` carries no aggregate field, so there is nothing for an aggregate verifier to conform to. |
+| EVM | Genesis hash, the signing hash for every transaction type, sender recovery and the transaction-list root are byte-exact to Go. Header *sealing* is not: the header type in use cannot hold `blockGasCost` or the `extData` fields, and Lux sets `blockGasCost` on every produced header. |
+| ZAP | `hanzo-zap` reads and writes the arena codec and refuses the frames Go refuses. It emits version word `1` where Go emits `2` — see [the ordering rule](/zap#the-version-word). |
+| zip | — |
+| GPU | — |
+
+### C++ — `luxfi/node2`, `luxfi/consensus2`, `cevm`, `luxcpp/*`
+
+| Plane | State |
+|---|---|
+| node | `node2d` builds; 17 of 17 tests pass; a five-process cluster finalizes over real loopback TCP. |
+| consensus | `consensus2` builds; 11 of 11 tests pass, including its conformance test against the Go corpus. |
+| EVM | `cevm`'s trie and interpreter match `geth` across every opcode vector in its suite. The shipped state transition does not read the EVM's refund output, so a storage clear costs more gas than `geth` charges — the correct transition already exists in the repository and has to be promoted over the shipped one. |
+| ZAP | `luxcpp/zap-cpp-core` implements the **frame RPC**, and its constants match Go's exactly. It does not implement the arena codec, and is not supposed to. |
+| zip | — |
+| GPU | The only full GPU stack, so there is nothing to conform *to* — correctness is against a CPU computation of the same thing. Where a launcher has such an oracle, HIP matches it; many launchers do not have one yet, and CUDA is [not cleared](/gpu) for anything entering a state root. |
+
+## The migration rule
+
+`luxd` → `hanzod` is a real end-state, and it passes through the corpus rather
+than around it.
+
+> An implementation does not replace another on a live network until its harness
+> is green against the corpus captured from **that network's own Go node**.
+
+Two consequences worth stating plainly:
+
+- **Green somewhere else does not count.** A harness green against a devnet
+  corpus says nothing about mainnet, because the corpus records what one node
+  said, not what the protocol permits.
+- **A harness that skips is a harness that failed.** The Rust harness fails on a
+  missing corpus rather than passing on zero checks. A suite that passes when it
+  checked nothing is worse than one that fails, because it will be believed.
+
+## Duplicates to collapse
+
+Two things doing one job is a defect. These are known and named so they are not
+rediscovered:
+
+- **`cevm` has two homes.** Both remotes share a root commit and have since
+  diverged. One of them stops receiving consensus-critical fixes the moment
+  someone picks the wrong one.
+- **`hanzo-zap` has more than one copy.** They were identical and have drifted —
+  one is now nearly twice the length of the other. The same wire question has to
+  be answered twice, and can be answered differently.
+- **The GPU ABI header has three copies.** The drifted copy also defines the
+  version constant its own compile-time check reads, so the check against
+  exactly this cannot fire.
+- **`evmgpu` pins an older module set than `node`** — a different `geth` and a
+  different `precompile` — which is a state-root divergence waiting for a
+  precompile to be called.
+
+## See also
+
+- [Build from source](/build) — verified native recipes for all three.
+- [Conformance](/conformance) — the corpus, the pinned oracle, the harness.

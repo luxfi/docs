@@ -66,8 +66,15 @@ lux validator add \
 
 ## Monitoring
 
-Access the node metrics and monitoring:
+A node with no `--http-port` set listens on **9630**, and stakes on **9631**.
+Every path is under `/v1/`.
 
-- **Metrics endpoint**: `http://localhost:9650/v1/metrics`
-- **Health check**: `http://localhost:9650/v1/health`
-- **Info API**: `http://localhost:9650/v1/info`
+- **Metrics endpoint**: `http://localhost:9630/v1/metrics`
+- **Health check**: `http://localhost:9630/v1/health`
+- **Info API**: `http://localhost:9630/v1/info`
+
+## Building one
+
+The pages above run a node from a release. To build any of the three
+implementations from source — Go, Rust or C++ — see
+[Build from source](/build).

@@ -1,0 +1,153 @@
+---
+title: Conformance
+description: The corpus that holds three implementations to one answer, and the harness that checks them
+---
+
+Three implementations of one protocol will agree on the easy cases by accident
+and disagree on the hard ones silently. Conformance is the machinery that makes
+the disagreement loud and early instead of quiet and on-chain.
+
+The corpus lives in [`luxfi/conformance`](https://github.com/luxfi/conformance).
+It holds canonical outputs captured from a live Go node. Every other
+implementation must reproduce them before it is allowed near a network.
+
+## The contract
+
+> For every vector, an implementation is conformant when the same input
+> produces output **equal** to the recorded result. Equality is exact: same hex,
+> same field values, same canonical JSON.
+
+"Close" is a fork. There is no tolerance because there is nothing for a
+tolerance to mean — a block hash that is nearly right identifies a different
+block, and a quorum threshold that is off by one accepts a block the rest of the
+network refuses.
+
+## What is recorded
+
+Vectors are grouped by plane. Each plane is a place two implementations can
+disagree and produce two chains.
+
+| Vector | Plane | What it pins |
+|---|---|---|
+| `evm_chainid`, `evm_genesis_block` | EVM | The chain id and genesis block as the node reports them |
+| `evm_header` | EVM | The exact bytes the genesis hash is taken over |
+| `evm_transaction` | EVM | Signing hash, wire bytes, recovered sender and list root per transaction type, plus the intrinsic gas floor and both contract-address rules |
+| `fpc_theta` | Consensus | θ per phase, and the α it yields at each committee size |
+| `luminance` | Consensus | The weight committees are sampled on, at every step of a trajectory |
+| `pchain_validators` | Consensus | The validator set that defines the committee |
+| `zap_handshake` | Wire | The first frame two peers exchange, and the frames Go refuses |
+| `zap_arena` | Wire | Every scalar, all four list kinds, the null shapes, nested objects through a signed pointer, and seven malformed frames with Go's answer to each |
+| `zap_frame` | Wire | The *other* ZAP — the [frame RPC](/zap/family), recorded so the shared name stops being an argument |
+| `network_id`, `node_version` | Provenance | What the corpus was captured against |
+
+Two details in that table carry more weight than they look like they do.
+
+**Refusals are recorded, not just acceptances.** `zap_handshake` and `zap_arena`
+both record frames Go's decoder *rejects*. An implementation must reject them
+too. Accepting a frame the network rejects is not leniency — it is a second
+protocol, and the peer that admits the message sees a history nobody else does.
+
+**Floats are recorded as bits.** θ and luminance are stored as IEEE-754 bit
+patterns, because a float is not its decimal rendering and two implementations
+that print the same sixteen digits can still be two different numbers.
+
+## The oracle is pinned
+
+`node_version.json` records the exact Go build the corpus came from — version
+and git commit. Re-capturing against a different build is a deliberate act: bump
+the pin, re-run the capture, review the diff.
+
+> A vector that changes without a version bump is a regression in the oracle,
+> not a new truth.
+
+The current pin is `luxd/1.36.133` at commit `f81aad95`. A node built from
+`luxfi/node` HEAD today reports a higher version, so re-capturing without
+bumping would silently move the ground everything else is measured against.
+
+## Reproducing the corpus
+
+```bash
+scripts/capture.sh http://127.0.0.1:9630
+```
+
+One command, because the corpus is asked for in two ways and both halves must
+come from the same build:
+
+- Over `/v1/`, it asks a **running node** what state it is in.
+- Through `oracle/`, a Go program linked against `luxfi/consensus`,
+  `luxfi/geth` and `luxfi/zap`, it asks the **packages** what their functions do.
+
+Vectors are never hand-edited. The corpus is always something Go actually said.
+
+The oracle checks its own work before writing. The genesis header vector is
+published only if keccak256 of the recorded bytes equals what `Header.Hash()`
+returns *and* equals the hash the node reported — three ways of getting the same
+number, or no vector.
+
+## Running the harness
+
+One harness exists today, in Rust. It carries **no vectors of its own** — a
+second copy of the truth is a second truth — and it puts the corpus's questions
+to the crates that would answer them on a live network: `lux-consensus` for
+consensus, `hanzo-zap` for the wire, `alloy` for the EVM.
+
+```bash
+cd lux-rs/conformance
+LUX_VECTORS=/path/to/luxfi/conformance/vectors cargo test
+```
+
+`LUX_VECTORS` defaults to a sibling checkout. **A missing corpus fails; it never
+skips.** A suite that passes when it checked nothing is worse than one that
+fails, because it will be believed.
+
+### Current result
+
+Twelve checks across four planes. Eleven pass:
+
+| Plane | Checks | Result |
+|---|---|---|
+| `consensus_fpc` | θ and α match the oracle | pass |
+| `consensus_luminance` | the whole trajectory matches | pass |
+| `evm_header` | fields read back; hashes to the block hash | pass |
+| `evm_transaction` | signed bytes decode; signing hash, id, sender and list root match | pass |
+| `zap_handshake` | the frames Go refuses are refused | pass |
+| `zap_handshake` | the frame bytes match the oracle | **fail** |
+
+The one failure is a single 16-bit word: Rust writes version `1` where Go writes
+`2`, on all six recorded node ids. It is a [known and deliberate
+divergence](/zap#the-version-word) — a reader in the fleet has not been widened
+yet, and readers are widened before emitters flip. It is left failing rather
+than asserted-as-correct, because a test that locks in a divergence will keep
+passing after the divergence is fixed.
+
+### Reading a failure
+
+A failure prints the id it disagreed on, what Go said, and what the
+implementation said. That is enough to fix it, and deliberately not enough to
+argue about — one of the two byte strings is on the network and the other is
+not.
+
+## What is not covered
+
+Stated plainly, because a gap that is not written down gets mistaken for a pass.
+
+- **No C++ harness against this corpus.** `consensus2` has its own conformance
+  test with its own captured vectors, and it passes; it is not pointed at this
+  corpus. Two corpora agreeing today is luck, not design.
+- **No end-to-end consensus sequence.** The corpus covers the functions a
+  decision is made of, not yet a sequence of accept, reject and reorg decisions.
+- **No Rust EVM building a header** from a genesis specification, and no
+  execution to a state root. Those need a chain with transactions in it, and the
+  C-Chain sits at block zero.
+- **No execution-plane vectors from the C++ EVM.** `cevm`'s opcode state roots
+  are checked only against `cevm`'s own goldens, so a divergence in gas
+  accounting is invisible to every other implementation.
+
+## The rule
+
+> A harness that is not green does not ship. A network is not migrated to an
+> implementation until its harness is green against the corpus captured from
+> that network's own Go node.
+
+Green against a devnet corpus says nothing about mainnet: a corpus records what
+one node said, not what the protocol permits.
