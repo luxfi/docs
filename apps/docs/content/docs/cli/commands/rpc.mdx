@@ -11,15 +11,15 @@ Make JSON-RPC calls to a Lux node.
 
 Examples:
   # Get P-Chain height
-  lux rpc call --method platform.getHeight --endpoint http://localhost:9630/v1/bc/P
+  lux rpc call --method platform.getHeight --endpoint http://localhost:9630/v1/chain/p
 
   # Get blockchains with params
-  lux rpc call --method platform.getBlockchains --params '&#123;}' --endpoint http://localhost:9630/v1/bc/P
+  lux rpc call --method platform.getBlockchains --params '&#123;}' --endpoint http://localhost:9630/v1/chain/p
 
   # Create blockchain
   lux rpc call --method platform.createBlockchain \
     --params '&#123;"vmID":"...", "name":"mychain", "genesis":"..."}' \
-    --endpoint http://localhost:9630/v1/bc/P
+    --endpoint http://localhost:9630/v1/chain/p
 
 
 ### lux rpc call
@@ -35,7 +35,7 @@ lux rpc call [flags]
 **Flags:**
 
 ```
-      --endpoint string   RPC endpoint URL (default "http://localhost:9630/v1/bc/P")
+      --endpoint string   RPC endpoint URL (default "http://localhost:9630/v1/chain/p")
       --method string     RPC method to call (required)
       --params string     JSON params object (optional)
       --timeout int       Request timeout in seconds (default 30)
@@ -46,7 +46,7 @@ lux rpc call [flags]
 Transfer LUX between the P and X chains by atomic export/import.
 
 The C-Chain is an EVM: move value on it with an ordinary EVM transaction
-against /v1/bc/C/rpc, not with this command.
+against /v1/chain/c, not with this command.
 
 Example:
   lux rpc transfer --from-chain P --to-chain X --to X-lux1... --amount 10

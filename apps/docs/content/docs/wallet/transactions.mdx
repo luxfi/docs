@@ -42,7 +42,7 @@ import (
 )
 
 client, _ := ethclient.Dial(
-    "http://127.0.0.1:9630/v1/bc/C/rpc",
+    "http://127.0.0.1:9630/v1/chain/c",
 )
 
 tx := types.NewTx(&types.DynamicFeeTx{

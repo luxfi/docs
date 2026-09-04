@@ -12,7 +12,7 @@ from web3 import Web3
 from eth_account import Account
 
 w3 = Web3(Web3.HTTPProvider(
-    "https://api.lux.network/v1/bc/C/rpc"
+    "https://api.lux.network/v1/chain/c"
 ))
 
 account = Account.from_key("0x...")
@@ -91,7 +91,7 @@ Same patterns work on any sovereign L1 EVM chain -- just change the provider URL
 ```python
 # Zoo chain (chain ID 200200)
 w3 = Web3(Web3.HTTPProvider(
-    "https://api.zoo.network/v1/bc/C/rpc"
+    "https://api.zoo.network/v1/chain/zoo"
 ))
 tx["chainId"] = 200200
 ```

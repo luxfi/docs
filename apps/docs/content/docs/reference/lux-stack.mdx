@@ -79,7 +79,7 @@ CHAIN_ID=99999              # EVM chain ID (unique)
 NETWORK_ID=12345            # Lux network ID
 
 # Lux mainnet connection (bridge + PQ safety)
-LUX_MAINNET_RPC=https://api.lux.network/v1/bc/C/rpc
+LUX_MAINNET_RPC=https://api.lux.network/v1/chain/c
 
 # Node
 LOG_LEVEL=info
@@ -122,9 +122,9 @@ Health checks are configured on all critical services (node, redis, all database
 The explorer connects to the C-Chain:
 
 ```
-RPC:       http://node:9650/v1/bc/C/rpc
-Trace:     http://node:9650/v1/bc/C/rpc
-WebSocket: ws://node:9650/v1/bc/C/ws
+RPC:       http://node:9650/v1/chain/c
+Trace:     http://node:9650/v1/chain/c
+WebSocket: ws://node:9650/v1/chain/c/ws
 ```
 
 Environment variables control chain display: `COIN`, `COIN_NAME`, `NETWORK`, `CHAIN_ID`.

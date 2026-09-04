@@ -24,24 +24,23 @@ canonical statement of the rule; everything we publish conforms to it.
   returns `404`. Each network is a different host serving the identical
   path tree.
 - **Each sovereign L1 answers on its own host.** `api.lux.network` serves the
-  Lux primary network only (`/v1/bc/{C,P,X}`). Zoo, Hanzo and Pars are not
+  Lux primary network only (`/v1/chain/{C,P,X}`). Zoo, Hanzo and Pars are not
   reachable as an alias or a blockchain ID underneath it; use their own hosts.
-- **Chain paths keep the `bc/` segment**: `/v1/bc/<chain>/rpc`. `/v1/C/rpc` and
-  `/v1/bc/C` are malformed paths, not short aliases, and return `404`.
-- **`<chain>` is the chain letter** (`C`, `P`, `X`), not an L1 nickname.
+- **Chain paths use the `chain/` segment**: `/v1/chain/<chain>` (e.g. `/v1/chain/c`, `/v1/chain/p`, `/v1/chain/x`), with `/rpc` optional (`/v1/chain/c/rpc`).
+- **Chain identifiers**: Primary network chains use standard abbreviations (`c`, `p`, `x`), while subnets use their brand or chain ID (`zoo`, `hanzo`, `pars`). Both lowercase and uppercase are supported.
 
 ### Canonical endpoints
 
 | Network | Chain ID | C-Chain JSON-RPC |
 |---------|----------|------------------|
-| Lux mainnet | 96369 | `https://api.lux.network/v1/bc/C/rpc` |
-| Lux testnet | 96368 | `https://api.lux-test.network/v1/bc/C/rpc` |
-| Lux devnet | 96367 | `https://api.lux-dev.network/v1/bc/C/rpc` |
-| Zoo mainnet | 200200 | `https://api.zoo.network/v1/bc/C/rpc` |
-| Zoo testnet | 200201 | `https://api.zoo-test.network/v1/bc/C/rpc` |
-| Hanzo mainnet | 36963 | `https://api.hanzo.network/v1/bc/C/rpc` |
-| Hanzo testnet | 36964 | `https://api.hanzo-test.network/v1/bc/C/rpc` |
-| Pars mainnet | 494949 | `https://api.pars.network/v1/bc/C/rpc` |
+| Lux mainnet | 96369 | `https://api.lux.network/v1/chain/c` |
+| Lux testnet | 96368 | `https://api.lux-test.network/v1/chain/c` |
+| Lux devnet | 96367 | `https://api.lux-dev.network/v1/chain/c` |
+| Zoo mainnet | 200200 | `https://api.zoo.network/v1/chain/zoo` |
+| Zoo testnet | 200201 | `https://api.zoo-test.network/v1/chain/zoo` |
+| Hanzo mainnet | 36963 | `https://api.hanzo.network/v1/chain/hanzo` |
+| Hanzo testnet | 36964 | `https://api.hanzo-test.network/v1/chain/hanzo` |
+| Pars mainnet | 494949 | `https://api.pars.network/v1/chain/pars` |
 
 WebSocket is the same path with `/ws` instead of `/rpc`, over `wss://`.
 Node-wide routes are `/v1/info` (POST) and `/v1/health` (GET).
@@ -107,24 +106,24 @@ never on the status code alone.
 ### Mainnet
 
 ```
-RPC: https://api.lux.network/v1/bc/C/rpc
-WebSocket: wss://api.lux.network/v1/bc/C/ws
+RPC: https://api.lux.network/v1/chain/c
+WebSocket: wss://api.lux.network/v1/chain/c/ws
 Chain ID: 96369
 ```
 
 ### Testnet
 
 ```
-RPC: https://api.lux-test.network/v1/bc/C/rpc
-WebSocket: wss://api.lux-test.network/v1/bc/C/ws
+RPC: https://api.lux-test.network/v1/chain/c
+WebSocket: wss://api.lux-test.network/v1/chain/c/ws
 Chain ID: 96368
 ```
 
 ### Devnet
 
 ```
-RPC: https://api.lux-dev.network/v1/bc/C/rpc
-WebSocket: wss://api.lux-dev.network/v1/bc/C/ws
+RPC: https://api.lux-dev.network/v1/chain/c
+WebSocket: wss://api.lux-dev.network/v1/chain/c/ws
 ```
 
 ## SDK Reference

@@ -94,7 +94,7 @@ EOF
 # Run graph-node pointing at Lux C-Chain
 cargo run -p graph-node --release -- \
   --postgres-url postgresql://user:pass@localhost:5432/graph-node \
-  --ethereum-rpc lux:https://api.lux.network/v1/bc/C/rpc \
+  --ethereum-rpc lux:https://api.lux.network/v1/chain/c \
   --ipfs 127.0.0.1:5001
 ```
 
@@ -148,7 +148,7 @@ graph-node [FLAGS] [OPTIONS]
 --ethereum-rpc NETWORK_NAME:[CAPABILITIES]:URL
 
 # Examples:
---ethereum-rpc lux:full,archive:https://api.lux.network/v1/bc/C/rpc
+--ethereum-rpc lux:full,archive:https://api.lux.network/v1/chain/c
 --ethereum-rpc mainnet:https://eth-mainnet.g.alchemy.com/v2/KEY
 ```
 

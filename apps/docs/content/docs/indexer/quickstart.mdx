@@ -13,17 +13,17 @@ Ensure a Lux node is running with JSON-RPC accessible.
 ```bash
 # Index C-Chain
 ./indexer -chain cchain \
-  -rpc http://localhost:9650/v1/bc/C/rpc \
+  -rpc http://localhost:9650/v1/chain/c \
   -port 4000
 
 # Index X-Chain
 ./indexer -chain xchain \
-  -rpc http://localhost:9650/v1/bc/X \
+  -rpc http://localhost:9650/v1/chain/x \
   -port 4200
 
 # Index P-Chain
 ./indexer -chain pchain \
-  -rpc http://localhost:9650/v1/bc/P \
+  -rpc http://localhost:9650/v1/chain/p \
   -port 4100
 ```
 
@@ -70,7 +70,7 @@ Available chains:
 
 ```bash
 docker run -it \
-  -e RPC_ENDPOINT=http://host.docker.internal:9650/v1/bc/C/rpc \
+  -e RPC_ENDPOINT=http://host.docker.internal:9650/v1/chain/c \
   -e DATABASE_URL=postgresql://indexer:indexer@postgres:5432/indexer \
   -p 4000:4000 \
   ghcr.io/luxfi/indexer:v0.2.2 indexer -chain cchain

@@ -163,15 +163,15 @@ curl -X POST http://localhost:9630/v1/info \
   -d '{"jsonrpc":"2.0","id":1,"method":"info.isBootstrapped","params":{}}'
 
 # P-Chain: current validators
-curl -X POST http://localhost:9630/v1/bc/P \
+curl -X POST http://localhost:9630/v1/chain/p \
   -d '{"jsonrpc":"2.0","id":1,"method":"platform.getCurrentValidators","params":{}}'
 
 # C-Chain: EVM JSON-RPC
-curl -X POST http://localhost:9630/v1/bc/C/rpc \
+curl -X POST http://localhost:9630/v1/chain/c \
   -d '{"jsonrpc":"2.0","id":1,"method":"eth_blockNumber","params":[]}'
 
 # X-Chain: asset balance
-curl -X POST http://localhost:9630/v1/bc/X \
+curl -X POST http://localhost:9630/v1/chain/x \
   -d '{"jsonrpc":"2.0","id":1,"method":"xvm.getBalance","params":{"address":"X-lux1...","assetID":"LUX"}}'
 ```
 

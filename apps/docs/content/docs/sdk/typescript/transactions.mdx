@@ -18,14 +18,14 @@ const account = privateKeyToAccount("0x...");
 
 const publicClient = createPublicClient({
   transport: http(
-    "https://api.lux.network/v1/bc/C/rpc"
+    "https://api.lux.network/v1/chain/c"
   ),
 });
 
 const walletClient = createWalletClient({
   account,
   transport: http(
-    "https://api.lux.network/v1/bc/C/rpc"
+    "https://api.lux.network/v1/chain/c"
   ),
 });
 
@@ -102,7 +102,7 @@ Same API, different chain configuration:
 const zooWallet = createWalletClient({
   account,
   transport: http(
-    "https://api.zoo.network/v1/bc/C/rpc"
+    "https://api.zoo.network/v1/chain/zoo"
   ),
 });
 

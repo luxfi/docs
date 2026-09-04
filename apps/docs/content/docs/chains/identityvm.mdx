@@ -40,7 +40,7 @@ The Identity VM (I-Chain) implements W3C-compatible Decentralized Identifiers (D
 The I-Chain API uses the `identity` namespace. Endpoint:
 
 ```
-https://api.lux.network/v1/bc/{blockchain-id}/rpc
+https://api.lux.network/v1/chain/{blockchain-id}/rpc
 ```
 
 ### Identity Operations
@@ -93,7 +93,7 @@ curl -X POST --data '{
   },
   "id": 1
 }' -H "Content-Type: application/json" \
-  https://api.lux.network/v1/bc/{blockchain-id}/rpc
+  https://api.lux.network/v1/chain/{blockchain-id}/rpc
 ```
 
 ## Related LPs

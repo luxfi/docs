@@ -11,9 +11,9 @@ Lux C-Chain exposes an Ethereum-compatible JSON-RPC API. Any tool that works wit
 
 | Network | HTTP | WebSocket |
 |---------|------|-----------|
-| Mainnet | `https://api.lux.network/v1/bc/C/rpc` | `wss://api.lux.network/v1/bc/C/ws` |
-| Testnet | `https://api.lux-test.network/v1/bc/C/rpc` | `wss://api.lux-test.network/v1/bc/C/ws` |
-| Local | `http://localhost:9650/v1/bc/C/rpc` | `ws://localhost:9650/v1/bc/C/ws` |
+| Mainnet | `https://api.lux.network/v1/chain/c` | `wss://api.lux.network/v1/chain/c/ws` |
+| Testnet | `https://api.lux-test.network/v1/chain/c` | `wss://api.lux-test.network/v1/chain/c/ws` |
+| Local | `http://localhost:9650/v1/chain/c` | `ws://localhost:9650/v1/chain/c/ws` |
 
 ### Chain IDs
 
@@ -30,7 +30,7 @@ All requests use HTTP POST with `Content-Type: application/json`.
 curl -s -X POST \
   -H "Content-Type: application/json" \
   --data '{"jsonrpc":"2.0","id":1,"method":"METHOD","params":PARAMS}' \
-  https://api.lux.network/v1/bc/C/rpc
+  https://api.lux.network/v1/chain/c
 ```
 
 ## Core Methods
@@ -45,7 +45,7 @@ curl -s -X POST --data '{
   "id": 1,
   "method": "eth_blockNumber",
   "params": []
-}' -H 'content-type:application/json' https://api.lux.network/v1/bc/C/rpc
+}' -H 'content-type:application/json' https://api.lux.network/v1/chain/c
 ```
 
 Response:
@@ -73,7 +73,7 @@ curl -s -X POST --data '{
   "id": 1,
   "method": "eth_getBalance",
   "params": ["0xYourAddress", "latest"]
-}' -H 'content-type:application/json' https://api.lux.network/v1/bc/C/rpc
+}' -H 'content-type:application/json' https://api.lux.network/v1/chain/c
 ```
 
 Response:
@@ -102,7 +102,7 @@ curl -s -X POST --data '{
   "id": 1,
   "method": "eth_sendRawTransaction",
   "params": ["0xf86c...signed_tx_hex"]
-}' -H 'content-type:application/json' https://api.lux.network/v1/bc/C/rpc
+}' -H 'content-type:application/json' https://api.lux.network/v1/chain/c
 ```
 
 Response:
@@ -133,7 +133,7 @@ curl -s -X POST --data '{
     "to": "0xContractAddress",
     "data": "0x70a08231000000000000000000000000YourAddress"
   }, "latest"]
-}' -H 'content-type:application/json' https://api.lux.network/v1/bc/C/rpc
+}' -H 'content-type:application/json' https://api.lux.network/v1/chain/c
 ```
 
 The `data` field is the ABI-encoded function selector and parameters. The example above calls `balanceOf(address)`.
@@ -162,7 +162,7 @@ curl -s -X POST --data '{
       "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
     ]
   }]
-}' -H 'content-type:application/json' https://api.lux.network/v1/bc/C/rpc
+}' -H 'content-type:application/json' https://api.lux.network/v1/chain/c
 ```
 
 The topic `0xddf252ad...` is the `Transfer(address,address,uint256)` event signature.
@@ -177,7 +177,7 @@ curl -s -X POST --data '{
   "id": 1,
   "method": "eth_getTransactionReceipt",
   "params": ["0xTransactionHash"]
-}' -H 'content-type:application/json' https://api.lux.network/v1/bc/C/rpc
+}' -H 'content-type:application/json' https://api.lux.network/v1/chain/c
 ```
 
 ### eth_estimateGas
@@ -194,7 +194,7 @@ curl -s -X POST --data '{
     "to": "0xRecipientAddress",
     "value": "0xDE0B6B3A7640000"
   }]
-}' -H 'content-type:application/json' https://api.lux.network/v1/bc/C/rpc
+}' -H 'content-type:application/json' https://api.lux.network/v1/chain/c
 ```
 
 ### eth_gasPrice
@@ -207,7 +207,7 @@ curl -s -X POST --data '{
   "id": 1,
   "method": "eth_gasPrice",
   "params": []
-}' -H 'content-type:application/json' https://api.lux.network/v1/bc/C/rpc
+}' -H 'content-type:application/json' https://api.lux.network/v1/chain/c
 ```
 
 ## WebSocket Subscriptions
@@ -217,7 +217,7 @@ Subscribe to real-time events over WebSocket.
 ### New Blocks
 
 ```javascript
-const ws = new WebSocket("wss://api.lux.network/v1/bc/C/ws");
+const ws = new WebSocket("wss://api.lux.network/v1/chain/c/ws");
 
 ws.onopen = () => {
   ws.send(JSON.stringify({

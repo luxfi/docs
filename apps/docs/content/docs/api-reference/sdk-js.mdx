@@ -225,7 +225,7 @@ For C-Chain interactions, use ethers.js with the Lux RPC endpoint.
 import { ethers } from "ethers";
 
 const provider = new ethers.JsonRpcProvider(
-  "https://api.lux.network/v1/bc/C/rpc"
+  "https://api.lux.network/v1/chain/c"
 );
 
 const blockNumber = await provider.getBlockNumber();
@@ -282,7 +282,7 @@ console.log("Deployed to:", await contract.getAddress());
 
 ```typescript
 const wsProvider = new ethers.WebSocketProvider(
-  "wss://api.lux.network/v1/bc/C/ws"
+  "wss://api.lux.network/v1/chain/c/ws"
 );
 
 // Subscribe to new blocks

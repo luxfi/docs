@@ -59,7 +59,7 @@ Go-live target for the Lux primary network (D + A + Z + B).
 The Z-Chain exposes three handler groups. Base endpoint:
 
 ```
-https://api.lux.network/v1/bc/{blockchain-id}
+https://api.lux.network/v1/chain/{blockchain-id}
 ```
 
 ### Transaction Endpoints (`/rpc`)
@@ -100,7 +100,7 @@ https://api.lux.network/v1/bc/{blockchain-id}
 
 ```bash
 curl -X POST \
-  https://api.lux.network/v1/bc/{blockchain-id}/rpc/sendTransaction \
+  https://api.lux.network/v1/chain/{blockchain-id}/rpc/sendTransaction \
   -H "Content-Type: application/json" \
   -d '{
     "nullifiers": ["0x..."],
@@ -113,7 +113,7 @@ curl -X POST \
 ## Example: Check Nullifier
 
 ```bash
-curl "https://api.lux.network/v1/bc/{blockchain-id}/privacy/isNullifierSpent?nullifier=0x..."
+curl "https://api.lux.network/v1/chain/{blockchain-id}/privacy/isNullifierSpent?nullifier=0x..."
 ```
 
 ## Related LPs

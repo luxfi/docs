@@ -10,10 +10,10 @@ All Lux chains expose JSON-RPC APIs. The SDK wraps these APIs with typed clients
 
 | API | Endpoint | Description |
 |-----|----------|-------------|
-| P-Chain | `/v1/bc/P` | Validators, chains, staking, delegations |
-| X-Chain | `/v1/bc/X` | UTXO operations, asset creation and transfer |
-| C-Chain | `/v1/bc/C/rpc` | EVM JSON-RPC (eth, net, web3 namespaces) |
-| Sovereign L1 EVM | `/v1/bc/{name}/rpc` | Same as C-Chain, per-chain endpoint |
+| P-Chain | `/v1/chain/p` | Validators, chains, staking, delegations |
+| X-Chain | `/v1/chain/x` | UTXO operations, asset creation and transfer |
+| C-Chain | `/v1/chain/c` | EVM JSON-RPC (eth, net, web3 namespaces) |
+| Sovereign L1 EVM | `/v1/chain/{name}/rpc` | Same as C-Chain, per-chain endpoint |
 | Info | `/v1/info` | Node info, network ID, node ID |
 | Health | `/v1/health` | Node and chain health status |
 | Admin | `/v1/admin` | Node administration (whitelisted) |

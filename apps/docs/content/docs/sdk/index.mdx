@@ -45,7 +45,7 @@ import { createPublicClient, http } from "viem";
 
 const client = createPublicClient({
   transport: http(
-    "https://api.lux.network/v1/bc/C/rpc"
+    "https://api.lux.network/v1/chain/c"
   ),
 });
 const block = await client.getBlockNumber();
@@ -57,7 +57,7 @@ const block = await client.getBlockNumber();
 from web3 import Web3
 
 w3 = Web3(Web3.HTTPProvider(
-    "https://api.lux.network/v1/bc/C/rpc"
+    "https://api.lux.network/v1/chain/c"
 ))
 block = w3.eth.block_number
 ```

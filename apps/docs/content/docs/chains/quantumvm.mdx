@@ -50,7 +50,7 @@ The Quantum VM (Q-Chain) is a post-quantum resistant blockchain virtual machine.
 The Q-Chain API uses the `qvm` namespace. Endpoint:
 
 ```
-https://api.lux.network/v1/bc/{blockchain-id}/rpc
+https://api.lux.network/v1/chain/{blockchain-id}/rpc
 ```
 
 ### Block Operations
@@ -81,7 +81,7 @@ curl -X POST --data '{
   "params": {},
   "id": 1
 }' -H "Content-Type: application/json" \
-  https://api.lux.network/v1/bc/{blockchain-id}/rpc
+  https://api.lux.network/v1/chain/{blockchain-id}/rpc
 ```
 
 Response:

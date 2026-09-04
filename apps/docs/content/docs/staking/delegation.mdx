@@ -54,7 +54,7 @@ curl -s -X POST --data '{
   "method":"platform.getCurrentValidators",
   "params":{},
   "id":1
-}' -H 'content-type:application/json' http://127.0.0.1:9630/v1/bc/P | jq '.result.validators[] | {nodeID, uptime, delegationFee}'
+}' -H 'content-type:application/json' http://127.0.0.1:9630/v1/chain/p | jq '.result.validators[] | {nodeID, uptime, delegationFee}'
 ```
 
 Look for validators with uptime above 95% and delegation fees at or near the 2% minimum.

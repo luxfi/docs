@@ -83,7 +83,7 @@ curl -s http://127.0.0.1:9630/v1/health
 
 curl -s -X POST -H 'content-type: application/json' \
   --data '{"jsonrpc":"2.0","id":1,"method":"eth_chainId","params":[]}' \
-  http://127.0.0.1:9630/v1/bc/C/rpc
+  http://127.0.0.1:9630/v1/chain/c
 ```
 
 `info.getNodeVersion` returns the version **and the git commit** the binary was

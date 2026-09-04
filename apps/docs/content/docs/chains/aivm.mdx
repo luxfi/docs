@@ -55,7 +55,7 @@ Go-live target for the Lux primary network (D + A + Z + B).
 The A-Chain uses a REST API (not JSON-RPC). Endpoint:
 
 ```
-https://api.lux.network/v1/bc/{blockchain-id}
+https://api.lux.network/v1/chain/{blockchain-id}
 ```
 
 ### Provider Endpoints
@@ -92,7 +92,7 @@ https://api.lux.network/v1/bc/{blockchain-id}
 
 ```bash
 curl -X POST \
-  https://api.lux.network/v1/bc/{blockchain-id}/providers/register \
+  https://api.lux.network/v1/chain/{blockchain-id}/providers/register \
   -H "Content-Type: application/json" \
   -d '{
     "id": "provider-1",

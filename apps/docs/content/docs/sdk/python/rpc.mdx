@@ -11,7 +11,7 @@ The Python SDK wraps Web3.py to provide typed access to all Lux node RPC endpoin
 from web3 import Web3
 
 w3 = Web3(Web3.HTTPProvider(
-    "https://api.lux.network/v1/bc/C/rpc"
+    "https://api.lux.network/v1/chain/c"
 ))
 
 # Get latest block
@@ -36,12 +36,12 @@ Connect to any sovereign L1 EVM chain by changing the endpoint:
 ```python
 # Zoo chain
 zoo = Web3(Web3.HTTPProvider(
-    "https://api.zoo.network/v1/bc/C/rpc"
+    "https://api.zoo.network/v1/chain/zoo"
 ))
 
 # Hanzo chain
 hanzo = Web3(Web3.HTTPProvider(
-    "https://api.hanzo.network/v1/bc/C/rpc"
+    "https://api.hanzo.network/v1/chain/hanzo"
 ))
 ```
 
@@ -51,7 +51,7 @@ hanzo = Web3(Web3.HTTPProvider(
 import requests
 
 resp = requests.post(
-    "https://api.lux.network/v1/bc/P",
+    "https://api.lux.network/v1/chain/p",
     json={
         "jsonrpc": "2.0",
         "method": "platform.getCurrentValidators",
@@ -67,9 +67,9 @@ print(f"Active validators: {len(validators)}")
 
 | Network | C-Chain RPC URL |
 |---------|-----------------|
-| Mainnet | `https://api.lux.network/v1/bc/C/rpc` |
-| Testnet | `https://api.lux-test.network/v1/bc/C/rpc` |
-| Local | `http://127.0.0.1:9630/v1/bc/C/rpc` |
+| Mainnet | `https://api.lux.network/v1/chain/c` |
+| Testnet | `https://api.lux-test.network/v1/chain/c` |
+| Local | `http://127.0.0.1:9630/v1/chain/c` |
 
 ## Chain IDs
 
