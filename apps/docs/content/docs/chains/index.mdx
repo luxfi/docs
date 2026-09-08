@@ -70,6 +70,25 @@ To track all chains on a testnet or devnet node:
 luxd --network-id=testnet --track-all-chains
 ```
 
+### Chains you have to ask for
+
+Some primary-network chains cost an operator something that validating the
+primary network did not ask for — co-location with a matcher, an HSM, a GPU, a
+custody role. Those run only when you name them:
+
+```bash
+luxd --chains=D,B,M          # by letter or by alias: --chains=dex,bridge,mpc
+```
+
+Without `--chains`, D, B and M decline even under `--track-all-chains`; the node
+says which chain it declined and why. A name no chain answers to is refused at
+startup rather than quietly ignored, because a misspelled chain and a broken
+chain look identical once the node is running.
+
+Naming a chain says what you want. Where a chain is also restricted, activation
+still requires an M-Chain ownership attestation naming your node — that is what
+you are entitled to, and only the second lives somewhere you cannot rewrite.
+
 ## Additional VMs
 
 | VM | Directory | Status |

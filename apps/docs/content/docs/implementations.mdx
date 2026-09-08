@@ -27,6 +27,17 @@ the corpus. A claim with no vector behind it is not a claim.
 | **hanzod** | Rust | `hanzo/node` | `hanzod` | The Rust node. Runs the Quasar engine through the `lux-consensus` crate. |
 | **node2** | C++ | `luxfi/node2` | `node2d` | The C++ daemon. Embeds `luxfi/consensus2` as its finality gate. |
 
+All three now live in one repository. `luxfi/node` holds the Go node itself —
+`cmd/luxd` and everything under it are that module, not a fetch — and the Rust
+and C++ runtimes sit beside it with the corpus that compares them. The reference
+implementation and the two ports being one checkout is what makes parity a thing
+you run instead of a thing you assert.
+
+The Go node runs the primary network's chains in-process: P X C Q Z A B G K M F.
+D is the exception and stays a plugin, because the DEX has two matchers — a
+pure-Go one and a GPU one behind a build tag — and linking the VM would make the
+node's build pick which the DEX runs.
+
 Supporting crates and libraries, one concern each:
 
 | Plane | Go | Rust | C++ |
